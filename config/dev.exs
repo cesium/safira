@@ -39,8 +39,6 @@ config :phoenix, :stacktrace_depth, 20
 # Configure your database
 config :safira, Safira.Repo,
   adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
   database: "safira_dev",
   hostname: "localhost",
   pool_size: 10
