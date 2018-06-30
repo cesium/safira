@@ -15,6 +15,9 @@ erl_crash.dump
 # variables.
 /config/*.secret.exs
 
+# Environment Variables
+/.env
+
 ### SublimeText ###
 # Cache files for Sublime Text
 *.tmlanguage.cache

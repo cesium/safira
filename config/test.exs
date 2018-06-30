@@ -17,3 +17,6 @@ config :safira, Safira.Repo,
   database: "safira_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+# Fast testing only
+config :bcrypt_elixir, :log_rounds, 4
