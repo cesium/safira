@@ -25,6 +25,8 @@ defmodule SafiraWeb.Router do
 
       resources "/badges", BadgeController, only: [:index, :show]
 
+      resources "/redeem", RedeemController, only: [:create]
+
     end
   end
 end

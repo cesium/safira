@@ -64,4 +64,62 @@ defmodule Safira.ContestTest do
       assert %Ecto.Changeset{} = Contest.change_badge(badge)
     end
   end
+
+  describe "users_badges" do
+    alias Safira.Contest.Redeem
+
+    @valid_attrs %{}
+    @update_attrs %{}
+    @invalid_attrs %{}
+
+    def redeem_fixture(attrs \\ %{}) do
+      {:ok, redeem} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Contest.create_redeem()
+
+      redeem
+    end
+
+    test "list_users_badges/0 returns all users_badges" do
+      redeem = redeem_fixture()
+      assert Contest.list_users_badges() == [redeem]
+    end
+
+    test "get_redeem!/1 returns the redeem with given id" do
+      redeem = redeem_fixture()
+      assert Contest.get_redeem!(redeem.id) == redeem
+    end
+
+    test "create_redeem/1 with valid data creates a redeem" do
+      assert {:ok, %Redeem{} = redeem} = Contest.create_redeem(@valid_attrs)
+    end
+
+    test "create_redeem/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Contest.create_redeem(@invalid_attrs)
+    end
+
+    test "update_redeem/2 with valid data updates the redeem" do
+      redeem = redeem_fixture()
+      assert {:ok, redeem} = Contest.update_redeem(redeem, @update_attrs)
+      assert %Redeem{} = redeem
+    end
+
+    test "update_redeem/2 with invalid data returns error changeset" do
+      redeem = redeem_fixture()
+      assert {:error, %Ecto.Changeset{}} = Contest.update_redeem(redeem, @invalid_attrs)
+      assert redeem == Contest.get_redeem!(redeem.id)
+    end
+
+    test "delete_redeem/1 deletes the redeem" do
+      redeem = redeem_fixture()
+      assert {:ok, %Redeem{}} = Contest.delete_redeem(redeem)
+      assert_raise Ecto.NoResultsError, fn -> Contest.get_redeem!(redeem.id) end
+    end
+
+    test "change_redeem/1 returns a redeem changeset" do
+      redeem = redeem_fixture()
+      assert %Ecto.Changeset{} = Contest.change_redeem(redeem)
+    end
+  end
 end

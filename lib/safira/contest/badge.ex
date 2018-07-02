@@ -6,7 +6,11 @@ defmodule Safira.Contest.Badge do
   schema "badges" do
     field :begin, :utc_datetime
     field :end, :utc_datetime
-    field :company_id, :id
+    has_one :company, User, foreign_key: :company_id
+    field :name, :string
+    field :description, :string
+
+    many_to_many :users, User, join_through: Redeem
 
     timestamps()
   end

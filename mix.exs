@@ -20,7 +20,7 @@ defmodule Safira.Mixfile do
   def application do
     [
       mod: {Safira.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:ex_machina, :logger, :runtime_tools]
     ]
   end
 
@@ -41,7 +41,8 @@ defmodule Safira.Mixfile do
       {:cowboy, "~> 1.0"},
       {:guardian, "~> 1.0"},
       {:comeonin, "~> 4.0"},
-      {:bcrypt_elixir, "~> 1.0"}
+      {:bcrypt_elixir, "~> 1.0"},
+      {:ex_machina, "~> 2.2", except: :prod}
     ]
   end
 
