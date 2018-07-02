@@ -11,7 +11,7 @@ defmodule Safira.Contest.Badge do
     field :description, :string
 
     many_to_many :users, User, join_through: Redeem
-    has_one :company_user, User, foreign_key: :company_id
+    belongs_to :company_user, User, foreign_key: :company_id
 
     timestamps()
   end

@@ -16,7 +16,7 @@ defmodule Safira.Accounts.User do
 
     many_to_many :badges, Badge, join_through: Redeem
     has_many :redeems, Redeem
-    has_one :company_badge, Badge
+    has_one :company_badge, Badge, foreign_key: :company_id
 
     timestamps()
   end
@@ -25,13 +25,13 @@ defmodule Safira.Accounts.User do
   def changeset(user, attrs) do
     user
     |> cast(attrs, [:email, :password, :password_confirmation])
-    |> validate_required([:email, :password, :password_confirmation])
-    |> validate_length(:email, min: 5, max: 255)
-    |> validate_format(:email, ~r/@/)
-    |> validate_length(:password, min: 8)
-    |> validate_confirmation(:password)
-    |> unique_constraint(:email)
-    |> genput_password_hash
+    #|> validate_required([:email, :password, :password_confirmation])
+    #|> validate_length(:email, min: 5, max: 255)
+    #|> validate_format(:email, ~r/@/)
+    #|> validate_length(:password, min: 8)
+    #|> validate_confirmation(:password)
+    #|> unique_constraint(:email)
+    #|> genput_password_hash
   end
 
   defp genput_password_hash(changeset) do
