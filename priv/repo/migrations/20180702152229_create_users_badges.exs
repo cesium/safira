@@ -6,8 +6,6 @@ defmodule Safira.Repo.Migrations.CreateUsersBadges do
       add :user_id, references(:users, on_delete: :nothing)
       add :badge_id, references(:badges, on_delete: :nothing)
       add :staff_id, references(:users, on_delete: :nothing)
-      add :name, :string
-      add :description, :text
 
       timestamps()
     end

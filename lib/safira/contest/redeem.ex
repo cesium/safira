@@ -9,7 +9,7 @@ defmodule Safira.Contest.Redeem do
   schema "users_badges" do
     belongs_to :attendee, User, foreign_key: :user_id
     belongs_to :badge, Badge, foreign_key: :badge_id
-    has_one :staff, User, foreign_key: :staff_id
+    belongs_to :staff, User, foreign_key: :staff_id
 
     timestamps()
   end

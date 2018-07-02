@@ -18,7 +18,7 @@ defmodule SafiraWeb.Router do
     post "/sign_in", AuthController, :sign_in
 
     scope "/v1" do
-      pipe_through :jwt_authenticated
+      #      pipe_through :jwt_authenticated
 
       get "/user", AuthController, :user
       resources "/users", UserController, only: [:index, :show]

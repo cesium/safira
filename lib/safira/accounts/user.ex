@@ -1,6 +1,8 @@
 defmodule Safira.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
+  alias Safira.Contest.Badge
+  alias Safira.Contest.Redeem
 
 
   schema "users" do
@@ -13,6 +15,8 @@ defmodule Safira.Accounts.User do
 
 
     many_to_many :badges, Badge, join_through: Redeem
+    has_many :redeems, Redeem
+    has_one :company_badge, Badge
 
     timestamps()
   end
