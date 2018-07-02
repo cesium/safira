@@ -8,10 +8,14 @@ defmodule SafiraWeb.AuthController do
   action_fallback SafiraWeb.FallbackController
 
   def sign_up(conn, %{"user" => user_params}) do
-    with {:ok, %User{} = user} <- Accounts.create_user(user_params),
-         {:ok, token, _claims} <- Guardian.encode_and_sign(user) do
-      conn 
-      |> render("jwt.json", jwt: token)
+    if user_params["uuid"] do
+      with  {:ok, %User{} = user} <- Accounts.create_user_uuid(user_params),
+            {:ok, token, _claims} <- Guardian.encode_and_sign(user) do
+        conn 
+        |> render("jwt.json", jwt: token)
+      end
+    else
+      {:error, :unauthorized}
     end
   end
 

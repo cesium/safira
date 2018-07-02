@@ -18,13 +18,14 @@ defmodule Safira.Accounts.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:email, :password, :password_confirmation])
-    |> validate_required([:email, :password, :password_confirmation])
+    |> cast(attrs, [:email, :password, :password_confirmation, :uuid])
+    |> validate_required([:email, :password, :password_confirmation, :uuid])
     |> validate_length(:email, min: 5, max: 255)
     |> validate_format(:email, ~r/@/)
     |> validate_length(:password, min: 8) 
     |> validate_confirmation(:password)
     |> unique_constraint(:email)
+    |> unique_constraint(:uuid)
     |> genput_password_hash
   end
 

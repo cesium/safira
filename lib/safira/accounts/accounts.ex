@@ -39,6 +39,8 @@ defmodule Safira.Accounts do
   """
   def get_user!(id), do: Repo.get!(User, id)
 
+  def get_user_uuid!(uuid), do: Repo.get_by!(User, uuid: uuid)
+
   @doc """
   Creates a user.
 
@@ -55,6 +57,16 @@ defmodule Safira.Accounts do
     %User{}
     |> User.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def create_user_uuid(attrs \\ %{}) do
+    if get_user_uuid!(attrs["uuid"]).email == nil do
+      get_user_uuid!(attrs["uuid"])
+      |> User.changeset(attrs)
+      |> Repo.update()
+    else
+      {:error, :unauthorized}
+    end
   end
 
   @doc """

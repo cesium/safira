@@ -15,8 +15,13 @@ defmodule Mix.Tasks.Gen.Users do
   defp create(n) do
     Mix.Task.run "app.start"
 
-    for _n <- 0..n do
-      Safira.Repo.insert!(%Safira.Accounts.User{:uuid => UUID.uuid4()})
+    cond do
+      n == 1 ->
+        Safira.Repo.insert!(%Safira.Accounts.User{:uuid => UUID.uuid4()})
+      n > 1 ->
+        for _n <- 1..n do
+          Safira.Repo.insert!(%Safira.Accounts.User{:uuid => UUID.uuid4()})
+        end
     end
   end
 end
