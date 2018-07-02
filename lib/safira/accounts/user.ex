@@ -6,6 +6,7 @@ defmodule Safira.Accounts.User do
   schema "users" do
     field :email, :string
     field :password_hash, :string
+    field :uuid, :string
 
     # Virtual fields:
     field :password, :string, virtual: true

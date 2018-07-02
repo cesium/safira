@@ -41,7 +41,8 @@ defmodule Safira.Mixfile do
       {:cowboy, "~> 1.0"},
       {:guardian, "~> 1.0"},
       {:comeonin, "~> 4.0"},
-      {:bcrypt_elixir, "~> 1.0"}
+      {:bcrypt_elixir, "~> 1.0"},
+      {:elixir_uuid, "~> 1.2"}
     ]
   end
 
