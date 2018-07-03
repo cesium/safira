@@ -18,6 +18,9 @@ erl_crash.dump
 # Environment Variables
 /.env
 
+# Test files
+/*.json
+
 ### SublimeText ###
 # Cache files for Sublime Text
 *.tmlanguage.cache
