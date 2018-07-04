@@ -17,7 +17,8 @@ defmodule Safira.Contest.Redeem do
   @doc false
   def changeset(redeem, attrs) do
     redeem
-    |> cast(attrs, [])
-    |> validate_required([])
+    |> cast(attrs, [:attendee, :badge,:staff])
+    |> validate_required([:attendee, :badge,:staff])
+    |> unique_constraint(:unique_badge_user, name: :unique_badge_user)
   end
 end
