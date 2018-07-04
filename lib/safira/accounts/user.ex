@@ -16,7 +16,7 @@ defmodule Safira.Accounts.User do
 
     many_to_many :badges, Badge, join_through: Redeem
     has_many :redeems, Redeem
-    has_one :company_badge, Badge
+    has_one :company_badge, Badge, foreign_key: :company_id
 
     timestamps()
   end
