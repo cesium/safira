@@ -1,4 +1,4 @@
-defmodule Mix.Tasks.Gen.Users do
+defmodule Mix.Tasks.Gen.Attendees do
   use Mix.Task
 
   def run(args) do
@@ -16,7 +16,11 @@ defmodule Mix.Tasks.Gen.Users do
     Mix.Task.run "app.start"
 
     Enum.each 1..n, fn(_n) ->
-      Safira.Repo.insert!(%Safira.Accounts.User{:uuid => UUID.uuid4()})
+      uuid = UUID.uuid4()
+      cond do
+        is_nil Safira.Repo.get_by(Safira.Accounts.Attendee, uuid: uuid) ->
+          Safira.Repo.insert!(%Safira.Accounts.Attendee{:uuid => uuid})
+      end
     end
   end
 end

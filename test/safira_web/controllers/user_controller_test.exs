@@ -4,8 +4,8 @@ defmodule SafiraWeb.UserControllerTest do
   alias Safira.Accounts
   alias Safira.Accounts.User
 
-  @create_attrs %{email: "some email", password_hash: "some password_hash"}
-  @update_attrs %{email: "some updated email", password_hash: "some updated password_hash"}
+  @create_attrs %{email: "some@email", password: "some password", password_confirmation: "some password"}
+  @update_attrs %{email: "some@updated.email", password: "some updated password", password_confirmation: "some updated password"}
   @invalid_attrs %{email: nil, password_hash: nil}
 
   def fixture(:user) do
@@ -32,8 +32,7 @@ defmodule SafiraWeb.UserControllerTest do
       conn = get conn, user_path(conn, :show, id)
       assert json_response(conn, 200)["data"] == %{
         "id" => id,
-        "email" => "some email",
-        "password_hash" => "some password_hash"}
+        "email" => "some@email"}
     end
 
     test "renders errors when data is invalid", %{conn: conn} do
@@ -52,8 +51,7 @@ defmodule SafiraWeb.UserControllerTest do
       conn = get conn, user_path(conn, :show, id)
       assert json_response(conn, 200)["data"] == %{
         "id" => id,
-        "email" => "some updated email",
-        "password_hash" => "some updated password_hash"}
+        "email" => "some@updated.email"}
     end
 
     test "renders errors when data is invalid", %{conn: conn, user: user} do

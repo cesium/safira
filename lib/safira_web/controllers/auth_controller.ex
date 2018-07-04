@@ -3,13 +3,17 @@ defmodule SafiraWeb.AuthController do
 
   alias Safira.Accounts
   alias Safira.Accounts.User
+  alias Safira.Accounts.Attendee
   alias Safira.Guardian
 
   action_fallback SafiraWeb.FallbackController
 
-  def sign_up(conn, %{"user" => %{"uuid" => uuid} = user_params}) do
-    with  {:ok, %User{} = user} <- Accounts.create_user_uuid(user_params, uuid),
-          {:ok, token, _claims} <- Guardian.encode_and_sign(user) do
+  def sign_up(conn, %{"user" => user_params}) do
+    with {:ok, %User{} = user} <- Accounts.create_user_uuid(user_params),
+         {:ok, %Attendee{} = _attendee} <- 
+          Map.put(user_params["attendee"], "user_id", user.id)
+          |> Accounts.update_attendee_uuid(),
+         {:ok, token, _claims} <- Guardian.encode_and_sign(user) do
       conn 
       |> render("jwt.json", jwt: token)
     end

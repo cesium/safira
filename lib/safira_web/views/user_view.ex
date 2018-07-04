@@ -14,8 +14,4 @@ defmodule SafiraWeb.UserView do
     %{id: user.id,
       email: user.email}
   end
-
-  def render("jwt.json", %{jwt: jwt}) do
-    %{jwt: jwt}
-  end
 end

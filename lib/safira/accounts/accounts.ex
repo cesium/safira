@@ -7,6 +7,7 @@ defmodule Safira.Accounts do
   alias Safira.Repo
 
   alias Safira.Accounts.User
+  alias Safira.Accounts.Attendee
 
   alias Safira.Guardian
 
@@ -16,7 +17,10 @@ defmodule Safira.Accounts do
 
   def get_user!(id), do: Repo.get!(User, id)
 
-  def get_user_uuid!(uuid), do: Repo.get_by!(User, uuid: uuid)
+  def get_user_preload!(id) do 
+    Repo.get!(User, id)
+    |> Repo.preload(:attendee)
+  end
 
   def create_user(attrs \\ %{}) do
     %User{}
@@ -24,11 +28,11 @@ defmodule Safira.Accounts do
     |> Repo.insert()
   end
 
-  def create_user_uuid(attrs, uuid) do
-    case get_by_uuid(uuid) do
-      {:ok, user} ->
-        User.changeset(user, attrs)
-        |> Repo.update()
+  def create_user_uuid(attrs) do
+    case get_by_uuid(attrs["attendee"]["uuid"]) do
+      {:ok, _attendee} ->
+        Map.delete(attrs, "attendee") 
+        |> create_user
       _ ->
         {:error, :unauthorized}
     end
@@ -46,6 +50,39 @@ defmodule Safira.Accounts do
 
   def change_user(%User{} = user) do
     User.changeset(user, %{})
+  end
+
+  def list_attendees do
+    Repo.all(Attendee)
+  end
+
+  def get_attendee!(id), do: Repo.get!(Attendee, id)
+
+  def get_attendee_uuid!(uuid), do: Repo.get_by!(Attendee, uuid: uuid)
+
+  def create_attendee(attrs \\ %{}) do
+    %Attendee{}
+    |> Attendee.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_attendee(%Attendee{} = attendee, attrs) do
+    attendee
+    |> Attendee.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def update_attendee_uuid(attrs) do
+    get_attendee_uuid!(attrs["uuid"])
+    |> update_attendee(attrs)
+  end
+
+  def delete_attendee(%Attendee{} = attendee) do
+    Repo.delete(attendee)
+  end
+
+  def change_attendee(%Attendee{} = attendee) do
+    Attendee.changeset(attendee, %{})
   end
 
   def token_sign_in(email, password) do
@@ -81,11 +118,11 @@ defmodule Safira.Accounts do
   end
 
   defp get_by_uuid(uuid) when is_binary(uuid) do
-    case Repo.get_by(User, uuid: uuid) do
+    case Repo.get_by(Attendee, uuid: uuid) do
       nil ->
         {:error, "Login error."}
-      user ->
-        {:ok, user}
+      attendee ->
+        {:ok, attendee}
     end
   end
 end

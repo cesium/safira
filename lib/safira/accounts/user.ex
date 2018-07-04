@@ -2,11 +2,14 @@ defmodule Safira.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Safira.Accounts.Attendee
+
 
   schema "users" do
     field :email, :string
     field :password_hash, :string
-    field :uuid, :string
+
+    has_one :attendee, Attendee, on_delete: :delete_all
 
     # Virtual fields:
     field :password, :string, virtual: true
@@ -15,17 +18,15 @@ defmodule Safira.Accounts.User do
     timestamps()
   end
 
-  @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:email, :password, :password_confirmation, :uuid])
-    |> validate_required([:email, :password, :password_confirmation, :uuid])
+    |> cast(attrs, [:email, :password, :password_confirmation])
+    |> validate_required([:email, :password, :password_confirmation])
     |> validate_length(:email, min: 5, max: 255)
     |> validate_format(:email, ~r/@/)
     |> validate_length(:password, min: 8) 
     |> validate_confirmation(:password)
     |> unique_constraint(:email)
-    |> unique_constraint(:uuid)
     |> genput_password_hash
   end
 
