@@ -25,6 +25,8 @@ defmodule SafiraWeb.Router do
       resources "/badges", BadgeController, only: [:index, :show]
 
       resources "/attendees", AttendeeController, except: [:create]
+
+      resources "/referrals", ReferralController, except: [:new, :edit]
     end
   end
 end
