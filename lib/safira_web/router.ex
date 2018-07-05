@@ -22,6 +22,8 @@ defmodule SafiraWeb.Router do
 
       get "/user", AuthController, :user
       resources "/users", UserController, only: [:index, :show]
+
+      resources "/badges", BadgeController, only: [:index, :show]
     end
   end
 end
