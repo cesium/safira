@@ -7,7 +7,7 @@ defmodule Safira.Repo.Migrations.AddBages do
       add :end, :utc_datetime
       add :name, :string
       add :description, :text
-      
+
       timestamps()
     end
   end
