@@ -5,7 +5,7 @@ defmodule Safira.Repo.Migrations.CreateReferrals do
     create table(:referrals, primary_key: false) do
       add :id, :uuid, primary_key: true
       add :available, :boolean, default: true, null: true
-      add :badge_id, references(:badges, on_delete: :nothing)
+      add :badge_id, references(:badges, on_delete: :delete_all)
 
       timestamps()
     end
