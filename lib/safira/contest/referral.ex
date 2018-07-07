@@ -5,7 +5,7 @@ defmodule Safira.Contest.Referral do
 
 
   schema "referrals" do
-    field :available, :boolean, default: false
+    field :available, :boolean, default: true
     belongs_to :badge, Badge
 
     timestamps()
