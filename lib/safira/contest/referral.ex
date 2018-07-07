@@ -1,16 +1,16 @@
 defmodule Safira.Contest.Referral do
   use Ecto.Schema
   import Ecto.Changeset
+  alias Safira.Contest.Badge
 
 
   schema "referrals" do
     field :available, :boolean, default: false
-    field :badge_id, :id
+    belongs_to :badge, Badge
 
     timestamps()
   end
 
-  @doc false
   def changeset(referral, attrs) do
     referral
     |> cast(attrs, [:available])
