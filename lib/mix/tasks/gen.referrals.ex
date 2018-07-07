@@ -1,0 +1,23 @@
+defmodule Mix.Tasks.Gen.Referrals do
+  use Mix.Task
+  alias Safira.Contest
+
+  def run(args) do
+    cond do
+      length(args) != 2 ->
+        Mix.shell.info "Needs to receive badge id and number of refarrels"
+      args |> List.last|> String.to_integer <= 0 ->
+        Mix.shell.info "Number of refarrels needs to be above 0."
+      true ->
+        create(List.first(args), List.last(args))
+    end
+  end
+
+  defp create(id,number) do
+    Mix.Task.run "app.start"
+
+    Enum.each 1..number, fn _n ->
+      Contest.create_referral(%{badge_id: id})
+    end
+  end
+end

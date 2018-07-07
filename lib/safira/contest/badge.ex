@@ -29,9 +29,13 @@ defmodule Safira.Contest.Badge do
     {_, begin_time} = fetch_field(changeset, :begin)
     {_, end_time} = fetch_field(changeset, :end)
 
-    case Time.compare(begin_time, end_time) do
-      :lt -> changeset
-      _ -> add_error(changeset, :begin, "Begin time can't be after end time" )
+    case !!begin_time and !!end_time do
+      true ->
+        case DateTime.compare(begin_time, end_time) do
+          :lt -> changeset
+          _ -> add_error(changeset, :begin, "Begin time can't be after end time" )
+        end
+      _ -> add_error(changeset, :begin, "Times not correct format" )
     end
   end
 end

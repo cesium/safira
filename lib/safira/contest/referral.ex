@@ -14,7 +14,7 @@ defmodule Safira.Contest.Referral do
 
   def changeset(referral, attrs) do
     referral
-    |> cast(attrs, [:available])
-    |> validate_required([:available])
+    |> cast(attrs, [:badge_id, :available])
+    |> validate_required([:badge_id, :available])
   end
 end
