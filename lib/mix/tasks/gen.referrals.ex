@@ -15,9 +15,11 @@ defmodule Mix.Tasks.Gen.Referrals do
 
   defp create([id|number]) do
     Mix.Task.run "app.start"
-
-    Enum.each 1..List.last(number), fn _n ->
+    for _n <- 1..List.last(number) do
       Contest.create_referral(%{badge_id: id})
+      |> elem(1)
+      |> Map.get(:id)
     end
+    |> Enum.map(&IO.puts/1)
   end
 end
