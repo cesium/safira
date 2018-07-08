@@ -9,14 +9,14 @@ defmodule Mix.Tasks.Gen.Referrals do
       args |> List.last|> String.to_integer <= 0 ->
         Mix.shell.info "Number of refarrels needs to be above 0."
       true ->
-        create(List.first(args), List.last(args))
+        args |> Enum.map(&String.to_integer/1) |> create
     end
   end
 
-  defp create(id,number) do
+  defp create([id|number]) do
     Mix.Task.run "app.start"
 
-    Enum.each 1..number, fn _n ->
+    Enum.each 1..List.last(number), fn _n ->
       Contest.create_referral(%{badge_id: id})
     end
   end
