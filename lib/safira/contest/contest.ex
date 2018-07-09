@@ -30,4 +30,32 @@ defmodule Safira.Contest do
   def change_badge(%Badge{} = badge) do
     Badge.changeset(badge, %{})
   end
+
+  alias Safira.Contest.Referral
+
+  def list_referrals do
+    Repo.all(Referral)
+  end
+
+  def get_referral!(id), do: Repo.get!(Referral, id)
+
+  def create_referral(attrs \\ %{}) do
+    %Referral{}
+    |> Referral.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_referral(%Referral{} = referral, attrs) do
+    referral
+    |> Referral.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def delete_referral(%Referral{} = referral) do
+    Repo.delete(referral)
+  end
+
+  def change_referral(%Referral{} = referral) do
+    Referral.changeset(referral, %{})
+  end
 end

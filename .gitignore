@@ -77,4 +77,8 @@ tags
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
+
+### IDEA
+.idea/*
+*.iml
 !.vscode/extensions.json
