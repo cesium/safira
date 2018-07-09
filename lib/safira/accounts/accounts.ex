@@ -29,8 +29,8 @@ defmodule Safira.Accounts do
   end
 
   def create_user_uuid(attrs) do
-    case get_by_uuid(attrs["attendee"]["uuid"]) do
-      {:ok, _attendee} ->
+    case get_attendee!(attrs["attendee"]["id"]) do
+      %Attendee{} = _attendee ->
         Map.delete(attrs, "attendee") 
         |> create_user
       _ ->
@@ -58,8 +58,6 @@ defmodule Safira.Accounts do
 
   def get_attendee!(id), do: Repo.get!(Attendee, id)
 
-  def get_attendee_uuid!(uuid), do: Repo.get_by!(Attendee, uuid: uuid)
-
   def create_attendee(attrs \\ %{}) do
     %Attendee{}
     |> Attendee.changeset(attrs)
@@ -73,7 +71,7 @@ defmodule Safira.Accounts do
   end
 
   def update_attendee_uuid(attrs) do
-    get_attendee_uuid!(attrs["uuid"])
+    get_attendee!(attrs["id"])
     |> update_attendee(attrs)
   end
 
@@ -114,15 +112,6 @@ defmodule Safira.Accounts do
       {:ok, user}
     else
       {:error, :invalid_password}
-    end
-  end
-
-  defp get_by_uuid(uuid) when is_binary(uuid) do
-    case Repo.get_by(Attendee, uuid: uuid) do
-      nil ->
-        {:error, "Login error."}
-      attendee ->
-        {:ok, attendee}
     end
   end
 end
