@@ -16,11 +16,7 @@ defmodule Mix.Tasks.Gen.Attendees do
     Mix.Task.run "app.start"
 
     Enum.each 1..n, fn(_n) ->
-      uuid = Ecto.UUID.generate()
-      cond do
-        is_nil Safira.Repo.get(Safira.Accounts.Attendee, uuid) ->
-          Safira.Repo.insert!(%Safira.Accounts.Attendee{:id => uuid})
-      end
+      Safira.Repo.insert!(%Safira.Accounts.Attendee{})
     end
   end
 end
