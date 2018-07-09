@@ -14,8 +14,10 @@ defmodule SafiraWeb.Router do
   scope "/api", SafiraWeb do
     pipe_through :api
 
-    post "/sign_up", AuthController, :sign_up
-    post "/sign_in", AuthController, :sign_in
+    scope "/auth" do
+      post "/sign_up", AuthController, :sign_up
+      post "/sign_in", AuthController, :sign_in
+    end
 
     scope "/v1" do
       pipe_through :jwt_authenticated
