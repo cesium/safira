@@ -4,10 +4,10 @@ defmodule Safira.Accounts.Attendee do
 
   alias Safira.Accounts.User
 
-
+  @primary_key {:id, :binary_id, autogenerate: true}
+  @derive {Phoenix.Param, key: :id}
   schema "attendees" do
     field :nickname, :string
-    field :uuid, :string
 
     belongs_to :user, User
 
@@ -16,10 +16,9 @@ defmodule Safira.Accounts.Attendee do
 
   def changeset(attendee, attrs) do
     attendee
-    |> cast(attrs, [:uuid, :nickname, :user_id])
+    |> cast(attrs, [:nickname, :user_id])
     |> cast_assoc(:user)
-    |> validate_required([:uuid, :nickname])
-    |> unique_constraint(:uuid)
+    |> validate_required([:nickname])
     |> unique_constraint(:nickname)
   end
 end

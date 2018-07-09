@@ -21,13 +21,13 @@ defmodule SafiraWeb.AttendeeController do
     end
   end
 
-  def show(conn, %{"id" => uuid}) do
-    attendee = Accounts.get_attendee_uuid!(uuid)
+  def show(conn, %{"id" => id}) do
+    attendee = Accounts.get_attendee!(id)
     render(conn, "show.json", attendee: attendee)
   end
 
-  def update(conn, %{"id" => uuid, "attendee" => attendee_params}) do
-    attendee = Accounts.get_attendee_uuid!(uuid)
+  def update(conn, %{"id" => id, "attendee" => attendee_params}) do
+    attendee = Accounts.get_attendee!(id)
 
     if get_user(conn).attendee == attendee do
       with {:ok, %Attendee{} = attendee} <- 
@@ -37,9 +37,9 @@ defmodule SafiraWeb.AttendeeController do
     end
   end
 
-  def delete(conn, %{"id" => uuid}) do
+  def delete(conn, %{"id" => id}) do
     user = get_user(conn)
-    attendee = Accounts.get_attendee_uuid!(uuid)
+    attendee = Accounts.get_attendee!(id)
     if user.attendee == attendee do
       with {:ok, %Attendee{}} <- Accounts.delete_attendee(attendee),
            {:ok, %User{}} <- Accounts.delete_user(user) do
