@@ -8,6 +8,7 @@ defmodule Safira.Accounts do
 
   alias Safira.Accounts.User
   alias Safira.Accounts.Attendee
+  alias Safira.Accounts.Staff
 
   alias Safira.Guardian
 
@@ -17,7 +18,7 @@ defmodule Safira.Accounts do
 
   def get_user!(id), do: Repo.get!(User, id)
 
-  def get_user_preload!(id) do 
+  def get_user_preload!(id) do
     Repo.get!(User, id)
     |> Repo.preload(:attendee)
   end
@@ -31,7 +32,7 @@ defmodule Safira.Accounts do
   def create_user_uuid(attrs) do
     case get_attendee!(attrs["attendee"]["id"]) do
       %Attendee{} = _attendee ->
-        Map.delete(attrs, "attendee") 
+        Map.delete(attrs, "attendee")
         |> create_user
       _ ->
         {:error, :unauthorized}
@@ -81,6 +82,32 @@ defmodule Safira.Accounts do
 
   def change_attendee(%Attendee{} = attendee) do
     Attendee.changeset(attendee, %{})
+  end
+
+  def list_staffs do
+    Repo.all(Staff)
+  end
+
+  def get_staff!(id), do: Repo.get!(Staff, id)
+
+  def create_staff(attrs \\ %{}) do
+    %Staff{}
+    |> Staff.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_staff(%Staff{} = staff, attrs) do
+    staff
+    |> Staff.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def delete_staff(%Staff{} = staff) do
+    Repo.delete(staff)
+  end
+
+  def change_staff(%Staff{} = staff) do
+    staff.changeset(staff, %{})
   end
 
   def token_sign_in(email, password) do
