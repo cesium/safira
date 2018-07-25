@@ -8,7 +8,7 @@ defmodule Safira.Accounts do
 
   alias Safira.Accounts.User
   alias Safira.Accounts.Attendee
-  alias Safira.Accounts.Staff
+  alias Safira.Accounts.Manager
 
   alias Safira.Guardian
 
@@ -84,30 +84,30 @@ defmodule Safira.Accounts do
     Attendee.changeset(attendee, %{})
   end
 
-  def list_staffs do
-    Repo.all(Staff)
+  def list_managers do
+    Repo.all(Manager)
   end
 
-  def get_staff!(id), do: Repo.get!(Staff, id)
+  def get_manager!(id), do: Repo.get!(Manager, id)
 
-  def create_staff(attrs \\ %{}) do
+  def create_manager(attrs \\ %{}) do
     %Staff{}
-    |> Staff.changeset(attrs)
+    |> Manager.changeset(attrs)
     |> Repo.insert()
   end
 
-  def update_staff(%Staff{} = staff, attrs) do
-    staff
-    |> Staff.changeset(attrs)
+  def update_manager(%Manager{} = manager, attrs) do
+    manager
+    |> Manager.changeset(attrs)
     |> Repo.update()
   end
 
-  def delete_staff(%Staff{} = staff) do
-    Repo.delete(staff)
+  def delete_manager(%Manager{} = manager) do
+    Repo.delete(manager)
   end
 
-  def change_staff(%Staff{} = staff) do
-    staff.changeset(staff, %{})
+  def change_manager(%Manager{} = manager) do
+    manager.changeset(manager, %{})
   end
 
   def token_sign_in(email, password) do

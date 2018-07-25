@@ -4,7 +4,7 @@ defmodule Safira.Accounts.Staff do
 
   alias Safira.Accounts.User
 
-  schema "staffs" do
+  schema "managers" do
     field :active, :boolean
 
     belongs_to :user, User
@@ -12,8 +12,8 @@ defmodule Safira.Accounts.Staff do
     timestamps()
   end
 
-  def changeset(attendee, attrs) do
-    attendee
+  def changeset(manager, attrs) do
+    manager
     |> cast(attrs, [:active])
     |> cast_assoc(:user)
     |> validate_required([:active])
