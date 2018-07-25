@@ -8,6 +8,7 @@ defmodule Safira.Accounts do
 
   alias Safira.Accounts.User
   alias Safira.Accounts.Attendee
+  alias Safira.Accounts.Manager
   alias Safira.Accounts.Company
 
   alias Safira.Guardian
@@ -18,7 +19,7 @@ defmodule Safira.Accounts do
 
   def get_user!(id), do: Repo.get!(User, id)
 
-  def get_user_preload!(id) do 
+  def get_user_preload!(id) do
     Repo.get!(User, id)
     |> Repo.preload(:attendee)
   end
@@ -32,7 +33,7 @@ defmodule Safira.Accounts do
   def create_user_uuid(attrs) do
     case get_attendee!(attrs["attendee"]["id"]) do
       %Attendee{} = _attendee ->
-        Map.delete(attrs, "attendee") 
+        Map.delete(attrs, "attendee")
         |> create_user
       _ ->
         {:error, :unauthorized}
@@ -83,6 +84,31 @@ defmodule Safira.Accounts do
   def change_attendee(%Attendee{} = attendee) do
     Attendee.changeset(attendee, %{})
   end
+
+  def list_managers do
+    Repo.all(Manager)
+  end
+
+  def get_manager!(id), do: Repo.get!(Manager, id)
+
+  def create_manager(attrs \\ %{}) do
+    %Staff{}
+    |> Manager.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_manager(%Manager{} = manager, attrs) do
+    manager
+    |> Manager.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def delete_manager(%Manager{} = manager) do
+    Repo.delete(manager)
+  end
+
+  def change_manager(%Manager{} = manager) do
+    manager.changeset(manager, %{})
 
   def list_companies do
     Repo.all(Company)
