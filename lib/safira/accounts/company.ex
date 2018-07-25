@@ -5,7 +5,7 @@ defmodule Safira.Accounts.Company do
 
   schema "companies" do
     field :name, :string
-    field :sponsor, :string
+    field :sponsorship, :string
     belongs_to :user, User
     belongs_to :badge, Badge
 
@@ -15,8 +15,8 @@ defmodule Safira.Accounts.Company do
   @doc false
   def changeset(company, attrs) do
     company
-    |> cast(attrs, [:name, :sponsor, :badge_id])
+    |> cast(attrs, [:name, :sponsorship, :badge_id])
     |> cast_assoc(:user)
-    |> validate_required([:name, :sponsor])
+    |> validate_required([:name, :sponsorship])
   end
 end

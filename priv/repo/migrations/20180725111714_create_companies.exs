@@ -4,7 +4,7 @@ defmodule Safira.Repo.Migrations.CreateCompanies do
   def change do
     create table(:companies) do
       add :name, :string
-      add :sponsor, :string
+      add :sponsorship, :string
       add :badge_id, references(:badges, on_delete: :delete_all)
       add :user_id, references(:users, on_delete: :delete_all)
 
