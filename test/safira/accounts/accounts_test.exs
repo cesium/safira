@@ -127,4 +127,66 @@ defmodule Safira.AccountsTest do
       assert %Ecto.Changeset{} = Accounts.change_attendee(attendee)
     end
   end
+
+  describe "companies" do
+    alias Safira.Accounts.Company
+
+    @valid_attrs %{name: "some name", sponsor: "some sponsor"}
+    @update_attrs %{name: "some updated name", sponsor: "some updated sponsor"}
+    @invalid_attrs %{name: nil, sponsor: nil}
+
+    def company_fixture(attrs \\ %{}) do
+      {:ok, company} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Accounts.create_company()
+
+      company
+    end
+
+    test "list_companies/0 returns all companies" do
+      company = company_fixture()
+      assert Accounts.list_companies() == [company]
+    end
+
+    test "get_company!/1 returns the company with given id" do
+      company = company_fixture()
+      assert Accounts.get_company!(company.id) == company
+    end
+
+    test "create_company/1 with valid data creates a company" do
+      assert {:ok, %Company{} = company} = Accounts.create_company(@valid_attrs)
+      assert company.name == "some name"
+      assert company.sponsor == "some sponsor"
+    end
+
+    test "create_company/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Accounts.create_company(@invalid_attrs)
+    end
+
+    test "update_company/2 with valid data updates the company" do
+      company = company_fixture()
+      assert {:ok, company} = Accounts.update_company(company, @update_attrs)
+      assert %Company{} = company
+      assert company.name == "some updated name"
+      assert company.sponsor == "some updated sponsor"
+    end
+
+    test "update_company/2 with invalid data returns error changeset" do
+      company = company_fixture()
+      assert {:error, %Ecto.Changeset{}} = Accounts.update_company(company, @invalid_attrs)
+      assert company == Accounts.get_company!(company.id)
+    end
+
+    test "delete_company/1 deletes the company" do
+      company = company_fixture()
+      assert {:ok, %Company{}} = Accounts.delete_company(company)
+      assert_raise Ecto.NoResultsError, fn -> Accounts.get_company!(company.id) end
+    end
+
+    test "change_company/1 returns a company changeset" do
+      company = company_fixture()
+      assert %Ecto.Changeset{} = Accounts.change_company(company)
+    end
+  end
 end
