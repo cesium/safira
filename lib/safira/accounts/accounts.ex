@@ -85,6 +85,10 @@ defmodule Safira.Accounts do
     Attendee.changeset(attendee, %{})
   end
 
+  def is_volunteer(%Attendee{} = attendee) do
+    attendee.volunteer
+  end
+
   def list_managers do
     Repo.all(Manager)
   end
@@ -108,7 +112,8 @@ defmodule Safira.Accounts do
   end
 
   def change_manager(%Manager{} = manager) do
-    manager.changeset(manager, %{})
+    Manager.changeset(manager, %{})
+  end
 
   def list_companies do
     Repo.all(Company)

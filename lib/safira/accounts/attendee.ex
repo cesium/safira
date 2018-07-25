@@ -8,6 +8,7 @@ defmodule Safira.Accounts.Attendee do
   @derive {Phoenix.Param, key: :id}
   schema "attendees" do
     field :nickname, :string
+    field :volunteer, :boolean, default: false
 
     belongs_to :user, User
 
@@ -16,9 +17,9 @@ defmodule Safira.Accounts.Attendee do
 
   def changeset(attendee, attrs) do
     attendee
-    |> cast(attrs, [:nickname, :user_id])
+    |> cast(attrs, [:nickname, :volunteer, :user_id])
     |> cast_assoc(:user)
-    |> validate_required([:nickname])
+    |> validate_required([:nickname, :volunteer])
     |> unique_constraint(:nickname)
   end
 end
