@@ -96,7 +96,7 @@ defmodule Safira.Accounts do
   def get_manager!(id), do: Repo.get!(Manager, id)
 
   def create_manager(attrs \\ %{}) do
-    %Staff{}
+    %Manager{}
     |> Manager.changeset(attrs)
     |> Repo.insert()
   end
