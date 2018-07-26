@@ -23,7 +23,12 @@ defmodule SafiraWeb.AttendeeController do
 
   def show(conn, %{"id" => id}) do
     attendee = Accounts.get_attendee!(id)
-    render(conn, "show.json", attendee: attendee)
+
+    if is_nil attendee.user_id do
+      {:error, :not_registered}
+    else
+      render(conn, "show.json", attendee: attendee)
+    end
   end
 
   def update(conn, %{"id" => id, "attendee" => attendee_params}) do
