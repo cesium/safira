@@ -3,11 +3,13 @@ defmodule Safira.Accounts.Manager do
   import Ecto.Changeset
 
   alias Safira.Accounts.User
+  alias Safira.Contest.Redeem
 
   schema "managers" do
     field :active, :boolean
 
     belongs_to :user, User
+    has_many :redeems, Redeem
 
     timestamps()
   end

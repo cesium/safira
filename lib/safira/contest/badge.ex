@@ -2,6 +2,8 @@ defmodule Safira.Contest.Badge do
   use Ecto.Schema
   import Ecto.Changeset
   alias Safira.Contest.Referral
+  alias Safira.Contest.Redeem
+  alias Safira.Accounts.Attendee
 
   schema "badges" do
     field :begin, :utc_datetime
@@ -10,6 +12,7 @@ defmodule Safira.Contest.Badge do
     field :description, :string
 
     has_many :referrals, Referral
+    many_to_many :attendees, Attendee, join_through: Redeem
 
     timestamps()
   end

@@ -3,6 +3,8 @@ defmodule Safira.Accounts.Attendee do
   import Ecto.Changeset
 
   alias Safira.Accounts.User
+  alias Safira.Contest.Redeem
+  alias Safira.Contest.Badge
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @derive {Phoenix.Param, key: :id}
@@ -11,6 +13,7 @@ defmodule Safira.Accounts.Attendee do
     field :volunteer, :boolean, default: false
 
     belongs_to :user, User
+    many_to_many :badges, Badge, join_through: Redeem
 
     timestamps()
   end
