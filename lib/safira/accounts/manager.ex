@@ -1,4 +1,4 @@
-defmodule Safira.Accounts.Staff do
+defmodule Safira.Accounts.Manager do
   use Ecto.Schema
   import Ecto.Changeset
 
