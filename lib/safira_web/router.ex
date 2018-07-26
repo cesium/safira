@@ -28,6 +28,7 @@ defmodule SafiraWeb.Router do
       resources "/attendees", AttendeeController, except: [:create]
       resources "/referrals", ReferralController, only: [:show]
       resources "/companies", CompanyController, only: [:index, :show]
+      resources "/redeems", RedeemController, only: [:create]
     end
   end
 end
