@@ -20,7 +20,7 @@ defmodule SafiraWeb.Router do
     end
 
     scope "/v1" do
-      #      pipe_through :jwt_authenticated
+      pipe_through :jwt_authenticated
 
       get "/user", AuthController, :user
 
