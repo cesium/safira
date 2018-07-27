@@ -5,11 +5,14 @@ defmodule Safira.Authorize do
   alias Safira.Repo
   alias Safira.Accounts.User
 
-  def init(_params) do
+  @user_types [:attendee, :company, :manager]
+
+  def init(default) do
+    default
   end
 
-  def call(conn, _params) do
-    if is_authorized(conn) do
+  def call(conn, param) do
+    if is_authorized(conn, param) do
       conn
     else
       conn
@@ -19,11 +22,13 @@ defmodule Safira.Authorize do
     end
   end
 
-  defp is_authorized(conn) do
+  defp is_authorized(conn, param) when param in @user_types do
     with  %User{} = user <- Guardian.Plug.current_resource(conn) do
       user 
-      |> Repo.preload(:manager)
-      not is_nil user.manager
+      |> Repo.preload(param)
+      |> Map.fetch!(param)
+      |> is_nil 
+      |> Kernel.not
     end
   end
 end
