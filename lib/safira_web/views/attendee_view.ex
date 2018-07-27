@@ -11,7 +11,7 @@ defmodule SafiraWeb.AttendeeView do
   end
 
   def render("attendee.json", %{attendee: attendee}) do
-    %{uuid: attendee.uuid,
+    %{id: attendee.id,
       nickname: attendee.nickname}
   end
 end
