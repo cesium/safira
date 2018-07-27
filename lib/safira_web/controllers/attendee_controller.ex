@@ -4,6 +4,8 @@ defmodule SafiraWeb.AttendeeController do
   alias Safira.Accounts
   alias Safira.Accounts.Attendee
   alias Safira.Accounts.User
+  alias Safira.Contest
+  alias Safira.Contest.Redeem
 
   action_fallback SafiraWeb.FallbackController
 
@@ -23,11 +25,15 @@ defmodule SafiraWeb.AttendeeController do
 
   def show(conn, %{"id" => id}) do
     attendee = Accounts.get_attendee!(id)
-
-    if is_nil attendee.user_id do
-      {:error, :not_registered}
-    else
-      render(conn, "show.json", attendee: attendee)
+    cond do
+      is_nil attendee.user_id ->
+        {:error, :not_registered}
+      is_company(conn) ->
+        with :ok <- redeem_company_badge(conn, id) do
+          render(conn, "show.json", attendee: attendee)
+        end
+      true ->
+        render(conn, "show.json", attendee: attendee)
     end
   end
 
@@ -54,8 +60,32 @@ defmodule SafiraWeb.AttendeeController do
   end
 
   defp get_user(conn) do
-    Guardian.Plug.current_resource(conn)
-    |> Map.fetch!(:id)
-    |> Accounts.get_user_preload!()
+    with  %User{} = user <- Guardian.Plug.current_resource(conn) do
+      user
+      |> Map.fetch!(:id)
+      |> Accounts.get_user_preload!()
+    end
+  end
+
+  defp is_company(conn) do
+    get_user(conn)
+    |> Map.fetch!(:company)
+    |> is_nil 
+    |> Kernel.not
+  end
+
+  defp redeem_company_badge(conn, id) do
+    user = get_user(conn)
+    redeem_params = %{"attendee_id" => id, "badge_id" => user.company.badge_id}
+    case Contest.create_redeem(redeem_params) do
+      {:ok, %Redeem{} = _redeem} ->
+        :ok
+      {:error, changeset} ->
+        if changeset.errors == [unique_attendee_badge: {"has already been taken", []}] do
+          :ok
+        else
+          :error
+        end
+    end
   end
 end
