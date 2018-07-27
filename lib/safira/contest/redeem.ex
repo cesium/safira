@@ -7,7 +7,7 @@ defmodule Safira.Contest.Redeem do
 
 
   schema "redeems" do
-    belongs_to :attendee, Attendee
+    belongs_to :attendee, Attendee, foreign_key: :attendee_id, type: :binary_id
     belongs_to :manager, Manager
     belongs_to :badge, Badge
 

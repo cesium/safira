@@ -3,8 +3,11 @@ defmodule SafiraWeb.RedeemController do
 
   alias Safira.Contest
   alias Safira.Contest.Redeem
+  alias Safira.Accounts
 
   action_fallback SafiraWeb.FallbackController
+
+  plug Safira.Authorize, :manager
 
   def index(conn, _params) do
     redeems = Contest.list_redeems()
@@ -12,11 +15,14 @@ defmodule SafiraWeb.RedeemController do
   end
 
   def create(conn, %{"redeem" => redeem_params}) do
-    with {:ok, %Redeem{} = redeem} <- Contest.create_redeem(redeem_params) do
+    user = Guardian.Plug.current_resource(conn)
+    |> Map.get(:id)
+    |> Accounts.get_user_preload!
+    redeem_params = Map.put(redeem_params, "manager_id", user.manager.id)
+    with {:ok, %Redeem{} = _redeem} <- Contest.create_redeem(redeem_params) do
       conn
       |> put_status(:created)
-      |> put_resp_header("location", redeem_path(conn, :show, redeem))
-      |> render("show.json", redeem: redeem)
+      |> json(%{redeem: "Badge redeem successfully"})
     end
   end
 

@@ -22,6 +22,8 @@ defmodule Safira.Accounts do
   def get_user_preload!(id) do
     Repo.get!(User, id)
     |> Repo.preload(:attendee)
+    |> Repo.preload(:company)
+    |> Repo.preload(:manager)
   end
 
   def create_user(attrs \\ %{}) do
