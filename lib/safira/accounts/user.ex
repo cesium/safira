@@ -3,6 +3,8 @@ defmodule Safira.Accounts.User do
   import Ecto.Changeset
 
   alias Safira.Accounts.Attendee
+  alias Safira.Accounts.Manager
+  alias Safira.Accounts.Company
 
 
   schema "users" do
@@ -10,6 +12,8 @@ defmodule Safira.Accounts.User do
     field :password_hash, :string
 
     has_one :attendee, Attendee, on_delete: :delete_all
+    has_one :manager, Manager, on_delete: :delete_all
+    has_one :company, Company, on_delete: :delete_all
 
     # Virtual fields:
     field :password, :string, virtual: true

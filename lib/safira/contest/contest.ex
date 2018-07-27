@@ -2,7 +2,7 @@ defmodule Safira.Contest do
 
   import Ecto.Query, warn: false
   alias Safira.Repo
-
+  alias Safira.Contest.Redeem
   alias Safira.Contest.Badge
 
   def list_badges do
@@ -57,5 +57,31 @@ defmodule Safira.Contest do
 
   def change_referral(%Referral{} = referral) do
     Referral.changeset(referral, %{})
+  end
+
+  def list_redeems do
+    Repo.all(Redeem)
+  end
+
+  def get_redeem!(id), do: Repo.get!(Redeem, id)
+
+  def create_redeem(attrs \\ %{}) do
+    %Redeem{}
+    |> Redeem.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_redeem(%Redeem{} = redeem, attrs) do
+    redeem
+    |> Redeem.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def delete_redeem(%Redeem{} = redeem) do
+    Repo.delete(redeem)
+  end
+
+  def change_redeem(%Redeem{} = redeem) do
+    Redeem.changeset(redeem, %{})
   end
 end
