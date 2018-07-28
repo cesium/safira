@@ -20,11 +20,11 @@ defmodule Mix.Tasks.Gen.Company do
 
     email = Enum.join([Enum.at(args,0), @domain], "@") |> String.downcase
     password = random_string(8)
-    user = Accounts.create_user(%{
+    user = %{
       "email" => email,
       "password" => password,
       "password_confirmation" => password
-    })
+    }
 
     Accounts.create_company(%{
       "name" => Enum.at(args,0),

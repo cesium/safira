@@ -6,7 +6,7 @@ defmodule Safira.Accounts.Manager do
   alias Safira.Contest.Redeem
 
   schema "managers" do
-    field :active, :boolean
+    field :active, :boolean, default: true
 
     belongs_to :user, User
     has_many :redeems, Redeem
