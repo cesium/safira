@@ -4,9 +4,9 @@ defmodule Mix.Tasks.Gen.Attendees do
   def run(args) do
     cond do
       length(args) == 0 ->
-        Mix.shell.info "Needs receive a number greater than 0."
+        Mix.shell.info "Needs to receive a number greater than 0."
       args |> List.first |> String.to_integer <= 0 ->
-        Mix.shell.info "Needs receive a number greater than 0."
+        Mix.shell.info "Needs to receive a number greater than 0."
       true ->
         args |> List.first |> String.to_integer |> create
     end
