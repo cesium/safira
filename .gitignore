@@ -21,6 +21,9 @@ erl_crash.dump
 # Test files
 /*.json
 
+# QrCodes
+/*.svg
+
 ### SublimeText ###
 # Cache files for Sublime Text
 *.tmlanguage.cache
