@@ -14,15 +14,6 @@ defmodule SafiraWeb.AttendeeController do
     render(conn, "index.json", attendees: attendees)
   end
 
-  def create(conn, %{"attendee" => attendee_params}) do
-    with {:ok, %Attendee{} = attendee} <- Accounts.create_attendee(attendee_params) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", attendee_path(conn, :show, attendee))
-      |> render("show.json", attendee: attendee)
-    end
-  end
-
   def show(conn, %{"id" => id}) do
     attendee = Accounts.get_attendee!(id)
     cond do
