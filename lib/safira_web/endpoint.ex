@@ -35,6 +35,9 @@ defmodule SafiraWeb.Endpoint do
     key: "_safira_key",
     signing_salt: "fH8xIeCu"
 
+  # The CORS plug
+  plug SafiraWeb.CORS
+
   plug SafiraWeb.Router
 
   @doc """
