@@ -39,6 +39,11 @@ defmodule Safira.Contest do
 
   def get_referral!(id), do: Repo.get!(Referral, id)
 
+  def get_referral_preload!(id) do
+    Repo.get!(Referral, id)
+    |> Repo.preload(:badge)
+  end
+
   def create_referral(attrs \\ %{}) do
     %Referral{}
     |> Referral.changeset(attrs)

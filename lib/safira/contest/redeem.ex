@@ -19,6 +19,6 @@ defmodule Safira.Contest.Redeem do
     redeem
     |> cast(attrs, [:attendee_id, :manager_id, :badge_id])
     |> validate_required([:attendee_id, :badge_id])
-    |> unique_constraint(:unique_attendee_badge, name: :unique_attendee_badge)
+    |> unique_constraint(:unique_attendee_badge, name: :unique_attendee_badge, message: "An attendee can't have the same badge twice")
   end
 end
