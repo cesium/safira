@@ -16,7 +16,7 @@ defmodule SafiraWeb.ReferralController do
     case referral.available do
       true ->
         user = get_user(conn)
-        redeem_params = %{badge_id: referral.badge_id, manager_id: 1, attendee_id: user.attendee.id}
+          redeem_params = %{badge_id: referral.badge_id, attendee_id: user.attendee.id}
         with {:ok, %Redeem{} = _redeem} <- Contest.create_redeem(redeem_params) do
           Contest.update_referral(referral,%{available: false})
           conn
