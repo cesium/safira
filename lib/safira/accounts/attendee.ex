@@ -1,5 +1,6 @@
 defmodule Safira.Accounts.Attendee do
   use Ecto.Schema
+  use Arc.Ecto.Schema
   import Ecto.Changeset
 
   alias Safira.Accounts.User
@@ -11,6 +12,7 @@ defmodule Safira.Accounts.Attendee do
   schema "attendees" do
     field :nickname, :string
     field :volunteer, :boolean, default: false
+    field :avatar, Safira.Avatar.Type
 
     belongs_to :user, User
     many_to_many :badges, Badge, join_through: Redeem
@@ -21,6 +23,7 @@ defmodule Safira.Accounts.Attendee do
   def changeset(attendee, attrs) do
     attendee
     |> cast(attrs, [:nickname, :volunteer, :user_id])
+    |> cast_attachments(attrs, [:avatar])
     |> cast_assoc(:user)
     |> validate_required([:nickname, :volunteer])
     |> unique_constraint(:nickname)

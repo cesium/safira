@@ -1,6 +1,7 @@
 defmodule SafiraWeb.AttendeeView do
   use SafiraWeb, :view
   alias SafiraWeb.AttendeeView
+  alias Safira.Avatar
 
   def render("index.json", %{attendees: attendees}) do
     %{data: render_many(attendees, AttendeeView, "attendee.json")}
@@ -12,6 +13,8 @@ defmodule SafiraWeb.AttendeeView do
 
   def render("attendee.json", %{attendee: attendee}) do
     %{id: attendee.id,
-      nickname: attendee.nickname}
+      nickname: attendee.nickname,
+      avatar: Avatar.url({attendee.avatar, attendee}, :original)
+    }
   end
 end

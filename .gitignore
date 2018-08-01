@@ -24,6 +24,9 @@ erl_crash.dump
 # QrCodes
 /*.svg
 
+# Local uploads
+/uploads
+
 ### SublimeText ###
 # Cache files for Sublime Text
 *.tmlanguage.cache

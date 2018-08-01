@@ -1,6 +1,8 @@
 defmodule Safira.Contest.Badge do
   use Ecto.Schema
+  use Arc.Ecto.Schema
   import Ecto.Changeset
+
   alias Safira.Contest.Referral
   alias Safira.Contest.Redeem
   alias Safira.Accounts.Attendee
@@ -10,6 +12,7 @@ defmodule Safira.Contest.Badge do
     field :end, :utc_datetime
     field :name, :string
     field :description, :string
+    field :avatar, Safira.Avatar.Type
 
     has_many :referrals, Referral
     many_to_many :attendees, Attendee, join_through: Redeem
@@ -21,6 +24,7 @@ defmodule Safira.Contest.Badge do
   def changeset(badge, attrs) do
     badge
     |> cast(attrs, [:name, :description,:begin, :end])
+    |> cast_attachments(attrs, [:avatar])
     |> validate_required([:name, :description, :begin, :end])
     |> validate_length(:name, min: 1, max: 255)
     |> validate_length(:description, min: 1, max: 450)
