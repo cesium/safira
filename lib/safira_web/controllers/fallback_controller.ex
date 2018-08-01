@@ -29,10 +29,4 @@ defmodule SafiraWeb.FallbackController do
     |> put_status(:not_found)
     |> render(SafiraWeb.ErrorView, :"404")
   end
-
-  def call(conn, {:error, :referral_not_available}) do
-    conn
-    |> put_status(:not_found)
-    |> render(SafiraWeb.ErrorView, :"404")
-  end
 end

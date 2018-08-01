@@ -23,7 +23,10 @@ defmodule SafiraWeb.ReferralController do
           |> put_status(:created)
           |> json(%{referral: "Referral redeemed successfully"})
         end
-      _ -> {:error, :referral_not_available}
+      _ ->
+          conn
+          |> put_status(:unauthorized)
+          |> json(%{referral: "Referral not available"})
     end
   end
 
