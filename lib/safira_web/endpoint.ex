@@ -36,7 +36,7 @@ defmodule SafiraWeb.Endpoint do
     signing_salt: "fH8xIeCu"
 
   # The CORS plug
-      plug SafiraWeb.CORS
+  plug SafiraWeb.CORS
 
   plug SafiraWeb.Router
 
