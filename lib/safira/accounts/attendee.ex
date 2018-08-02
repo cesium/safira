@@ -6,6 +6,7 @@ defmodule Safira.Accounts.Attendee do
   alias Safira.Accounts.User
   alias Safira.Contest.Redeem
   alias Safira.Contest.Badge
+  alias Safira.Contest.Referral
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @derive {Phoenix.Param, key: :id}
@@ -16,6 +17,7 @@ defmodule Safira.Accounts.Attendee do
 
     belongs_to :user, User
     many_to_many :badges, Badge, join_through: Redeem
+    has_many :referrals, Referral
 
     timestamps()
   end
