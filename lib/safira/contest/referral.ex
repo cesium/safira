@@ -9,7 +9,7 @@ defmodule Safira.Contest.Referral do
   schema "referrals" do
     field :available, :boolean, default: true
     belongs_to :badge, Badge
-    belongs_to :attendee, Attendee
+    belongs_to :attendee, Attendee, foreign_key: :attendee_id, type: :binary_id
 
     timestamps()
   end
@@ -17,6 +17,6 @@ defmodule Safira.Contest.Referral do
   def changeset(referral, attrs) do
     referral
     |> cast(attrs, [:badge_id, :available, :attendee_id])
-    |> validate_required([:badge_id, :available, :attendee_id])
+    |> validate_required([:badge_id, :available])
   end
 end
