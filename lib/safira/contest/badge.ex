@@ -32,7 +32,7 @@ defmodule Safira.Contest.Badge do
   end
 
 
-  def validate_time(changeset) do
+  defp validate_time(changeset) do
     {_, begin_time} = fetch_field(changeset, :begin)
     {_, end_time} = fetch_field(changeset, :end)
 

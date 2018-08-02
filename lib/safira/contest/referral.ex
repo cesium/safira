@@ -18,5 +18,21 @@ defmodule Safira.Contest.Referral do
     referral
     |> cast(attrs, [:badge_id, :available, :attendee_id])
     |> validate_required([:badge_id, :available])
+    |> validate_redeem
+  end
+
+
+  defp validate_redeem(changeset) do
+    {_, available} = fetch_field(changeset, :available)
+    {_, attendee_id} = fetch_field(changeset, :attendee_id)
+
+    case {available ,!attendee_id} do
+      {false,true}->
+        add_error(changeset, :attendee_id, "A referral redeem can't have an nil attendee")
+      {true,false}->
+        add_error(changeset, :attendee_id, "An available referral can't have an attendee")
+      _ ->
+        changeset
+    end
   end
 end
