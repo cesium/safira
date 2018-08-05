@@ -12,13 +12,13 @@ defmodule SafiraWeb.ReferralController do
   plug Safira.Authorize, :attendee
 
   def show(conn, %{"id" => id}) do
-    referral = Contest.preload_referral(id)
+    referral = Contest.get_referral_preload!(id)
     case referral.available do
       true ->
         user = get_user(conn)
-          redeem_params = %{badge_id: referral.badge_id, attendee_id: user.attendee.id}
+        redeem_params = %{badge_id: referral.badge_id, attendee_id: user.attendee.id}
         with {:ok, %Redeem{} = _redeem} <- Contest.create_redeem(redeem_params) do
-          Contest.update_referral(referral,%{available: false})
+          Contest.update_referral(referral,%{available: false, attendee_id: user.attendee.id})
           conn
           |> put_status(:created)
           |> json(%{referral: "Referral redeemed successfully"})
