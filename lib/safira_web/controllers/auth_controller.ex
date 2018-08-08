@@ -1,15 +1,14 @@
 defmodule SafiraWeb.AuthController do
   use SafiraWeb, :controller
 
-  alias Safira.Accounts
-  alias Safira.Accounts.User
+  alias Safira.Auth
   alias Safira.Guardian
 
   action_fallback SafiraWeb.FallbackController
 
   def sign_up(conn, %{"user" => user_params}) do
-    with {:ok, %User{} = user} <- Accounts.create_user_uuid(user_params),
-         {:ok, token, _claims} <- Guardian.encode_and_sign(user) do
+    with {:ok, multi} <- Auth.create_user_uuid(user_params),
+         {:ok, token, _claims} <- Guardian.encode_and_sign(multi.user) do
       conn 
       |> render("jwt.json", jwt: token)
     end
@@ -21,7 +20,7 @@ defmodule SafiraWeb.AuthController do
   end
 
   def sign_in(conn, %{"email" => email, "password" => password}) do
-    case Accounts.token_sign_in(email, password) do
+    case Auth.token_sign_in(email, password) do
       {:ok, token, _claims} ->
         conn |> render("jwt.json", jwt: token)
       _ ->

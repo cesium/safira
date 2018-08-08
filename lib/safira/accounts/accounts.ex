@@ -11,8 +11,6 @@ defmodule Safira.Accounts do
   alias Safira.Accounts.Manager
   alias Safira.Accounts.Company
 
-  alias Safira.Guardian
-
   def list_users do
     Repo.all(User)
   end
@@ -30,33 +28,6 @@ defmodule Safira.Accounts do
     %User{}
     |> User.changeset(attrs)
     |> Repo.insert()
-  end
-
-  def create_user_uuid(attrs) do
-    Repo.transaction(fn ->
-      case logic_user_uuid(attrs) do
-        {:ok, %User{} = user} ->
-          case update_attendee_uuid(Map.put(attrs["attendee"], "user_id", user.id)) do
-            {:ok, %Attendee{} = _attendee} -> user
-            _ -> Repo.rollback(:unauthorized)
-          end
-        {:error, _} -> Repo.rollback(:unauthorized)
-      end      
-    end)
-  end
-
-  defp logic_user_uuid(attrs) do
-    case get_attendee!(attrs["attendee"]["id"]) do
-      %Attendee{} = attendee ->
-        if is_nil attendee.user_id do
-          Map.delete(attrs, "attendee")
-          |> create_user
-        else
-          {:error, :unauthorized}
-        end
-      _ ->
-        {:error, :unauthorized}
-    end
   end
 
   def update_user(%User{} = user, attrs) do
@@ -89,11 +60,6 @@ defmodule Safira.Accounts do
     attendee
     |> Attendee.changeset(attrs)
     |> Repo.update()
-  end
-
-  def update_attendee_uuid(attrs) do
-    get_attendee!(attrs["id"])
-    |> update_attendee(attrs)
   end
 
   def delete_attendee(%Attendee{} = attendee) do
@@ -158,37 +124,5 @@ defmodule Safira.Accounts do
 
   def change_company(%Company{} = company) do
     Company.changeset(company, %{})
-  end
-
-  def token_sign_in(email, password) do
-    case email_password_auth(email, password) do
-      {:ok, user} ->
-        Guardian.encode_and_sign(user)
-      _ ->
-        {:error, :unauthorized}
-    end
-  end
-
-  defp email_password_auth(email, password) when is_binary(email) and is_binary(password) do
-    with {:ok, user} <- get_by_email(email),
-    do: verify_password(password, user)
-  end
-
-  defp get_by_email(email) when is_binary(email) do
-    case Repo.get_by(User, email: email) do
-      nil ->
-        Comeonin.Bcrypt.dummy_checkpw()
-        {:error, "Login error."}
-      user ->
-        {:ok, user}
-    end
-  end
-
-  defp verify_password(password, %User{} = user) when is_binary(password) do
-    if Comeonin.Bcrypt.checkpw(password, user.password_hash) do
-      {:ok, user}
-    else
-      {:error, :invalid_password}
-    end
   end
 end
