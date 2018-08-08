@@ -18,6 +18,12 @@ defmodule SafiraWeb.FallbackController do
     |> json(%{error: "Attendee needs to be registered"})
   end
 
+  def call(conn, {:error, :has_user}) do
+    conn
+    |> put_status(:unauthorized)
+    |> json(%{error: "Already registered"})
+  end
+
   def call(conn, {:error, %Ecto.Changeset{} = changeset}) do
     conn
     |> put_status(:unprocessable_entity)
