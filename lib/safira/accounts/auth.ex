@@ -18,7 +18,7 @@ defmodule Safira.Auth do
             {:error, _} -> {:error, :unauthorized}
           end
         else
-          {:error, :unauthorized}
+          {:error, :has_user}
         end
       _ ->
         {:error, :unauthorized}
