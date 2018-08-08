@@ -33,10 +33,27 @@ defmodule Safira.Accounts do
   end
 
   def create_user_uuid(attrs) do
+    Repo.transaction(fn ->
+      case logic_user_uuid(attrs) do
+        {:ok, %User{} = user} ->
+          case update_attendee_uuid(Map.put(attrs["attendee"], "user_id", user.id)) do
+            {:ok, %Attendee{} = _attendee} -> user
+            _ -> Repo.rollback(:unauthorized)
+          end
+        {:error, _} -> Repo.rollback(:unauthorized)
+      end      
+    end)
+  end
+
+  defp logic_user_uuid(attrs) do
     case get_attendee!(attrs["attendee"]["id"]) do
-      %Attendee{} = _attendee ->
-        Map.delete(attrs, "attendee")
-        |> create_user
+      %Attendee{} = attendee ->
+        if is_nil attendee.user_id do
+          Map.delete(attrs, "attendee")
+          |> create_user
+        else
+          {:error, :unauthorized}
+        end
       _ ->
         {:error, :unauthorized}
     end
