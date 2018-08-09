@@ -9,7 +9,7 @@ defmodule SafiraWeb.AuthView do
 
   def render("attendee.json", %{user: user}) do
     %{id: user.attendee.id,
-      nick: user.attendee.nickname,
+      nickname: user.attendee.nickname,
       avatar: Avatar.url({user.attendee.avatar, user.attendee}, :original),
       email: user.email}
 
