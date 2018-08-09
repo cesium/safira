@@ -13,7 +13,7 @@ defmodule SafiraWeb.RedeemController do
     user = Guardian.Plug.current_resource(conn)
     |> Map.get(:id)
     |> Accounts.get_user_preload!
-    case Map.fetch(redeem_params,"badge_id") do
+    case Map.fetch(redeem_params, "badge_id") do
       {:ok, id} ->
         Contest.get_badge!(id)
         redeem_params = Map.put(redeem_params, "manager_id", user.manager.id)

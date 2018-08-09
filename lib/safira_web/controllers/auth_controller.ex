@@ -26,7 +26,7 @@ defmodule SafiraWeb.AuthController do
     case is_nil user_preload.attendee do
       true ->
         {:error, :unauthorized}
-      _ ->
+      false ->
         render(conn, "attendee.json", user: user_preload)
     end
   end
