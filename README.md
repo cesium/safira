@@ -38,6 +38,10 @@
     - /sign_in
      - POST /
   - /v1
+    - /user
+      - GET /
+    - /attendee
+      - GET /
     - /badges
       - GET /
       - GET /:id
@@ -59,6 +63,8 @@
     - /sign_in
      - POST /
   - /v1
+    - /user
+      - GET /
     - /badges
       - GET /
       - GET /:id
@@ -75,6 +81,8 @@
 
 - /api
   - /auth
+    - /user
+      - GET /
     - /sign_up
      - POST /
     - /sign_in

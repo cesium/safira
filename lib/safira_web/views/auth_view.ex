@@ -12,7 +12,6 @@ defmodule SafiraWeb.AuthView do
       nickname: user.attendee.nickname,
       avatar: Avatar.url({user.attendee.avatar, user.attendee}, :original),
       email: user.email}
-
   end
 
   def render("jwt.json", %{jwt: jwt}) do
