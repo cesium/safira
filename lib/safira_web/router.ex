@@ -23,6 +23,7 @@ defmodule SafiraWeb.Router do
       pipe_through :jwt_authenticated
 
       get "/user", AuthController, :user
+      get "/attendee", AuthController, :attendee
 
       resources "/badges", BadgeController, only: [:index, :show]
       resources "/attendees", AttendeeController, except: [:create]
