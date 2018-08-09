@@ -435,7 +435,7 @@
 }
 ```
 
-- Not an manager
+- Not an manager, no badge_id, not valid badge_id
 ```json
 {
 	"errors": {
