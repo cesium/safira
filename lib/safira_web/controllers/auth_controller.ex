@@ -2,8 +2,8 @@ defmodule SafiraWeb.AuthController do
   use SafiraWeb, :controller
 
   alias Safira.Auth
-  alias Safira.Guardian
   alias Safira.Accounts
+  alias Safira.Guardian
 
   action_fallback SafiraWeb.FallbackController
 
@@ -22,8 +22,8 @@ defmodule SafiraWeb.AuthController do
 
   def attendee(conn, _params) do
     user = Guardian.Plug.current_resource(conn)
-    user_preload = Safira.Accounts.get_user_preload!(user.id)
-    case is_nil user_preload do
+    user_preload = Accounts.get_user_preload!(user.id)
+    case is_nil user_preload.attendee do
       true ->
         {:error, :unauthorized}
       _ ->
