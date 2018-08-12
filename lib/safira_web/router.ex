@@ -11,6 +11,10 @@ defmodule SafiraWeb.Router do
     plug Guardian.AuthPipeline
   end
 
+  scope "/", SafiraWeb do
+    get "/", PageController, :index
+  end
+
   scope "/api", SafiraWeb do
     pipe_through :api
 
