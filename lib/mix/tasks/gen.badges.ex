@@ -1,7 +1,7 @@
 defmodule Mix.Tasks.Gen.Badges do
   use Mix.Task
-  alias Safira.Contest
-
+  import Mix.Ecto
+  NimbleCSV.define(MyParser, separator: ";", escape: "\"")
   def run(args) do
     cond do
       length(args) == 0 ->
@@ -9,17 +9,19 @@ defmodule Mix.Tasks.Gen.Badges do
       true ->
         args |> create
     end
+
+    File.rm_rf("/tmp/badges")
   end
 
   defp create(paths) do
     Mix.Task.run "app.start"
     File.mkdir!("/tmp/badges")
     paths
-    |> Enum.map(&parse_csv)
-    |> Enum.map(&create_badges)
+    |> Enum.map(&(parse_csv/1))
+    |> Enum.map(&(Safira.Contest.create_badges/1))
     |> Enum.map(
       fn x ->
-        case Repo.transaction(x) do
+        case Safira.Repo.transaction(x) do
           {:ok, result} -> result
           {:error, error} -> IO.puts(error)
         end
@@ -38,12 +40,6 @@ defmodule Mix.Tasks.Gen.Badges do
           end_time: DateTime.from_iso8601("#{end_time}#{"T00:00:00Z"}"),
           avatar: get_image(url,name)}
       end)
-  end
-
-  defp create_badges(list_badges) do
-    Enum.reduce(list_badges,Muti.new,fn x, acc ->
-      Multi.insert(acc, :badge, create_badge(x))
-    end)
   end
 
   defp get_image(url, name) do
