@@ -53,7 +53,8 @@ defmodule Safira.Mixfile do
       {:poison, "~> 3.1"},
       {:sweet_xml, "~> 0.6"},
       {:arc_ecto, "~> 0.10.0"},
-      {:xml_builder, "~> 2.0", override: true}
+      {:xml_builder, "~> 2.0", override: true},
+      {:nimble_csv, "~> 0.3"}
     ]
   end
 
