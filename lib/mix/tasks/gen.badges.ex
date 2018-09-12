@@ -1,7 +1,11 @@
 defmodule Mix.Tasks.Gen.Badges do
   use Mix.Task
   import Mix.Ecto
+
   NimbleCSV.define(MyParser, separator: ";", escape: "\"")
+
+  # format Coffee break;badge do lanche;2019-02-11;2019-02-12;/tmp/goraster.png
+
   def run(args) do
     cond do
       length(args) == 0 ->
