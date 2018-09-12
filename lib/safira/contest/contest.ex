@@ -19,8 +19,10 @@ defmodule Safira.Contest do
   end
 
   def create_badges(list_badges) do
-    Enum.reduce(list_badges,Multi.new,fn x, acc ->
-      Ecto.Multi.insert(acc, :badge, Safira.Contest.create_badge(x))
+    list_badges
+    |> Enum.with_index()
+    |> Enum.reduce(Multi.new,fn {x,index}, acc ->
+      Ecto.Multi.insert(acc, index, Badge.changeset(%Badge{},x))
     end)
   end
 

@@ -10,12 +10,10 @@ defmodule Mix.Tasks.Gen.Badges do
         args |> create
     end
 
-    File.rm_rf("/tmp/badges")
   end
 
   defp create(paths) do
     Mix.Task.run "app.start"
-    File.mkdir!("/tmp/badges")
     paths
     |> Enum.map(&(parse_csv/1))
     |> Enum.map(&(Safira.Contest.create_badges/1))
@@ -34,19 +32,16 @@ defmodule Mix.Tasks.Gen.Badges do
     |> MyParser.parse_stream
     |> Stream.map(
       fn [name, description,begin_time,end_time,url] ->
+        {:ok,b_t,_} = DateTime.from_iso8601("#{begin_time}T00:00:00Z")
+        {:ok,e_t,_} = DateTime.from_iso8601("#{end_time}T00:00:00Z")
+
         %{name: name,
           description: description,
-          begin_time: DateTime.from_iso8601("#{begin_time}#{"T00:00:00Z"}"),
-          end_time: DateTime.from_iso8601("#{end_time}#{"T00:00:00Z"}"),
-          avatar: get_image(url,name)}
+          begin: b_t,
+          end: e_t,
+          avatar: url}
       end)
   end
 
-  defp get_image(url, name) do
-    {:ok, resp} = :httpc.request(:get, {url, []}, [], [body_format: :binary])
-    {{_, 200, 'OK'}, _headers, body} = resp
-    File.write!("/tmp/badges/#{name}.jpg", body)
-    "/tmp/badges/#{name}.jpg"
-  end
 
 end
