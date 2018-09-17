@@ -9,7 +9,7 @@ defmodule Mix.Tasks.Gen.Badges do
   def run(args) do
     cond do
       length(args) == 0 ->
-        Mix.shell.info "Needs to receive a number greater than 0."
+        Mix.shell.info "Needs to receive atleast one file path ."
       true ->
         args |> create
     end
@@ -36,16 +36,14 @@ defmodule Mix.Tasks.Gen.Badges do
     |> MyParser.parse_stream
     |> Stream.map(
       fn [name, description,begin_time,end_time,url] ->
-        {:ok,b_t,_} = DateTime.from_iso8601("#{begin_time}T00:00:00Z")
-        {:ok,e_t,_} = DateTime.from_iso8601("#{end_time}T00:00:00Z")
+        {:ok,begin_datetime,_} = DateTime.from_iso8601("#{begin_time}T00:00:00Z")
+        {:ok,end_datetime,_} = DateTime.from_iso8601("#{end_time}T00:00:00Z")
 
         %{name: name,
           description: description,
-          begin: b_t,
-          end: e_t,
+          begin: begin_datetime,
+          end: end_time,
           avatar: url}
       end)
   end
-
-
 end
