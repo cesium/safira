@@ -36,13 +36,13 @@ defmodule Mix.Tasks.Gen.Badges do
     |> MyParser.parse_stream
     |> Stream.map(
       fn [name, description,begin_time,end_time,url] ->
-        {:ok,begin_datetime,_} = DateTime.from_iso8601("#{begin_time}T00:00:00Z")
-        {:ok,end_datetime,_} = DateTime.from_iso8601("#{end_time}T00:00:00Z")
+        {:ok, begin_datetime, _} = DateTime.from_iso8601("#{begin_time}T00:00:00Z")
+        {:ok, end_datetime, _} = DateTime.from_iso8601("#{end_time}T00:00:00Z")
 
         %{name: name,
           description: description,
           begin: begin_datetime,
-          end: end_time,
+          end: end_datetime,
           avatar: url}
       end)
   end
