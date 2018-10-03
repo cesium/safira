@@ -20,6 +20,7 @@ erl_crash.dump
 
 # Test files
 /*.json
+/*.csv
 
 # QrCodes
 /*.svg
