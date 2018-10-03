@@ -4,6 +4,7 @@ defmodule Safira.Contest do
   alias Safira.Repo
   alias Safira.Contest.Redeem
   alias Safira.Contest.Badge
+  alias Ecto.Multi
 
   def list_badges do
     Repo.all(Badge)
@@ -15,6 +16,14 @@ defmodule Safira.Contest do
     %Badge{}
     |> Badge.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def create_badges(list_badges) do
+    list_badges
+    |> Enum.with_index()
+    |> Enum.reduce(Multi.new,fn {x,index}, acc ->
+      Ecto.Multi.insert(acc, index, Badge.changeset(%Badge{},x))
+    end)
   end
 
   def update_badge(%Badge{} = badge, attrs) do
