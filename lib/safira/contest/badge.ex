@@ -23,7 +23,7 @@ defmodule Safira.Contest.Badge do
   @doc false
   def changeset(badge, attrs) do
     badge
-    |> cast(attrs, [:name, :description,:begin, :end])
+    |> cast(attrs, [:name, :description, :begin, :end])
     |> cast_attachments(attrs, [:avatar])
     |> validate_required([:name, :description, :begin, :end])
     |> validate_length(:name, min: 1, max: 255)
