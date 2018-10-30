@@ -16,6 +16,7 @@ defmodule Safira.Auth do
           case Repo.transaction(logic_user_uuid(attrs)) do
             {:ok, result} -> {:ok, result}
             {:error, _} -> {:error, :unauthorized}
+            {:error, _, _, _} -> {:error, :unauthorized}
           end
         else
           {:error, :has_user}
