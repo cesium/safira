@@ -6,6 +6,12 @@ defmodule SafiraWeb.FallbackController do
   """
   use SafiraWeb, :controller
 
+  def call(conn, {:error, :register_error}) do
+    conn
+    |> put_status(:bad_request)
+    |> json(%{error: "Invalid register data"})
+  end
+
   def call(conn, {:error, :unauthorized}) do
     conn
     |> put_status(:unauthorized)
