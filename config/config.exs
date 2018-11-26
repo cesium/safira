@@ -35,11 +35,10 @@ config :arc,
 config :ex_aws,
   access_key_id: [{:system, "AWS_ACCESS_KEY_ID"}, :instance_role],
   secret_access_key: [{:system, "AWS_SECRET_ACCESS_KEY"}, :instance_role],
-  region: "eu-west-1",
   s3: [
     scheme: "https://",
-    host: "s3.eu-west-1.amazonaws.com",
-    region: "eu-west-1"
+    host: "#{System.get_env("S3_BUCKET")}.s3.amazonaws.com",
+    region: System.get_env("AWS_REGION")
   ]
 
 # Import environment specific config. This must remain at the bottom
