@@ -119,54 +119,29 @@
   ```
 
  ### Errors:
-   - Invalid email
-      ```json
+   - Invalid email, email already taken, password doesn't match, username already taken
 
-        {
-          "errors": {
-            "email": [
-              "has invalid format"
-            ]
-          }
-        }
-      ```
+   ```json
+     {
+       "error": "Invalid register data"
+     }
+   ```
+   - UUID taken
 
-   - Email allready taken
-
-      ```json
-
-        {
-          "errors": {
-            "email": [
-              "has already been taken"
-            ]
-          }
-        }
-      ```
-
-   - Password doesn't match
-
-      ```json
-
-        {
-          "errors": {
-            "password_confirmation": [
-              "does not match confirmation"
-            ]
-          }
-        }
-      ```
-
+   ```json
+     {
+       "error": "Already registered"
+     }
+   ```
    - UUID Incorrect
 
-      ```json
-
-      {
-        "errors": {
-          "detail": "Bad Request"
-        }
-      }
-      ```
+   ```json
+     {
+       "errors": {
+         "detail": "Bad Request"
+       }
+     }
+   ```
 
 # sign_in
   ## request POST
