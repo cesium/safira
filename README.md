@@ -84,9 +84,9 @@
     - /user
       - GET /
     - /sign_up
-     - POST /
+      - POST /
     - /sign_in
-     - POST /
+      - POST /
   - /v1
     - /redeems
       - POST /
@@ -94,9 +94,8 @@
 
 # sign_up
 
- ## request POST
+ ## POST /
   ```json
-
     {
       "user": {
           "email": "foo@bar.com",
@@ -112,9 +111,8 @@
 
  ### Valid:
   ```json
-
     {
-      "jwt": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzYWZpcmEiLCJleHAiOjE1MzYxNDU4NzEsImlhdCI6MTUzMzcyNjY3MSwiaXNzIjoic2FmaXJhIiwianRpIjoiMGIxODFiZmUtZjYyYS00MTEwLWE2NmQtMDcxNTVjMGZjOWJlIiwibmJmIjoxNTMzNzI2NjcwLCJzdWIiOiIzOCIsInR5cCI6ImFjY2VzcyJ9.RUlR6XjHpgwJcRxjdBIRQsFvSXLG5SMSWAdR4g8CrM6hCFm3GuEDysTYtCTx1sQONJKNlAkls5O1wC-ocefgdg"
+      "jwt": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzYWZpcmEiLCJl..."
     }
   ```
 
@@ -144,10 +142,9 @@
    ```
 
 # sign_in
-  ## request POST
+  ## POST /
 
   ```json
-
   {
     "email": "foo@bar.com",
    "password": "somePassword"
@@ -158,7 +155,7 @@
 
 ```json
     {
-      "jwt": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzYWZpcmEiLCJleHAiOjE1MzYxNTE4NjgsImlhdCI6MTUzMzczMjY2OCwiaXNzIjoic2FmaXJhIiwianRpIjoiMjI2MGJlYjQtMDAwZi00ZjdhLTk1YzUtZDM1OTU1NDE4Yjg3IiwibmJmIjoxNTMzNzMyNjY3LCJzdWIiOiIxIiwidHlwIjoiYWNjZXNzIn0.jSPUcn0e3Qg3tEiTxzvYHWfFa5YgNO-XPPrEZCBTuIkr3-zNLrx_50QvcOxB--ZDm0vmSTbCOl5ml_801IDFTw"
+      "jwt": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzYWZpcmEiLCJle..."
     }
   ```
 
@@ -176,7 +173,7 @@
   When you are autheticated you get a jwt token.
 
   This token is used as a bearer token to service
-  any calls to the api that need to be authented
+  any calls to the api that need to be authenticated.
 
 ### Errors:
 ```json
@@ -192,9 +189,10 @@
 ```
 
 # attendee
-  ## request GET /
+  ## GET / (Show)
+  Fetches the nick, uuid, email and avatar of the logged in attendee.
+
   ### Valid:
-  Way to get  uuid, nick e email of attendee loged in
   ```json
  {
 	"nick": "qwrqasd",
@@ -207,6 +205,7 @@
 
 # badges
   ## GET / (Index)
+  Fetches the badges of the logged in attendee.
 
   ### Valid:
   ```json
@@ -224,6 +223,7 @@
   }
   ```
   ## GET /:id (Show)
+  Fetches a single badge.
 
   ### Valid:
   ```json
@@ -249,6 +249,8 @@
 
 # attendees
   ## GET / (Index)
+  Lists all attendess.
+
   ### Valid:
   ```json
   {
@@ -263,6 +265,8 @@
   ```
 
   ## GET /:id (Show)
+  Shows an attendee.
+
   ### Valid:
   ```json
   {
@@ -282,6 +286,8 @@
   }
   ```
   ## PUT /:id (Update)
+  Changes an attendee.
+
   ### Request:
 
   ```json
@@ -314,8 +320,10 @@
   ```
 
   ## DELETE /:id (Delete)
+  Removes an attendee.
+
   ### Valid:
-  204 no content
+  `204` (no content)
   ### Errors:
   - Invalid uuid
   ```json
