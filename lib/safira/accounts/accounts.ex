@@ -44,15 +44,11 @@ defmodule Safira.Accounts do
     User.changeset(user, %{})
   end
 
-  def list_leaderboard do
-    Repo.all(from a in Attendee, 
-      where: not (is_nil a.user_id) and not a.volunteer)
-    |> Repo.preload(:badges)
-    |> Enum.map(fn x -> Map.put(x, :badge_count, length(x.badges)) end)
-    |> Enum.sort(&(&1.badges_count >= &2.badges_count))
+  def list_attendees do
+    Repo.all(Attendee)
   end
 
-  def list_attendees do
+  def list_active_attendees do
     Repo.all(from a in Attendee, where: not (is_nil a.user_id))
     |> Repo.preload(:badges)
   end

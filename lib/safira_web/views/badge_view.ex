@@ -12,7 +12,8 @@ defmodule SafiraWeb.BadgeView do
   end
 
   def render("badge.json", %{badge: badge}) do
-    %{name: badge.id,
+    %{id: badge.name,
+      name: badge.id,
       description: badge.description,
       avatar: Avatar.url({badge.avatar, badge}, :original),
       begin: badge.begin,

@@ -16,7 +16,8 @@ defmodule Mix.Tasks.Gen.Attendees do
     Mix.Task.run "app.start"
 
     Enum.each 1..n, fn(_n) ->
-      Safira.Repo.insert!(%Safira.Accounts.Attendee{})
+      a = Safira.Repo.insert!(%Safira.Accounts.Attendee{})
+      IO.puts(a.id)
     end
   end
 end

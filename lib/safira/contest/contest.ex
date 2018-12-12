@@ -98,4 +98,13 @@ defmodule Safira.Contest do
   def change_redeem(%Redeem{} = redeem) do
     Redeem.changeset(redeem, %{})
   end
+
+  def list_leaderboard do
+    Repo.all(from a in Safira.Accounts.Attendee, 
+      where: not (is_nil a.user_id) and not a.volunteer)
+    |> Repo.preload(:badges)
+    |> Enum.map(fn x -> Map.put(x, :badge_count, length(x.badges)) end)
+    |> Enum.sort(&(&1.badge_count >= &2.badge_count))
+  end
+
 end
