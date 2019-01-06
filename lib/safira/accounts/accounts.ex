@@ -48,6 +48,11 @@ defmodule Safira.Accounts do
     Repo.all(Attendee)
   end
 
+  def list_active_attendees do
+    Repo.all(from a in Attendee, where: not (is_nil a.user_id))
+    |> Repo.preload(:badges)
+  end
+
   def get_attendee!(id) do
     Repo.get!(Attendee, id)
     |> Repo.preload(:badges)

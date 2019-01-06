@@ -28,6 +28,8 @@
       - GET /:id
     - /redeems
       - POST /
+    - /leaderboard
+      - GET /
 
 ## Attendee
 
@@ -431,5 +433,28 @@ Removes an attendee.
     "errors": {
         "detail": "Endpoint Not Found"
     }
+}
+```
+
+#leaderboard
+## GET /
+```json
+{
+    "data": [
+        {
+            "avatar": "/uploads/attendee/avatars/ee4514b5-6b71-44ff-b26f-8afc0b8c7e51/original.png?v=63705800808",
+            "badges": [
+                {
+                    "avatar": "/uploads/badge/avatars/5/original.png?v=63705802360",
+                    "begin": "2019-02-12T00:00:00.000000Z",
+                    "description": "hackerino",
+                    "end": "2019-02-13T00:00:00.000000Z",
+                    "name": 5
+                }
+            ],
+            "id": "ee4514b5-6b71-44ff-b26f-8afc0b8c7e51",
+            "nickname": "Nick"
+        }
+    ]
 }
 ```

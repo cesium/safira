@@ -19,6 +19,8 @@ defmodule Safira.Accounts.Attendee do
     many_to_many :badges, Badge, join_through: Redeem
     has_many :referrals, Referral
 
+    field :badge_count, :integer, default: 0, virtual: true
+
     timestamps()
   end
 

@@ -17,6 +17,10 @@ defmodule Mix.Tasks.Gen.Attendees do
 
     Enum.each 1..n, fn(_n) ->
       Safira.Repo.insert!(%Safira.Accounts.Attendee{})
+      |> Map.get(:id)
+      |> IO.puts
     end
+
+
   end
 end
