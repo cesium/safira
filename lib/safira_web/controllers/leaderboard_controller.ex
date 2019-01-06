@@ -2,6 +2,7 @@ defmodule SafiraWeb.LeaderboardController do
   use SafiraWeb, :controller
 
   alias Safira.Contest
+  alias Safira.Accounts
 
   action_fallback SafiraWeb.FallbackController
 
