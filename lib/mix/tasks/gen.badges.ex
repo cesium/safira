@@ -4,7 +4,7 @@ defmodule Mix.Tasks.Gen.Badges do
 
   NimbleCSV.define(MyParser, separator: ";", escape: "\"")
 
-  #Its waiting for an header ou an empty line on the beggining of the file
+  #Its waiting for an header or an empty line on the beggining of the file
   # format Coffee break;badge do lanche;2019-02-11;2019-02-12;/tmp/goraster.png
 
   def run(args) do
