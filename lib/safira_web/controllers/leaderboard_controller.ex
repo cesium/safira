@@ -2,12 +2,11 @@ defmodule SafiraWeb.LeaderboardController do
   use SafiraWeb, :controller
 
   alias Safira.Contest
-  alias Safira.Accounts
 
   action_fallback SafiraWeb.FallbackController
 
   def index(conn, _params) do
-    attendees = Accounts.list_leaderboard()
+    attendees = Contest.list_leaderboard()
     render(conn, SafiraWeb.AttendeeView, "index.json", attendees: attendees)
   end
 end
