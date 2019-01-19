@@ -106,5 +106,4 @@ defmodule Safira.Contest do
     |> Enum.map(fn x -> Map.put(x, :badge_count, length(x.badges)) end)
     |> Enum.sort(&(&1.badge_count >= &2.badge_count))
   end
-
 end
