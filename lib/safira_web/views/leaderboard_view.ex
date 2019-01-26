@@ -4,7 +4,7 @@ defmodule SafiraWeb.LeaderboardView do
   alias Safira.Avatar
 
   def render("index.json", %{attendees: attendees}) do
-    %{data: render_many(attendees, LeaderboardView, "attendee.json")}
+    %{data: render_many(attendees, LeaderboardView, "attendee.json", as: :attendee)}
   end
 
   def render("attendee.json", %{attendee: attendee}) do
