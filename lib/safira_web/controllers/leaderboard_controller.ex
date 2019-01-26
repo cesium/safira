@@ -7,6 +7,6 @@ defmodule SafiraWeb.LeaderboardController do
 
   def index(conn, _params) do
     attendees = Contest.list_leaderboard()
-    render(conn, SafiraWeb.AttendeeView, "index.json", attendees: attendees)
+    render(conn, SafiraWeb.LeaderboardView, "index.json", attendees: attendees)
   end
 end
