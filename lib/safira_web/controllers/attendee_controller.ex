@@ -29,13 +29,15 @@ defmodule SafiraWeb.AttendeeController do
   end
 
   def update(conn, %{"id" => id, "attendee" => attendee_params}) do
+    user = get_user(conn)
     attendee = Accounts.get_attendee!(id)
-
-    if get_user(conn).attendee == attendee do
+    if user.attendee.id == attendee.id do
       with {:ok, %Attendee{} = attendee} <- 
           Accounts.update_attendee(attendee, attendee_params) do
-        render(conn, "show.json", attendee: attendee)
+            render(conn, "show.json", attendee: attendee)
       end
+    else 
+      {:error, :unauthorized}
     end
   end
 
