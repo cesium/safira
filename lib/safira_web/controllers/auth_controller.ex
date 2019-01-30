@@ -37,7 +37,7 @@ defmodule SafiraWeb.AuthController do
       true ->
         {:error, :not_found}      
       false ->
-        render(conn, "is_registered.json", is_registered: is_nil attendee.user_id)
+        render(conn, "is_registered.json", is_registered: not is_nil attendee.user_id)
     end
   end
 
