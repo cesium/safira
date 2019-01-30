@@ -34,8 +34,8 @@ defmodule SafiraWeb.AuthController do
   def is_registered(conn, %{"id" => id}) do
     attendee = Accounts.get_attendee!(id)
     case is_nil attendee do
-      true -> 
-        {:error, :bad_request}
+      true ->
+        {:error, :not_found}      
       false ->
         render(conn, "is_registered.json", is_registered: is_nil attendee.user_id)
     end
