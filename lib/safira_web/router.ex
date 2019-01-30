@@ -24,6 +24,8 @@ defmodule SafiraWeb.Router do
     end
 
     scope "/v1" do
+      get "/is_registered/:id", AuthController, :is_registered
+
       pipe_through :jwt_authenticated
 
       get "/user", AuthController, :user
