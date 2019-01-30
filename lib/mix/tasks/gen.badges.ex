@@ -40,13 +40,17 @@ defmodule Mix.Tasks.Gen.Badges do
         {:ok, begin_datetime, _} = DateTime.from_iso8601("#{begin_time}T00:00:00Z")
         {:ok, end_datetime, _} = DateTime.from_iso8601("#{end_time}T00:00:00Z")
 
-        %{name: name,
-          description: description,
-          begin: begin_datetime,
-          end: end_datetime,
-          avatar: %Plug.Upload{
-            filename: check_image_filename(image_path), 
-            path: check_image_path(image_path)
+        %{create: %{
+            name: name,
+            description: description,
+            begin: begin_datetime,
+            end: end_datetime,
+          },
+          update: %{
+            avatar: %Plug.Upload{
+              filename: check_image_filename(image_path), 
+              path: check_image_path(image_path)
+            }
           }
         }
       end)
