@@ -24,11 +24,12 @@ defmodule SafiraWeb.Router do
     end
 
     scope "/v1" do
-      get "/attendee", AuthController, :attendee
+      get "/is_registered/:id", AuthController, :is_registered
 
       pipe_through :jwt_authenticated
 
       get "/user", AuthController, :user
+      get "/attendee", AuthController, :attendee
       get "/leaderboard", LeaderboardController, :index
 
       resources "/badges", BadgeController, only: [:index, :show]

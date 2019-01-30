@@ -31,10 +31,20 @@ defmodule SafiraWeb.AuthController do
     end
   end
 
+  def is_registered(conn, %{"id" => id}) do
+    attendee = Accounts.get_attendee!(id)
+    case is_nil attendee do
+      true -> 
+        {:error, :bad_request}
+      false ->
+        render(conn, "is_registered.json", is_registered: is_nil attendee.user_id)
+    end
+  end
+
   def sign_in(conn, %{"email" => email, "password" => password}) do
     case Auth.token_sign_in(email, password) do
       {:ok, token, _claims} ->
-        conn |> render("jwt.json", jwt: token)
+        render(conn, "jwt.json", jwt: token)
       _ ->
         {:error, :unauthorized}
     end

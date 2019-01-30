@@ -7,6 +7,10 @@ defmodule SafiraWeb.AuthView do
       email: user.email}
   end
 
+  def render("is_registered.json", %{is_registered: value}) do
+    %{is_registered: value}
+  end
+
   def render("attendee.json", %{user: user}) do
     %{id: user.attendee.id,
       nickname: user.attendee.nickname,
