@@ -29,7 +29,7 @@ config :safira, Safira.Guardian,
 
 # AWS config
 config :arc,
-  bucket: {:system, "S3_BUCKET"},
+  bucket: {:system, "S3_BUCKET"}
 
 config :ex_aws,
   access_key_id: [{:system, "AWS_ACCESS_KEY_ID"}, :instance_role],
