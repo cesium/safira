@@ -44,7 +44,7 @@ defmodule Safira.Avatar do
     |> String.split(".") 
     |> List.last 
     |> String.downcase
-   "#{struct}/avatars/#{scope.id}"
+   "/#{System.get_env("S3_BUCKET")}/#{struct}/avatars/#{scope.id}"
   end
 
   # Provide a default URL if there hasn't been a file uploaded
