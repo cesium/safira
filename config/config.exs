@@ -37,7 +37,7 @@ config :ex_aws,
   secret_access_key: [{:system, "AWS_SECRET_ACCESS_KEY"}, :instance_role],
   s3: [
     scheme: "https://",
-    host: "s3.amazonaws.com",
+    host: "#{System.get_env('S3_BUCKET')}.s3.amazonaws.com",
     region: System.get_env("AWS_REGION")
   ]
 
