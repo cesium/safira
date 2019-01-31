@@ -13,6 +13,7 @@ defmodule Safira.Avatar do
   end
 
   @versions [:original]
+  @acl :public_read
 
   # To add a thumbnail version:
   # @versions [:original, :thumb]
