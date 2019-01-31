@@ -54,7 +54,7 @@ defmodule Safira.Avatar do
     |> String.split(".") 
     |> List.last 
     |> String.downcase
-    Safira.Endpoint.url <> "/images/default/#{struct}-missing.png"
+    "/images/default/#{struct}-missing.png"
   end
 
   # Specify custom headers for s3 objects
