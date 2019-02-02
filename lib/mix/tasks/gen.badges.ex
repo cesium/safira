@@ -21,14 +21,26 @@ defmodule Mix.Tasks.Gen.Badges do
     Mix.Task.run "app.start"
     paths
     |> Enum.map(&(parse_csv/1))
-    |> Enum.map(&(Safira.Contest.create_badges/1))
-    |> Enum.map(
-      fn x ->
-        case Safira.Repo.transaction(x) do
-          {:ok, result} -> IO.inspect(result)
-          {:error, error} -> IO.puts(error)
-        end
-      end)
+    |> Enum.map(&(sequence/1))
+    |> Enum.map(&({Safira.Contest.create_badges(elem(&1,0)),elem(&1,1)}))
+    |> Enum.map(&(insert_badge/1))
+  end
+
+  defp sequence(list) do
+    create = Enum.map(list,fn value -> elem(value, 0) end)
+    update = Enum.map(list,fn value -> elem(value, 1) end)
+    {create,update}
+  end
+
+  defp insert_badge(transactions) do 
+    case Safira.Repo.transaction(elem(transactions,0)) do
+      {:ok, result} -> 
+        Enum.zip(result,elem(transactions,1)) 
+        |> Enum.map(fn {a,b} -> 
+          Safira.Contest.update_badge(elem(a,1),b)
+        end)
+      {:error, error} -> IO.puts(error)
+    end
   end
 
   defp parse_csv(path) do
@@ -40,14 +52,18 @@ defmodule Mix.Tasks.Gen.Badges do
         {:ok, begin_datetime, _} = DateTime.from_iso8601("#{begin_time}T00:00:00Z")
         {:ok, end_datetime, _} = DateTime.from_iso8601("#{end_time}T00:00:00Z")
 
-        %{
-          name: name,
-          description: description,
-          begin: begin_datetime,
-          end: end_datetime,
-          avatar: %Plug.Upload{
-            filename: check_image_filename(image_path), 
-            path: check_image_path(image_path)
+        {
+          %{
+            name: name,
+            description: description,
+            begin: begin_datetime,
+            end: end_datetime,
+          },
+          %{
+            avatar: %Plug.Upload{
+              filename: check_image_filename(image_path), 
+              path: check_image_path(image_path)
+            }
           }
         }
       end)

@@ -44,7 +44,7 @@ defmodule Safira.Mixfile do
       {:bcrypt_elixir, "~> 1.0"},
       {:qr_code_svg, git: "https://github.com/ondrej-tucek/qr-code-svg", tag: "v1.2.0"},
       {:corsica, "~> 1.0"},
-      {:arc, "~> 0.10.0"},
+      {:arc, "~> 0.11.0"},
       # If using Amazon S3
       {:ex_aws, "~> 2.0"},
       {:ex_aws_s3, "~> 2.0"},
@@ -52,7 +52,7 @@ defmodule Safira.Mixfile do
       {:httpoison, "~> 0.13"},
       {:poison, "~> 3.1"},
       {:sweet_xml, "~> 0.6"},
-      {:arc_ecto, "~> 0.10.0"},
+      {:arc_ecto, "~> 0.11.1"},
       {:xml_builder, "~> 2.0", override: true},
       {:nimble_csv, "~> 0.3"}
     ]
