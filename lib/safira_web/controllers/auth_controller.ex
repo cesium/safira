@@ -17,6 +17,22 @@ defmodule SafiraWeb.AuthController do
 
   def user(conn, _params) do
     user = Guardian.Plug.current_resource(conn)
+    user_preload = Accounts.get_user_preload!(user.id)
+    user =
+      cond do
+        not is_nil user_preload.attendee ->
+          user
+          |> Map.put(:id, user_preload.id) 
+          |> Map.put(:type, "attendee")
+        not is_nil user_preload.company ->
+          user
+          |> Map.put(:id, user_preload.id) 
+          |> Map.put(:type, "company")
+        not is_nil user_preload.manager ->
+          user
+          |> Map.put(:id, user_preload.id) 
+          |> Map.put(:type, "manager")
+      end
     render(conn, "user.json", user: user)
   end
 

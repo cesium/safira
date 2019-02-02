@@ -3,8 +3,11 @@ defmodule SafiraWeb.AuthView do
   alias Safira.Avatar
 
   def render("user.json", %{user: user}) do
-    %{id: user.id,
-      email: user.email}
+    %{
+      id: user.id,
+      email: user.email,
+      type: user.type
+    }
   end
 
   def render("is_registered.json", %{is_registered: value}) do
