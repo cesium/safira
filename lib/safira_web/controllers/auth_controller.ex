@@ -24,20 +24,14 @@ defmodule SafiraWeb.AuthController do
           user
           |> Map.put(:id, user_preload.id) 
           |> Map.put(:type, "attendee")
-          #user.id = user_preload.attendee.id
-          #user.type = "attendee"
         not is_nil user_preload.company ->
           user
           |> Map.put(:id, user_preload.id) 
           |> Map.put(:type, "company")
-          #user.id = user_preload.company.id
-          #user.type = "company"
         not is_nil user_preload.manager ->
           user
           |> Map.put(:id, user_preload.id) 
           |> Map.put(:type, "manager")
-          #user.id = user_preload.manager.id
-          #user.type = "manager"
       end
     render(conn, "user.json", user: user)
   end
