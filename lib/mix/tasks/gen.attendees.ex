@@ -20,7 +20,5 @@ defmodule Mix.Tasks.Gen.Attendees do
       |> Map.get(:id)
       |> IO.puts
     end
-
-
   end
 end
