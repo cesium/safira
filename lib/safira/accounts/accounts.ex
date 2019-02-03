@@ -88,6 +88,13 @@ defmodule Safira.Accounts do
 
   def get_manager!(id), do: Repo.get!(Manager, id)
 
+  def get_manager_by_email(email) do
+    Repo.all from m in Manager,                 
+    join: u  in assoc(m, :user),                                       
+    where: u.email == ^email,                           
+    preload: [user: u]    
+  end
+
   def create_manager(attrs \\ %{}) do
     %Manager{}
     |> Manager.changeset(attrs)
