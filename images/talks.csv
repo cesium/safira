@@ -1,9 +1,9 @@
 Nome;Descrição;Data Inicio;Data Fim;Imagem;
-Podcast;Podcast de Job van der Voort;2019-02-04;2019-02-05;tmp/talks/Segunda/podcast.png;
-Sessão de Abertura;Estiveste presente na sessão de abertura;2019-02-04;2019-02-05;tmp/talks/Segunda/sessao.png;
-Talk  Accenture;Estiveste presente na talk da accenture;2019-02-04;2019-02-05;tmp/talks/Segunda/talkaccenture.png;
-Talk Blip;Estiveste presente na talk da blip;2019-02-04;2019-02-05;tmp/talks/Segunda/talkblip.png;
-Talk David Amador;Estiveste presente na talk do David Amador;2019-02-04;2019-02-05;tmp/talks/terça/davidamador.png;
+Podcast;Podcast de Job van der Voort;2019-02-04;2019-02-05;images/talks/Segunda/podcast.png;
+Sessão de Abertura;Estiveste presente na sessão de abertura;2019-02-04;2019-02-05;images/talks/Segunda/sessao.png;
+Talk  Accenture;Estiveste presente na talk da accenture;2019-02-04;2019-02-05;images/talks/Segunda/talkaccenture.png;
+Talk Blip;Estiveste presente na talk da blip;2019-02-04;2019-02-05;images/talks/Segunda/talkblip.png;
+Talk David Amador;Estiveste presente na talk do David Amador;2019-02-04;2019-02-05;images/talks/terça/davidamador.png;
 Talk André Pimenta;Estiveste presente na talk do André Pimenta;2019-02-05;2019-02-06;images/talks/terça/talkandrepimenta.png;
 Talk Celso Martinho;Estiveste presente na talk do Celso Martinho;2019-02-05;2019-02-06;images/talks/terça/davidamador.png;
 Workshop Accenture;Estiveste presente no workshop da Accenture;2019-02-05;2019-02-06;images/talks/terça/accenture.png;
