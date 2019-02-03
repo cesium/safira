@@ -13,6 +13,7 @@ defmodule Mix.Tasks.Gift.Badges do
   defp create(attendee_id) do
     Mix.Task.run "app.start"
 
-    Safira.Contest.list_badges |> Enum.map(&(Safira.Contest.create_redeem(%{attendee_id: attendee_id, manager_id: 1, badge_id: &1.id})))
+    Safira.Contest.list_badges 
+    |> Enum.map(&(Safira.Contest.create_redeem(%{attendee_id: attendee_id, manager_id: 1, badge_id: &1.id})))
   end
 end
