@@ -13,7 +13,7 @@ defmodule Safira.Contest do
   def list_secret do
     Repo.all(from r in Redeem, 
       join: b in assoc(r, :badge), 
-      where: b.type == 1, 
+      where: b.type == ^1, 
       preload: [badge: b], 
       distinct: :badge_id)
     |> Enum.map(fn x -> x.badge end) 
@@ -26,7 +26,7 @@ defmodule Safira.Contest do
   end
 
   def list_badges_conservative do
-    Enum.concat(list_secret(),list_badges())
+    list_secret() ++ list_normals()
   end
 
 
