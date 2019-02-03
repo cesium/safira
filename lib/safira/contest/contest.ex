@@ -26,7 +26,7 @@ defmodule Safira.Contest do
   end
 
   def list_badges_conservative do
-    list_secret()++list_normals()
+    list_secret() ++ list_normals()
   end
 
 
