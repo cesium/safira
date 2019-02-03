@@ -11,14 +11,14 @@ defmodule Safira.Contest do
   end
 
   def list_badges_conservative do
-    query = 
-      from b in Badge,
-      inner_join: r in assoc(b,:redeem),
-      where: b.type != 0 or not(b.type == 1 and count(r.badge_id) == 0 ),
-      select: b,
-      preload: [:redeem]
+    query = from r in  Redeem, 
+      join: b in assoc(r, :badge), 
+      where: b.type != 0, 
+      preload: [badge: b], 
+      distinct: :badge_id
 
     Repo.all(query)
+    |> Enum.map(fn x -> x.badge end) 
   end
 
 
@@ -115,7 +115,7 @@ defmodule Safira.Contest do
     Repo.all(from a in Safira.Accounts.Attendee, 
       where: not (is_nil a.user_id) and not a.volunteer)
     |> Repo.preload(:badges)
-    |> Enum.map(fn x -> Map.put(x, :badge_count, length(x.badges)) end)
+    |> Enum.map(fn x -> Map.put(x, :badge_count, length(Enum.filter(x.badges,fn x -> x.type != 0 end))) end)
     |> Enum.sort(&(&1.badge_count >= &2.badge_count))
   end
 end
