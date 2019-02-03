@@ -2,6 +2,8 @@ import sys
 import qrcode
 
 FRONTEND = "https://moonstone.seium.org/user/"
+if sys.argv[2] == "stg":
+    FRONTEND = "https://stg-moonstone.seium.org/user/"
 
 
 with open(sys.argv[1]) as f:
