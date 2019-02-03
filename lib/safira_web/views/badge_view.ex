@@ -17,7 +17,8 @@ defmodule SafiraWeb.BadgeView do
       description: badge.description,
       avatar: Avatar.url({badge.avatar, badge}, :original),
       begin: badge.begin,
-      end: badge.end
+      end: badge.end,
+      type: badge.type
     }
   end
 end

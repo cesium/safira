@@ -13,6 +13,7 @@ defmodule Safira.Contest.Badge do
     field :name, :string
     field :description, :string
     field :avatar, Safira.Avatar.Type
+    field :type, :integer
 
     has_many :referrals, Referral
     many_to_many :attendees, Attendee, join_through: Redeem
@@ -23,9 +24,9 @@ defmodule Safira.Contest.Badge do
   @doc false
   def changeset(badge, attrs) do
     badge
-    |> cast(attrs, [:name, :description, :begin, :end])
+    |> cast(attrs, [:name, :description, :begin, :end, :type])
     |> cast_attachments(attrs, [:avatar])
-    |> validate_required([:name, :description, :begin, :end])
+    |> validate_required([:name, :description, :begin, :end, :type])
     |> validate_length(:name, min: 1, max: 255)
     |> validate_length(:description, min: 1, max: 450)
     |> validate_time
