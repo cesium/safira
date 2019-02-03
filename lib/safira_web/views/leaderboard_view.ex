@@ -12,7 +12,8 @@ defmodule SafiraWeb.LeaderboardView do
       id: attendee.id,
       nickname: attendee.nickname,
       avatar: Avatar.url({attendee.avatar, attendee}, :original),
-      badges: attendee.badge_count
+      badges: attendee.badge_count,
+      volunteer: attendee.volunteer
     }
   end
 end
