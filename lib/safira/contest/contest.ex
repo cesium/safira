@@ -10,22 +10,23 @@ defmodule Safira.Contest do
     Repo.all(Badge)
   end
 
-  def list_badges_conservative do
-    querySecret = from r in  Redeem, 
+  def list_secret do
+    Repo.all(from r in Redeem, 
       join: b in assoc(r, :badge), 
       where: b.type == 1, 
       preload: [badge: b], 
-      distinct: :badge_id
-
-    queryGeneric = from b in  Badge, 
-      where: b.type != 0 or b.type != 1
-
-    secret = Repo.all(querySecret)
+      distinct: :badge_id)
     |> Enum.map(fn x -> x.badge end) 
-    
-    badge = Repo.all(queryGeneric)
+  end
+  
+  def list_normals do
+     Repo.all(from b in  Badge, 
+      where: (b.type != ^1)
+      and (b.type != ^0))
+  end
 
-    Enum.concat(secret,badge)
+  def list_badges_conservative do
+    Enum.concat(list_secret(),list_badges())
   end
 
 
