@@ -10,6 +10,18 @@ defmodule Safira.Contest do
     Repo.all(Badge)
   end
 
+  def list_badges_conservative do
+    query = 
+      from b in Badge,
+      inner_join: r in assoc(b,:redeem),
+      where: b.type != 0 or not(b.type == 1 and count(r.badge_id) == 0 ),
+      select: b,
+      preload: [:redeem]
+
+    Repo.all(query)
+  end
+
+
   def get_badge!(id), do: Repo.get!(Badge, id)
 
   def create_badge(attrs \\ %{}) do

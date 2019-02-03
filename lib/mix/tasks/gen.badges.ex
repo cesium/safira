@@ -1,6 +1,5 @@
 defmodule Mix.Tasks.Gen.Badges do
   use Mix.Task
-  import Mix.Ecto
 
   NimbleCSV.define(MyParser, separator: ";", escape: "\"")
 
@@ -48,7 +47,7 @@ defmodule Mix.Tasks.Gen.Badges do
     |> File.stream!
     |> MyParser.parse_stream
     |> Stream.map(
-      fn [name, description, begin_time, end_time, image_path] ->
+      fn [name, description, begin_time, end_time, image_path, type] ->
         {:ok, begin_datetime, _} = DateTime.from_iso8601("#{begin_time}T00:00:00Z")
         {:ok, end_datetime, _} = DateTime.from_iso8601("#{end_time}T00:00:00Z")
 
@@ -58,6 +57,7 @@ defmodule Mix.Tasks.Gen.Badges do
             description: description,
             begin: begin_datetime,
             end: end_datetime,
+            type: String.to_integer(type)
           },
           %{
             avatar: %Plug.Upload{
