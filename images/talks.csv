@@ -1,5 +1,5 @@
 Nome;Descrição;Data Inicio;Data Fim;Imagem;
-Podcast;Podcast de Job Van der Voort;2019-02-04;2019-02-05;tmp/talks/Segunda/podcast.png;
+Podcast;Podcast de Job van der Voort;2019-02-04;2019-02-05;tmp/talks/Segunda/podcast.png;
 Sessão de Abertura;Estiveste presente na sessão de abertura;2019-02-04;2019-02-05;tmp/talks/Segunda/sessao.png;
 Talk  Accenture;Estiveste presente na talk da accenture;2019-02-04;2019-02-05;tmp/talks/Segunda/talkaccenture.png;
 Talk Blip;Estiveste presente na talk da blip;2019-02-04;2019-02-05;tmp/talks/Segunda/talkblip.png;
@@ -11,10 +11,10 @@ Workshop Outsystems;Estiveste presente no workshop da Outsystems;2019-02-05;2019
 Workshop Pixelmatters;Estiveste presente no workshop da Pixelmatters;2019-02-05;2019-02-06;images/talks/terça/workshoppixelmatters.png;
 Workshop XpanIt;Estiveste presente no workshop da Xpandit;2019-02-05;2019-02-06;images/talks/terça/workshopxpandit.png;
 Tertúlia;Estiveste na tertúlia;2019-02-05;2019-02-06;images/talks/terça/tertulia.png;
-Talk Daniel Ferrari;Estiveste presente na talk de Daniel Ferrari;2019-02-06;2019-02-07;"images/talks/quarta/talkdanielferrari.png;";
+Talk Daniel Ferrari;Estiveste presente na talk de Daniel Ferrari;2019-02-06;2019-02-07;images/talks/quarta/talkdanielferrari.png;
 Talk Jorge Resende;Estiveste presente na talk de Jorge Resende;2019-02-06;2019-02-07;images/talks/quarta/talkjorgeresende.png;
 Talk Raul Azevedo;Estiveste presente na talk de Raul Azevedo;2019-02-06;2019-02-07;images/talks/quarta/talkraulazevedo.png;
-Tertulia;Estiveste na tertúlia;2019-02-06;2019-02-07;images/talks/quarta/tertulia.png;quarta
+Tertulia;Estiveste na tertúlia;2019-02-06;2019-02-07;images/talks/quarta/tertulia.png;
 Workshop de React;Estiveste presente no workshop de React;2019-02-06;2019-02-07;images/talks/quarta/workshopreact.png;
 Workshop da WeDo;Estiveste presente no workshop da WeDo;2019-02-06;2019-02-07;images/talks/quarta/workshopwedo.png;
 Talk de André Barbosa;Estiveste presente na talk de André Barbosa;2019-02-07;2019-02-08;images/talks/quinta/talkandrebarbosa.png;
