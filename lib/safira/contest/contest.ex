@@ -26,7 +26,7 @@ defmodule Safira.Contest do
   end
 
   def list_badges_conservative do
-    Enum.concat(list_secret(),list_badges())
+    list_secret()++list_normals()
   end
 
 
