@@ -19,7 +19,7 @@ defmodule SafiraWeb.BadgeController do
   end
 
   def show(conn, %{"id" => id}) do
-    badge = Contest.get_badge!(id)
+    badge = Contest.get_badge_preload!(id)
     render(conn, "show.json", badge: badge)
   end
 
