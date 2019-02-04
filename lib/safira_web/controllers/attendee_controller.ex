@@ -20,8 +20,12 @@ defmodule SafiraWeb.AttendeeController do
       is_nil attendee.user_id ->
         {:error, :not_registered}
       is_company(conn) ->
-        redeem_company_badge(conn, id) 
-        render(conn, "show.json", attendee: attendee)
+        with :ok <- redeem_company_badge(conn, id) do 
+          render(conn, "show.json", attendee: attendee)
+        else
+          err -> IO.inspect(err)
+          render(conn, "show.json", attendee: attendee)
+        end
       true ->
         render(conn, "show.json", attendee: attendee)
     end
@@ -73,7 +77,7 @@ defmodule SafiraWeb.AttendeeController do
       {:ok, %Redeem{} = _redeem} ->
         :ok
       {:error, changeset} ->
-        if changeset.errors == [unique_attendee_badge: {"has already been taken", []}] do
+        if changeset.errors == [unique_attendee_badge: {"An attendee can't have the same badge twice", []}] do
           :ok
         else
           :error
