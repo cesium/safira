@@ -29,9 +29,7 @@ defmodule Safira.Contest do
     list_secret() ++ list_normals()
   end
 
-
   def get_badge!(id), do: Repo.get!(Badge, id)
-
 
   def get_badge_preload!(id) do
     Repo.get!(Badge, id)
