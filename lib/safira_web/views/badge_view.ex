@@ -9,10 +9,21 @@ defmodule SafiraWeb.BadgeView do
   end
 
   def render("show.json", %{badge: badge}) do
-    %{data: render_one(badge, BadgeView, "badge.json")}
+    %{data: render_one(badge, BadgeView, "badge_show.json")}
   end
 
   def render("badge.json", %{badge: badge}) do
+    %{id: badge.id,
+      name: badge.name,
+      description: badge.description,
+      avatar: Avatar.url({badge.avatar, badge}, :original),
+      begin: badge.begin,
+      end: badge.end,
+      type: badge.type,
+    }
+  end
+
+  def render("badge_show.json", %{badge: badge}) do
     %{id: badge.id,
       name: badge.name,
       description: badge.description,
