@@ -20,9 +20,8 @@ defmodule SafiraWeb.AttendeeController do
       is_nil attendee.user_id ->
         {:error, :not_registered}
       is_company(conn) ->
-        with :ok <- redeem_company_badge(conn, id) do
-          render(conn, "show.json", attendee: attendee)
-        end
+        redeem_company_badge(conn, id) 
+        render(conn, "show.json", attendee: attendee)
       true ->
         render(conn, "show.json", attendee: attendee)
     end
