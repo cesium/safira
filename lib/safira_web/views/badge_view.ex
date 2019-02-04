@@ -1,6 +1,7 @@
 defmodule SafiraWeb.BadgeView do
   use SafiraWeb, :view
   alias SafiraWeb.BadgeView
+  alias SafiraWeb.AttendeeView
   alias Safira.Avatar
 
   def render("index.json", %{badges: badges}) do
@@ -19,16 +20,7 @@ defmodule SafiraWeb.BadgeView do
       begin: badge.begin,
       end: badge.end,
       type: badge.type,
-      attendees: render_many(badge.attendees, BadgeView, "attendee.json" ) 
+      attendees: render_many(badge.attendees, AttendeeView, "attendee_simple.json" ) 
     }
   end
-
-  def render("attendee.json", %{badge: attendee}) do
-    %{id: attendee.id,
-      nickname: attendee.nickname,
-      avatar: Avatar.url({attendee.avatar, attendee}, :original),
-      volunteer: attendee.volunteer
-    }
-  end
-
 end

@@ -20,4 +20,13 @@ defmodule SafiraWeb.AttendeeView do
       volunteer: attendee.volunteer
     }
   end
+
+  def render("attendee_simple.json", %{attendee: attendee}) do
+    %{id: attendee.id,
+      nickname: attendee.nickname,
+      avatar: Avatar.url({attendee.avatar, attendee}, :original),
+      volunteer: attendee.volunteer
+    }
+  end
+
 end
