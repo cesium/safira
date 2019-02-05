@@ -30,7 +30,7 @@ defmodule Safira.Contest do
         fn badge -> 
           not Enum.reduce(badge.attendees, false, 
             fn attendee, acc -> 
-              attendee.volunteer or acc 
+              attendee.volunteer or (attendee.nickname == nil) or acc 
             end) 
         end) 
   end
