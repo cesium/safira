@@ -18,14 +18,21 @@ defmodule Safira.Contest do
       preload: [badge: b, attendee: a], 
       distinct: :badge_id)
     |> Enum.map(fn x -> x.badge end) 
+
   end
   
   def list_normals do
-     Repo.all(from b in  Badge, 
+    Repo.all(from b in  Badge, 
       join: a in assoc(b, :attendees), 
-      where: ((b.type != ^1) and (b.type != ^0) and not a.volunteer),
+      where: b.type != ^1 and b.type != ^0 ,
       preload: [attendees: a]) 
-      |> Enum.filter(fn x -> length(x.attendees) > 0 end)
+      |> Enum.filter(
+        fn badge -> 
+          not Enum.reduce(badge.attendees, false, 
+            fn attendee, acc -> 
+              attendee.volunteer or acc 
+            end) 
+        end) 
   end
 
   def list_badges_conservative do
