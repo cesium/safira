@@ -14,7 +14,7 @@ defmodule Safira.Contest do
     Repo.all(from r in Redeem, 
       join: b in assoc(r, :badge), 
       join: a in assoc(r, :attendee), 
-      where: b.type == ^1 and not a.volunteer and a.nickname != nil, 
+      where: b.type == ^1 and not a.volunteer and (not is_nil(a.nickname)) != nil, 
       preload: [badge: b, attendee: a], 
       distinct: :badge_id)
     |> Enum.map(fn x -> x.badge end) 
@@ -30,7 +30,7 @@ defmodule Safira.Contest do
         fn badge -> 
           not Enum.reduce(badge.attendees, false, 
             fn attendee, acc -> 
-              attendee.volunteer or (attendee.nickname == nil) or acc 
+              attendee.volunteer or is_nil(attendee.nickname) or acc 
             end) 
         end) 
   end
