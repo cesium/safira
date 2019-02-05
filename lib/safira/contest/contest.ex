@@ -13,16 +13,19 @@ defmodule Safira.Contest do
   def list_secret do
     Repo.all(from r in Redeem, 
       join: b in assoc(r, :badge), 
-      where: b.type == ^1, 
-      preload: [badge: b], 
+      join: a in assoc(r, :attendee), 
+      where: b.type == ^1 and not a.volunteer, 
+      preload: [badge: b, attendee: a], 
       distinct: :badge_id)
     |> Enum.map(fn x -> x.badge end) 
   end
   
   def list_normals do
      Repo.all(from b in  Badge, 
-      where: (b.type != ^1)
-      and (b.type != ^0))
+      join: a in assoc(b, :attendees), 
+      where: ((b.type != ^1) and (b.type != ^0) and not a.volunteer),
+      preload: [attendees: a]) 
+      |> Enum.filter(fn x -> length(x.attendees) > 0 end)
   end
 
   def list_badges_conservative do
