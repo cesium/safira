@@ -28,9 +28,9 @@ defmodule Safira.Contest do
       preload: [attendees: a]) 
       |> Enum.filter(
         fn badge -> 
-          not Enum.reduce(badge.attendees, false, 
+          not Enum.reduce(badge.attendees, true, 
             fn attendee, acc -> 
-              attendee.volunteer or acc 
+              attendee.volunteer and acc 
             end) 
         end) 
   end
