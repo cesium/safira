@@ -9,7 +9,7 @@ defmodule Mix.Tasks.Gen.Badges do
   def run(args) do
     cond do
       length(args) == 0 ->
-        Mix.shell.info "Needs to receive atleast one file path ."
+        Mix.shell.info "Needs to receive atleast one file path."
       true ->
         args |> create
     end

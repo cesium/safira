@@ -10,6 +10,7 @@ defmodule Safira.Accounts.User do
   schema "users" do
     field :email, :string
     field :password_hash, :string
+    field :ban, :boolean, default: false
 
     has_one :attendee, Attendee, on_delete: :delete_all
     has_one :manager, Manager, on_delete: :delete_all

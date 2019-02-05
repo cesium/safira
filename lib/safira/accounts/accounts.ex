@@ -24,6 +24,13 @@ defmodule Safira.Accounts do
     |> Repo.preload(:manager)
   end
 
+  def get_user_preload_email!(email) do
+    Repo.get_by!(User, email: email)
+    |> Repo.preload(:attendee)
+    |> Repo.preload(:company)
+    |> Repo.preload(:manager)
+  end
+
   def create_user(attrs \\ %{}) do
     %User{}
     |> User.changeset(attrs)
@@ -89,10 +96,10 @@ defmodule Safira.Accounts do
   def get_manager!(id), do: Repo.get!(Manager, id)
 
   def get_manager_by_email(email) do
-    Repo.all from m in Manager,                 
-    join: u  in assoc(m, :user),                                       
-    where: u.email == ^email,                           
-    preload: [user: u]    
+    Repo.all from m in Manager,
+    join: u  in assoc(m, :user),
+    where: u.email == ^email,
+    preload: [user: u]
   end
 
   def create_manager(attrs \\ %{}) do

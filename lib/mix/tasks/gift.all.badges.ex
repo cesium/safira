@@ -1,4 +1,4 @@
-defmodule Mix.Tasks.Gift.Badges do
+defmodule Mix.Tasks.Gift.All.Badges do
   use Mix.Task
 
   def run(args) do
