@@ -23,9 +23,7 @@ defmodule Safira.Contest do
   
   def list_normals do
     Repo.all(from b in  Badge, 
-      join: a in assoc(b, :attendees), 
-      where: b.type != ^1 and b.type != ^0 ,
-      preload: [attendees: a]) 
+      where: b.type != ^1 and b.type != ^0)
   end
 
   def list_badges_conservative do
