@@ -26,13 +26,6 @@ defmodule Safira.Contest do
       join: a in assoc(b, :attendees), 
       where: b.type != ^1 and b.type != ^0 ,
       preload: [attendees: a]) 
-      |> Enum.filter(
-        fn badge -> 
-          not Enum.reduce(badge.attendees, true, 
-            fn attendee, acc -> 
-              attendee.volunteer and acc 
-            end) 
-        end) 
   end
 
   def list_badges_conservative do
