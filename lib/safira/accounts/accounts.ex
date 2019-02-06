@@ -24,6 +24,13 @@ defmodule Safira.Accounts do
     |> Repo.preload(:manager)
   end
 
+  def get_user_preload_email!(email) do
+    Repo.get_by!(User, email: email)
+    |> Repo.preload(:attendee)
+    |> Repo.preload(:company)
+    |> Repo.preload(:manager)
+  end
+
   def get_user_preload_email(email) do
     Repo.get_by(User, email: email)
     |> Repo.preload(:attendee)
