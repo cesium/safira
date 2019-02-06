@@ -114,7 +114,9 @@ defmodule Mix.Tasks.Gift.Badge do
 
   defp give_email(email, badge_id) do
     user = Accounts.get_user_preload_email!(email)
-    give(user.attendee.id, badge_id)
+    if not is_nil user do
+      give(user.attendee.id, badge_id)
+    end
   end
 
   defp give_check(input, badge_id) do
