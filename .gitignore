@@ -89,3 +89,6 @@ tags
 .idea/*
 *.iml
 !.vscode/extensions.json
+
+### iex
+.iex.exs
