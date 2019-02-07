@@ -6,7 +6,6 @@ defmodule Safira.Contest.Badge do
   alias Safira.Contest.Referral
   alias Safira.Contest.Redeem
   alias Safira.Accounts.Attendee
-  
 
   schema "badges" do
     field :begin, :utc_datetime
