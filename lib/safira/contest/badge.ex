@@ -6,6 +6,7 @@ defmodule Safira.Contest.Badge do
   alias Safira.Contest.Referral
   alias Safira.Contest.Redeem
   alias Safira.Accounts.Attendee
+  
 
   schema "badges" do
     field :begin, :utc_datetime
@@ -13,6 +14,7 @@ defmodule Safira.Contest.Badge do
     field :name, :string
     field :description, :string
     field :avatar, Safira.Avatar.Type
+    #%{hidden: 0, secret: 1, empresa: 2, talk: 3, workshop: 4, oradore: 5, dias: 6, outros: 7}
     field :type, :integer
 
     has_many :referrals, Referral
