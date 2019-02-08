@@ -102,6 +102,14 @@ defmodule Safira.Contest do
     Repo.all(Redeem)
   end
 
+  def list_redeems_stats do 
+    Repo.all(from r in Redeem, 
+      join: b in assoc(r, :badge), 
+      join: a in assoc(r, :attendee), 
+      where: b.type == ^1 and not(a.volunteer) and not(is_nil(a.nickname)), 
+      preload: [badge: b, attendee: a])
+  end
+
   def get_redeem!(id), do: Repo.get!(Redeem, id)
 
   def create_redeem(attrs \\ %{}) do
@@ -130,5 +138,15 @@ defmodule Safira.Contest do
     |> Repo.preload(:badges)
     |> Enum.map(fn x -> Map.put(x, :badge_count, length(Enum.filter(x.badges,fn x -> x.type != 0 end))) end)
     |> Enum.sort(&(&1.badge_count >= &2.badge_count))
+  end
+
+  def get_winner do
+    Repo.all(from a in Safira.Accounts.Attendee, 
+      where: not (is_nil a.user_id))
+    |> Repo.preload(:badges)
+    |> Enum.map(fn x -> Map.put(x, :badge_count, length(Enum.filter(x.badges,fn x -> x.type != 0 end))) end)
+    |> Enum.filter(fn a -> a.badge_count >= 10 end)
+    |> Enum.map(fn a -> Enum.map( Enum.filter(a.badges,fn b -> b.type != 0 end), fn x -> "#{a.nickname}:#{x.name}" end) end)
+    |> List.flatten
   end
 end
