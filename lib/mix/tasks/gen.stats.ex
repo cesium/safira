@@ -17,5 +17,6 @@ defmodule Mix.Tasks.Gen.Stats do
 
     Contest.list_redeems_stats
     |> Enum.map(&Poison.encode!/1)
+    |> IO.puts
   end
 end
