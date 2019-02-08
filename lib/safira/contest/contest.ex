@@ -142,7 +142,7 @@ defmodule Safira.Contest do
 
   def get_winner do
     Repo.all(from a in Safira.Accounts.Attendee, 
-      where: not (is_nil a.user_id))
+      where: not (is_nil a.user_id) and not(a.volunteer))
     |> Repo.preload(:badges)
     |> Enum.map(fn x -> Map.put(x, :badge_count, length(Enum.filter(x.badges,fn x -> x.type != 0 end))) end)
     |> Enum.filter(fn a -> a.badge_count >= 10 end)
