@@ -4,8 +4,6 @@ defmodule SafiraWeb.AttendeeController do
   alias Safira.Accounts
   alias Safira.Accounts.Attendee
   alias Safira.Accounts.User
-  alias Safira.Contest
-  alias Safira.Contest.Redeem
 
   action_fallback SafiraWeb.FallbackController
 
@@ -19,13 +17,6 @@ defmodule SafiraWeb.AttendeeController do
     cond do
       is_nil attendee.user_id ->
         {:error, :not_registered}
-      is_company(conn) ->
-        with :ok <- redeem_company_badge(conn, id) do 
-          render(conn, "show.json", attendee: attendee)
-        else
-          err -> IO.inspect(err)
-          render(conn, "show.json", attendee: attendee)
-        end
       true ->
         render(conn, "show.json", attendee: attendee)
     end
@@ -35,11 +26,11 @@ defmodule SafiraWeb.AttendeeController do
     user = get_user(conn)
     attendee = Accounts.get_attendee!(id)
     if user.attendee.id == attendee.id do
-      with {:ok, %Attendee{} = attendee} <- 
+      with {:ok, %Attendee{} = attendee} <-
           Accounts.update_attendee(attendee, attendee_params) do
             render(conn, "show.json", attendee: attendee)
       end
-    else 
+    else
       {:error, :unauthorized}
     end
   end
@@ -60,28 +51,6 @@ defmodule SafiraWeb.AttendeeController do
       user
       |> Map.fetch!(:id)
       |> Accounts.get_user_preload!()
-    end
-  end
-
-  defp is_company(conn) do
-    get_user(conn)
-    |> Map.fetch!(:company)
-    |> is_nil 
-    |> Kernel.not
-  end
-
-  defp redeem_company_badge(conn, id) do
-    user = get_user(conn)
-    redeem_params = %{"attendee_id" => id, "badge_id" => user.company.badge_id}
-    case Contest.create_redeem(redeem_params) do
-      {:ok, %Redeem{} = _redeem} ->
-        :ok
-      {:error, changeset} ->
-        if changeset.errors == [unique_attendee_badge: {"An attendee can't have the same badge twice", []}] do
-          :ok
-        else
-          :error
-        end
     end
   end
 end
