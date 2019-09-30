@@ -1,7 +1,5 @@
 defmodule SafiraWeb.AuthControllerTest do
   use SafiraWeb.ConnCase
-  alias Safira.Repo
-  alias Safira.Accounts.Attendee
 
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}

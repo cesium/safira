@@ -23,7 +23,7 @@ defmodule SafiraWeb.AttendeeController do
         with :ok <- redeem_company_badge(conn, id) do 
           render(conn, "show.json", attendee: attendee)
         else
-          #err -> IO.inspect(err)
+          err -> IO.inspect(err)
           render(conn, "show.json", attendee: attendee)
         end
       true ->
