@@ -6,7 +6,7 @@ defmodule SafiraWeb.ErrorViewTest do
 
   test "renders 404.json" do
     assert render(SafiraWeb.ErrorView, "404.json", []) ==
-           %{errors: %{detail: "Not Found"}}
+           %{errors: %{detail: "Endpoint Not Found"}}
   end
 
   test "renders 500.json" do

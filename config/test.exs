@@ -18,3 +18,8 @@ config :safira, Safira.Repo,
 
 # Fast testing only
 config :bcrypt_elixir, :log_rounds, 4
+
+# Guardian config
+config :safira, Safira.Guardian,
+  issuer: "safira",
+  secret_key: "BnJosu+UxrCR70RWM4dhDJz2bH34D+wTbLcu7R9siQWGr8uGmB8k+ClnAEw3EkVQ"

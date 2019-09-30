@@ -15,6 +15,9 @@ erl_crash.dump
 # variables.
 /config/*.secret.exs
 
+# Where 3rd-party dependencies like ExDoc output generated docs.
+/doc/api/
+
 # Environment Variables
 /.env
 
