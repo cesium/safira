@@ -1,4 +1,4 @@
-# Safira
+# Safira [![Build Status](https://travis-ci.com/cesium/safira.svg?branch=master)](https://travis-ci.com/cesium/safira)
 
 # Endpoints
 
