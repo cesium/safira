@@ -25,7 +25,14 @@ defmodule Safira.Mixfile do
   end
 
   # Specifies which paths to compile per environment.
-  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(:test) do 
+    [
+      "lib", 
+      "test/support",
+      "test/factories",
+      "test/strategies"
+    ]
+  end
   defp elixirc_paths(_),     do: ["lib"]
 
   # Specifies your project dependencies.
@@ -54,7 +61,10 @@ defmodule Safira.Mixfile do
       {:sweet_xml, "~> 0.6"},
       {:arc_ecto, "~> 0.11.1"},
       {:xml_builder, "~> 2.0", override: true},
-      {:nimble_csv, "~> 0.3"}
+      {:nimble_csv, "~> 0.3"},
+      {:ex_machina, "~> 2.3", only: :test},
+      {:bureaucrat, "~> 0.2.5", only: :test},
+      {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false}
     ]
   end
 

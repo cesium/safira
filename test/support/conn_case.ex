@@ -19,7 +19,11 @@ defmodule SafiraWeb.ConnCase do
     quote do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
-      import SafiraWeb.Router.Helpers
+      alias SafiraWeb.Router.Helpers, as: Routes
+
+      import SafiraWeb.ConnCaseHelper
+      import Safira.Factory
+      import Bureaucrat.Helpers
 
       # The default endpoint for testing
       @endpoint SafiraWeb.Endpoint
@@ -34,5 +38,4 @@ defmodule SafiraWeb.ConnCase do
     end
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
-
 end
