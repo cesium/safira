@@ -12,31 +12,39 @@ defmodule SafiraWeb.RedeemController do
     user = get_user(conn)
     cond do
         is_company(conn) ->
-            redeem_params = Map.put(redeem_params, "badge_id", user.company.badge_id)
-            with {:ok, %Redeem{} = _redeem} <- Contest.create_redeem(redeem_params) do
-                  conn
-                  |> put_status(:created)
-                  |> json(%{redeem: "Badge redeem successfully"})
-            end
+            company_aux(conn,redeem_params,user)
         is_manager(conn) ->
-            case Map.fetch(redeem_params, "badge_id") do
-              {:ok, id} ->
-                Contest.get_badge!(id)
-                redeem_params = Map.put(redeem_params, "manager_id", user.manager.id)
-                with {:ok, %Redeem{} = _redeem} <- Contest.create_redeem(redeem_params) do
-                  conn
-                  |> put_status(:created)
-                  |> json(%{redeem: "Badge redeem successfully"})
-                end
-              _ ->
-                {:error, :not_found}
-            end
+            manager_aux(conn,redeem_params,user)
         true ->
             conn
             |> put_status(:unauthorized)
             |> json(%{error: "Cannot access resource"})
             |> halt()
     end
+  end
+
+  defp company_aux(conn, redeem_params, user) do
+      redeem_params = Map.put(redeem_params, "badge_id", user.company.badge_id)
+      with {:ok, %Redeem{} = _redeem} <- Contest.create_redeem(redeem_params) do
+            conn
+            |> put_status(:created)
+            |> json(%{redeem: "Badge redeem successfully"})
+      end
+  end
+
+  defp manager_aux(conn, redeem_params, user)do
+      case Map.fetch(redeem_params, "badge_id") do
+        {:ok, id} ->
+          Contest.get_badge!(id)
+          redeem_params = Map.put(redeem_params, "manager_id", user.manager.id)
+          with {:ok, %Redeem{} = _redeem} <- Contest.create_redeem(redeem_params) do
+            conn
+            |> put_status(:created)
+            |> json(%{redeem: "Badge redeem successfully"})
+          end
+        _ ->
+          {:error, :not_found}
+      end
   end
 
   defp is_company(conn) do
