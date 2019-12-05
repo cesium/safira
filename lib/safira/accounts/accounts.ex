@@ -72,6 +72,11 @@ defmodule Safira.Accounts do
     |> Repo.preload(:badges)
   end
 
+  def get_attendee(id) do
+    Repo.get(Attendee, id)
+    |> Repo.preload(:badges)
+  end
+
   def create_attendee(attrs \\ %{}) do
     %Attendee{}
     |> Attendee.changeset(attrs)
