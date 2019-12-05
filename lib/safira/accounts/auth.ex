@@ -10,19 +10,23 @@ defmodule Safira.Auth do
   alias Safira.Guardian
 
   def create_user_uuid(attrs) do
-    case Accounts.get_attendee(attrs["attendee"]["id"]) do
-      %Attendee{} = attendee ->
-        if is_nil attendee.user_id do
-          case Repo.transaction(logic_user_uuid(attrs)) do
-            {:ok, result} -> {:ok, result}
-            {:error, _} -> {:error, :register_error}
-            {:error, _, _, _} -> {:error, :register_error}
-          end
-        else
-          {:error, :has_user}
-        end
-      _ ->
+    if is_nil(attrs["attendee"]["id"]) do
         {:error, :unauthorized}
+    else
+        case Accounts.get_attendee(attrs["attendee"]["id"]) do
+          %Attendee{} = attendee ->
+            if is_nil attendee.user_id do
+              case Repo.transaction(logic_user_uuid(attrs)) do
+                {:ok, result} -> {:ok, result}
+                {:error, _} -> {:error, :register_error}
+                {:error, _, _, _} -> {:error, :register_error}
+              end
+            else
+              {:error, :has_user}
+            end
+          _ ->
+            {:error, :unauthorized}
+        end
     end
   end
 
