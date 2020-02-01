@@ -23,3 +23,11 @@ config :bcrypt_elixir, :log_rounds, 4
 config :safira, Safira.Guardian,
   issuer: "safira",
   secret_key: "BnJosu+UxrCR70RWM4dhDJz2bH34D+wTbLcu7R9siQWGr8uGmB8k+ClnAEw3EkVQ"
+
+# Bamboo config
+config :safira, Safira.Mailer,
+  adapter: Bamboo.TestAdapter
+
+# Env
+System.put_env(%{"FROM_EMAIL" => "geral@safira.safira"})
+System.put_env(%{"FRONTEND_URL" => "www.safira.safira"})

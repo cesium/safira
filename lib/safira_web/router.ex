@@ -3,6 +3,10 @@ defmodule SafiraWeb.Router do
 
   alias Safira.Guardian
 
+  if Mix.env == :dev do
+    forward "/sent_emails", Bamboo.SentEmailViewerPlug
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -21,6 +25,8 @@ defmodule SafiraWeb.Router do
     scope "/auth" do
       post "/sign_up", AuthController, :sign_up
       post "/sign_in", AuthController, :sign_in
+      
+      resources "/passwords", PasswordController, only: [:create, :update]
     end
 
     scope "/v1" do

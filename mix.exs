@@ -62,6 +62,8 @@ defmodule Safira.Mixfile do
       {:arc_ecto, "~> 0.11.1"},
       {:xml_builder, "~> 2.0", override: true},
       {:nimble_csv, "~> 0.3"},
+      {:bamboo, "~> 1.4"},
+      {:timex, "~> 3.5"},
       {:ex_machina, "~> 2.3", only: :test},
       {:bureaucrat, "~> 0.2.5", only: :test},
       {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false}
