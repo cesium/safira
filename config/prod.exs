@@ -68,6 +68,10 @@ config :logger, level: :info
 #     config :safira, SafiraWeb.Endpoint, server: true
 #
 
+config :safira, Safira.Mailer,
+  adapter: Bamboo.MailgunAdapter,
+  api_key: Map.fetch!(System.get_env(), "EMAIL_API_KEY")
+
 # Finally import the config/prod.secret.exs
 # which should be versioned separately.
 # import_config "prod.secret.exs"

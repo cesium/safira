@@ -3,7 +3,7 @@ defmodule Safira.Repo.Migrations.UsersBanField do
 
   def change do
     alter table(:users) do
-      add :ban, :boolean
+      add :ban, :boolean, default: false
     end
   end
 end

@@ -24,6 +24,10 @@ defmodule Safira.Accounts do
     |> Repo.preload(:manager)
   end
 
+  def get_user_email(email) do
+    Repo.get_by(User, email: email)
+  end
+
   def get_user_preload_email!(email) do
     Repo.get_by!(User, email: email)
     |> Repo.preload(:attendee)
@@ -36,6 +40,10 @@ defmodule Safira.Accounts do
     |> Repo.preload(:attendee)
     |> Repo.preload(:company)
     |> Repo.preload(:manager)
+  end
+
+  def get_user_token(token) do
+    Repo.get_by(User, reset_password_token: token)
   end
 
   def create_user(attrs \\ %{}) do
