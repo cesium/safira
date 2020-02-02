@@ -37,8 +37,9 @@ defmodule SafiraWeb.AttendeeController do
 
   def delete(conn, %{"id" => id}) do
     user = get_user(conn)
+    user_attendee = Accounts.get_attendee!(user.attendee.id)
     attendee = Accounts.get_attendee!(id)
-    if user.attendee == attendee do
+    if user_attendee == attendee do
       with {:ok, %Attendee{}} <- Accounts.delete_attendee(attendee),
            {:ok, %User{}} <- Accounts.delete_user(user) do
         send_resp(conn, :no_content, "")
