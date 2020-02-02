@@ -1,5 +1,5 @@
 defmodule Safira.Repo do
-  use Ecto.Repo, otp_app: :safira
+  use Ecto.Repo, otp_app: :safira, adapter: Ecto.Adapters.Postgres
 
   @doc """
   Dynamically loads the repository url from the

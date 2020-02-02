@@ -42,12 +42,14 @@ defmodule Safira.Auth do
   defp logic_user_uuid(attrs) do
     Multi.new
     |> Multi.insert(:user, User.changeset(%User{}, Map.delete(attrs, "attendee")))
-    |> Multi.run(:attendee, &add_user_attendee(&1, attrs))
+    |> Multi.run(:attendee, fn _repo, %{user: user} ->
+        add_user_attendee(user, attrs)
+    end)
   end
 
-  defp add_user_attendee(multi, attrs) do
+  def add_user_attendee(user, attrs) do
     Accounts.get_attendee!(attrs["attendee"]["id"])
-    |> Accounts.update_attendee(Map.put(attrs["attendee"], "user_id", multi.user.id))
+    |> Accounts.update_attendee(Map.put(attrs["attendee"], "user_id", user.id))
   end
 
   defp email_password_auth(email, password) when is_binary(email) and is_binary(password) do
