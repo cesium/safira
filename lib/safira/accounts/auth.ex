@@ -47,7 +47,7 @@ defmodule Safira.Auth do
     end)
   end
 
-  def add_user_attendee(user, attrs) do
+  defp add_user_attendee(user, attrs) do
     Accounts.get_attendee!(attrs["attendee"]["id"])
     |> Accounts.update_attendee(Map.put(attrs["attendee"], "user_id", user.id))
   end
