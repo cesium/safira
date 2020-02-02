@@ -74,4 +74,28 @@ defmodule Safira.Auth do
       {:error, :invalid_password}
     end
   end
+
+  def random_string(len) do
+    :crypto.strong_rand_bytes(len)
+    |> Base.url_encode64
+    |> binary_part(0, len)
+  end
+
+  ## PasswordReset
+
+  # checks if now is later than 1 day from the reset_token_sent_at
+  def expired?(datetime) do
+    Timex.after?(Timex.now, Timex.shift(datetime, days: 1))
+  end
+
+  # sets the token & sent at in the database for the user
+  def reset_password_token(user) do
+    token = random_string(48)
+    sent_at = DateTime.utc_now
+
+    user
+    |> User.password_token_changeset(
+      %{reset_password_token: token, reset_token_sent_at: sent_at})
+    |> Repo.update!
+  end
 end

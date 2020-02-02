@@ -42,3 +42,10 @@ config :safira, Safira.Repo,
   database: "safira_dev",
   hostname: "localhost",
   pool_size: 10
+
+config :safira, Safira.Mailer,
+  adapter: Bamboo.LocalAdapter
+
+# Env
+System.put_env(%{"FROM_EMAIL" => "geral@safira.safira"})
+System.put_env(%{"FRONTEND_URL" => "http://localhost:3000"})
