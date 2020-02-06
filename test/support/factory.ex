@@ -3,4 +3,6 @@ defmodule Safira.Factory do
   use Safira.UserStrategy
   use Safira.UserFactory
   use Safira.AttendeeFactory
+  use Safira.BadgeFactory
+  use Safira.RedeemFactory
 end
