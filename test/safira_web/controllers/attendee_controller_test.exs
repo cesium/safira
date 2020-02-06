@@ -16,6 +16,21 @@ defmodule SafiraWeb.AttendeeControllerTest do
       assert json_response(conn, 204) == ""
     end
 
+    test "with valid token and with badges" do
+      user = create_user_strategy(:user)
+      attendee = build(:attendee) |> Map.put(:user_id, user.id) |> insert
+      badge = insert(:badge)
+      redeem = build(:redeem)
+        |> Map.put(:attendee_id, attendee.id)
+        |> Map.put(:badge_id, badge.id)
+        |> insert
+      %{conn: conn, user: _} = api_authenticate(user)
+      conn = conn
+        |> delete(Routes.attendee_path(conn, :delete, attendee.id))
+        |> doc()
+      assert json_response(conn, 204) == ""
+    end
+
     test "with invalid token", %{conn: conn} do
       user = create_user_strategy(:user)
       attendee = build(:attendee) |> Map.put(:user_id, user.id) |> insert
