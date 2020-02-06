@@ -41,4 +41,10 @@ defmodule SafiraWeb.FallbackController do
     |> put_status(:not_found)
     |> render(SafiraWeb.ErrorView, :"404")
   end
+
+  def call(conn, {:error, :no_permission}) do
+    conn
+    |> put_status(:unauthorized)
+    |> json(%{error: "You have no permission to do this"})
+  end
 end

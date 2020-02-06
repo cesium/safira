@@ -42,8 +42,12 @@ defmodule SafiraWeb.AttendeeController do
     if user_attendee == attendee do
       with {:ok, %Attendee{}} <- Accounts.delete_attendee(attendee),
            {:ok, %User{}} <- Accounts.delete_user(user) do
-        send_resp(conn, :no_content, "")
+        conn
+        |> put_resp_content_type("application/json")
+        |> send_resp(:no_content, Poison.encode!(""))
       end
+    else
+        {:error, :no_permission}
     end
   end
 
