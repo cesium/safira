@@ -20,7 +20,7 @@ defmodule SafiraWeb.AttendeeControllerTest do
       user = create_user_strategy(:user)
       attendee = build(:attendee) |> Map.put(:user_id, user.id) |> insert
       badge = insert(:badge)
-      redeem = build(:redeem)
+      _redeem = build(:redeem)
         |> Map.put(:attendee_id, attendee.id)
         |> Map.put(:badge_id, badge.id)
         |> insert
