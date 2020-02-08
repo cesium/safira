@@ -14,6 +14,7 @@ defmodule Safira.Accounts.Attendee do
     field :nickname, :string
     field :volunteer, :boolean, default: false
     field :avatar, Safira.Avatar.Type
+    field :name, :string
 
     belongs_to :user, User
     many_to_many :badges, Badge, join_through: Redeem
@@ -33,5 +34,12 @@ defmodule Safira.Accounts.Attendee do
     |> validate_length(:nickname, min: 2, max: 15)
     |> validate_format(:nickname, ~r/^[a-zA-Z0-9]+([a-zA-Z0-9](_|-)[a-zA-Z0-9])*[a-zA-Z0-9]+$/)
     |> unique_constraint(:nickname)
+  end
+
+  def only_user_changeset(attendee, attrs) do
+    attendee
+    |> cast(attrs, [:user_id, :name])
+    |> cast_assoc(:user)
+    |> validate_required([:user_id, :name])
   end
 end
