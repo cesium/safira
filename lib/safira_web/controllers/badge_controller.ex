@@ -37,11 +37,4 @@ defmodule SafiraWeb.BadgeController do
     |> is_nil 
     |> Kernel.not
   end
-
-  defp is_attendee(conn) do
-    get_user(conn)
-    |> Map.fetch!(:manager)
-    |> is_nil 
-    |> Kernel.not
-  end
 end
