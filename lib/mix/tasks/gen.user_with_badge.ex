@@ -8,6 +8,7 @@ defmodule Mix.Tasks.Gen.UserWithBadge do
   alias Safira.Accounts.User
 
   NimbleCSV.define(EneiParser, separator: ",", escape: "\"")
+  # Do not use header
 
   def run(args) do
     cond do
@@ -67,148 +68,26 @@ defmodule Mix.Tasks.Gen.UserWithBadge do
       multi = 
         cond do
           user_csv.housing == "Não tem" ->
-            multi
-            |> Multi.insert(
-              :redeem1,
-              fn %{attendee: attendee} ->
-                Redeem.changeset(
-                  %Redeem{},
-                  %{
-                    attendee_id: attendee.id,
-                    badge_id: badge_1.id
-                  }
-                )
-              end
-            )
-            |> Multi.insert(
-              :redeem2,
-              fn %{attendee: attendee} ->
-                Redeem.changeset(
-                  %Redeem{},
-                  %{
-                    attendee_id: attendee.id,
-                    badge_id: badge_2.id
-                  }
-                )
-              end
-            )
-            |> Multi.insert(
-              :redeem3,
-              fn %{attendee: attendee} ->
-                Redeem.changeset(
-                  %Redeem{},
-                  %{
-                    attendee_id: attendee.id,
-                    badge_id: badge_3.id
-                  }
-                )
-              end
-            )
+            Enum.reduce(
+              [badge_1, badge_2, badge_3],
+              multi,
+              fn badge, acc ->
+                give_badge(badge.id, acc)
+            end)
           user_csv.housing == "Alojamento D. Maria II" ->
-            multi
-            |> Multi.insert(
-              :redeem4,
-              fn %{attendee: attendee} ->
-                Redeem.changeset(
-                  %Redeem{},
-                  %{
-                    attendee_id: attendee.id,
-                    badge_id: badge_10.id
-                  }
-                )
-              end
-            )
+            give_badge(badge_10.id, multi)
           user_csv.housing == "Alojamento Alberto Sampaio" ->
-            multi
-            |> Multi.insert(
-              :redeem5,
-              fn %{attendee: attendee} ->
-                Redeem.changeset(
-                  %Redeem{},
-                  %{
-                    attendee_id: attendee.id,
-                    badge_id: badge_11.id
-                  }
-                )
-              end
-            )
+            give_badge(badge_11.id, multi)
         end
 
       multi = 
         if user_csv.food == 0 do
-          multi
-          |> Multi.insert(
-            :redeem6,
-            fn %{attendee: attendee} ->
-              Redeem.changeset(
-                %Redeem{},
-                %{
-                  attendee_id: attendee.id,
-                  badge_id: badge_4.id
-                }
-              )
-            end
-          )
-          |> Multi.insert(
-            :redeem7,
-            fn %{attendee: attendee} ->
-              Redeem.changeset(
-                %Redeem{},
-                %{
-                  attendee_id: attendee.id,
-                  badge_id: badge_5.id
-                }
-              )
-            end
-          )
-          |> Multi.insert(
-            :redeem8,
-            fn %{attendee: attendee} ->
-              Redeem.changeset(
-                %Redeem{},
-                %{
-                  attendee_id: attendee.id,
-                  badge_id: badge_6.id
-                }
-              )
-            end
-          )
-          |> Multi.insert(
-            :redeem9,
-            fn %{attendee: attendee} ->
-              Redeem.changeset(
-                %Redeem{},
-                %{
-                  attendee_id: attendee.id,
-                  badge_id: badge_7.id
-                }
-              )
-            end
-          )
-          |> Multi.insert(
-            :redeem10,
-            fn %{attendee: attendee} ->
-              Redeem.changeset(
-                %Redeem{},
-                %{
-                  attendee_id: attendee.id,
-                  badge_id: badge_8.id
-                }
-              )
-            end
-          )
-          |> Multi.insert(
-            :redeem11,
-            fn %{attendee: attendee} ->
-              Redeem.changeset(
-                %Redeem{},
-                %{
-                  attendee_id: attendee.id,
-                  badge_id: badge_9.id
-                }
-              )
-            end
-          )
+          Enum.reduce(
+            [badge_4, badge_5, badge_6, badge_7, badge_8, badge_9],
+            multi,
+            fn badge, acc ->
+              give_badge(badge.id, acc)
+          end)
         else
           multi
         end
@@ -216,6 +95,22 @@ defmodule Mix.Tasks.Gen.UserWithBadge do
       multi
       |> Repo.transaction()
     end)
+  end
+
+  defp give_badge(badge_id, multi) do
+    Multi.insert(
+      multi,
+      badge_id,
+      fn %{attendee: attendee} ->
+        Redeem.changeset(
+          %Redeem{},
+          %{
+            attendee_id: attendee.id,
+            badge_id: badge_id
+          }
+        )
+      end
+    )
   end
 
   defp create_user_aux(user) do
@@ -232,7 +127,7 @@ defmodule Mix.Tasks.Gen.UserWithBadge do
 
   defp parse_csv(path) do
     path
-    |> File.stream!(read_ahead: 1_000)
+    |> File.stream!(read_ahead: 1_000, skip_headers: false)
     |> EneiParser.parse_stream()
     |> Stream.map(fn [name, lastname, email, housing, food] ->
       %{
