@@ -95,3 +95,4 @@ tags
 
 ### iex
 .iex.exs
+.elixir_ls/
