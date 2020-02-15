@@ -33,6 +33,15 @@ defmodule Safira.Contest.Badge do
     |> validate_time
   end
 
+  @doc false
+  def admin_changeset(badge, attrs) do
+    badge
+    |> cast(attrs, [:begin, :end, :name, :description, :type])
+    |> validate_required([:begin, :end, :name, :description, :type])
+    |> validate_length(:name, min: 1, max: 255)
+    |> validate_length(:description, min: 1, max: 450)
+    |> validate_time
+  end
 
   defp validate_time(changeset) do
     {_, begin_time} = fetch_field(changeset, :begin)

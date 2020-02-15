@@ -20,23 +20,28 @@ defmodule SafiraWeb do
   def controller do
     quote do
       use Phoenix.Controller, namespace: SafiraWeb
+
       import Plug.Conn
-      import SafiraWeb.Router.Helpers
       import SafiraWeb.Gettext
+      alias SafiraWeb.Router.Helpers, as: Routes
     end
   end
 
   def view do
     quote do
-      use Phoenix.View, root: "lib/safira_web/templates",
-                        namespace: SafiraWeb
+      use Phoenix.View,
+        root: "lib/safira_web/templates",
+        namespace: SafiraWeb
 
       # Import convenience functions from controllers
-      import Phoenix.Controller, only: [get_flash: 2, view_module: 1]
+      import Phoenix.Controller, only: [get_flash: 1, get_flash: 2, view_module: 1]
 
-      import SafiraWeb.Router.Helpers
+      # Use all HTML functionality (forms, tags, etc)
+      use Phoenix.HTML
+
       import SafiraWeb.ErrorHelpers
       import SafiraWeb.Gettext
+      alias SafiraWeb.Router.Helpers, as: Routes
     end
   end
 
