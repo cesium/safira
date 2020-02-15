@@ -33,7 +33,7 @@ defmodule Safira.Accounts.User do
     |> downcase_email
     |> validate_required([:email, :password, :password_confirmation])
     |> validate_length(:email, min: 5, max: 255)
-    |> validate_format(:email, ~r/\A[^@\s]+@[^@\s]+\z/)
+    |> validate_format(:email, ~r/\A([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})\z/)
     |> validate_length(:password, min: 8) 
     |> validate_confirmation(:password)
     |> unique_constraint(:email)
