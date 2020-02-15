@@ -21,8 +21,15 @@ defmodule SafiraWeb.Endpoint do
   plug Plug.Static,
     at: "/",
     from: :safira,
-    gzip: false,
+    gzip: true,
     only: ~w(css fonts images js favicon.ico robots.txt)
+
+  if Mix.env() == :dev do
+    plug Plug.Static,
+      at: "uploads/", 
+      from: "uploads/", 
+      gzip: false
+  end
 
   plug Plug.Static,
     at: "/torch",

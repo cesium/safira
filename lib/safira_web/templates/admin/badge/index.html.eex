@@ -21,8 +21,6 @@
             <%= filter_string_input(:badge, :description, @conn.params) %>
           </div>
         
-        
-        
           <div class="field">
             <label>Begin</label>
             <%= filter_date_input(:badge, :begin, @conn.params) %>
@@ -32,7 +30,6 @@
             <label>End</label>
             <%= filter_date_input(:badge, :end, @conn.params) %>
           </div>
-        
         
           <div class="field">
             <label>Type</label>
@@ -68,16 +65,16 @@
         <tbody>
           <%= for badge <- @badges do %>
             <tr>
-              
-                <td><%= badge.begin %></td>
-              
-                <td><%= badge.end %></td>
-              
+            
                 <td><%= badge.name %></td>
               
                 <td><%= badge.description %></td>
               
                 <td><%= badge.type %></td>
+
+                <td><%= badge.begin %></td>
+              
+                <td><%= badge.end %></td>
               
               <td class="torch-actions">
                 <span><%= link "Show", to: Routes.admin_badge_path(@conn, :show, badge) %></span>
