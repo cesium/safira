@@ -6,9 +6,10 @@ defmodule Mix.Tasks.Gen.UserWithBadge do
   alias Safira.Contest
   alias Safira.Repo
   alias Safira.Accounts.User
+  alias Safira.Auth
 
   NimbleCSV.define(EneiParser, separator: ",", escape: "\"")
-  # Do not use header
+  # Use header
 
   def run(args) do
     cond do
@@ -26,9 +27,12 @@ defmodule Mix.Tasks.Gen.UserWithBadge do
     :inets.start()
     :ssl.start()
 
-    with {:ok, :saved_to_file} <-
-           :httpc.request(:get, {to_charlist(url), []}, [], stream: '/tmp/elixir') do
-      parse_csv("/tmp/elixir") |> create_user_give_badge
+    case :httpc.request(:get, {to_charlist(url), []}, [], stream: '/tmp/user.csv') do
+      {:ok, _resp} -> 
+        parse_csv("/tmp/user.csv") 
+        |> create_user_give_badge
+
+      {:error, resp} -> resp
     end
   end
 
@@ -94,7 +98,20 @@ defmodule Mix.Tasks.Gen.UserWithBadge do
 
       multi
       |> Repo.transaction()
+      |> send_mail()
     end)
+  end
+
+  defp send_mail(transaction) do
+    case transaction do
+      {:ok, changes} -> 
+        user = Auth.reset_password_token(changes.user)
+
+        Safira.Email.send_password_email(user.email, user.reset_password_token)
+        |>Safira.Mailer.deliver_now()
+
+      _ -> transaction
+    end
   end
 
   defp give_badge(badge_id, multi) do
@@ -127,7 +144,7 @@ defmodule Mix.Tasks.Gen.UserWithBadge do
 
   defp parse_csv(path) do
     path
-    |> File.stream!(read_ahead: 1_000, skip_headers: false)
+    |> File.stream!(read_ahead: 1_000)
     |> EneiParser.parse_stream()
     |> Stream.map(fn [name, lastname, email, housing, food] ->
       %{

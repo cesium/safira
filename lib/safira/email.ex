@@ -18,12 +18,4 @@ defmodule Safira.Email do
     |> subject("Finish account registration")
     |> text_body("Please visit #{System.get_env("FRONTEND_URL")}/password/edit?token=#{token} to finish your account registration")
   end
-
-  def send_contest_email(to_email, token) do
-    new_email()
-    |> to(to_email)
-    |> from(System.get_env("FROM_EMAIL"))
-    |> subject("You have been added to a new Contest")
-    |> text_body("Please visit #{System.get_env("FRONTEND_URL")}/user/contests/#{token}")
-  end
 end
