@@ -36,6 +36,12 @@
       <%= datetime_select f, :end %>
       <%= error_tag f, :end %>
     </div>
+
+    <div class="torch-form-group">
+      <label>Avatar</label>
+      <%= file_input f, :avatar %>
+      <%= error_tag f, :avatar %>
+    </div>
   
     <div class="torch-submit-form">
       <%= submit "Submit", class: "torch-submit-button" %>
