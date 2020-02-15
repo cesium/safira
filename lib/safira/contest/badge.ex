@@ -29,7 +29,7 @@ defmodule Safira.Contest.Badge do
     |> cast_attachments(attrs, [:avatar])
     |> validate_required([:name, :description, :begin, :end, :type])
     |> validate_length(:name, min: 1, max: 255)
-    |> validate_length(:description, min: 1, max: 450)
+    |> validate_length(:description, min: 1, max: 1000)
     |> validate_time
   end
 
