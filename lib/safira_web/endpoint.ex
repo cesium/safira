@@ -50,6 +50,8 @@ defmodule SafiraWeb.Endpoint do
   plug Plug.Head
   plug Plug.Session, @session_options
 
+  plug Pow.Plug.Session, otp_app: :safira
+
   # The CORS plug
   plug SafiraWeb.CORS
 

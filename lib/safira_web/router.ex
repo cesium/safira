@@ -1,5 +1,6 @@
 defmodule SafiraWeb.Router do
   use SafiraWeb, :router
+  use Pow.Phoenix.Router
 
   alias Safira.Guardian
 
@@ -13,6 +14,11 @@ defmodule SafiraWeb.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+  end
+
+  pipeline :protected do
+    plug Pow.Plug.RequireAuthenticated,
+      error_handler: Pow.Phoenix.PlugErrorHandler
   end
 
   pipeline :api do
@@ -54,8 +60,19 @@ defmodule SafiraWeb.Router do
     end
   end
 
-  scope "/admin", SafiraWeb.Admin, as: :admin do
+  scope "/" do
     pipe_through :browser
+
+    pow_session_routes()
+  end
+
+  #scope "/", Pow.Phoenix, as: "pow" do
+  #  pipe_through [:browser, :protected]
+  #  resources "/registration", RegistrationController, singleton: true, only: [:edit, :update]
+  #end
+
+  scope "/admin", SafiraWeb.Admin, as: :admin do
+    pipe_through [:browser, :protected]
 
     resources "/badges", BadgeController
   end

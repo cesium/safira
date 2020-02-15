@@ -50,6 +50,11 @@ config :torch,
   otp_app: :safira,
   template_format: "eex"
 
+config :safira, :pow,
+  user: Safira.Admin.Accounts.AdminUser,
+  repo: Safira.Repo,
+  web_module: SafiraWeb
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
