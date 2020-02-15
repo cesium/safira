@@ -1,4 +1,4 @@
-defmodule Safira.Mixfile do
+defmodule Safira.MixProject do
   use Mix.Project
 
   def project do
@@ -6,9 +6,9 @@ defmodule Safira.Mixfile do
       app: :safira,
       version: "0.0.1",
       elixir: "~> 1.6",
-      elixirc_paths: elixirc_paths(Mix.env),
-      compilers: [:phoenix, :gettext] ++ Mix.compilers,
-      start_permanent: Mix.env == :prod,
+      elixirc_paths: elixirc_paths(Mix.env()),
+      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
+      start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps()
     ]
@@ -41,13 +41,15 @@ defmodule Safira.Mixfile do
   defp deps do
     [
       {:phoenix, "~> 1.4.12"},
-      {:phoenix_pubsub, "~> 1.0"},
+      {:phoenix_pubsub, "~> 1.1"},
       {:phoenix_ecto, "~> 4.0"},
       {:ecto_sql, "~> 3.1"},
-      {:plug_cowboy, "~> 1.0"},
       {:postgrex, ">= 0.0.0"},
+      {:phoenix_html, "~> 2.11"},
+      {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:gettext, "~> 0.11"},
-      {:cowboy, "~> 1.0"},
+      {:jason, "~> 1.0"},
+      {:plug_cowboy, "~> 2.0"},
       {:guardian, "~> 1.0"},
       {:comeonin, "~> 4.0"},
       {:bcrypt_elixir, "~> 1.0"},
@@ -66,6 +68,7 @@ defmodule Safira.Mixfile do
       {:nimble_csv, "~> 0.3"},
       {:bamboo, "~> 1.4"},
       {:timex, "~> 3.5"},
+      {:torch, "~> 2.0"},
       {:ex_machina, "~> 2.3", only: :test},
       {:bureaucrat, "~> 0.2.5", only: :test},
       {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false}
@@ -82,7 +85,7 @@ defmodule Safira.Mixfile do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      "test": ["ecto.create --quiet", "ecto.migrate", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate", "test"]
     ]
   end
 end

@@ -7,6 +7,14 @@ defmodule SafiraWeb.Router do
     forward "/sent_emails", Bamboo.SentEmailViewerPlug
   end
 
+  pipeline :browser do
+    plug :accepts, ["html"]
+    plug :fetch_session
+    plug :fetch_flash
+    plug :protect_from_forgery
+    plug :put_secure_browser_headers
+  end
+
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -44,5 +52,11 @@ defmodule SafiraWeb.Router do
       resources "/companies", CompanyController, only: [:index, :show]
       resources "/redeems", RedeemController, only: [:create]
     end
+  end
+
+  scope "/admin", SafiraWeb.Admin, as: :admin do
+    pipe_through :browser
+
+    resources "/badges", BadgeController
   end
 end

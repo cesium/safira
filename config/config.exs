@@ -3,9 +3,10 @@
 #
 # This configuration file is loaded before any dependency and
 # is restricted to this project.
-use Mix.Config
 
 # General application configuration
+use Mix.Config
+
 config :safira,
   ecto_repos: [Safira.Repo]
 
@@ -42,6 +43,13 @@ config :ex_aws,
     region: System.get_env("AWS_REGION")
   ]
 
+# Use Jason for JSON parsing in Phoenix
+config :phoenix, :json_library, Jason
+
+config :torch,
+  otp_app: :safira,
+  template_format: "eex"
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
-import_config "#{Mix.env}.exs"
+import_config "#{Mix.env()}.exs"
