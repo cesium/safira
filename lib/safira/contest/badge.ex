@@ -37,9 +37,10 @@ defmodule Safira.Contest.Badge do
   def admin_changeset(badge, attrs) do
     badge
     |> cast(attrs, [:begin, :end, :name, :description, :type])
+    |> cast_attachments(attrs, [:avatar])
     |> validate_required([:begin, :end, :name, :description, :type])
     |> validate_length(:name, min: 1, max: 255)
-    |> validate_length(:description, min: 1, max: 450)
+    |> validate_length(:description, min: 1, max: 1000)
     |> validate_time
   end
 
