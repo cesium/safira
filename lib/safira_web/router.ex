@@ -75,5 +75,6 @@ defmodule SafiraWeb.Router do
     pipe_through [:browser, :protected]
 
     resources "/badges", BadgeController
+    resources "/attendees", AttendeeController
   end
 end
