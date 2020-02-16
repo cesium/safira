@@ -36,6 +36,13 @@
           <div class="torch-show-label">End:</div>
           <div class="torch-show-data"><%= @badge.end %></div>
         </li>
+
+        <li>
+          <div class="torch-show-label">Avatar:</div>
+          <div class="torch-show-data">
+            <%= img_tag(Safira.Avatar.url({@badge.avatar, @badge}, :original)) %>
+          </div>
+        </li>
       
     </ul>
   </div>
