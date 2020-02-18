@@ -27,6 +27,7 @@
             <a href="/admin/badges">Badges</a>
             <a href="/admin/attendees">Attendees</a>
             <a href="/admin/managers">Managers</a>
+            <a href="/admin/companies">Companies</a>
           </nav>
         </div>
       </section>

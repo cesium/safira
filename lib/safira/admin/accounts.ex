@@ -11,6 +11,7 @@ defmodule Safira.Admin.Accounts do
 
   alias Safira.Accounts.Attendee
   alias Safira.Accounts.Manager
+  alias Safira.Accounts.Company
 
   @pagination [page_size: 15]
   @pagination_distance 5
@@ -309,6 +310,152 @@ defmodule Safira.Admin.Accounts do
   end
 
   defp filter_config(:managers) do
+    defconfig do
+      
+    end
+  end
+
+  @doc """
+  Paginate the list of companies using filtrex
+  filters.
+
+  ## Examples
+
+      iex> list_companies(%{})
+      %{companies: [%Company{}], ...}
+  """
+  @spec paginate_companies(map) :: {:ok, map} | {:error, any}
+  def paginate_companies(params \\ %{}) do
+    params =
+      params
+      |> Map.put_new("sort_direction", "desc")
+      |> Map.put_new("sort_field", "inserted_at")
+
+    {:ok, sort_direction} = Map.fetch(params, "sort_direction")
+    {:ok, sort_field} = Map.fetch(params, "sort_field")
+
+    with {:ok, filter} <- Filtrex.parse_params(filter_config(:companies), params["company"] || %{}),
+         %Scrivener.Page{} = page <- do_paginate_companies(filter, params) do
+      {:ok,
+        %{
+          companies: page.entries,
+          page_number: page.page_number,
+          page_size: page.page_size,
+          total_pages: page.total_pages,
+          total_entries: page.total_entries,
+          distance: @pagination_distance,
+          sort_field: sort_field,
+          sort_direction: sort_direction
+        }
+      }
+    else
+      {:error, error} -> {:error, error}
+      error -> {:error, error}
+    end
+  end
+
+  defp do_paginate_companies(filter, params) do
+    Company
+    |> Filtrex.query(filter)
+    |> order_by(^sort(params))
+    |> paginate(Repo, params, @pagination)
+  end
+
+  @doc """
+  Returns the list of companies.
+
+  ## Examples
+
+      iex> list_companies()
+      [%Company{}, ...]
+
+  """
+  def list_companies do
+    Repo.all(Company)
+  end
+
+  @doc """
+  Gets a single company.
+
+  Raises `Ecto.NoResultsError` if the Company does not exist.
+
+  ## Examples
+
+      iex> get_company!(123)
+      %Company{}
+
+      iex> get_company!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_company!(id), do: Repo.get!(Company, id)
+
+  @doc """
+  Creates a company.
+
+  ## Examples
+
+      iex> create_company(%{field: value})
+      {:ok, %Company{}}
+
+      iex> create_company(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_company(attrs \\ %{}) do
+    %Company{}
+    |> Company.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a company.
+
+  ## Examples
+
+      iex> update_company(company, %{field: new_value})
+      {:ok, %Company{}}
+
+      iex> update_company(company, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_company(%Company{} = company, attrs) do
+    company
+    |> Company.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a Company.
+
+  ## Examples
+
+      iex> delete_company(company)
+      {:ok, %Company{}}
+
+      iex> delete_company(company)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_company(%Company{} = company) do
+    Repo.delete(company)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking company changes.
+
+  ## Examples
+
+      iex> change_company(company)
+      %Ecto.Changeset{source: %Company{}}
+
+  """
+  def change_company(%Company{} = company) do
+    Company.changeset(company, %{})
+  end
+
+  defp filter_config(:companies) do
     defconfig do
       
     end
