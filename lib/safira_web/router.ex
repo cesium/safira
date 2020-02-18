@@ -78,5 +78,6 @@ defmodule SafiraWeb.Router do
     resources "/attendees", AttendeeController
     resources "/managers", ManagerController
     resources "/companies", CompanyController
+    resources "/redeems", RedeemController
   end
 end
