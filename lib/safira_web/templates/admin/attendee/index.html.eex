@@ -1,0 +1,74 @@
+<section id="torch-toolbar">
+  <div class="torch-container">
+    <%= link "New Attendee", to: Routes.admin_attendee_path(@conn, :new) %>
+  </div>
+</section>
+<section id="torch-index-content">
+  <div class="torch-container">
+    <section id="torch-filters">
+      <h3>Find Attendees</h3>
+      <%= form_tag @conn.request_path, method: :get, id: "torch-filters-form" do %>
+        
+          <div class="field">
+            <label>Nickname</label>
+            <%= filter_select(:attendee, :nickname, @conn.params) %>
+            <%= filter_string_input(:attendee, :nickname, @conn.params) %>
+          </div>
+        
+          <div class="field">
+            <label>Name</label>
+            <%= filter_select(:attendee, :name, @conn.params) %>
+            <%= filter_string_input(:attendee, :name, @conn.params) %>
+          </div>
+        
+        <button type="submit" class="torch-button">Search</button>
+        <%= link "Clear Filters", to: Routes.admin_attendee_path(@conn, :index) %>
+      <% end %>
+
+    </section>
+
+    <section id="torch-table">
+    <%= if length(@attendees) > 0 do %>
+      <table>
+        <thead>
+          <tr>
+
+            <th><%= table_link(@conn, "Nickname", :nickname) %></th>
+            
+            <th><%= table_link(@conn, "UUID", :id) %></th>
+            
+            <th><%= table_link(@conn, "Name", :name) %></th>
+
+            <th><%= table_link(@conn, "Email", :email) %></th>
+            
+            <th><span>Actions</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= for attendee <- @attendees do %>
+            <tr>
+
+              <td><%= attendee.nickname %></td>
+              
+              <td><%= attendee.id %></td>
+              
+              <td><%= attendee.name %></td>
+
+              <td><%= attendee.user.email %></td>
+              
+              <td class="torch-actions">
+                <span><%= link "Show", to: Routes.admin_attendee_path(@conn, :show, attendee) %></span>
+                <span><%= link "Edit", to: Routes.admin_attendee_path(@conn, :edit, attendee) %></span>
+                <span><%= link "Delete", to: Routes.admin_attendee_path(@conn, :delete, attendee), method: :delete, data: [confirm: "Are you sure?"] %></span>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <%= render Torch.PaginationView, "_pagination.html", assigns %>
+    <% else %>
+      <p class="torch-no-data">No Attendees match your search.</p>
+    <% end %>
+    </section>
+  </div>
+</section>

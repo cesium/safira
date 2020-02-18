@@ -25,6 +25,10 @@
           <nav class="torch-nav">
             <!-- nav links here -->
             <a href="/admin/badges">Badges</a>
+            <a href="/admin/attendees">Attendees</a>
+            <a href="/admin/managers">Managers</a>
+            <a href="/admin/companies">Companies</a>
+            <a href="/admin/redeems">Redeems</a>
           </nav>
         </div>
       </section>
