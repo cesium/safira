@@ -9,7 +9,7 @@
       <h3>Find Attendees</h3>
       <%= form_tag @conn.request_path, method: :get, id: "torch-filters-form" do %>
         
-        <div class="field">
+          <div class="field">
             <label>Nickname</label>
             <%= filter_select(:attendee, :nickname, @conn.params) %>
             <%= filter_string_input(:attendee, :nickname, @conn.params) %>

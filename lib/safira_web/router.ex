@@ -76,5 +76,6 @@ defmodule SafiraWeb.Router do
 
     resources "/badges", BadgeController
     resources "/attendees", AttendeeController
+    resources "/managers", ManagerController
   end
 end
