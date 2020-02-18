@@ -16,12 +16,6 @@
           </div>
         
           <div class="field">
-            <label>UUID</label>
-            <%= filter_select(:attendee, :id, @conn.params) %>
-            <%= filter_string_input(:attendee, :id, @conn.params) %>
-          </div>
-        
-          <div class="field">
             <label>Name</label>
             <%= filter_select(:attendee, :name, @conn.params) %>
             <%= filter_string_input(:attendee, :name, @conn.params) %>

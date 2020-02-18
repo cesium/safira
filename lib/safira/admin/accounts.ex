@@ -164,6 +164,8 @@ defmodule Safira.Admin.Accounts do
 
   defp filter_config(:attendees) do
     defconfig do
+      text :nickname
+      text :name
     end
   end
 
