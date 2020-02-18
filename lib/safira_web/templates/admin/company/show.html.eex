@@ -1,0 +1,17 @@
+<section id="torch-toolbar">
+  <div class="torch-container">
+    <%= link "Edit", to: Routes.admin_company_path(@conn, :edit, @company), class: "torch-button" %>
+    <%= link "Back", to: Routes.admin_company_path(@conn, :index), class: "torch-button" %>
+  </div>
+</section>
+
+<section id="torch-header-and-content">
+  <div class="torch-container">
+    <div class="header">
+      <h3>Company Details</h3>
+    </div>
+    <ul>
+      
+    </ul>
+  </div>
+</section>
