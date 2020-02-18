@@ -31,11 +31,11 @@ defmodule Mix.Tasks.Gen.Badges do
     {create,update}
   end
 
-  defp insert_badge(transactions) do 
+  defp insert_badge(transactions) do
     case Safira.Repo.transaction(elem(transactions,0)) do
-      {:ok, result} -> 
-        Enum.zip(result,elem(transactions,1)) 
-        |> Enum.map(fn {a,b} -> 
+      {:ok, result} ->
+        Enum.zip(result,elem(transactions,1))
+        |> Enum.map(fn {a,b} ->
           Safira.Contest.update_badge(elem(a,1),b)
         end)
       {:error, error} -> IO.puts(error)
@@ -61,7 +61,7 @@ defmodule Mix.Tasks.Gen.Badges do
           },
           %{
             avatar: %Plug.Upload{
-              filename: check_image_filename(image_path), 
+              filename: check_image_filename(image_path),
               path: check_image_path(image_path)
             }
           }
@@ -79,7 +79,7 @@ defmodule Mix.Tasks.Gen.Badges do
 
   defp check_image_path(image_path) do
     if is_nil(image_path) do
-      "#{File.cwd!}/images/default/badge-missing.png"
+      "#{File.cwd!}/assets/static/images/badge-missing.png"
     else
       image_path
     end

@@ -41,9 +41,9 @@ defmodule Safira.Avatar do
   # Override the storage directory:
   def storage_dir(version, {file, scope}) do
     struct = scope.__struct__
-    |> Kernel.to_string 
-    |> String.split(".") 
-    |> List.last 
+    |> Kernel.to_string
+    |> String.split(".")
+    |> List.last
     |> String.downcase
    "uploads/#{struct}/avatars/#{scope.id}"
   end
@@ -51,11 +51,11 @@ defmodule Safira.Avatar do
   # Provide a default URL if there hasn't been a file uploaded
   def default_url(version, scope) do
     struct = scope.__struct__
-    |> Kernel.to_string 
-    |> String.split(".") 
-    |> List.last 
+    |> Kernel.to_string
+    |> String.split(".")
+    |> List.last
     |> String.downcase
-    "/images/default/#{struct}-missing.png"
+    "#{System.get_env("URL")}/images/#{struct}-missing.png"
   end
 
   # Specify custom headers for s3 objects

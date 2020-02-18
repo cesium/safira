@@ -11,17 +11,17 @@
       <h3>Badge Details</h3>
     </div>
     <ul>
-      
+
         <li>
           <div class="torch-show-label">Name:</div>
           <div class="torch-show-data"><%= @badge.name %></div>
         </li>
-      
+
         <li>
           <div class="torch-show-label">Description:</div>
           <div class="torch-show-data"><%= @badge.description %></div>
         </li>
-      
+
         <li>
           <div class="torch-show-label">Type:</div>
           <div class="torch-show-data"><%= @badge.type %></div>
@@ -31,7 +31,7 @@
           <div class="torch-show-label">Begin:</div>
           <div class="torch-show-data"><%= @badge.begin %></div>
         </li>
-      
+
         <li>
           <div class="torch-show-label">End:</div>
           <div class="torch-show-data"><%= @badge.end %></div>
@@ -43,7 +43,7 @@
             <%= img_tag(Safira.Avatar.url({@badge.avatar, @badge}, :original)) %>
           </div>
         </li>
-      
+
     </ul>
   </div>
 </section>
