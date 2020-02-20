@@ -36,6 +36,12 @@ defmodule Safira.Accounts.Attendee do
     |> unique_constraint(:nickname)
   end
 
+  def volunteer_changeset(attendee, attrs) do
+    attendee
+    |> cast(attrs, [:volunteer])
+    |> validate_required([:volunteer])
+  end
+
   def only_user_changeset(attendee, attrs) do
     attendee
     |> cast(attrs, [:user_id, :name])
