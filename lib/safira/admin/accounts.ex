@@ -244,7 +244,7 @@ defmodule Safira.Admin.Accounts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_manager!(id), do: Repo.get!(Manager, id)
+  def get_manager!(id), do: Repo.get!(Manager, id) |> Repo.preload(:user)
 
   @doc """
   Creates a manager.

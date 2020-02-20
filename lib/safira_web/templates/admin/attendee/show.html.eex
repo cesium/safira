@@ -28,6 +28,11 @@
       </li>
 
       <li>
+        <div class="torch-show-label">Ban:</div>
+        <div class="torch-show-data"><%= @attendee.user.ban %></div>
+      </li>
+
+      <li>
         <div class="torch-show-label">Volunteer:</div>
         <div class="torch-show-data"><%= @attendee.volunteer %></div>
       </li>
