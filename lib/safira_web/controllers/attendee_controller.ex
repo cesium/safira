@@ -17,13 +17,15 @@ defmodule SafiraWeb.AttendeeController do
     cond do
       is_nil attendee.user_id ->
         {:error, :not_registered}
+      Accounts.is_manager(conn) ->
+        render(conn, "manager_show.json", attendee: attendee)
       true ->
         render(conn, "show.json", attendee: attendee)
     end
   end
 
   def update(conn, %{"id" => id, "attendee" => attendee_params}) do
-    user = get_user(conn)
+    user = Accounts.get_user(conn)
     attendee = Accounts.get_attendee!(id)
     if user.attendee.id == attendee.id do
       with {:ok, %Attendee{} = attendee} <-
@@ -36,7 +38,7 @@ defmodule SafiraWeb.AttendeeController do
   end
 
   def delete(conn, %{"id" => id}) do
-    user = get_user(conn)
+    user = Accounts.get_user(conn)
     user_attendee = Accounts.get_attendee!(user.attendee.id)
     attendee = Accounts.get_attendee!(id)
     if user_attendee == attendee do
@@ -48,14 +50,6 @@ defmodule SafiraWeb.AttendeeController do
       end
     else
         {:error, :no_permission}
-    end
-  end
-
-  defp get_user(conn) do
-    with  %User{} = user <- Guardian.Plug.current_resource(conn) do
-      user
-      |> Map.fetch!(:id)
-      |> Accounts.get_user_preload!()
     end
   end
 end

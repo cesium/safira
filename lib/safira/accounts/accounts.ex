@@ -71,13 +71,14 @@ defmodule Safira.Accounts do
   end
 
   def list_active_attendees do
-    Repo.all(from a in Attendee, where: not (is_nil a.user_id))
+    Repo.all(from a in Attendee, where: not is_nil(a.user_id))
     |> Repo.preload(:badges)
   end
 
   def get_attendee!(id) do
     Repo.get!(Attendee, id)
     |> Repo.preload(:badges)
+    |> Repo.preload(:user)
   end
 
   def get_attendee(id) do
@@ -122,10 +123,12 @@ defmodule Safira.Accounts do
   def get_manager!(id), do: Repo.get!(Manager, id)
 
   def get_manager_by_email(email) do
-    Repo.all from m in Manager,
-    join: u  in assoc(m, :user),
-    where: u.email == ^email,
-    preload: [user: u]
+    Repo.all(
+      from m in Manager,
+        join: u in assoc(m, :user),
+        where: u.email == ^email,
+        preload: [user: u]
+    )
   end
 
   def create_manager(attrs \\ %{}) do
@@ -172,5 +175,27 @@ defmodule Safira.Accounts do
 
   def change_company(%Company{} = company) do
     Company.changeset(company, %{})
+  end
+
+  def is_company(conn) do
+    get_user(conn)
+    |> Map.fetch!(:company)
+    |> is_nil
+    |> Kernel.not()
+  end
+
+  def is_manager(conn) do
+    get_user(conn)
+    |> Map.fetch!(:manager)
+    |> is_nil
+    |> Kernel.not()
+  end
+
+  def get_user(conn) do
+    with %User{} = user <- Guardian.Plug.current_resource(conn) do
+      user
+      |> Map.fetch!(:id)
+      |> get_user_preload!()
+    end
   end
 end
