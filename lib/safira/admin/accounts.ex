@@ -95,7 +95,7 @@ defmodule Safira.Admin.Accounts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_attendee!(id), do: Repo.get!(Attendee, id)
+  def get_attendee!(id), do: Repo.get!(Attendee, id) |> Repo.preload(:user)
 
   @doc """
   Creates a attendee.

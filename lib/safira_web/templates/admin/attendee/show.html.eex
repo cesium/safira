@@ -11,6 +11,33 @@
       <h3>Attendee Details</h3>
     </div>
     <ul>
+
+      <li>
+        <div class="torch-show-label">Nickname:</div>
+        <div class="torch-show-data"><%= @attendee.nickname %></div>
+      </li>
+
+      <li>
+        <div class="torch-show-label">Name:</div>
+        <div class="torch-show-data"><%= @attendee.name %></div>
+      </li>
+
+      <li>
+        <div class="torch-show-label">Email:</div>
+        <div class="torch-show-data"><%= @attendee.user.email %></div>
+      </li>
+
+      <li>
+        <div class="torch-show-label">Volunteer:</div>
+        <div class="torch-show-data"><%= @attendee.volunteer %></div>
+      </li>
+
+      <li>
+        <div class="torch-show-label">Avatar:</div>
+        <div class="torch-show-data">
+            <%= img_tag(Safira.Avatar.url({@attendee.avatar, @attendee}, :original)) %>
+        </div>
+      </li>
       
     </ul>
   </div>
