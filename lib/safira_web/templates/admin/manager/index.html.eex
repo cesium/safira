@@ -8,12 +8,7 @@
     <section id="torch-filters">
       <h3>Find Managers</h3>
       <%= form_tag @conn.request_path, method: :get, id: "torch-filters-form" do %>
-      
-        <div class="field">
-            <label>Email</label>
-            <%= filter_select(:user, :email, @conn.params) %>
-            <%= filter_string_input(:user, :email, @conn.params) %>
-        </div>
+
         
         <button type="submit" class="torch-button">Search</button>
         <%= link "Clear Filters", to: Routes.admin_manager_path(@conn, :index) %>

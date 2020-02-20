@@ -207,7 +207,7 @@ defmodule Safira.Admin.Contest do
   defp do_paginate_redeems(filter, params) do
     Redeem
     |> Filtrex.query(filter)
-    |> preload([:badge, attendee: :user])
+    |> preload([:badge, manager: :user, attendee: :user])
     |> order_by(^sort(params))
     |> paginate(Repo, params, @pagination)
   end
