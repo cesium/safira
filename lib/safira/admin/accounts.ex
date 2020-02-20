@@ -95,7 +95,10 @@ defmodule Safira.Admin.Accounts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_attendee!(id), do: Repo.get!(Attendee, id) |> Repo.preload(:user)
+  def get_attendee!(id) do
+     Repo.get!(Attendee, id) 
+     |> Repo.preload(:user)
+  end
 
   @doc """
   Creates a attendee.
@@ -244,7 +247,10 @@ defmodule Safira.Admin.Accounts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_manager!(id), do: Repo.get!(Manager, id) |> Repo.preload(:user)
+  def get_manager!(id) do 
+    Repo.get!(Manager, id) 
+    |> Repo.preload(:user)
+  end
 
   @doc """
   Creates a manager.
@@ -390,7 +396,10 @@ defmodule Safira.Admin.Accounts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_company!(id), do: Repo.get!(Company, id) |> Repo.preload([:user, :badge])
+  def get_company!(id) do 
+    Repo.get!(Company, id) 
+    |> Repo.preload([:user, :badge])
+  end
 
   @doc """
   Creates a company.
