@@ -239,7 +239,7 @@ defmodule Safira.Admin.Contest do
       ** (Ecto.NoResultsError)
 
   """
-  def get_redeem!(id), do: Repo.get!(Redeem, id)
+  def get_redeem!(id), do: Repo.get!(Redeem, id) |> Repo.preload([:badge, manager: :user, attendee: :user])
 
   @doc """
   Creates a redeem.
