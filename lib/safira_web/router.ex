@@ -50,6 +50,7 @@ defmodule SafiraWeb.Router do
 
       get "/user", AuthController, :user
       get "/attendee", AuthController, :attendee
+      get "/company", AuthController, :company
       get "/leaderboard", LeaderboardController, :index
 
       resources "/badges", BadgeController, only: [:index, :show]
