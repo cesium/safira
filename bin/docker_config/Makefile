@@ -1,11 +1,15 @@
+build: run
+
 DOCKER = docker
 CONTAINER = postgres
-POSTGRES = psql
-RUNFLAGS = --name $(CONTAINER) -p 5432:5432 $(CONTAINER):11.5
-CREATEUSER = createuser -U $(CONTAINER) -d $(USER)
+POSTGRES = postgres
+RUNFLAGS = -d --name $(CONTAINER) -p 5432:5432 $(POSTGRES):11.5
+CREATEUSER = createuser -U $(POSTGRES) -d $(USER)
 
 run:
 	$(DOCKER) run $(RUNFLAGS)
+	@sleep 2
+	$(DOCKER) exec $(CONTAINER) $(CREATEUSER)
 
 start:
 	$(DOCKER) start $(CONTAINER)
@@ -13,11 +17,7 @@ start:
 stop:
 	$(DOCKER) stop $(CONTAINER)
 
-restart:
-	$(DOCKER) restart $(CONTAINER)
-
-createuser:
-	$(DOCKER) exec $(CONTAINER) $(CREATEUSER)
+.PHONY: run
 
 clean:
 	$(DOCKER) rm $(CONTAINER)
