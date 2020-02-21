@@ -75,6 +75,14 @@ defmodule Safira.Accounts do
     |> Repo.preload(:badges)
   end
 
+  def list_active_volunteers_attendees do
+    Repo.all(from a in Attendee,
+      where: not is_nil(a.user_id),
+      where: a.volunteer == ^true
+    )
+    |> Repo.preload(:badges)
+  end
+
   def get_attendee!(id) do
     Repo.get!(Attendee, id)
     |> Repo.preload(:badges)
