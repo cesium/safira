@@ -94,7 +94,13 @@ defmodule Safira.Accounts do
 
   def update_attendee(%Attendee{} = attendee, attrs) do
     attendee
-    |> Attendee.changeset(attrs)
+    |> Attendee.update_changeset(attrs)
+    |> Repo.update()
+  end
+
+  def update_attendee_sign_up(%Attendee{} = attendee, attrs) do
+    attendee
+    |> Attendee.update_changeset_sign_up(attrs)
     |> Repo.update()
   end
 

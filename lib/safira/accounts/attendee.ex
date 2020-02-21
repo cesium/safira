@@ -27,10 +27,21 @@ defmodule Safira.Accounts.Attendee do
 
   def changeset(attendee, attrs) do
     attendee
-    |> cast(attrs, [:nickname, :volunteer, :user_id])
+    |> cast(attrs, [:name, :nickname, :volunteer, :user_id])
     |> cast_attachments(attrs, [:avatar])
     |> cast_assoc(:user)
-    |> validate_required([:nickname, :volunteer])
+    |> validate_required([:name, :nickname, :volunteer])
+    |> validate_length(:nickname, min: 2, max: 15)
+    |> validate_format(:nickname, ~r/^[a-zA-Z0-9]+([a-zA-Z0-9](_|-)[a-zA-Z0-9])*[a-zA-Z0-9]+$/)
+    |> unique_constraint(:nickname)
+  end
+
+  def update_changeset_sign_up(attendee, attrs) do
+    attendee
+    |> cast(attrs, [:name, :nickname, :user_id])
+    |> cast_attachments(attrs, [:avatar])
+    |> cast_assoc(:user)
+    |> validate_required([:name, :nickname])
     |> validate_length(:nickname, min: 2, max: 15)
     |> validate_format(:nickname, ~r/^[a-zA-Z0-9]+([a-zA-Z0-9](_|-)[a-zA-Z0-9])*[a-zA-Z0-9]+$/)
     |> unique_constraint(:nickname)
