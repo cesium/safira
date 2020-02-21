@@ -13,7 +13,8 @@ defmodule SafiraWeb.BadgeView do
   end
 
   def render("badge.json", %{badge: badge}) do
-    %{id: badge.id,
+    %{
+      id: badge.id,
       name: badge.name,
       description: badge.description,
       avatar: Avatar.url({badge.avatar, badge}, :original),
@@ -24,14 +25,15 @@ defmodule SafiraWeb.BadgeView do
   end
 
   def render("badge_show.json", %{badge: badge}) do
-    %{id: badge.id,
+    %{
+      id: badge.id,
       name: badge.name,
       description: badge.description,
       avatar: Avatar.url({badge.avatar, badge}, :original),
       begin: badge.begin,
       end: badge.end,
       type: badge.type,
-      attendees: render_many(badge.attendees, AttendeeView, "attendee_simple.json" ) 
+      attendees: render_many(badge.attendees, AttendeeView, "attendee_simple.json")
     }
   end
 end

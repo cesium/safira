@@ -15,10 +15,22 @@ defmodule SafiraWeb.AuthView do
   end
 
   def render("attendee.json", %{user: user}) do
-    %{id: user.attendee.id,
+    %{
+      id: user.attendee.id,
       nickname: user.attendee.nickname,
       avatar: Avatar.url({user.attendee.avatar, user.attendee}, :original),
-      email: user.email}
+      email: user.email
+    }
+  end
+
+  def render("company.json", %{user: user}) do
+    %{
+      id: user.company.id,
+      name: user.company.name,
+      email: user.email,
+      sponsorship: user.company.sponsorship,
+      badge_id: user.company.badge_id
+    }
   end
 
   def render("jwt.json", %{jwt: jwt}) do

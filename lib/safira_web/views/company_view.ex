@@ -11,8 +11,11 @@ defmodule SafiraWeb.CompanyView do
   end
 
   def render("company.json", %{company: company}) do
-    %{id: company.id,
+    %{
+      id: company.id,
       name: company.name,
-      sponsorship: company.sponsorship}
+      sponsorship: company.sponsorship,
+      badge_id: company.badge_id
+    }
   end
 end

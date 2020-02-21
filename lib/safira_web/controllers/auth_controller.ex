@@ -47,6 +47,17 @@ defmodule SafiraWeb.AuthController do
     end
   end
 
+  def company(conn, _params) do
+    user = Guardian.Plug.current_resource(conn)
+    user_preload = Accounts.get_user_preload!(user.id)
+    case is_nil user_preload.company do
+      true ->
+        {:error, :unauthorized}
+      false ->
+        render(conn, "company.json", user: user_preload)
+    end
+  end
+
   def is_registered(conn, %{"id" => id}) do
     attendee = Accounts.get_attendee!(id)
     case is_nil attendee do
