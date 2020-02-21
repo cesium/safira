@@ -14,11 +14,14 @@ defmodule SafiraWeb.AttendeeController do
 
   def show(conn, %{"id" => id}) do
     attendee = Accounts.get_attendee!(id)
+
     cond do
-      is_nil attendee.user_id ->
+      is_nil(attendee.user_id) ->
         {:error, :not_registered}
+
       Accounts.is_manager(conn) ->
         render(conn, "manager_show.json", attendee: attendee)
+
       true ->
         render(conn, "show.json", attendee: attendee)
     end
@@ -27,10 +30,11 @@ defmodule SafiraWeb.AttendeeController do
   def update(conn, %{"id" => id, "attendee" => attendee_params}) do
     user = Accounts.get_user(conn)
     attendee = Accounts.get_attendee!(id)
+
     if user.attendee.id == attendee.id do
       with {:ok, %Attendee{} = attendee} <-
-          Accounts.update_attendee(attendee, attendee_params) do
-            render(conn, "show.json", attendee: attendee)
+             Accounts.update_attendee(attendee, attendee_params) do
+        render(conn, "show.json", attendee: attendee)
       end
     else
       {:error, :unauthorized}
@@ -41,6 +45,7 @@ defmodule SafiraWeb.AttendeeController do
     user = Accounts.get_user(conn)
     user_attendee = Accounts.get_attendee!(user.attendee.id)
     attendee = Accounts.get_attendee!(id)
+
     if user_attendee == attendee do
       with {:ok, %Attendee{}} <- Accounts.delete_attendee(attendee),
            {:ok, %User{}} <- Accounts.delete_user(user) do
@@ -49,7 +54,7 @@ defmodule SafiraWeb.AttendeeController do
         |> send_resp(:no_content, Poison.encode!(""))
       end
     else
-        {:error, :no_permission}
+      {:error, :no_permission}
     end
   end
 end

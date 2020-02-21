@@ -2,7 +2,6 @@ defmodule SafiraWeb.ReferralController do
   use SafiraWeb, :controller
 
   alias Safira.Accounts
-  alias Safira.Accounts.User
   alias Safira.Contest
   alias Safira.Contest.Redeem
 
