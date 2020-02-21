@@ -1,6 +1,6 @@
 ## How to Run?
 
-To create a PostgreSQL container and a user, you just nedd to run:
+To create a PostgreSQL container and a user, you just need to run:
 
 ```
 make
