@@ -154,17 +154,6 @@ defmodule Safira.Admin.Contest do
     Badge.admin_changeset(badge, %{})
   end
 
-  defp filter_config(:badges) do
-    defconfig do
-      date :begin
-        date :end
-        text :name
-        text :description
-        number :type
-        
-    end
-  end
-
   @doc """
   Paginate the list of redeems using filtrex
   filters.
@@ -309,9 +298,22 @@ defmodule Safira.Admin.Contest do
     Redeem.changeset(redeem, %{})
   end
 
-  defp filter_config(:redeems) do
+  defp filter_config(:badges) do
     defconfig do
-      
+      date :begin
+        date :end
+        text :name
+        text :description
+        number :type
+        
     end
   end
+
+  defp filter_config(:redeems) do
+    defconfig do
+      number :manager_id
+      number :badge_id
+    end
+  end
+
 end
