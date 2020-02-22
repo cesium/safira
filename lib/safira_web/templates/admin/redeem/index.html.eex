@@ -39,7 +39,11 @@
 
               <td><%= redeem.attendee.name %></td>
 
-              <td><%= redeem.attendee.user.email %></td>
+              <%= if (redeem.manager_id) != nil do %>
+                <td><%= redeem.attendee.user.email%></td>
+              <% else %>
+                <td></td>
+              <% end %>
 
               <td><%= redeem.badge.name %></td>
               
