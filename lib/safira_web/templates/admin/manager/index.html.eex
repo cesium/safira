@@ -9,6 +9,11 @@
       <h3>Find Managers</h3>
       <%= form_tag @conn.request_path, method: :get, id: "torch-filters-form" do %>
 
+        <div class="field">
+            <label>Active</label>
+            <%= filter_assoc_select(:manager, :active, [{"true", true}, {"false", false}], @conn.params) %>
+        </div>
+
         
         <button type="submit" class="torch-button">Search</button>
         <%= link "Clear Filters", to: Routes.admin_manager_path(@conn, :index) %>

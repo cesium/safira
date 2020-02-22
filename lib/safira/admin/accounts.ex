@@ -463,6 +463,7 @@ defmodule Safira.Admin.Accounts do
 
   defp filter_config(:managers) do
     defconfig do
+      boolean :active
     end
   end
 
