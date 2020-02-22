@@ -165,13 +165,6 @@ defmodule Safira.Admin.Accounts do
     Attendee.changeset(attendee, %{})
   end
 
-  defp filter_config(:attendees) do
-    defconfig do
-      text :nickname
-      text :name
-    end
-  end
-
   @doc """
   Paginate the list of managers using filtrex
   filters.
@@ -317,11 +310,6 @@ defmodule Safira.Admin.Accounts do
     Manager.changeset(manager, %{})
   end
 
-  defp filter_config(:managers) do
-    defconfig do
-    end
-  end
-
   @doc """
   Paginate the list of companies using filtrex
   filters.
@@ -464,6 +452,18 @@ defmodule Safira.Admin.Accounts do
   """
   def change_company(%Company{} = company) do
     Company.changeset(company, %{})
+  end
+
+  defp filter_config(:attendees) do
+    defconfig do
+      text :nickname
+      text :name
+    end
+  end
+
+  defp filter_config(:managers) do
+    defconfig do
+    end
   end
 
   defp filter_config(:companies) do
