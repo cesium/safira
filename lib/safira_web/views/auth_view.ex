@@ -18,6 +18,7 @@ defmodule SafiraWeb.AuthView do
     %{
       id: user.attendee.id,
       nickname: user.attendee.nickname,
+      name: user.attendee.name,
       avatar: Avatar.url({user.attendee.avatar, user.attendee}, :original),
       email: user.email
     }
