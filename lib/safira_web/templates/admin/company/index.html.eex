@@ -37,7 +37,7 @@
 
             <th><%= table_link(@conn, "Sponsorship", :sponsorship) %></th>
 
-            <th><%= table_link(@conn, "Badge Name", :badge_name) %></th>
+            <th><span>Badge Name</span></th>
             
             <th><span>Actions</span></th>
           </tr>
