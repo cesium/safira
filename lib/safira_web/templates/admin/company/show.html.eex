@@ -11,6 +11,31 @@
       <h3>Company Details</h3>
     </div>
     <ul>
+
+      <li>
+        <div class="torch-show-label">Name:</div>
+        <div class="torch-show-data"><%= @company.name %></div>
+      </li>
+
+      <li>
+        <div class="torch-show-label">Sponsorship:</div>
+        <div class="torch-show-data"><%= @company.sponsorship %></div>
+      </li>
+
+      <li>
+        <div class="torch-show-label">Email:</div>
+        <div class="torch-show-data"><%= @company.user.email %></div>
+      </li>
+
+      <li>
+        <div class="torch-show-label">Ban:</div>
+        <div class="torch-show-data"><%= @company.user.ban %></div>
+      </li>
+
+      <li>
+        <div class="torch-show-label">Badge Name:</div>
+        <div class="torch-show-data"><%= @company.badge.name %></div>
+      </li>
       
     </ul>
   </div>

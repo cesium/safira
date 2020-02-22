@@ -11,6 +11,21 @@
       <h3>Manager Details</h3>
     </div>
     <ul>
+
+      <li>
+        <div class="torch-show-label">Email:</div>
+        <div class="torch-show-data"><%= @manager.user.email %></div>
+      </li>
+
+      <li>
+        <div class="torch-show-label">Active:</div>
+        <div class="torch-show-data"><%= @manager.active %></div>
+      </li>
+
+      <li>
+        <div class="torch-show-label">Ban:</div>
+        <div class="torch-show-data"><%= @manager.user.ban %></div>
+      </li>
       
     </ul>
   </div>
