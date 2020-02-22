@@ -9,15 +9,25 @@ defmodule SafiraWeb.AuthControllerTest do
     test "user", %{conn: conn} do
       attendee = insert(:attendee)
       user = build(:user)
-      struct = %{"user" => 
-        %{"email" => user.email, 
-          "password" => user.password, 
+
+      struct = %{
+        "user" => %{
+          "email" => user.email,
+          "password" => user.password,
           "password_confirmation" => user.password,
-        "attendee" => %{"id" => attendee.id}}
+          "attendee" => %{
+            "id" => attendee.id,
+            "name" => attendee.name,
+            "nickname" => attendee.nickname
+          }
+        }
       }
-      conn = conn
+
+      conn =
+        conn
         |> post(Routes.auth_path(conn, :sign_up), struct)
         |> doc()
+
       assert json_response(conn, 200)["jwt"] != %{}
     end
   end
@@ -26,18 +36,24 @@ defmodule SafiraWeb.AuthControllerTest do
     test "user with valid credentials", %{conn: conn} do
       user = create_user_strategy(:user)
       struct = %{"email" => user.email, "password" => user.password}
-      conn = conn
+
+      conn =
+        conn
         |> post(Routes.auth_path(conn, :sign_in), struct)
         |> doc()
+
       assert json_response(conn, 200)["jwt"] != %{}
     end
 
     test "user with invalid credentials", %{conn: conn} do
       user = create_user_strategy(:user)
       struct = %{"email" => user.email, "password" => "test1234"}
-      conn = conn
-      |> post(Routes.auth_path(conn, :sign_in), struct)
-      |> doc()
+
+      conn =
+        conn
+        |> post(Routes.auth_path(conn, :sign_in), struct)
+        |> doc()
+
       assert json_response(conn, :unauthorized)["errors"] != %{}
     end
   end

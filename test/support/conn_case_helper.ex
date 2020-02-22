@@ -4,8 +4,6 @@ defmodule SafiraWeb.ConnCaseHelper do
   import Plug.Conn
 
   alias Safira.Guardian
-  alias Safira.Accounts.User
-  alias Safira.Repo
 
   def browser_authenticate(user \\ insert(:user)) do
     conn = build_conn()
