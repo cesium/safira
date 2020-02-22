@@ -37,15 +37,21 @@
           <%= for redeem <- @redeems do %>
             <tr>
 
-              <td><%= redeem.attendee.name %></td>
+              <td>
+                  <span><%= link redeem.attendee.name, to: Routes.admin_attendee_path(@conn, :show, redeem.attendee) %></span>
+              </td>
 
               <%= if (redeem.manager_id) != nil do %>
-                <td><%= redeem.attendee.user.email%></td>
+                <td>
+                  <span><%= link redeem.manager.user.email, to: Routes.admin_manager_path(@conn, :show, redeem.manager) %></span>
+                </td>
               <% else %>
                 <td></td>
               <% end %>
 
-              <td><%= redeem.badge.name %></td>
+              <td>
+                  <span><%= link redeem.badge.name, to: Routes.admin_badge_path(@conn, :show, redeem.badge) %></span>
+              </td>
               
               <td class="torch-actions">
                 <span><%= link "Show", to: Routes.admin_redeem_path(@conn, :show, redeem) %></span>
