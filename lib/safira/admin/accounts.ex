@@ -313,7 +313,6 @@ defmodule Safira.Admin.Accounts do
 
   defp filter_config(:managers) do
     defconfig do
-      
     end
   end
 
@@ -359,6 +358,7 @@ defmodule Safira.Admin.Accounts do
   defp do_paginate_companies(filter, params) do
     Company
     |> Filtrex.query(filter)
+    |> preload(:badge)
     |> order_by(^sort(params))
     |> paginate(Repo, params, @pagination)
   end
@@ -459,7 +459,8 @@ defmodule Safira.Admin.Accounts do
 
   defp filter_config(:companies) do
     defconfig do
-      
+      text :name
+      text :sponsorship
     end
   end
 end

@@ -16,7 +16,7 @@
         </div>
 
         <div class="field">
-            <label>Name</label>
+            <label>Sponsorship</label>
             <%= filter_select(:company, :sponsorship, @conn.params) %>
             <%= filter_string_input(:company, :sponsorship, @conn.params) %>
         </div>
@@ -37,7 +37,7 @@
 
             <th><%= table_link(@conn, "Sponsorship", :sponsorship) %></th>
 
-            <th><%= table_link(@conn, "Badge ID", :badge_id) %></th>
+            <th><%= table_link(@conn, "Badge Name", :badge_name) %></th>
             
             <th><span>Actions</span></th>
           </tr>
@@ -50,7 +50,7 @@
 
               <td><%= company.sponsorship %></td>
 
-              <td><%= company.badge_id %></td>
+              <td><%= company.badge.name %></td>
               
               <td class="torch-actions">
                 <span><%= link "Show", to: Routes.admin_company_path(@conn, :show, company) %></span>
