@@ -4,6 +4,7 @@ defmodule Safira.AttendeeFactory do
       def attendee_factory do
         %Safira.Accounts.Attendee{
           nickname: "safira_foo",
+          name: "Safira Foo",
           volunteer: false
         }
       end
