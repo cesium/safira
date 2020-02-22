@@ -11,6 +11,46 @@
       <h3>Redeem Details</h3>
     </div>
     <ul>
+
+      <li>
+        <div class="torch-show-label">Attendee Email:</div>
+        <div class="torch-show-data"><%= @redeem.attendee.user.email %></div>
+      </li>
+
+      <li>
+        <div class="torch-show-label">Attendee Ban:</div>
+        <div class="torch-show-data"><%= @redeem.attendee.user.ban %></div>
+      </li>
+
+      <li>
+        <div class="torch-show-label">Badge Name:</div>
+        <div class="torch-show-data"><%= @redeem.badge.name %></div>
+      </li>
+
+      <%= if (@redeem.manager_id) != nil do %>
+        <li>
+          <div class="torch-show-label">Manager Email:</div>
+          <div class="torch-show-data"><%= @redeem.manager.user.email %></div>
+        </li>
+
+        <li>
+          <div class="torch-show-label">Manager Ban:</div>
+          <div class="torch-show-data"><%= @redeem.manager.user.ban %></div>
+        </li>
+      <% else %>
+        <li><div class="torch-show-label">Manager Email:</div></li>
+        <li><div class="torch-show-label">Manager Ban:</div></li>
+      <% end %>
+
+      <li>
+        <div class="torch-show-label">Inserted At:</div>
+        <div class="torch-show-data"><%= @redeem.inserted_at %></div>
+      </li>
+
+      <li>
+        <div class="torch-show-label">Updated At:</div>
+        <div class="torch-show-data"><%= @redeem.updated_at %></div>
+      </li>
       
     </ul>
   </div>
