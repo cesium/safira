@@ -19,6 +19,8 @@
       - GET /:id
       - POST /:id
       - DELETE /:id
+    - /company
+      - GET /
     - /companies
       - GET /
       - GET /:id
@@ -73,6 +75,8 @@
       - GET /:id
       - POST /:id
       - DELETE /:id
+    - /company
+      - GET /
     - /companies
       - GET /
       - GET /:id
@@ -188,21 +192,6 @@ any calls to the api that need to be authenticated.
 }
 ```
 
-# attendee
-## GET / (Show)
-Fetches the nick, uuid, email and avatar of the logged in attendee.
-
-### Valid:
-```json
-{
-    "nick": "qwrqasd",
-    "id": "43ffc4f5-3b12-4243-a157-e4e9e90d35dc",
-    "email": "fooo@bar.com",
-    "avatar": "/images/default/attendee-missing.png"
-}
-```
-
-
 # badges
 ## GET / (Index)
 Fetches the badges of the logged in attendee.
@@ -247,6 +236,22 @@ Fetches a single badge.
 }
 ```
 
+# attendee
+## GET / (Show)
+Fetches the nick, uuid, email and avatar of the logged in attendee.
+
+### Valid:
+```json
+{
+    "nick": "qwrqasd",
+    "id": "43ffc4f5-3b12-4243-a157-e4e9e90d35dc",
+    "email": "fooo@bar.com",
+    "name": "Name LastName",
+    "avatar": "/images/default/attendee-missing.png"
+}
+```
+
+
 # attendees
 ## GET / (Index)
 Lists all attendess.
@@ -256,9 +261,23 @@ Lists all attendess.
 {
     "data": [
         {
-            "nickname": "foo",
-            "id": "d832f350-fe30-4d98-a245-59d1aa186f36",
-            "avatar": "/images/default/attendee-missing.png"
+            "avatar": "https://safira20.herokuapp.com//images/attendee-missing.png",
+            "badge_count": 1,
+            "badges": [
+                {
+                    "avatar": "https://teste.amazonaws.com/uploads/badge/avatars/179/original.png?v=63731919919",
+                    "begin": "2019-02-05T00:00:00Z",
+                    "description": "Estiveste presente na talk do Celso Martinho",
+                    "end": "2019-02-06T00:00:00Z",
+                    "id": 179,
+                    "name": "Talk Celso Martinho",
+                    "type": 3
+                }
+            ],
+            "id": "6de51b47-4c35-4127-8c48-79b354061ae5",
+            "name": "Name LastName",
+            "nickname": "attendee1",
+            "volunteer": false
         }
     ]
 }
@@ -305,6 +324,7 @@ Changes an attendee.
     "data": {
         "nickname": "qwrqasd",
         "id": "d832f350-fe30-4d98-a245-59d1aa186f36",
+        "name": "Name LastName",
         "avatar": "/images/default/attendee-missing.png"
     }
 }
@@ -359,6 +379,17 @@ Removes an attendee.
             "An attendee can't have the same badge twice"
         ]
     }
+}
+```
+# company
+## GET /
+```json
+{
+    "badge_id": 10,
+    "email": "company@company.org",
+    "id": 1,
+    "name": "Company",
+    "sponsorship": "Tier"
 }
 ```
 
