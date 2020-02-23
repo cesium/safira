@@ -37,7 +37,7 @@
 
             <th><%= table_link(@conn, "Sponsorship", :sponsorship) %></th>
 
-            <th><%= table_link(@conn, "Badge Name", :badge_name) %></th>
+            <th><span>Badge Name</span></th>
             
             <th><span>Actions</span></th>
           </tr>
@@ -50,7 +50,9 @@
 
               <td><%= company.sponsorship %></td>
 
-              <td><%= company.badge.name %></td>
+              <td>
+                  <span><%= link company.badge.name, to: Routes.admin_badge_path(@conn, :show, company.badge) %></span>
+              </td>
               
               <td class="torch-actions">
                 <span><%= link "Show", to: Routes.admin_company_path(@conn, :show, company) %></span>

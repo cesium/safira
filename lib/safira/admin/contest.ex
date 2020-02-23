@@ -36,17 +36,16 @@ defmodule Safira.Admin.Contest do
     with {:ok, filter} <- Filtrex.parse_params(filter_config(:badges), params["badge"] || %{}),
          %Scrivener.Page{} = page <- do_paginate_badges(filter, params) do
       {:ok,
-        %{
-          badges: page.entries,
-          page_number: page.page_number,
-          page_size: page.page_size,
-          total_pages: page.total_pages,
-          total_entries: page.total_entries,
-          distance: @pagination_distance,
-          sort_field: sort_field,
-          sort_direction: sort_direction
-        }
-      }
+       %{
+         badges: page.entries,
+         page_number: page.page_number,
+         page_size: page.page_size,
+         total_pages: page.total_pages,
+         total_entries: page.total_entries,
+         distance: @pagination_distance,
+         sort_field: sort_field,
+         sort_direction: sort_direction
+       }}
     else
       {:error, error} -> {:error, error}
       error -> {:error, error}
@@ -154,17 +153,6 @@ defmodule Safira.Admin.Contest do
     Badge.admin_changeset(badge, %{})
   end
 
-  defp filter_config(:badges) do
-    defconfig do
-      date :begin
-        date :end
-        text :name
-        text :description
-        number :type
-        
-    end
-  end
-
   @doc """
   Paginate the list of redeems using filtrex
   filters.
@@ -187,17 +175,16 @@ defmodule Safira.Admin.Contest do
     with {:ok, filter} <- Filtrex.parse_params(filter_config(:redeems), params["redeem"] || %{}),
          %Scrivener.Page{} = page <- do_paginate_redeems(filter, params) do
       {:ok,
-        %{
-          redeems: page.entries,
-          page_number: page.page_number,
-          page_size: page.page_size,
-          total_pages: page.total_pages,
-          total_entries: page.total_entries,
-          distance: @pagination_distance,
-          sort_field: sort_field,
-          sort_direction: sort_direction
-        }
-      }
+       %{
+         redeems: page.entries,
+         page_number: page.page_number,
+         page_size: page.page_size,
+         total_pages: page.total_pages,
+         total_entries: page.total_entries,
+         distance: @pagination_distance,
+         sort_field: sort_field,
+         sort_direction: sort_direction
+       }}
     else
       {:error, error} -> {:error, error}
       error -> {:error, error}
@@ -239,8 +226,8 @@ defmodule Safira.Admin.Contest do
       ** (Ecto.NoResultsError)
 
   """
-  def get_redeem!(id) do 
-    Repo.get!(Redeem, id) 
+  def get_redeem!(id) do
+    Repo.get!(Redeem, id)
     |> Repo.preload([:badge, manager: :user, attendee: :user])
   end
 
@@ -309,9 +296,20 @@ defmodule Safira.Admin.Contest do
     Redeem.changeset(redeem, %{})
   end
 
+  defp filter_config(:badges) do
+    defconfig do
+      date(:begin)
+      date(:end)
+      text(:name)
+      text(:description)
+      number(:type)
+    end
+  end
+
   defp filter_config(:redeems) do
     defconfig do
-      
+      number(:manager_id)
+      number(:badge_id)
     end
   end
 end

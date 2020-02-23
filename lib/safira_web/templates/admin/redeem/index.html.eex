@@ -9,7 +9,17 @@
       <h3>Find Redeems</h3>
       <%= form_tag @conn.request_path, method: :get, id: "torch-filters-form" do %>
         
-        
+        <div class="field">
+          <label>Manager ID</label>
+          <%= number_filter_select(:redeem, :manager_id, @conn.params) %>
+          <%= filter_number_input(:redeem, :manager_id, @conn.params) %>
+        </div>
+
+        <div class="field">
+          <label>Badge ID</label>
+          <%= number_filter_select(:redeem, :badge_id, @conn.params) %>
+          <%= filter_number_input(:redeem, :badge_id, @conn.params) %>
+        </div>
         
         
         <button type="submit" class="torch-button">Search</button>
@@ -24,11 +34,15 @@
         <thead>
           <tr>
 
-            <th><%= table_link(@conn, "Attendee Name", :name) %></th>
+            <th><span>Attendee Name</span></th>
 
-            <th><%= table_link(@conn, "Manager Email", :manager_email) %></th>
+            <th><span>Manager Email</span></th>
 
-            <th><%= table_link(@conn, "Badge Name", :name) %></th>
+            <th><%= table_link(@conn, "Manager ID", :manager_id) %></th>
+
+            <th><span>Badge Name</span></th>
+
+            <th><%= table_link(@conn, "Badge ID", :manager_id) %></th>
             
             <th><span>Actions</span></th>
           </tr>
@@ -37,15 +51,27 @@
           <%= for redeem <- @redeems do %>
             <tr>
 
-              <td><%= redeem.attendee.name %></td>
+              <td>
+                  <span><%= link redeem.attendee.name, to: Routes.admin_attendee_path(@conn, :show, redeem.attendee) %></span>
+              </td>
 
               <%= if (redeem.manager_id) != nil do %>
-                <td><%= redeem.attendee.user.email%></td>
+                <td>
+                  <span><%= link redeem.manager.user.email, to: Routes.admin_manager_path(@conn, :show, redeem.manager) %></span>
+                </td>
+
+                <td><%= redeem.manager_id %></td>
               <% else %>
+                <td></td>
+
                 <td></td>
               <% end %>
 
-              <td><%= redeem.badge.name %></td>
+              <td>
+                  <span><%= link redeem.badge.name, to: Routes.admin_badge_path(@conn, :show, redeem.badge) %></span>
+              </td>
+
+              <td><%= redeem.badge_id %></td>
               
               <td class="torch-actions">
                 <span><%= link "Show", to: Routes.admin_redeem_path(@conn, :show, redeem) %></span>
