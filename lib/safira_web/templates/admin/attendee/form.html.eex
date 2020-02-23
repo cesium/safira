@@ -8,12 +8,6 @@
     <% end %>
 
     <div class="torch-form-group">
-      <%= label f, :nickname %>
-      <%= text_input f, :nickname %>
-      <%= error_tag f, :nickname %>
-    </div>
-
-    <div class="torch-form-group">
       <%= label f, :name %>
       <%= text_input f, :name %>
       <%= error_tag f, :name %>
@@ -23,12 +17,6 @@
       <%= label f, :volunteer %>
       <%= text_input f, :volunteer %>
       <%= error_tag f, :volunteer %>
-    </div>
-
-    <div class="torch-form-group">
-      <label>Avatar</label>
-      <%= file_input f, :avatar %>
-      <%= error_tag f, :avatar %>
     </div>
   
     <div class="torch-submit-form">
