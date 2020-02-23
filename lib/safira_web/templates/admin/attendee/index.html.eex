@@ -39,7 +39,7 @@
             
             <th><%= table_link(@conn, "Name", :name) %></th>
 
-            <th><%= table_link(@conn, "Email", :email) %></th>
+            <th><span>Email</span></th>
             
             <th><span>Actions</span></th>
           </tr>
