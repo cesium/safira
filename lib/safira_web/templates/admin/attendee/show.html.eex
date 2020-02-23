@@ -43,6 +43,19 @@
             <%= img_tag(Safira.Avatar.url({@attendee.avatar, @attendee}, :original)) %>
         </div>
       </li>
+
+      <li>
+        <div class="torch-show-label">Badges:</div>
+          <tbody>
+            <%= for badge <- @attendee.badges do %>
+              <li>
+                <div class="torch-show-data">
+                  <%= link img_tag(Safira.Avatar.url({badge.avatar, badge}, :original)), to: Routes.admin_badge_path(@conn, :show, badge) %>
+                </div>
+              </li>
+            <% end %>
+          </tbody>
+      </li>
       
     </ul>
   </div>
