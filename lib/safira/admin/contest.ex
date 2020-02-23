@@ -10,6 +10,7 @@ defmodule Safira.Admin.Contest do
 
   alias Safira.Contest.Badge
   alias Safira.Contest.Redeem
+  alias Safira.Contest.Referral
 
   @pagination [page_size: 15]
   @pagination_distance 5
@@ -296,6 +297,150 @@ defmodule Safira.Admin.Contest do
     Redeem.changeset(redeem, %{})
   end
 
+  @doc """
+  Paginate the list of referrals using filtrex
+  filters.
+
+  ## Examples
+
+      iex> list_referrals(%{})
+      %{referrals: [%Referral{}], ...}
+  """
+  @spec paginate_referrals(map) :: {:ok, map} | {:error, any}
+  def paginate_referrals(params \\ %{}) do
+    params =
+      params
+      |> Map.put_new("sort_direction", "desc")
+      |> Map.put_new("sort_field", "inserted_at")
+
+    {:ok, sort_direction} = Map.fetch(params, "sort_direction")
+    {:ok, sort_field} = Map.fetch(params, "sort_field")
+
+    with {:ok, filter} <- Filtrex.parse_params(filter_config(:referrals), params["referral"] || %{}),
+         %Scrivener.Page{} = page <- do_paginate_referrals(filter, params) do
+      {:ok,
+        %{
+          referrals: page.entries,
+          page_number: page.page_number,
+          page_size: page.page_size,
+          total_pages: page.total_pages,
+          total_entries: page.total_entries,
+          distance: @pagination_distance,
+          sort_field: sort_field,
+          sort_direction: sort_direction
+        }
+      }
+    else
+      {:error, error} -> {:error, error}
+      error -> {:error, error}
+    end
+  end
+
+  defp do_paginate_referrals(filter, params) do
+    Referral
+    |> Filtrex.query(filter)
+    |> preload([:badge, attendee: :user])
+    |> order_by(^sort(params))
+    |> paginate(Repo, params, @pagination)
+  end
+
+  @doc """
+  Returns the list of referrals.
+
+  ## Examples
+
+      iex> list_referrals()
+      [%Referral{}, ...]
+
+  """
+  def list_referrals do
+    Repo.all(Referral)
+  end
+
+  @doc """
+  Gets a single referral.
+
+  Raises `Ecto.NoResultsError` if the Referral does not exist.
+
+  ## Examples
+
+      iex> get_referral!(123)
+      %Referral{}
+
+      iex> get_referral!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_referral!(id) do 
+    Repo.get!(Referral, id)
+    |> Repo.preload([:badge, attendee: :user])
+  end
+
+  @doc """
+  Creates a referral.
+
+  ## Examples
+
+      iex> create_referral(%{field: value})
+      {:ok, %Referral{}}
+
+      iex> create_referral(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_referral(attrs \\ %{}) do
+    %Referral{}
+    |> Referral.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a referral.
+
+  ## Examples
+
+      iex> update_referral(referral, %{field: new_value})
+      {:ok, %Referral{}}
+
+      iex> update_referral(referral, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_referral(%Referral{} = referral, attrs) do
+    referral
+    |> Referral.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a Referral.
+
+  ## Examples
+
+      iex> delete_referral(referral)
+      {:ok, %Referral{}}
+
+      iex> delete_referral(referral)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_referral(%Referral{} = referral) do
+    Repo.delete(referral)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking referral changes.
+
+  ## Examples
+
+      iex> change_referral(referral)
+      %Ecto.Changeset{source: %Referral{}}
+
+  """
+  def change_referral(%Referral{} = referral) do
+    Referral.changeset(referral, %{})
+  end
+
   defp filter_config(:badges) do
     defconfig do
       date(:begin)
@@ -310,6 +455,12 @@ defmodule Safira.Admin.Contest do
     defconfig do
       number(:manager_id)
       number(:badge_id)
+    end
+  end
+
+  defp filter_config(:referrals) do
+    defconfig do
+      boolean :available
     end
   end
 end

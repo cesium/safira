@@ -29,6 +29,7 @@
             <a href="/admin/managers">Managers</a>
             <a href="/admin/companies">Companies</a>
             <a href="/admin/redeems">Redeems</a>
+            <a href="/admin/referrals">Referrals</a>
           </nav>
         </div>
       </section>
