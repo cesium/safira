@@ -55,7 +55,7 @@ defmodule Safira.Avatar do
     |> String.split(".")
     |> List.last
     |> String.downcase
-    "#{System.get_env("URL")}/images/#{struct}-missing.png"
+    "#{System.get_env("AVATAR_URL")}/images/#{struct}-missing.png"
   end
 
   # Specify custom headers for s3 objects
