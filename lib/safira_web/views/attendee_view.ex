@@ -44,6 +44,7 @@ defmodule SafiraWeb.AttendeeView do
     %{
       id: attendee.id,
       nickname: attendee.nickname,
+      name: attendee.name,
       avatar: Avatar.url({attendee.avatar, attendee}, :original),
       volunteer: attendee.volunteer
     }
