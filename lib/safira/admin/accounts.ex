@@ -98,6 +98,7 @@ defmodule Safira.Admin.Accounts do
   def get_attendee!(id) do
      Repo.get!(Attendee, id) 
      |> Repo.preload(:user)
+     |> Repo.preload(:badges)
   end
 
   @doc """
