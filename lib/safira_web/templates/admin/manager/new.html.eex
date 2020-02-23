@@ -7,8 +7,7 @@
 <section id="torch-header-and-content">
   <div class="torch-container">
     <div class="header">
-      <h3>New Manager</h3>
+      <h3>Creating a Manager is not possible</h3>
     </div>
-    <%= render "form.html", Map.put(assigns, :action, Routes.admin_manager_path(@conn, :create)) %>
   </div>
 </section>

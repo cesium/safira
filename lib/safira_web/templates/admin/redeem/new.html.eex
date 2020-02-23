@@ -7,8 +7,7 @@
 <section id="torch-header-and-content">
   <div class="torch-container">
     <div class="header">
-      <h3>New Redeem</h3>
+      <h3>Creating a Redeem is not possible</h3>
     </div>
-    <%= render "form.html", Map.put(assigns, :action, Routes.admin_redeem_path(@conn, :create)) %>
   </div>
 </section>

@@ -27,7 +27,7 @@
         <thead>
           <tr>
 
-            <th><%= table_link(@conn, "Email", :email) %></th>
+            <th><span>Email</span></th>
 
             <th><%= table_link(@conn, "Active", :active) %></th>
             
