@@ -6,6 +6,12 @@
     <%= if @changeset.action do %>
       <p class="torch-form-error">Oops, something went wrong! Please check the errors below.</p>
     <% end %>
+
+    <div class="torch-form-group">
+      <%= label f, :active %>
+      <%= text_input f, :active %>
+      <%= error_tag f, :active %>
+    </div>
   
     <div class="torch-submit-form">
       <%= submit "Submit", class: "torch-submit-button" %>
