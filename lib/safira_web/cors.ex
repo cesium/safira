@@ -1,6 +1,9 @@
 defmodule SafiraWeb.CORS do
   use Corsica.Router,
-    origins: System.get_env("FRONTEND_URL"),
+    origins: [
+      "http://#{System.get_env("CORS_DOMAIN")}",
+      "https://#{System.get_env("CORS_DOMAIN")}"
+    ],
     log: [rejected: :error, invalid: :warn, accepted: :debug],
     allow_headers: :all,
     allow_credentials: true,
