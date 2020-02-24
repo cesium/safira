@@ -15,6 +15,7 @@ defmodule Mix.Tasks.Gen.Referrals do
 
   defp create([id|number]) do
     Mix.Task.run "app.start"
+    IO.puts(Contest.get_badge!(id).name)
     for _n <- 1..List.last(number) do
       Contest.create_referral(%{badge_id: id})
       |> elem(1)

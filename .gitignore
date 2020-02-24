@@ -119,3 +119,7 @@ tags
 ### iex
 .iex.exs
 .elixir_ls/
+
+*.in
+temp
+pdf/
