@@ -39,7 +39,7 @@
 \usepackage{multicol}
 \setlength{\columnsep}{-0.5cm}
 
-\renewcommand{\arraystretch}{1.2}
+\renewcommand{\arraystretch}{1.5}
 
 \usepackage[T1]{fontenc}
 \renewcommand*\familydefault{\sfdefault}
@@ -54,19 +54,19 @@
       \end{tabular}\\
 
       \multicolumn{1}{c}{
-        \small{Semana da Engenharia Informática}
+        \small{ENEI}
       }\\[-0.15cm]
 
       \multicolumn{1}{c}{
-        \small{Universidade do Minho, 2018}
+        \small{Altice Forum Braga, 2020}
       }\\[-0.1cm]
 
       \multicolumn{1}{c}{
-        \texttt{https://moonstone.seium.org}
+        \texttt{https://enei.pt}
       }\\[-0.1cm]
 
       \multicolumn{1}{c}{
-        \texttt{#2}
+        \multirow{3}{\linewidth}{\texttt{#2}}
       }\\
     \end{tabular}
 
@@ -74,7 +74,7 @@
 
     \begin{tabular}[t]{l}
       \begin{pspicture}(2.5cm,2.5cm)
-        \psbarcode[transy=-0.05cm]{https://safira.seium.org/api/v1/referrals/#2}{height=1 width=1}{qrcode}
+        \psbarcode[transy=-0.05cm]{https://safira.enei.pt/api/v1/referrals/#2}{height=1 width=1}{qrcode}
       \end{pspicture} \\
     \end{tabular}\\ \hline
   \end{tabular}
