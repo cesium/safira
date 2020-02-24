@@ -9,8 +9,8 @@ defmodule SafiraWeb.ReferralController do
 
   plug Safira.Authorize, :attendee
 
-  def show(conn, %{"id" => id}) do
-    referral = Contest.get_referral_preload!(id)
+  def create(conn, %{"id" => id}) do
+    referral = Contest.get_referral!(id)
 
     case referral.available do
       true ->
