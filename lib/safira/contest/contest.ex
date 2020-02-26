@@ -41,6 +41,10 @@ defmodule Safira.Contest do
     |> Repo.preload(:attendees)
   end
 
+  def get_badge_description(description) do
+    Repo.get_by!(Badge, description: description)
+  end
+
   def create_badge(attrs \\ %{}) do
     %Badge{}
     |> Badge.changeset(attrs)
@@ -116,6 +120,10 @@ defmodule Safira.Contest do
 
   def get_redeem!(id), do: Repo.get!(Redeem, id)
 
+  def get_keys_redeem(attendee_id, badge_id) do 
+    Repo.get_by(Redeem, [attendee_id: attendee_id, badge_id: badge_id])
+  end
+
   def create_redeem(attrs \\ %{}) do
     %Redeem{}
     |> Redeem.changeset(attrs)
@@ -143,6 +151,12 @@ defmodule Safira.Contest do
     |> Repo.preload([badges: from(b in Badge, where: b.type != ^0)])
     |> Enum.map(fn x -> Map.put(x, :badge_count, length(Enum.filter(x.badges,fn x -> x.type != 0 end))) end)
     |> Enum.sort(&(&1.badge_count >= &2.badge_count))
+  end
+
+  def top_list_leaderboard(n) do
+    list_leaderboard()
+    |> Enum.take(n)
+    |> Enum.map(fn a -> %{a.name => a.badge_count} end)
   end
 
   def get_winner do
