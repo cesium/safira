@@ -4,15 +4,15 @@ set -e
 . "functions.sh"
 
 if not_installed "docker"; then
-  pp_error "setup" "
-  We are using docker for hosting our DB. pls insall it and run this script again.
-  "
+
+  pp_error "setup" "We are using docker for hosting our DB. pls insall it and run this script again."
 
   exit 1
+
 else
-  docker_state=$(docker info >/dev/null 2>&1)
-  if [[ $? -ne 0 ]]; then
-    pp_error "setup" "Docker does not seem to be running, run it first and retry"
+  
+  if ! docker info > /dev/null 2>&1; then
+    pp_error "setup" "Docker does not seem to be running, start it and retry"
     exit 1
   fi
 
