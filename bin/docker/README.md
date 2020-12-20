@@ -10,4 +10,6 @@ The setup script uses a Makefile with has some commands you can run on your own:
   * ```make start``` -> To start a container after a stop.
   * ```make clean``` -> To remove the container, and consequently all its data.
 
-Note: The used PostgreSQL engine version is 11.5. There are new versions, but they require other configurations which might not be compatible with the current state of safira.
+Notes: 
+  * The used PostgreSQL engine version is 11.5. There are new versions, but they require other configurations which might not be compatible with the current state of safira.
+  * Makefile has some constants that you can change. Perhaps you already have a container named postgres, which has another version and you don't want to loose it, so in this case you might want to change the CONTAINER constant to another value, and perhaps its port too.
