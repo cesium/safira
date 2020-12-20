@@ -3,7 +3,7 @@
 If you want to run a PostgreSQL database engine in docker, you just need to run ``` ./setup.sh ``` inside this folder,
 which leaves you with a container up-and-running, or informs you what you need or what went wrong.
 
-The setup script uses a Makefile with has some commands you can run on your own:
+The setup script uses a Makefile which has some commands you can run on your own:
 
   * ```make```       -> To create a PostgreSQL container and a user. After running this command your container is up-and-running.
   * ```make stop```  -> To stop the container.
