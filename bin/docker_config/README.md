@@ -1,21 +1,10 @@
 ## How to Run?
 
-To create a PostgreSQL container and a user, you just need to run:
+If you want to run a PostgreSQL database engine in docker, you just need to run ``` ./setup.sh ```, inside this folder,
+which leaves you with a container up-and-running, or informs you what you need or what went wrong.
 
-```
-make
-```
-After running this command your container is up-and-running.
+The setup script uses a Makefile with some commands you can run on your own:
 
-
-If you want to stop the container, you just need to run:
-
-```
-make stop
-```
-
-If you stopped your docker, or container, for starting it again you just need to run:
-
-```
-make start
-```
+  * ```make```       -> To create a PostgreSQL container and a user. After running this command your container is up-and-running.
+  * ```make stop```  -> To stop the container.
+  * ```make start``` -> For starting a container after a stop.
