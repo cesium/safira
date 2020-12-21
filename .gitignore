@@ -43,6 +43,7 @@ npm-debug.log
 
 # Environment Variables
 /.env
+/bin/setup/.env
 
 # Test files
 /*.json
