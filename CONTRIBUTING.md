@@ -1,4 +1,8 @@
-## How to Run?
+## Setup
+
+To run Safira locally, you need to have some tools installed. Go to ```bin/setup``` and execute the setup script ```./setup.sh```.
+
+## Database on Docker
 
 We use ```docker-compose``` to deploy a database engine in docker.
 Some commands that are useful:
