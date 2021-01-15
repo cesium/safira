@@ -3,7 +3,7 @@ defmodule Safira.Repo.Migrations.AddCompanyChannelId do
 
   def change do
     alter table(:companies) do
-      add: channel_id, :string
+      add :channel_id, :string
     end
   end
 end
