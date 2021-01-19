@@ -18,7 +18,7 @@ defmodule Safira.Accounts.Company do
   @doc false
   def changeset(company, attrs) do
     company
-    |> cast(attrs, [:name, :sponsorship, :badge_id])
+    |> cast(attrs, [:name, :sponsorship, :badge_id, :channel_id])
     |> cast_assoc(:user)
     |> validate_required([:name, :sponsorship])
     |> unique_constraint(:channel_id)
