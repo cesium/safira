@@ -5,7 +5,6 @@ defmodule Mix.Tasks.Gen.Company do
   @domain "enei.pt"
 
   def run(args) do
-
     cond do
       length(args) != 4 ->
         Mix.shell().info("Needs to receive a Company name, sponsorship, badge_id and channel_id.")
