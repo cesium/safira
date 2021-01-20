@@ -15,6 +15,8 @@ defmodule Safira.Contest.Badge do
     field :avatar, Safira.Avatar.Type
     #%{hidden: 0, secret: 1, empresa: 2, talk: 3, workshop: 4, oradore: 5, dias: 6, outros: 7}
     field :type, :integer
+    field :tokens, :integer
+
 
     has_many :referrals, Referral
     many_to_many :attendees, Attendee, join_through: Redeem
@@ -25,7 +27,7 @@ defmodule Safira.Contest.Badge do
   @doc false
   def changeset(badge, attrs) do
     badge
-    |> cast(attrs, [:name, :description, :begin, :end, :type])
+    |> cast(attrs, [:name, :description, :begin, :end, :type, :tokens])
     |> cast_attachments(attrs, [:avatar])
     |> validate_required([:name, :description, :begin, :end, :type])
     |> validate_length(:name, min: 1, max: 255)
@@ -36,7 +38,7 @@ defmodule Safira.Contest.Badge do
   @doc false
   def admin_changeset(badge, attrs) do
     badge
-    |> cast(attrs, [:begin, :end, :name, :description, :type])
+    |> cast(attrs, [:begin, :end, :name, :description, :type, :tokens])
     |> cast_attachments(attrs, [:avatar])
     |> validate_required([:begin, :end, :name, :description, :type])
     |> validate_length(:name, min: 1, max: 255)

@@ -20,7 +20,8 @@ defmodule SafiraWeb.BadgeView do
       avatar: Avatar.url({badge.avatar, badge}, :original),
       begin: badge.begin,
       end: badge.end,
-      type: badge.type
+      type: badge.type,
+      tokens: badge.tokens,
     }
   end
 
@@ -33,6 +34,7 @@ defmodule SafiraWeb.BadgeView do
       begin: badge.begin,
       end: badge.end,
       type: badge.type,
+      tokens: badge.tokens,
       attendees: render_many(badge.attendees, AttendeeView, "attendee_simple.json")
     }
   end

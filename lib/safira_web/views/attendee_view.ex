@@ -23,7 +23,8 @@ defmodule SafiraWeb.AttendeeView do
       avatar: Avatar.url({attendee.avatar, attendee}, :original),
       badges: render_many(attendee.badges, SafiraWeb.BadgeView, "badge.json"),
       badge_count: attendee.badge_count,
-      volunteer: attendee.volunteer
+      volunteer: attendee.volunteer,
+      total_tokens: attendee.total_tokens,
     }
   end
 
@@ -46,7 +47,8 @@ defmodule SafiraWeb.AttendeeView do
       nickname: attendee.nickname,
       name: attendee.name,
       avatar: Avatar.url({attendee.avatar, attendee}, :original),
-      volunteer: attendee.volunteer
+      volunteer: attendee.volunteer,
+      total_tokens: attendee.total_tokens,
     }
   end
 end
