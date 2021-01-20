@@ -15,6 +15,7 @@ defmodule Safira.Accounts.Attendee do
     field :volunteer, :boolean, default: false
     field :avatar, Safira.Avatar.Type
     field :name, :string
+    field :total_tokens, :integer, default: 0
 
     belongs_to :user, User
     many_to_many :badges, Badge, join_through: Redeem

@@ -24,6 +24,7 @@ defmodule Safira.MixProject do
     ]
   end
 
+
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test) do
     [
