@@ -34,7 +34,8 @@ defmodule SafiraWeb.AuthView do
     }
   end
 
-  def render("jwt.json", %{jwt: jwt}) do
-    %{jwt: jwt}
+  def render("signup_response.json", %{jwt: jwt, association_code: association_code}) do
+    %{jwt: jwt,
+      association_code: association_code}
   end
 end
