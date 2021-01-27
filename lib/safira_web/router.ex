@@ -52,6 +52,7 @@ defmodule SafiraWeb.Router do
       get "/attendee", AuthController, :attendee
       get "/company", AuthController, :company
       get "/leaderboard", LeaderboardController, :index
+      post "/association", DiscordAssociationController, :create
 
       resources "/badges", BadgeController, only: [:index, :show]
       resources "/attendees", AttendeeController, except: [:create]

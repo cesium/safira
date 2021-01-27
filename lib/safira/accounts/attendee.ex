@@ -59,6 +59,11 @@ defmodule Safira.Accounts.Attendee do
     |> unique_constraint(:nickname)
   end
 
+  def update_changeset_discord_association(attendee, attrs) do
+    attendee
+    |> cast(attrs, [:discord_id])
+  end
+
   def volunteer_changeset(attendee, attrs) do
     attendee
     |> cast(attrs, [:volunteer])

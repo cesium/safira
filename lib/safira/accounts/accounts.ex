@@ -94,6 +94,14 @@ defmodule Safira.Accounts do
     |> Repo.preload(:badges)
   end
 
+  def get_attendee_by_discord_association_code(discord_association_code) do
+    try do
+      Repo.get_by(Attendee, discord_association_code: discord_association_code)
+    rescue
+      _e in Ecto.Query.CastError -> nil
+    end
+  end
+
   def create_attendee(attrs \\ %{}) do
     %Attendee{}
     |> Attendee.changeset(attrs)
@@ -106,13 +114,26 @@ defmodule Safira.Accounts do
     |> Repo.update()
   end
 
+  def update_attendee_association(%Attendee{} = attendee, attrs) do
+    attendee
+    |> Attendee.update_changeset_discord_association(attrs)
+    |> Repo.update()
+  end
+
   def update_attendee_sign_up(%Attendee{} = attendee, attrs) do
     attendee
     |> Attendee.update_changeset_sign_up(attrs)
     |> Repo.update()
   end
 
+
   def volunteer_update_attendee(%Attendee{} = attendee, attrs) do
+    attendee
+    |> Attendee.volunteer_changeset(attrs)
+    |> Repo.update()
+  end
+
+  def discord_association_update_attendee(%Attendee{} = attendee, attrs) do
     attendee
     |> Attendee.volunteer_changeset(attrs)
     |> Repo.update()
