@@ -4,7 +4,6 @@ defmodule SafiraWeb.AuthController do
   alias Safira.Auth
   alias Safira.Accounts
   alias Safira.Guardian
-  require IEx
 
   action_fallback SafiraWeb.FallbackController
 
