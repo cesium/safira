@@ -13,7 +13,7 @@ defmodule SafiraWeb.AuthController do
          {:ok, token, _claims} <- Guardian.encode_and_sign(multi.user) do
       conn
       |> render("signup_response.json", %{jwt: token,
-       association_code: multi.attendee.association_code})
+      discord_association_code: multi.attendee.discord_association_code})
     end
   end
 

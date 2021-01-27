@@ -18,7 +18,7 @@ defmodule Mix.Tasks.Gen.Attendees do
     Enum.each 1..n, fn(_n) ->
       created_attendee = Safira.Repo.insert!(%Safira.Accounts.Attendee{})
       IO.puts("Id: #{Map.get(created_attendee, :id)}")
-      IO.puts("Association_code: #{Map.get(created_attendee, :association_code)}")
+      IO.puts("Association_code: #{Map.get(created_attendee, :discord_association_code)}")
     end
   end
 end

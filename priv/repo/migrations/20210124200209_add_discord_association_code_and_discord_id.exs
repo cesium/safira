@@ -1,9 +1,9 @@
-defmodule Safira.Repo.Migrations.AddAssociationCodeAndDiscordId do
+defmodule Safira.Repo.Migrations.AddDiscordAssociationCodeAndDiscordId do
   use Ecto.Migration
 
   def change do
     alter table(:attendees) do
-      add :association_code, :uuid, null: false
+      add :discord_association_code, :uuid, null: false
       add :discord_id, :string
     end
 
