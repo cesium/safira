@@ -8,7 +8,7 @@ defmodule Mix.Tasks.Gen.UserWithBadge do
   alias Safira.Accounts.User
   alias Safira.Auth
 
-  NimbleCSV.define(EneiParser, separator: ",", escape: "\"")
+  NimbleCSV.define(SeiParser, separator: ",", escape: "\"")
   # Use header
 
   def run(args) do
@@ -28,11 +28,11 @@ defmodule Mix.Tasks.Gen.UserWithBadge do
     :ssl.start()
 
     case :httpc.request(:get, {to_charlist(url), []}, [], stream: '/tmp/user.csv') do
-      {:ok, _resp} -> 
-        parse_csv("/tmp/user.csv") 
-        |> create_user_give_badge
+      {:ok, _resp} ->
+        IO.inspect(parse_csv("/tmp/user.csv"))
+        # |> create_user_give_badge
 
-      {:error, resp} -> resp
+      {:error, resp} -> IO.inspect resp
     end
   end
 
@@ -50,7 +50,7 @@ defmodule Mix.Tasks.Gen.UserWithBadge do
     badge_11 = Contest.get_badge_name!("Alojamento Alberto Sampaio")
 
     Enum.map(list_user_csv, fn user_csv ->
-      multi = 
+      multi =
         Multi.new()
         |> Multi.insert(
           :user,
@@ -69,7 +69,7 @@ defmodule Mix.Tasks.Gen.UserWithBadge do
           end
         )
 
-      multi = 
+      multi =
         cond do
           user_csv.housing == "Não tem" ->
             Enum.reduce(
@@ -84,7 +84,7 @@ defmodule Mix.Tasks.Gen.UserWithBadge do
             give_badge(badge_11.id, multi)
         end
 
-      multi = 
+      multi =
         if user_csv.food == 0 do
           Enum.reduce(
             [badge_4, badge_5, badge_6, badge_7, badge_8, badge_9],
@@ -104,7 +104,7 @@ defmodule Mix.Tasks.Gen.UserWithBadge do
 
   defp send_mail(transaction) do
     case transaction do
-      {:ok, changes} -> 
+      {:ok, changes} ->
         user = Auth.reset_password_token(changes.user)
 
         Safira.Email.send_password_email(user.email, user.reset_password_token)
@@ -145,16 +145,17 @@ defmodule Mix.Tasks.Gen.UserWithBadge do
   defp parse_csv(path) do
     path
     |> File.stream!(read_ahead: 1_000)
-    |> EneiParser.parse_stream()
-    |> Stream.map(fn [name, lastname, email, housing, food] ->
+    |> SeiParser.parse_stream()
+    |> Stream.map(fn row ->
       %{
-        name: "#{name} #{lastname}",
-        email: email,
-        housing: housing,
-        food: String.to_integer(food)
+        name: "#{Enum.at(row,2)} #{Enum.at(row,3)}",
+        email: Enum.at(row,4),
+        housing: nil, #old value: housing
+        food: nil #old value: String.to_integer(food)
       }
     end)
   end
+
 
   defp random_string(length) do
     :crypto.strong_rand_bytes(length)
