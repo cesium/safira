@@ -25,14 +25,14 @@ defmodule SafiraWeb.DiscordAssociationController do
     cond do
       not is_nil attendee ->
          # no need for checking if discord_id is valid
-         # since the the user's discord_id is attained by the bot through the discord API
+         # since the the user's discord_id is obtained by the bot through the discord API
          Accounts.update_attendee_association(attendee, %{discord_id: discord_id})
          conn
          |> put_status(:created)
          |> json(%{association: "Attendee discord_id successfully associated"})
       true ->
         conn
-        |> put_status(:error)
+        |> put_status(:not_found)
         |> json(%{error: "Attendee not found"})
     end
   end
