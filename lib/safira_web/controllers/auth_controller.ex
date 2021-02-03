@@ -8,11 +8,12 @@ defmodule SafiraWeb.AuthController do
   action_fallback SafiraWeb.FallbackController
 
   def sign_up(conn, %{"user" => user_params}) do
-    with {:ok, multi} <- Auth.create_user_uuid(user_params),
-         {:ok, token, _claims} <- Guardian.encode_and_sign(multi.user) do
+    with {:ok, %{user: user,
+          attendee: %{discord_association_code: code}}} <- Auth.create_user_uuid(user_params),
+         {:ok, token, _claims} <- Guardian.encode_and_sign(user) do
       conn
       |> render("signup_response.json", %{jwt: token,
-      discord_association_code: multi.attendee.discord_association_code})
+      discord_association_code: code})
     end
   end
 
