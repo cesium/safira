@@ -138,11 +138,6 @@ defmodule Safira.Accounts do
     |> Repo.update()
   end
 
-  def discord_association_update_attendee(%Attendee{} = attendee, attrs) do
-    attendee
-    |> Attendee.volunteer_changeset(attrs)
-    |> Repo.update()
-  end
 
   def delete_attendee(%Attendee{} = attendee) do
     Repo.delete(attendee)
