@@ -7,6 +7,7 @@ defmodule Safira.Repo.Migrations.AddDiscordAssociationCodeAndDiscordId do
       add :discord_id, :string
     end
 
+      create unique_index(:attendees, [:discord_association_code])
       create unique_index(:attendees, [:discord_id])
   end
 end
