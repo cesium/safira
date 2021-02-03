@@ -139,7 +139,7 @@ defmodule Mix.Tasks.Gen.UserWithBadge do
       "password_confirmation" => password
     }
 
-    User.changeset(%User{}, user)
+    x = User.changeset(%User{}, user)
   end
 
   defp parse_csv(path) do
