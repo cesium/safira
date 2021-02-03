@@ -132,7 +132,6 @@ defmodule Safira.Accounts do
     |> Repo.update()
   end
 
-
   def volunteer_update_attendee(%Attendee{} = attendee, attrs) do
     attendee
     |> Attendee.volunteer_changeset(attrs)
