@@ -95,10 +95,9 @@ defmodule Safira.Accounts do
   end
 
   def get_attendee_by_discord_association_code(discord_association_code) do
-    try do
-      Repo.get_by(Attendee, discord_association_code: discord_association_code)
-    rescue
-      _e in Ecto.Query.CastError -> nil # since this code is sent by an user and it should be an UUID
+    case Ecto.UUID.cast(discord_association_code) do
+      {:ok, casted_code} -> Repo.get_by(Attendee, discord_association_code: casted_code)
+      _ -> nil
     end
   end
 
