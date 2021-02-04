@@ -23,8 +23,7 @@ defmodule SafiraWeb.PasswordController do
       user ->
         user = Auth.reset_password_token(user)
         # send password token to pw_params["email"]
-        Safira.Email.send_reset_email(email, user.reset_password_token)
-        |> Safira.Mailer.deliver_now()
+        Safira.Mailer.send_reset_email(email, user.reset_password_token)
 
         conn
         |> put_status(:created)

@@ -107,8 +107,7 @@ defmodule Mix.Tasks.Gen.UserWithBadge do
       {:ok, changes} ->
         user = Auth.reset_password_token(changes.user)
 
-        Safira.Email.send_password_email(user.email, user.reset_password_token)
-        |>Safira.Mailer.deliver_now()
+        Safira.Mailer.send_password_email(user.email, user.reset_password_token)
 
       _ -> transaction
     end

@@ -93,7 +93,7 @@ defmodule Mix.Tasks.Gen.UserFromCsv do
       {:ok, changes} ->
         user = Auth.reset_password_token(changes.user)
 
-        IO.inspect Safira.Mailer.send_password_email
+        Safira.Mailer.send_password_email(user.email, user.reset_password_token)
 
       _ ->
         transaction
