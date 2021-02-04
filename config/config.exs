@@ -8,7 +8,9 @@
 use Mix.Config
 
 config :safira,
-  ecto_repos: [Safira.Repo]
+  ecto_repos: [Safira.Repo],
+  mailgun_domain: System.get_env("EMAIL_DOMAIN"),
+  mailgun_key: System.get_env("EMAIL_API_KEY")
 
 # Configures the endpoint
 config :safira, SafiraWeb.Endpoint,

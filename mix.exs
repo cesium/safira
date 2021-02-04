@@ -61,7 +61,6 @@ defmodule Safira.MixProject do
       {:ex_aws_s3, "~> 2.0"},
       {:hackney, "~> 1.9"},
       {:httpoison, "~> 0.13"},
-      {:poison, "~> 3.1"},
       {:sweet_xml, "~> 0.6"},
       {:arc_ecto, "~> 0.11.1"},
       {:xml_builder, "~> 2.0", override: true},
@@ -72,7 +71,9 @@ defmodule Safira.MixProject do
       {:pow, "~> 1.0.18"},
       {:ex_machina, "~> 2.3", only: :test},
       {:bureaucrat, "~> 0.2.5", only: :test},
-      {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false},
+      {:mailgun, "~> 0.1.2"},
+      {:poison, "~> 2.1", override: true}
     ]
   end
 
