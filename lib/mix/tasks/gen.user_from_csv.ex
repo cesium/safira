@@ -53,13 +53,7 @@ defmodule Mix.Tasks.Gen.UserFromCsv do
         |> Multi.insert(
           :attendee,
           fn %{user: user} ->
-            Attendee.only_user_changeset(
-              %Attendee{},
-              %{
-                user_id: user.id,
-                name: user_csv_entry.name
-              }
-            )
+            create_attendee_aux(user, user_csv_entry)
           end
         )
       end
@@ -78,7 +72,7 @@ defmodule Mix.Tasks.Gen.UserFromCsv do
     User.changeset(%User{}, user)
   end
 
-  defp create_attendee_aux(%{user: user}, user_csv_entry) do
+  defp create_attendee_aux(user, user_csv_entry) do
     Attendee.only_user_changeset(
       %Attendee{},
       %{
