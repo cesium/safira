@@ -23,10 +23,10 @@ defmodule Mix.Tasks.Gen.UserFromCsv do
 
     if File.exists?(path) do
       path
-        |> parse_csv
-        |> create_users
+      |> parse_csv
+      |> create_users
     else
-        IO.puts("File does not exist")
+      IO.puts("File does not exist")
     end
   end
 
@@ -36,29 +36,28 @@ defmodule Mix.Tasks.Gen.UserFromCsv do
     |> SeiParser.parse_stream()
     |> Stream.map(fn row ->
       %{
-        name: "#{Enum.at(row,2)} #{Enum.at(row,3)}",
-        email: Enum.at(row,4)
+        name: "#{Enum.at(row, 2)} #{Enum.at(row, 3)}",
+        email: Enum.at(row, 4)
       }
     end)
   end
 
   defp create_users(user_csv_stream) do
     Enum.map(user_csv_stream, fn user_csv_entry ->
-        Multi.new()
-        |> Multi.insert(
-          :user,
-          create_user_aux(user_csv_entry)
-        )
-        |> Multi.insert(
-          :attendee,
-          fn %{user: user} ->
-            create_attendee_aux(user, user_csv_entry)
-          end
-        )
-        |> Repo.transaction()
-        |> send_mail()
-      end
-    )
+      Multi.new()
+      |> Multi.insert(
+        :user,
+        create_user_aux(user_csv_entry)
+      )
+      |> Multi.insert(
+        :attendee,
+        fn %{user: user} ->
+          create_attendee_aux(user, user_csv_entry)
+        end
+      )
+      |> Repo.transaction()
+      |> send_mail()
+    end)
   end
 
   defp create_user_aux(user) do
@@ -95,9 +94,10 @@ defmodule Mix.Tasks.Gen.UserFromCsv do
         user = Auth.reset_password_token(changes.user)
 
         Safira.Email.send_password_email(user.email, user.reset_password_token)
-        |>Safira.Mailer.deliver_now()
+        |> Safira.Mailer.deliver_now()
 
-      _ -> transaction
+      _ ->
+        transaction
     end
   end
 end
