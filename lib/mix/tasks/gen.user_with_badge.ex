@@ -8,7 +8,7 @@ defmodule Mix.Tasks.Gen.UserWithBadge do
   alias Safira.Accounts.User
   alias Safira.Auth
 
-  NimbleCSV.define(SeiParser, separator: ",", escape: "\"")
+  NimbleCSV.define(EneiParser, separator: ",", escape: "\"")
   # Use header
 
   def run(args) do
@@ -29,10 +29,10 @@ defmodule Mix.Tasks.Gen.UserWithBadge do
 
     case :httpc.request(:get, {to_charlist(url), []}, [], stream: '/tmp/user.csv') do
       {:ok, _resp} ->
-        IO.inspect(parse_csv("/tmp/user.csv"))
-        # |> create_user_give_badge
+        parse_csv("/tmp/user.csv")
+        |> create_user_give_badge
 
-      {:error, resp} -> IO.inspect resp
+      {:error, resp} -> resp
     end
   end
 
@@ -139,23 +139,22 @@ defmodule Mix.Tasks.Gen.UserWithBadge do
       "password_confirmation" => password
     }
 
-    x = User.changeset(%User{}, user)
+    User.changeset(%User{}, user)
   end
 
   defp parse_csv(path) do
     path
     |> File.stream!(read_ahead: 1_000)
-    |> SeiParser.parse_stream()
-    |> Stream.map(fn row ->
+    |> EneiParser.parse_stream()
+    |> Stream.map(fn [name, lastname, email, housing, food] ->
       %{
-        name: "#{Enum.at(row,2)} #{Enum.at(row,3)}",
-        email: Enum.at(row,4),
-        housing: nil, #old value: housing
-        food: nil #old value: String.to_integer(food)
+        name: "#{name} #{lastname}",
+        email: email,
+        housing: housing,
+        food: String.to_integer(food)
       }
     end)
   end
-
 
   defp random_string(length) do
     :crypto.strong_rand_bytes(length)

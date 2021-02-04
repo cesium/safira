@@ -1,11 +1,12 @@
 defmodule Mix.Tasks.Gen.UserFromCsv do
   use Mix.Task
   alias Ecto.Multi
+  alias Safira.Repo
+  alias Safira.Auth
   alias Safira.Accounts.User
   alias Safira.Accounts.Attendee
 
-  require IEx
-
+  NimbleCSV.define(SeiParser, separator: ",", escape: "\"")
 
   def run(args) do
     cond do
@@ -24,8 +25,6 @@ defmodule Mix.Tasks.Gen.UserFromCsv do
       path
         |> parse_csv
         |> create_users
-        |> Enum.to_list
-        |> IO.inspect
     else
         IO.puts("File does not exist")
     end
@@ -56,6 +55,8 @@ defmodule Mix.Tasks.Gen.UserFromCsv do
             create_attendee_aux(user, user_csv_entry)
           end
         )
+        |> Repo.transaction()
+        |> send_mail()
       end
     )
   end
@@ -86,5 +87,17 @@ defmodule Mix.Tasks.Gen.UserFromCsv do
     :crypto.strong_rand_bytes(length)
     |> Base.url_encode64()
     |> binary_part(0, length)
+  end
+
+  defp send_mail(transaction) do
+    case transaction do
+      {:ok, changes} ->
+        user = Auth.reset_password_token(changes.user)
+
+        Safira.Email.send_password_email(user.email, user.reset_password_token)
+        |>Safira.Mailer.deliver_now()
+
+      _ -> transaction
+    end
   end
 end
