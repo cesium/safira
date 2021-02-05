@@ -6,7 +6,7 @@ defmodule Mix.Tasks.Gen.UsersFromCsv do
   alias Safira.Accounts.User
   alias Safira.Accounts.Attendee
 
-  NimbleCSV.define(SeiParser, separator: ",", escape: "\"")
+  alias NimbleCSV.RFC4180, as: CSV
 
   def run(args) do
     cond do
@@ -33,7 +33,7 @@ defmodule Mix.Tasks.Gen.UsersFromCsv do
   defp parse_csv(path) do
     path
     |> File.stream!(read_ahead: 1_000)
-    |> SeiParser.parse_stream()
+    |> CSV.parse_stream()
     |> Stream.map(fn row ->
       %{
         name: "#{Enum.at(row, 2)} #{Enum.at(row, 3)}",
