@@ -154,13 +154,13 @@ defmodule Safira.Contest do
   end
 
   def list_daily_leaderboard(date) do
-    query = from a in Safira.Accounts.Attendee,
-      join: r in Redeem, on: a.id == r.attendee_id,
-      join: b in Badge, on: r.badge_id == b.id,
-      where: not(is_nil a.user_id) and fragment("?::date", r.inserted_at) == ^date and b.type != ^0,
-      preload: [badges: b]
-
-    Repo.all(query)
+    Repo.all(
+      from a in Safira.Accounts.Attendee,
+        join: r in Redeem, on: a.id == r.attendee_id,
+        join: b in Badge, on: r.badge_id == b.id,
+        where: not(is_nil a.user_id) and fragment("?::date", r.inserted_at) == ^date and b.type != ^0,
+        preload: [badges: b]
+    )
     |> Enum.map(fn a -> Map.put(a, :badge_count, length(a.badges)) end)
     |> Enum.sort(&(&1.badge_count >= &2.badge_count))
   end
