@@ -21,12 +21,12 @@ defmodule Mix.Tasks.Gen.UsersFromCsv do
   defp create(path) do
     Mix.Task.run("app.start")
 
-    if File.exists?(path) do
+    try do
       path
-      |> parse_csv
-      |> create_users
-    else
-      IO.puts("File does not exist")
+        |> parse_csv
+        |> create_users
+    rescue
+      e in File.Error -> IO.inspect e
     end
   end
 
@@ -94,7 +94,6 @@ defmodule Mix.Tasks.Gen.UsersFromCsv do
         user = Auth.reset_password_token(changes.user)
 
         Safira.Email.send_password_email(user.email, user.reset_password_token)
-        |>Safira.Mailer.deliver_now()
 
       _ ->
         transaction
