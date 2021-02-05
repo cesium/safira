@@ -1,7 +1,6 @@
 defmodule Safira.Email do
   #use Bamboo.Phoenix, view: Safira.FeedbackView
   import Bamboo.Email
-  import Bamboo.Phoenix
 
   def send_reset_email(to_email, token) do
     new_email()
