@@ -8,10 +8,12 @@ defmodule SafiraWeb.AuthController do
   action_fallback SafiraWeb.FallbackController
 
   def sign_up(conn, %{"user" => user_params}) do
-    with {:ok, multi} <- Auth.create_user_uuid(user_params),
-         {:ok, token, _claims} <- Guardian.encode_and_sign(multi.user) do
+    with {:ok, %{user: user,
+          attendee: %{discord_association_code: code}}} <- Auth.create_user_uuid(user_params),
+         {:ok, token, _claims} <- Guardian.encode_and_sign(user) do
       conn
-      |> render("jwt.json", jwt: token)
+      |> render("signup_response.json", %{jwt: token,
+      discord_association_code: code})
     end
   end
 
@@ -22,15 +24,15 @@ defmodule SafiraWeb.AuthController do
       cond do
         not is_nil user_preload.attendee ->
           user
-          |> Map.put(:id, user_preload.id) 
+          |> Map.put(:id, user_preload.id)
           |> Map.put(:type, "attendee")
         not is_nil user_preload.company ->
           user
-          |> Map.put(:id, user_preload.id) 
+          |> Map.put(:id, user_preload.id)
           |> Map.put(:type, "company")
         not is_nil user_preload.manager ->
           user
-          |> Map.put(:id, user_preload.id) 
+          |> Map.put(:id, user_preload.id)
           |> Map.put(:type, "manager")
       end
     render(conn, "user.json", user: user)
@@ -62,7 +64,7 @@ defmodule SafiraWeb.AuthController do
     attendee = Accounts.get_attendee!(id)
     case is_nil attendee do
       true ->
-        {:error, :not_found}      
+        {:error, :not_found}
       false ->
         render(conn, "is_registered.json", is_registered: not is_nil attendee.user_id)
     end
