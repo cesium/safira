@@ -1,18 +1,22 @@
 version: '3.1'
 
 services:
-  database:
+  db:
     image: postgres:11.5
-    container_name: database
+    container_name: safira_db
     env_file: .env
-    environment: 
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    environment:
+      POSTGRES_DB: ${DB_NAME:-safira_dev}
+      POSTGRES_USER: ${DB_USERNAME:-safira}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-secret}
+      POSTGRES_PORT: ${DB_PORT:-5432}
+      POSTGRES_HOST: ${DB_HOST:-localhost}
     ports:
-      - ${DB_PORT}:5432
+      - ${DB_PORT:-5432}:5432
     volumes:
       - pgdata:/var/lib/postgresql/data
     restart: always
 
 volumes:
   pgdata:
+
