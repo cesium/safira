@@ -13,9 +13,7 @@ defmodule SafiraWeb.LeaderboardController do
   def daily(conn, %{"date" => date_params}) do
     case Date.from_iso8601(date_params) do
       {:ok, result} ->
-
         attendees = Contest.list_daily_leaderboard(result)
-        #IO.inspect(attendees)
         render(conn, SafiraWeb.LeaderboardView, "index.json", attendees: attendees)
 
       {:error, _error} ->
