@@ -6,6 +6,19 @@ defmodule SafiraWeb.DiscordAssociationController do
 
   action_fallback SafiraWeb.FallbackController
 
+
+  def show(conn, %{"id" => discord_id}) do
+    cond do
+      Accounts.is_manager(conn) ->
+        show_aux(conn, discord_id)
+
+      true ->
+        conn
+        |> put_status(:unauthorized)
+        |> json(%{error: "Cannot access resource"})
+        |> halt()
+    end
+  end
   # association_params= %{"discord_association_code" => discord_association_code, "discord_id" => discord_id}
   def create(conn, association_params) do
     cond do
@@ -19,6 +32,21 @@ defmodule SafiraWeb.DiscordAssociationController do
         |> halt()
     end
   end
+
+  defp show_aux(conn,discord_id) do
+      attendee = Accounts.get_attendee_by_discord_id(discord_id)
+      cond do
+        not is_nil(attendee) ->
+          conn
+          |> put_status(:ok)
+          |> json(%{id: attendee.id})
+          |> halt()
+        true ->
+          conn
+          |> put_status(:not_found)
+          |> json(%{error: "No attendee with that discord_id"})
+      end
+    end
 
   defp association_aux(conn, association_params = %{
          "discord_association_code" => discord_association_code,
