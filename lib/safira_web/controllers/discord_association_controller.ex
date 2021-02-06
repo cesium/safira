@@ -29,6 +29,7 @@ defmodule SafiraWeb.DiscordAssociationController do
         conn
         |> put_status(:unauthorized)
         |> json(%{error: "Cannot access resource"})
+        |> halt()
     end
   end
 
