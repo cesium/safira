@@ -60,7 +60,7 @@ defmodule Mix.Tasks.Gen.Badges do
           begin: begin_datetime,
           end: end_datetime,
           type: String.to_integer(type),
-          tokens: tokens
+          tokens: String.to_integer(tokens)
         },
         %{
           avatar: %Plug.Upload{

@@ -29,7 +29,7 @@ defmodule Safira.Contest.Badge do
     badge
     |> cast(attrs, [:name, :description, :begin, :end, :type, :tokens])
     |> cast_attachments(attrs, [:avatar])
-    |> validate_required([:name, :description, :begin, :end, :type])
+    |> validate_required([:name, :description, :begin, :end, :type, :tokens])
     |> validate_length(:name, min: 1, max: 255)
     |> validate_length(:description, min: 1, max: 1000)
     |> validate_time
@@ -40,7 +40,7 @@ defmodule Safira.Contest.Badge do
     badge
     |> cast(attrs, [:begin, :end, :name, :description, :type, :tokens])
     |> cast_attachments(attrs, [:avatar])
-    |> validate_required([:begin, :end, :name, :description, :type])
+    |> validate_required([:begin, :end, :name, :description, :type, :tokens])
     |> validate_length(:name, min: 1, max: 255)
     |> validate_length(:description, min: 1, max: 1000)
     |> validate_time
