@@ -16,6 +16,8 @@ defmodule Safira.Accounts.Attendee do
     field :avatar, Safira.Avatar.Type
     field :name, :string
     field :total_tokens, :integer, default: 0
+    field :discord_association_code, Ecto.UUID, autogenerate: true
+    field :discord_id, :string
 
     belongs_to :user, User
     many_to_many :badges, Badge, join_through: Redeem
@@ -56,6 +58,11 @@ defmodule Safira.Accounts.Attendee do
     |> validate_length(:nickname, min: 2, max: 15)
     |> validate_format(:nickname, ~r/^[a-zA-Z0-9]+([a-zA-Z0-9](_|-)[a-zA-Z0-9])*[a-zA-Z0-9]+$/)
     |> unique_constraint(:nickname)
+  end
+
+  def update_changeset_discord_association(attendee, attrs) do
+    attendee
+    |> cast(attrs, [:discord_id])
   end
 
   def volunteer_changeset(attendee, attrs) do

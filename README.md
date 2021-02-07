@@ -6,6 +6,11 @@
 
 # Documentation
 
+Before you start, make sure you have the correct environment set. Use
+`.env.sample` as a starter (`cp .env.sample .env`). Fill in the correct
+information and then export its values (either `source .env` or install
+[direnv](https://direnv.net)).
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`

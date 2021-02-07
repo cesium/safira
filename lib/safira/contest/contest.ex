@@ -11,18 +11,18 @@ defmodule Safira.Contest do
   end
 
   def list_secret do
-    Repo.all(from r in Redeem, 
-      join: b in assoc(r, :badge), 
-      join: a in assoc(r, :attendee), 
-      where: b.type == ^1 and not(a.volunteer) and not(is_nil(a.nickname)), 
-      preload: [badge: b, attendee: a], 
+    Repo.all(from r in Redeem,
+      join: b in assoc(r, :badge),
+      join: a in assoc(r, :attendee),
+      where: b.type == ^1 and not(a.volunteer) and not(is_nil(a.nickname)),
+      preload: [badge: b, attendee: a],
       distinct: :badge_id)
-    |> Enum.map(fn x -> x.badge end) 
+    |> Enum.map(fn x -> x.badge end)
 
   end
-  
+
   def list_normals do
-    Repo.all(from b in  Badge, 
+    Repo.all(from b in  Badge,
       where: b.type != ^1 and b.type != ^0)
   end
 
@@ -110,17 +110,17 @@ defmodule Safira.Contest do
     Repo.all(Redeem)
   end
 
-  def list_redeems_stats do 
-    Repo.all(from r in Redeem, 
-      join: b in assoc(r, :badge), 
-      join: a in assoc(r, :attendee), 
-      where: b.type == ^1 and not(a.volunteer) and not(is_nil(a.nickname)), 
+  def list_redeems_stats do
+    Repo.all(from r in Redeem,
+      join: b in assoc(r, :badge),
+      join: a in assoc(r, :attendee),
+      where: b.type == ^1 and not(a.volunteer) and not(is_nil(a.nickname)),
       preload: [badge: b, attendee: a])
   end
 
   def get_redeem!(id), do: Repo.get!(Redeem, id)
 
-  def get_keys_redeem(attendee_id, badge_id) do 
+  def get_keys_redeem(attendee_id, badge_id) do
     Repo.get_by(Redeem, [attendee_id: attendee_id, badge_id: badge_id])
   end
 
@@ -145,11 +145,23 @@ defmodule Safira.Contest do
   end
 
   def list_leaderboard do
-    Repo.all(from a in Safira.Accounts.Attendee, 
+    Repo.all(from a in Safira.Accounts.Attendee,
       where: not (is_nil a.user_id))
     #|> Repo.preload(:badges)
     |> Repo.preload([badges: from(b in Badge, where: b.type != ^0)])
     |> Enum.map(fn x -> Map.put(x, :badge_count, length(Enum.filter(x.badges,fn x -> x.type != 0 end))) end)
+    |> Enum.sort(&(&1.badge_count >= &2.badge_count))
+  end
+
+  def list_daily_leaderboard(date) do
+    Repo.all(
+      from a in Safira.Accounts.Attendee,
+        join: r in Redeem, on: a.id == r.attendee_id,
+        join: b in Badge, on: r.badge_id == b.id,
+        where: not(is_nil a.user_id) and fragment("?::date", r.inserted_at) == ^date and b.type != ^0,
+        preload: [badges: b]
+    )
+    |> Enum.map(fn a -> Map.put(a, :badge_count, length(a.badges)) end)
     |> Enum.sort(&(&1.badge_count >= &2.badge_count))
   end
 
@@ -160,7 +172,7 @@ defmodule Safira.Contest do
   end
 
   def get_winner do
-    Repo.all(from a in Safira.Accounts.Attendee, 
+    Repo.all(from a in Safira.Accounts.Attendee,
       where: not (is_nil a.user_id) and not(a.volunteer))
     |> Repo.preload([badges: from(b in Badge, where: b.type != ^0)])
     |> Enum.map(fn x -> Map.put(x, :badge_count, length(Enum.filter(x.badges,fn x -> x.type != 0 end))) end)

@@ -3,8 +3,11 @@ use Mix.Config
 # Configure your database
 config :safira, Safira.Repo,
   adapter: Ecto.Adapters.Postgres,
-  database: "safira_dev",
-  hostname: "localhost",
+  database: System.get_env("DB_NAME", "safira_dev"),
+  username: System.get_env("DB_USERNAME", "safira"),
+  password: System.get_env("DB_PASSWORD", "secret"),
+  port: System.get_env("DB_PORT", "5432"),
+  hostname: System.get_env("DB_HOST", "localhost"),
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 

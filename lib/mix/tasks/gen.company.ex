@@ -2,14 +2,14 @@ defmodule Mix.Tasks.Gen.Company do
   use Mix.Task
   alias Safira.Accounts
 
-  @domain "enei.pt"
+  @domain "seium.org"
 
   def run(args) do
     cond do
-      length(args) != 3 ->
-        Mix.shell().info("Needs to receive a Company name, sponsorship and badge_id.")
+      length(args) != 4 ->
+        Mix.shell().info("Needs to receive a Company name, sponsorship, badge_id and channel_id.")
 
-      args |> List.last() |> String.to_integer() < 0 ->
+      Enum.at(args, 2) |> String.to_integer() <= 0 ->
         Mix.shell().info("Number of badge_id needs to be above 0.")
 
       true ->
@@ -32,7 +32,8 @@ defmodule Mix.Tasks.Gen.Company do
     Accounts.create_company(%{
       "name" => Enum.at(args, 0),
       "sponsorship" => Enum.at(args, 1),
-      "badge_id" => args |> List.last() |> String.to_integer(),
+      "badge_id" => Enum.at(args, 2) |> String.to_integer(),
+      "channel_id" => Enum.at(args, 3),
       "user" => user
     })
 
