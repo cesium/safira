@@ -2,7 +2,7 @@ defmodule Mix.Tasks.Gen.Managers do
   use Mix.Task
   alias Safira.Accounts
 
-  @domain "enei.pt"
+  @domain "seium.org"
 
   def run(args) do
     cond do

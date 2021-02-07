@@ -4,7 +4,7 @@ defmodule SafiraWeb.Router do
 
   alias Safira.Guardian
 
-  if Mix.env == :dev do
+  if Mix.env() == :dev do
     forward "/sent_emails", Bamboo.SentEmailViewerPlug
   end
 
@@ -39,7 +39,7 @@ defmodule SafiraWeb.Router do
     scope "/auth" do
       post "/sign_up", AuthController, :sign_up
       post "/sign_in", AuthController, :sign_in
-      
+
       resources "/passwords", PasswordController, only: [:create, :update]
     end
 
@@ -52,11 +52,13 @@ defmodule SafiraWeb.Router do
       get "/attendee", AuthController, :attendee
       get "/company", AuthController, :company
       get "/leaderboard", LeaderboardController, :index
+      get "/leaderboard/:date", LeaderboardController, :daily
+      post "/association", DiscordAssociationController, :create
 
       resources "/badges", BadgeController, only: [:index, :show]
       resources "/attendees", AttendeeController, except: [:create]
       resources "/referrals", ReferralController, only: [:create]
-      resources "/companies", CompanyController, only: [:index, :show]
+      resources "/companies", CompanyController, only: [:index, :show, :update]
       resources "/redeems", RedeemController, only: [:create]
     end
   end
@@ -67,10 +69,10 @@ defmodule SafiraWeb.Router do
     pow_session_routes()
   end
 
-  #scope "/", Pow.Phoenix, as: "pow" do
+  # scope "/", Pow.Phoenix, as: "pow" do
   #  pipe_through [:browser, :protected]
   #  resources "/registration", RegistrationController, singleton: true, only: [:edit, :update]
-  #end
+  # end
 
   scope "/admin", SafiraWeb.Admin, as: :admin do
     pipe_through [:browser, :protected]
