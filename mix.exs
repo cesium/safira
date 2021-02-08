@@ -33,7 +33,8 @@ defmodule Safira.MixProject do
       "test/strategies"
     ]
   end
-  defp elixirc_paths(_),     do: ["lib"]
+
+  defp elixirc_paths(_), do: ["lib"]
 
   # Specifies your project dependencies.
   #

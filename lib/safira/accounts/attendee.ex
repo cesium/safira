@@ -15,6 +15,7 @@ defmodule Safira.Accounts.Attendee do
     field :volunteer, :boolean, default: false
     field :avatar, Safira.Avatar.Type
     field :name, :string
+    field :token_balance, :integer, default: 0
     field :discord_association_code, Ecto.UUID, autogenerate: true
     field :discord_id, :string
 
