@@ -8,7 +8,10 @@
 use Mix.Config
 
 config :safira,
-  ecto_repos: [Safira.Repo]
+  ecto_repos: [Safira.Repo],
+  company_code: System.get_env("COMPANY_CODE"),
+  speaker_code: System.get_env("SPEAKER_CODE"),
+  staff_code: System.get_env("STAFF_CODE")
 
 # Configures the endpoint
 config :safira, SafiraWeb.Endpoint,
