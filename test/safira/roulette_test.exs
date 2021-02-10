@@ -94,7 +94,7 @@ defmodule Safira.RouletteTest do
   describe "attendees_prizes" do
     alias Safira.Roulette.AttendeePrize
 
-    @invalid_attrs %{attendee_id: nil, prize_id: nil, quantity: 1}
+    @invalid_attrs %{attendee_id: nil, prize_id: nil, quantity: nil}
 
     def setup() do
       user = create_user_strategy(:user)
@@ -105,7 +105,7 @@ defmodule Safira.RouletteTest do
 
     def attendee_prize_fixture(attrs \\ %{}) do
       {attendee, prize} = setup()
-      attendee_prize = %{attendee_id: attendee.id, prize_id: prize.id, quantity: nil}
+      attendee_prize = %{attendee_id: attendee.id, prize_id: prize.id, quantity: 1}
 
       {:ok, returned_attendee_prize} =
         attrs
