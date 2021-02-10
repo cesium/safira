@@ -1,8 +1,8 @@
-Nome,Descricao,Data Inicio,Data Fim,Imagem,Tipo
-Workshop INMC,Participar no Workshop eID & ePassport: Hands on,2020-02-24,2020-02-25,badges/workshops/workshopinmc.png,7
-Workshop Newhotel,Participar no Workshop Hands-on workshop: Angular for frontend developers,2020-02-24,2020-02-25,badges/workshops/workshopnewhotel.png,7
-Workshop Kelvin Inc,Participar no Workshop Rxjs on Quakes (Hands-On),2020-02-24,2020-02-25,badges/workshops/workshopkelvininc.png,7
-Workshop Hitachi,Participar no Workshop Know your Beer – Microsoft Power Platform,2020-02-25,2020-02-26,badges/workshops/workshophitachi.png,7
-Workshop Accenture,Participar no Workshop ,2020-02-25,2020-02-26,badges/workshops/workshopaccenture.png,7
-Workshop Carolina Dias,Participar no Workshop Monitorização de infraestruturas e aplicações - Azure Monitor e Azure Application Insight,2020-02-25,2020-02-26,badges/workshops/workshopcarolinadias.png,7
-Workshop Sonae BIT,Participar no Workshop OutSystems 101 - BIT by Sonae MC,2020-02-26,2020-02-27,badges/workshops/workshopoutsystems.png,7
+Nome,Descricao,Data Inicio,Data Fim,Imagem,Tipo,Tokens
+Workshop INMC,Participar no Workshop eID & ePassport: Hands on,2020-02-24,2020-02-25,badges/workshops/workshopinmc.png,7,1
+Workshop Newhotel,Participar no Workshop Hands-on workshop: Angular for frontend developers,2020-02-24,2020-02-25,badges/workshops/workshopnewhotel.png,7,1
+Workshop Kelvin Inc,Participar no Workshop Rxjs on Quakes (Hands-On),2020-02-24,2020-02-25,badges/workshops/workshopkelvininc.png,7,1
+Workshop Hitachi,Participar no Workshop Know your Beer – Microsoft Power Platform,2020-02-25,2020-02-26,badges/workshops/workshophitachi.png,7,1
+Workshop Accenture,Participar no Workshop ,2020-02-25,2020-02-26,badges/workshops/workshopaccenture.png,7,1
+Workshop Carolina Dias,Participar no Workshop Monitorização de infraestruturas e aplicações - Azure Monitor e Azure Application Insight,2020-02-25,2020-02-26,badges/workshops/workshopcarolinadias.png,7,1
+Workshop Sonae BIT,Participar no Workshop OutSystems 101 - BIT by Sonae MC,2020-02-26,2020-02-27,badges/workshops/workshopoutsystems.png,7,1

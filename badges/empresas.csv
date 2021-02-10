@@ -1,29 +1,29 @@
-Nome,Descricao,Data Inicio,Data Fim,Imagem,Tipo
-Accenture (Exclusive),Visitar o stand da Accenture,2020-02-23,2020-02-27,badges/empresas/accenture.png,4
-NOS (Gold),Visitar o stand da NOS,2020-02-23,2020-02-27,badges/empresas/nos.png,4
-KPMG (Gold),Visitar o stand da KPMG,2020-02-23,2020-02-27,badges/empresas/kpmg.png,4
-Subvisual (Gold),Visitar o stand da Subvisual,2020-02-23,2020-02-27,badges/empresas/subvisual.png,4
-Primavera (Silver),Visitar o stand da Primavera,2020-02-23,2020-02-27,badges/empresas/primavera.png,4
-Newhotel (Silver),Visitar o stand da Newhotel,2020-02-23,2020-02-27,badges/empresas/newhotelSoftware.png,4
-Eurotux (Silver),Visitar o stand da Eurotux,2020-02-23,2020-02-27,badges/empresas/eurotux.png,4
-Sonae BIT (Silver),Visitar o stand da Sonae BIT,2020-02-23,2020-02-27,badges/empresas/bitBySonae.png,4
-INCM (Silver),Visitar o stand da INCM,2020-02-23,2020-02-27,badges/empresas/incm.png,4
-Hitachi Solutions (Silver),Visitar o stand da Hitachi Solutions,2020-02-23,2020-02-27,badges/empresas/hitachiSolutions.png,4
-Deloitte (Silver),Visitar o stand da Deloitte,2020-02-23,2020-02-27,badges/empresas/deloitte.png,4
-Checkmarx (Silver),Visitar o stand da Checkmarx,2020-02-23,2020-02-27,badges/empresas/checkmarx.png,4
-Glintt (Silver),Visitar o stand da Glintt,2020-02-23,2020-02-27,badges/empresas/glintt.png,4
-Bosch (Silver),Visitar o stand da Bosch,2020-02-23,2020-02-27,badges/empresas/bosch.png,4
-Retail Consult (Silver),Visitar o stand da Retail Consult,2020-02-23,2020-02-27,badges/empresas/retailConsult.png,4
-Globalvia (Silver),Visitar o stand da Globalvia,2020-02-23,2020-02-27,badges/empresas/globalvia.png,4
-Apside (Bronze),Visitar o stand da Apside,2020-02-23,2020-02-27,badges/empresas/apside.png,4
-Seegno (Bronze),Visitar o stand da Seegno,2020-02-23,2020-02-27,badges/empresas/seegno.png,4
-UbiWhere (Bronze),Visitar o stand da UbiWhere,2020-02-23,2020-02-27,badges/empresas/ubiwhere.png,4
-Critical Software (Bronze),Visitar o stand da Critical Software,2020-02-23,2020-02-27,badges/empresas/critical.png,4
-AlticeLabs/Inova-Ria (Bronze),Visitar o stand da AlticeLabs/Inova-Ria,2020-02-23,2020-02-27,badges/empresas/inovariaGenius.png,4
-OutSystems (Bronze),Visitar o stand da OutSystems,2020-02-23,2020-02-27,badges/empresas/outSystems.png,4
-Nmbrs (Bronze),Visitar o stand da Nmbrs,2020-02-23,2020-02-27,badges/empresas/nmbrs.png,4
-Devexperts (Bronze),Visitar o stand da Devexperts,2020-02-23,2020-02-27,badges/empresas/devexperts.png,4
-Blip (Bronze),Visitar o stand da Blip,2020-02-23,2020-02-27,badges/empresas/blip.png,4
-Farfetch (Bronze),Visitar o stand da Farfetch,2020-02-23,2020-02-27,badges/empresas/farfetch.png,4
-Kelvin Inc (Bronze),Visitar o stand da Kelvin Inc,2020-02-23,2020-02-27,badges/empresas/kelvinInc.png,4
-M&Costas (Apoio),Visitar o stand da M&Costas,2020-02-23,2020-02-27,badges/empresas/mcostas.png,4
+Nome,Descricao,Data Inicio,Data Fim,Imagem,Tipo,Tokens
+Accenture (Exclusive),Visitar o stand da Accenture,2020-02-23,2020-02-27,badges/empresas/accenture.png,4,1
+NOS (Gold),Visitar o stand da NOS,2020-02-23,2020-02-27,badges/empresas/nos.png,4,1
+KPMG (Gold),Visitar o stand da KPMG,2020-02-23,2020-02-27,badges/empresas/kpmg.png,4,1
+Subvisual (Gold),Visitar o stand da Subvisual,2020-02-23,2020-02-27,badges/empresas/subvisual.png,4,1
+Primavera (Silver),Visitar o stand da Primavera,2020-02-23,2020-02-27,badges/empresas/primavera.png,4,1
+Newhotel (Silver),Visitar o stand da Newhotel,2020-02-23,2020-02-27,badges/empresas/newhotelSoftware.png,4,1
+Eurotux (Silver),Visitar o stand da Eurotux,2020-02-23,2020-02-27,badges/empresas/eurotux.png,4,1
+Sonae BIT (Silver),Visitar o stand da Sonae BIT,2020-02-23,2020-02-27,badges/empresas/bitBySonae.png,4,1
+INCM (Silver),Visitar o stand da INCM,2020-02-23,2020-02-27,badges/empresas/incm.png,4,1
+Hitachi Solutions (Silver),Visitar o stand da Hitachi Solutions,2020-02-23,2020-02-27,badges/empresas/hitachiSolutions.png,4,1
+Deloitte (Silver),Visitar o stand da Deloitte,2020-02-23,2020-02-27,badges/empresas/deloitte.png,4,1
+Checkmarx (Silver),Visitar o stand da Checkmarx,2020-02-23,2020-02-27,badges/empresas/checkmarx.png,4,1
+Glintt (Silver),Visitar o stand da Glintt,2020-02-23,2020-02-27,badges/empresas/glintt.png,4,1
+Bosch (Silver),Visitar o stand da Bosch,2020-02-23,2020-02-27,badges/empresas/bosch.png,4,1
+Retail Consult (Silver),Visitar o stand da Retail Consult,2020-02-23,2020-02-27,badges/empresas/retailConsult.png,4,1
+Globalvia (Silver),Visitar o stand da Globalvia,2020-02-23,2020-02-27,badges/empresas/globalvia.png,4,1
+Apside (Bronze),Visitar o stand da Apside,2020-02-23,2020-02-27,badges/empresas/apside.png,4,1
+Seegno (Bronze),Visitar o stand da Seegno,2020-02-23,2020-02-27,badges/empresas/seegno.png,4,1
+UbiWhere (Bronze),Visitar o stand da UbiWhere,2020-02-23,2020-02-27,badges/empresas/ubiwhere.png,4,1
+Critical Software (Bronze),Visitar o stand da Critical Software,2020-02-23,2020-02-27,badges/empresas/critical.png,4,1
+AlticeLabs/Inova-Ria (Bronze),Visitar o stand da AlticeLabs/Inova-Ria,2020-02-23,2020-02-27,badges/empresas/inovariaGenius.png,4,1
+OutSystems (Bronze),Visitar o stand da OutSystems,2020-02-23,2020-02-27,badges/empresas/outSystems.png,4,1
+Nmbrs (Bronze),Visitar o stand da Nmbrs,2020-02-23,2020-02-27,badges/empresas/nmbrs.png,4,1
+Devexperts (Bronze),Visitar o stand da Devexperts,2020-02-23,2020-02-27,badges/empresas/devexperts.png,4,1
+Blip (Bronze),Visitar o stand da Blip,2020-02-23,2020-02-27,badges/empresas/blip.png,4,1
+Farfetch (Bronze),Visitar o stand da Farfetch,2020-02-23,2020-02-27,badges/empresas/farfetch.png,4,1
+Kelvin Inc (Bronze),Visitar o stand da Kelvin Inc,2020-02-23,2020-02-27,badges/empresas/kelvinInc.png,4,1
+M&Costas (Apoio),Visitar o stand da M&Costas,2020-02-23,2020-02-27,badges/empresas/mcostas.png,4,1
