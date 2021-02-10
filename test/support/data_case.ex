@@ -23,6 +23,7 @@ defmodule Safira.DataCase do
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
+      import Safira.Factory
       import Safira.DataCase
     end
   end

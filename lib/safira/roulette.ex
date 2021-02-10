@@ -164,7 +164,7 @@ defmodule Safira.Roulette do
   """
   def update_attendee_prize(%AttendeePrize{} = attendee_prize, attrs) do
     attendee_prize
-    |> AttendeePrize.update_changeset(attrs)
+    |> AttendeePrize.changeset(attrs)
     |> Repo.update()
   end
 
