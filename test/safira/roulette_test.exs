@@ -7,9 +7,19 @@ defmodule Safira.RouletteTest do
     alias Safira.Roulette.Prize
 
     @valid_attrs %{max_amount_per_attendee: 10, name: "some name", probability: 0.42, stock: 40}
-    @update_attrs %{max_amount_per_attendee: 10, name: "some updated name", probability: 0.61, stock: 50}
+    @update_attrs %{
+      max_amount_per_attendee: 10,
+      name: "some updated name",
+      probability: 0.61,
+      stock: 50
+    }
     @invalid_attrs1 %{max_amount_per_attendee: nil, name: nil, probability: nil, stock: nil}
-    @invalid_attrs2 %{max_amount_per_attendee: 11, name: "some name", probability: 0.42, stock: 10}
+    @invalid_attrs2 %{
+      max_amount_per_attendee: 11,
+      name: "some name",
+      probability: 0.42,
+      stock: 10
+    }
     @invalid_attrs3 %{max_amount_per_attendee: 9, name: "some name", probability: -0.7, stock: 10}
     @invalid_attrs4 %{max_amount_per_attendee: 9, name: "some name", probability: 1.7, stock: 10}
 
@@ -80,4 +90,68 @@ defmodule Safira.RouletteTest do
       assert %Ecto.Changeset{} = Roulette.change_prize(prize)
     end
   end
+
+  """
+  describe "attendees_prizes" do
+    alias Safira.Roulette.AttendeePrize
+
+    @valid_attrs %{attendee_id: "7c2c5f14-1570-4655-b296-a3d6fe7af430", prize_id: 1, quantity: 42}
+    @update_attrs %{attendee_id: "7c2c5f14-1570-4655-b296-a3d6fe7af430", prize_id: 1, quantity: 43}
+    @invalid_attrs %{attendee_id: nil, prize_id: nil, quantity: nil}
+
+    def attendee_prize_fixture(attrs \\ %{}) do
+      {:ok, attendee_prize} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Roulette.create_attendee_prize()
+
+      attendee_prize
+    end
+
+    test "list_attendees_prizes/0 returns all attendees_prizes" do
+      attendee = insert(:attendee)
+      IO.inspect(attendee)
+      attendee_prize = attendee_prize_fixture()
+      assert Roulette.list_attendees_prizes() == [attendee_prize]
+    end
+
+    test "get_attendee_prize!/1 returns the attendee_prize with given id" do
+      attendee_prize = attendee_prize_fixture()
+      assert Roulette.get_attendee_prize!(attendee_prize.id) == attendee_prize
+    end
+
+    test "create_attendee_prize/1 with valid data creates a attendee_prize" do
+      assert {:ok, %AttendeePrize{} = attendee_prize} = Roulette.create_attendee_prize(@valid_attrs)
+      assert attendee_prize.quantity == 42
+    end
+
+    test "create_attendee_prize/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Roulette.create_attendee_prize(@invalid_attrs)
+    end
+
+    test "update_attendee_prize/2 with valid data updates the attendee_prize" do
+      attendee_prize = attendee_prize_fixture()
+      assert {:ok, attendee_prize} = Roulette.update_attendee_prize(attendee_prize, @update_attrs)
+      assert %AttendeePrize{} = attendee_prize
+      assert attendee_prize.quantity == 43
+    end
+
+    test "update_attendee_prize/2 with invalid data returns error changeset" do
+      attendee_prize = attendee_prize_fixture()
+      assert {:error, %Ecto.Changeset{}} = Roulette.update_attendee_prize(attendee_prize, @invalid_attrs)
+      assert attendee_prize == Roulette.get_attendee_prize!(attendee_prize.id)
+    end
+
+    test "delete_attendee_prize/1 deletes the attendee_prize" do
+      attendee_prize = attendee_prize_fixture()
+      assert {:ok, %AttendeePrize{}} = Roulette.delete_attendee_prize(attendee_prize)
+      assert_raise Ecto.NoResultsError, fn -> Roulette.get_attendee_prize!(attendee_prize.id) end
+    end
+
+    test "change_attendee_prize/1 returns a attendee_prize changeset" do
+      attendee_prize = attendee_prize_fixture()
+      assert %Ecto.Changeset{} = Roulette.change_attendee_prize(attendee_prize)
+    end
+  end
+  """
 end

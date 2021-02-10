@@ -11,6 +11,5 @@ defmodule Safira.Repo.Migrations.CreatePrizes do
 
       timestamps()
     end
-
   end
 end
