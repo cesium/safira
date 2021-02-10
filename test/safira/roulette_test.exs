@@ -129,7 +129,9 @@ defmodule Safira.RouletteTest do
       {attendee, prize} = setup()
       attendee_prize = %{attendee_id: attendee.id, prize_id: prize.id, quantity: 1}
 
-      assert {:ok, %AttendeePrize{} = returned_attendee_prize} = Roulette.create_attendee_prize(attendee_prize)
+      assert {:ok, %AttendeePrize{} = returned_attendee_prize} =
+               Roulette.create_attendee_prize(attendee_prize)
+
       assert returned_attendee_prize.attendee_id == attendee.id
       assert returned_attendee_prize.prize_id == prize.id
       assert returned_attendee_prize.quantity == 1
@@ -152,7 +154,10 @@ defmodule Safira.RouletteTest do
 
     test "update_attendee_prize/2 with valid data updates the attendee_prize" do
       attendee_prize = attendee_prize_fixture()
-      assert {:ok, attendee_prize} = Roulette.update_attendee_prize(attendee_prize, %{quantity: 5})
+
+      assert {:ok, attendee_prize} =
+               Roulette.update_attendee_prize(attendee_prize, %{quantity: 5})
+
       assert %AttendeePrize{} = attendee_prize
       assert attendee_prize.quantity == 5
     end
@@ -160,13 +165,19 @@ defmodule Safira.RouletteTest do
     test "update_attendee_prize/2 with invalid data returns error changeset" do
       attendee_prize = attendee_prize_fixture()
       # invalid quantity
-      assert {:error, %Ecto.Changeset{}} = Roulette.update_attendee_prize(attendee_prize, %{quantity: 0})
+      assert {:error, %Ecto.Changeset{}} =
+               Roulette.update_attendee_prize(attendee_prize, %{quantity: 0})
+
       assert attendee_prize == Roulette.get_attendee_prize!(attendee_prize.id)
       # invalid attendee_id
-      assert {:error, %Ecto.Changeset{}} = Roulette.update_attendee_prize(attendee_prize, %{attendee_id: nil})
+      assert {:error, %Ecto.Changeset{}} =
+               Roulette.update_attendee_prize(attendee_prize, %{attendee_id: nil})
+
       assert attendee_prize == Roulette.get_attendee_prize!(attendee_prize.id)
       # invalid prize_id
-      assert {:error, %Ecto.Changeset{}} = Roulette.update_attendee_prize(attendee_prize, %{prize_id: nil})
+      assert {:error, %Ecto.Changeset{}} =
+               Roulette.update_attendee_prize(attendee_prize, %{prize_id: nil})
+
       assert attendee_prize == Roulette.get_attendee_prize!(attendee_prize.id)
     end
 
@@ -181,5 +192,4 @@ defmodule Safira.RouletteTest do
       assert %Ecto.Changeset{} = Roulette.change_attendee_prize(attendee_prize)
     end
   end
-
 end
