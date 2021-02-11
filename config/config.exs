@@ -8,15 +8,17 @@
 use Mix.Config
 
 config :safira,
-  ecto_repos: [Safira.Repo]
+  ecto_repos: [Safira.Repo],
+  company_code: System.get_env("COMPANY_CODE"),
+  speaker_code: System.get_env("SPEAKER_CODE"),
+  staff_code: System.get_env("STAFF_CODE")
 
 # Configures the endpoint
 config :safira, SafiraWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "3KpMz5Dsmzm2+40c8Urp8UC0N95fFWvsHudtIUHjTv2yGsikjN3wIHPNPi3e+4xi",
   render_errors: [view: SafiraWeb.ErrorView, accepts: ~w(json)],
-  pubsub: [name: Safira.PubSub,
-           adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: Safira.PubSub, adapter: Phoenix.PubSub.PG2]
 
 # Configures Elixir's Logger
 config :logger, :console,

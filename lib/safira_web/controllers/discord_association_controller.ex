@@ -56,10 +56,9 @@ defmodule SafiraWeb.DiscordAssociationController do
            "discord_id" => _discord_id
          }
        ) do
-    # System.get_env can't be used in a match clause
-    company_code = System.get_env("COMPANY_CODE")
-    staff_code = System.get_env("STAFF_CODE")
-    speaker_code = System.get_env("SPEAKER_CODE")
+    company_code = Application.fetch_env!(:safira, :company_code)
+    staff_code = Application.fetch_env!(:safira, :staff_code)
+    speaker_code = Application.fetch_env!(:safira, :speaker_code)
 
     case discord_association_code do
       ^company_code -> notify_succesful_association(conn, "empresa")
