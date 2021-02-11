@@ -103,8 +103,6 @@ defmodule Safira.Accounts do
 
   def get_attendee_by_discord_id(discord_id) do
       Repo.get_by(Attendee, discord_id: discord_id)
-      |> Repo.preload(:badges)
-      |> Repo.preload(:user)
   end
 
   def create_attendee(attrs \\ %{}) do

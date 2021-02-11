@@ -9,6 +9,8 @@ defmodule Safira.Accounts.Attendee do
   alias Safira.Contest.Referral
   alias Safira.Store.Redeemable
   alias Safira.Store.Buy
+  alias Safira.Roulette.Prize
+  alias Safira.Roulette.AttendeePrize
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @derive {Phoenix.Param, key: :id}
@@ -17,6 +19,7 @@ defmodule Safira.Accounts.Attendee do
     field :volunteer, :boolean, default: false
     field :avatar, Safira.Avatar.Type
     field :name, :string
+    field :token_balance, :integer, default: 0
     field :discord_association_code, Ecto.UUID, autogenerate: true
     field :discord_id, :string
 
@@ -24,6 +27,7 @@ defmodule Safira.Accounts.Attendee do
     many_to_many :badges, Badge, join_through: Redeem
     has_many :referrals, Referral
     many_to_many :redeemables, Redeemable, join_through: Buy
+    many_to_many :prizes, Prize, join_through: AttendeePrize
 
     field :badge_count, :integer, default: 0, virtual: true
 
