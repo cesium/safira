@@ -70,7 +70,7 @@ defmodule Safira.Roulette do
   """
   def update_prize(%Prize{} = prize, attrs) do
     prize
-    |> Prize.changeset(attrs)
+    |> Prize.update_changeset(attrs)
     |> Repo.update()
   end
 

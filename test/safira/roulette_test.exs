@@ -8,7 +8,7 @@ defmodule Safira.RouletteTest do
 
     @valid_attrs %{max_amount_per_attendee: 10, name: "some name", probability: 0.42, stock: 40}
     @update_attrs %{
-      max_amount_per_attendee: 10,
+      max_amount_per_attendee: 51,
       name: "some updated name",
       probability: 0.61,
       stock: 50
@@ -61,7 +61,7 @@ defmodule Safira.RouletteTest do
       prize = prize_fixture()
       assert {:ok, prize} = Roulette.update_prize(prize, @update_attrs)
       assert %Prize{} = prize
-      assert prize.max_amount_per_attendee == 10
+      assert prize.max_amount_per_attendee == 51
       assert prize.name == "some updated name"
       assert prize.probability == 0.61
       assert prize.stock == 50
@@ -70,8 +70,6 @@ defmodule Safira.RouletteTest do
     test "update_prize/2 with invalid data returns error changeset" do
       prize = prize_fixture()
       assert {:error, %Ecto.Changeset{}} = Roulette.update_prize(prize, @invalid_attrs1)
-      assert prize == Roulette.get_prize!(prize.id)
-      assert {:error, %Ecto.Changeset{}} = Roulette.update_prize(prize, @invalid_attrs2)
       assert prize == Roulette.get_prize!(prize.id)
       assert {:error, %Ecto.Changeset{}} = Roulette.update_prize(prize, @invalid_attrs3)
       assert prize == Roulette.get_prize!(prize.id)
