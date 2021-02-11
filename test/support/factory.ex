@@ -5,4 +5,6 @@ defmodule Safira.Factory do
   use Safira.AttendeeFactory
   use Safira.BadgeFactory
   use Safira.RedeemFactory
+  use Safira.PrizeStrategy
+  use Safira.PrizeFactory
 end
