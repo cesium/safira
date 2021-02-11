@@ -4,6 +4,7 @@ defmodule Safira.Roulette.Prize do
   import Ecto.Changeset
 
   alias Safira.Accounts.Attendee
+  alias Safira.Roulette.AttendeePrize
 
   schema "prizes" do
     field :name, :string
