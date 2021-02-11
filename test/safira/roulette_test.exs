@@ -162,21 +162,34 @@ defmodule Safira.RouletteTest do
 
     test "update_attendee_prize/2 with invalid data returns error changeset" do
       attendee_prize = attendee_prize_fixture()
+
       # invalid quantity
       assert {:error, %Ecto.Changeset{}} =
                Roulette.update_attendee_prize(attendee_prize, %{quantity: 0})
 
       assert attendee_prize == Roulette.get_attendee_prize!(attendee_prize.id)
+
       # invalid attendee_id
       assert {:error, %Ecto.Changeset{}} =
                Roulette.update_attendee_prize(attendee_prize, %{attendee_id: nil})
 
       assert attendee_prize == Roulette.get_attendee_prize!(attendee_prize.id)
+
       # invalid prize_id
       assert {:error, %Ecto.Changeset{}} =
                Roulette.update_attendee_prize(attendee_prize, %{prize_id: nil})
 
       assert attendee_prize == Roulette.get_attendee_prize!(attendee_prize.id)
+    end
+
+    test "update_attendee_prize/2 with quantity greater than the maximum per attendee" do
+      attendee_prize = attendee_prize_fixture()
+      prize = Roulette.get_prize!(attendee_prize.prize_id)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Roulette.update_attendee_prize(attendee_prize, %{
+                 quantity: prize.max_amount_per_attendee + 1
+               })
     end
 
     test "delete_attendee_prize/1 deletes the attendee_prize" do
