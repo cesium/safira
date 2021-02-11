@@ -180,10 +180,4 @@ defmodule Safira.Contest do
     |> Enum.map(fn a -> Enum.map( Enum.filter(a.badges,fn b -> b.type != 0 end), fn x -> "#{a.nickname}:#{x.name}" end) end)
     |> List.flatten
   end
-  
-  def list_redeemables do
-    Repo.all(Redeemable)
-  end
-
-  def get_redeemable!(id), do: Repo.get!(Redeemable, id)
 end

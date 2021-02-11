@@ -7,8 +7,8 @@ defmodule Safira.Accounts.Attendee do
   alias Safira.Contest.Redeem
   alias Safira.Contest.Badge
   alias Safira.Contest.Referral
-  alias Safira.Contest.Redeemable
-  alias Safira.Contest.Buy
+  alias Safira.Store.Redeemable
+  alias Safira.Store.Buy
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @derive {Phoenix.Param, key: :id}
