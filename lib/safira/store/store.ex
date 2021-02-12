@@ -8,4 +8,10 @@ defmodule Safira.Store do
   end
 
   def get_redeemable!(id), do: Repo.get!(Redeemable, id)
+
+  def create_redeemable(attrs \\ %{}) do
+    %Redeemable{}
+    |> Redeemable.changeset(attrs)
+    |> Repo.insert()
+  end
 end
