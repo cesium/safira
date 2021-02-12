@@ -27,7 +27,6 @@ defmodule Mix.Tasks.Gen.Prizes do
     |> parse_csv
     |> validate_probabilities
     |> Enum.map(fn prize -> Safira.Roulette.create_prize(prize) end)
-
   end
 
   defp parse_csv(path) do
@@ -70,6 +69,7 @@ defmodule Mix.Tasks.Gen.Prizes do
     |> case do
       {_, 1.0} ->
         list
+
       _ ->
         raise "The sum of all prizes probabilities is not 1."
     end
