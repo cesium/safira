@@ -54,6 +54,8 @@ defmodule SafiraWeb.Router do
       get "/leaderboard", LeaderboardController, :index
       get "/leaderboard/:date", LeaderboardController, :daily
 
+      post "/roulette", RouletteController, :spin
+
       resources "/badges", BadgeController, only: [:index, :show]
       resources "/attendees", AttendeeController, except: [:create]
       resources "/referrals", ReferralController, only: [:create]
