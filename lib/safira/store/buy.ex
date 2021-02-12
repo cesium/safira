@@ -5,8 +5,10 @@ defmodule Safira.Store.Buy do
   alias Safira.Accounts.Attendee
 
   schema "buys" do
-    belongs_to(:attendee, Attendee, foreign_key: :attendee_id, type: :binary_id)
-    belongs_to(:redeemable, Redeemable, foreign_key: :redeemable_id, type: :binary_id)
+    field :quantity, :integer
+
+    belongs_to :attendee, Attendee, foreign_key: :attendee_id 
+    belongs_to :redeemable, Redeemable, foreign_key: :redeemable_id
 
     timestamps()
   end
