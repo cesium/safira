@@ -4,6 +4,7 @@ defmodule Safira.Contest do
   alias Safira.Repo
   alias Safira.Contest.Redeem
   alias Safira.Contest.Badge
+  alias Safira.Accounts.Attendee
   alias Ecto.Multi
 
   def list_badges do
@@ -128,7 +129,29 @@ defmodule Safira.Contest do
     %Redeem{}
     |> Redeem.changeset(attrs)
     |> Repo.insert()
+
+    attendee = Repo.get!(Attendee, attrs.attendee_id)
+    token_balance = attendee.token_balance
+
+    badge = Repo.get!(Badge, attrs.badge_id)
+    tokens_badge = badge.tokens
+
+    new_balalance = token_balance + tokens_badge
+    changeset = Ecto.Changeset.change attendee, token_balance: new_balalance
+    Multi.new()
+    #|> Multi.run(:get, Safira.Contest, :get_attendee_badge, [attrs.attendee_id, attrs.badge_id])
+    |> Multi.update(:update, changeset)
+    |> Repo.transaction()
   end
+
+
+
+  #def get_attendee_badge(attendee_id, badge_id) do
+  #   attendee = Repo.get!(Attendee, attendee_id)
+  #   badge = Repo.get!(Badge, badge_id)
+  #   {:ok, %{attendee: attendee, badge: badge}}
+  #end
+
 
   def update_redeem(%Redeem{} = redeem, attrs) do
     redeem
