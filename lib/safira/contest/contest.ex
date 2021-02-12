@@ -6,6 +6,7 @@ defmodule Safira.Contest do
   alias Safira.Contest.Badge
   alias Safira.Accounts.Attendee
   alias Ecto.Multi
+  alias Ecto.Changeset
 
   def list_badges do
     Repo.all(Badge)
@@ -125,6 +126,7 @@ defmodule Safira.Contest do
     Repo.get_by(Redeem, [attendee_id: attendee_id, badge_id: badge_id])
   end
 
+  """
   def create_redeem(attrs \\ %{}) do
     %Redeem{}
     |> Redeem.changeset(attrs)
@@ -142,6 +144,18 @@ defmodule Safira.Contest do
     #|> Multi.run(:get, Safira.Contest, :get_attendee_badge, [attrs.attendee_id, attrs.badge_id])
     |> Multi.update(:update, changeset)
     |> Repo.transaction()
+  end
+  """
+
+  def create_redeem(attrs \\ %{}) do
+    Multi.new()
+    |> Multi.insert(:redeem, Redeem.changeset(%Redeem{}, attrs))
+    |> Multi.update(:attendee, fn %{redeem: redeem} ->
+      redeem = Repo.preload(redeem, [:badge, :attendee])
+      Changeset.change(redeem.attendee, token_balance: (redeem.attendee.token_balance + redeem.badge.tokens))
+    end)
+    |> Repo.transaction()
+    |> (fn x -> {elem(x,0), (elem(x,1) |> Map.get(:redeem))} end).()
   end
 
 
