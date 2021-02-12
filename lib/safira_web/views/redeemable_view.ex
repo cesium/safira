@@ -15,11 +15,8 @@ defmodule SafiraWeb.RedeemableView do
     %{
       id: redeemable.id,
       name: redeemable.name,
-      description: redeemable.description,
       image: Avatar.url({redeemable.img, redeemable}, :original),
-      price: redeemable.price,
-      redeem_limit: redeemable.redeem_limit,
-      max_per_user: redeemable.max_per_user
+      price: redeemable.price
     }
   end
 
@@ -30,7 +27,7 @@ defmodule SafiraWeb.RedeemableView do
       description: redeemable.description,
       image: Avatar.url({redeemable.img, redeemable}, :original),
       price: redeemable.price,
-      redeem_limit: redeemable.redeem_limit,
+      stock: redeemable.stock,
       max_per_user: redeemable.max_per_user
     }
   end
