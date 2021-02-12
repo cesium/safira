@@ -7,7 +7,7 @@ defmodule Safira.Store.Buy do
   schema "buys" do
     field :quantity, :integer
 
-    belongs_to :attendee, Attendee, foreign_key: :attendee_id 
+    belongs_to :attendee, Attendee, foreign_key: :attendee_id, type: :binary_id
     belongs_to :redeemable, Redeemable, foreign_key: :redeemable_id
 
     timestamps()
