@@ -117,7 +117,7 @@ defmodule Mix.Tasks.Gift.Badge do
     if not is_nil user do
       give(user.attendee.id, badge_id)
     else
-      IO.puts("Invalid email: #{email}")
+      Mix.shell.info "Invalid email: #{email}"
     end
   end
 
