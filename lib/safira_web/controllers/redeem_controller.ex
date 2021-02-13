@@ -32,7 +32,7 @@ defmodule SafiraWeb.RedeemController do
     with {:ok, %Redeem{} = _redeem} <- Contest.create_redeem(redeem_params) do
       conn
       |> put_status(:created)
-      |> json(%{redeem: "Badge redeem successfully. Tokens added to your balance"})
+      |> json(%{redeem: "Badge redeemed successfully. Tokens added to your balance"})
     end
   end
 
