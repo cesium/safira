@@ -196,4 +196,12 @@ defmodule Safira.Roulette do
   def change_attendee_prize(%AttendeePrize{} = attendee_prize) do
     AttendeePrize.changeset(attendee_prize, %{})
   end
+
+  @doc """
+
+  """
+  def spin() do
+
+  end
+
 end
