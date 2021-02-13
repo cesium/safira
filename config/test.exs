@@ -13,7 +13,10 @@ config :logger, level: :warn
 config :safira, Safira.Repo,
   adapter: Ecto.Adapters.Postgres,
   database: "safira_test",
-  hostname: "localhost",
+  username: System.get_env("DB_USERNAME", "safira"),
+  password: System.get_env("DB_PASSWORD", "secret"),
+  port: System.get_env("DB_PORT", "5432"),
+  hostname: System.get_env("DB_HOST", "localhost"),
   pool: Ecto.Adapters.SQL.Sandbox
 
 # Fast testing only
