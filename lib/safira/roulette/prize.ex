@@ -37,7 +37,7 @@ defmodule Safira.Roulette.Prize do
     |> cast_attachments(attrs, [:avatar])
     |> validate_required([:name, :stock, :max_amount_per_attendee, :probability])
     |> validate_number(:max_amount_per_attendee, greater_than: 0)
-    |> validate_number(:stock, greater_than: 0)
+    |> validate_number(:stock, greater_than_or_equal_to: 0)
     |> validate_number(:probability, greater_than_or_equal_to: 0, less_than_or_equal_to: 1)
   end
 end

@@ -4,19 +4,22 @@ defmodule SafiraWeb.RouletteController do
   alias Safira.Accounts
   alias Safira.Roulette
 
+  action_fallback SafiraWeb.FallbackController
+
   def spin(conn, _params) do
     attendee = Accounts.get_user(conn) |> Map.fetch!(:attendee)
     cond do
        not is_nil(attendee)->
-        Roulette.spin(attendee)
-        conn
-        |> put_status(:ok)
-        |> json(%{message: "You spinned the roulette"})
+        with {:ok, changes} <- Roulette.spin(attendee) do
+          conn
+          |> put_status(:ok)
+          |> json(%{message: "You've won #{Map.get(changes, :prize).name}"})
+        end
 
       true ->
         conn
         |> put_status(:unauthorized)
-        |> json(%{error: "Only attendees can spin the roulette"})
+        |> json(%{error: "Only attendees can spin the wheel"})
     end
   end
 end

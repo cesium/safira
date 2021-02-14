@@ -85,9 +85,6 @@ defmodule Safira.Accounts.Attendee do
     attendee
     |> cast(attrs, [:token_balance])
     |> validate_required([:token_balance])
-    |> validate_number(:token_balance,
-      greater_than_or_equal_to: 0,
-      message: "must be greater than or equal to %{number}"
-    )
+    |> validate_number(:token_balance, greater_than_or_equal_to: 0)
   end
 end

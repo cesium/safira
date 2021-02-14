@@ -135,6 +135,13 @@ defmodule Safira.Roulette do
   def get_attendee_prize!(id), do: Repo.get!(AttendeePrize, id)
 
   @doc """
+  Gets AttendeePrize given attendee_id and prize_id.
+  """
+  def get_keys_attendee_prize(attendee_id, prize_id) do
+    Repo.get_by(AttendeePrize, attendee_id: attendee_id, prize_id: prize_id)
+  end
+
+  @doc """
   Creates a attendee_prize.
 
   ## Examples
@@ -206,34 +213,75 @@ defmodule Safira.Roulette do
   """
   def spin(attendee) do
     Multi.new()
+    # remove tokens from attendee to spin the wheel
     |> Multi.update(
       :attendee,
       Attendee.update_token_balance_changeset(attendee, %{
         token_balance: attendee.token_balance - Application.fetch_env!(:safira, :roulette_cost)
       })
     )
-    |> Multi.run(:prize, fn _repo, _ -> {:ok, spin_prize()} end)
-    |> IO.inspect()
-    #|> Repo.transaction()
+    # prize after spinning
+    |> Multi.run(:prize, fn _repo, _changes -> {:ok, spin_prize()} end)
+    # get an attendee_prize if exists one
+    |> Multi.run(:attendee_prize, fn _repo, %{attendee: attendee, prize: prize} ->
+      {:ok,
+       get_keys_attendee_prize(attendee.id, prize.id) ||
+         %AttendeePrize{attendee_id: attendee.id, prize_id: prize.id, quantity: 0}}
+    end)
+    # insert or update the existing attendee_prize
+    |> Multi.insert_or_update(:upsert_atendee_prize, fn %{attendee_prize: attendee_prize} ->
+      AttendeePrize.changeset(attendee_prize, %{quantity: attendee_prize.quantity + 1})
+    end)
+    # decrement stock of prize
+    |> Multi.update(:prize_stock, fn %{prize: prize} ->
+      Prize.update_changeset(prize, %{stock: prize.stock - 1})
+    end)
+    # IF THE PRIZE STOCK IS 0, SHOULD WE UPDATE EQUALLY THE PROBABILITIES
+    # OF THE OTHER PRIZES ???
+    |> serializable_transaction()
   end
 
   defp spin_prize() do
     prizes = Repo.all(Prize)
-    random_prize = Float.round(:random.uniform, 3)
+    random_prize = strong_randomizer() |> Float.round(3)
 
-    cumulatives = prizes
-    |> Enum.map_reduce(0, fn prize, acc -> {Float.round(acc + prize.probability, 3), acc + prize.probability} end)
-    |> elem(0)
+    cumulatives =
+      prizes
+      |> Enum.map_reduce(0, fn prize, acc ->
+        {Float.round(acc + prize.probability, 3), acc + prize.probability}
+      end)
+      |> elem(0)
 
-
-    prob = cumulatives
-    |> Enum.filter(fn x -> x >= random_prize end)
-    |> Enum.at(0)
+    prob =
+      cumulatives
+      |> Enum.filter(fn x -> x >= random_prize end)
+      |> Enum.at(0)
 
     prizes
     |> Enum.at(
       cumulatives
       |> Enum.find_index(fn x -> x == prob end)
     )
+  end
+
+  defp strong_randomizer() do
+    <<i1::unsigned-integer-32, i2::unsigned-integer-32, i3::unsigned-integer-32>> =
+      :crypto.strong_rand_bytes(12)
+
+    :rand.seed(:exsplus, {i1, i2, i3})
+    :rand.uniform()
+  end
+
+  defp serializable_transaction(multi) do
+    Repo.transaction(fn ->
+      Repo.query!("set transaction isolation level serializable;")
+      Repo.transaction(multi)
+      |> case do
+        {:ok, result} ->
+          result
+        {:error, _failed_operation, changeset, _changes_so_far} ->
+          Repo.rollback(changeset) # That's the way to retrieve the changeset
+      end
+    end)
   end
 end
