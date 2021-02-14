@@ -5,9 +5,11 @@ defmodule Safira.Roulette do
 
   import Ecto.Query, warn: false
   alias Safira.Repo
+  alias Ecto.Multi
 
   alias Safira.Roulette.Prize
   alias Safira.Roulette.AttendeePrize
+  alias Safira.Accounts.Attendee
 
   @doc """
   Returns the list of prizes.
@@ -198,10 +200,40 @@ defmodule Safira.Roulette do
   end
 
   @doc """
-
+  Transaction that take a number of tokens from an attendee,
+  apply a probability-based function for "spinning the wheel",
+  and give the price to the attendee.
   """
-  def spin() do
-
+  def spin(attendee) do
+    Multi.new()
+    |> Multi.update(
+      :attendee,
+      Attendee.update_token_balance_changeset(attendee, %{
+        token_balance: attendee.token_balance - Application.fetch_env!(:safira, :roulette_cost)
+      })
+    )
+    |> Multi.run(:prize, fn _repo, _ -> {:ok, spin_prize()} end)
+    |> IO.inspect()
+    #|> Repo.transaction()
   end
 
+  defp spin_prize() do
+    prizes = Repo.all(Prize)
+    random_prize = Float.round(:random.uniform, 3)
+
+    cumulatives = prizes
+    |> Enum.map_reduce(0, fn prize, acc -> {Float.round(acc + prize.probability, 3), acc + prize.probability} end)
+    |> elem(0)
+
+
+    prob = cumulatives
+    |> Enum.filter(fn x -> x >= random_prize end)
+    |> Enum.at(0)
+
+    prizes
+    |> Enum.at(
+      cumulatives
+      |> Enum.find_index(fn x -> x == prob end)
+    )
+  end
 end

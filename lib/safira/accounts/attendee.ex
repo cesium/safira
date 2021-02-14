@@ -80,4 +80,14 @@ defmodule Safira.Accounts.Attendee do
     |> cast_assoc(:user)
     |> validate_required([:user_id, :name])
   end
+
+  def update_token_balance_changeset(attendee, attrs) do
+    attendee
+    |> cast(attrs, [:token_balance])
+    |> validate_required([:token_balance])
+    |> validate_number(:token_balance,
+      greater_than_or_equal_to: 0,
+      message: "must be greater than or equal to %{number}"
+    )
+  end
 end
