@@ -1,6 +1,7 @@
 defmodule Safira.Contest do
 
   import Ecto.Query, warn: false
+  alias Ecto.Changeset
   alias Safira.Repo
   alias Safira.Contest.Redeem
   alias Safira.Contest.Badge
