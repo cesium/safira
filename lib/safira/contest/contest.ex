@@ -136,7 +136,12 @@ defmodule Safira.Contest do
       )
     end)
     |> Repo.transaction()
-    |> (fn x -> {elem(x, 0), elem(x, 1) |> Map.get(:redeem)} end).()
+    |> case do
+      {:ok, result} ->
+        {:ok, Map.get(result, :redeem)}
+      {:error, _failed_operation, changeset, _changes_so_far} ->
+        {:error, changeset}
+    end
   end
 
   def update_redeem(%Redeem{} = redeem, attrs) do
