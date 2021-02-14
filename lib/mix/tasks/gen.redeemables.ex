@@ -22,10 +22,8 @@ defmodule Mix.Tasks.Gen.Redeemables do
   
     defp create(path) do
       Mix.Task.run("app.start")
-
       path
       |> parse_csv
-      |> IO.inspect
       |> Enum.map(fn redeemable ->
         Safira.Store.create_redeemable(redeemable) end)
     end
