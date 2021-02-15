@@ -3,6 +3,7 @@ defmodule Safira.Store.Buy do
   import Ecto.Changeset
   alias Safira.Store.Redeemable
   alias Safira.Accounts.Attendee
+  alias Safira.Repo
 
   schema "buys" do
     field :quantity, :integer
@@ -33,7 +34,7 @@ defmodule Safira.Store.Buy do
       
       {_, _ } -> 
         redeemable = Redeemable
-                     |> Repo.get(redeemable_id)
+                     |> Repo.get!(redeemable_id)
         cond do
           redeemable.max_per_user >= quantity ->
             changeset

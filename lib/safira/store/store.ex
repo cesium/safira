@@ -1,12 +1,10 @@
 defmodule Safira.Store do
   import Ecto.Query, warn: false
-  alias Ecto.Changeset
   alias Ecto.Multi
   alias Safira.Repo
   alias Safira.Store.Redeemable
   alias Safira.Store.Buy
   alias Safira.Accounts
-  alias Safira.Accounts.User
   alias Safira.Accounts.Attendee
 
   def list_redeemables do
@@ -14,6 +12,10 @@ defmodule Safira.Store do
   end
 
   def get_redeemable!(id), do: Repo.get!(Redeemable, id)
+
+  def get_redeemable(id) do
+    Repo.get!(Redeemable, id)
+  end
 
   def create_redeemable(attrs \\ %{}) do
     %Redeemable{}
@@ -27,9 +29,8 @@ defmodule Safira.Store do
 
   def buy_redeemable(redeemable_id, attendee) do
     Multi.new()
-    |> Multi.run(:redeemable, fn _repo -> {:ok, get_redeemable!(redeemable_id)} end)
-    |> Multi.update(:redeemable_stock, fn %{redeemable: redeemable} -> 
-                    Redeemable.changeset(redeemable, %{stock: redeemable.stock -1}) end)
+    |> Multi.update(:redeemable,
+            Redeemable.changeset(get_redeemable!(redeemable_id), %{stock: get_redeemable!(redeemable_id).stock - 1}))
     |> Multi.update(:attendee, fn %{redeemable: redeemable} ->
       Attendee.update_token_balance_changeset(attendee, %{
         token_balance: attendee.token_balance - redeemable.price}) end)
@@ -53,7 +54,7 @@ defmodule Safira.Store do
     try do
       Repo.transaction(fn ->
         Repo.query!("set transaction isolation level serializable;")
-
+        
         Repo.transaction(multi)
         |> case do
           {:ok, result} ->
@@ -61,10 +62,10 @@ defmodule Safira.Store do
 
           {:error, _failed_operation, changeset, _changes_so_far} ->
             Repo.rollback(changeset)
-        end
+          end
       end)
     rescue
-      _ ->
+      error ->
         serializable_transaction(multi)
     end
   end

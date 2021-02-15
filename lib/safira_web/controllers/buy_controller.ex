@@ -2,11 +2,7 @@ defmodule SafiraWeb.BuyController do
     use SafiraWeb, :controller
   
     alias Safira.Store
-    alias Safira.Store.Buy
-    alias Safira.Store.Redeemable
-    alias Safira.Accounts.User
     alias Safira.Accounts
-    alias Safira.Repo
   
     action_fallback SafiraWeb.FallbackController
   
@@ -24,7 +20,6 @@ defmodule SafiraWeb.BuyController do
             conn
               |> put_status(:unauthorized)
               |> json(%{error: "Only attendees can buy products!"})
-              |> halt()
       end
     end
 
@@ -37,9 +32,6 @@ defmodule SafiraWeb.BuyController do
 
         redeemable_id ->
           Store.buy_redeemable(redeemable_id,attendee)
-          conn
-          |> put_status(:ok)
-          |> json(%{Redeemable: "Item #{redeemable_id} bought successfully"})
       end
     end
   end
