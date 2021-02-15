@@ -73,6 +73,7 @@ defmodule Safira.Accounts do
   def list_active_attendees do
     Repo.all(from a in Attendee, where: not is_nil(a.user_id))
     |> Repo.preload(:badges)
+    |> Repo.preload(:prizes)
     |> Enum.map(fn x -> Map.put(x, :badge_count, length(Enum.filter(x.badges,fn x -> x.type != 0 end))) end)
   end
 
@@ -100,6 +101,8 @@ defmodule Safira.Accounts do
   def get_attendee(id) do
     Repo.get(Attendee, id)
     |> Repo.preload(:badges)
+    |> Repo.preload(:user)
+    |> Repo.preload(:prizes)
   end
 
   def get_attendee_by_discord_association_code(discord_association_code) do
