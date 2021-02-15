@@ -1,4 +1,4 @@
-defmodule Safira.Interactions.Bonus do
+defmodule Safira.Interaction.Bonus do
   use Ecto.Schema
   import Ecto.Changeset
   alias Safira.Accounts.Attendee

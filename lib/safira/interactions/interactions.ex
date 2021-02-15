@@ -1,12 +1,12 @@
-defmodule Safira.Interactions do
+defmodule Safira.Interaction do
   @moduledoc """
-  The Interactions context.
+  The Interaction context.
   """
 
   import Ecto.Query, warn: false
   alias Safira.Repo
 
-alias Safira.Interactions.Bonus
+alias Safira.Interaction.Bonus
 
 @doc """
 Returns the list of bonuses.
