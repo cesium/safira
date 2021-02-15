@@ -11,7 +11,8 @@ config :safira,
   ecto_repos: [Safira.Repo],
   company_code: System.get_env("COMPANY_CODE"),
   speaker_code: System.get_env("SPEAKER_CODE"),
-  staff_code: System.get_env("STAFF_CODE")
+  staff_code: System.get_env("STAFF_CODE"),
+  roulette_cost: String.to_integer(System.get_env("ROULETTE_COST") || "10")
 
 # Configures the endpoint
 config :safira, SafiraWeb.Endpoint,
