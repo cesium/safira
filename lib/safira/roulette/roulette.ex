@@ -222,7 +222,7 @@ defmodule Safira.Roulette do
     )
     # prize after spinning
     |> Multi.run(:prize, fn _repo, _changes -> {:ok, spin_prize()} end)
-    # get an attendee_prize if exists one
+    # get an attendee_prize if exists one, or build one
     |> Multi.run(:attendee_prize, fn _repo, %{attendee: attendee, prize: prize} ->
       {:ok,
        get_keys_attendee_prize(attendee.id, prize.id) ||
@@ -232,18 +232,23 @@ defmodule Safira.Roulette do
     |> Multi.insert_or_update(:upsert_atendee_prize, fn %{attendee_prize: attendee_prize} ->
       AttendeePrize.changeset(attendee_prize, %{quantity: attendee_prize.quantity + 1})
     end)
-    # decrement stock of prize
+    # decrement stock of prize and possibly the probability
     |> Multi.update(:prize_stock, fn %{prize: prize} ->
-      Prize.update_changeset(prize, %{stock: prize.stock - 1})
+      update_prize_stock(prize)
     end)
-    # IF THE PRIZE STOCK IS 0, SHOULD WE UPDATE EQUALLY THE PROBABILITIES
-    # OF THE OTHER PRIZES ???
+    # update probabilities if the stock of current prize is 0
+    |> Multi.merge(fn %{prize_stock: prize_stock, prize: prize} ->
+      update_probabilities(prize_stock, prize)
+    end)
     |> serializable_transaction()
   end
 
   defp spin_prize() do
-    prizes = Repo.all(Prize)
     random_prize = strong_randomizer() |> Float.round(3)
+
+    prizes =
+      Repo.all(Prize)
+      |> Enum.filter(fn x -> x.probability > 0 end)
 
     cumulatives =
       prizes
@@ -272,16 +277,63 @@ defmodule Safira.Roulette do
     :rand.uniform()
   end
 
-  defp serializable_transaction(multi) do
-    Repo.transaction(fn ->
-      Repo.query!("set transaction isolation level serializable;")
-      Repo.transaction(multi)
-      |> case do
-        {:ok, result} ->
-          result
-        {:error, _failed_operation, changeset, _changes_so_far} ->
-          Repo.rollback(changeset) # That's the way to retrieve the changeset
+  defp update_prize_stock(prize) do
+    attrs = %{stock: prize.stock - 1}
+
+    attrs =
+      cond do
+        Map.get(attrs, :stock) == 0 ->
+          Map.put(attrs, :probability, 0)
+
+        true ->
+          attrs
       end
-    end)
+
+    Prize.update_changeset(prize, attrs)
+  end
+
+  defp update_probabilities(prize_stock, prize) do
+    cond do
+      prize_stock.stock == 0 ->
+        Repo.all(Prize)
+        |> Enum.filter(fn x -> x.id != prize.id end)
+        |> Enum.with_index()
+        |> Enum.reduce(Multi.new(), fn {x, index}, acc ->
+          Multi.update(
+            acc,
+            index,
+            Prize.update_changeset(x, %{probability: x.probability / (1 - prize.probability)})
+          )
+        end)
+
+      true ->
+        Multi.new()
+    end
+  end
+
+  defp serializable_transaction(multi) do
+    try do
+      Repo.transaction(fn ->
+        Repo.query!("set transaction isolation level serializable;")
+
+        Repo.transaction(multi)
+        |> case do
+          {:ok, result} ->
+            result
+
+          {:error, failed_operation, changeset, changes_so_far} ->
+            # That's the way to retrieve the changeset as a value
+            IO.inspect(failed_operation)
+            IO.inspect(changes_so_far)
+            Repo.rollback(changeset)
+        end
+      end)
+    rescue
+      _ ->
+        # When transaction raises a serialization error means that
+        # could not serialize access due to concurrent update which
+        # is a correct error. After that the spinning should be repeated.
+        serializable_transaction(multi)
+    end
   end
 end
