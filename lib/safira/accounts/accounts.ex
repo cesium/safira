@@ -206,11 +206,6 @@ defmodule Safira.Accounts do
     |> Repo.insert()
   end
 
-  def update_company(%Company{} = company, attrs) do
-    company
-    |> Company.changeset(attrs)
-    |> Repo.update()
-  end
 
   def delete_company(%Company{} = company) do
     Repo.delete(company)
