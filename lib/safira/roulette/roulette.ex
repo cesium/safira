@@ -321,10 +321,8 @@ defmodule Safira.Roulette do
           {:ok, result} ->
             result
 
-          {:error, failed_operation, changeset, changes_so_far} ->
+          {:error, _failed_operation, changeset, _changes_so_far} ->
             # That's the way to retrieve the changeset as a value
-            IO.inspect(failed_operation)
-            IO.inspect(changes_so_far)
             Repo.rollback(changeset)
         end
       end)
