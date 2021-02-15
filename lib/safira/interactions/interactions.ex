@@ -40,7 +40,7 @@ defmodule Safira.Interaction do
   def get_bonus!(id), do: Repo.get!(Bonus, id)
 
   @doc """
-  Gets AttendeePrize given attendee_id and prize_id.
+  Gets Bonus given attendee_id and company_id.
   """
   def get_keys_bonus(attendee_id, company_id) do
     Repo.get_by(Bonus, attendee_id: attendee_id, company_id: company_id)
