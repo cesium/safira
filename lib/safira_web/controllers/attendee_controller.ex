@@ -13,7 +13,7 @@ defmodule SafiraWeb.AttendeeController do
   end
 
   def show(conn, %{"id" => id}) do
-    attendee = Accounts.get_attendee!(id)
+    attendee = Accounts.get_attendee_with_badge_count!(id)
 
     cond do
       is_nil(attendee.user_id) ->
