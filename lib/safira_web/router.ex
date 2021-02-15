@@ -59,7 +59,7 @@ defmodule SafiraWeb.Router do
       resources "/badges", BadgeController, only: [:index, :show]
       resources "/attendees", AttendeeController, except: [:create]
       resources "/referrals", ReferralController, only: [:create]
-      resources "/companies", CompanyController, only: [:index, :show, :update]
+      resources "/companies", CompanyController, only: [:index, :show]
       resources "/redeems", RedeemController, only: [:create]
       resources "/store", RedeemableController, only: [:index, :show]
       resources "/association", DiscordAssociationController, only: [:show, :create]

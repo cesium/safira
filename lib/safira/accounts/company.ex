@@ -20,7 +20,7 @@ defmodule Safira.Accounts.Company do
     company
     |> cast(attrs, [:name, :sponsorship, :badge_id, :channel_id])
     |> cast_assoc(:user)
-    |> validate_required([:name, :sponsorship])
+    |> validate_required([:name, :sponsorship, :badge_id, :channel_id])
     |> unique_constraint(:channel_id)
   end
 end
