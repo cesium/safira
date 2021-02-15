@@ -1,6 +1,7 @@
 defmodule Safira.Contest do
 
   import Ecto.Query, warn: false
+  alias Ecto.Changeset
   alias Safira.Repo
   alias Safira.Contest.Redeem
   alias Safira.Contest.Badge
@@ -125,9 +126,22 @@ defmodule Safira.Contest do
   end
 
   def create_redeem(attrs \\ %{}) do
-    %Redeem{}
-    |> Redeem.changeset(attrs)
-    |> Repo.insert()
+    Multi.new()
+    |> Multi.insert(:redeem, Redeem.changeset(%Redeem{}, attrs))
+    |> Multi.update(:attendee, fn %{redeem: redeem} ->
+      redeem = Repo.preload(redeem, [:badge, :attendee])
+
+      Changeset.change(redeem.attendee,
+        token_balance: redeem.attendee.token_balance + redeem.badge.tokens
+      )
+    end)
+    |> Repo.transaction()
+    |> case do
+      {:ok, result} ->
+        {:ok, Map.get(result, :redeem)}
+      {:error, _failed_operation, changeset, _changes_so_far} ->
+        {:error, changeset}
+    end
   end
 
   def update_redeem(%Redeem{} = redeem, attrs) do
