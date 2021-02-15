@@ -59,6 +59,7 @@ defmodule SafiraWeb.Router do
       resources "/referrals", ReferralController, only: [:create]
       resources "/companies", CompanyController, only: [:index, :show, :update]
       resources "/redeems", RedeemController, only: [:create]
+      resources "/store", RedeemableController, only: [:index, :show]
       resources "/association", DiscordAssociationController, only: [:show, :create]
     end
   end
