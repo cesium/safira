@@ -6,99 +6,99 @@ defmodule Safira.Interaction do
   import Ecto.Query, warn: false
   alias Safira.Repo
 
-alias Safira.Interaction.Bonus
+  alias Safira.Interaction.Bonus
 
-@doc """
-Returns the list of bonuses.
+  @doc """
+  Returns the list of bonuses.
 
-## Examples
+  ## Examples
 
-    iex> list_bonuses()
-    [%Bonus{}, ...]
+      iex> list_bonuses()
+      [%Bonus{}, ...]
 
-"""
-def list_bonuses do
-  Repo.all(Bonus)
-end
+  """
+  def list_bonuses do
+    Repo.all(Bonus)
+  end
 
-@doc """
-Gets a single bonus.
+  @doc """
+  Gets a single bonus.
 
-Raises `Ecto.NoResultsError` if the Bonus does not exist.
+  Raises `Ecto.NoResultsError` if the Bonus does not exist.
 
-## Examples
+  ## Examples
 
-    iex> get_bonus!(123)
+      iex> get_bonus!(123)
+      %Bonus{}
+
+      iex> get_bonus!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_bonus!(id), do: Repo.get!(Bonus, id)
+
+  @doc """
+  Creates a bonus.
+
+  ## Examples
+
+      iex> create_bonus(%{field: value})
+      {:ok, %Bonus{}}
+
+      iex> create_bonus(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_bonus(attrs \\ %{}) do
     %Bonus{}
+    |> Bonus.changeset(attrs)
+    |> Repo.insert()
+  end
 
-    iex> get_bonus!(456)
-    ** (Ecto.NoResultsError)
+  @doc """
+  Updates a bonus.
 
-"""
-def get_bonus!(id), do: Repo.get!(Bonus, id)
+  ## Examples
 
-@doc """
-Creates a bonus.
+      iex> update_bonus(bonus, %{field: new_value})
+      {:ok, %Bonus{}}
 
-## Examples
+      iex> update_bonus(bonus, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
 
-    iex> create_bonus(%{field: value})
-    {:ok, %Bonus{}}
+  """
+  def update_bonus(%Bonus{} = bonus, attrs) do
+    bonus
+    |> Bonus.changeset(attrs)
+    |> Repo.update()
+  end
 
-    iex> create_bonus(%{field: bad_value})
-    {:error, %Ecto.Changeset{}}
+  @doc """
+  Deletes a Bonus.
 
-"""
-def create_bonus(attrs \\ %{}) do
-  %Bonus{}
-  |> Bonus.changeset(attrs)
-  |> Repo.insert()
-end
+  ## Examples
 
-@doc """
-Updates a bonus.
+      iex> delete_bonus(bonus)
+      {:ok, %Bonus{}}
 
-## Examples
+      iex> delete_bonus(bonus)
+      {:error, %Ecto.Changeset{}}
 
-    iex> update_bonus(bonus, %{field: new_value})
-    {:ok, %Bonus{}}
+  """
+  def delete_bonus(%Bonus{} = bonus) do
+    Repo.delete(bonus)
+  end
 
-    iex> update_bonus(bonus, %{field: bad_value})
-    {:error, %Ecto.Changeset{}}
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking bonus changes.
 
-"""
-def update_bonus(%Bonus{} = bonus, attrs) do
-  bonus
-  |> Bonus.changeset(attrs)
-  |> Repo.update()
-end
+  ## Examples
 
-@doc """
-Deletes a Bonus.
+      iex> change_bonus(bonus)
+      %Ecto.Changeset{source: %Bonus{}}
 
-## Examples
-
-    iex> delete_bonus(bonus)
-    {:ok, %Bonus{}}
-
-    iex> delete_bonus(bonus)
-    {:error, %Ecto.Changeset{}}
-
-"""
-def delete_bonus(%Bonus{} = bonus) do
-  Repo.delete(bonus)
-end
-
-@doc """
-Returns an `%Ecto.Changeset{}` for tracking bonus changes.
-
-## Examples
-
-    iex> change_bonus(bonus)
-    %Ecto.Changeset{source: %Bonus{}}
-
-"""
-def change_bonus(%Bonus{} = bonus) do
-  Bonus.changeset(bonus, %{})
-end
+  """
+  def change_bonus(%Bonus{} = bonus) do
+    Bonus.changeset(bonus, %{})
+  end
 end
