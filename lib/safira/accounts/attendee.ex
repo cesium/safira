@@ -7,6 +7,8 @@ defmodule Safira.Accounts.Attendee do
   alias Safira.Contest.Redeem
   alias Safira.Contest.Badge
   alias Safira.Contest.Referral
+  alias Safira.Store.Redeemable
+  alias Safira.Store.Buy
   alias Safira.Roulette.Prize
   alias Safira.Roulette.AttendeePrize
 
@@ -24,6 +26,7 @@ defmodule Safira.Accounts.Attendee do
     belongs_to :user, User
     many_to_many :badges, Badge, join_through: Redeem
     has_many :referrals, Referral
+    many_to_many :redeemables, Redeemable, join_through: Buy
     many_to_many :prizes, Prize, join_through: AttendeePrize
 
     field :badge_count, :integer, default: 0, virtual: true
@@ -79,5 +82,12 @@ defmodule Safira.Accounts.Attendee do
     |> cast(attrs, [:user_id, :name])
     |> cast_assoc(:user)
     |> validate_required([:user_id, :name])
+  end
+
+  def update_token_balance_changeset(attendee, attrs) do
+    attendee
+    |> cast(attrs, [:token_balance])
+    |> validate_required([:token_balance])
+    |> validate_number(:token_balance, greater_than_or_equal_to: 0)
   end
 end
