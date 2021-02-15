@@ -145,11 +145,7 @@ defmodule Safira.Contest do
   end
 
   def list_leaderboard do
-    Repo.all(from a in Safira.Accounts.Attendee,
-      where: not (is_nil a.user_id))
-    #|> Repo.preload(:badges)
-    |> Repo.preload([badges: from(b in Badge, where: b.type != ^0)])
-    |> Enum.map(fn x -> Map.put(x, :badge_count, length(Enum.filter(x.badges,fn x -> x.type != 0 end))) end)
+    Safira.Accounts.list_active_attendees
     |> Enum.sort(&(&1.badge_count >= &2.badge_count))
   end
 

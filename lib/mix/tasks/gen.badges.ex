@@ -1,7 +1,7 @@
 defmodule Mix.Tasks.Gen.Badges do
   use Mix.Task
 
-  NimbleCSV.define(MyParser, separator: ",", escape: "\"")
+  alias NimbleCSV.RFC4180, as: CSV
 
   # Its waiting for an header or an empty line on the beggining of the file
   # format Coffee break;badge do lanche;2019-02-11;2019-02-12;/tmp/goraster.png
@@ -48,7 +48,7 @@ defmodule Mix.Tasks.Gen.Badges do
   defp parse_csv(path) do
     path
     |> File.stream!()
-    |> MyParser.parse_stream()
+    |> CSV.parse_stream()
     |> Stream.map(fn [name, description, begin_time, end_time, image_path, type, tokens] ->
       {:ok, begin_datetime, _} = DateTime.from_iso8601("#{begin_time}T00:00:00Z")
       {:ok, end_datetime, _} = DateTime.from_iso8601("#{end_time}T00:00:00Z")
