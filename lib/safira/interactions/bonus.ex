@@ -18,5 +18,7 @@ defmodule Safira.Interaction.Bonus do
     bonus
     |> cast(attrs, [:count, :attendee_id, :company_id])
     |> validate_required([:count, :attendee_id, :company_id])
+    |> unique_constraint(:unique_attendee_prize)
+    |> validate_number(:count, greater_than: 0, less_than_or_equal_to: 3)
   end
 end

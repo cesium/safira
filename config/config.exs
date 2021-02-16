@@ -12,7 +12,8 @@ config :safira,
   company_code: System.get_env("COMPANY_CODE"),
   speaker_code: System.get_env("SPEAKER_CODE"),
   staff_code: System.get_env("STAFF_CODE"),
-  roulette_cost: String.to_integer(System.get_env("ROULETTE_COST") || "10")
+  roulette_cost: String.to_integer(System.get_env("ROULETTE_COST") || "10"),
+  token_bonus: String.to_integer(System.get_env("TOKEN_BONUS") || "10")
 
 # Configures the endpoint
 config :safira, SafiraWeb.Endpoint,

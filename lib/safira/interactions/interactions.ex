@@ -7,6 +7,8 @@ defmodule Safira.Interaction do
   alias Safira.Repo
 
   alias Safira.Interaction.Bonus
+  alias Safira.Accounts.Attendee
+  alias Ecto.Multi
 
   @doc """
   Returns the list of bonuses.
@@ -36,6 +38,13 @@ defmodule Safira.Interaction do
 
   """
   def get_bonus!(id), do: Repo.get!(Bonus, id)
+
+  @doc """
+  Gets Bonus given attendee_id and company_id.
+  """
+  def get_keys_bonus(attendee_id, company_id) do
+    Repo.get_by(Bonus, attendee_id: attendee_id, company_id: company_id)
+  end
 
   @doc """
   Creates a bonus.
@@ -100,5 +109,34 @@ defmodule Safira.Interaction do
   """
   def change_bonus(%Bonus{} = bonus) do
     Bonus.changeset(bonus, %{})
+  end
+
+  def give_bonus(attendee, company) do
+    Multi.new()
+    # get or build a bonus
+    |> Multi.run(:get_bonus, fn _repo, _changes ->
+      {:ok,
+       get_keys_bonus(attendee.id, company.id) ||
+         %Bonus{attendee_id: attendee.id, company_id: company.id, count: 0}}
+    end)
+    # update the bonus count
+    |> Multi.insert_or_update(:upsert_bonus, fn %{get_bonus: bonus} ->
+      Bonus.changeset(bonus, %{count: bonus.count + 1})
+    end)
+    # update attendee's token_balance
+    |> Multi.update(
+      :update_attendee,
+      Attendee.update_token_balance_changeset(attendee, %{
+        token_balance: attendee.token_balance + Application.fetch_env!(:safira, :token_bonus)
+      })
+    )
+    |> Repo.transaction()
+    |> case do
+      {:ok, result} ->
+        {:ok, result}
+
+      {:error, _failed_operation, changeset, _changes_so_far} ->
+        {:error, changeset}
+    end
   end
 end
