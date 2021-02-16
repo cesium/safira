@@ -10,6 +10,11 @@ defmodule Safira.Store do
     Repo.all(Redeemable)
   end
 
+  def list_store_redeemables do
+    Repo.all(Redeemable)
+    |> Enum.filter(fn redeemable -> redeemable.stock > 0 end)
+  end
+
   def get_redeemable!(id), do: Repo.get!(Redeemable, id)
 
   def get_redeemable(id) do
@@ -42,12 +47,12 @@ defmodule Safira.Store do
   end
 
   def get_attendee_redeemables(attendee) do
-    redeemables = attendee
-                  |> Repo.preload(:redeemables)
-                  |> Map.fetch!(:redeemables)
-                  |> Enum.map(fn redeemable ->
-                    b = get_keys_buy(attendee.id,redeemable.id)
-                    Map.put(redeemable, :quantity, b.quantity) end)
+    attendee
+    |> Repo.preload(:redeemables)
+    |> Map.fetch!(:redeemables)
+    |> Enum.map(fn redeemable ->
+      b = get_keys_buy(attendee.id,redeemable.id)
+      Map.put(redeemable, :quantity, b.quantity) end)
   end
 
   defp serializable_transaction(multi) do

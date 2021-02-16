@@ -7,7 +7,7 @@ defmodule SafiraWeb.RedeemableController do
   action_fallback(SafiraWeb.FallbackController)
 
   def index(conn, _params) do
-    redeemables = Store.list_redeemables()
+    redeemables = Store.list_store_redeemables()
     render(conn, "index.json", redeemables: redeemables)
   end
 
