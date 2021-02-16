@@ -53,6 +53,7 @@ defmodule SafiraWeb.Router do
       get "/company", AuthController, :company
       get "/leaderboard", LeaderboardController, :index
       get "/leaderboard/:date", LeaderboardController, :daily
+      get "/store/my_products", RedeemableController, :my_items
 
       post "/roulette", RouletteController, :spin
 
@@ -63,7 +64,7 @@ defmodule SafiraWeb.Router do
       resources "/redeems", RedeemController, only: [:create]
       resources "/store", RedeemableController, only: [:index, :show]
       resources "/association", DiscordAssociationController, only: [:show, :create]
-      resources "/buy", BuyController, only: [:create]
+      resources "/store/buy", BuyController, only: [:create]
       resources "/roulette/prizes", PrizeController, only: [:index, :show]
     end
   end

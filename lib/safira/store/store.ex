@@ -4,7 +4,6 @@ defmodule Safira.Store do
   alias Safira.Repo
   alias Safira.Store.Redeemable
   alias Safira.Store.Buy
-  alias Safira.Accounts
   alias Safira.Accounts.Attendee
 
   def list_redeemables do
@@ -42,12 +41,13 @@ defmodule Safira.Store do
     |> serializable_transaction()
   end
 
-  def get_attendee_redeemables(conn) do
-    Accounts.get_user(conn)
-    |> Map.fetch!(:attendee)
-    |> Repo.preload(:redeemables)
-    |> Map.fetch!(:redeemables)
-    |> Enum.map(fn redeemable -> IO.puts redeemable.id end )
+  def get_attendee_redeemables(attendee) do
+    redeemables = attendee
+                  |> Repo.preload(:redeemables)
+                  |> Map.fetch!(:redeemables)
+                  |> Enum.map(fn redeemable ->
+                    b = get_keys_buy(attendee.id,redeemable.id)
+                    Map.put(redeemable, :quantity, b.quantity) end)
   end
 
   defp serializable_transaction(multi) do
@@ -65,7 +65,7 @@ defmodule Safira.Store do
           end
       end)
     rescue
-      error ->
+      _error ->
         serializable_transaction(multi)
     end
   end
