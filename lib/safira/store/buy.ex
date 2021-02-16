@@ -17,6 +17,7 @@ defmodule Safira.Store.Buy do
   def changeset(buy, attrs) do
     buy
     |> cast(attrs, [:attendee_id, :redeemable_id, :quantity])
+    |> unique_constraint(:unique_attendee_redeemable)
     |> validate_required([:attendee_id, :redeemable_id, :quantity])
     |> validate_number(:quantity, greater_than_or_equal_to: 0)
     |> validate_quantity
