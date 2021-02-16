@@ -14,7 +14,7 @@ defmodule SafiraWeb.BuyController do
             with {:ok,changes} <- buy_aux(conn, attendee,redeemable_params) do
               conn
               |> put_status(:ok)
-              |> json(%{Redeemable: "#{Map.get(changes, :redeemable).name} bought successfully"})
+              |> json(%{Redeemable: "#{Map.get(changes, :redeemable).name} bought successfully!"})
             end
           true ->
             conn

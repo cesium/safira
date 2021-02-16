@@ -17,10 +17,6 @@ defmodule Safira.Store do
 
   def get_redeemable!(id), do: Repo.get!(Redeemable, id)
 
-  def get_redeemable(id) do
-    Repo.get!(Redeemable, id)
-  end
-
   def create_redeemable(attrs \\ %{}) do
     %Redeemable{}
     |> Redeemable.changeset(attrs)
