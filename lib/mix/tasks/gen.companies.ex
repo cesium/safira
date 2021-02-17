@@ -75,7 +75,8 @@ defmodule Mix.Tasks.Gen.Companies do
             |> String.split("(")
             |> List.first(),
           sponsorship: sponsorship,
-          channel_id: channel_id
+          channel_id: channel_id,
+          remaining_spotlights: sponsorship_to_spotlights(sponsorship)
         }
       }
     end)
@@ -138,7 +139,14 @@ defmodule Mix.Tasks.Gen.Companies do
   end
 
   defp create_user(name) do
-    email = Enum.join([name, @domain], "@") |> String.downcase()
+    email = Enum.join([
+      name
+      |> String.downcase()
+      |> String.replace(" ", "")
+      |> String.replace("&", "_")
+      |> String.replace("/", "_")
+      |> String.split("(")
+      |> List.first(), @domain], "@")
     password = random_string(8)
 
     %{
@@ -152,5 +160,14 @@ defmodule Mix.Tasks.Gen.Companies do
     :crypto.strong_rand_bytes(length)
     |> Base.url_encode64()
     |> binary_part(0, length)
+  end
+
+  defp sponsorship_to_spotlights(sponsorship) do
+    case sponsorship do
+      "Exclusive" -> 3
+      "Gold" -> 2
+      "Silver" -> 1
+      "Bronze" -> 1
+    end
   end
 end

@@ -9,6 +9,7 @@ defmodule Safira.Accounts.Company do
     field :name, :string
     field :sponsorship, :string
     field :channel_id, :string
+    field :remaining_spotlights, :integer
     belongs_to :user, User
     belongs_to :badge, Badge
 
@@ -18,9 +19,10 @@ defmodule Safira.Accounts.Company do
   @doc false
   def changeset(company, attrs) do
     company
-    |> cast(attrs, [:name, :sponsorship, :badge_id, :channel_id])
+    |> cast(attrs, [:name, :sponsorship, :badge_id, :channel_id, :remaining_spotlights])
     |> cast_assoc(:user)
-    |> validate_required([:name, :sponsorship, :badge_id, :channel_id])
+    |> validate_required([:name, :sponsorship, :badge_id, :channel_id, :remaining_spotlights])
+    |> validate_number(:remaining_spotlights, greater_than_or_equal_to: 0)
     |> unique_constraint(:channel_id)
   end
 end
