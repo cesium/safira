@@ -19,7 +19,6 @@ defmodule Safira.Interaction.Spotlight do
     |> Ecto.Changeset.optimistic_lock(:lock_version)
   end
 
-
   def finish_changeset(spotlight, attrs) do
     spotlight
     |> cast(attrs, [:active])

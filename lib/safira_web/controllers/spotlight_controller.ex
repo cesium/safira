@@ -12,13 +12,14 @@ defmodule SafiraWeb.SpotlightController do
     cond do
       Accounts.is_company(conn) ->
         with {:ok, _struct} <- Interaction.start_spotlight(user.company) do
-          spotlight_discord_request(user.company.name, "POST") # to signal discord to start the spotlight
+          # to signal discord to start the spotlight
+          spotlight_discord_request(user.company.name, "POST")
 
           schedule_spotlight_finish(user.company.name)
 
           conn
           |> put_status(:created)
-          |> json(%{spotlight: "Spotlight requested succesfully",})
+          |> json(%{spotlight: "Spotlight requested succesfully"})
         end
 
       true ->
@@ -30,26 +31,29 @@ defmodule SafiraWeb.SpotlightController do
   end
 
   defp spotlight_discord_request(company_name, request_type) do
-    headers = %{"Content-Type" => "application/json",
-     "Authorization" => System.get_env("DISCORD_BOT_API_KEY")}
+    headers = %{
+      "Content-Type" => "application/json",
+      "Authorization" => System.get_env("DISCORD_BOT_API_KEY")
+    }
 
     url = "#{System.get_env("DISCORD_BOT_URL")}/spotlight"
 
     case request_type do
       "POST" ->
-        body = Poison.encode! %{"company" => company_name}
-        HTTPoison.post(url,body, headers, [])
+        body = Poison.encode!(%{"company" => company_name})
+        HTTPoison.post(url, body, headers, [])
 
-      "DELETE" -> HTTPoison.delete(url, headers)
+      "DELETE" ->
+        HTTPoison.delete(url, headers)
     end
-
   end
 
   defp schedule_spotlight_finish(company_name) do
     Task.async(fn ->
       :timer.sleep(Application.fetch_env!(:safira, :spotlight_duration) * 60 * 1000)
       Interaction.finish_spotlight()
-      spotlight_discord_request(company_name, "DELETE") #To signal discord to end the spotlight
+      # To signal discord to end the spotlight
+      spotlight_discord_request(company_name, "DELETE")
     end)
   end
 end
