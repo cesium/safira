@@ -29,8 +29,9 @@ defmodule Safira.Store do
 
   def buy_redeemable(redeemable_id, attendee) do
     Multi.new()
-    |> Multi.update(:redeemable,
-            Redeemable.changeset(get_redeemable!(redeemable_id), %{stock: get_redeemable!(redeemable_id).stock - 1}))
+    |> Multi.run(:redeemable_info, fn _repo, _var ->  {:ok, get_redeemable!(redeemable_id)} end)
+    |> Multi.update(:redeemable, fn %{redeemable_info: redeemable} ->
+            Redeemable.changeset(redeemable, %{stock: redeemable.stock - 1}) end )
     |> Multi.update(:attendee, fn %{redeemable: redeemable} ->
       Attendee.update_token_balance_changeset(attendee, %{
         token_balance: attendee.token_balance - redeemable.price}) end)
