@@ -178,7 +178,7 @@ defmodule Safira.Interaction do
     # update company's remaining_spotlights
     |> Multi.update(
       :update_company,
-      Safira.Accounts.Company.start_spotlight_changeset(company,
+      Company.start_spotlight_changeset(company,
       %{remaining_spotlights: company.remaining_spotlights - 1})
     )
     |> Repo.transaction()
@@ -199,5 +199,11 @@ defmodule Safira.Interaction do
     get_spotlight()
     |> Spotlight.finish_changeset(%{active: false})
     |> Repo.update()
+  end
+
+  def is_badge_spotlighted(badge_id) do
+    spotlight = get_spotlight()
+
+    !is_nil(spotlight) and spotlight.active and spotlight.badge_id==badge_id
   end
 end

@@ -5,6 +5,7 @@ defmodule Safira.Contest do
   alias Safira.Repo
   alias Safira.Contest.Redeem
   alias Safira.Contest.Badge
+  alias Safira.Interaction
   alias Ecto.Multi
 
   def list_badges do
@@ -132,7 +133,7 @@ defmodule Safira.Contest do
       redeem = Repo.preload(redeem, [:badge, :attendee])
 
       Changeset.change(redeem.attendee,
-        token_balance: redeem.attendee.token_balance + redeem.badge.tokens
+        token_balance: redeem.attendee.token_balance + calculate_badge_tokens(redeem.badge)
       )
     end)
     |> Repo.transaction()
@@ -189,5 +190,13 @@ defmodule Safira.Contest do
     |> Enum.filter(fn a -> a.badge_count >= 10 end)
     |> Enum.map(fn a -> Enum.map( Enum.filter(a.badges,fn b -> b.type != 0 end), fn x -> "#{a.nickname}:#{x.name}" end) end)
     |> List.flatten
+  end
+
+  def calculate_badge_tokens(badge) do
+    cond do
+      Interaction.is_badge_spotlighted(badge.id) -> badge.tokens * 2
+
+      true -> badge.tokens
+    end
   end
 end

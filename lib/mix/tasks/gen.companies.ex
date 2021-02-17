@@ -66,14 +66,7 @@ defmodule Mix.Tasks.Gen.Companies do
           }
         },
         %{
-          name:
-            name
-            |> String.downcase()
-            |> String.replace(" ", "")
-            |> String.replace("&", "_")
-            |> String.replace("/", "_")
-            |> String.split("(")
-            |> List.first(),
+          name: name,
           sponsorship: sponsorship,
           channel_id: channel_id,
           remaining_spotlights: sponsorship_to_spotlights(sponsorship)
