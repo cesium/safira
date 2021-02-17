@@ -11,7 +11,7 @@ defmodule SafiraWeb.SpotlightController do
 
     cond do
       Accounts.is_company(conn) ->
-        with {:ok, _struct} <- Interaction.start_spotlight(user.company.badge_id) do
+        with {:ok, _struct} <- Interaction.start_spotlight(user.company) do
           spotlight_discord_request(user.company.name, "POST") # to signal discord to start the spotlight
 
           schedule_spotlight_finish(user.company.name)

@@ -15,13 +15,7 @@ defmodule Safira.Interaction.Spotlight do
     spotlight
     |> cast(attrs, [:active, :badge_id])
     |> validate_required([:active, :badge_id])
-  end
-
-  def start_changeset(spotlight, attrs) do
-    spotlight
-    |> cast(attrs, [:active, :badge_id])
-    |> validate_required([:active, :badge_id])
-    |> validate_not_already_active
+    |> validate_not_already_active()
     |> Ecto.Changeset.optimistic_lock(:lock_version)
   end
 
@@ -33,7 +27,7 @@ defmodule Safira.Interaction.Spotlight do
   end
 
   defp validate_not_already_active(changeset) do
-    if changeset.data.active do
+    if changeset.data && changeset.data.active do
       add_error(changeset, :active, "Another spotlight is still active")
     else
       changeset

@@ -8,6 +8,7 @@ defmodule Safira.Interaction do
 
   alias Safira.Interaction.Bonus
   alias Safira.Accounts.Attendee
+  alias Safira.Accounts.Company
   alias Safira.Interaction.Spotlight
   alias Ecto.Multi
 
@@ -162,10 +163,32 @@ defmodule Safira.Interaction do
   @doc """
   Starts the spotlight
   """
-  def start_spotlight(badge_id) do
-    (get_spotlight() || init_spotlight(badge_id))
-    |> Spotlight.start_changeset(%{badge_id: badge_id, active: true})
-    |> Repo.update()
+  def start_spotlight(company) do
+    Multi.new()
+    # get or build a spotlight
+    |> Multi.run(:get_spotlight, fn _repo, _changes ->
+      {:ok,
+       get_spotlight() ||
+         %Spotlight{}}
+    end)
+    # update the spotlight
+    |> Multi.insert_or_update(:upsert_spotlight, fn %{get_spotlight: spotlight} ->
+      Spotlight.changeset(spotlight, %{badge_id: company.badge_id, active: true})
+    end)
+    # update company's remaining_spotlights
+    |> Multi.update(
+      :update_company,
+      Safira.Accounts.Company.start_spotlight_changeset(company,
+      %{remaining_spotlights: company.remaining_spotlights - 1})
+    )
+    |> Repo.transaction()
+    |> case do
+      {:ok, result} ->
+        {:ok, result}
+
+      {:error, _failed_operation, changeset, _changes_so_far} ->
+        {:error, changeset}
+    end
   end
 
   @doc """
