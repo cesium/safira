@@ -172,7 +172,7 @@ defmodule Safira.Contest do
         preload: [badges: b]
     )
     |> Enum.map(fn a -> Map.put(a, :badge_count, length(a.badges)) end)
-    |> Enum.sort(&(&1.badge_count >= &2.badge_count))
+    |> Enum.sort_by(&{&1.badge_count, &1.token_balance}, :desc)
   end
 
   def top_list_leaderboard(n) do
