@@ -19,30 +19,47 @@ defmodule Mix.Tasks.Export.Buys do
     Enum.each(
       Safira.Accounts.list_active_attendees(),
       fn a ->
-        redeemables = Safira.Store.get_attendee_redeemables(a)
-        head = "id : #{a.id}, name: #{a.name} , email: #{Safira.Accounts.get_user!(a.user_id).email}"
-        attendee_products = print_redeemables(redeemables)
-        line = "#{head} ->#{attendee_products}\n"
         with {:ok, file} = File.open(path, [:append]) do
-          IO.binwrite(file, line)
+          IO.binwrite(
+            file,
+            create_line(
+              header(a),
+              print_redeemables(Safira.Store.get_attendee_redeemables(a))
+            )
+          )
+
           File.close(file)
-        end end)
+        end
+      end
+    )
   end
 
   defp export() do
     Enum.each(
       Safira.Accounts.list_active_attendees(),
       fn a ->
-        redeemables = Safira.Store.get_attendee_redeemables(a)
-        head = "id : #{a.id}, name: #{a.name} , email: #{Safira.Accounts.get_user!(a.user_id).email}"
-        attendee_products = print_redeemables(redeemables)
-        line = "#{head} ->#{attendee_products}\n"
-        IO.puts line end)
+        Mix.shell().info(
+          create_line(
+            header(a),
+            print_redeemables(Safira.Store.get_attendee_redeemables(a))
+          )
+        )
+      end
+    )
   end
-  
+
   defp print_redeemables(redeemables) do
-    products = ""
     redeemables
-    |> Enum.map(fn r -> products <> " (#{r.name}, #{r.quantity})" end)
+    |> Enum.map(fn r -> " (#{r.name}, #{r.quantity})" end)
+  end
+
+  defp create_line(header, redeemables) do
+    "#{header} ->#{redeemables}\n"
+  end
+
+  defp header(attendee) do
+    "id : #{attendee.id}, name: #{attendee.name} , email: #{
+      Safira.Accounts.get_user!(attendee.user_id).email
+    }"
   end
 end
