@@ -8,6 +8,7 @@ defmodule Safira.Interaction do
 
   alias Safira.Interaction.Bonus
   alias Safira.Accounts.Attendee
+  alias Safira.Interaction.Spotlight
   alias Ecto.Multi
 
   @doc """
@@ -138,5 +139,42 @@ defmodule Safira.Interaction do
       {:error, _failed_operation, changeset, _changes_so_far} ->
         {:error, changeset}
     end
+  end
+
+
+  @doc """
+  Creates the application's spotlight.
+  """
+  def init_spotlight(badge_id) do
+    %Spotlight{}
+    |> Spotlight.changeset(%{badge_id: badge_id, active: false})
+    |> Repo.insert()
+    |> elem(1) #success is garanteed since the badge_id will always exist
+  end
+
+  @doc """
+  Returns the only existing Spotlight
+  """
+  def get_spotlight() do
+    Repo.all(Spotlight) |> List.first()
+  end
+
+  @doc """
+  Starts the spotlight
+  """
+  def start_spotlight(badge_id) do
+    (get_spotlight() || init_spotlight(badge_id))
+    |> Spotlight.start_changeset(%{badge_id: badge_id, active: true})
+    |> Repo.update()
+  end
+
+  @doc """
+  Signals spotlight as inactive
+
+  """
+  def finish_spotlight() do
+    get_spotlight()
+    |> Spotlight.finish_changeset(%{active: false})
+    |> Repo.update()
   end
 end
