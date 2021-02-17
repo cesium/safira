@@ -24,8 +24,9 @@ defmodule SafiraWeb.AttendeeController do
         render(conn, "manager_show.json", attendee: attendee)
 
       true ->
-        attendee = attendee
-                   |> Map.put(:redeemables,Store.get_attendee_redeemables(attendee))
+        attendee = 
+          attendee
+          |> Map.put(:redeemables,Store.get_attendee_redeemables(attendee))
         render(conn, "show.json", attendee: attendee)
     end
   end

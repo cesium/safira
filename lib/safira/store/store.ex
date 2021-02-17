@@ -23,23 +23,29 @@ defmodule Safira.Store do
     |> Repo.insert()
   end
 
-  def get_keys_buy(attendee_id,redeemable_id) do
-    Repo.get_by(Buy, [attendee_id: attendee_id, redeemable_id: redeemable_id])
+  def get_keys_buy(attendee_id, redeemable_id) do
+    Repo.get_by(Buy, attendee_id: attendee_id, redeemable_id: redeemable_id)
   end
 
   def buy_redeemable(redeemable_id, attendee) do
     Multi.new()
-    |> Multi.run(:redeemable_info, fn _repo, _var ->  {:ok, get_redeemable!(redeemable_id)} end)
+    |> Multi.run(:redeemable_info, fn _repo, _var -> {:ok, get_redeemable!(redeemable_id)} end)
     |> Multi.update(:redeemable, fn %{redeemable_info: redeemable} ->
-            Redeemable.changeset(redeemable, %{stock: redeemable.stock - 1}) end )
+      Redeemable.changeset(redeemable, %{stock: redeemable.stock - 1})
+    end)
     |> Multi.update(:attendee, fn %{redeemable: redeemable} ->
       Attendee.update_token_balance_changeset(attendee, %{
-        token_balance: attendee.token_balance - redeemable.price}) end)
+        token_balance: attendee.token_balance - redeemable.price
+      })
+    end)
     |> Multi.run(:buy, fn _repo, %{attendee: attendee, redeemable: redeemable} ->
-      {:ok, get_keys_buy(attendee.id, redeemable_id) ||
-         %Buy{attendee_id: attendee.id, redeemable_id: redeemable.id, quantity: 0}} end)
+      {:ok,
+       get_keys_buy(attendee.id, redeemable_id) ||
+         %Buy{attendee_id: attendee.id, redeemable_id: redeemable.id, quantity: 0}}
+    end)
     |> Multi.insert_or_update(:upsert_buy, fn %{buy: buy} ->
-        Buy.changeset(buy, %{quantity: buy.quantity + 1}) end)
+      Buy.changeset(buy, %{quantity: buy.quantity + 1})
+    end)
     |> serializable_transaction()
   end
 
@@ -48,15 +54,16 @@ defmodule Safira.Store do
     |> Repo.preload(:redeemables)
     |> Map.fetch!(:redeemables)
     |> Enum.map(fn redeemable ->
-      b = get_keys_buy(attendee.id,redeemable.id)
-      Map.put(redeemable, :quantity, b.quantity) end)
+      b = get_keys_buy(attendee.id, redeemable.id)
+      Map.put(redeemable, :quantity, b.quantity)
+    end)
   end
 
   defp serializable_transaction(multi) do
     try do
       Repo.transaction(fn ->
         Repo.query!("set transaction isolation level serializable;")
-        
+
         Repo.transaction(multi)
         |> case do
           {:ok, result} ->
@@ -64,7 +71,7 @@ defmodule Safira.Store do
 
           {:error, _failed_operation, changeset, _changes_so_far} ->
             Repo.rollback(changeset)
-          end
+        end
       end)
     rescue
       _error ->
