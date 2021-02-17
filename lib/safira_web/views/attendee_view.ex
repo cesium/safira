@@ -26,7 +26,7 @@ defmodule SafiraWeb.AttendeeView do
       volunteer: attendee.volunteer,
       token_balance: attendee.token_balance,
       prizes: render_many(attendee.prizes, SafiraWeb.PrizeView, "prize.json"),
-      redeemables: render_many(attendee.redeemables, SafiraWeb.RedeemableView, "redeemables.json")
+      redeemables: render_many(attendee.redeemables, SafiraWeb.RedeemableView, "my_redeemables.json")
     }
   end
 
