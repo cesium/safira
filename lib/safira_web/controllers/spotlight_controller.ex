@@ -47,7 +47,7 @@ defmodule SafiraWeb.SpotlightController do
 
   defp schedule_spotlight_finish(company_name) do
     Task.async(fn ->
-      :timer.sleep(5*60*1000)
+      :timer.sleep(Application.fetch_env!(:safira, :spotlight_duration) * 60 * 1000)
       Interaction.finish_spotlight()
       spotlight_discord_request(company_name, "DELETE") #To signal discord to end the spotlight
     end)

@@ -35,4 +35,4 @@ config :safira, Safira.Mailer,
 System.put_env(%{"FROM_EMAIL" => "geral@safira.safira"})
 System.put_env(%{"FRONTEND_URL" => "www.safira.safira"})
 System.put_env(%{"DISCORD_BOT_URL" => "https://httpbin.org/anything"})
-System.put_env(%{"DISCORD_BOT_API_KEY" => "2021SafiraSei"})
+System.put_env(%{"DISCORD_BOT_API_KEY" => "mockKey"})
