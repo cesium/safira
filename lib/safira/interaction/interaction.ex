@@ -142,17 +142,6 @@ defmodule Safira.Interaction do
     end
   end
 
-
-  @doc """
-  Creates the application's spotlight.
-  """
-  def init_spotlight(badge_id) do
-    %Spotlight{}
-    |> Spotlight.changeset(%{badge_id: badge_id, active: false})
-    |> Repo.insert()
-    |> elem(1) #success is garanteed since the badge_id will always exist
-  end
-
   @doc """
   Returns the only existing Spotlight
   """
