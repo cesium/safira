@@ -129,11 +129,17 @@ defmodule Safira.Contest do
     Multi.new()
     |> Multi.insert(:redeem, Redeem.changeset(%Redeem{}, attrs))
     |> Multi.update(:attendee, fn %{redeem: redeem} ->
+
       redeem = Repo.preload(redeem, [:badge, :attendee])
 
-      Changeset.change(redeem.attendee,
-        token_balance: redeem.attendee.token_balance + redeem.badge.tokens
+      Safira.Accounts.Attendee.update_on_redeem_changeset(
+        redeem.attendee,
+        %{
+          token_balance: redeem.attendee.token_balance + redeem.badge.tokens,
+          entries: redeem.attendee.entries + 1
+        }
       )
+
     end)
     |> Repo.transaction()
     |> case do
@@ -172,7 +178,7 @@ defmodule Safira.Contest do
         preload: [badges: b]
     )
     |> Enum.map(fn a -> Map.put(a, :badge_count, length(a.badges)) end)
-    |> Enum.sort(&(&1.badge_count >= &2.badge_count))
+    |> Enum.sort_by(&{&1.badge_count, &1.token_balance}, :desc)
   end
 
   def top_list_leaderboard(n) do
