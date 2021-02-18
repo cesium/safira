@@ -30,9 +30,17 @@
       - POST /
     - /leaderboard
       - GET /
+      - GET /:date
     - /association
       - GET /:discord_id
       - POST /
+    - /roulette
+      - POST
+    - /roulette/prizes
+      - GET /
+      - GET /:id
+    - /give_bonus
+      - POST /:id
     - /spotlight
       - POST
 
@@ -62,6 +70,14 @@
       - GET /:id
     - /referrals
       - GET /:id
+    - /leaderboard
+      - GET /
+      - GET /:date
+    - /roulette
+      - POST
+    - /roulette/prizes
+      - GET /
+      - GET /:id
 
 ## Company
 
@@ -85,6 +101,10 @@
     - /companies
       - GET /
       - GET /:id
+    - /redeems
+      - POST /
+    - /give_bonus
+      - POST /:id
     - /spotlight
       - POST
 
@@ -214,11 +234,14 @@ Fetches the badges of the logged in attendee.
 {
     "data": [
         {
-            "name": 1,
+            "name": "Dia 1",
+            "id": 1,
             "end": "2018-07-31T15:59:51.746577Z",
             "description": "coisa",
             "begin": "2018-07-31T15:59:51.742630Z",
-            "avatar": "/images/default/badge-missing.png"
+            "avatar": "/images/default/badge-missing.png",
+            "tokens": 1,
+            "type": 3
         }
     ]
 }
@@ -230,11 +253,15 @@ Fetches a single badge.
 ```json
 {
     "data": {
-        "name": 1,
+        "attendees": [ ... ],
+        "name": "Dia 1",
+        "id": 1,
         "end": "2018-07-31T15:59:51.746577Z",
         "description": "coisa",
         "begin": "2018-07-31T15:59:51.742630Z",
-        "avatar": "/images/default/badge-missing.png"
+        "avatar": "/images/default/badge-missing.png",
+        "tokens": 1,
+        "type": 3
     }
 }
 ```
@@ -397,11 +424,13 @@ Removes an attendee.
 ## GET /
 ```json
 {
-    "badge_id": 10,
-    "email": "company@company.org",
-    "id": 1,
-    "name": "Company",
-    "sponsorship": "Tier"
+    "data": {
+        "badge_id": 37,
+        "channel_id": "1",
+        "id": 1,
+        "name": "Accenture",
+        "sponsorship": "Exclusive"
+    }
 }
 ```
 
@@ -411,9 +440,11 @@ Removes an attendee.
 {
     "data": [
         {
-            "sponsorship": "ola",
-            "name": "ola",
-            "id": 1
+            "badge_id": 37,
+            "channel_id": "1",
+            "id": 1,
+            "name": "Accenture",
+            "sponsorship": "Exclusive"
         }
     ]
 }
@@ -500,6 +531,33 @@ Removes an attendee.
 }
 ```
 
+## GET /:date (The format is: {yyyy-mm-dd} , ex: /leaderboard/2021-02-17)
+```json
+{
+    "data": [
+        {
+            "avatar": "/images/attendee-missing.png",
+            "badges": 2,
+            "id": "1f18064f-9fe8-437a-9141-9c75ee85d25b",
+            "name": "user3",
+            "nickname": "user3",
+            "token_balance": 2,
+            "volunteer": false
+        },
+        {
+            "avatar": "/images/attendee-missing.png",
+            "badges": 1,
+            "id": "79a29c1c-9f2e-4de1-a318-54eb1e6ec060",
+            "name": "user1",
+            "nickname": "user1",
+            "token_balance": 71,
+            "volunteer": false
+        }
+    ]
+  }
+}
+```
+
 # spotlight
 ## POST 
 No body
@@ -582,3 +640,47 @@ Fetches the id of the attendee associated with the given discord id
 {
   "error": "Unable to associate"
 }
+```
+
+# Roulette
+## POST /
+```JSON
+{
+  "message": "You've won Raspberry"
+}
+```
+
+# Roulette - Prizes
+## GET /
+```JSON
+{
+  "data": [
+    {
+      "avatar": "/uploads/prize/avatars/25/original.png?v=63780572128",
+      "id": 25,
+      "name": "Amazon Voucher"
+    }
+  ]
+}
+```
+
+## GET /:id
+```JSON
+{
+  "data": {
+    "avatar": "/uploads/prize/avatars/26/original.png?v=63780572129",
+    "id": 26,
+    "max_amount_per_attendee": 1,
+    "name": "Raspberry Pi 4 2gb + carregador",
+    "stock": 1
+  }
+}
+```
+
+# Give Bonus
+## POST /:id
+```JSON
+{
+  "message": "10 bonus tokens were given to attendee 05942830-fe17-4133-aadf-23c44d5dc24b"
+}
+```
