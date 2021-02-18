@@ -34,6 +34,13 @@
     - /association
       - GET /:discord_id
       - POST /
+    - /roulette
+      - POST
+    - /roulette/prizes
+      - GET /
+      - GET /:id
+    - /give_bonus
+      - POST /:id
 
 ## Attendee
 
@@ -61,6 +68,14 @@
       - GET /:id
     - /referrals
       - GET /:id
+    - /leaderboard
+      - GET /
+      - GET /:date
+    - /roulette
+      - POST
+    - /roulette/prizes
+      - GET /
+      - GET /:id
 
 ## Company
 
@@ -84,6 +99,10 @@
     - /companies
       - GET /
       - GET /:id
+    - /redeems
+      - POST /
+    - /give_bonus
+      - POST /:id
 
 ## Manager
 
@@ -211,11 +230,14 @@ Fetches the badges of the logged in attendee.
 {
     "data": [
         {
-            "name": 1,
+            "name": "Dia 1",
+            "id": 1,
             "end": "2018-07-31T15:59:51.746577Z",
             "description": "coisa",
             "begin": "2018-07-31T15:59:51.742630Z",
-            "avatar": "/images/default/badge-missing.png"
+            "avatar": "/images/default/badge-missing.png",
+            "tokens": 1,
+            "type": 3
         }
     ]
 }
@@ -227,11 +249,15 @@ Fetches a single badge.
 ```json
 {
     "data": {
-        "name": 1,
+        "attendees": [ ... ],
+        "name": "Dia 1",
+        "id": 1,
         "end": "2018-07-31T15:59:51.746577Z",
         "description": "coisa",
         "begin": "2018-07-31T15:59:51.742630Z",
-        "avatar": "/images/default/badge-missing.png"
+        "avatar": "/images/default/badge-missing.png",
+        "tokens": 1,
+        "type": 3
     }
 }
 ```
