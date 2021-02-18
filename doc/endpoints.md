@@ -33,6 +33,8 @@
     - /association
       - GET /:discord_id
       - POST /
+    - /spotlight
+      - POST
 
 ## Attendee
 
@@ -60,8 +62,7 @@
       - GET /:id
     - /referrals
       - GET /:id
-    - /spotlight
-      - POST
+
 ## Company
 
 - /api
