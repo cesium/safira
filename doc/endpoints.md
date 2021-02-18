@@ -57,7 +57,8 @@
       - GET /:id
     - /referrals
       - GET /:id
-
+    - /spotlight
+      - POST
 ## Company
 
 - /api
@@ -80,6 +81,8 @@
     - /companies
       - GET /
       - GET /:id
+    - /spotlight
+      - POST
 
 ## Manager
 
@@ -465,7 +468,7 @@ Removes an attendee.
 }
 ```
 
-#leaderboard
+# leaderboard
 ## GET /
 ```json
 {
@@ -487,3 +490,41 @@ Removes an attendee.
     ]
 }
 ```
+
+# spotlight
+## POST 
+No body
+
+### Valid
+```Json
+{
+  "spotlight": "Spotlight requested succesfully"
+}
+```
+
+### Errors:
+
+- A company is already in spotlight
+
+```json
+{
+  "errors": {
+    "active": [
+      "Another spotlight is still active"
+    ]
+  }
+}
+```
+
+- The company has no remaining spotlights
+
+```json
+{
+  "errors": {
+    "remaining_spotlights": [
+      "must be greater than or equal to 0"
+    ]
+  }
+}
+```
+
