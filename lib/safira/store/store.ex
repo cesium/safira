@@ -1,6 +1,7 @@
 defmodule Safira.Store do
   import Ecto.Query, warn: false
   alias Ecto.Multi
+  alias Ecto.Query
   alias Safira.Repo
   alias Safira.Store.Redeemable
   alias Safira.Store.Buy
@@ -8,6 +9,12 @@ defmodule Safira.Store do
 
   def list_redeemables do
     Repo.all(Redeemable)
+  end
+
+  def exist_redeemable(redeemable_id) do
+    query = from r in Redeemable, 
+            where: r.id == ^redeemable_id
+    Repo.exists?(query)
   end
 
   def list_store_redeemables do

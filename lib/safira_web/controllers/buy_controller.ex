@@ -34,7 +34,14 @@ defmodule SafiraWeb.BuyController do
         |> json(%{Redeemable: "No 'redeemable_id' param"})
 
       redeemable_id ->
-        Store.buy_redeemable(redeemable_id, attendee)
+        case Store.exist_redeemable(redeemable_id) do
+          true -> 
+            Store.buy_redeemable(redeemable_id, attendee)
+          false ->
+            conn
+            |> put_status(:not_found)
+            |> json(%{Redeemable: "There is no such redeemable"})
+        end
     end
   end
 end
