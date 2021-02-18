@@ -262,7 +262,7 @@ Fetches the nick, uuid, email and avatar of the logged in attendee.
 
 # attendees
 ## GET / (Index)
-Lists all attendess.
+Lists all attendees.
 
 ### Valid:
 ```json
@@ -279,12 +279,14 @@ Lists all attendess.
                     "end": "2019-02-06T00:00:00Z",
                     "id": 179,
                     "name": "Talk Celso Martinho",
+                    "tokens": 1,
                     "type": 3
                 }
             ],
             "id": "6de51b47-4c35-4127-8c48-79b354061ae5",
             "name": "Name LastName",
             "nickname": "attendee1",
+            "token_balance": 4,
             "volunteer": false
         }
     ]
@@ -449,7 +451,7 @@ Removes an attendee.
 ### Valid:
 ```json
 {
-    "redeem": "Badge redeem successfully"
+    "redeem": "Badge redeemed successfully. Tokens added to your balance"
 }
 ```
 ### Errors:
