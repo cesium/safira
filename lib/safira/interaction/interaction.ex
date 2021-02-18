@@ -171,14 +171,7 @@ defmodule Safira.Interaction do
       Company.start_spotlight_changeset(company,
       %{remaining_spotlights: company.remaining_spotlights - 1})
     )
-    |> Repo.transaction()
-    |> case do
-      {:ok, result} ->
-        {:ok, result}
-
-      {:error, _failed_operation, changeset, _changes_so_far} ->
-        {:error, changeset}
-    end
+    |> apply_transaction()
   end
 
   @doc """
@@ -194,5 +187,26 @@ defmodule Safira.Interaction do
     spotlight = get_spotlight()
 
     !is_nil(spotlight) and spotlight.active and spotlight.badge_id==badge_id
+  end
+
+  defp apply_transaction(multi) do
+    try do
+      Repo.transaction(fn ->
+
+        Repo.transaction(multi)
+        |> case do
+          {:ok, result} ->
+            result
+
+          {:error, _failed_operation, changeset, _changes_so_far} ->
+            # That's the way to retrieve the changeset as a value
+            Repo.rollback(changeset)
+        end
+      end)
+    rescue
+      _ ->
+        # Transaction may raise Ecto.StaleEntryError when optimistic locking fails
+        apply_transaction(multi)
+    end
   end
 end
