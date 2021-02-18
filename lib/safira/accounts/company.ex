@@ -19,9 +19,17 @@ defmodule Safira.Accounts.Company do
   @doc false
   def changeset(company, attrs) do
     company
-    |> cast(attrs, [:name, :sponsorship, :badge_id, :channel_id])
+    |> cast(attrs, [:name, :sponsorship, :badge_id, :channel_id, :remaining_spotlights])
     |> cast_assoc(:user)
-    |> validate_required([:name, :sponsorship, :badge_id, :channel_id])
+    |> cast(attrs, [:name, :sponsorship, :badge_id, :channel_id, :remaining_spotlights])
+    |> validate_required([:name, :sponsorship, :badge_id, :channel_id,])
     |> unique_constraint(:channel_id)
+  end
+
+
+  def start_spotlight_changeset(company, attrs) do
+    company
+    |> cast(attrs, [:remaining_spotlights])
+    |> validate_number(:remaining_spotlights, greater_than_or_equal_to: 0)
   end
 end
