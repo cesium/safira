@@ -13,7 +13,7 @@ defmodule SafiraWeb.SpotlightController do
       Accounts.is_company(conn) ->
         with {:ok, _struct} <- Interaction.start_spotlight(user.company) do
           # to signal discord to start the spotlight
-          spotlight_discord_request(user.company.name, "POST")
+          spotlight_discord_request(user.company.name, :post)
 
           schedule_spotlight_finish(user.company.name)
 
@@ -39,12 +39,12 @@ defmodule SafiraWeb.SpotlightController do
     url = "#{Application.fetch_env!(:safira, :discord_bot_url)}/spotlight"
 
     case request_type do
-      "POST" ->
+      :post ->
         body = Poison.encode!(%{"company" => company_name})
-        HTTPoison.post(url, body, headers, [])
+        IO.inspect HTTPoison.post(url, body, headers, [])
 
-      "DELETE" ->
-        HTTPoison.delete(url, headers)
+      :delete ->
+        IO.inspect HTTPoison.delete(url, headers)
     end
   end
 
@@ -53,7 +53,7 @@ defmodule SafiraWeb.SpotlightController do
       :timer.sleep(Application.fetch_env!(:safira, :spotlight_duration) * 60 * 1000)
       Interaction.finish_spotlight()
       # To signal discord to end the spotlight
-      spotlight_discord_request(company_name, "DELETE")
+      spotlight_discord_request(company_name, :delete)
     end)
   end
 end
