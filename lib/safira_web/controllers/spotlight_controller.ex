@@ -33,10 +33,10 @@ defmodule SafiraWeb.SpotlightController do
   defp spotlight_discord_request(company_name, request_type) do
     headers = %{
       "Content-Type" => "application/json",
-      "Authorization" => System.get_env("DISCORD_BOT_API_KEY")
+      "Authorization" => Application.fetch_env!(:safira, :discord_bot_api_key)
     }
 
-    url = "#{System.get_env("DISCORD_BOT_URL")}/spotlight"
+    url = "#{Application.fetch_env!(:safira, :discord_bot_url)}/spotlight"
 
     case request_type do
       "POST" ->
