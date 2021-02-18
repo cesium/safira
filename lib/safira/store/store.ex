@@ -1,7 +1,6 @@
 defmodule Safira.Store do
   import Ecto.Query, warn: false
   alias Ecto.Multi
-  alias Ecto.Query
   alias Safira.Repo
   alias Safira.Store.Redeemable
   alias Safira.Store.Buy
