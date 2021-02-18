@@ -20,7 +20,8 @@ defmodule SafiraWeb.RedeemableView do
       id: redeemable.id,
       name: redeemable.name,
       image: Avatar.url({redeemable.img, redeemable}, :original),
-      price: redeemable.price
+      price: redeemable.price,
+      stock: redeemable.stock
     }
   end
 
