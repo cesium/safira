@@ -6,8 +6,11 @@ defmodule Safira.Interaction do
   import Ecto.Query, warn: false
   alias Safira.Repo
 
+
   alias Safira.Interaction.Bonus
   alias Safira.Accounts.Attendee
+  alias Safira.Accounts.Company
+  alias Safira.Interaction.Spotlight
   alias Ecto.Multi
 
   @doc """
@@ -137,6 +140,73 @@ defmodule Safira.Interaction do
 
       {:error, _failed_operation, changeset, _changes_so_far} ->
         {:error, changeset}
+    end
+  end
+
+  @doc """
+  Returns the only existing Spotlight
+  """
+  def get_spotlight() do
+    Repo.all(Spotlight) |> List.first()
+  end
+
+  @doc """
+  Starts the spotlight
+  """
+  def start_spotlight(company) do
+    Multi.new()
+    # get or build a spotlight
+    |> Multi.run(:get_spotlight, fn _repo, _changes ->
+      {:ok,
+       get_spotlight() ||
+         %Spotlight{}}
+    end)
+    # update the spotlight
+    |> Multi.insert_or_update(:upsert_spotlight, fn %{get_spotlight: spotlight} ->
+      Spotlight.changeset(spotlight, %{badge_id: company.badge_id, active: true})
+    end)
+    # update company's remaining_spotlights
+    |> Multi.update(
+      :update_company,
+      Company.start_spotlight_changeset(company,
+      %{remaining_spotlights: company.remaining_spotlights - 1})
+    )
+    |> apply_transaction()
+  end
+
+  @doc """
+  Signals spotlight as inactive
+  """
+  def finish_spotlight() do
+    get_spotlight()
+    |> Spotlight.finish_changeset(%{active: false})
+    |> Repo.update()
+  end
+
+  def is_badge_spotlighted(badge_id) do
+    spotlight = get_spotlight()
+
+    !is_nil(spotlight) and spotlight.active and spotlight.badge_id==badge_id
+  end
+
+  defp apply_transaction(multi) do
+    try do
+      Repo.transaction(fn ->
+
+        Repo.transaction(multi)
+        |> case do
+          {:ok, result} ->
+            result
+
+          {:error, _failed_operation, changeset, _changes_so_far} ->
+            # That's the way to retrieve the changeset as a value
+            Repo.rollback(changeset)
+        end
+      end)
+    rescue
+      _ ->
+        # Transaction may raise Ecto.StaleEntryError when optimistic locking fails
+        apply_transaction(multi)
     end
   end
 end

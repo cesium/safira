@@ -56,6 +56,7 @@ defmodule SafiraWeb.Router do
 
       post "/roulette", RouletteController, :spin
       post "/give_bonus/:id", BonusController, :give_bonus
+      post "/spotlight", SpotlightController, :create
 
       resources "/badges", BadgeController, only: [:index, :show]
       resources "/attendees", AttendeeController, except: [:create]
