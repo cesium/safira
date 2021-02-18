@@ -394,11 +394,13 @@ Removes an attendee.
 ## GET /
 ```json
 {
-    "badge_id": 10,
-    "email": "company@company.org",
-    "id": 1,
-    "name": "Company",
-    "sponsorship": "Tier"
+    "data": {
+        "badge_id": 37,
+        "channel_id": "1",
+        "id": 1,
+        "name": "Accenture",
+        "sponsorship": "Exclusive"
+    }
 }
 ```
 
@@ -408,9 +410,11 @@ Removes an attendee.
 {
     "data": [
         {
-            "sponsorship": "ola",
-            "name": "ola",
-            "id": 1
+            "badge_id": 37,
+            "channel_id": "1",
+            "id": 1,
+            "name": "Accenture",
+            "sponsorship": "Exclusive"
         }
     ]
 }
