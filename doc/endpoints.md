@@ -30,6 +30,7 @@
       - POST /
     - /leaderboard
       - GET /
+      - GET /:date
     - /association
       - GET /:discord_id
       - POST /
@@ -496,24 +497,27 @@ Removes an attendee.
 }
 ```
 
-# leaderboard
-## GET /
+## GET /:date (The format is: {yyyy-mm-dd} , ex: /leaderboard/2021-02-17)
 ```json
 {
     "data": [
         {
-            "avatar": "/uploads/attendee/avatars/ee4514b5-6b71-44ff-b26f-8afc0b8c7e51/original.png?v=63705800808",
-            "badges": [
-                {
-                    "avatar": "/uploads/badge/avatars/5/original.png?v=63705802360",
-                    "begin": "2019-02-12T00:00:00.000000Z",
-                    "description": "hackerino",
-                    "end": "2019-02-13T00:00:00.000000Z",
-                    "name": 5
-                }
-            ],
-            "id": "ee4514b5-6b71-44ff-b26f-8afc0b8c7e51",
-            "nickname": "Nick"
+            "avatar": "/images/attendee-missing.png",
+            "badges": 2,
+            "id": "1f18064f-9fe8-437a-9141-9c75ee85d25b",
+            "name": "user3",
+            "nickname": "user3",
+            "token_balance": 2,
+            "volunteer": false
+        },
+        {
+            "avatar": "/images/attendee-missing.png",
+            "badges": 1,
+            "id": "79a29c1c-9f2e-4de1-a318-54eb1e6ec060",
+            "name": "user1",
+            "nickname": "user1",
+            "token_balance": 71,
+            "volunteer": false
         }
     ]
 }
