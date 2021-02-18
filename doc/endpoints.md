@@ -36,7 +36,7 @@
     - /store
       - GET /
       - GET /:id
-      - POST /
+      - POST /buy
 
 ## Attendee
 
