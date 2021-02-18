@@ -41,6 +41,8 @@
       - GET /:id
     - /give_bonus
       - POST /:id
+    - /spotlight
+      - POST
 
 ## Attendee
 
@@ -103,6 +105,8 @@
       - POST /
     - /give_bonus
       - POST /:id
+    - /spotlight
+      - POST
 
 ## Manager
 
@@ -550,6 +554,44 @@ Removes an attendee.
             "volunteer": false
         }
     ]
+  }
+}
+```
+
+# spotlight
+## POST 
+No body
+
+### Valid
+```Json
+{
+  "spotlight": "Spotlight requested succesfully"
+}
+```
+
+### Errors:
+
+- A company is already in spotlight
+
+```json
+{
+  "errors": {
+    "active": [
+      "Another spotlight is still active"
+    ]
+  }
+}
+```
+
+- The company has no remaining spotlights
+
+```json
+{
+  "errors": {
+    "remaining_spotlights": [
+      "must be greater than or equal to 0"
+    ]
+  }
 }
 ```
 
@@ -642,4 +684,3 @@ Fetches the id of the attendee associated with the given discord id
   "message": "10 bonus tokens were given to attendee 05942830-fe17-4133-aadf-23c44d5dc24b"
 }
 ```
-
