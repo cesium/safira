@@ -30,6 +30,9 @@
       - POST /
     - /leaderboard
       - GET /
+    - /association
+      - GET /:discord_id
+      - POST /
 
 ## Attendee
 
@@ -97,6 +100,9 @@
   - /v1
     - /redeems
       - POST /
+    - /association
+      - GET /:discord_id
+      - POST /  
 
 
 # sign_up
@@ -119,7 +125,9 @@
 ### Valid:
 ```json
 {
+    "discord_association_code": "733405df-0b7b-4dc3-9666-3038fde44698",
     "jwt": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJzYWZpcmEiLCJl..."
+
 }
 ```
 
@@ -528,3 +536,48 @@ No body
 }
 ```
 
+# Association
+## /:discord_id (Show)
+Fetches the id of the attendee associated with the given discord id
+
+### Valid: 
+```JSON
+{
+  "id": "f90b60ce-219c-4edc-a92a-e6c63fec4a4d"
+}
+```
+
+### Errors:
+
+- Discord id is not associated:
+
+```JSON 
+{
+  "error": "No attendee with that discord_id"
+}
+```
+
+## POST /
+
+```json
+{
+	"discord_association_code": "733405df-0b7b-4dc3-9666-3038fde44698",
+	"discord_id": "abc"
+}
+```
+
+### Valid: 
+```JSON
+{
+  "association": "participante"/"empresa"/"orador"/"staff"
+}
+```
+
+### Errors:
+
+- Invalid association code:
+
+```JSON 
+{
+  "error": "Unable to associate"
+}
