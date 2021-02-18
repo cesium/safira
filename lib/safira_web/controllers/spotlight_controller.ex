@@ -41,10 +41,10 @@ defmodule SafiraWeb.SpotlightController do
     case request_type do
       "POST" ->
         body = Poison.encode!(%{"company" => company_name})
-        HTTPoison.post(url, body, headers, [])
+        IO.inspect HTTPoison.post(url, body, headers, [])
 
       "DELETE" ->
-        HTTPoison.delete(url, headers)
+        IO.inspect HTTPoison.delete(url, headers)
     end
   end
 
