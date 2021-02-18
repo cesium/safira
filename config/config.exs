@@ -15,8 +15,8 @@ config :safira,
   roulette_cost: String.to_integer(System.get_env("ROULETTE_COST") || "10"),
   token_bonus: String.to_integer(System.get_env("TOKEN_BONUS") || "10"),
   spotlight_duration: String.to_integer(System.get_env("SPOTLIGHT_DURATION")) || 30,
-  discord_bot_url: System.get_env("DISCORD_BOT_URL"),
-  discord_bot_api_key: System.get_env("DISCORD_BOT_API_KEY")
+  discord_bot_url: System.get_env("DISCORD_BOT_URL") || "https://httpbin.org/anything",
+  discord_bot_api_key: System.get_env("DISCORD_BOT_API_KEY") || "mockKey"
 
 # Configures the endpoint
 config :safira, SafiraWeb.Endpoint,
