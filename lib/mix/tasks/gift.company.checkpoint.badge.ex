@@ -1,6 +1,9 @@
 defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge do
   use Mix.Task
 
+  import Ecto.Query, warn: false
+
+  alias Safira.Accounts.Attendee
   alias Safira.Contest.Badge
   alias Safira.Contest.Redeem
 
@@ -36,7 +39,6 @@ defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge do
     |> validate_args()
     |> map_args()
     |> gift()
-    |> IO.inspect()
   end
 
   defp validate_args(args) do
@@ -60,30 +62,52 @@ defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge do
   defp gift(args) do
     case Repo.get(Badge, Map.get(args, :badge_id)) do
       %Badge{} = badge ->
-        Map.put(args, :badge_id, badge)
+        args = Map.put(args, :badge, badge)
+        attendees = get_attendees_company_badges(args)
+        give_checkpoint_badge(args, attendees)
 
       nil ->
         Mix.shell().error("Badge_id needs to be valid.")
     end
   end
 
-  defp create_redeem(attrs \\ %{}) do
-    Multi.new()
-    |> Multi.insert(:redeem, Redeem.changeset(%Redeem{}, attrs))
-    |> Multi.update(:attendee, fn %{redeem: redeem} ->
-      redeem = Repo.preload(redeem, [:badge, :attendee])
+  defp get_attendees_company_badges(args) do
+    Repo.all(
+      from a in Attendee,
+      join: r in Redeem, on: a.id == r.attendee_id,
+      join: b in Badge, on: r.badge_id == b.id,
+      where: b.type == 4,
+      preload: [badges: b]
+    )
+    |> Enum.map(fn a -> Map.put(a, :badge_count, length(a.badges)) end)
+    |> Enum.filter(fn x -> x.badge_count >= Map.get(args, :badge_count) end)
+  end
 
-      Changeset.change(redeem.attendee,
-        token_balance: redeem.attendee.token_balance + redeem.badge.tokens
-      )
+  defp give_checkpoint_badge(args, attendees) do
+    attendees
+    |> Enum.each(fn a ->
+      %{
+        attendee_id: a.id,
+        badge_id: Map.get(args, :badge_id),
+        manager_id: 1
+      }
+      |> create_redeem(args, a, Map.get(args, :badge))
     end)
+  end
+
+  defp create_redeem(redeem_attrs, args, attendee, badge) do
+    Multi.new()
+    |> Multi.insert(:redeem, Redeem.changeset(%Redeem{}, redeem_attrs))
+    |> Multi.update(:attendee,
+      Attendee.update_on_redeem_changeset(
+        attendee,
+        %{
+          token_balance: attendee.token_balance + badge.tokens,
+          entries: attendee.entries + Map.get(args, :entries)
+        }
+      )
+    )
     |> Repo.transaction()
-    |> case do
-      {:ok, result} ->
-        {:ok, Map.get(result, :redeem)}
-      {:error, _failed_operation, changeset, _changes_so_far} ->
-        {:error, changeset}
-    end
   end
 
 end
