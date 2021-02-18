@@ -599,3 +599,47 @@ Fetches the id of the attendee associated with the given discord id
   "error": "Unable to associate"
 }
 ```
+
+# Roulette
+## POST /
+```JSON
+{
+  "message": "You've won Raspberry"
+}
+```
+
+# Roulette - Prizes
+## GET /
+```JSON
+{
+  "data": [
+    {
+      "avatar": "/uploads/prize/avatars/25/original.png?v=63780572128",
+      "id": 25,
+      "name": "Amazon Voucher"
+    }
+  ]
+}
+```
+
+## GET /:id
+```JSON
+{
+  "data": {
+    "avatar": "/uploads/prize/avatars/26/original.png?v=63780572129",
+    "id": 26,
+    "max_amount_per_attendee": 1,
+    "name": "Raspberry Pi 4 2gb + carregador",
+    "stock": 1
+  }
+}
+```
+
+# Give Bonus
+## POST /:id
+```JSON
+{
+  "message": "10 bonus tokens were given to attendee 05942830-fe17-4133-aadf-23c44d5dc24b"
+}
+```
+
