@@ -15,19 +15,4 @@ defmodule SafiraWeb.CompanyController do
     company = Accounts.get_company!(id)
     render(conn, "show.json", company: company)
   end
-
-  def update(conn, %{"id" => id, "company" => company_params}) do
-    cond do
-      Accounts.is_manager(conn) ->
-        with {:ok, %Company{} = company} <-
-               Accounts.get_company!(id) |> Accounts.update_company(company_params) do
-          render(conn, "show.json", company: company)
-        end
-
-      true ->
-        conn
-        |> put_status(:unauthorized)
-        |> json(%{error: "Cannot access resource"})
-    end
-  end
 end

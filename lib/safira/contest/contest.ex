@@ -1,6 +1,7 @@
 defmodule Safira.Contest do
 
   import Ecto.Query, warn: false
+  alias Ecto.Changeset
   alias Safira.Repo
   alias Safira.Contest.Redeem
   alias Safira.Contest.Badge
@@ -125,9 +126,28 @@ defmodule Safira.Contest do
   end
 
   def create_redeem(attrs \\ %{}) do
-    %Redeem{}
-    |> Redeem.changeset(attrs)
-    |> Repo.insert()
+    Multi.new()
+    |> Multi.insert(:redeem, Redeem.changeset(%Redeem{}, attrs))
+    |> Multi.update(:attendee, fn %{redeem: redeem} ->
+
+      redeem = Repo.preload(redeem, [:badge, :attendee])
+
+      Safira.Accounts.Attendee.update_on_redeem_changeset(
+        redeem.attendee,
+        %{
+          token_balance: redeem.attendee.token_balance + redeem.badge.tokens,
+          entries: redeem.attendee.entries + 1
+        }
+      )
+
+    end)
+    |> Repo.transaction()
+    |> case do
+      {:ok, result} ->
+        {:ok, Map.get(result, :redeem)}
+      {:error, _failed_operation, changeset, _changes_so_far} ->
+        {:error, changeset}
+    end
   end
 
   def update_redeem(%Redeem{} = redeem, attrs) do
@@ -145,11 +165,7 @@ defmodule Safira.Contest do
   end
 
   def list_leaderboard do
-    Repo.all(from a in Safira.Accounts.Attendee,
-      where: not (is_nil a.user_id))
-    #|> Repo.preload(:badges)
-    |> Repo.preload([badges: from(b in Badge, where: b.type != ^0)])
-    |> Enum.map(fn x -> Map.put(x, :badge_count, length(Enum.filter(x.badges,fn x -> x.type != 0 end))) end)
+    Safira.Accounts.list_active_attendees
     |> Enum.sort(&(&1.badge_count >= &2.badge_count))
   end
 
@@ -162,7 +178,7 @@ defmodule Safira.Contest do
         preload: [badges: b]
     )
     |> Enum.map(fn a -> Map.put(a, :badge_count, length(a.badges)) end)
-    |> Enum.sort(&(&1.badge_count >= &2.badge_count))
+    |> Enum.sort_by(&{&1.badge_count, &1.token_balance}, :desc)
   end
 
   def top_list_leaderboard(n) do

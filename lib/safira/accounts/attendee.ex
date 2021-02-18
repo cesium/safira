@@ -20,6 +20,7 @@ defmodule Safira.Accounts.Attendee do
     field :avatar, Safira.Avatar.Type
     field :name, :string
     field :token_balance, :integer, default: 0
+    field :entries, :integer, default: 0
     field :discord_association_code, Ecto.UUID, autogenerate: true
     field :discord_id, :string
 
@@ -89,5 +90,13 @@ defmodule Safira.Accounts.Attendee do
     |> cast(attrs, [:token_balance])
     |> validate_required([:token_balance])
     |> validate_number(:token_balance, greater_than_or_equal_to: 0)
+  end
+
+  def update_on_redeem_changeset(attendee, attrs) do
+    attendee
+    |> cast(attrs, [:token_balance, :entries])
+    |> validate_required([:token_balance, :entries])
+    |> validate_number(:token_balance, greater_than_or_equal_to: 0)
+    |> validate_number(:entries, greater_than_or_equal_to: 0)
   end
 end
