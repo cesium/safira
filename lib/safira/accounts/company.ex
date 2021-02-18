@@ -9,6 +9,7 @@ defmodule Safira.Accounts.Company do
     field :name, :string
     field :sponsorship, :string
     field :channel_id, :string
+    field :remaining_spotlights, :integer
     belongs_to :user, User
     belongs_to :badge, Badge
 
