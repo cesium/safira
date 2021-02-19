@@ -514,18 +514,22 @@ Removes an attendee.
 {
     "data": [
         {
-            "avatar": "/uploads/attendee/avatars/ee4514b5-6b71-44ff-b26f-8afc0b8c7e51/original.png?v=63705800808",
-            "badges": [
-                {
-                    "avatar": "/uploads/badge/avatars/5/original.png?v=63705802360",
-                    "begin": "2019-02-12T00:00:00.000000Z",
-                    "description": "hackerino",
-                    "end": "2019-02-13T00:00:00.000000Z",
-                    "name": 5
-                }
-            ],
-            "id": "ee4514b5-6b71-44ff-b26f-8afc0b8c7e51",
-            "nickname": "Nick"
+            "avatar": "/images/attendee-missing.png",
+            "badges": 28,
+            "id": "79a29c1c-9f2e-4de1-a318-54eb1e6ec060",
+            "name": "user1",
+            "nickname": "jpsilva98",
+            "token_balance": 80,
+            "volunteer": false
+        },
+        {
+            "avatar": "/images/attendee-missing.png",
+            "badges": 11,
+            "id": "05942830-fe17-4133-aadf-23c44d5dc24b",
+            "name": "user2",
+            "nickname": "user2",
+            "token_balance": 91,
+            "volunteer": false
         }
     ]
 }
@@ -678,9 +682,38 @@ Fetches the id of the attendee associated with the given discord id
 ```
 
 # Give Bonus
-## POST /:id
+Company gives a pre-defined bonus to an attendee
+
+## POST /:attendee_id
+
+### Valid
 ```JSON
 {
-  "message": "10 bonus tokens were given to attendee 05942830-fe17-4133-aadf-23c44d5dc24b"
+  "attendee_id": "05942830-fe17-4133-aadf-23c44d5dc24b",
+  "bonus_count": 2,
+  "company_id": 1,
+  "name": "user2",
+  "token_bonus": 10
+}
+```
+
+### Errors
+- When a company tries to give more than 3 bonuses to the same attendee.
+```JSON
+{
+  "errors": {
+    "count": [
+      "must be less than or equal to 3"
+    ]
+  }
+}
+```
+
+- When the attendee_id is not valid
+```JSON
+{
+  "errors": {
+    "detail": "Bad Request"
+  }
 }
 ```
