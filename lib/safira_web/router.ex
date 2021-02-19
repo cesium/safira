@@ -65,6 +65,7 @@ defmodule SafiraWeb.Router do
       resources "/redeems", RedeemController, only: [:create]
       resources "/store", RedeemableController, only: [:index, :show]
       resources "/association", DiscordAssociationController, only: [:show, :create]
+      resources "/store/buy", BuyController, only: [:create]
       resources "/roulette/prizes", PrizeController, only: [:index, :show]
     end
   end
