@@ -710,16 +710,22 @@ Fetches all redeemables in store.
 {
     "data": [
         {
+            "description": "PowerBank 5k com logo SEI",
             "id": 1,
-            "image": "/images/redeemable-missing.png",
-            "name": "T-shirt",
-            "price": 10
+            "image": "/uploads/redeemable/avatars/1/original.png?v=63780993725",
+            "max_per_user": 1,
+            "name": "PowerBank",
+            "price": 100,
+            "stock": 30
         },
         {
+            "description": "Merch SEI",
             "id": 2,
-            "image": "/images/redeemable-missing.png",
-            "name": "Caneta",
-            "price": 5
+            "image": "/uploads/redeemable/avatars/2/original.png?v=63780993725",
+            "max_per_user": 1,
+            "name": "T-shirt",
+            "price": 50,
+            "stock": 10
         }
     ]
 }
@@ -731,7 +737,7 @@ Fetches a single item.
 ```json
 {
     "data": {
-        "description": "Caneta Merch SEI",
+        "description": "Merch SEI",
         "id": 2,
         "image": "/images/redeemable-missing.png",
         "max_per_user": 10,
