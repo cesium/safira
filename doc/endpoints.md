@@ -371,9 +371,7 @@ Shows an attendee.
         "prizes": [{
                     "avatar": "/uploads/prize/avatars/26/original.png?v=63780572129",
                     "id": 26,
-                    "max_amount_per_attendee": 1,
-                    "name": "Raspberry Pi 4 2gb + carregador",
-                    "stock": 1
+                    "name": "Raspberry Pi 4 2gb + carregador"
         }],
         "redeemables": [
             {
@@ -838,7 +836,9 @@ Prizes that an attendee can win by spinning the roulette.
     {
       "avatar": "/uploads/prize/avatars/25/original.png?v=63780572128",
       "id": 25,
-      "name": "Amazon Voucher"
+      "max_amount_per_attendee": 1,
+      "name": "Amazon Voucher",
+      "stock": 8
     }
   ]
 }
