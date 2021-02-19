@@ -536,7 +536,10 @@ Removes an attendee.
 ```
 
 ## GET /:date (The format is: {yyyy-mm-dd} , ex: /leaderboard/2021-02-17)
-```json
+
+Get the daily leaderboard
+
+```JSON
 {
     "data": [
         {
@@ -655,6 +658,8 @@ Fetches the id of the attendee associated with the given discord id
 ```
 
 # Roulette - Prizes
+Prizes that an attendee can win by spinning the roulette.
+
 ## GET /
 ```JSON
 {
@@ -668,7 +673,10 @@ Fetches the id of the attendee associated with the given discord id
 }
 ```
 
-## GET /:id
+## GET /:prize_id
+Get a specific prize by prize_id
+
+### Valid
 ```JSON
 {
   "data": {
@@ -677,6 +685,16 @@ Fetches the id of the attendee associated with the given discord id
     "max_amount_per_attendee": 1,
     "name": "Raspberry Pi 4 2gb + carregador",
     "stock": 1
+  }
+}
+```
+
+### Errors
+- When the prize_id does not exist.
+```JSON
+{
+  "errors": {
+    "detail": "Endpoint Not Found"
   }
 }
 ```
