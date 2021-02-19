@@ -30,9 +30,23 @@
       - POST /
     - /leaderboard
       - GET /
+      - GET /:date
     - /association
       - GET /:discord_id
       - POST /
+    - /store
+      - GET /
+      - GET /:id
+      - POST /buy
+    - /roulette
+      - POST
+    - /roulette/prizes
+      - GET /
+      - GET /:id
+    - /give_bonus
+      - POST /:id
+    - /spotlight
+      - POST
 
 ## Attendee
 
@@ -60,6 +74,18 @@
       - GET /:id
     - /referrals
       - GET /:id
+    - /store
+      - GET /
+      - GET /:id
+      - POST /buy
+    - /leaderboard
+      - GET /
+      - GET /:date
+    - /roulette
+      - POST
+    - /roulette/prizes
+      - GET /
+      - GET /:id
 
 ## Company
 
@@ -83,6 +109,12 @@
     - /companies
       - GET /
       - GET /:id
+    - /redeems
+      - POST /
+    - /give_bonus
+      - POST /:id
+    - /spotlight
+      - POST
 
 ## Manager
 
@@ -210,11 +242,14 @@ Fetches the badges of the logged in attendee.
 {
     "data": [
         {
-            "name": 1,
+            "name": "Dia 1",
+            "id": 1,
             "end": "2018-07-31T15:59:51.746577Z",
             "description": "coisa",
             "begin": "2018-07-31T15:59:51.742630Z",
-            "avatar": "/images/default/badge-missing.png"
+            "avatar": "/images/default/badge-missing.png",
+            "tokens": 1,
+            "type": 3
         }
     ]
 }
@@ -226,11 +261,15 @@ Fetches a single badge.
 ```json
 {
     "data": {
-        "name": 1,
+        "attendees": [ ... ],
+        "name": "Dia 1",
+        "id": 1,
         "end": "2018-07-31T15:59:51.746577Z",
         "description": "coisa",
         "begin": "2018-07-31T15:59:51.742630Z",
-        "avatar": "/images/default/badge-missing.png"
+        "avatar": "/images/default/badge-missing.png",
+        "tokens": 1,
+        "type": 3
     }
 }
 ```
@@ -269,7 +308,7 @@ Lists all attendees.
 {
     "data": [
         {
-            "avatar": "https://safira20.herokuapp.com//images/attendee-missing.png",
+            "avatar": "/images/attendee-missing.png",
             "badge_count": 1,
             "badges": [
                 {
@@ -283,15 +322,30 @@ Lists all attendees.
                     "type": 3
                 }
             ],
-            "id": "6de51b47-4c35-4127-8c48-79b354061ae5",
-            "name": "Name LastName",
-            "nickname": "attendee1",
-            "token_balance": 4,
+            "entries": 0,
+            "id": "eae3333d-51a6-4142-b35d-0154e431ff60",
+            "name": "user1",
+            "nickname": "user1",
+            "token_balance": 10,
+            "volunteer": false
+        },
+        {
+            "avatar": "/images/attendee-missing.png",
+            "badge_count": 0,
+            "badges": [],
+            "entries": 0,
+            "id": "87656cdb-5615-4118-b981-a76f5ee4352a",
+            "name": "user3",
+            "nickname": "user3",
+            "token_balance": 10,
             "volunteer": false
         }
     ]
 }
 ```
+
+
+
 
 ## GET /:id (Show)
 Shows an attendee.
@@ -300,9 +354,39 @@ Shows an attendee.
 ```json
 {
     "data": {
-        "nickname": "foo",
-        "id": "43ffc4f5-3b12-4243-a157-e4e9e90d35dc",
-        "avatar": "/images/default/attendee-missing.png"
+        "avatar": "/images/attendee-missing.png",
+        "badge_count": 1,
+        "badges": [{
+                    "avatar": "https://teste.amazonaws.com/uploads/badge/avatars/179/original.png?v=63731919919",
+                    "begin": "2019-02-05T00:00:00Z",
+                    "description": "Estiveste presente na talk do Celso Martinho",
+                    "end": "2019-02-06T00:00:00Z",
+                    "id": 179,
+                    "name": "Talk Celso Martinho",
+                    "type": 3
+                }],
+        "entries": 0,
+        "id": "eae3333d-51a6-4142-b35d-0154e431ff60",
+        "name": "user1",
+        "nickname": "user1",
+        "prizes": [{
+                    "avatar": "/uploads/prize/avatars/26/original.png?v=63780572129",
+                    "id": 26,
+                    "max_amount_per_attendee": 1,
+                    "name": "Raspberry Pi 4 2gb + carregador",
+                    "stock": 1
+        }],
+        "redeemables": [
+            {
+                "id": 1,
+                "image": "/images/redeemable-missing.png",
+                "name": "T-shirt",
+                "price": 10,
+                "quantity": 1
+            }
+        ],
+        "token_balance": 10,
+        "volunteer": false
     }
 }
 ```
@@ -395,11 +479,13 @@ Removes an attendee.
 ## GET /
 ```json
 {
-    "badge_id": 10,
-    "email": "company@company.org",
-    "id": 1,
-    "name": "Company",
-    "sponsorship": "Tier"
+    "data": {
+        "badge_id": 37,
+        "channel_id": "1",
+        "id": 1,
+        "name": "Accenture",
+        "sponsorship": "Exclusive"
+    }
 }
 ```
 
@@ -409,9 +495,11 @@ Removes an attendee.
 {
     "data": [
         {
-            "sponsorship": "ola",
-            "name": "ola",
-            "id": 1
+            "badge_id": 37,
+            "channel_id": "1",
+            "id": 1,
+            "name": "Accenture",
+            "sponsorship": "Exclusive"
         }
     ]
 }
@@ -498,26 +586,67 @@ Removes an attendee.
 }
 ```
 
-# leaderboard
-## GET /
+## GET /:date (The format is: {yyyy-mm-dd} , ex: /leaderboard/2021-02-17)
 ```json
 {
     "data": [
         {
-            "avatar": "/uploads/attendee/avatars/ee4514b5-6b71-44ff-b26f-8afc0b8c7e51/original.png?v=63705800808",
-            "badges": [
-                {
-                    "avatar": "/uploads/badge/avatars/5/original.png?v=63705802360",
-                    "begin": "2019-02-12T00:00:00.000000Z",
-                    "description": "hackerino",
-                    "end": "2019-02-13T00:00:00.000000Z",
-                    "name": 5
-                }
-            ],
-            "id": "ee4514b5-6b71-44ff-b26f-8afc0b8c7e51",
-            "nickname": "Nick"
+            "avatar": "/images/attendee-missing.png",
+            "badges": 2,
+            "id": "1f18064f-9fe8-437a-9141-9c75ee85d25b",
+            "name": "user3",
+            "nickname": "user3",
+            "token_balance": 2,
+            "volunteer": false
+        },
+        {
+            "avatar": "/images/attendee-missing.png",
+            "badges": 1,
+            "id": "79a29c1c-9f2e-4de1-a318-54eb1e6ec060",
+            "name": "user1",
+            "nickname": "user1",
+            "token_balance": 71,
+            "volunteer": false
         }
     ]
+  }
+}
+```
+
+# spotlight
+## POST 
+No body
+
+### Valid
+```Json
+{
+  "spotlight": "Spotlight requested succesfully"
+}
+```
+
+### Errors:
+
+- A company is already in spotlight
+
+```json
+{
+  "errors": {
+    "active": [
+      "Another spotlight is still active"
+    ]
+  }
+}
+```
+
+- The company has no remaining spotlights
+
+```json
+{
+  "errors": {
+    "remaining_spotlights": [
+      "must be greater than or equal to 0"
+    ]
+  }
 }
 ```
 
@@ -565,5 +694,165 @@ Fetches the id of the attendee associated with the given discord id
 ```JSON 
 {
   "error": "Unable to associate"
+}
+```
+# Store
+## GET / (Index)
+Fetches all redeemables in store.
+
+### Valid:
+```json
+
+{
+    "data": [
+        {
+            "id": 1,
+            "image": "/images/redeemable-missing.png",
+            "name": "T-shirt",
+            "price": 10
+        },
+        {
+            "id": 2,
+            "image": "/images/redeemable-missing.png",
+            "name": "Caneta",
+            "price": 5
+        }
+    ]
+}
+```
+## GET /:id (Show)
+Fetches a single item.
+
+### Valid:
+```json
+{
+    "data": {
+        "description": "Caneta Merch SEI",
+        "id": 2,
+        "image": "/images/redeemable-missing.png",
+        "max_per_user": 10,
+        "name": "Caneta",
+        "price": 5,
+        "stock": 7
+    }
+}
+```
+
+### Errors:
+- When an item does not exist in store.
+```json
+{
+    "errors": {
+        "detail": "Endpoint Not Found"
+    }
+}
+```
+
+## POST /buy
+Buy a redeemable.
+```json
+{
+    "redeemable": {
+        "redeemable_id": 3
+    }
+}
+```
+
+### Valid:
+```json
+{
+    "Redeemable": "Caneta bought successfully!"
+}
+```
+### Errors:
+- When the participant has already reached the maximum quantity allowed per user.
+```json
+{
+    "errors": {
+        "quantity": [
+            "Quantity is greater than the maximum amount permitted per attendee"
+        ]
+    }
+}
+```
+- Attendee *token balance* is insufficient to buy the redeemable.
+```json
+{
+    "errors": {
+        "token_balance": [
+            "must be greater than or equal to 0"
+        ]
+    }
+}
+```
+- The stock of the selected redeemable reached 0.
+```json
+{
+    "errors": {
+        "stock": [
+            "must be greater than or equal to 0"
+        ]
+    }
+}
+```
+- There is no *redeemable_id* parameter or it is written differently.
+```json
+{
+    "Redeemable": "No 'redeemable_id' param"
+}
+```
+- Not an attendee
+```json
+{
+    "error": "Only attendees can buy products!"
+}
+```
+- There is no redeemable with that *id*
+```json
+{
+    "Redeemable": "There is no such redeemable"
+}
+```
+
+# Roulette
+## POST /
+```JSON
+{
+  "message": "You've won Raspberry"
+}
+```
+
+# Roulette - Prizes
+## GET /
+```JSON
+{
+  "data": [
+    {
+      "avatar": "/uploads/prize/avatars/25/original.png?v=63780572128",
+      "id": 25,
+      "name": "Amazon Voucher"
+    }
+  ]
+}
+```
+
+## GET /:id
+```JSON
+{
+  "data": {
+    "avatar": "/uploads/prize/avatars/26/original.png?v=63780572129",
+    "id": 26,
+    "max_amount_per_attendee": 1,
+    "name": "Raspberry Pi 4 2gb + carregador",
+    "stock": 1
+  }
+}
+```
+
+# Give Bonus
+## POST /:id
+```JSON
+{
+  "message": "10 bonus tokens were given to attendee 05942830-fe17-4133-aadf-23c44d5dc24b"
 }
 ```
