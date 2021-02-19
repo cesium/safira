@@ -568,25 +568,32 @@ Removes an attendee.
 {
     "data": [
         {
-            "avatar": "/uploads/attendee/avatars/ee4514b5-6b71-44ff-b26f-8afc0b8c7e51/original.png?v=63705800808",
-            "badges": [
-                {
-                    "avatar": "/uploads/badge/avatars/5/original.png?v=63705802360",
-                    "begin": "2019-02-12T00:00:00.000000Z",
-                    "description": "hackerino",
-                    "end": "2019-02-13T00:00:00.000000Z",
-                    "name": 5
-                }
-            ],
-            "id": "ee4514b5-6b71-44ff-b26f-8afc0b8c7e51",
-            "nickname": "Nick"
+            "avatar": "/images/attendee-missing.png",
+            "badges": 28,
+            "id": "79a29c1c-9f2e-4de1-a318-54eb1e6ec060",
+            "name": "user1",
+            "nickname": "jpsilva98",
+            "token_balance": 80,
+            "volunteer": false
+        },
+        {
+            "avatar": "/images/attendee-missing.png",
+            "badges": 11,
+            "id": "05942830-fe17-4133-aadf-23c44d5dc24b",
+            "name": "user2",
+            "nickname": "user2",
+            "token_balance": 91,
+            "volunteer": false
         }
     ]
 }
 ```
 
 ## GET /:date (The format is: {yyyy-mm-dd} , ex: /leaderboard/2021-02-17)
-```json
+
+Get the daily leaderboard
+
+```JSON
 {
     "data": [
         {
@@ -822,6 +829,8 @@ Buy a redeemable.
 ```
 
 # Roulette - Prizes
+Prizes that an attendee can win by spinning the roulette.
+
 ## GET /
 ```JSON
 {
@@ -835,7 +844,10 @@ Buy a redeemable.
 }
 ```
 
-## GET /:id
+## GET /:prize_id
+Get a specific prize by prize_id
+
+### Valid
 ```JSON
 {
   "data": {
@@ -848,10 +860,49 @@ Buy a redeemable.
 }
 ```
 
-# Give Bonus
-## POST /:id
+### Errors
+- When the prize_id does not exist.
 ```JSON
 {
-  "message": "10 bonus tokens were given to attendee 05942830-fe17-4133-aadf-23c44d5dc24b"
+  "errors": {
+    "detail": "Endpoint Not Found"
+  }
+}
+```
+
+# Give Bonus
+Company gives a pre-defined bonus to an attendee
+
+## POST /:attendee_id
+
+### Valid
+```JSON
+{
+  "attendee_id": "05942830-fe17-4133-aadf-23c44d5dc24b",
+  "bonus_count": 2,
+  "company_id": 1,
+  "name": "user2",
+  "token_bonus": 10
+}
+```
+
+### Errors
+- When a company tries to give more than 3 bonuses to the same attendee.
+```JSON
+{
+  "errors": {
+    "count": [
+      "must be less than or equal to 3"
+    ]
+  }
+}
+```
+
+- When the attendee_id is not valid
+```JSON
+{
+  "errors": {
+    "detail": "Bad Request"
+  }
 }
 ```
