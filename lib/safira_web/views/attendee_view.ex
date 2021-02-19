@@ -4,7 +4,7 @@ defmodule SafiraWeb.AttendeeView do
   alias Safira.Avatar
 
   def render("index.json", %{attendees: attendees}) do
-    %{data: render_many(attendees, AttendeeView, "attendee.json")}
+    %{data: render_many(attendees, AttendeeView, "attendees.json")}
   end
 
   def render("show.json", %{attendee: attendee}) do
@@ -25,8 +25,25 @@ defmodule SafiraWeb.AttendeeView do
       badge_count: attendee.badge_count,
       volunteer: attendee.volunteer,
       token_balance: attendee.token_balance,
+      prizes: render_many(attendee.prizes, SafiraWeb.PrizeView, "prize.json"),
       entries: attendee.entries,
-      prizes: render_many(attendee.prizes, SafiraWeb.PrizeView, "prize.json")
+      redeemables: render_many(attendee.redeemables, SafiraWeb.RedeemableView, "my_redeemables.json")
+    }
+  end
+
+  def render("attendees.json", %{attendee: attendee}) do
+    %{
+      id: attendee.id,
+      nickname: attendee.nickname,
+      name: attendee.name,
+      avatar: Avatar.url({attendee.avatar, attendee}, :original),
+      badges: render_many(attendee.badges, SafiraWeb.BadgeView, "badge.json"),
+      badge_count: attendee.badge_count,
+      volunteer: attendee.volunteer,
+      token_balance: attendee.token_balance,
+      #prizes: render_many(attendee.prizes, SafiraWeb.PrizeView, "prize.json"),
+      entries: attendee.entries,
+      #redeemables: render_many(attendee.redeemables, SafiraWeb.RedeemableView, "my_redeemables.json")
     }
   end
 
