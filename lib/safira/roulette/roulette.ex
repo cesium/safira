@@ -222,6 +222,10 @@ defmodule Safira.Roulette do
     )
     # prize after spinning
     |> Multi.run(:prize, fn _repo, _changes -> {:ok, spin_prize()} end)
+    # Depending on the type of prize the behaviour is different
+    |> Multi.merge(fn %{prize: prize, attendee: attendee} ->
+      prize_type(prize, attendee)
+    end)
     # get an attendee_prize if exists one, or build one
     |> Multi.run(:attendee_prize, fn _repo, %{attendee: attendee, prize: prize} ->
       {:ok,
@@ -267,6 +271,67 @@ defmodule Safira.Roulette do
       cumulatives
       |> Enum.find_index(fn x -> x == prob end)
     )
+  end
+
+  defp prize_type(prize, attendee) do
+    cond do
+      prize.name == "Tokens" ->
+        calculate_tokens(attendee)
+
+        String.contains?(prize.name, "Entradas") ->
+        give_entry(attendee)
+
+      String.contains?(prize.name, "Lucky Bastard") ->
+        give_badge(prize, attendee)
+
+      true ->
+        Multi.new()
+    end
+  end
+
+  defp calculate_tokens(attendee) do
+    min = Application.fetch_env!(:safira, :roulette_tokens_min)
+    max = Application.fetch_env!(:safira, :roulette_tokens_max)
+    tokens = Enum.random(min..max)
+
+    Multi.new()
+    |> Multi.update(:attendee_token_balance,
+      Attendee.update_token_balance_changeset(
+        attendee,
+        %{
+          token_balance: attendee.token_balance + tokens
+        }
+      )
+    )
+  end
+
+  defp give_entry(attendee) do
+    Multi.new()
+    |> Multi.update(:attendee_entries,
+      Attendee.update_entries_changeset(
+        attendee,
+        %{
+          entries: attendee.entries + 1
+        }
+      )
+    )
+  end
+
+  defp give_badge(prize, attendee) do
+    Multi.new()
+    |> Multi.run(:badge, fn _repo, _changes ->
+      {:ok, Safira.Contest.get_badge_name!(prize.name)}
+    end)
+    |> Multi.insert(:redeem, fn %{badge: badge} ->
+      Safira.Contest.Redeem.changeset(
+        %Safira.Contest.Redeem{},
+        %{
+          attendee_id: attendee.id,
+          badge_id: badge.id,
+          manager_id: 1
+        }
+      )
+    end)
   end
 
   defp strong_randomizer() do
@@ -322,8 +387,19 @@ defmodule Safira.Roulette do
             result
 
           {:error, _failed_operation, changeset, _changes_so_far} ->
-            # That's the way to retrieve the changeset as a value
-            Repo.rollback(changeset)
+            token_balance_error =
+              get_errors(changeset)
+              |> Map.get(:token_balance)
+
+            cond do
+              token_balance_error ->
+                # That's the way to retrieve the changeset as a value
+                Repo.rollback(changeset)
+
+              true ->
+                # should repeat spinning unless it has no token_balance
+                serializable_transaction(multi)
+            end
         end
       end)
     rescue
@@ -333,5 +409,13 @@ defmodule Safira.Roulette do
         # is a correct error. After that the spinning should be repeated.
         serializable_transaction(multi)
     end
+  end
+
+  defp get_errors(changeset) do
+    Ecto.Changeset.traverse_errors(changeset, fn {msg, opts} ->
+      Enum.reduce(opts, msg, fn {key, value}, acc ->
+        String.replace(acc, "%{#{key}}", to_string(value))
+      end)
+    end)
   end
 end
