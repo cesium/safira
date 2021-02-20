@@ -100,7 +100,7 @@ defmodule Mix.Tasks.Gen.UsersFromCsv do
       {:ok, changes} ->
         user = Auth.reset_password_token(changes.user)
 
-        Safira.Email.send_password_email(
+        Safira.Email.send_registration_email(
           user.email,
           user.reset_password_token,
           changes.attendee.discord_association_code

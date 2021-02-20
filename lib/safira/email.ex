@@ -11,7 +11,7 @@ defmodule Safira.Email do
     |> Safira.Mailer.deliver_now()
   end
 
-  def send_password_email(to_email, token, discord_association_code) do
+  def send_registration_email(to_email, token, discord_association_code) do
     new_email()
     |> to(to_email)
     |> from(System.get_env("FROM_EMAIL"))
@@ -790,8 +790,7 @@ defmodule Safira.Email do
                           <h2 style="Margin-top: 0;Margin-bottom: 0;font-style: normal;font-weight: normal;color: #021a2c;font-size: 26px;line-height: 34px;"><strong>CHECK-IN</strong></h2>
                           <p style="Margin-top: 16px;Margin-bottom: 20px;">Boa tarde caro(a) participante,<br>
                             <br>
-                            Está tudo pronto para o início da SEI'21! Para finalizar a criação da tua conta, basta clicares no botão abaixo para definir uma password
-                            ou acederes a <a style="text-decoration: underline;transition: opacity 0.1s ease-in;color: #222d8f;" href="#{password_reset_link}">este link</a> e seguir as indicações que se encontram na plataforma.</p>
+                            Está tudo pronto para o início da SEI'21! Para finalizar a criação da tua conta, basta clicares no botão abaixo para definir uma password para a tua conta.
                         </div>
                       </div>
 
