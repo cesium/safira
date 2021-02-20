@@ -834,7 +834,7 @@ defmodule Safira.Email do
                       <div style="Margin-left: 20px;Margin-right: 20px;">
                         <div style="mso-line-height-rule: exactly;mso-text-raise: 11px;vertical-align: middle;">
                           <p style="Margin-top: 0;Margin-bottom: 0;">Quando te juntares ao Discord, ser-te-á pedido para inserires um código pessoal de forma a associar a tua conta do Discord à da restante plataforma da SEI, este será:</p>
-                          <p class="size-20" style="Margin-top: 20px;Margin-bottom: 0;font-size: 17px;line-height: 26px;text-align: center;" lang="x-size-20"><strong>#{discord_association_code}</strong></p>
+                          <p class="size-20" style="Margin-top: 20px;Margin-bottom: 20px;font-size: 17px;line-height: 26px;text-align: center;" lang="x-size-20"><strong>#{discord_association_code}</strong></p>
                           </div>
                       </div>
 
