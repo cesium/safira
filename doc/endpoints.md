@@ -826,11 +826,76 @@ Buy a redeemable.
 
 # Roulette
 ## POST /
+
+### Valid
+
+- When you win tokens
 ```JSON
 {
-  "message": "You've won Raspberry"
+    "prize": {
+        "avatar": "/uploads/prize/avatars/45/original.png?v=63781002813",
+        "id": 45,
+        "name": "Tokens"
+    },
+    "tokens": 10
 }
 ```
+
+- When you win a normal prize
+```JSON
+{
+    "prize": {
+        "avatar": "/uploads/prize/avatars/57/original.png?v=63781049535",
+        "id": 57,
+        "name": "Raspberry Pi 4 2gb + carregador"
+    }
+}
+```
+
+- When you win entries for the final draw
+```JSON
+{
+    "entries": 1,
+    "prize": {
+        "avatar": "/uploads/prize/avatars/66/original.png?v=63781049535",
+        "id": 66,
+        "name": "Entradas para o sorteio final"
+    }
+}
+```
+
+- When you win a roulette badge
+```JSON
+{
+    "badge": {
+        "avatar": "/uploads/badge/avatars/129/original.png?v=63780362701",
+        "begin": "2020-02-26T00:00:00Z",
+        "description": "Lucky Bastard 1",
+        "end": "2020-02-27T00:00:00Z",
+        "id": 129,
+        "name": "Lucky Bastard 1",
+        "tokens": 1,
+        "type": 9
+    },
+    "prize": {
+        "avatar": "/uploads/prize/avatars/61/original.png?v=63781049535",
+        "id": 61,
+        "name": "Lucky Bastard 1"
+    }
+}
+```
+
+- When you win nothing
+```JSON
+{
+    "prize": {
+        "avatar": "/uploads/prize/avatars/67/original.png?v=63781049535",
+        "id": 67,
+        "name": "Nada"
+    }
+}
+```
+
 
 # Roulette - Prizes
 Prizes that an attendee can win by spinning the roulette.
