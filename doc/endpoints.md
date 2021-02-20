@@ -372,9 +372,7 @@ Shows an attendee.
         "prizes": [{
                     "avatar": "/uploads/prize/avatars/26/original.png?v=63780572129",
                     "id": 26,
-                    "max_amount_per_attendee": 1,
-                    "name": "Raspberry Pi 4 2gb + carregador",
-                    "stock": 1
+                    "name": "Raspberry Pi 4 2gb + carregador"
         }],
         "redeemables": [
             {
@@ -713,16 +711,22 @@ Fetches all redeemables in store.
 {
     "data": [
         {
+            "description": "PowerBank 5k com logo SEI",
             "id": 1,
-            "image": "/images/redeemable-missing.png",
-            "name": "T-shirt",
-            "price": 10
+            "image": "/uploads/redeemable/avatars/1/original.png?v=63780993725",
+            "max_per_user": 1,
+            "name": "PowerBank",
+            "price": 100,
+            "stock": 30
         },
         {
+            "description": "Merch SEI",
             "id": 2,
-            "image": "/images/redeemable-missing.png",
-            "name": "Caneta",
-            "price": 5
+            "image": "/uploads/redeemable/avatars/2/original.png?v=63780993725",
+            "max_per_user": 1,
+            "name": "T-shirt",
+            "price": 50,
+            "stock": 10
         }
     ]
 }
@@ -734,7 +738,7 @@ Fetches a single item.
 ```json
 {
     "data": {
-        "description": "Caneta Merch SEI",
+        "description": "Merch SEI",
         "id": 2,
         "image": "/images/redeemable-missing.png",
         "max_per_user": 10,
@@ -823,11 +827,76 @@ Buy a redeemable.
 
 # Roulette
 ## POST /
+
+### Valid
+
+- When you win tokens
 ```JSON
 {
-  "message": "You've won Raspberry"
+    "prize": {
+        "avatar": "/uploads/prize/avatars/45/original.png?v=63781002813",
+        "id": 45,
+        "name": "Tokens"
+    },
+    "tokens": 10
 }
 ```
+
+- When you win a normal prize
+```JSON
+{
+    "prize": {
+        "avatar": "/uploads/prize/avatars/57/original.png?v=63781049535",
+        "id": 57,
+        "name": "Raspberry Pi 4 2gb + carregador"
+    }
+}
+```
+
+- When you win entries for the final draw
+```JSON
+{
+    "entries": 1,
+    "prize": {
+        "avatar": "/uploads/prize/avatars/66/original.png?v=63781049535",
+        "id": 66,
+        "name": "Entradas para o sorteio final"
+    }
+}
+```
+
+- When you win a roulette badge
+```JSON
+{
+    "badge": {
+        "avatar": "/uploads/badge/avatars/129/original.png?v=63780362701",
+        "begin": "2020-02-26T00:00:00Z",
+        "description": "Lucky Bastard 1",
+        "end": "2020-02-27T00:00:00Z",
+        "id": 129,
+        "name": "Lucky Bastard 1",
+        "tokens": 1,
+        "type": 9
+    },
+    "prize": {
+        "avatar": "/uploads/prize/avatars/61/original.png?v=63781049535",
+        "id": 61,
+        "name": "Lucky Bastard 1"
+    }
+}
+```
+
+- When you win nothing
+```JSON
+{
+    "prize": {
+        "avatar": "/uploads/prize/avatars/67/original.png?v=63781049535",
+        "id": 67,
+        "name": "Nada"
+    }
+}
+```
+
 
 # Roulette - Prizes
 Prizes that an attendee can win by spinning the roulette.
@@ -839,7 +908,9 @@ Prizes that an attendee can win by spinning the roulette.
     {
       "avatar": "/uploads/prize/avatars/25/original.png?v=63780572128",
       "id": 25,
-      "name": "Amazon Voucher"
+      "max_amount_per_attendee": 1,
+      "name": "Amazon Voucher",
+      "stock": 8
     }
   ]
 }
