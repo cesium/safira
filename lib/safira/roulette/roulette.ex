@@ -206,12 +206,23 @@ defmodule Safira.Roulette do
     AttendeePrize.changeset(attendee_prize, %{})
   end
 
+  def spin(attendee) do
+    spin_transaction(attendee)
+    |> case  do
+      {:error, :spin_again} ->
+        spin(attendee)
+
+      result ->
+        result
+    end
+  end
+
   @doc """
   Transaction that take a number of tokens from an attendee,
   apply a probability-based function for "spinning the wheel",
   and give the price to the attendee.
   """
-  def spin(attendee) do
+  def spin_transaction(attendee) do
     Multi.new()
     # remove tokens from attendee to spin the wheel
     |> Multi.update(
@@ -278,7 +289,7 @@ defmodule Safira.Roulette do
       prize.name == "Tokens" ->
         calculate_tokens(attendee)
 
-        String.contains?(prize.name, "Entradas") ->
+      String.contains?(prize.name, "Entradas") ->
         give_entry(attendee)
 
       String.contains?(prize.name, "Lucky Bastard") ->
@@ -392,13 +403,13 @@ defmodule Safira.Roulette do
               |> Map.get(:token_balance)
 
             cond do
-              token_balance_error ->
+              not is_nil token_balance_error ->
                 # That's the way to retrieve the changeset as a value
                 Repo.rollback(changeset)
 
               true ->
                 # should repeat spinning unless it has no token_balance
-                serializable_transaction(multi)
+                Repo.rollback(:spin_again)
             end
         end
       end)

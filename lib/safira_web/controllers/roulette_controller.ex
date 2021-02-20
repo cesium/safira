@@ -11,10 +11,7 @@ defmodule SafiraWeb.RouletteController do
     cond do
        not is_nil(attendee)->
         with {:ok, changes} <- Roulette.spin(attendee) do
-          IO.inspect(changes)
-          conn
-          |> put_status(:ok)
-          |> json(%{message: "You've won #{Map.get(changes, :prize).name}"})
+          render(conn, "roulette.json", changes)
         end
 
       true ->
