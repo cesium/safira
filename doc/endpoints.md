@@ -704,13 +704,14 @@ Fetches the id of the attendee associated with the given discord id
 # Store
 ## GET / (Index)
 Fetches all redeemables in store.
-
+- When is an attendee
 ### Valid:
 ```json
 
 {
     "data": [
         {
+            "can_buy": 1,
             "description": "PowerBank 5k com logo SEI",
             "id": 1,
             "image": "/uploads/redeemable/avatars/1/original.png?v=63780993725",
@@ -720,10 +721,11 @@ Fetches all redeemables in store.
             "stock": 30
         },
         {
+            "can_buy": 3,
             "description": "Merch SEI",
             "id": 2,
             "image": "/uploads/redeemable/avatars/2/original.png?v=63780993725",
-            "max_per_user": 1,
+            "max_per_user": 4,
             "name": "T-shirt",
             "price": 50,
             "stock": 10
@@ -731,13 +733,60 @@ Fetches all redeemables in store.
     ]
 }
 ```
+- When is not an attendee
+### Valid:
+```json
+
+{
+    "data": [
+        {
+            "can_buy": 0,
+            "description": "PowerBank 5k com logo SEI",
+            "id": 1,
+            "image": "/uploads/redeemable/avatars/1/original.png?v=63780993725",
+            "max_per_user": 1,
+            "name": "PowerBank",
+            "price": 100,
+            "stock": 30
+        },
+        {
+            "can_buy": 0,
+            "description": "Merch SEI",
+            "id": 2,
+            "image": "/uploads/redeemable/avatars/2/original.png?v=63780993725",
+            "max_per_user": 4,
+            "name": "T-shirt",
+            "price": 50,
+            "stock": 10
+        }
+    ]
+}
+```
+
 ## GET /:id (Show)
 Fetches a single item.
-
+- When is an attendee
 ### Valid:
 ```json
 {
     "data": {
+        "can_buy": 7,
+        "description": "Merch SEI",
+        "id": 2,
+        "image": "/images/redeemable-missing.png",
+        "max_per_user": 10,
+        "name": "Caneta",
+        "price": 5,
+        "stock": 7
+    }
+}
+```
+- When is not an attendee
+### Valid:
+```json
+{
+    "data": {
+        "can_buy": 0,
         "description": "Merch SEI",
         "id": 2,
         "image": "/images/redeemable-missing.png",
