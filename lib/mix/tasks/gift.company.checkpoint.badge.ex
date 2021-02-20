@@ -20,12 +20,13 @@ defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge do
           to receive the checkpoint basge
       - entries: Number of entries that an attendee receives for
           having this badge
+      - badge_type: type of badge to confirm
   """
 
   def run(args) do
     cond do
-      length(args) != 3 ->
-        Mix.shell().info("Needs to receive badge_id, badge_count and entries.")
+      length(args) != 4 ->
+        Mix.shell().info("Needs to receive badge_id, badge_count, entries and badge_type.")
 
       true ->
         args |> create()
@@ -55,7 +56,8 @@ defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge do
     %{
       badge_id: Enum.at(args, 0),
       badge_count: Enum.at(args, 1),
-      entries: Enum.at(args, 2)
+      entries: Enum.at(args, 2),
+      badge_type: Enum.at(args, 3),
     }
   end
 
@@ -76,7 +78,7 @@ defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge do
       from a in Attendee,
       join: r in Redeem, on: a.id == r.attendee_id,
       join: b in Badge, on: r.badge_id == b.id,
-      where: b.type == 4,
+      where: b.type == ^Map.get(args, :badge_type),
       preload: [badges: b]
     )
     |> Enum.map(fn a -> Map.put(a, :badge_count, length(a.badges)) end)

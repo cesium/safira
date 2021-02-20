@@ -5,7 +5,7 @@ defmodule SafiraWeb.PrizeView do
   alias Safira.Avatar
 
   def render("index.json", %{prizes: prizes}) do
-    %{data: render_many(prizes, PrizeView, "prize.json")}
+    %{data: render_many(prizes, PrizeView, "prize_show.json")}
   end
 
   def render("show.json", %{prize: prize}) do

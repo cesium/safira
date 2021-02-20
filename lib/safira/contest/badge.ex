@@ -13,7 +13,7 @@ defmodule Safira.Contest.Badge do
     field :name, :string
     field :description, :string
     field :avatar, Safira.Avatar.Type
-    #%{hidden: 0, secret: 1, empresa: 2, talk: 3, workshop: 4, oradore: 5, dias: 6, outros: 7}
+    #%{verificações: 0, secret: 1, desafios: 2, dias: 3, empresas: 4, oradores: 5, talks: 6, workshops: 7, outros: 8}
     field :type, :integer
     field :tokens, :integer
 

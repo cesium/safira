@@ -234,7 +234,7 @@ any calls to the api that need to be authenticated.
 
 # badges
 ## GET / (Index)
-Fetches the badges of the logged in attendee.
+Fetches all badges depending in the type of user that is consulting them.
 
 ### Valid:
 ```json
@@ -301,7 +301,7 @@ Fetches the nick, uuid, email and avatar of the logged in attendee.
 
 # attendees
 ## GET / (Index)
-Lists all attendess.
+Lists all attendees.
 
 ### Valid:
 ```json
@@ -318,6 +318,7 @@ Lists all attendess.
                     "end": "2019-02-06T00:00:00Z",
                     "id": 179,
                     "name": "Talk Celso Martinho",
+                    "tokens": 1,
                     "type": 3
                 }
             ],
@@ -371,9 +372,7 @@ Shows an attendee.
         "prizes": [{
                     "avatar": "/uploads/prize/avatars/26/original.png?v=63780572129",
                     "id": 26,
-                    "max_amount_per_attendee": 1,
-                    "name": "Raspberry Pi 4 2gb + carregador",
-                    "stock": 1
+                    "name": "Raspberry Pi 4 2gb + carregador"
         }],
         "redeemables": [
             {
@@ -538,7 +537,7 @@ Removes an attendee.
 ### Valid:
 ```json
 {
-    "redeem": "Badge redeem successfully"
+    "redeem": "Badge redeemed successfully. Tokens added to your balance"
 }
 ```
 ### Errors:
@@ -568,25 +567,32 @@ Removes an attendee.
 {
     "data": [
         {
-            "avatar": "/uploads/attendee/avatars/ee4514b5-6b71-44ff-b26f-8afc0b8c7e51/original.png?v=63705800808",
-            "badges": [
-                {
-                    "avatar": "/uploads/badge/avatars/5/original.png?v=63705802360",
-                    "begin": "2019-02-12T00:00:00.000000Z",
-                    "description": "hackerino",
-                    "end": "2019-02-13T00:00:00.000000Z",
-                    "name": 5
-                }
-            ],
-            "id": "ee4514b5-6b71-44ff-b26f-8afc0b8c7e51",
-            "nickname": "Nick"
+            "avatar": "/images/attendee-missing.png",
+            "badges": 28,
+            "id": "79a29c1c-9f2e-4de1-a318-54eb1e6ec060",
+            "name": "user1",
+            "nickname": "user1",
+            "token_balance": 80,
+            "volunteer": false
+        },
+        {
+            "avatar": "/images/attendee-missing.png",
+            "badges": 11,
+            "id": "05942830-fe17-4133-aadf-23c44d5dc24b",
+            "name": "user2",
+            "nickname": "user2",
+            "token_balance": 91,
+            "volunteer": false
         }
     ]
 }
 ```
 
 ## GET /:date (The format is: {yyyy-mm-dd} , ex: /leaderboard/2021-02-17)
-```json
+
+Get the daily leaderboard
+
+```JSON
 {
     "data": [
         {
@@ -705,16 +711,22 @@ Fetches all redeemables in store.
 {
     "data": [
         {
+            "description": "PowerBank 5k com logo SEI",
             "id": 1,
-            "image": "/images/redeemable-missing.png",
-            "name": "T-shirt",
-            "price": 10
+            "image": "/uploads/redeemable/avatars/1/original.png?v=63780993725",
+            "max_per_user": 1,
+            "name": "PowerBank",
+            "price": 100,
+            "stock": 30
         },
         {
+            "description": "Merch SEI",
             "id": 2,
-            "image": "/images/redeemable-missing.png",
-            "name": "Caneta",
-            "price": 5
+            "image": "/uploads/redeemable/avatars/2/original.png?v=63780993725",
+            "max_per_user": 1,
+            "name": "T-shirt",
+            "price": 50,
+            "stock": 10
         }
     ]
 }
@@ -726,7 +738,7 @@ Fetches a single item.
 ```json
 {
     "data": {
-        "description": "Caneta Merch SEI",
+        "description": "Merch SEI",
         "id": 2,
         "image": "/images/redeemable-missing.png",
         "max_per_user": 10,
@@ -815,13 +827,80 @@ Buy a redeemable.
 
 # Roulette
 ## POST /
+
+### Valid
+
+- When you win tokens
 ```JSON
 {
-  "message": "You've won Raspberry"
+    "prize": {
+        "avatar": "/uploads/prize/avatars/45/original.png?v=63781002813",
+        "id": 45,
+        "name": "Tokens"
+    },
+    "tokens": 10
 }
 ```
 
+- When you win a normal prize
+```JSON
+{
+    "prize": {
+        "avatar": "/uploads/prize/avatars/57/original.png?v=63781049535",
+        "id": 57,
+        "name": "Raspberry Pi 4 2gb + carregador"
+    }
+}
+```
+
+- When you win entries for the final draw
+```JSON
+{
+    "entries": 1,
+    "prize": {
+        "avatar": "/uploads/prize/avatars/66/original.png?v=63781049535",
+        "id": 66,
+        "name": "Entradas para o sorteio final"
+    }
+}
+```
+
+- When you win a roulette badge
+```JSON
+{
+    "badge": {
+        "avatar": "/uploads/badge/avatars/129/original.png?v=63780362701",
+        "begin": "2020-02-26T00:00:00Z",
+        "description": "Lucky Bastard 1",
+        "end": "2020-02-27T00:00:00Z",
+        "id": 129,
+        "name": "Lucky Bastard 1",
+        "tokens": 1,
+        "type": 9
+    },
+    "prize": {
+        "avatar": "/uploads/prize/avatars/61/original.png?v=63781049535",
+        "id": 61,
+        "name": "Lucky Bastard 1"
+    }
+}
+```
+
+- When you win nothing
+```JSON
+{
+    "prize": {
+        "avatar": "/uploads/prize/avatars/67/original.png?v=63781049535",
+        "id": 67,
+        "name": "Nada"
+    }
+}
+```
+
+
 # Roulette - Prizes
+Prizes that an attendee can win by spinning the roulette.
+
 ## GET /
 ```JSON
 {
@@ -829,13 +908,18 @@ Buy a redeemable.
     {
       "avatar": "/uploads/prize/avatars/25/original.png?v=63780572128",
       "id": 25,
-      "name": "Amazon Voucher"
+      "max_amount_per_attendee": 1,
+      "name": "Amazon Voucher",
+      "stock": 8
     }
   ]
 }
 ```
 
-## GET /:id
+## GET /:prize_id
+Get a specific prize by prize_id
+
+### Valid
 ```JSON
 {
   "data": {
@@ -848,10 +932,49 @@ Buy a redeemable.
 }
 ```
 
-# Give Bonus
-## POST /:id
+### Errors
+- When the prize_id does not exist.
 ```JSON
 {
-  "message": "10 bonus tokens were given to attendee 05942830-fe17-4133-aadf-23c44d5dc24b"
+  "errors": {
+    "detail": "Endpoint Not Found"
+  }
+}
+```
+
+# Give Bonus
+Company gives a pre-defined bonus to an attendee
+
+## POST /:attendee_id
+
+### Valid
+```JSON
+{
+  "attendee_id": "05942830-fe17-4133-aadf-23c44d5dc24b",
+  "bonus_count": 2,
+  "company_id": 1,
+  "name": "user2",
+  "token_bonus": 10
+}
+```
+
+### Errors
+- When a company tries to give more than 3 bonuses to the same attendee.
+```JSON
+{
+  "errors": {
+    "count": [
+      "must be less than or equal to 3"
+    ]
+  }
+}
+```
+
+- When the attendee_id is not valid
+```JSON
+{
+  "errors": {
+    "detail": "Bad Request"
+  }
 }
 ```
