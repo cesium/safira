@@ -8,6 +8,13 @@ defmodule Mix.Tasks.Gen.UsersFromCsv do
 
   alias NimbleCSV.RFC4180, as: CSV
 
+  @shortdoc "Generates the attendees from a CSV and sends emails to finish registration"
+
+  @moduledoc """
+  This task is waiting for a CSV where the 2nd collumn is name,
+   3rd collumn is last name and 4th collumn is email
+  """
+
   def run(args) do
     cond do
       Enum.empty?(args) ->
@@ -23,10 +30,10 @@ defmodule Mix.Tasks.Gen.UsersFromCsv do
 
     try do
       path
-        |> parse_csv
-        |> create_users
+      |> parse_csv
+      |> create_users
     rescue
-      e in File.Error -> IO.inspect e
+      e in File.Error -> IO.inspect(e)
     end
   end
 
@@ -93,7 +100,11 @@ defmodule Mix.Tasks.Gen.UsersFromCsv do
       {:ok, changes} ->
         user = Auth.reset_password_token(changes.user)
 
-        Safira.Email.send_password_email(user.email, user.reset_password_token)
+        Safira.Email.send_registration_email(
+          user.email,
+          user.reset_password_token,
+          changes.attendee.discord_association_code
+        )
 
       _ ->
         transaction
