@@ -3,6 +3,7 @@ defmodule Mix.Tasks.Gen.UsersFromCsv do
   alias Ecto.Multi
   alias Safira.Repo
   alias Safira.Auth
+  alias Safira.Accounts
   alias Safira.Accounts.User
   alias Safira.Accounts.Attendee
 
@@ -23,10 +24,10 @@ defmodule Mix.Tasks.Gen.UsersFromCsv do
 
     try do
       path
-        |> parse_csv
-        |> create_users
+      |> parse_csv
+      |> create_users
     rescue
-      e in File.Error -> IO.inspect e
+      e in File.Error -> IO.inspect(e)
     end
   end
 
@@ -93,8 +94,11 @@ defmodule Mix.Tasks.Gen.UsersFromCsv do
       {:ok, changes} ->
         user = Auth.reset_password_token(changes.user)
 
-        Safira.Email.send_password_email(user.email, user.reset_password_token,
-        user.atendee.discord_association_code)
+        Safira.Email.send_password_email(
+          user.email,
+          user.reset_password_token,
+          changes.attendee.discord_association_code
+        )
 
       _ ->
         transaction
