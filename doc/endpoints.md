@@ -234,7 +234,7 @@ any calls to the api that need to be authenticated.
 
 # badges
 ## GET / (Index)
-Fetches the badges of the logged in attendee.
+Fetches all badges depending in the type of user that is consulting them.
 
 ### Valid:
 ```json
@@ -573,7 +573,7 @@ Removes an attendee.
             "badges": 28,
             "id": "79a29c1c-9f2e-4de1-a318-54eb1e6ec060",
             "name": "user1",
-            "nickname": "jpsilva98",
+            "nickname": "user1",
             "token_balance": 80,
             "volunteer": false
         },
