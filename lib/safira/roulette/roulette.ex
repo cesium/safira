@@ -329,6 +329,7 @@ defmodule Safira.Roulette do
   end
 
   defp give_badge(prize, attendee) do
+
     Multi.new()
     |> Multi.run(:badge, fn _repo, _changes ->
       {:ok, Safira.Contest.get_badge_name!(prize.name)}
@@ -342,6 +343,19 @@ defmodule Safira.Roulette do
           manager_id: 1
         }
       )
+    end)
+    |> Multi.update(:attendee_balance_entries, fn %{redeem: redeem} ->
+
+      redeem = Repo.preload(redeem, [:badge, :attendee])
+
+      Safira.Accounts.Attendee.update_on_redeem_changeset(
+        redeem.attendee,
+        %{
+          token_balance: redeem.attendee.token_balance + redeem.badge.tokens,
+          entries: redeem.attendee.entries + 1
+        }
+      )
+
     end)
   end
 
