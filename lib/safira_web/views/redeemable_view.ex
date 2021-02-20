@@ -23,7 +23,8 @@ defmodule SafiraWeb.RedeemableView do
       image: Avatar.url({redeemable.img, redeemable}, :original),
       price: redeemable.price,
       stock: redeemable.stock,
-      max_per_user: redeemable.max_per_user
+      max_per_user: redeemable.max_per_user,
+      can_buy: redeemable.can_buy
     }
   end
 

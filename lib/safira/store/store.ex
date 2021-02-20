@@ -23,8 +23,7 @@ defmodule Safira.Store do
           nil ->
             Map.put(redeemable,:can_buy,redeemable.max_per_user)
           buy -> 
-            can_buy = redeemable.max_per_user - buy.quantity
-            Map.put(redeemable,:can_buy,can_buy)
+            Map.put(redeemable,:can_buy, Kernel.min(redeemable.max_per_user - buy.quantity, redeemable.stock))
         end
     end)
   end
