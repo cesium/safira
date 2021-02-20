@@ -2,11 +2,15 @@ defmodule SafiraWeb.RedeemableController do
   use SafiraWeb, :controller
 
   alias Safira.Store
+  alias Safira.Accounts
 
   action_fallback(SafiraWeb.FallbackController)
 
   def index(conn, _params) do
-    redeemables = Store.list_redeemables()
+    attendee =
+      Accounts.get_user(conn)
+      |> Map.fetch!(:attendee)
+    redeemables = Store.list_store_redeemables(attendee)
     render(conn, "index.json", redeemables: redeemables)
   end
 

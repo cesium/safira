@@ -16,9 +16,17 @@ defmodule Safira.Store do
     Repo.exists?(query)
   end
 
-  def list_store_redeemables do
+  def list_store_redeemables(attendee) do
     Repo.all(Redeemable)
-    |> Enum.filter(fn redeemable -> redeemable.stock > 0 end)
+    |> Enum.map(fn redeemable ->
+        case get_keys_buy(attendee.id, redeemable.id) do
+          nil ->
+            Map.put(redeemable,:can_buy,redeemable.max_per_user)
+          buy -> 
+            can_buy = redeemable.max_per_user - buy.quantity
+            Map.put(redeemable,:can_buy,can_buy)
+        end
+    end)
   end
 
   def get_redeemable!(id), do: Repo.get!(Redeemable, id)
