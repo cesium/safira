@@ -5,15 +5,11 @@ defmodule Mix.Tasks.Export.Attendees.Entries do
     Mix.Task.run("app.start")
 
     IO.puts("uuid,name,email,entries")
-    file = File.open!("exported_attendees_entries.csv", [:write, :utf8])
-    IO.write(file, "uuid,name,email,entries\n")
 
     Enum.each(
       Safira.Accounts.list_active_attendees(),
       fn a ->
         IO.puts(csv_io(a))
-        IO.write(file, csv_io(a))
-        IO.write(file, "\n")
       end
     )
   end
