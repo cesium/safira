@@ -11,8 +11,8 @@ defmodule Mix.Tasks.Gen.UsersFromCsv do
   @shortdoc "Generates the attendees from a CSV and sends emails to finish registration"
 
   @moduledoc """
-  This task is waiting for a CSV where the 2nd collumn is name,
-   3rd collumn is last name and 4th collumn is email
+  This task is waiting for a CSV where the 3rd collumn is name,
+   4th collumn is last name and 5th collumn is email
   """
 
   def run(args) do
