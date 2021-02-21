@@ -145,7 +145,8 @@
         "password_confirmation": "somePassword",
         "attendee": {
             "id": "adaa8aab4e-7549-494b-91f0-52e9c9a8cf5d",
-            "nickname": "foobar"
+            "nickname": "foobar",
+	    "name": "Foo Bar"
         }
     }
 }
