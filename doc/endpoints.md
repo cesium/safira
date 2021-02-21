@@ -43,6 +43,8 @@
     - /roulette/prizes
       - GET /
       - GET /:id
+    - /roulette/latestwins
+      - GET /
     - /give_bonus
       - POST /:id
     - /spotlight
@@ -448,7 +450,13 @@ Removes an attendee.
 
 
 # referrals
-## GET /:id
+## POST /
+```JSON
+{
+	"id": "ee2c4d55-7765-47c6-85af-b087fa03dc9b"
+}
+```
+
 ### Valid:
 ```json
 {
@@ -988,6 +996,23 @@ Get a specific prize by prize_id
   "errors": {
     "detail": "Endpoint Not Found"
   }
+}
+```
+
+# Roulette - Latest 5 Wins
+## GET /
+
+```JSON
+{
+  "data": [
+    {
+      "avatar": "/uploads/prize/avatars/12/original.png?v=63781160330",
+      "id": 12,
+      "max_amount_per_attendee": 1,
+      "name": "ATH-M50X Profissional Audio-technica",
+      "stock": 0
+    }
+  ]
 }
 ```
 
