@@ -26,7 +26,7 @@ defmodule Safira.Store.Redeemable do
     |> validate_required([:name, :price, :stock, :max_per_user, :description])
     |> validate_length(:name, min: 1, max: 255)
     |> validate_number(:price, greater_than: 0)
-    |> validate_number(:stock, greater_than_or_equal_to: 0)
+    |> validate_number(:stock, greater_than_or_equal_to: 0, message: "Item is sold out!")
     |> validate_number(:max_per_user, greater_than: 0)
     |> validate_length(:description, min: 1, max: 1000)
   end

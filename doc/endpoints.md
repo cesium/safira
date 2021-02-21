@@ -791,7 +791,7 @@ Buy a redeemable.
 {
     "errors": {
         "token_balance": [
-            "must be greater than or equal to 0"
+            "Token balance is insufficient."
         ]
     }
 }
@@ -801,7 +801,7 @@ Buy a redeemable.
 {
     "errors": {
         "stock": [
-            "must be greater than or equal to 0"
+            "Item is sold out!"
         ]
     }
 }
