@@ -58,6 +58,14 @@ defmodule Safira.Roulette do
     |> Repo.insert()
   end
 
+  def create_prizes(list_prizes) do
+    list_prizes
+    |> Enum.with_index()
+    |> Enum.reduce(Multi.new,fn {x,index}, acc ->
+      Multi.insert(acc, index, Prize.changeset(%Prize{},x))
+    end)
+  end
+
   @doc """
   Updates a prize.
 
