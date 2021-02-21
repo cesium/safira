@@ -455,13 +455,14 @@ defmodule Safira.Roulette do
   def latest_five_wins() do
     query =
       from ap in AttendeePrize,
+      join: a in Safira.Accounts.Attendee, on: ap.attendee_id == a.id,
       join: p in Prize, on: ap.prize_id == p.id,
       where: p.name != "Nada",
       order_by: [desc: ap.updated_at],
       limit: 5,
-      preload: [prize: p]
+      preload: [prize: p, attendee: a]
 
     Repo.all(query)
-    |> Enum.map(fn ap -> ap.prize end)
+    |> Enum.map(fn ap -> {ap.attendee.name, ap.prize, ap.updated_at} end)
   end
 end

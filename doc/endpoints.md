@@ -1006,11 +1006,15 @@ Get a specific prize by prize_id
 {
   "data": [
     {
-      "avatar": "/uploads/prize/avatars/12/original.png?v=63781160330",
-      "id": 12,
-      "max_amount_per_attendee": 1,
-      "name": "ATH-M50X Profissional Audio-technica",
-      "stock": 0
+      "attendee_name": "user1",
+      "date": "2021-02-21T21:36:13",
+      "prize": {
+        "avatar": "/uploads/prize/avatars/12/original.png?v=63781160330",
+        "id": 12,
+        "max_amount_per_attendee": 1,
+        "name": "ATH-M50X Profissional Audio-technica",
+        "stock": 0
+      }
     }
   ]
 }
