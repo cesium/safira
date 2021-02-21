@@ -31,7 +31,6 @@ defmodule SafiraWeb.RouletteView do
   end
 
   def render("latest_prizes.json", %{latest_prizes: latest_prizes}) do
-    IO.inspect(latest_prizes)
     %{data: render_many(latest_prizes, SafiraWeb.RouletteView, "latest_prize_show.json")}
   end
 
