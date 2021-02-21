@@ -18,7 +18,7 @@ defmodule Mix.Tasks.Gen.UsersFromCsv do
 
   def run(args) do
     cond do
-      Enum.empty?(args) ->
+      length(args) != 2 ->
         Mix.shell().info("Needs to receive a file URL and a flag.")
 
       true ->
@@ -39,7 +39,7 @@ defmodule Mix.Tasks.Gen.UsersFromCsv do
           |> parse_csv
           |> create_users
         rescue
-          e in File.Error -> IO.inspect(e)
+          e in File.Error -> IO.inspect e
         end
 
        "Remote" ->
@@ -53,7 +53,7 @@ defmodule Mix.Tasks.Gen.UsersFromCsv do
             |> parse_csv
             |> create_users
 
-          {:error, resp} -> resp
+          {:error, resp} -> IO.inspect resp
         end
     end
 
