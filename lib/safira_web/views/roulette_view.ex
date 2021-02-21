@@ -29,4 +29,8 @@ defmodule SafiraWeb.RouletteView do
 
     resp
   end
+
+  def render("latest_prizes.json", %{prizes: prizes}) do
+    %{data: render_many(prizes, SafiraWeb.PrizeView, "prize_show.json")}
+  end
 end
