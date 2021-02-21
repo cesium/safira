@@ -6,12 +6,8 @@ defmodule Mix.Tasks.Export.Attendees.Entries do
 
     IO.puts("uuid,name,email,entries")
 
-    Enum.each(
-      Safira.Accounts.list_active_attendees(),
-      fn a ->
-        IO.puts(csv_io(a))
-      end
-    )
+    Safira.Accounts.list_active_attendees()
+    |> Enum.each(fn a -> csv_io(a) |> Mix.shell().info end)
   end
 
   defp csv_io(attendee) do
