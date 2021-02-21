@@ -20,4 +20,9 @@ defmodule SafiraWeb.RouletteController do
         |> json(%{error: "Only attendees can spin the wheel"})
     end
   end
+
+  def latest_wins(conn, _params) do
+    latest_prizes = Roulette.latest_five_wins()
+    render(conn, "latest_prizes.json", latest_prizes: latest_prizes)
+  end
 end

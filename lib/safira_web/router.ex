@@ -53,6 +53,7 @@ defmodule SafiraWeb.Router do
       get "/company", AuthController, :company
       get "/leaderboard", LeaderboardController, :index
       get "/leaderboard/:date", LeaderboardController, :daily
+      get "/roulette/latestwins", RouletteController, :latest_wins
 
       post "/roulette", RouletteController, :spin
       post "/give_bonus/:id", BonusController, :give_bonus
