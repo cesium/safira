@@ -13,7 +13,7 @@ defmodule Safira.Store do
   def get_redeemable!(id), do: Repo.get!(Redeemable, id)
 
   def exist_redeemable(redeemable_id) do
-    query = from r in Redeemable, 
+    query = from r in Redeemable,
             where: r.id == ^redeemable_id
     Repo.exists?(query)
   end
@@ -41,6 +41,20 @@ defmodule Safira.Store do
     %Redeemable{}
     |> Redeemable.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def create_redeemables(list_redeemables) do
+    list_redeemables
+    |> Enum.with_index()
+    |> Enum.reduce(Multi.new,fn {x,index}, acc ->
+      Multi.insert(acc, index, Redeemable.changeset(%Redeemable{},x))
+    end)
+  end
+
+  def update_redeemable(%Redeemable{} = redeemable, attrs) do
+    redeemable
+    |> Redeemable.changeset(attrs)
+    |> Repo.update()
   end
 
   def get_keys_buy(attendee_id, redeemable_id) do

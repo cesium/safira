@@ -24,9 +24,11 @@ defmodule Mix.Tasks.Gen.Prizes do
     Mix.Task.run("app.start")
 
     path
-    |> parse_csv
-    |> validate_probabilities
-    |> Enum.map(fn prize -> Safira.Roulette.create_prize(prize) end)
+    |> parse_csv()
+    |> validate_probabilities()
+    |> sequence()
+    |> (fn {create,update} -> {Safira.Roulette.create_prizes(create), update} end).()
+    |> insert_prize()
   end
 
   defp parse_csv(path) do
@@ -34,14 +36,18 @@ defmodule Mix.Tasks.Gen.Prizes do
     |> File.stream!()
     |> CSV.parse_stream()
     |> Enum.map(fn [name, max_amount_per_attendee, stock, probability, image_path] ->
-      %{
-        name: name,
-        max_amount_per_attendee: String.to_integer(max_amount_per_attendee),
-        stock: String.to_integer(stock),
-        probability: String.to_float(probability),
-        avatar: %Plug.Upload{
-          filename: check_image_filename(image_path),
-          path: check_image_path(image_path)
+      {
+        %{
+          name: name,
+          max_amount_per_attendee: String.to_integer(max_amount_per_attendee),
+          stock: String.to_integer(stock),
+          probability: String.to_float(probability),
+        },
+        %{
+          avatar: %Plug.Upload{
+            filename: check_image_filename(image_path),
+            path: check_image_path(image_path)
+          }
         }
       }
     end)
@@ -49,7 +55,7 @@ defmodule Mix.Tasks.Gen.Prizes do
 
   defp check_image_filename(image_path) do
     if String.trim(image_path) == "" do
-      "avatar-missing.png"
+      "prize-missing.png"
     else
       String.split(image_path, "/") |> List.last()
     end
@@ -57,7 +63,7 @@ defmodule Mix.Tasks.Gen.Prizes do
 
   defp check_image_path(image_path) do
     if String.trim(image_path) == "" do
-      "#{File.cwd!()}/assets/static/images/avatar-missing.png"
+      "#{File.cwd!()}/assets/static/images/prize-missing.png"
     else
       image_path
     end
@@ -65,13 +71,32 @@ defmodule Mix.Tasks.Gen.Prizes do
 
   defp validate_probabilities(list) do
     list
-    |> Enum.map_reduce(0, fn prize, acc -> {prize, prize.probability + acc} end)
+    |> Enum.map_reduce(0, fn {prize,_}, acc -> {prize, prize.probability + acc} end)
     |> case do
       {_, 1.0} ->
         list
 
       _ ->
         raise "The sum of all prizes probabilities is not 1."
+    end
+  end
+
+  defp sequence(list) do
+    create = Enum.map(list, fn value -> elem(value, 0) end)
+    update = Enum.map(list, fn value -> elem(value, 1) end)
+    {create, update}
+  end
+
+  defp insert_prize(transactions) do
+    case Safira.Repo.transaction(elem(transactions, 0)) do
+      {:ok, result} ->
+        Enum.zip(result, elem(transactions, 1))
+        |> Enum.map(fn {a, b} ->
+          Safira.Roulette.update_prize(elem(a, 1), b)
+        end)
+
+      {:error, error} ->
+        IO.puts(error)
     end
   end
 end
