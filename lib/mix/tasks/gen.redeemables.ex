@@ -24,8 +24,9 @@ defmodule Mix.Tasks.Gen.Redeemables do
       Mix.Task.run("app.start")
       path
       |> parse_csv
-      |> Enum.map(fn redeemable ->
-        Safira.Store.create_redeemable(redeemable) end)
+      |> sequence()
+      |> (fn {create,update} -> {Safira.Store.create_redeemables(create), update} end).()
+      |> insert_redeemable()
     end
 
     defp parse_csv(path) do
@@ -33,15 +34,19 @@ defmodule Mix.Tasks.Gen.Redeemables do
       |> File.stream!()
       |> CSV.parse_stream
       |> Enum.map(fn [name, price, stock, max_per_user, description, path_to_image] ->
-        %{
-          name: name,
-          price: String.to_integer(price),
-          stock: String.to_integer(stock),
-          max_per_user: String.to_integer(max_per_user),
-          description: description,
-          img: %Plug.Upload{
-            filename: check_image_filename(path_to_image),
-            path: check_image_path(path_to_image)
+        {
+          %{
+            name: name,
+            price: String.to_integer(price),
+            stock: String.to_integer(stock),
+            max_per_user: String.to_integer(max_per_user),
+            description: description
+          },
+          %{
+            img: %Plug.Upload{
+              filename: check_image_filename(path_to_image),
+              path: check_image_path(path_to_image)
+            }
           }
         }
       end)
@@ -60,6 +65,25 @@ defmodule Mix.Tasks.Gen.Redeemables do
         "#{File.cwd!()}/assets/static/images/redeemable-missing.png"
       else
         image_path
+      end
+    end
+
+    defp sequence(list) do
+      create = Enum.map(list, fn value -> elem(value, 0) end)
+      update = Enum.map(list, fn value -> elem(value, 1) end)
+      {create, update}
+    end
+
+    defp insert_redeemable(transactions) do
+      case Safira.Repo.transaction(elem(transactions, 0)) do
+        {:ok, result} ->
+          Enum.zip(result, elem(transactions, 1))
+          |> Enum.map(fn {a, b} ->
+            Safira.Store.update_redeemable(elem(a, 1), b)
+          end)
+
+        {:error, error} ->
+          IO.puts(error)
       end
     end
 end
