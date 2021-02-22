@@ -4,7 +4,7 @@ defmodule Mix.Tasks.Export.Attendees.Entries do
   def run(_) do
     Mix.Task.run("app.start")
 
-    IO.puts("uuid,name,email,entries")
+    Mix.shell().info("uuid,name,email,entries")
 
     Safira.Accounts.list_active_attendees()
     |> Enum.each(fn a -> csv_io(a) |> Mix.shell().info end)
