@@ -8,22 +8,22 @@ defmodule Mix.Tasks.Gen.Badges do
 
   def run(args) do
     cond do
-      length(args) == 0 ->
-        Mix.shell().info("Needs to receive atleast one file path.")
+      Enum.empty?(args) ->
+        Mix.shell().info("Needs to receive a file URL.")
 
       true ->
-        args |> create
+        args |> List.first() |> create
     end
   end
 
-  defp create(paths) do
+  defp create(path) do
     Mix.Task.run("app.start")
 
-    paths
-    |> Enum.map(&parse_csv/1)
-    |> Enum.map(&sequence/1)
-    |> Enum.map(&{Safira.Contest.create_badges(elem(&1, 0)), elem(&1, 1)})
-    |> Enum.map(&insert_badge/1)
+    path
+    |> parse_csv()
+    |> sequence()
+    |> (fn {create,update} -> {Safira.Contest.create_badges(create), update} end).()
+    |> insert_badge()
   end
 
   defp sequence(list) do
@@ -35,7 +35,10 @@ defmodule Mix.Tasks.Gen.Badges do
   defp insert_badge(transactions) do
     case Safira.Repo.transaction(elem(transactions, 0)) do
       {:ok, result} ->
-        Enum.zip(result, elem(transactions, 1))
+        result
+        |> Map.to_list()
+        |> Enum.sort_by(&{elem(&1,0)})
+        |> Enum.zip(elem(transactions, 1))
         |> Enum.map(fn {a, b} ->
           Safira.Contest.update_badge(elem(a, 1), b)
         end)
@@ -45,11 +48,12 @@ defmodule Mix.Tasks.Gen.Badges do
     end
   end
 
+
   defp parse_csv(path) do
     path
     |> File.stream!()
     |> CSV.parse_stream()
-    |> Stream.map(fn [name, description, begin_time, end_time, image_path, type, tokens] ->
+    |> Enum.map(fn [name, description, begin_time, end_time, image_path, type, tokens] ->
       {:ok, begin_datetime, _} = DateTime.from_iso8601("#{begin_time}T00:00:00Z")
       {:ok, end_datetime, _} = DateTime.from_iso8601("#{end_time}T00:00:00Z")
 
