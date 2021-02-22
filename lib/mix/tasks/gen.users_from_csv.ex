@@ -13,28 +13,55 @@ defmodule Mix.Tasks.Gen.UsersFromCsv do
   @moduledoc """
   This task is waiting for a CSV where the 3rd collumn is name,
    4th collumn is last name and 5th collumn is email
+  and a flag ("Local"/"Remote") indicating if the file is local or remote
+
+  ex:
+  mix gen.users_from_csv "assets/participantes_sei_exemplo.csv" "Local"
+  mix gen.users_from_csv "https://sample.url.participantes_sei_exemplo.csv" "Remote"
   """
 
   def run(args) do
     cond do
-      Enum.empty?(args) ->
-        Mix.shell().info("Needs to receive a file URL.")
+      length(args) != 2 ->
+        Mix.shell().info("Needs to receive a file URL and a flag.")
 
       true ->
-        args |> List.first() |> create
+        args |> create
     end
   end
 
-  defp create(path) do
+  defp create(args) do
     Mix.Task.run("app.start")
 
-    try do
-      path
-      |> parse_csv
-      |> create_users
-    rescue
-      e in File.Error -> IO.inspect(e)
+    file_url = Enum.at(args, 0)
+    location_flag = Enum.at(args, 1)
+
+    case location_flag do
+      "Local" ->
+        try do
+          file_url
+          |> parse_csv
+          |> create_users
+        rescue
+          e in File.Error -> IO.inspect e
+        end
+
+       "Remote" ->
+
+        :inets.start()
+        :ssl.start()
+
+        case :httpc.request(:get, {to_charlist(file_url), []}, [], stream: '/tmp/user.csv') do
+          {:ok, _resp} ->
+            "/tmp/user.csv"
+            |> parse_csv
+            |> create_users
+
+          {:error, resp} -> IO.inspect resp
+        end
     end
+
+
   end
 
   defp parse_csv(path) do
