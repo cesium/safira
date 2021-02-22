@@ -14,6 +14,10 @@ defmodule Mix.Tasks.Gen.UsersFromCsv do
   This task is waiting for a CSV where the 3rd collumn is name,
    4th collumn is last name and 5th collumn is email
   and a flag ("Local"/"Remote") indicating if the file is local or remote
+
+  ex:
+  mix gen.users_from_csv "assets/participantes_sei_exemplo.csv" "Local"
+  mix gen.users_from_csv "https://sample.url.participantes_sei_exemplo.csv" "Remote"
   """
 
   def run(args) do

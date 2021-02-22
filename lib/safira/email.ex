@@ -788,7 +788,7 @@ defmodule Safira.Email do
                       <div style="Margin-left: 20px;Margin-right: 20px;">
                         <div style="mso-line-height-rule: exactly;mso-text-raise: 11px;vertical-align: middle;">
                           <h2 style="Margin-top: 0;Margin-bottom: 0;font-style: normal;font-weight: normal;color: #021a2c;font-size: 26px;line-height: 34px;"><strong>CHECK-IN</strong></h2>
-                          <p style="Margin-top: 16px;Margin-bottom: 20px;">Boa tarde caro(a) participante,<br>
+                          <p style="Margin-top: 16px;Margin-bottom: 20px;">Olá, caro(a) participante,<br>
                             <br>
                             Está tudo pronto para o início da SEI'21! Para finalizar a criação da tua conta, basta clicares no botão abaixo para definir uma password para a tua conta.
                         </div>
