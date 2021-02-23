@@ -267,7 +267,7 @@ defmodule Safira.Roulette do
   end
 
   defp spin_prize() do
-    random_prize = strong_randomizer() |> Float.round(6)
+    random_prize = strong_randomizer() |> Float.round(12)
 
     prizes =
       Repo.all(Prize)
@@ -276,7 +276,7 @@ defmodule Safira.Roulette do
     cumulatives =
       prizes
       |> Enum.map_reduce(0, fn prize, acc ->
-        {Float.round(acc + prize.probability, 6), acc + prize.probability}
+        {Float.round(acc + prize.probability, 12), acc + prize.probability}
       end)
       |> elem(0)
 
