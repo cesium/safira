@@ -5,11 +5,12 @@ defmodule Mix.Tasks.Gift.Badge do
   alias Safira.Contest.Badge
   alias Safira.Accounts
 
+  # Note: the flag must always be present even though it is only used when a file is given
   def run(args) do
     cond do
-      length(args) != 2 ->
-        Mix.shell.info "Needs to receive one file path or an attendee_id and a badge_id."
-      args |> List.last |> String.to_integer < 0 ->
+      length(args) != 3 ->
+        Mix.shell.info "Needs to receive one file path or an attendee_id and a badge_id and a flag Local/Remote"
+      args |> Enum.at(1) |> String.to_integer < 0 ->
         Mix.shell.info "Number of badge_id needs to be above 0."
       true ->
         args |> create
@@ -21,11 +22,10 @@ defmodule Mix.Tasks.Gift.Badge do
 
     cond do
       is_valid_uuid(Enum.at(args, 0)) ->
-        give_by_uuid(args)
+        give_by_uuid(Enum.slice(args,0,2))
       is_valid_email(Enum.at(args, 0)) ->
-        give_by_email(args)
-      File.regular?(Enum.at(args, 0)) ->
-        give_by_file(args)
+        give_by_email(Enum.slice(args,0,2))
+      true -> give_by_file(args)
     end
   end
 
@@ -57,11 +57,31 @@ defmodule Mix.Tasks.Gift.Badge do
   end
 
   defp give_by_file(args) do
-    badge_id = List.last(args) |> String.to_integer
+    badge_id = Enum.at(args,1) |> String.to_integer
+    location_flag = Enum.at(args,2)
+
     if exists_badge(badge_id) do
-      Enum.at(args, 0)
-      |> File.stream!
-      |> Enum.map(fn x -> give_check(x |> String.trim, badge_id) end)
+      file_url = Enum.at(args, 0)
+      case location_flag do
+        "Local" ->
+          file_url
+          |> File.stream!
+          |> Enum.map(fn x -> give_check(x |> String.trim, badge_id) end)
+
+        "Remote" ->
+          :inets.start()
+          :ssl.start()
+
+          case :httpc.request(:get, {to_charlist(file_url), []}, [], stream: '/tmp/user2.csv') do
+            {:ok, _resp} ->
+              "/tmp/user2.csv"
+              |> File.stream!
+              |> Enum.map(fn x -> give_check(x |> String.trim, badge_id) end)
+
+            {:error, resp} -> IO.inspect resp
+          end
+          File.rm("/tmp/user2.csv")
+      end
     else
       Mix.shell.info "Badge_id needs to be valid."
     end
