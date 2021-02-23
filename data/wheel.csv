@@ -1,18 +1,23 @@
 name,max_amount_per_attendee,stock,probability,path_to_image
-Cartão Amazon 10€,1,10,"0,02",data/prizes/amazon_gift_card.png
-Cartão Amazon 20€,1,5,"0,02",data/prizes/amazon_gift_card.png
-Cartão Amazon 50€,1,2,"0,01",data/prizes/amazon_gift_card.png
-Cartão Dá 20€,1,5,"0,02",data/prizes/cartaoda.png
-Cartão Dá 50€,1,2,"0,02",data/prizes/cartaoda.png
-Cartão Surprise 20€,1,5,"0,02",data/prizes/cartao_surprise.png
-Cartão Surprise 50€,1,2,"0,01",data/prizes/cartao_surprise.png
-JBL Flip 5,1,3,"0,01",data/prizes/jbl_flip_5.png
-Xbox Series X,1,1,"0,005",data/prizes/xbox_series_x.png
-Raspberry Pi 4 2gb + carregador,1,3,"0,02",data/prizes/raspberry_pi_4.png
-Google Nest Mini,1,3,"0,02",data/prizes/google_nest_mini.png
-ATH-M50X Profissional Audio-technica,1,1,"0,005",data/prizes/audiotechnica.png
-Xbox Game Pass Ultimate - 3 meses,1,1,"0,02",data/prizes/xbox_gamepass_ultimate_3m.png
-Badge roleta,10,2147483000,"0,1",data/badges/atividades/luckybastard(FINAL).png
-Token,2147483000,2147483000,"0,05",data/prizes/token.png
-Entradas para o sorteio final,2147483000,2147483000,"0,05",data/prizes/contest_entry.png
-Nada,2147483000,2147483000,"0,6",data/prizes/nothing.png
+Xbox Series X,1,1,0.0002,data/prizes/xbox_series_x.png
+ATH-M50X Profissional Audio-technica,1,1,0.0003,data/prizes/audiotechnica.png
+JBL Flip 5,1,3,0.001,data/prizes/jbl_flip_5.png
+Raspberry Pi 4 2GB + carregador,1,3,0.001,data/prizes/raspberry_pi_4.png
+Google Nest Mini,1,3,0.005,data/prizes/google_nest_mini.png
+Xbox Game Pass Ultimate - 3 meses,1,1,0.005,data/prizes/xbox_gamepass_ultimate_3m.png
+Cartão Presente 50€,1,6,0.002,data/prizes/voucher50.png
+Cartão Presente 20€,1,15,0.0075,data/prizes/voucher20.png
+Cartão Presente 10€,1,10,0.008,data/prizes/voucher10.png
+Lucky Bastard 1,1,2147483000,0.01,data/badges/atividades/luckybastard(FINAL).png
+Lucky Bastard 2,1,2147483000,0.01,data/badges/atividades/luckybastard(FINAL).png
+Lucky Bastard 3,1,2147483000,0.01,data/badges/atividades/luckybastard(FINAL).png
+Lucky Bastard 4,1,2147483000,0.01,data/badges/atividades/luckybastard(FINAL).png
+Lucky Bastard 5,1,2147483000,0.01,data/badges/atividades/luckybastard(FINAL).png
+Lucky Bastard 6,1,2147483000,0.01,data/badges/atividades/luckybastard(FINAL).png
+Lucky Bastard 7,1,2147483000,0.01,data/badges/atividades/luckybastard(FINAL).png
+Lucky Bastard 8,1,2147483000,0.01,data/badges/atividades/luckybastard(FINAL).png
+Lucky Bastard 9,1,2147483000,0.01,data/badges/atividades/luckybastard(FINAL).png
+Lucky Bastard 10,1,2147483000,0.01,data/badges/atividades/luckybastard(FINAL).png
+Tokens,2147483000,2147483000,0.07,data/prizes/token.png
+Entradas para o sorteio final,2147483000,2147483000,0.2,data/prizes/contest_entry.png
+Nada,2147483000,2147483000,0.6,data/prizes/nothing.png
