@@ -10,7 +10,10 @@ defmodule Mix.Tasks.Gift.Daily.Badge do
 
   alias Safira.Repo
 
+  # Expects a date in yyyy-mm-dd format
   def run(args) do
+    Mix.Task.run("app.start")
+
     cond do
       length(args) != 2 ->
         Mix.shell().info("Needs to receive badge_id and the date of the day.")
@@ -22,7 +25,7 @@ defmodule Mix.Tasks.Gift.Daily.Badge do
 
   def create(args) do
 
-    {badge_id, date} = {args |> Enum.at(0), args |> Enum.at(1)}
+    {badge_id, date} = {args |> Enum.at(0), args |> Enum.at(1) |>  Date.from_iso8601!()}
 
     Repo.all(
       from a in Attendee,
