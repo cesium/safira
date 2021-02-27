@@ -23,8 +23,9 @@ defmodule Mix.Tasks.Export.Buys do
           IO.binwrite(
             file,
             create_line(
-              header(a),
-              print_redeemables(Safira.Store.get_attendee_redeemables(a))
+              a,
+              print_prizes(Safira.Store.get_attendee_redeemables(a)),
+              print_prizes(Safira.Roulette.get_attendee_prizes(a))
             )
           )
 
@@ -40,21 +41,22 @@ defmodule Mix.Tasks.Export.Buys do
       fn a ->
         Mix.shell().info(
           create_line(
-            header(a),
-            print_redeemables(Safira.Store.get_attendee_redeemables(a))
+            a,
+            Safira.Store.get_attendee_redeemables(a),
+            Safira.Roulette.get_attendee_prizes(a)
           )
         )
       end
     )
   end
 
-  defp print_redeemables(redeemables) do
-    redeemables
-    |> Enum.map(fn r -> " (#{r.name}, #{r.quantity})" end)
+  defp print_prizes(prizes) do
+    prizes
+    |> Enum.map(fn p -> "\t#{p.name} -> #{p.quantity}\n" end)
   end
 
-  defp create_line(header, redeemables) do
-    "#{header} ->#{redeemables}\n"
+  defp create_line(a, redeemables, roulette_prizes) do
+    "#{header(a)}:\n#{print_prizes(redeemables)}#{print_prizes(roulette_prizes)}"
   end
 
   defp header(attendee) do

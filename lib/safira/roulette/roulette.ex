@@ -142,6 +142,16 @@ defmodule Safira.Roulette do
   """
   def get_attendee_prize!(id), do: Repo.get!(AttendeePrize, id)
 
+  def get_attendee_prizes(attendee) do
+    attendee
+    |> Repo.preload(:prizes)
+    |> Map.fetch!(:prizes)
+    |> Enum.map(fn prize ->
+      ap = get_keys_attendee_prize(attendee.id, prize.id)
+      Map.put(prize, :quantity, ap.quantity)
+    end)
+  end
+
   @doc """
   Gets AttendeePrize given attendee_id and prize_id.
   """
