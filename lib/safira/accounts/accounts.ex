@@ -74,6 +74,7 @@ defmodule Safira.Accounts do
     Repo.all(from a in Attendee, where: not is_nil(a.user_id))
     |> Repo.preload(:badges)
     |> Repo.preload(:prizes)
+    |> Repo.preload(:redeemables)
     |> Enum.map(fn x -> Map.put(x, :badge_count, length(Enum.filter(x.badges,fn x -> x.type != 0 end))) end)
   end
 
