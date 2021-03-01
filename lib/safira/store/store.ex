@@ -32,7 +32,7 @@ defmodule Safira.Store do
     case get_keys_buy(attendee_id, redeemable.id) do
       nil ->
         Map.put(redeemable,:can_buy,Kernel.min(redeemable.max_per_user, redeemable.stock))
-      buy -> 
+      buy ->
         Map.put(redeemable,:can_buy, Kernel.min(redeemable.max_per_user - buy.quantity, redeemable.stock))
     end
   end
@@ -89,7 +89,7 @@ defmodule Safira.Store do
     |> Map.fetch!(:redeemables)
     |> Enum.map(fn redeemable ->
       b = get_keys_buy(attendee.id, redeemable.id)
-      Map.put(redeemable, :quantity, b.quantity)
+      Map.put(%{name: redeemable.name}, :quantity, b.quantity)
     end)
   end
 

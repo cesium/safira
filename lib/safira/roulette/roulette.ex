@@ -61,8 +61,8 @@ defmodule Safira.Roulette do
   def create_prizes(list_prizes) do
     list_prizes
     |> Enum.with_index()
-    |> Enum.reduce(Multi.new,fn {x,index}, acc ->
-      Multi.insert(acc, index, Prize.changeset(%Prize{},x))
+    |> Enum.reduce(Multi.new(), fn {x, index}, acc ->
+      Multi.insert(acc, index, Prize.changeset(%Prize{}, x))
     end)
   end
 
@@ -147,8 +147,8 @@ defmodule Safira.Roulette do
     |> Repo.preload(:prizes)
     |> Map.fetch!(:prizes)
     |> Enum.map(fn prize ->
-      ap = get_keys_attendee_prize(attendee.id, prize.id)
-      Map.put(prize, :quantity, ap.quantity)
+      attendee_prize = get_keys_attendee_prize(attendee.id, prize.id)
+      Map.put(%{name: prize.name}, :quantity, attendee_prize.quantity)
     end)
   end
 
@@ -226,7 +226,7 @@ defmodule Safira.Roulette do
 
   def spin(attendee) do
     spin_transaction(attendee)
-    |> case  do
+    |> case do
       {:error, :spin_again} ->
         spin(attendee)
 
@@ -324,7 +324,8 @@ defmodule Safira.Roulette do
     tokens = Enum.random(min..max)
 
     Multi.new()
-    |> Multi.update(:attendee_token_balance,
+    |> Multi.update(
+      :attendee_token_balance,
       Attendee.update_token_balance_changeset(
         attendee,
         %{
@@ -336,7 +337,8 @@ defmodule Safira.Roulette do
 
   defp give_entry(attendee) do
     Multi.new()
-    |> Multi.update(:attendee_entries,
+    |> Multi.update(
+      :attendee_entries,
       Attendee.update_entries_changeset(
         attendee,
         %{
@@ -347,7 +349,6 @@ defmodule Safira.Roulette do
   end
 
   defp give_badge(prize, attendee) do
-
     Multi.new()
     |> Multi.run(:badge, fn _repo, _changes ->
       {:ok, Safira.Contest.get_badge_name!(prize.name)}
@@ -363,7 +364,6 @@ defmodule Safira.Roulette do
       )
     end)
     |> Multi.update(:attendee_balance_entries, fn %{redeem: redeem} ->
-
       redeem = Repo.preload(redeem, [:badge, :attendee])
 
       Safira.Accounts.Attendee.update_on_redeem_changeset(
@@ -373,7 +373,6 @@ defmodule Safira.Roulette do
           entries: redeem.attendee.entries + 1
         }
       )
-
     end)
   end
 
@@ -435,7 +434,7 @@ defmodule Safira.Roulette do
               |> Map.get(:token_balance)
 
             cond do
-              not is_nil token_balance_error ->
+              not is_nil(token_balance_error) ->
                 # That's the way to retrieve the changeset as a value
                 Repo.rollback(changeset)
 
@@ -465,12 +464,14 @@ defmodule Safira.Roulette do
   def latest_five_wins() do
     query =
       from ap in AttendeePrize,
-      join: a in Safira.Accounts.Attendee, on: ap.attendee_id == a.id,
-      join: p in Prize, on: ap.prize_id == p.id,
-      where: p.name != "Nada",
-      order_by: [desc: ap.updated_at],
-      limit: 5,
-      preload: [prize: p, attendee: a]
+        join: a in Safira.Accounts.Attendee,
+        on: ap.attendee_id == a.id,
+        join: p in Prize,
+        on: ap.prize_id == p.id,
+        where: p.name != "Nada",
+        order_by: [desc: ap.updated_at],
+        limit: 5,
+        preload: [prize: p, attendee: a]
 
     Repo.all(query)
     |> Enum.map(fn ap -> {ap.attendee.name, ap.prize, ap.updated_at} end)
