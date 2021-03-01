@@ -50,7 +50,7 @@ defmodule Mix.Tasks.Export.Buys do
   end
 
   defp export_csv() do
-    with {:ok, file} = File.open("teste.csv", [:append]) do
+    with {:ok, file} = File.open("prizes - #{ DateTime.utc_now()}.csv", [:append]) do
       Safira.Accounts.list_active_attendees()
       |> Enum.each(fn attendee ->
         header =
