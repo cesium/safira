@@ -1,0 +1,13 @@
+{
+    "addons": [
+        "heroku-postgressql"
+    ],
+    "buildpacks": [
+        {
+            "url": "https://buildpack-registry.s3.amazonaws.com/buildpacks/hashnuke/elixir.tgz"
+        },
+        {
+            "url": "https://buildpack-registry.s3.amazonaws.com/buildpacks/gjaldon/phoenix-static.tgz"
+        }
+    ]
+}
