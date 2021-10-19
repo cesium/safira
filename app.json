@@ -1,6 +1,6 @@
 {
     "addons": [
-        "heroku-postgressql"
+        "heroku-postgresql"
     ],
     "buildpacks": [
         {
