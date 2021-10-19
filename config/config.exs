@@ -9,9 +9,9 @@ use Mix.Config
 
 config :safira,
   ecto_repos: [Safira.Repo],
-  company_code: System.get_env("COMPANY_CODE"),
-  speaker_code: System.get_env("SPEAKER_CODE"),
-  staff_code: System.get_env("STAFF_CODE"),
+  company_code: System.get_env("DISCORD_COMPANY_CODE"),
+  speaker_code: System.get_env("DISCORD_SPEAKER_CODE"),
+  staff_code: System.get_env("DISCORD_STAFF_CODE"),
   from_email: System.get_env("FROM_EMAIL") || "test@seium.com",
   roulette_cost: String.to_integer(System.get_env("ROULETTE_COST") || "10"),
   roulette_tokens_min: String.to_integer(System.get_env("ROULETTE_TOKENS_MIN") || "5"),
