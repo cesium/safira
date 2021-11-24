@@ -9,64 +9,78 @@ defmodule Mix.Tasks.Gift.Badge do
   def run(args) do
     cond do
       length(args) != 3 ->
-        Mix.shell.info "Needs to receive one file path or an attendee_id and a badge_id and a flag Local/Remote"
-      args |> Enum.at(1) |> String.to_integer < 0 ->
-        Mix.shell.info "Number of badge_id needs to be above 0."
+        Mix.shell().info(
+          "Needs to receive one file path or an attendee_id and a badge_id and a flag Local/Remote"
+        )
+
+      args |> Enum.at(1) |> String.to_integer() < 0 ->
+        Mix.shell().info("Number of badge_id needs to be above 0.")
+
       true ->
         args |> create
     end
   end
 
   defp create(args) do
-    Mix.Task.run "app.start"
+    Mix.Task.run("app.start")
 
-    cond do
-      is_valid_uuid(Enum.at(args, 0)) ->
-        give_by_uuid(Enum.slice(args,0,2))
-      is_valid_email(Enum.at(args, 0)) ->
-        give_by_email(Enum.slice(args,0,2))
-      true -> give_by_file(args)
-    end
+    badge_id = Enum.at(args,1) |> String.to_integer()
+    badge = Safira.Contest.get_badge!(id)
+    curr = Datetime.utc_now()
+
+    if (compare(curr,badge.start) != :lt and compare(curr,badge.end) != :gt)
+      cond do
+        is_valid_uuid(Enum.at(args, 0)) ->
+          give_by_uuid(Enum.slice(args, 0, 2))
+
+        is_valid_email(Enum.at(args, 0)) ->
+          give_by_email(Enum.slice(args, 0, 2))
+
+        true ->
+          give_by_file(args)
+      end
   end
 
   defp is_valid_email(email) do
-    case valid_email(email |> String.trim) do
+    case valid_email(email |> String.trim()) do
       false -> false
-      true -> is_register_email(email |> String.trim)
+      true -> is_register_email(email |> String.trim())
     end
   end
 
   defp is_register_email(email) do
     user = Accounts.get_user_preload_email!(email)
-    not is_nil user.attendee
+    not is_nil(user.attendee)
   end
 
   defp valid_email(email) do
     email
-    |> String.trim
+    |> String.trim()
     |> String.match?(~r/\A[^@\s]+@[^@\s]+\z/)
   end
 
   defp give_by_email(args) do
-    badge_id = List.last(args) |> String.to_integer
+    badge_id = List.last(args) |> String.to_integer()
+
     if exists_badge(badge_id) do
       give_email(Enum.at(args, 0), badge_id)
     else
-      Mix.shell.info "Badge_id needs to be valid."
+      Mix.shell().info("Badge_id needs to be valid.")
     end
   end
 
   defp give_by_file(args) do
-    badge_id = Enum.at(args,1) |> String.to_integer
-    location_flag = Enum.at(args,2)
+    badge_id = Enum.at(args, 1) |> String.to_integer()
+    location_flag = Enum.at(args, 2)
 
     if exists_badge(badge_id) do
       file_url = Enum.at(args, 0)
+
       case location_flag do
         "Local" ->
           file_url
-          |> File.stream!
-          |> Enum.map(fn x -> give_check(x |> String.trim, badge_id) end)
+          |> File.stream!()
+          |> Enum.map(fn x -> give_check(x |> String.trim(), badge_id) end)
 
         "Remote" ->
           :inets.start()
@@ -75,15 +89,17 @@ defmodule Mix.Tasks.Gift.Badge do
           case :httpc.request(:get, {to_charlist(file_url), []}, [], stream: '/tmp/user2.csv') do
             {:ok, _resp} ->
               "/tmp/user2.csv"
-              |> File.stream!
-              |> Enum.map(fn x -> give_check(x |> String.trim, badge_id) end)
+              |> File.stream!()
+              |> Enum.map(fn x -> give_check(x |> String.trim(), badge_id) end)
 
-            {:error, resp} -> IO.inspect resp
+            {:error, resp} ->
+              IO.inspect(resp)
           end
+
           File.rm("/tmp/user2.csv")
       end
     else
-      Mix.shell.info "Badge_id needs to be valid."
+      Mix.shell().info("Badge_id needs to be valid.")
     end
   end
 
@@ -101,19 +117,28 @@ defmodule Mix.Tasks.Gift.Badge do
     end
   end
 
-
   defp is_register(id) do
     attendee = Accounts.get_attendee!(id)
-    not is_nil attendee.user_id
+    not is_nil(attendee.user_id)
   end
 
   defp give_by_uuid(args) do
-    badge_id = List.last(args) |> String.to_integer
+    badge_id = List.last(args) |> String.to_integer()
+
     if exists_badge(badge_id) do
       give(Enum.at(args, 0), badge_id)
     else
-      Mix.shell.info "Badge_id needs to be valid."
+      Mix.shell().info("Badge_id needs to be valid.")
     end
+  end
+
+  defp is_within_time(id) do
+     badge = Safira.Repo.get(Badge,id)
+     current_time = DateTime.utc_now()
+     badge |> Badge.
+     # get datetime desse badge
+
+
   end
 
   defp exists_badge(id) do
@@ -124,22 +149,18 @@ defmodule Mix.Tasks.Gift.Badge do
   end
 
   defp give(attendee_id, badge_id) do
-    Contest.create_redeem(
-      %{attendee_id: attendee_id,
-        manager_id: 1,
-        badge_id: badge_id
-      }
-    )
+    Contest.create_redeem(%{attendee_id: attendee_id, manager_id: 1, badge_id: badge_id})
   end
 
   defp give_email(email, badge_id) do
     user = Accounts.get_user_preload_email(email)
-    if not is_nil user do
+
+    if not is_nil(user) do
       with {:error, _changeset} <- give(user.attendee.id, badge_id) do
-        Mix.shell.info "Duplicate badge for #{email}"
+        Mix.shell().info("Duplicate badge for #{email}")
       end
     else
-      Mix.shell.info "Invalid email: #{email}"
+      Mix.shell().info("Invalid email: #{email}")
     end
   end
 
@@ -147,9 +168,9 @@ defmodule Mix.Tasks.Gift.Badge do
     cond do
       is_valid_uuid?(input) ->
         give(input, badge_id)
+
       valid_email(input) ->
         give_email(input, badge_id)
     end
   end
-
 end
