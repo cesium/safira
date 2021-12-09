@@ -10,6 +10,7 @@ defmodule Safira.Roulette do
   alias Safira.Roulette.Prize
   alias Safira.Roulette.AttendeePrize
   alias Safira.Accounts.Attendee
+  alias Safira.Contest.DailyToken
 
   @doc """
   Returns the list of prizes.
@@ -262,6 +263,10 @@ defmodule Safira.Roulette do
     # update probabilities if the stock of current prize is 0
     |> Multi.merge(fn %{prize_stock: prize_stock, prize: prize} ->
       update_probabilities(prize_stock, prize)
+    end)
+    |> Multi.insert_or_update(:daily_token, fn %{attendee: attendee} ->
+      {:ok, date, _} = DateTime.from_iso8601("#{Date.utc_today()}T00:00:00Z")
+      DailyToken.changeset(%DailyToken{}, %{quantity: attendee.token_balance, attendee_id: attendee.id, day: date})
     end)
     |> serializable_transaction()
   end
