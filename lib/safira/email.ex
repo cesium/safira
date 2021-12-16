@@ -15,7 +15,7 @@ defmodule Safira.Email do
     Mix.shell().info to_email
     new_email()
     |> to(to_email)
-    |> from(Application.fetch_env!(:safira, :from_email))
+    |> from(%{Application.fetch_env!(:safira, :from_email_name), Application.fetch_env!(:safira, :from_email)})
     |> subject("[SEI'21] Finalizar Registo e Informações")
     |> html_body(build_email_text(token, discord_association_code))
     |> Safira.Mailer.deliver_now()
