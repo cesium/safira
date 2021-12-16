@@ -5,6 +5,7 @@ defmodule Safira.Store do
   alias Safira.Store.Redeemable
   alias Safira.Store.Buy
   alias Safira.Accounts.Attendee
+  alias Safira.Contest.DailyToken
 
   def list_redeemables do
     Repo.all(Redeemable)
@@ -80,6 +81,10 @@ defmodule Safira.Store do
     end) # fetches the buy repo if it exists or creates a new one if it doest exist
     |> Multi.insert_or_update(:upsert_buy, fn %{buy: buy} ->
       Buy.changeset(buy, %{quantity: buy.quantity + 1})
+    end)
+    |> Multi.insert_or_update(:daily_token, fn %{attendee: attendee} ->
+      {:ok, date, _} = DateTime.from_iso8601("#{Date.utc_today()}T00:00:00Z")
+      DailyToken.changeset(%DailyToken{}, %{quantity: attendee.token_balance, attendee_id: attendee.id, day: date})
     end) #increments the amount bought by 1
     |> serializable_transaction()
   end

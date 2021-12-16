@@ -13,7 +13,10 @@ defmodule SafiraWeb.LeaderboardController do
   def daily(conn, %{"date" => date_params}) do
     case Date.from_iso8601(date_params) do
       {:ok, result} ->
-        attendees = Contest.list_daily_leaderboard(result)
+        board = Contest.list_daily_leaderboard(result)
+        attendees = board 
+                    |> Enum.map(fn a -> %{badge_count: a.badge_count, attendee: Map.put(a.attendee, :token_balance, a.token_count)} end)
+                    |> Enum.map(fn a -> Map.put(a.attendee, :badge_count, a.badge_count) end)
         render(conn, SafiraWeb.LeaderboardView, "index.json", attendees: attendees)
 
       {:error, _error} ->

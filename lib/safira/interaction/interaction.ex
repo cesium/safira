@@ -11,6 +11,7 @@ defmodule Safira.Interaction do
   alias Safira.Accounts.Attendee
   alias Safira.Accounts.Company
   alias Safira.Interaction.Spotlight
+  alias Safira.Contest.DailyToken
   alias Ecto.Multi
 
   @doc """
@@ -133,6 +134,10 @@ defmodule Safira.Interaction do
         token_balance: attendee.token_balance + Application.fetch_env!(:safira, :token_bonus)
       })
     )
+    |> Multi.insert_or_update(:daily_token, fn %{update_attendee: attendee} ->
+      {:ok, date, _} = DateTime.from_iso8601("#{Date.utc_today()}T00:00:00Z")
+      DailyToken.changeset(%DailyToken{}, %{quantity: attendee.token_balance, attendee_id: attendee.id, day: date})
+    end)
     |> Repo.transaction()
     |> case do
       {:ok, result} ->
