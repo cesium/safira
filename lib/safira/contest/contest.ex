@@ -6,6 +6,7 @@ defmodule Safira.Contest do
   alias Safira.Contest.Badge
   alias Safira.Interaction
   alias Ecto.Multi
+  alias Safira.Contest.DailyToken
 
   def list_badges do
     Repo.all(Badge)
@@ -141,6 +142,10 @@ defmodule Safira.Contest do
       )
 
     end)
+    |> Multi.insert_or_update(:daily_token, fn %{attendee: attendee} ->
+      {:ok, date, _} = DateTime.from_iso8601("#{Date.utc_today()}T00:00:00Z")
+      DailyToken.changeset(%DailyToken{}, %{quantity: attendee.token_balance, attendee_id: attendee.id, day: date})
+    end)
     |> Repo.transaction()
     |> case do
       {:ok, result} ->
@@ -174,11 +179,13 @@ defmodule Safira.Contest do
       from a in Safira.Accounts.Attendee,
         join: r in Redeem, on: a.id == r.attendee_id,
         join: b in Badge, on: r.badge_id == b.id,
-        where: not(is_nil a.user_id) and fragment("?::date", r.inserted_at) == ^date and b.type != ^0,
-        preload: [badges: b]
+        join: t in DailyToken, on: a.id == t.attendee_id,
+        where: not(is_nil a.user_id) and fragment("?::date", r.inserted_at) == ^date and b.type != ^0 and fragment("?::date", t.day) == ^date,
+        select: %{attendee: a, token_count: t.quantity},
+        preload: [badges: b, daily_tokens: t]
     )
-    |> Enum.map(fn a -> Map.put(a, :badge_count, length(a.badges)) end)
-    |> Enum.sort_by(&{&1.badge_count, &1.token_balance}, &>=/2)
+    |> Enum.map(fn a -> Map.put(a, :badge_count, length(a.attendee.badges)) end)
+    |> Enum.sort_by(&{&1.badge_count, &1.token_count}, &>=/2)
   end
 
   def top_list_leaderboard(n) do

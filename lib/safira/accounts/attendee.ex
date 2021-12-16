@@ -7,6 +7,7 @@ defmodule Safira.Accounts.Attendee do
   alias Safira.Contest.Redeem
   alias Safira.Contest.Badge
   alias Safira.Contest.Referral
+  alias Safira.Contest.DailyToken
   alias Safira.Store.Redeemable
   alias Safira.Store.Buy
   alias Safira.Roulette.Prize
@@ -27,6 +28,7 @@ defmodule Safira.Accounts.Attendee do
     belongs_to :user, User
     many_to_many :badges, Badge, join_through: Redeem
     has_many :referrals, Referral
+    has_many :daily_tokens, DailyToken
     many_to_many :redeemables, Redeemable, join_through: Buy
     many_to_many :prizes, Prize, join_through: AttendeePrize
 
