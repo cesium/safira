@@ -32,7 +32,7 @@ defmodule Safira.Store do
     case get_keys_buy(attendee_id, redeemable.id) do
       nil ->
         Map.put(redeemable,:can_buy,Kernel.min(redeemable.max_per_user, redeemable.stock))
-      buy -> 
+      buy ->
         Map.put(redeemable,:can_buy, Kernel.min(redeemable.max_per_user - buy.quantity, redeemable.stock))
     end
   end
@@ -63,24 +63,38 @@ defmodule Safira.Store do
 
   def buy_redeemable(redeemable_id, attendee) do
     Multi.new()
+    # check if the redeemable in question exists
     |> Multi.run(:redeemable_info, fn _repo, _var -> {:ok, get_redeemable!(redeemable_id)} end)
     |> Multi.update(:redeemable, fn %{redeemable_info: redeemable} ->
-      Redeemable.changeset(redeemable, %{stock: redeemable.stock - 1})
+      Redeemable.changeset(redeemable, %{stock: redeemable.stock - 1}) #removes 1 from the redeemable's stock
     end)
     |> Multi.update(:attendee, fn %{redeemable: redeemable} ->
       Attendee.update_token_balance_changeset(attendee, %{
         token_balance: attendee.token_balance - redeemable.price
       })
-    end)
+    end) #Removes the redeemable's price from the atendee's total balance
     |> Multi.run(:buy, fn _repo, %{attendee: attendee, redeemable: redeemable} ->
       {:ok,
        get_keys_buy(attendee.id, redeemable_id) ||
          %Buy{attendee_id: attendee.id, redeemable_id: redeemable.id, quantity: 0}}
-    end)
+    end) # fetches the buy repo if it exists or creates a new one if it doest exist
     |> Multi.insert_or_update(:upsert_buy, fn %{buy: buy} ->
       Buy.changeset(buy, %{quantity: buy.quantity + 1})
-    end)
+    end) #increments the amount bought by 1
     |> serializable_transaction()
+  end
+
+  #redeems an item for an atendee, should only be used by managers
+  def redeem_redeemable(redeemable_id, atendee,  quantity) do
+    Multi.new()
+    |> Multi.run(:redeemable_info, fn _repo, _var -> {:ok, get_redeemable!(redeemable_id)} end) #fetches redeemable form id
+    |> Multi.run(:buy, fn _repo, %{attendee: attendee, redeemable: redeemable} ->
+      {:ok, get_keys_buy(attendee.id, redeemable_id)}
+    end)                                                                                        #fetches buy from atendee and redeemable id
+    |> Multi.insert_or_update(:upsert_buy, fn %{buy: buy} ->
+      Buy.changeset(buy, %{redeemed: buy.redeemed + quantity})
+    end)                                                                                        #increments the amount redeemed
+    |> serializable_transaction()                                                               #applies the changes
   end
 
   def get_attendee_redeemables(attendee) do
