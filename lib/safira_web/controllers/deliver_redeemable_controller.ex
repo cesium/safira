@@ -52,7 +52,7 @@ defmodule SafiraWeb.DeliverRedeemableController do
         {_,_,nil} ->
           conn
           |> put_status(:bad_request)
-          |> json(%Redeemable: "Json does not have `quantity` param")
+          |> json(%{Redeemable: "Json does not have `quantity` param"})
         {_,_,_} ->
           Store.redeem_redeemable(redeemable_id, user, quant)
       end
