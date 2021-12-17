@@ -39,7 +39,7 @@ defmodule SafiraWeb.DeliverRedeemableController do
     redeemable_id = Map.get(json, "redeemable")
     quant = Map.get(json, "quantity")
 
-    case {user,Store.exist_redeemable(redeemable_id)} do
+    case {user,Store.exist_redeemable(redeemable_id),quant} do
       {nil,_,_} ->
         conn
         |> put_status(:not_found)
