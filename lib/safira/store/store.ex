@@ -14,9 +14,14 @@ defmodule Safira.Store do
   def get_redeemable!(id), do: Repo.get!(Redeemable, id)
 
   def exist_redeemable(redeemable_id) do
-    query = from r in Redeemable,
+    case redeemable_id do
+      nil ->
+        false
+      _ ->
+        query = from r in Redeemable,
             where: r.id == ^redeemable_id
-    Repo.exists?(query)
+        Repo.exists?(query)
+    end
   end
 
   def list_store_redeemables(attendee) do
