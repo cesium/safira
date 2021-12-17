@@ -46,9 +46,11 @@ defmodule SafiraWeb.DeliverRedeemableController do
           |> put_status(:not_found)
           |> json(%{User: "User does not exist"})
         {_,false,_} ->
+          conn
           |> put_status(:not_found)
           |> json(%{Redeemable: "There is no such redeemable"})
         {_,_,nil} ->
+          conn
           |> put_status(:bad_request)
           |> json(%Redeemable: "Json does not have `quantity` param")
         {_,_,_} ->
