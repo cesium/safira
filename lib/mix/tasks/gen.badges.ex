@@ -22,7 +22,7 @@ defmodule Mix.Tasks.Gen.Badges do
     path
     |> parse_csv()
     |> sequence()
-    |> (fn {create,update} -> {Safira.Contest.create_badges(create), update} end).()
+    |> (fn {create, update} -> {Safira.Contest.create_badges(create), update} end).()
     |> insert_badge()
   end
 
@@ -37,7 +37,7 @@ defmodule Mix.Tasks.Gen.Badges do
       {:ok, result} ->
         result
         |> Map.to_list()
-        |> Enum.sort_by(&{elem(&1,0)})
+        |> Enum.sort_by(&{elem(&1, 0)})
         |> Enum.zip(elem(transactions, 1))
         |> Enum.map(fn {a, b} ->
           Safira.Contest.update_badge(elem(a, 1), b)
@@ -48,14 +48,13 @@ defmodule Mix.Tasks.Gen.Badges do
     end
   end
 
-
   defp parse_csv(path) do
     path
     |> File.stream!()
     |> CSV.parse_stream()
     |> Enum.map(fn [name, description, begin_time, end_time, image_path, type, tokens] ->
-      {:ok, begin_datetime, _} = DateTime.from_iso8601("#{begin_time}T00:00:00Z")
-      {:ok, end_datetime, _} = DateTime.from_iso8601("#{end_time}T00:00:00Z")
+      {:ok, begin_datetime, _} = DateTime.from_iso8601(begin_time)
+      {:ok, end_datetime, _} = DateTime.from_iso8601(end_time)
 
       {
         %{
