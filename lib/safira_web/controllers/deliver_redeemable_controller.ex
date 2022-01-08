@@ -11,7 +11,7 @@ defmodule SafiraWeb.DeliverRedeemableController do
       json
   {
         redeem:{
-          user_id: id
+          attendee_id: id
           redeemable: redeemable_id
           quantity: quantity
   }
@@ -19,9 +19,6 @@ defmodule SafiraWeb.DeliverRedeemableController do
 
   "
   def create(conn , %{"redeem" => redeem_params}) do
-    atendee =
-      Accounts.get_user(conn)
-
     cond do
       Accounts.is_manager(conn) -> #checks the user toker to see if its a manager
         validate_redeem(conn, redeem_params)
@@ -33,17 +30,17 @@ defmodule SafiraWeb.DeliverRedeemableController do
   end
 
   def validate_redeem(conn, json) do
-    user =
-      Map.get(json, "user_id")
-      |> Accounts.get_user!() #fetch user by id
+    attendee =
+      Map.get(json, "attendee_id")
+      |> Accounts.get_attendee() #fetch user by id
     redeemable_id = Map.get(json, "redeemable")
     quant = Map.get(json, "quantity")
 
-    case {user,Store.exist_redeemable(redeemable_id),quant} do
+    case {attendee,Store.exist_redeemable(redeemable_id),quant} do
       {nil,_,_} ->
         conn
         |> put_status(:not_found)
-        |> json(%{User: "User does not exist"})
+        |> json(%{User: "Attendee does not exist"})
       {_,false,_} ->
         conn
         |> put_status(:not_found)
@@ -53,7 +50,16 @@ defmodule SafiraWeb.DeliverRedeemableController do
         |> put_status(:bad_request)
         |> json(%{Redeemable: "Json does not have `quantity` param"})
       {_,_,_} ->
-        Store.redeem_redeemable(redeemable_id, user, quant)
+        case Store.redeem_redeemable(redeemable_id, attendee, quant) do
+          {:ok, changes} -> 
+            conn
+              |> put_status(:ok)
+              |> json(%{Redeemable: "#{Map.get(changes, :redeemable).name} redeemed successfully!"})
+          {:error, error} -> 
+            conn
+              |> put_status(:bad_request)
+              |> json(%{Error: "Wrong quantity"})
+        end
     end
   end
 end

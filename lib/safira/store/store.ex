@@ -95,16 +95,16 @@ defmodule Safira.Store do
   end
 
   #redeems an item for an atendee, should only be used by managers
-  def redeem_redeemable(redeemable_id, atendee,  quantity) do
+  def redeem_redeemable(redeemable_id, attendee, quantity) do
     Multi.new()
-    |> Multi.run(:redeemable_info, fn _repo, _var -> {:ok, get_redeemable!(redeemable_id)} end) #fetches redeemable form id
-    |> Multi.run(:buy, fn _repo, %{attendee: attendee, redeemable: redeemable} ->
+    |> Multi.run(:buy, fn _repo, _changes -> 
       {:ok, get_keys_buy(attendee.id, redeemable_id)}
-    end)                                                                                        #fetches buy from atendee and redeemable id
-    |> Multi.insert_or_update(:upsert_buy, fn %{buy: buy} ->
+    end)
+    |> Multi.run(:redeemable, fn _repo, _var -> {:ok, get_redeemable!(redeemable_id)} end)
+    |> Multi.update(:update_buy, fn %{buy: buy} ->
       Buy.changeset(buy, %{redeemed: buy.redeemed + quantity})
-    end)                                                                                        #increments the amount redeemed
-    |> serializable_transaction()                                                               #applies the changes
+    end)
+    |> serializable_transaction()
   end
 
   def get_attendee_redeemables(attendee) do
