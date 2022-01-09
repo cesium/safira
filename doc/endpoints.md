@@ -889,8 +889,8 @@ deliver a redeemable to the atendee.
 ```json
 {
     "redeem": {
-        "user_id": 2
-        "redeemable_id": 3
+        "user_id": 2,
+        "redeemable_id": 3,
         "quantity": 1
     }
 }
@@ -932,6 +932,7 @@ deliver a redeemable to the atendee.
         ]
     }
 }
+```
 
 # Roulette
 ## POST /
