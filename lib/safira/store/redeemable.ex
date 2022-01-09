@@ -22,8 +22,8 @@ defmodule Safira.Store.Redeemable do
   def changeset(redeemable, attrs) do
     redeemable
     |> cast(attrs, [:name, :price, :stock, :max_per_user, :description])
-    |> cast_attachments(attrs, [:img])
     |> validate_required([:name, :price, :stock, :max_per_user, :description])
+    |> cast_attachments(attrs, [:img])
     |> validate_length(:name, min: 1, max: 255)
     |> validate_number(:price, greater_than: 0)
     |> validate_number(:stock, greater_than_or_equal_to: 0, message: "Item is sold out!")
