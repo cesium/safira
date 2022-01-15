@@ -1710,7 +1710,6 @@ defmodule Safira.Email do
                       <div style="Margin-left: 20px;Margin-right: 20px;">
                         <div style="mso-line-height-rule: exactly;mso-text-raise: 11px;vertical-align: middle;">
                             Podes consultar a agenda completa em <strong><a href="https://seium.org/agenda">https://seium.org/agenda</a>.</strong>
-                            <br>
                             Estamos à tua espera na sessão de abertura, dia 23 às 10H! Junta-te a nós!!<br>
                             Até já,<br>
                             A equipa organizadora da SEI'22</p>
