@@ -129,7 +129,8 @@ defmodule Mix.Tasks.Gen.UsersFromCsv do
 
         Safira.Email.send_registration_email(
           user.email,
-          user.reset_password_token
+          user.reset_password_token,
+          changes.attendee.discord_association_code
         )
 
       _ ->
