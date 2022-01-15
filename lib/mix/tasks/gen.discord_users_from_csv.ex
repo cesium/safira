@@ -1,4 +1,4 @@
-defmodule Mix.Tasks.Gen.UsersFromCsv do
+defmodule Mix.Tasks.Gen.DiscordUsersFromCsv do
   use Mix.Task
   alias Ecto.Multi
   alias Safira.Repo
