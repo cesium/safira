@@ -21,7 +21,7 @@ defmodule Safira.Email do
     |> Safira.Mailer.deliver_now()
   end
 
-  def send_registration_email(to_email, token, discord_association_code) do
+  def send_registration_email(to_email, token) do
     Mix.shell().info to_email
     new_email()
     |> to(to_email)
