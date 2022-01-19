@@ -72,8 +72,8 @@ defmodule Mix.Tasks.Gen.Badges do
         %{
           name: name,
           description: description,
-          begin_activity: begin_datetime,
-          end_activity: end_datetime,
+          begin: begin_datetime,
+          end: end_datetime,
           begin_badge: begin_badge_datetime,
           end_badge: end_badge_datetime,
           type: String.to_integer(type),

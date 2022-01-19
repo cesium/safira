@@ -11,8 +11,8 @@ defmodule Safira.Contest.Badge do
     field(:name, :string)
     field(:description, :string)
 
-    field(:begin_activity, :utc_datetime)
-    field(:end_activity, :utc_datetime)
+    field(:begin, :utc_datetime)
+    field(:end, :utc_datetime)
     field(:begin_badge, :utc_datetime)
     field(:end_badge, :utc_datetime)
 
@@ -34,8 +34,8 @@ defmodule Safira.Contest.Badge do
     |> cast(attrs, [
       :name,
       :description,
-      :begin_activity,
-      :end_activity,
+      :begin,
+      :end,
       :begin_badge,
       :end_badge,
       :type,
@@ -45,8 +45,8 @@ defmodule Safira.Contest.Badge do
     |> validate_required([
       :name,
       :description,
-      :begin_activity,
-      :end_activity,
+      :begin,
+      :end,
       :begin_badge,
       :end_badge,
       :type,
@@ -61,8 +61,8 @@ defmodule Safira.Contest.Badge do
   def admin_changeset(badge, attrs) do
     badge
     |> cast(attrs, [
-      :begin_activity,
-      :end_activity,
+      :begin,
+      :end,
       :begin_badge,
       :end_badge,
       :name,
@@ -72,8 +72,8 @@ defmodule Safira.Contest.Badge do
     ])
     |> cast_attachments(attrs, [:avatar])
     |> validate_required([
-      :begin_activity,
-      :end_activity,
+      :begin,
+      :end,
       :begin_badge,
       :end_badge,
       :name,
@@ -87,20 +87,20 @@ defmodule Safira.Contest.Badge do
   end
 
   defp validate_time(changeset) do
-    {_, begin_activity} = fetch_field(changeset, :begin_activity)
-    {_, end_activity} = fetch_field(changeset, :end_activity)
+    {_, begin_time} = fetch_field(changeset, :begin)
+    {_, end_time} = fetch_field(changeset, :end)
     {_, begin_badge} = fetch_field(changeset, :begin_badge)
     {_, end_badge} = fetch_field(changeset, :end_badge)
 
     cond do
-      case DateTime.compare(begin_activity, end_activity)
-        and Datetime.compare(begin_badge,end_badge) do
-          :lt -> changeset
-          _ -> add_error(changeset, :begin, "Begin time can't be after end time")
-        end
+      DateTime.compare(begin_time, end_time) != :gt ->
+        add_error(changeset, :begin, "Activity time Invalid")
 
-      _ ->
-        add_error(changeset, :begin, "Times not correct format")
+      Datetime.compare(begin_badge, end_badge) != :gt ->
+        add_error(changeset, :begin_badge, "Badge-gifting time Invalid")
+
+      true ->
+        changeset
     end
   end
 end
