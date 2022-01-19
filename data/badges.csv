@@ -1,4 +1,4 @@
-Badge,Descrição / Como ganhar,Begin,End,Image path,Tipo,Valor (tokens)
+Badge,Descrição / Como ganhar,Begin,End,Begin Badge Period,End Badge Period,Image path,Tipo,Valor (tokens)
 Sessão de abertura,Participa na Sessão de Abertura,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,data/badges/geral/abertura(FINAL).png,3,20
 Dia 1,Participa no evento no dia 23 de fevereiro,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,data/badges/geral/dias(FINAL).png,3,20
 Dia 2,Participa no evento no dia 24 de fevereiro,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,data/badges/geral/dias(2)(FINAL).png,3,20
@@ -20,8 +20,7 @@ Early Bird,Sê uma das primeiras 50 inscrições na SEI,2021-02-23T02:00:00Z,202
 15 empresas,Fala com 15 empresas,2021-02-24T02:00:00Z,2021-02-27T02:00:00Z,data/badges/empresa/empresa(15)(FINAL).png,4,60
 20 empresas,Fala com 20 empresas,2021-02-24T02:00:00Z,2021-02-27T02:00:00Z,data/badges/empresa/empresa(20)(FINAL).png,4,100
 Talk Paulo Dimas,Participa na talk 'The Future of Language: Augmenting AI and Humans',2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,data/badges/talk/talk(PauloDimas)(FINAL).png,6,25
-Talk Everis,"Participa na talk 'Como escolher o primeiro emprego?'
-",2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,data/badges/talk/talk(TiagoSantos)(FINAL).png,6,25
+Talk Everis,Participa na talk 'Como escolher o primeiro emprego?',2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,data/badges/talk/talk(TiagoSantos)(FINAL).png,6,25
 Talk João Oliveira,Participa na talk 'We Can Do It!',2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,data/badges/talk/talk(JoaoOliveira)(FINAL).png,6,25
 Talk João Dias,Participa na talk 'Developing Tasker - Desafios de um solo Developer',2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,data/badges/talk/talk(JoaoDias)(FINAL).png,6,25
 Talk Subvisual,Participa na talk '(don’t) use vim',2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,data/badges/talk/talk(MiguelPalhas)(FINAL).png,6,25
@@ -33,8 +32,7 @@ Talk Francisco Maia,Participa na talk 'STAYAWAY COVID - uma ferramenta de combat
 Talk Gonçalo Silva,Participa na talk 'Developing software remotely and asynchronously',2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,data/badges/talk/talk(GoncaloSilva)(FINAL).png,6,25
 Talk KPMG,Participa na talk 'The future is KPMG',2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,data/badges/talk/talk(RuiGoncalves)(FINAL).png,6,25
 Talk Miguel Regedor,Participa na talk '7 Conselhos de um Engenheiro Informático',2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,data/badges/talk/talk(MiguelRegedor)(FINAL).png,6,25
-Talk André Lago,"Participa na talk 'Como conseguires o teu emprego de sonho na Google'
-",2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,data/badges/talk/talk(AndreLago)(FINAL).png,6,25
+Talk André Lago,Participa na talk 'Como conseguires o teu emprego de sonho na Google',2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,data/badges/talk/talk(AndreLago)(FINAL).png,6,25
 The Brave One - Talk Paulo Dimas,Mantém a webcam ligada durante a atividade,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,data/badges/talk/TheBraveOne(PauloDimas)(FINAL).png,6,5
 The Brave One - Talk Everis,Mantém a webcam ligada durante a atividade,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,data/badges/talk/TheBraveOne(TiagoSantos)(FINAL).png,6,5
 The Brave One - Talk João Oliveira,Mantém a webcam ligada durante a atividade,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,data/badges/talk/TheBraveOne(JoaoOliveira)(FINAL).png,6,5
