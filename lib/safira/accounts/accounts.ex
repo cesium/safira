@@ -229,6 +229,13 @@ defmodule Safira.Accounts do
     |> Kernel.not()
   end
 
+  def is_admin(conn) do
+    get_user(conn)
+    |> Map.fetch!(:manager)
+    |> is_nil
+    |> Kernel.not()
+  end
+
   def get_user(conn) do
     with %User{} = user <- Guardian.Plug.current_resource(conn) do
       user

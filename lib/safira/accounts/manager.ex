@@ -7,6 +7,7 @@ defmodule Safira.Accounts.Manager do
 
   schema "managers" do
     field :active, :boolean, default: true
+    field :is_admin :boolea, default: false
 
     belongs_to :user, User
     has_many :redeems, Redeem
@@ -16,8 +17,9 @@ defmodule Safira.Accounts.Manager do
 
   def changeset(manager, attrs) do
     manager
-    |> cast(attrs, [:active])
+    |> cast(attrs, [:active, :is_admin])
     |> cast_assoc(:user)
-    |> validate_required([:active])
+    |> validate_required([:active, :is_admin])
   end
+
 end

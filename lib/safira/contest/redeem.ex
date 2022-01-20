@@ -4,6 +4,7 @@ defmodule Safira.Contest.Redeem do
   alias Safira.Contest.Badge
   alias Safira.Accounts.Attendee
   alias Safira.Accounts.Manager
+  alias Safira.Accounts
 
   schema "redeems" do
     belongs_to(:attendee, Attendee, foreign_key: :attendee_id, type: :binary_id)
@@ -22,7 +23,20 @@ defmodule Safira.Contest.Redeem do
       name: :unique_attendee_badge,
       message: "An attendee can't have the same badge twice"
     )
-    |> is_within_period()
+    |> check_period()
+  end
+
+  def check_period(changeset) do
+    attendee_id = fetch_field(changeset, :attendee_id)
+    case attendee_id do
+      :error ->
+        is_within_period(changeset)
+      _ ->
+        if Accounts.is_admin(attendee_id) do
+          changeset
+        else
+          is_within_period(changeset)
+    end
   end
 
   def is_within_period(changeset) do
