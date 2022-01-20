@@ -4,6 +4,7 @@ defmodule Safira.Contest do
   alias Safira.Repo
   alias Safira.Contest.Redeem
   alias Safira.Contest.Badge
+  alias Safira.Contest.Cv
   alias Safira.Interaction
   alias Ecto.Multi
   alias Safira.Contest.DailyToken
@@ -210,5 +211,16 @@ defmodule Safira.Contest do
 
       true -> badge.tokens
     end
+  end
+
+  def delete_by_user_id!(id) do
+    Repo.get_by!(Cv, user: id)
+    |> Repo.delete()
+  end
+
+  def update_cv(attendee_id, attrs) do
+    Repo.get_by!(Cv, user: attendee_id)
+    |> Cv.changeset(attrs)
+    |> Repo.update()
   end
 end
