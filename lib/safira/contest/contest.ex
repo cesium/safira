@@ -12,6 +12,10 @@ defmodule Safira.Contest do
     Repo.all(Badge)
   end
 
+  def list_available_badges do
+    Repo.all(Badge)
+  end
+
   def list_secret do
     Repo.all(from r in Redeem,
       join: b in assoc(r, :badge),
@@ -126,7 +130,7 @@ defmodule Safira.Contest do
     Repo.get_by(Redeem, [attendee_id: attendee_id, badge_id: badge_id])
   end
 
-  def create_redeem(attrs \\ %{}) do
+  def create_redeem(attrs \\ %{}, user_type \\ :manager) do
     Multi.new()
     |> Multi.insert(:redeem, Redeem.changeset(%Redeem{}, attrs))
     |> Multi.update(:attendee, fn %{redeem: redeem} ->

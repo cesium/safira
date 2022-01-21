@@ -7,7 +7,7 @@ defmodule Safira.Accounts.Manager do
 
   schema "managers" do
     field :active, :boolean, default: true
-    field :is_admin :boolea, default: false
+    field :is_admin, :boolean, default: false
 
     belongs_to :user, User
     has_many :redeems, Redeem

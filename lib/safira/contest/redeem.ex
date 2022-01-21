@@ -15,7 +15,7 @@ defmodule Safira.Contest.Redeem do
   end
 
   @doc false
-  def changeset(redeem, attrs) do
+  def changeset(redeem, attrs, user_type \\ :manager) do
     redeem
     |> cast(attrs, [:attendee_id, :manager_id, :badge_id])
     |> validate_required([:attendee_id, :badge_id])
@@ -23,23 +23,19 @@ defmodule Safira.Contest.Redeem do
       name: :unique_attendee_badge,
       message: "An attendee can't have the same badge twice"
     )
-    |> check_period()
+    |> check_period(user_type)
   end
 
-  def check_period(changeset) do
-    attendee_id = fetch_field(changeset, :attendee_id)
-    case attendee_id do
-      :error ->
-        is_within_period(changeset)
-      _ ->
-        if Accounts.is_admin(attendee_id) do
+  defp check_period(changeset, user_type) do
+    case user_type do
+      :admin ->
           changeset
-        else
-          is_within_period(changeset)
+      _ ->
+        is_within_period(changeset)
     end
   end
 
-  def is_within_period(changeset) do
+  defp is_within_period(changeset) do
     {_, badge} = fetch_field(changeset, :badge)
     curr = Datetime.utc_now()
 
