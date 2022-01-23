@@ -93,10 +93,10 @@ defmodule Safira.Contest.Badge do
     {_, end_badge} = fetch_field(changeset, :end_badge)
 
     cond do
-      DateTime.compare(begin_time, end_time) != :gt ->
+      DateTime.compare(begin_time, end_time) != :lt ->
         add_error(changeset, :begin, "Activity time Invalid")
 
-      Datetime.compare(begin_badge, end_badge) != :gt ->
+      DateTime.compare(begin_badge, end_badge) != :lt ->
         add_error(changeset, :begin_badge, "Badge-gifting time Invalid")
 
       true ->
