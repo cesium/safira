@@ -8,18 +8,22 @@ defmodule Safira.Contest.Badge do
   alias Safira.Accounts.Attendee
 
   schema "badges" do
-    field :begin, :utc_datetime
-    field :end, :utc_datetime
-    field :name, :string
-    field :description, :string
-    field :avatar, Safira.Avatar.Type
-    #%{verificações: 0, secret: 1, desafios: 2, geral: 3, empresas: 4, oradores: 5, talks: 6, workshops: 7, discord: 8, pitches: 9}
-    field :type, :integer
-    field :tokens, :integer
+    field(:name, :string)
+    field(:description, :string)
 
+    field(:begin, :utc_datetime)
+    field(:end, :utc_datetime)
+    field(:begin_badge, :utc_datetime)
+    field(:end_badge, :utc_datetime)
 
-    has_many :referrals, Referral
-    many_to_many :attendees, Attendee, join_through: Redeem
+    field(:avatar, Safira.Avatar.Type)
+
+    # %{verificações: 0, secret: 1, desafios: 2, geral: 3, empresas: 4, oradores: 5, talks: 6, workshops: 7, discord: 8, pitches: 9}
+    field(:type, :integer)
+    field(:tokens, :integer)
+
+    has_many(:referrals, Referral)
+    many_to_many(:attendees, Attendee, join_through: Redeem)
 
     timestamps()
   end
@@ -27,9 +31,27 @@ defmodule Safira.Contest.Badge do
   @doc false
   def changeset(badge, attrs) do
     badge
-    |> cast(attrs, [:name, :description, :begin, :end, :type, :tokens])
+    |> cast(attrs, [
+      :name,
+      :description,
+      :begin,
+      :end,
+      :begin_badge,
+      :end_badge,
+      :type,
+      :tokens
+    ])
     |> cast_attachments(attrs, [:avatar])
-    |> validate_required([:name, :description, :begin, :end, :type, :tokens])
+    |> validate_required([
+      :name,
+      :description,
+      :begin,
+      :end,
+      :begin_badge,
+      :end_badge,
+      :type,
+      :tokens
+    ])
     |> validate_length(:name, min: 1, max: 255)
     |> validate_length(:description, min: 1, max: 1000)
     |> validate_time
@@ -38,9 +60,27 @@ defmodule Safira.Contest.Badge do
   @doc false
   def admin_changeset(badge, attrs) do
     badge
-    |> cast(attrs, [:begin, :end, :name, :description, :type, :tokens])
+    |> cast(attrs, [
+      :begin,
+      :end,
+      :begin_badge,
+      :end_badge,
+      :name,
+      :description,
+      :type,
+      :tokens
+    ])
     |> cast_attachments(attrs, [:avatar])
-    |> validate_required([:begin, :end, :name, :description, :type, :tokens])
+    |> validate_required([
+      :begin,
+      :end,
+      :begin_badge,
+      :end_badge,
+      :name,
+      :description,
+      :type,
+      :tokens
+    ])
     |> validate_length(:name, min: 1, max: 255)
     |> validate_length(:description, min: 1, max: 1000)
     |> validate_time
@@ -49,14 +89,18 @@ defmodule Safira.Contest.Badge do
   defp validate_time(changeset) do
     {_, begin_time} = fetch_field(changeset, :begin)
     {_, end_time} = fetch_field(changeset, :end)
+    {_, begin_badge} = fetch_field(changeset, :begin_badge)
+    {_, end_badge} = fetch_field(changeset, :end_badge)
 
-    case !!begin_time and !!end_time do
+    cond do
+      DateTime.compare(begin_time, end_time) != :gt ->
+        add_error(changeset, :begin, "Activity time Invalid")
+
+      Datetime.compare(begin_badge, end_badge) != :gt ->
+        add_error(changeset, :begin_badge, "Badge-gifting time Invalid")
+
       true ->
-        case DateTime.compare(begin_time, end_time) do
-          :lt -> changeset
-          _ -> add_error(changeset, :begin, "Begin time can't be after end time" )
-        end
-      _ -> add_error(changeset, :begin, "Times not correct format" )
+        changeset
     end
   end
 end

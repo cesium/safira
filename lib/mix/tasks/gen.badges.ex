@@ -52,9 +52,21 @@ defmodule Mix.Tasks.Gen.Badges do
     path
     |> File.stream!()
     |> CSV.parse_stream()
-    |> Enum.map(fn [name, description, begin_time, end_time, image_path, type, tokens] ->
+    |> Enum.map(fn [
+                     name,
+                     description,
+                     begin_time,
+                     end_time,
+                     begin_badge,
+                     end_badge,
+                     image_path,
+                     type,
+                     tokens
+                   ] ->
       {:ok, begin_datetime, _} = DateTime.from_iso8601(begin_time)
       {:ok, end_datetime, _} = DateTime.from_iso8601(end_time)
+      {:ok, begin_badge_datetime, _} = DateTime.from_iso8601(begin_badge)
+      {:ok, end_badge_datetime, _} = DateTime.from_iso8601(end_badge)
 
       {
         %{
@@ -62,6 +74,8 @@ defmodule Mix.Tasks.Gen.Badges do
           description: description,
           begin: begin_datetime,
           end: end_datetime,
+          begin_badge: begin_badge_datetime,
+          end_badge: end_badge_datetime,
           type: String.to_integer(type),
           tokens: String.to_integer(tokens)
         },
