@@ -1,4 +1,4 @@
-defmodule Mix.Tasks.Gen.UsersFromCsv do
+defmodule Mix.Tasks.Gen.DiscordUsersFromCsv do
   use Mix.Task
   alias Ecto.Multi
   alias Safira.Repo
@@ -127,9 +127,10 @@ defmodule Mix.Tasks.Gen.UsersFromCsv do
       {:ok, changes} ->
         user = Auth.reset_password_token(changes.user)
 
-        Safira.Email.send_registration_email(
+        Safira.Email.send_discord_registration_email(
           user.email,
-          user.reset_password_token
+          user.reset_password_token,
+          changes.attendee.discord_association_code
         )
 
       _ ->
