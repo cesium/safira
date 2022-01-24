@@ -14,6 +14,9 @@ defmodule Safira.Contest do
 
   def list_available_badges do
     Repo.all(Badge)
+    |> Enum.reject(fn x -> not badge_is_in_time(x) )
+    #Repo.all(from b in Badge,
+    # where: b.begin_badge < curr and b.end_badge > curr)
   end
 
   def list_secret do
@@ -78,6 +81,20 @@ defmodule Safira.Contest do
   def change_badge(%Badge{} = badge) do
     Badge.changeset(badge, %{})
   end
+
+  def badge_is_in_time(%Badge{} = badge) do
+    curr = Datetime.utc_now()
+
+    cond do
+      Datetime.compare(curr, badge.start_badge) == :lt ->
+        :false
+      Datetime.compare(curr, badge.end_badge) == :gt ->
+        :false
+      true ->
+        :true
+    end
+  end
+
 
   alias Safira.Contest.Referral
 
