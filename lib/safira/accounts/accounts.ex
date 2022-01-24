@@ -230,10 +230,16 @@ defmodule Safira.Accounts do
   end
 
   def is_admin(conn) do
+    manager =
     get_user(conn)
-    |> Map.fetch!(:manager)
-    |> is_nil
-    |> Kernel.not()
+    |> Map.fetch(:manager)
+
+    case manager do
+      {:error} ->
+        :false
+      {:ok, man} ->
+        man.is_admin
+    end
   end
 
   def get_user(conn) do
