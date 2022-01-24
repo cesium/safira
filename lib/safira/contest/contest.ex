@@ -15,8 +15,6 @@ defmodule Safira.Contest do
   def list_available_badges do
     Repo.all(Badge)
     |> Enum.reject(fn x -> not badge_is_in_time(x) )
-    #Repo.all(from b in Badge,
-    # where: b.begin_badge < curr and b.end_badge > curr)
   end
 
   def list_secret do
