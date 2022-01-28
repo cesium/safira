@@ -40,7 +40,7 @@ defmodule Safira.Contest.Redeem do
     curr = DateTime.utc_now()
 
     cond do
-      DateTime.compare(curr, badge.start) == :lt ->
+      DateTime.compare(curr, badge.begin) == :lt ->
         add_error(changeset, :begin, "Badge cannot be redeemed before the activity")
 
       DateTime.compare(curr, badge.end) == :gt ->
