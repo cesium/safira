@@ -15,8 +15,11 @@ defmodule SafiraWeb.RedeemController do
       Accounts.is_company(conn) ->
         company_aux(conn, redeem_params, user)
 
+      Accounts.is_admin(conn) ->
+        manager_aux(conn, redeem_params, user, :admin)
+
       Accounts.is_manager(conn) ->
-        manager_aux(conn, redeem_params, user)
+        manager_aux(conn, redeem_params, user, :manager)
 
       true ->
         conn
@@ -36,13 +39,13 @@ defmodule SafiraWeb.RedeemController do
     end
   end
 
-  defp manager_aux(conn, redeem_params, user) do
+  defp manager_aux(conn, redeem_params, user, user_type) do
     case Map.fetch(redeem_params, "badge_id") do
       {:ok, id} ->
         Contest.get_badge!(id)
         redeem_params = Map.put(redeem_params, "manager_id", user.manager.id)
 
-        with {:ok, %Redeem{} = _redeem} <- Contest.create_redeem(redeem_params) do
+        with {:ok, %Redeem{} = _redeem} <- Contest.create_redeem(redeem_params, user_type) do
           conn
           |> put_status(:created)
           |> json(%{redeem: "Badge redeemed successfully. Tokens added to your balance"})
