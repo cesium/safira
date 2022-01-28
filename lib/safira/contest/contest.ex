@@ -85,11 +85,11 @@ defmodule Safira.Contest do
 
     cond do
       DateTime.compare(curr, badge.start) == :lt ->
-        :false
+        false
       DateTime.compare(curr, badge.end) == :gt ->
-        :false
+        false
       true ->
-        :true
+        true
     end
   end
 
