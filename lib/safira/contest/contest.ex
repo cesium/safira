@@ -84,7 +84,7 @@ defmodule Safira.Contest do
     curr = DateTime.utc_now()
 
     cond do
-      DateTime.compare(curr, badge.start) == :lt ->
+      DateTime.compare(curr, badge.begin) == :lt ->
         false
       DateTime.compare(curr, badge.end) == :gt ->
         false
