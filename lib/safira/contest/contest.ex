@@ -147,7 +147,7 @@ defmodule Safira.Contest do
 
   def create_redeem(attrs \\ %{}, user_type \\ :manager) do
     Multi.new()
-    |> Multi.insert(:redeem, Redeem.changeset(%Redeem{}, attrs))
+    |> Multi.insert(:redeem, Redeem.changeset(%Redeem{}, attrs, user_type))
     |> Multi.update(:attendee, fn %{redeem: redeem} ->
 
       redeem = Repo.preload(redeem, [:badge, :attendee])
