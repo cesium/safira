@@ -37,13 +37,13 @@ defmodule Safira.Contest.Redeem do
 
   defp is_within_period(changeset) do
     {_, badge} = fetch_field(changeset, :badge)
-    curr = Datetime.utc_now()
+    curr = DateTime.utc_now()
 
     cond do
-      Datetime.compare(curr, badge.start) == :lt ->
+      DateTime.compare(curr, badge.start) == :lt ->
         add_error(changeset, :begin, "Badge cannot be redeemed before the activity")
 
-      Datetime.compare(curr, badge.end) == :gt ->
+      DateTime.compare(curr, badge.end) == :gt ->
         add_error(changeset, :end, "Badge cannot be redeemed after the activity")
 
       true ->

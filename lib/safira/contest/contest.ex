@@ -81,12 +81,12 @@ defmodule Safira.Contest do
   end
 
   def badge_is_in_time(%Badge{} = badge) do
-    curr = Datetime.utc_now()
+    curr = DateTime.utc_now()
 
     cond do
-      Datetime.compare(curr, badge.start_badge) == :lt ->
+      DateTime.compare(curr, badge.start_badge) == :lt ->
         :false
-      Datetime.compare(curr, badge.end_badge) == :gt ->
+      DateTime.compare(curr, badge.end_badge) == :gt ->
         :false
       true ->
         :true
