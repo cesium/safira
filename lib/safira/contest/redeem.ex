@@ -2,6 +2,7 @@ defmodule Safira.Contest.Redeem do
   use Ecto.Schema
   import Ecto.Changeset
   alias Safira.Contest.Badge
+  alias Safira.Contest
   alias Safira.Accounts.Attendee
   alias Safira.Accounts.Manager
   alias Safira.Accounts
@@ -36,7 +37,8 @@ defmodule Safira.Contest.Redeem do
   end
 
   defp is_within_period(changeset) do
-    {_, badge} = fetch_field(changeset, :badge)
+    {_, badge_id} = fetch_field(changeset, :badge_id)
+    badge = Contest.get_badge!(badge_id)
     curr = DateTime.utc_now()
 
     cond do
