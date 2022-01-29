@@ -96,6 +96,7 @@ defmodule Mix.Tasks.Gen.ManagersFromCsv do
       Accounts.create_manager(%{"user" => user})
 
       IO.puts("#{email}:#{password}")
+      IO.puts(user_csv_entry.admin)
     end)
   end
 
