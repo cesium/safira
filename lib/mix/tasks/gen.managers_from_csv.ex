@@ -71,7 +71,7 @@ defmodule Mix.Tasks.Gen.UsersFromCsv do
     |> Stream.map(fn row ->
       %{
         name: "#{Enum.at(row, 0)} #{Enum.at(row, 1)}",
-        username: Enum.at(row, 2)
+        username: Enum.at(row, 2),
         admin: Enum.at(row, 3)
       }
     end)
@@ -84,6 +84,7 @@ defmodule Mix.Tasks.Gen.UsersFromCsv do
 
       user = %{
         "email" => email,
+        "name" => user.name,
         "password" => password,
         "password_confirmation" => password,
         "is_admin" => admin
