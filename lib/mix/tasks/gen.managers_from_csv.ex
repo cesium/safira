@@ -79,12 +79,12 @@ defmodule Mix.Tasks.Gen.ManagersFromCsv do
 
   defp create_users(user_csv_stream) do
     Enum.map(user_csv_stream, fn user_csv_entry ->
-      email = Enum.join(["#{user.username}", @domain], "@")
+      email = Enum.join(["#{user_csv_entry.username}", @domain], "@")
       password = random_string(8)
 
       user = %{
         "email" => email,
-        "name" => user.name,
+        "name" => user_csv_entry.name,
         "password" => password,
         "password_confirmation" => password,
         "is_admin" => admin
