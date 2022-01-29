@@ -3,10 +3,13 @@ defmodule Mix.Tasks.Gen.ManagersFromCsv do
   alias Ecto.Multi
   alias Safira.Repo
   alias Safira.Auth
+  alias Safira.Accounts
   alias Safira.Accounts.User
   alias Safira.Accounts.Attendee
 
   alias NimbleCSV.RFC4180, as: CSV
+
+  @domain "seium.org"
 
   @shortdoc "Generates the attendees from a CSV and sends emails to finish registration"
 
