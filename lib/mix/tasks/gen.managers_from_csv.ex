@@ -19,8 +19,8 @@ defmodule Mix.Tasks.Gen.ManagersFromCsv do
   and a flag ("Local"/"Remote") indicating if the file is local or remote
 
   ex:
-  mix gen.users_from_csv "assets/participantes_sei_exemplo.csv" "Local"
-  mix gen.users_from_csv "https://sample.url.participantes_sei_exemplo.csv" "Remote"
+        $ mix gen.users_from_csv "assets/participantes_sei_exemplo.csv" "Local"
+        $ mix gen.users_from_csv "https://sample.url.participantes_sei_exemplo.csv" "Remote"
   """
 
   def run(args) do
