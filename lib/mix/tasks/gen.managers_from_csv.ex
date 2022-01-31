@@ -11,7 +11,7 @@ defmodule Mix.Tasks.Gen.ManagersFromCsv do
 
   @domain "seium.org"
 
-  @shortdoc "Generates the attendees from a CSV and sends emails to finish registration"
+  @shortdoc "Generates the mangers from a CSV"
 
   @moduledoc """
   This task is waiting for a CSV where the 3rd collumn is name,
@@ -19,8 +19,8 @@ defmodule Mix.Tasks.Gen.ManagersFromCsv do
   and a flag ("Local"/"Remote") indicating if the file is local or remote
 
   ## Examples
-        $ mix gen.users_from_csv "assets/participantes_sei_exemplo.csv" "Local"
-        $ mix gen.users_from_csv "https://sample.url.participantes_sei_exemplo.csv" "Remote"
+        $ mix gen.managers_from_csv "assets/managers_sei_exemplo.csv" "Local"
+        $ mix gen.managers_from_csv "https://sample.url.managers_sei_exemplo.csv" "Remote"
   """
 
   def run(args) do
