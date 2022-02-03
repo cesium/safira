@@ -42,7 +42,7 @@ defmodule Safira.Contest.Redeem do
     curr = DateTime.utc_now()
 
     cond do
-      DateTime.compare(curr, badge.start_badge) == :lt ->
+      DateTime.compare(curr, badge.begin_badge) == :lt ->
         add_error(changeset, :begin_badge, "Can't redeem Badge before badge-gifting period")
 
       DateTime.compare(curr, badge.end_badge) == :gt ->
