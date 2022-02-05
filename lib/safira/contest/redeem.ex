@@ -23,6 +23,29 @@ defmodule Safira.Contest.Redeem do
       message: "An attendee can't have the same badge twice"
     )
     |> is_within_period()
+    |> simultaneous_constraint()
+  end
+
+  # verificar se não tem já um badge de uma talk ou workshop nessa hora
+  def simultaneous_constraint(changeset) do
+    {_, attendee} = fetch_field(changeset, :attendee)
+    {_, badge} = fetch_field(changeset, :badge)
+    badges = Repo.all(Ecto.assoc(attendee, :badges))
+
+    if Enum.any?(badges, &coincidental(badge, &1)) do
+      add_error(
+        changeset,
+        :badge,
+        "Attendee already has badge for an activity within that period"
+      )
+    else
+      changeset
+    end
+  end
+
+  def coincidental(badge_a, badge_b) do
+    Datetime.compare(badge_a.begin, badge_b.end) == :lt and
+      Datetime.compare(badge_b.begin, badge_a.end) == :lt
   end
 
   def is_within_period(changeset) do
