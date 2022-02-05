@@ -12,6 +12,11 @@ defmodule Safira.Contest do
     Repo.all(Badge)
   end
 
+  def list_available_badges do
+    Repo.all(Badge)
+    |> Enum.reject(fn x -> not badge_is_in_time(x) end)
+  end
+
   def list_secret do
     Repo.all(from r in Redeem,
       join: b in assoc(r, :badge),
@@ -75,6 +80,20 @@ defmodule Safira.Contest do
     Badge.changeset(badge, %{})
   end
 
+  def badge_is_in_time(badge) do
+    curr = DateTime.utc_now()
+
+    cond do
+      DateTime.compare(curr, badge.start_badge) == :lt ->
+        false
+      DateTime.compare(curr, badge.end_badge) == :gt ->
+        false
+      true ->
+        true
+    end
+  end
+
+
   alias Safira.Contest.Referral
 
   def list_referrals do
@@ -126,9 +145,9 @@ defmodule Safira.Contest do
     Repo.get_by(Redeem, [attendee_id: attendee_id, badge_id: badge_id])
   end
 
-  def create_redeem(attrs \\ %{}) do
+  def create_redeem(attrs \\ %{}, user_type \\ :manager) do
     Multi.new()
-    |> Multi.insert(:redeem, Redeem.changeset(%Redeem{}, attrs))
+    |> Multi.insert(:redeem, Redeem.changeset(%Redeem{}, attrs, user_type))
     |> Multi.update(:attendee, fn %{redeem: redeem} ->
 
       redeem = Repo.preload(redeem, [:badge, :attendee])

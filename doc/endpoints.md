@@ -134,7 +134,8 @@
     - /association
       - GET /:discord_id
       - POST /  
-
+    - /store
+      - POST /redeem
 
 # sign_up
 
@@ -561,7 +562,7 @@ Removes an attendee.
     }
 }
 ```
-- Not an manager, no badge_id, not valid badge_id
+- Not a manager, no badge_id, not valid badge_id
 ```json
 {
     "errors": {
@@ -880,6 +881,56 @@ Buy a redeemable.
 ```json
 {
     "Redeemable": "There is no such redeemable"
+}
+```
+
+## POST /redeem
+deliver a redeemable to the atendee.
+```json
+{
+    "redeem": {
+        "user_id": 2,
+        "redeemable_id": 3,
+        "quantity": 1
+    }
+}
+```
+
+### Valid:
+```json
+{
+    "Redeemable": "Caneta bought successfully!"
+}
+```
+### Errors:
+- User doesn not exist
+```json
+{
+    "errors": {
+        "User": [
+            "User does not exist"
+        ]
+    }
+}
+```
+- redeemable does not exist
+```json
+{
+    "errors": {
+        "Redeemable": [
+            "There is no such redeemable"
+        ]
+    }
+}
+```
+- json is lacking the quantity parameter
+```json
+{
+    "errors": {
+        "stock": [
+            "Json does not have `quantity` param"
+        ]
+    }
 }
 ```
 

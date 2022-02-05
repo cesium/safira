@@ -14,9 +14,14 @@ defmodule Safira.Store do
   def get_redeemable!(id), do: Repo.get!(Redeemable, id)
 
   def exist_redeemable(redeemable_id) do
-    query = from r in Redeemable,
+    case redeemable_id do
+      nil ->
+        false
+      _ ->
+        query = from r in Redeemable,
             where: r.id == ^redeemable_id
-    Repo.exists?(query)
+        Repo.exists?(query)
+    end
   end
 
   def list_store_redeemables(attendee) do
@@ -33,7 +38,7 @@ defmodule Safira.Store do
     case get_keys_buy(attendee_id, redeemable.id) do
       nil ->
         Map.put(redeemable,:can_buy,Kernel.min(redeemable.max_per_user, redeemable.stock))
-      buy -> 
+      buy ->
         Map.put(redeemable,:can_buy, Kernel.min(redeemable.max_per_user - buy.quantity, redeemable.stock))
     end
   end
@@ -64,26 +69,40 @@ defmodule Safira.Store do
 
   def buy_redeemable(redeemable_id, attendee) do
     Multi.new()
+    # check if the redeemable in question exists
     |> Multi.run(:redeemable_info, fn _repo, _var -> {:ok, get_redeemable!(redeemable_id)} end)
     |> Multi.update(:redeemable, fn %{redeemable_info: redeemable} ->
-      Redeemable.changeset(redeemable, %{stock: redeemable.stock - 1})
+      Redeemable.changeset(redeemable, %{stock: redeemable.stock - 1}) #removes 1 from the redeemable's stock
     end)
     |> Multi.update(:attendee, fn %{redeemable: redeemable} ->
       Attendee.update_token_balance_changeset(attendee, %{
         token_balance: attendee.token_balance - redeemable.price
       })
-    end)
+    end) #Removes the redeemable's price from the atendee's total balance
     |> Multi.run(:buy, fn _repo, %{attendee: attendee, redeemable: redeemable} ->
       {:ok,
        get_keys_buy(attendee.id, redeemable_id) ||
          %Buy{attendee_id: attendee.id, redeemable_id: redeemable.id, quantity: 0}}
-    end)
+    end) # fetches the buy repo if it exists or creates a new one if it doest exist
     |> Multi.insert_or_update(:upsert_buy, fn %{buy: buy} ->
       Buy.changeset(buy, %{quantity: buy.quantity + 1})
     end)
     |> Multi.insert_or_update(:daily_token, fn %{attendee: attendee} ->
       {:ok, date, _} = DateTime.from_iso8601("#{Date.utc_today()}T00:00:00Z")
       DailyToken.changeset(%DailyToken{}, %{quantity: attendee.token_balance, attendee_id: attendee.id, day: date})
+    end) #increments the amount bought by 1
+    |> serializable_transaction()
+  end
+
+  #redeems an item for an atendee, should only be used by managers
+  def redeem_redeemable(redeemable_id, attendee, quantity) do
+    Multi.new()
+    |> Multi.run(:buy, fn _repo, _changes -> 
+      {:ok, get_keys_buy(attendee.id, redeemable_id)}
+    end)
+    |> Multi.run(:redeemable, fn _repo, _var -> {:ok, get_redeemable!(redeemable_id)} end)
+    |> Multi.update(:update_buy, fn %{buy: buy} ->
+      Buy.changeset(buy, %{redeemed: buy.redeemed + quantity})
     end)
     |> serializable_transaction()
   end
