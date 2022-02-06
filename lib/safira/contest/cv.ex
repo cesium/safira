@@ -14,7 +14,6 @@ defmodule Safira.Contest.Cv do
   def changeset(cv, attrs) do
     cv 
     |> cast(attrs, [:user])
-    |> cast_assoc(:attendee)
     |> cast_attachments(attrs, [:cv])
   end
 end
