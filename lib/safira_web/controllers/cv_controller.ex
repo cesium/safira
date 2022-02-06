@@ -11,6 +11,12 @@ defmodule SafiraWeb.CvController do
     user = Accounts.get_user(conn)
   end
 
+  def create(conn, params) do
+    user = Accounts.get_user(conn)
+
+    Contest.create_cv(user.attendee.id, params)
+  end
+
   def update(conn, params) do
     user = Accounts.get_user(conn)
 

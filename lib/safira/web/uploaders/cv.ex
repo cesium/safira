@@ -3,6 +3,7 @@ defmodule Safira.Cv do
 
   # Include ecto support (requires package arc_ecto installed):
   use Arc.Ecto.Definition
+  alias Safira.Accounts
 
   def __storage do
     if Mix.env() == :dev do
@@ -22,15 +23,12 @@ defmodule Safira.Cv do
 
   # Override the persisted filenames:
   def filename(_, {_, scope}) do
-    "cv-#{scope.name}-#{scope.id}"
+    user = Accounts.get_attendee!(scope.user)
+    "cv-#{user.name}-#{scope.user}"
   end
 
   # Override the storage directory:
   def storage_dir(version, {file, scope}) do
-    IO.puts(file)
-    IO.puts(scope)
-    IO.puts(version)
-
     struct =
       scope.__struct__
       |> IO.inspect()

@@ -69,7 +69,7 @@ defmodule SafiraWeb.Router do
       resources "/association", DiscordAssociationController, only: [:show, :create]
       resources "/store/buy", BuyController, only: [:create]
       resources "/roulette/prizes", PrizeController, only: [:index, :show]
-      resources "/cvs", CvController, only: [:update, :delete]
+      resources "/cvs", CvController, only: [:create, :update, :delete]
     end
   end
 

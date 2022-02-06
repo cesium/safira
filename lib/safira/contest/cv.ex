@@ -2,6 +2,7 @@ defmodule Safira.Contest.Cv do
   use Ecto.Schema
   use Arc.Ecto.Schema
   import Ecto.Changeset
+  alias Safira.Accounts.Attendee
 
   schema "cv" do
     has_one :user, Attendee, on_delete: :delete_all

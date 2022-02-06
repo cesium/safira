@@ -3,7 +3,7 @@ defmodule Safira.Repo.Migrations.AddCvTable do
 
   def change do
     create table(:cvs) do
-      add :user_id, references(:attendees, on_delete: :delete_all, type: :uuid)
+      add :user_id, references(:attendees, on_delete: :delete_all, type: :uuid), primary_key = true
       add :cv, :string
 
       timestamps()

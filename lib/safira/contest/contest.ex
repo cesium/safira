@@ -218,6 +218,12 @@ defmodule Safira.Contest do
     |> Repo.delete()
   end
 
+  def create_cv(attendee_id, attrs) do
+    %Cv{user: attendee_id}
+    |> Cv.changeset(attrs)
+    |> Repo.update()
+  end
+
   def update_cv(attendee_id, attrs) do
     Repo.get_by!(Cv, user: attendee_id)
     |> Cv.changeset(attrs)
