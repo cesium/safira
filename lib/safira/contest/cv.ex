@@ -4,7 +4,6 @@ defmodule Safira.Contest.Cv do
   import Ecto.Changeset
   alias Safira.Accounts.Attendee
 
-  @primary_key {:id, :integer, autogenerate: true}
   schema "cv" do
     has_one :user, Attendee, on_delete: :delete_all
     field :cv, Safira.Cv.Type
