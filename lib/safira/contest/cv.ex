@@ -5,7 +5,7 @@ defmodule Safira.Contest.Cv do
   alias Safira.Accounts.Attendee
 
   schema "cv" do
-    belongs_to (:attendee, Attendee, foreign_key: :user)
+    belongs_to(:attendee, Attendee, foreign_key: :user)
     field :cv, Safira.Cv.Type
 
     timestamps()
