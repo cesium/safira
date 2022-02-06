@@ -5,7 +5,7 @@ defmodule Safira.Contest.Cv do
   alias Safira.Accounts.Attendee
 
   schema "cv" do
-    belongs_to :user, Attendee
+    belongs_to (:attendee, Attendee, foreign_key: :user)
     field :cv, Safira.Cv.Type
 
     timestamps()
@@ -13,7 +13,7 @@ defmodule Safira.Contest.Cv do
 
   def changeset(cv, attrs) do
     cv 
-    |> cast_assoc(:user)
+    |> cast(attrs, [:user])
     |> cast_attachments(attrs, [:cv])
   end
 end
