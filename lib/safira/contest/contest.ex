@@ -220,7 +220,7 @@ defmodule Safira.Contest do
 
   def create_cv(attendee_id, attrs) do
     %Cv{}
-    |> Cv.changeset(Map.merge(attrs, %{"user": attendee_id}))
+    |> Cv.changeset(Map.merge(attrs, {"user": attendee_id}))
     |> Repo.update()
   end
 

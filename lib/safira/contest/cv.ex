@@ -5,7 +5,7 @@ defmodule Safira.Contest.Cv do
   alias Safira.Accounts.Attendee
 
   schema "cv" do
-    has_one :user, Attendee, on_delete: :delete_all
+    belongs_to :user, Attendee, on_delete: :delete_all
     field :cv, Safira.Cv.Type
 
     timestamps()
