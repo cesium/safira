@@ -19,12 +19,13 @@ defmodule Safira.Contest.Redeem do
   def changeset(redeem, attrs, user_type \\ :manager) do
     redeem
     |> cast(attrs, [:attendee_id, :manager_id, :badge_id])
+    |> foreign_key_contraint(:attendee_id)
+    |> foreign_key_contraint(:manager_id)
     |> validate_required([:attendee_id, :badge_id])
     |> unique_constraint(:unique_attendee_badge,
       name: :unique_attendee_badge,
       message: "An attendee can't have the same badge twice"
     )
-    |> foreign_key_contraint(:foreign_key_constraint, :name)
     |> check_period(user_type)
   end
 
