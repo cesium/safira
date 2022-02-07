@@ -19,8 +19,8 @@ defmodule Safira.Contest.Redeem do
   def changeset(redeem, attrs, user_type \\ :manager) do
     redeem
     |> cast(attrs, [:attendee_id, :manager_id, :badge_id])
-    |> foreign_key_contraint(:attendee_id)
-    |> foreign_key_contraint(:manager_id)
+    |> foreign_key_constraint(:attendee_id, :name)
+    |> foreign_key_constraint (:manager_id, :name)
     |> validate_required([:attendee_id, :badge_id])
     |> unique_constraint(:unique_attendee_badge,
       name: :unique_attendee_badge,
