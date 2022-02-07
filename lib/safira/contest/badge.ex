@@ -96,7 +96,7 @@ defmodule Safira.Contest.Badge do
       DateTime.compare(begin_time, end_time) != :gt ->
         add_error(changeset, :begin, "Activity time Invalid")
 
-      Datetime.compare(begin_badge, end_badge) != :gt ->
+      DateTime.compare(begin_badge, end_badge) != :gt ->
         add_error(changeset, :begin_badge, "Badge-gifting time Invalid")
 
       true ->
