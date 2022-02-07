@@ -24,6 +24,7 @@ defmodule Safira.Contest.Redeem do
       name: :unique_attendee_badge,
       message: "An attendee can't have the same badge twice"
     )
+    |> foreign_key_contraint(:foreign_key_constraint, :name)
     |> check_period(user_type)
   end
 
