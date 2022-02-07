@@ -52,8 +52,8 @@ defmodule Safira.Contest.Redeem do
 
   # verifica se os badges sao simultaneos e algum deles é um workshop
   def coincidental(badge_a, badge_b) do
-    Datetime.compare(badge_a.begin, badge_b.end) == :lt and
-      Datetime.compare(badge_b.begin, badge_a.end) == :lt and
+    DateTime.compare(badge_a.begin, badge_b.end) == :lt and
+      DateTime.compare(badge_b.begin, badge_a.end) == :lt and
       is_unique_type(badge_a.type) and is_unique_type(badge_b.type)
   end
 
