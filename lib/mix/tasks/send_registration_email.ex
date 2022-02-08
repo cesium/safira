@@ -2,14 +2,20 @@ defmodule Mix.Tasks.Send.RegistrationEmails do
   use Mix.Task
 
   alias Safira.Accounts
+  alias Safira.Accounts.Attendee
   alias Safira.Auth
+  alias Safira.Repo
 
   def run(args) do
     Mix.Task.run("app.start")
 
     Accounts.list_users()
+    |> Repo.preload(:attendee)
     |> Enum.filter(fn a ->
-      not Accounts.is_manager(a) and not Accounts.is_company(a)
+      a
+      |> Map.fetch!(:attendee)
+      |> is_nil
+      |> Kernel.not()
     end)
     |> Enum.each(fn a ->
       send_mail(a)
