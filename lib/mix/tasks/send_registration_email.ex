@@ -2,8 +2,7 @@ defmodule Mix.Tasks.Send.RegistrationEmails do
   use Mix.Task
 
   alias Safira.Accounts
-  alias Safira.Contest
-  alias Safira.Contest.Badge
+  alias Safira.Auth
 
   def run(args) do
     Mix.Task.run("app.start")
