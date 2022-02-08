@@ -35,10 +35,12 @@ defmodule SafiraWeb.DeliverRedeemableController do
     cond do
       not is_nil(attendee) ->
         redeemables = Store.get_attendee_not_redemed(attendee)
+        conn
+        |> json(redeemables)
       true ->
         conn
-          |> put_status(:bad_request)
-          |> json(%{Error: "Wrong attendee"})
+        |> put_status(:bad_request)
+        |> json(%{Error: "Wrong attendee"})
     end
   end
 
@@ -66,12 +68,12 @@ defmodule SafiraWeb.DeliverRedeemableController do
         case Store.redeem_redeemable(redeemable_id, attendee, quant) do
           {:ok, changes} ->
             conn
-              |> put_status(:ok)
-              |> json(%{Redeemable: "#{Map.get(changes, :redeemable).name} redeemed successfully!"})
+            |> put_status(:ok)
+            |> json(%{Redeemable: "#{Map.get(changes, :redeemable).name} redeemed successfully!"})
           {:error, error} ->
             conn
-              |> put_status(:bad_request)
-              |> json(%{Error: "Wrong quantity"})
+            |> put_status(:bad_request)
+            |> json(%{Error: "Wrong quantity"})
         end
     end
   end
