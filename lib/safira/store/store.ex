@@ -120,7 +120,7 @@ defmodule Safira.Store do
   ## fetches every redeemabla that has yet to be redeemed
   def get_attendee_not_redemed(attendee) do
     attendee
-    |> Repo.preload(:redemables)
+    |> Repo.preload(:redeemables)
     |> Map.fetch!(:redeemables)
     |> Enum.filter( fn redeemable ->
       b = get_keys_buy(attendee.id, redeemable.id)
