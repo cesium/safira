@@ -49,7 +49,7 @@ defmodule SafiraWeb.RedeemableController do
       true ->
         conn
           |> put_status(:bad_request)
-          |> json(%{Error: "Wrong quantity"})
+          |> json(%{Error: "Wrong attendee"})
   end
 
 
