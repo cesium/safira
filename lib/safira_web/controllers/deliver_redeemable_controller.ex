@@ -29,6 +29,10 @@ defmodule SafiraWeb.DeliverRedeemableController do
     end
   end
 
+  def show(conn , _params) do
+    #Get attendee and grab redeems
+  end
+
   def validate_redeem(conn, json) do
     attendee =
       Map.get(json, "attendee_id")
