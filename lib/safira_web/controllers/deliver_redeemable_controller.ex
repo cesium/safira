@@ -31,7 +31,7 @@ defmodule SafiraWeb.DeliverRedeemableController do
 
   def show(conn, %{"id" => attendee_id}) do
     attendee =
-      Accounts.get_attendee(attendee_id)
+      Accounts.get_attendee!(attendee_id)
       |> Map.fetch!(:attendee)
     cond do
       not is_nil(attendee) ->
