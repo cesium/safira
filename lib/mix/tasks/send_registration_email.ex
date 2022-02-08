@@ -8,6 +8,9 @@ defmodule Mix.Tasks.Send.RegistrationEmails do
     Mix.Task.run("app.start")
 
     Accounts.list_users()
+    |> Enum.filter(fn a ->
+      not Accounts.is_manager(a) and not Accounts.is_company(a)
+    end)
     |> Enum.each(fn a ->
       send_mail(a)
     end)
