@@ -1,4 +1,4 @@
-defmodule Mix.Tasks.Gift.All.Attendees.Badge do
+defmodule Mix.Tasks.Send.RegistrationEmails do
   use Mix.Task
 
   alias Safira.Accounts
