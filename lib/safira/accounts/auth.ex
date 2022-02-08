@@ -88,7 +88,7 @@ defmodule Safira.Auth do
 
   # checks if now is later than 1 day from the reset_token_sent_at
   def expired?(datetime) do
-    Timex.after?(Timex.now(), Timex.shift(datetime, days: 1))
+    Timex.after?(Timex.now(), Timex.shift(datetime, days: 10))
   end
 
   # sets the token & sent at in the database for the user

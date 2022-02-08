@@ -6,16 +6,6 @@ defmodule Mix.Tasks.Send.RegistrationEmails do
   alias Safira.Contest.Badge
 
   def run(args) do
-    cond do
-      length(args) != 1 ->
-        Mix.shell().info("Needs to receive only an id.")
-
-      true ->
-        args |> List.first() |> String.to_integer() |> create
-    end
-  end
-
-  defp create(badge_id) do
     Mix.Task.run("app.start")
 
     with _badge = %Badge{} <- Contest.get_badge!(badge_id) do
@@ -26,7 +16,7 @@ defmodule Mix.Tasks.Send.RegistrationEmails do
     end
   end
 
-  defp send_mail(transaction) do
+  defp send_mail(user) do
     user = Auth.reset_password_token(user)
 
     Safira.Email.send_registration_email(
