@@ -36,8 +36,6 @@ defmodule SafiraWeb.DeliverRedeemableController do
     cond do
       not is_nil(attendee) ->
         redeemables = Store.get_attendee_not_redemed(attendee)
-        ## this is probably wrong but i don't know how to check
-        render(conn, "show.json", redeemables: redeemables)
       true ->
         conn
           |> put_status(:bad_request)
