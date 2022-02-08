@@ -97,7 +97,7 @@ defmodule Safira.Store do
   #redeems an item for an atendee, should only be used by managers
   def redeem_redeemable(redeemable_id, attendee, quantity) do
     Multi.new()
-    |> Multi.run(:buy, fn _repo, _changes -> 
+    |> Multi.run(:buy, fn _repo, _changes ->
       {:ok, get_keys_buy(attendee.id, redeemable_id)}
     end)
     |> Multi.run(:redeemable, fn _repo, _var -> {:ok, get_redeemable!(redeemable_id)} end)
@@ -116,6 +116,22 @@ defmodule Safira.Store do
       Map.put(redeemable, :quantity, b.quantity)
     end)
   end
+
+  ## fetches every redeemabla that has yet to be redeemed
+  def get_attendee_not_redemed(attendee) do
+    attendee
+    |> Repo.preload(:redemables)
+    |> Map.fetch!(:redeemables)
+    |> Enum.filter( fn redeemable ->
+      b = get_keys_buy(attendee.id, redeemable.id)
+      b.quantity > 0 && b.quantity > b.redeemed
+    end)
+    |> Enum.map(fn redeemable ->
+      b = get_keys_buy(attendee.id, redeemable.id)
+      Map.put(redeemable, :quantity, b.quantity, :notredeemed , b.redeemed - b.quantity)
+    end)
+  end
+
 
   defp serializable_transaction(multi) do
     try do

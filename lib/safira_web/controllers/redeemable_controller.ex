@@ -29,11 +29,28 @@ defmodule SafiraWeb.RedeemableController do
         not is_nil(attendee) ->
           redeemable = Store.get_redeemable_attendee(id,attendee)
           render(conn, "show.json", redeemable: redeemable)
-  
+
         true ->
           redeemable = Store.get_redeemable!(id)
           render(conn, "show_non_attendee.json", redeemable: redeemable)
       end
-    
+
   end
+
+  def show_unredeemed(conn, _params) do
+    attendee =
+      Accounts.get_user(conn)
+      |> Map.fetch!(:attendee)
+    cond do
+      not is_nil(attendee) ->
+        redeemables = Store.get_attendee_not_redemed(attendee)
+        ## this is probably wrong but i don't know how to check
+        render(conn, "show.json", redeemable: redeemable)
+      true ->
+        conn
+          |> put_status(:bad_request)
+          |> json(%{Error: "Wrong quantity"})
+  end
+
+
 end

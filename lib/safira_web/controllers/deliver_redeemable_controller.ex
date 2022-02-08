@@ -14,7 +14,7 @@ defmodule SafiraWeb.DeliverRedeemableController do
           attendee_id: id
           redeemable: redeemable_id
           quantity: quantity
-  }
+        }
   }
 
   "
@@ -51,11 +51,11 @@ defmodule SafiraWeb.DeliverRedeemableController do
         |> json(%{Redeemable: "Json does not have `quantity` param"})
       {_,_,_} ->
         case Store.redeem_redeemable(redeemable_id, attendee, quant) do
-          {:ok, changes} -> 
+          {:ok, changes} ->
             conn
               |> put_status(:ok)
               |> json(%{Redeemable: "#{Map.get(changes, :redeemable).name} redeemed successfully!"})
-          {:error, error} -> 
+          {:error, error} ->
             conn
               |> put_status(:bad_request)
               |> json(%{Error: "Wrong quantity"})
