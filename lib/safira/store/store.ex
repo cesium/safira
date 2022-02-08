@@ -128,7 +128,8 @@ defmodule Safira.Store do
     end)
     |> Enum.map(fn redeemable ->
       b = get_keys_buy(attendee.id, redeemable.id)
-        Map.put(redeemable, %{quantity: b.quantity, not_redeemed: b.quantity - b.redeemed})
+      redeemable = Map.put(redeemable, :quantity, b.quantity)
+      Map.put(redeemable, :not_redeemed, b.quantity - b.redeemed)
     end)
   end
 
