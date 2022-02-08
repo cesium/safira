@@ -8,12 +8,10 @@ defmodule Mix.Tasks.Send.RegistrationEmails do
   def run(args) do
     Mix.Task.run("app.start")
 
-    with _badge = %Badge{} <- Contest.get_badge!(badge_id) do
-      Accounts.list_users()
-      |> Enum.each(fn a ->
-        send_mail(a)
-      end)
-    end
+    Accounts.list_users()
+    |> Enum.each(fn a ->
+      send_mail(a)
+    end)
   end
 
   defp send_mail(user) do
