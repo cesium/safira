@@ -18,11 +18,13 @@ defmodule Safira.Roulette.AttendeePrize do
   @doc false
   def changeset(attendee_prize, attrs) do
     attendee_prize
-    |> cast(attrs, [:quantity, :attendee_id, :prize_id])
+    |> cast(attrs, [:quantity, :attendee_id, :prize_id, :redeemed])
     |> validate_required([:quantity, :attendee_id, :prize_id])
     |> unique_constraint(:unique_attendee_prize)
     |> validate_number(:quantity, greater_than: 0)
+    |> validate_number(:redeemed, greater_than_of_equal_to: 0)
     |> validate_quantity
+    |> validate_redeemed
   end
 
   defp validate_quantity(changeset) do
@@ -41,7 +43,9 @@ defmodule Safira.Roulette.AttendeePrize do
         add_error(changeset, :quantity, "Quantity shouldn't be nil")
 
       {_, _} ->
-        prize = Prize |> Repo.get(prize_id)
+        prize =
+          Prize
+          |> Repo.get(prize_id)
 
         cond do
           prize.max_amount_per_attendee >= quantity ->
@@ -55,5 +59,38 @@ defmodule Safira.Roulette.AttendeePrize do
             )
         end
     end
+  end
+
+  #ensures that the max amount of redeemed items is less than the total amount bought
+  defp validate_redeemed(changeset) do
+    {_, prize_id} = fetch_field(changeset, :prize_id)
+    {_, redeemed} = fetch_field(changeset, :redeemed)
+    {_, quantity} = fetch_field(changeset, :quantity)
+
+    case {prize_id, redeemed} do
+      {nil, nil} ->
+        add_error(changeset, :prize_id, "Prize shouldn't be nil")
+        add_error(changeset, :redeemed, "Redeemed shouldn't be nil")
+
+      {nil, _} ->
+        add_error(changeset, :prize_id, "Prize shouldn't be nil")
+
+      {_, nil} ->
+        add_error(changeset, :redeemed, "Redeemed shouldn't be nil")
+
+      {_, _} ->
+        cond do
+          quantity >= redeemed ->
+            changeset
+
+          true ->
+            add_error(
+              changeset,
+              :quantity,
+              "Redeemed is greater than the quantity bought by the atendee"
+            )
+        end
+    end
+
   end
 end
