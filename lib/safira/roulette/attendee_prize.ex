@@ -10,8 +10,6 @@ defmodule Safira.Roulette.AttendeePrize do
     field :redeemed, :integer, default: 0 #default 0 should mean all previous code
 
 
-    still works as intended when creating a "buy"
-
     belongs_to :attendee, Attendee, foreign_key: :attendee_id, type: :binary_id
     belongs_to :prize, Prize
 
