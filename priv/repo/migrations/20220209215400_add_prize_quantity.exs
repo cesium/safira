@@ -1,4 +1,4 @@
-defmodule Safira.Repo.Migrations.AddRedeemedQuantity do
+defmodule Safira.Repo.Migrations.AddPrizeQuantity do
   use Ecto.Migration
 
   def change do

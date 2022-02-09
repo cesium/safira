@@ -12,6 +12,7 @@ defmodule Safira.Roulette.Prize do
     field :max_amount_per_attendee, :integer
     field :probability, :float
     field :avatar, Safira.Avatar.Type
+    field :is_redeemable, :boolean
 
     many_to_many :attendees, Attendee, join_through: AttendeePrize
 

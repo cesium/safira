@@ -8,7 +8,7 @@ defmodule Safira.Roulette.AttendeePrize do
   schema "attendees_prizes" do
     field :quantity, :integer
     field :redeemed, :integer, default: 0 #default 0 should mean all previous code
-    field :is_redeemable, :boolean
+
 
     still works as intended when creating a "buy"
 
