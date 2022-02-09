@@ -470,4 +470,24 @@ defmodule Safira.Roulette do
     Repo.all(query)
     |> Enum.map(fn ap -> {ap.attendee.name, ap.prize, ap.updated_at} end)
   end
+
+  def get_attendee_not_redemed(attendee) do
+    attendee
+    |> Repo.preload(:prizes)
+    |> Map.fetch!(:prizes)
+    |> Enum.filter( fn prize ->
+      p = get_keys_buy(attendee.id, prize.id)
+      p.quantity > 0 && p.quantity > p.redeemed
+    end)
+    |> Enum.map(fn prize ->
+      p = get_keys_prize(attendee.id, prize.id)
+      prize = Map.put(prize, :quantity, p.quantity)
+      Map.put(prize, :not_redeemed, p.quantity - p.redeemed)
+    end)
+  end
+
+  def get_keys_prize(attendee_id, prize_id) do
+  Repo.get_by(AttendeePrize, attendee_id: attendee_id, prize_id: prize_id )
+  end
+
 end
