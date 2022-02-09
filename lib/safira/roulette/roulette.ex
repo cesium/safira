@@ -476,18 +476,52 @@ defmodule Safira.Roulette do
     |> Repo.preload(:prizes)
     |> Map.fetch!(:prizes)
     |> Enum.filter( fn prize ->
-      p = get_keys_buy(attendee.id, prize.id)
-      p.quantity > 0 && p.quantity > p.redeemed
+      ap = get_keys_buy(attendee.id, prize.id)
+      ap.quantity > 0 && ap.quantity > ap.redeemed
     end)
     |> Enum.map(fn prize ->
-      p = get_keys_prize(attendee.id, prize.id)
-      prize = Map.put(prize, :quantity, p.quantity)
-      Map.put(prize, :not_redeemed, p.quantity - p.redeemed)
+      ap = get_keys_prize(attendee.id, prize.id)
+      prize = Map.put(prize, :quantity, ap.quantity)
+      Map.put(prize, :not_redeemed, ap.quantity - ap.redeemed)
     end)
   end
 
   def get_keys_prize(attendee_id, prize_id) do
     Repo.get_by(AttendeePrize, attendee_id: attendee_id, prize_id: prize_id )
+  end
+
+  def exist_prize(prize_id) do
+    case prize_id do
+      nil ->
+        false
+      _ ->
+        query = from p in Prize,
+            where: p.id == ^prize_id
+        Repo.exists?(query)
+    end
+  end
+
+  #redeems an item for an atendee, should only be used by managers
+  def redeem_prize(prize_id, attendee, quantity) do
+    Multi.new()
+    |> Multi.run(:buy, fn _repo, _changes ->
+      {:ok, get_keys_prize(attendee.id, prize_id)}
+    end)
+    |> Multi.run(:prize, fn _repo, _var -> {:ok, get_prize!(prize_id)} end)
+    |> Multi.update(:update_attendee_prize, fn %{attendee_prize: attendee_prize} ->
+      AttendeePrize.changeset(attendee_prize, %{redeemed: attendee_prize.redeemed + quantity})
+    end)
+    |> serializable_transaction()
+  end
+
+  def get_attendee_redeemables(attendee) do
+    attendee
+    |> Repo.preload(:redeemables)
+    |> Map.fetch!(:redeemables)
+    |> Enum.map(fn redeemable ->
+      b = get_keys_buy(attendee.id, redeemable.id)
+      Map.put(redeemable, :quantity, b.quantity)
+    end)
   end
 
 end
