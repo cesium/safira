@@ -583,8 +583,7 @@ defmodule Safira.Email do
                                                             bgcolor=""
                                                             class="outer-td"
                                                             style="
-                                                              padding: 0px 0px 0px
-                                                                0px;
+                                                              padding: 0px 0px 5px 0px;
                                                             "
                                                           >
                                                             <table
@@ -662,8 +661,7 @@ defmodule Safira.Email do
                                                             bgcolor=""
                                                             class="outer-td"
                                                             style="
-                                                              padding: 0px 0px 0px
-                                                                0px;
+                                                              padding: 0px 0px 0px 0px;
                                                             "
                                                           >
                                                             <table
@@ -738,8 +736,7 @@ defmodule Safira.Email do
                                                         <tr>
                                                           <td
                                                             style="
-                                                              padding: 18px 30px
-                                                                10px 30px;
+                                                              padding: 25px 30px 15px 30px;
                                                               line-height: 20px;
                                                               text-align: inherit;
                                                             "
@@ -812,8 +809,7 @@ defmodule Safira.Email do
                                                             bgcolor=""
                                                             class="outer-td"
                                                             style="
-                                                              padding: 0px 0px 0px
-                                                                0px;
+                                                              padding: 0px 0px 0px 0px;
                                                             "
                                                           >
                                                             <table
@@ -839,7 +835,7 @@ defmodule Safira.Email do
                                                                     "
                                                                   >
                                                                     <a
-                                                                      href=""
+                                                                      href="#{password_reset_link}"
                                                                       style="
                                                                         background-color: #36dbee;
                                                                         border: 1px
@@ -1471,7 +1467,7 @@ defmodule Safira.Email do
                                                                     "
                                                                   >
                                                                     <a
-                                                                      href="https://seium.org/agenda"
+                                                                      href="https://www.seium.org/schedule"
                                                                       style="
                                                                         background-color: #36dbee;
                                                                         border: 1px
