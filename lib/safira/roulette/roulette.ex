@@ -487,7 +487,7 @@ defmodule Safira.Roulette do
   end
 
   def get_keys_prize(attendee_id, prize_id) do
-    Repo.get_by(AttendeePrize, attendee_id: attendee_id, prize_id: prize_id )
+    Repo.get_by(AttendeePrize, attendee_id: attendee_id, prize_id: prize_id)
   end
 
   def exist_prize(prize_id) do
@@ -504,7 +504,7 @@ defmodule Safira.Roulette do
   #redeems an item for an atendee, should only be used by managers
   def redeem_prize(prize_id, attendee, quantity) do
     Multi.new()
-    |> Multi.run(:buy, fn _repo, _changes ->
+    |> Multi.run(:attendee_prize, fn _repo, _changes ->
       {:ok, get_keys_prize(attendee.id, prize_id)}
     end)
     |> Multi.run(:prize, fn _repo, _var -> {:ok, get_prize!(prize_id)} end)
@@ -514,13 +514,13 @@ defmodule Safira.Roulette do
     |> serializable_transaction()
   end
 
-  def get_attendee_redeemables(attendee) do
+  def get_attendee_prize(attendee) do
     attendee
-    |> Repo.preload(:redeemables)
-    |> Map.fetch!(:redeemables)
-    |> Enum.map(fn redeemable ->
-      b = get_keys_buy(attendee.id, redeemable.id)
-      Map.put(redeemable, :quantity, b.quantity)
+    |> Repo.preload(:prize)
+    |> Map.fetch!(:prize)
+    |> Enum.map(fn prize ->
+      ap = get_keys_attendee_prize(attendee.id, prize.id)
+      Map.put(prize, :quantity, ap.quantity)
     end)
   end
 
