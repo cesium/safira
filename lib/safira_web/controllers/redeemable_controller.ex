@@ -29,11 +29,12 @@ defmodule SafiraWeb.RedeemableController do
         not is_nil(attendee) ->
           redeemable = Store.get_redeemable_attendee(id,attendee)
           render(conn, "show.json", redeemable: redeemable)
-  
+
         true ->
           redeemable = Store.get_redeemable!(id)
           render(conn, "show_non_attendee.json", redeemable: redeemable)
       end
-    
+
   end
+
 end

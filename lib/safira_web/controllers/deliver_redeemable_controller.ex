@@ -14,7 +14,7 @@ defmodule SafiraWeb.DeliverRedeemableController do
           attendee_id: id
           redeemable: redeemable_id
           quantity: quantity
-  }
+        }
   }
 
   "
@@ -26,6 +26,20 @@ defmodule SafiraWeb.DeliverRedeemableController do
         conn
         |> put_status(:unauthorized)
         |> json(%{error: "Only managers can deliver redeemables"})
+    end
+  end
+
+  def show(conn, %{"id" => attendee_id}) do
+    attendee =
+      Accounts.get_attendee!(attendee_id)
+    cond do
+      not is_nil(attendee) ->
+        redeemables = Store.get_attendee_not_redemed(attendee)
+        render(conn, "index.json", delivers: redeemables)
+      true ->
+        conn
+        |> put_status(:bad_request)
+        |> json(%{Error: "Wrong attendee"})
     end
   end
 
@@ -51,14 +65,14 @@ defmodule SafiraWeb.DeliverRedeemableController do
         |> json(%{Redeemable: "Json does not have `quantity` param"})
       {_,_,_} ->
         case Store.redeem_redeemable(redeemable_id, attendee, quant) do
-          {:ok, changes} -> 
+          {:ok, changes} ->
             conn
-              |> put_status(:ok)
-              |> json(%{Redeemable: "#{Map.get(changes, :redeemable).name} redeemed successfully!"})
-          {:error, error} -> 
+            |> put_status(:ok)
+            |> json(%{Redeemable: "#{Map.get(changes, :redeemable).name} redeemed successfully!"})
+          {:error, error} ->
             conn
-              |> put_status(:bad_request)
-              |> json(%{Error: "Wrong quantity"})
+            |> put_status(:bad_request)
+            |> json(%{Error: "Wrong quantity"})
         end
     end
   end
