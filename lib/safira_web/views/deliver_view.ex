@@ -1,4 +1,4 @@
-defmodule SafiraWeb.DeliverView do
+defmodule SafiraWeb.DeliverRedeemableView do
   use SafiraWeb, :view
   alias SafiraWeb.AttendeeView
   alias Safira.Avatar
