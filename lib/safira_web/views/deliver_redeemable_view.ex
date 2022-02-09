@@ -6,7 +6,7 @@ defmodule SafiraWeb.DeliverRedeemableView do
     %{data: render_many(delivers, DeliverRedeemableView, "delivers.json")}
   end
 
-  def render("delivers.json", %{deliver_redeemable: deliver, _}) do
+  def render("delivers.json", %{deliver_redeemable: deliver}) do
     %{
       id: deliver.id,
       name: deliver.name,
