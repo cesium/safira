@@ -91,6 +91,6 @@ defmodule Safira.Roulette.AttendeePrize do
             )
         end
     end
-
   end
+
 end
