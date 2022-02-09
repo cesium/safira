@@ -4,11 +4,11 @@ defmodule SafiraWeb.DeliverRedeemableView do
   alias Safira.Avatar
 
   def render("index.json", %{delivers: delivers}) do
-    %{data: render_many(delivers, DeliverView, "show.json")}
+    %{data: render_many(delivers, DeliverRedeemableView, "show.json")}
   end
 
   def render("show.json", %{deliver: deliver}) do
-    %{data: render_one(deliver, DeliverView, "deliver.json")}
+    %{data: render_one(deliver, DeliverRedeemableView, "deliver.json")}
   end
 
   def render("deliver.json", %{deliver: deliver}) do
