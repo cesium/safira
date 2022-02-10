@@ -50,7 +50,7 @@ defmodule SafiraWeb.DeliverPrizeController do
     prize_id = Map.get(json, "prize")
     quant = Map.get(json, "quantity")
 
-    case {attendee,Roullette.exist_prize(prize_id),quant} do
+    case {attendee,Roulette.exist_prize(prize_id),quant} do
       {nil,_,_} ->
         conn
         |> put_status(:not_found)
