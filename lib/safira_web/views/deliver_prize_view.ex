@@ -10,7 +10,7 @@ defmodule SafiraWeb.DeliverPrizeView do
     %{
       id: deliver.id,
       name: deliver.name,
-      image: deliver.img,
+      image: deliver.avatar,
       not_redeemed: deliver.not_redeemed
     }
   end
