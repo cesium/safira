@@ -26,6 +26,7 @@ defmodule Safira.Store do
 
   def list_store_redeemables(attendee) do
     Repo.all(Redeemable)
+    |> Enum.filter(fn redeemable -> redeemable.is_redeemable end)
     |> Enum.map(fn redeemable -> add_can_buy(redeemable, attendee.id) end)
   end
 
@@ -115,6 +116,7 @@ defmodule Safira.Store do
       b = get_keys_buy(attendee.id, redeemable.id)
       Map.put(redeemable, :quantity, b.quantity)
     end)
+
   end
 
   ## fetches every redeemabla that has yet to be redeemed

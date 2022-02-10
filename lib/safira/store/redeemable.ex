@@ -13,6 +13,7 @@ defmodule Safira.Store.Redeemable do
     field :price, :integer
     field :stock, :integer
     field :max_per_user, :integer
+    field :is_redeemable, :boolean, default: :true
 
     many_to_many :attendees, Attendee, join_through: Buy
 
@@ -21,8 +22,8 @@ defmodule Safira.Store.Redeemable do
 
   def changeset(redeemable, attrs) do
     redeemable
-    |> cast(attrs, [:name, :price, :stock, :max_per_user, :description])
-    |> validate_required([:name, :price, :stock, :max_per_user, :description])
+    |> cast(attrs, [:name, :price, :stock, :max_per_user, :description, :is_redeemable])
+    |> validate_required([:name, :price, :stock, :max_per_user, :description, :is_redeemable])
     |> cast_attachments(attrs, [:img])
     |> validate_length(:name, min: 1, max: 255)
     |> validate_number(:price, greater_than: 0)
