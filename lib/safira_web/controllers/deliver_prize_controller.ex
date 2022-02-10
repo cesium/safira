@@ -42,7 +42,7 @@ defmodule SafiraWeb.DeliverPrizeController do
         # |> json(%{Error: "TEST after after get attendee_not redeemed"})
 
         #temp comment
-        render(conn, "index.json", delivers: prize)
+        render(conn, "indexe.json", delivers: prize)
       true ->
         conn
         |> put_status(:bad_request)
