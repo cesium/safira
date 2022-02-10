@@ -71,6 +71,7 @@ defmodule SafiraWeb.DeliverPrizeController do
         |> put_status(:bad_request)
         |> json(%{Redeemable: "Json does not have `quantity` param"})
       {_,_,_} ->
+        conn
         |> put_status(:bad_request)
         |> json(%{Error: "TEST b4 case roulette"})
 
