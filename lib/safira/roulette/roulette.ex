@@ -513,7 +513,8 @@ defmodule Safira.Roulette do
     |> Multi.update(:update_attendee_prize, fn %{attendee_prize: attendee_prize} ->
       AttendeePrize.changeset(attendee_prize, %{redeemed: attendee_prize.redeemed + quantity})
     end)
-    |> Store.serializable_transaction()
+    #|> Store.serializable_transaction()
+    |> Repo.transaction()
   end
 
   def get_attendee_prize(attendee) do
