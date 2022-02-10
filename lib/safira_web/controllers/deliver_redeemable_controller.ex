@@ -72,7 +72,7 @@ defmodule SafiraWeb.DeliverRedeemableController do
           {:error, error} ->
             conn
             |> put_status(:bad_request)
-            |> json(%{Error: error})
+            |> json(%{Error: "Wrong quantity"})
         end
     end
   end
