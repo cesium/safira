@@ -20,9 +20,10 @@ defmodule Safira.Roulette.AttendeePrize do
   def changeset(attendee_prize, attrs) do
     attendee_prize
     |> cast(attrs, [:quantity, :attendee_id, :prize_id, :redeemed])
+    |> unique_constraint(:unique_attendee_prize)
     |> validate_required([:quantity, :attendee_id, :prize_id])
     |> unique_constraint(:unique_attendee_prize)
-    |> validate_number(:quantity, greater_than: 0)
+    |> validate_number(:quantity, greater_than_or_equal_to: 0)
     |> validate_number(:redeemed, greater_than_of_equal_to: 0)
     |> validate_quantity
     |> validate_redeemed
