@@ -81,7 +81,7 @@ defmodule SafiraWeb.DeliverPrizeController do
             conn
             |> put_status(:ok)
             |> json(%{Prize: "#{Map.get(changes, :prize).name} redeemed successfully!"})
-          {:error, error} ->
+          _ ->
             conn
             |> put_status(:bad_request)
             |> json(%{Error: "Wrong quantity"})
