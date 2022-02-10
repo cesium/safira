@@ -24,7 +24,7 @@ defmodule Safira.Roulette.AttendeePrize do
     |> validate_required([:quantity, :attendee_id, :prize_id])
     |> unique_constraint(:unique_attendee_prize)
     |> validate_number(:quantity, greater_than_or_equal_to: 0)
-    |> validate_number(:redeemed, greater_than_of_equal_to: 0)
+    |> validate_number(:redeemed, greater_than_or_equal_to: 0)
     |> validate_quantity
     |> validate_redeemed
   end
