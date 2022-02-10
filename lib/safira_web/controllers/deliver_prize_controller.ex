@@ -37,12 +37,12 @@ defmodule SafiraWeb.DeliverPrizeController do
       not is_nil(attendee) ->
         prize = Roulette.get_attendee_not_redeemed(attendee)
 
-        conn
-        |> put_status(:bad_request)
-        |> json(%{Error: "TEST after after get attendee_not redeemed"})
+        # conn
+        # |> put_status(:bad_request)
+        # |> json(%{Error: "TEST after after get attendee_not redeemed"})
 
         #temp comment
-        #render(conn, "index.json", delivers: prize)
+        render(conn, "index.json", delivers: prize)
       true ->
         conn
         |> put_status(:bad_request)
