@@ -22,6 +22,8 @@ defmodule Safira.Store.Buy do
     |> validate_required([:attendee_id, :redeemable_id, :quantity])
     |> validate_number(:quantity, greater_than_or_equal_to: 0)
     |> validate_number(:redeemed, greater_than_or_equal_to: 0)
+    |> foreign_key_constraint(:attendee_id)
+    |> foreign_key_constraint(:redeemable_id)
     |> validate_quantity
     |> validate_redeemed
   end
