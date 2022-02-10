@@ -22,6 +22,8 @@ defmodule Safira.Store.Buy do
     |> validate_required([:attendee_id, :redeemable_id, :quantity])
     |> validate_number(:quantity, greater_than_or_equal_to: 0)
     |> validate_number(:redeemed, greater_than_or_equal_to: 0)
+    |> foreign_key_constraint(:attendee_id)
+    |> foreign_key_constraint(:redeemable_id)
     |> validate_quantity
     |> validate_redeemed
   end
@@ -60,7 +62,7 @@ defmodule Safira.Store.Buy do
     end
   end
 
-#ensures that the max amount of redeemd items is less than the total amount bought
+#ensures that the max amount of redeemed items is less than the total amount bought
   defp validate_redeemed(changeset) do
     {_, redeemable_id} = fetch_field(changeset, :redeemable_id)
     {_, redeemed} = fetch_field(changeset, :redeemed)

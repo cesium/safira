@@ -64,7 +64,14 @@ defmodule Safira.Store do
   end
 
   def get_keys_buy(attendee_id, redeemable_id) do
-    Repo.get_by(Buy, attendee_id: attendee_id, redeemable_id: redeemable_id)
+    a = Repo.get_by(Buy, attendee_id: attendee_id, redeemable_id: redeemable_id)
+    case a do
+      nil ->
+        {:error, a}
+      _ ->
+        {:ok, a}
+    end
+
   end
 
   def buy_redeemable(redeemable_id, attendee) do
@@ -98,7 +105,7 @@ defmodule Safira.Store do
   def redeem_redeemable(redeemable_id, attendee, quantity) do
     Multi.new()
     |> Multi.run(:buy, fn _repo, _changes ->
-      {:ok, get_keys_buy(attendee.id, redeemable_id)}
+      get_keys_buy(attendee.id, redeemable_id)
     end)
     |> Multi.run(:redeemable, fn _repo, _var -> {:ok, get_redeemable!(redeemable_id)} end)
     |> Multi.update(:update_buy, fn %{buy: buy} ->
@@ -134,7 +141,7 @@ defmodule Safira.Store do
   end
 
 
-  defp serializable_transaction(multi) do
+  def serializable_transaction(multi) do
     try do
       Repo.transaction(fn ->
         Repo.query!("set transaction isolation level serializable;")

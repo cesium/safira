@@ -6,6 +6,7 @@ defmodule Safira.Roulette do
   import Ecto.Query, warn: false
   alias Safira.Repo
   alias Ecto.Multi
+  alias Safira.Store
 
   alias Safira.Roulette.Prize
   alias Safira.Roulette.AttendeePrize
@@ -470,4 +471,66 @@ defmodule Safira.Roulette do
     Repo.all(query)
     |> Enum.map(fn ap -> {ap.attendee.name, ap.prize, ap.updated_at} end)
   end
+
+  def get_attendee_not_redeemed(attendee) do
+    attendee
+    |> Repo.preload(:prizes)
+    |> Map.fetch!(:prizes)
+    |> Enum.filter( fn prize ->
+      ap = get_keys_prize(attendee.id, prize.id)
+      ap.quantity > 0 && ap.quantity > ap.redeemed
+    end)
+    |> Enum.filter(fn prize -> prize.is_redeemable end)
+    |> Enum.map(fn prize ->
+      ap = get_keys_prize(attendee.id, prize.id)
+      prize2 = Map.put(prize, :quantity, ap.quantity)
+      Map.put(prize2, :not_redeemed, ap.quantity - ap.redeemed)
+    end)
+  end
+
+  def get_keys_prize(attendee_id, prize_id) do
+    ap = Repo.get_by(AttendeePrize, attendee_id: attendee_id, prize_id: prize_id)
+    case ap do
+      nil ->
+        {:error, ap}
+      _ ->
+        {:ok, ap}
+    end
+  end
+
+  def exist_prize(prize_id) do
+    case prize_id do
+      nil ->
+        false
+      _ ->
+        query = from p in Prize,
+            where: p.id == ^prize_id
+        Repo.exists?(query)
+    end
+  end
+
+  #redeems an item for an atendee, should only be used by managers
+  def redeem_prize(prize_id, attendee, quantity) do
+    Multi.new()
+    |> Multi.run(:attendee_prize, fn _repo, _changes ->
+      get_keys_prize(attendee.id, prize_id)
+    end)
+    |> Multi.run(:prizes, fn _repo, _var -> {:ok, get_prize!(prize_id)} end)
+    |> Multi.update(:update_attendee_prize, fn %{attendee_prize: attendee_prize} ->
+      AttendeePrize.changeset(attendee_prize, %{redeemed: attendee_prize.redeemed + quantity})
+    end)
+    #|> Store.serializable_transaction()
+    |> Repo.transaction()
+  end
+
+  def get_attendee_prize(attendee) do
+    attendee
+    |> Repo.preload(:prizes)
+    |> Map.fetch!(:prizes)
+    |> Enum.map(fn prize ->
+      ap = get_keys_attendee_prize(attendee.id, prize.id)
+      Map.put(prize, :quantity, ap.quantity)
+    end)
+  end
+
 end

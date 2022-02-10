@@ -12,6 +12,7 @@ defmodule Safira.Roulette.Prize do
     field :max_amount_per_attendee, :integer
     field :probability, :float
     field :avatar, Safira.Avatar.Type
+    field :is_redeemable, :boolean
 
     many_to_many :attendees, Attendee, join_through: AttendeePrize
 
@@ -21,9 +22,9 @@ defmodule Safira.Roulette.Prize do
   @doc false
   def changeset(prize, attrs) do
     prize
-    |> cast(attrs, [:name, :stock, :max_amount_per_attendee, :probability])
+    |> cast(attrs, [:name, :stock, :max_amount_per_attendee, :probability, :is_redeemable])
     |> cast_attachments(attrs, [:avatar])
-    |> validate_required([:name, :stock, :max_amount_per_attendee, :probability])
+    |> validate_required([:name, :stock, :max_amount_per_attendee, :probability, :is_redeemable])
     |> validate_number(:max_amount_per_attendee, greater_than: 0)
     |> (&validate_number(&1, :stock,
           greater_than_or_equal_to: fetch_field(&1, :max_amount_per_attendee) |> elem(1)
@@ -35,7 +36,7 @@ defmodule Safira.Roulette.Prize do
     prize
     |> cast(attrs, [:name, :stock, :max_amount_per_attendee, :probability])
     |> cast_attachments(attrs, [:avatar])
-    |> validate_required([:name, :stock, :max_amount_per_attendee, :probability])
+    |> validate_required([:name, :stock, :max_amount_per_attendee, :probability, :is_redeemable])
     |> validate_number(:max_amount_per_attendee, greater_than: 0)
     |> validate_number(:stock, greater_than_or_equal_to: 0)
     |> validate_number(:probability, greater_than_or_equal_to: 0, less_than_or_equal_to: 1)

@@ -35,13 +35,14 @@ defmodule Mix.Tasks.Gen.Prizes do
     path
     |> File.stream!()
     |> CSV.parse_stream()
-    |> Enum.map(fn [name, max_amount_per_attendee, stock, probability, image_path] ->
+    |> Enum.map(fn [name, max_amount_per_attendee, stock, probability, is_redeemable, image_path] ->
       {
         %{
           name: name,
           max_amount_per_attendee: String.to_integer(max_amount_per_attendee),
           stock: String.to_integer(stock),
           probability: String.to_float(probability),
+          is_redeemable: convert_bool!(is_redeemable),
         },
         %{
           avatar: %Plug.Upload{
@@ -99,4 +100,7 @@ defmodule Mix.Tasks.Gen.Prizes do
         IO.puts(error)
     end
   end
+
+  defp convert_bool!("yes"), do: true
+  defp convert_bool!("no"), do: false
 end
