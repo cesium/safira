@@ -32,19 +32,20 @@ defmodule SafiraWeb.DeliverPrizeController do
   def show(conn, %{"id" => attendee_id}) do
     attendee =
       Accounts.get_attendee!(attendee_id)
-    cond do
-      not is_nil(attendee) ->
-        prize = Roulette.get_attendee_not_redeemed(attendee)
-        |> put_status(:bad_request)
-        |> json(%{Error: "TEST B4 RENDER"})
+    |> put_status(:bad_request)
+    |> json(%{Error: "TEST after get attendee"})
 
-        #temp comment
-        #render(conn, "index.json", delivers: prize)
-      true ->
-        conn
-        |> put_status(:bad_request)
-        |> json(%{Error: "Wrong attendee"})
-    end
+    # cond do
+    #   not is_nil(attendee) ->
+    #     prize = Roulette.get_attendee_not_redeemed(attendee)
+
+    #     #temp comment
+    #     #render(conn, "index.json", delivers: prize)
+    #   true ->
+    #     conn
+    #     |> put_status(:bad_request)
+    #     |> json(%{Error: "Wrong attendee"})
+    # end
   end
 
   def validate_redeem(conn, json) do
@@ -54,37 +55,36 @@ defmodule SafiraWeb.DeliverPrizeController do
     prize_id = Map.get(json, "prize")
     quant = Map.get(json, "quantity")
     exist = Roulette.exist_prize(prize_id)
-    #TEST CODE
-    conn
-    |> put_status(:ok)
-    |> json(%{Error: "TEST JSON"})
+    # I WAS HERE
 
-    # temp comment
-    # case {attendee, exist, quant} do
-    #   {nil,_,_} ->
-    #     conn
-    #     |> put_status(:not_found)
-    #     |> json(%{User: "Attendee does not exist"})
-    #   {_,false,_} ->
-    #     conn
-    #     |> put_status(:not_found)
-    #     |> json(%{Redeemable: "There is no such Prize"})
-    #   {_,_,nil} ->
-    #     conn
-    #     |> put_status(:bad_request)
-    #     |> json(%{Redeemable: "Json does not have `quantity` param"})
-    #   {_,_,_} ->
-    #     case Roulette.redeem_prize(prize_id, attendee, quant) do
-    #       {:ok, changes} ->
-    #         conn
-    #         |> put_status(:ok)
-    #         |> json(%{Prize: "#{Map.get(changes, :prize).name} redeemed successfully!"})
-    #       {:error, error} ->
-    #         conn
-    #         |> put_status(:bad_request)
-    #         |> json(%{Error: "Wrong quantity"})
-    #     end
-    # end
+    case {attendee, exist, quant} do
+      {nil,_,_} ->
+        conn
+        |> put_status(:not_found)
+        |> json(%{User: "Attendee does not exist"})
+      {_,false,_} ->
+        conn
+        |> put_status(:not_found)
+        |> json(%{Redeemable: "There is no such Prize"})
+      {_,_,nil} ->
+        conn
+        |> put_status(:bad_request)
+        |> json(%{Redeemable: "Json does not have `quantity` param"})
+      {_,_,_} ->
+        |> put_status(:bad_request)
+        |> json(%{Error: "TEST b4 case roulette"})
+
+        # case Roulette.redeem_prize(prize_id, attendee, quant) do
+        #   {:ok, changes} ->
+        #     conn
+        #     |> put_status(:ok)
+        #     |> json(%{Prize: "#{Map.get(changes, :prize).name} redeemed successfully!"})
+        #   {:error, error} ->
+        #     conn
+        #     |> put_status(:bad_request)
+        #     |> json(%{Error: "Wrong quantity"})
+        # end
+    end
   end
 
 end
