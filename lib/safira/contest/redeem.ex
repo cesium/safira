@@ -30,9 +30,11 @@ defmodule Safira.Contest.Redeem do
 
   # verificar se não tem já um badge de uma talk ou workshop nessa hora
   def simultaneous_constraint(changeset) do
-    {_, attendee} = fetch_field(changeset, :attendee)
-    {_, badge} = fetch_field(changeset, :badge)
-    badges = Repo.all(Ecto.assoc(attendee, :badges))
+    {_, attendee_id} = fetch_field(changeset, :attendee_id)
+    {_, badge_id} = fetch_field(changeset, :badge_id)
+    attendee = Accounts.get_attendee!(attendee_id)
+    badges = attendee.badges
+    badge = Contest.get_badge!(badge_id)
 
     if Enum.any?(badges, &coincidental(badge, &1)) do
       add_error(
