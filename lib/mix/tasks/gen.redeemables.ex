@@ -7,7 +7,7 @@ defmodule Mix.Tasks.Gen.Redeemables do
 
     @moduledoc """
     This CSV is waiting for:
-      name,price,stock,max_per_user,description,path_to_image
+      name,price,stock,max_per_user,description,is_redeemable,path_to_image
     """
 
     def run(args) do
@@ -33,14 +33,15 @@ defmodule Mix.Tasks.Gen.Redeemables do
       path
       |> File.stream!()
       |> CSV.parse_stream
-      |> Enum.map(fn [name, price, stock, max_per_user, description, path_to_image] ->
+      |> Enum.map(fn [name, price, stock, max_per_user, description, is_redeemable, path_to_image] ->
         {
           %{
             name: name,
             price: String.to_integer(price),
             stock: String.to_integer(stock),
             max_per_user: String.to_integer(max_per_user),
-            description: description
+            description: description,
+            is_redeemable: convert_bool!(is_redeemable)
           },
           %{
             img: %Plug.Upload{
@@ -86,4 +87,7 @@ defmodule Mix.Tasks.Gen.Redeemables do
           IO.puts(error)
       end
     end
+    
+  defp convert_bool!("yes"), do: true
+  defp convert_bool!("no"), do: false
 end
