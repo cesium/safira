@@ -489,7 +489,13 @@ defmodule Safira.Roulette do
   end
 
   def get_keys_prize(attendee_id, prize_id) do
-    Repo.get_by(AttendeePrize, attendee_id: attendee_id, prize_id: prize_id)
+    ap = Repo.get_by(AttendeePrize, attendee_id: attendee_id, prize_id: prize_id)
+    case ap do
+      nil ->
+        {:error, ap}
+      _ ->
+        {:ok, ap}
+    end
   end
 
   def exist_prize(prize_id) do
@@ -507,7 +513,7 @@ defmodule Safira.Roulette do
   def redeem_prize(prize_id, attendee, quantity) do
     Multi.new()
     |> Multi.run(:attendee_prize, fn _repo, _changes ->
-      {:ok, get_keys_prize(attendee.id, prize_id)}
+      get_keys_prize(attendee.id, prize_id)
     end)
     |> Multi.run(:prizes, fn _repo, _var -> {:ok, get_prize!(prize_id)} end)
     |> Multi.update(:update_attendee_prize, fn %{attendee_prize: attendee_prize} ->
