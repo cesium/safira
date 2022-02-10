@@ -1,4 +1,4 @@
-defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge.Quantity do
+defmodule Mix.Tasks.Gift.Quantity.Checkpoint.Badge do
   use Mix.Task
 
   import Ecto.Query, warn: false
@@ -96,7 +96,7 @@ defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge.Quantity do
 
   defp create_redeem(redeem_attrs, args, attendee, badge) do
     Multi.new()
-    |> Multi.insert(:redeem, Redeem.changeset(%Redeem{}, redeem_attrs))
+    |> Multi.insert(:redeem, Redeem.changeset(%Redeem{}, redeem_attrs, :admin))
     |> Multi.update(:attendee,
       Attendee.update_on_redeem_changeset(
         attendee,
