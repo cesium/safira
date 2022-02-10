@@ -75,20 +75,17 @@ defmodule SafiraWeb.DeliverPrizeController do
       {_,_,_} ->
         #I WAS HERE
         rp = Roulette.redeem_prize(prize_id, attendee, quant)
-        conn
-        |> put_status(:bad_request)
-        |> json(%{Error: "AFTER ROULETTE"})
 
-        # case rp do
-        #   {:ok, changes} ->
-        #     conn
-        #     |> put_status(:ok)
-        #     |> json(%{Prize: "#{Map.get(changes, :prize).name} redeemed successfully!"})
-        #   {:error, error} ->
-        #     conn
-        #     |> put_status(:bad_request)
-        #     |> json(%{Error: "Wrong quantity"})
-        # end
+        case rp do
+          {:ok, changes} ->
+            conn
+            |> put_status(:ok)
+            |> json(%{Prize: "#{Map.get(changes, :prize).name} redeemed successfully!"})
+          {:error, error} ->
+            conn
+            |> put_status(:bad_request)
+            |> json(%{Error: "Wrong quantity"})
+        end
     end
   end
 
