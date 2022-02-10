@@ -6,6 +6,7 @@ defmodule Safira.Roulette do
   import Ecto.Query, warn: false
   alias Safira.Repo
   alias Ecto.Multi
+  alias Safira.Store
 
   alias Safira.Roulette.Prize
   alias Safira.Roulette.AttendeePrize
@@ -512,7 +513,7 @@ defmodule Safira.Roulette do
     |> Multi.update(:update_attendee_prize, fn %{attendee_prize: attendee_prize} ->
       AttendeePrize.changeset(attendee_prize, %{redeemed: attendee_prize.redeemed + quantity})
     end)
-    |> serializable_transaction()
+    |> Store.serializable_transaction()
   end
 
   def get_attendee_prize(attendee) do

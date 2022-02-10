@@ -134,7 +134,7 @@ defmodule Safira.Store do
   end
 
 
-  defp serializable_transaction(multi) do
+  def serializable_transaction(multi) do
     try do
       Repo.transaction(fn ->
         Repo.query!("set transaction isolation level serializable;")
