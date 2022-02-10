@@ -32,6 +32,8 @@ defmodule SafiraWeb.DeliverPrizeController do
   def show(conn, %{"id" => attendee_id}) do
     attendee =
       Accounts.get_attendee!(attendee_id)
+
+    conn
     |> put_status(:bad_request)
     |> json(%{Error: "TEST after get attendee"})
 
@@ -71,11 +73,12 @@ defmodule SafiraWeb.DeliverPrizeController do
         |> put_status(:bad_request)
         |> json(%{Redeemable: "Json does not have `quantity` param"})
       {_,_,_} ->
+        rp = Roulette.redeem_prize(prize_id, attendee, quant)
         conn
         |> put_status(:bad_request)
-        |> json(%{Error: "TEST b4 case roulette"})
+        |> json(%{Error: "AFTER ROULETTE"})
 
-        # case Roulette.redeem_prize(prize_id, attendee, quant) do
+        # case rp do
         #   {:ok, changes} ->
         #     conn
         #     |> put_status(:ok)
