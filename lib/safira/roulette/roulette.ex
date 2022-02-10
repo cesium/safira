@@ -473,8 +473,8 @@ defmodule Safira.Roulette do
 
   def get_attendee_not_redeemed(attendee) do
     attendee
-    |> Repo.preload(:prize)
-    |> Map.fetch!(:prize)
+    |> Repo.preload(:prizes)
+    |> Map.fetch!(:prizes)
     |> Enum.filter( fn prize ->
       ap = get_keys_prize(attendee.id, prize.id)
       ap.quantity > 0 && ap.quantity > ap.redeemed
@@ -508,7 +508,7 @@ defmodule Safira.Roulette do
     |> Multi.run(:attendee_prize, fn _repo, _changes ->
       {:ok, get_keys_prize(attendee.id, prize_id)}
     end)
-    |> Multi.run(:prize, fn _repo, _var -> {:ok, get_prize!(prize_id)} end)
+    |> Multi.run(:prizes, fn _repo, _var -> {:ok, get_prize!(prize_id)} end)
     |> Multi.update(:update_attendee_prize, fn %{attendee_prize: attendee_prize} ->
       AttendeePrize.changeset(attendee_prize, %{redeemed: attendee_prize.redeemed + quantity})
     end)
@@ -517,8 +517,8 @@ defmodule Safira.Roulette do
 
   def get_attendee_prize(attendee) do
     attendee
-    |> Repo.preload(:prize)
-    |> Map.fetch!(:prize)
+    |> Repo.preload(:prizes)
+    |> Map.fetch!(:prizes)
     |> Enum.map(fn prize ->
       ap = get_keys_attendee_prize(attendee.id, prize.id)
       Map.put(prize, :quantity, ap.quantity)
