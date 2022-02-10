@@ -34,7 +34,7 @@ defmodule SafiraWeb.DeliverPrizeController do
       Accounts.get_attendee!(attendee_id)
     cond do
       not is_nil(attendee) ->
-        prize = Roulette.get_attendee_not_redemed(attendee)
+        prize = Roulette.get_attendee_not_redeemed(attendee)
         render(conn, "index.json", delivers: prize)
       true ->
         conn

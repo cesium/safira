@@ -61,7 +61,7 @@ defmodule SafiraWeb.Router do
       post "/give_bonus/:id", BonusController, :give_bonus
       post "/spotlight", SpotlightController, :create
       post "/store/redeem", DeliverRedeemableController, :create
-      post "/roulette/redeem", DeliverPrizeController, :create #404
+      post "/roulette/redeem", DeliverPrizeController, :create #404 -> 500?
 
       resources "/badges", BadgeController, only: [:index, :show]
       resources "/attendees", AttendeeController, except: [:create]

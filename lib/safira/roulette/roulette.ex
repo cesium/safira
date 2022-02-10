@@ -471,10 +471,10 @@ defmodule Safira.Roulette do
     |> Enum.map(fn ap -> {ap.attendee.name, ap.prize, ap.updated_at} end)
   end
 
-  def get_attendee_not_redemed(attendee) do
+  def get_attendee_not_redeemed(attendee) do
     attendee
-    |> Repo.preload(:prizes)
-    |> Map.fetch!(:prizes)
+    |> Repo.preload(:prize)
+    |> Map.fetch!(:prize)
     |> Enum.filter( fn prize ->
       ap = get_keys_prize(attendee.id, prize.id)
       ap.quantity > 0 && ap.quantity > ap.redeemed
