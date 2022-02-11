@@ -5,6 +5,7 @@ defmodule SafiraWeb.AttendeeController do
   alias Safira.Accounts.Attendee
   alias Safira.Accounts.User
   alias Safira.Store
+  alias Safira.Roulette
 
   action_fallback SafiraWeb.FallbackController
 
@@ -27,6 +28,7 @@ defmodule SafiraWeb.AttendeeController do
         attendee = 
           attendee
           |> Map.put(:redeemables,Store.get_attendee_redeemables(attendee))
+          |> Map.put(:prizes,Roulette.get_attendee_prize(attendee))
         render(conn, "show.json", attendee: attendee)
     end
   end

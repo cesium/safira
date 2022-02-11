@@ -529,7 +529,8 @@ defmodule Safira.Roulette do
     |> Map.fetch!(:prizes)
     |> Enum.map(fn prize ->
       ap = get_keys_attendee_prize(attendee.id, prize.id)
-      Map.put(prize, :quantity, ap.quantity)
+      prize2 = Map.put(prize, :quantity, ap.quantity)
+      Map.put(prize2, :not_redeemed, ap.quantity - ap.redeemed)
     end)
   end
 
