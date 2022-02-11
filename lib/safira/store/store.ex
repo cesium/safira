@@ -37,9 +37,9 @@ defmodule Safira.Store do
 
   defp add_can_buy(redeemable,attendee_id) do
     case get_keys_buy(attendee_id, redeemable.id) do
-      nil ->
+      {_, nil} ->
         Map.put(redeemable,:can_buy,Kernel.min(redeemable.max_per_user, redeemable.stock))
-      buy ->
+      {_, buy} ->
         Map.put(redeemable,:can_buy, Kernel.min(redeemable.max_per_user - buy.quantity, redeemable.stock))
     end
   end
