@@ -128,7 +128,7 @@ defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge.With.Redeemable do
     |> Repo.transaction()
   end
 
-  defp gift_checkpoint_redeemable(args, attendees) do
+  defp give_checkpoint_redeemable(args, attendees) do
     attendees
     |> Enum.each(fn a ->
       Store.buy_redeemable(Map.get(args, :redeemable_id),a)
