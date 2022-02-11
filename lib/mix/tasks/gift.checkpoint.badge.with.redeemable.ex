@@ -7,6 +7,7 @@ defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge.With.Redeemable do
   alias Safira.Contest.Badge
   alias Safira.Contest.Redeem
 
+  alias Safira.Store
   alias Safira.Repo
   alias Ecto.Multi
   alias Ecto.Multi
