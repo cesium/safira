@@ -89,6 +89,7 @@ defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge.With.Redeemable do
         Mix.shell().error("Badge_id needs to be valid.")
     end
   end
+
   defp get_attendees_company_badges(args) do
     Repo.all(
       from a in Attendee,
@@ -115,7 +116,7 @@ defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge.With.Redeemable do
 
   defp create_redeem(redeem_attrs, args, attendee, badge) do
     Multi.new()
-    |> Multi.insert(:redeem, Redeem.changeset(%Redeem{}, redeem_attrs))
+    |> Multi.insert(:redeem, Redeem.changeset(%Redeem{}, redeem_attrs, :admin))
     |> Multi.update(:attendee,
       Attendee.update_on_redeem_changeset(
         attendee,
