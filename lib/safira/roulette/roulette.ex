@@ -489,7 +489,8 @@ defmodule Safira.Roulette do
   end
 
   def get_keys_prize(attendee_id, prize_id) do
-    ap = Repo.get_by(AttendeePrize, attendee_id: attendee_id, prize_id: prize_id)
+    ap = 
+      Repo.get_by(AttendeePrize, attendee_id: attendee_id, prize_id: prize_id)
     case ap do
       nil ->
         {:error, ap}
@@ -519,7 +520,6 @@ defmodule Safira.Roulette do
     |> Multi.update(:update_attendee_prize, fn %{attendee_prize: attendee_prize} ->
       AttendeePrize.changeset(attendee_prize, %{redeemed: attendee_prize.redeemed + quantity})
     end)
-    #|> Store.serializable_transaction()
     |> Repo.transaction()
   end
 

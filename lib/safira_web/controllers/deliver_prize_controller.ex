@@ -36,12 +36,6 @@ defmodule SafiraWeb.DeliverPrizeController do
     cond do
       not is_nil(attendee) ->
         prize = Roulette.get_attendee_not_redeemed(attendee)
-
-        # conn
-        # |> put_status(:bad_request)
-        # |> json(%{Error: "TEST after after get attendee_not redeemed"})
-
-        #temp comment
         render(conn, "index.json", delivers: prize)
       true ->
         conn
@@ -57,7 +51,6 @@ defmodule SafiraWeb.DeliverPrizeController do
     prize_id = Map.get(json, "prize")
     quant = Map.get(json, "quantity")
     exist = Roulette.exist_prize(prize_id)
-    # I WAS HERE
 
     case {attendee, exist, quant} do
       {nil,_,_} ->
@@ -73,14 +66,13 @@ defmodule SafiraWeb.DeliverPrizeController do
         |> put_status(:bad_request)
         |> json(%{Redeemable: "Json does not have `quantity` param"})
       {_,_,_} ->
-        #I WAS HERE
         rp = Roulette.redeem_prize(prize_id, attendee, quant)
 
         case rp do
           {:ok, changes} ->
             conn
             |> put_status(:ok)
-            |> json(%{Prize: "#{Map.get(changes, :prize).name} redeemed successfully!"})
+            |> json(%{Prize: "#{Map.get(changes, :prizes).name} redeemed successfully!"})
           _ ->
             conn
             |> put_status(:bad_request)
@@ -88,5 +80,4 @@ defmodule SafiraWeb.DeliverPrizeController do
         end
     end
   end
-
 end
