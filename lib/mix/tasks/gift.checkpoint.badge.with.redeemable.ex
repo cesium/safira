@@ -41,7 +41,7 @@ defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge.With.Redeemable do
     args
     |> validate_args()
     |> map_args()
-    |> gift_redeemable()
+    |> gift_redeemable_badge()
     |> gift_badge()
 
   end
@@ -66,23 +66,12 @@ defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge.With.Redeemable do
     }
   end
 
-  defp gift_badge(args) do
+  defp gift_redeemable_badge(args) do
     case Repo.get(Badge, Map.get(args, :badge_id)) do
       %Badge{} = badge ->
         args = Map.put(args, :badge, badge)
         attendees = get_attendees_company_badges(args)
         give_checkpoint_badge(args, attendees)
-
-      nil ->
-        Mix.shell().error("Badge_id needs to be valid.")
-    end
-  end
-
-  defp gift_redeemable(args) do
-    case Repo.get(Badge, Map.get(args, :badge_id)) do
-      %Badge{} = badge ->
-        args = Map.put(args, :badge, badge)
-        attendees = get_attendees_company_badges(args)
         give_checkpoint_redeemable(args, attendees)
 
       nil ->
