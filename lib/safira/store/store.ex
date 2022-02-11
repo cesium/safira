@@ -120,7 +120,7 @@ defmodule Safira.Store do
     |> Repo.preload(:redeemables)
     |> Map.fetch!(:redeemables)
     |> Enum.map(fn redeemable ->
-      b = get_keys_buy(attendee.id, redeemable.id)
+      {:ok,b} = get_keys_buy(attendee.id, redeemable.id)
       Map.put(redeemable, :quantity, b.quantity)
     end)
 
@@ -132,7 +132,7 @@ defmodule Safira.Store do
     |> Repo.preload(:redeemables)
     |> Map.fetch!(:redeemables)
     |> Enum.filter( fn redeemable ->
-      b = get_keys_buy(attendee.id, redeemable.id)
+      {:ok,b} = get_keys_buy(attendee.id, redeemable.id)
       b.quantity > 0 && b.quantity > b.redeemed
     end)
     |> Enum.map(fn redeemable ->
