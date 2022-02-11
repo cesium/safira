@@ -42,7 +42,6 @@ defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge.With.Redeemable do
     |> validate_args()
     |> map_args()
     |> gift_redeemable_badge()
-    |> gift_badge()
 
   end
 
