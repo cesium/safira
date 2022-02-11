@@ -16,7 +16,7 @@ defmodule SafiraWeb.PrizeView do
     %{
       id: prize.id,
       name: prize.name,
-      avatar: Avatar.url({prize.avatar, prize}, :original)
+      avatar: Avatar.url({prize.avatar, prize}, :original),
       not_redeemed: prize.not_redeemed
     }
   end
