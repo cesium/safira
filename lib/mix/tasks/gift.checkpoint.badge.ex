@@ -99,7 +99,7 @@ defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge do
 
   defp create_redeem(redeem_attrs, args, attendee, badge) do
     Multi.new()
-    |> Multi.insert(:redeem, Redeem.changeset(%Redeem{}, redeem_attrs))
+    |> Multi.insert(:redeem, Redeem.changeset(%Redeem{}, redeem_attrs, :admin))
     |> Multi.update(:attendee,
       Attendee.update_on_redeem_changeset(
         attendee,
