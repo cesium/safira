@@ -88,8 +88,9 @@ defmodule Safira.Store do
       })
     end) #Removes the redeemable's price from the atendee's total balance
     |> Multi.run(:buy, fn _repo, %{attendee: attendee, redeemable: redeemable} ->
+      {_, keys_buy} = get_keys_buy(attendee.id, redeemable_id)
       {:ok,
-       get_keys_buy(attendee.id, redeemable_id) ||
+       keys_buy ||
          %Buy{attendee_id: attendee.id, redeemable_id: redeemable.id, quantity: 0}}
     end) # fetches the buy repo if it exists or creates a new one if it doest exist
     |> Multi.insert_or_update(:upsert_buy, fn %{buy: buy} ->
