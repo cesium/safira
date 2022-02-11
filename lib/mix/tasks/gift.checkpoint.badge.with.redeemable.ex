@@ -78,6 +78,17 @@ defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge.With.Redeemable do
     end
   end
 
+  defp gift_redeemable(args) do
+    case Repo.get(Badge, Map.get(args, :badge_id)) do
+      %Badge{} = badge ->
+        args = Map.put(args, :badge, badge)
+        attendees = get_attendees_company_badges(args)
+        give_checkpoint_redeemable(args, attendees)
+
+      nil ->
+        Mix.shell().error("Badge_id needs to be valid.")
+    end
+  end
   defp get_attendees_company_badges(args) do
     Repo.all(
       from a in Attendee,
@@ -117,16 +128,12 @@ defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge.With.Redeemable do
     |> Repo.transaction()
   end
 
-  defp gift_redeemable(args) do
-    st = args
-    |> Map.get(args, :redeemable_id)
-    |> Store.buy_redeemable()
-    case st do
-      {:ok, _} ->
-        args
-      _ ->
-        {:error, "Cnat gift redeemable"}
-    end
-
+  defp gift_checkpoint_redeemable(args, attendees) do
+    attendees
+    |> Enum.each(fn a ->
+      Store.buy_redeemable(Map.get(args, :redeemable_id),a)
+    end)
+    #this needs to return args
+    args
   end
 end
