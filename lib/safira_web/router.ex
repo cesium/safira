@@ -55,13 +55,13 @@ defmodule SafiraWeb.Router do
       get "/leaderboard/:date", LeaderboardController, :daily
       get "/roulette/latestwins", RouletteController, :latest_wins
       get "/store/redeem/:id", DeliverRedeemableController, :show
-      get "/roulette/redeem/:id", DeliverPrizeController, :show #500
+      get "/roulette/redeem/:id", DeliverPrizeController, :show
 
       post "/roulette", RouletteController, :spin
       post "/give_bonus/:id", BonusController, :give_bonus
       post "/spotlight", SpotlightController, :create
       post "/store/redeem", DeliverRedeemableController, :create
-      post "/roulette/redeem", DeliverPrizeController, :create #infinit loop, test code
+      post "/roulette/redeem", DeliverPrizeController, :create
 
       resources "/badges", BadgeController, only: [:index, :show]
       resources "/attendees", AttendeeController, except: [:create]

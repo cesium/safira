@@ -41,7 +41,7 @@ defmodule Mix.Tasks.Gift.Daily.Badge do
         attendee_id: a.id,
         manager_id: 1,
         badge_id: badge_id
-      })
+      }, :admin)
     end)
 
   end

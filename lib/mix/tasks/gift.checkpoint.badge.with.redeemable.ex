@@ -1,4 +1,4 @@
-defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge do
+defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge.With.Redeemable do
   use Mix.Task
 
   import Ecto.Query, warn: false
@@ -7,6 +7,7 @@ defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge do
   alias Safira.Contest.Badge
   alias Safira.Contest.Redeem
 
+  alias Safira.Store
   alias Safira.Repo
   alias Ecto.Multi
   alias Ecto.Multi
@@ -21,15 +22,16 @@ defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge do
       - entries: Number of entries that an attendee receives for
           having this badge
       - badge_type: type of badge to confirm
+      - redeemable_id: Redeemable's ID that is associated with the given badge
   """
 
   def run(args) do
     cond do
-      length(args) != 4 ->
-        Mix.shell().info("Needs to receive badge_id, badge_count, entries and badge_type.")
+      length(args) != 5 ->
+        Mix.shell().info("Needs to receive badge_id, badge_count, entries ,badge_type and redeemable_id.")
 
       true ->
-        args |> create()
+        create(args)
     end
   end
 
@@ -39,7 +41,8 @@ defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge do
     args
     |> validate_args()
     |> map_args()
-    |> gift()
+    |> gift_redeemable_badge()
+
   end
 
   defp validate_args(args) do
@@ -58,15 +61,17 @@ defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge do
       badge_count: Enum.at(args, 1),
       entries: Enum.at(args, 2),
       badge_type: Enum.at(args, 3),
+      redeemable_id: Enum.at(args, 4)
     }
   end
 
-  defp gift(args) do
+  defp gift_redeemable_badge(args) do
     case Repo.get(Badge, Map.get(args, :badge_id)) do
       %Badge{} = badge ->
         args = Map.put(args, :badge, badge)
         attendees = get_attendees_company_badges(args)
         give_checkpoint_badge(args, attendees)
+        give_checkpoint_redeemable(args, attendees)
 
       nil ->
         Mix.shell().error("Badge_id needs to be valid.")
@@ -112,4 +117,12 @@ defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge do
     |> Repo.transaction()
   end
 
+  defp give_checkpoint_redeemable(args, attendees) do
+    attendees
+    |> Enum.each(fn a ->
+      Store.buy_redeemable(Map.get(args, :redeemable_id),a)
+    end)
+    #this needs to return args
+    args
+  end
 end
