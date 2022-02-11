@@ -34,7 +34,7 @@ defmodule SafiraWeb.DeliverRedeemableController do
       Accounts.get_attendee!(attendee_id)
     cond do
       not is_nil(attendee) ->
-        if Accounts.is_manager(conn)
+        if Accounts.is_manager(conn) do
           redeemables = Store.get_attendee_not_redemed(attendee)
         else
           redeemables = Store.get_attendee_redeemables(attendee)
