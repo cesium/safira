@@ -17,7 +17,16 @@ defmodule SafiraWeb.PrizeView do
       id: prize.id,
       name: prize.name,
       avatar: Avatar.url({prize.avatar, prize}, :original),
-      not_redeemed: prize.not_redeemed
+    }
+  end
+
+  def render("prize_attendee.json", %{prize: prize}) do
+    %{
+      id: prize.id,
+      name: prize.name,
+      avatar: Avatar.url({prize.avatar, prize}, :original),
+      not_redeemed: prize.not_redeemed,
+      is_redeemable: prize.is_redeemable
     }
   end
 
