@@ -41,6 +41,8 @@ defmodule Mix.Tasks.Gen.Companies do
                        description,
                        begin_time,
                        end_time,
+                       begin_badge_time,
+                       end_badge_time,
                        image_path,
                        type,
                        tokens,
@@ -49,6 +51,8 @@ defmodule Mix.Tasks.Gen.Companies do
                      ] ->
       {:ok, begin_datetime, _} = DateTime.from_iso8601("#{begin_time}T00:00:00Z")
       {:ok, end_datetime, _} = DateTime.from_iso8601("#{end_time}T00:00:00Z")
+      {:ok, begin_badge_datetime, _} = DateTime.from_iso8601("#{begin_badge_time}T00:00:00Z")
+      {:ok, end_badge_datetime, _} = DateTime.from_iso8601("#{end_badge_time}T00:00:00Z")
 
       {
         %{
@@ -56,6 +60,8 @@ defmodule Mix.Tasks.Gen.Companies do
           description: description,
           begin: begin_datetime,
           end: end_datetime,
+          begin_badge: begin_badge_datetime,
+          end_badge: end_badge_datetime,
           type: String.to_integer(type),
           tokens: String.to_integer(tokens)
         },

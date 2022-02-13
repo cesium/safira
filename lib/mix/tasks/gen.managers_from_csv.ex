@@ -87,10 +87,8 @@ defmodule Mix.Tasks.Gen.ManagersFromCsv do
 
       user = %{
         "email" => email,
-        "name" => user_csv_entry.name,
         "password" => password,
         "password_confirmation" => password,
-        "is_admin" => convert!(user_csv_entry.admin)
       }
 
       Accounts.create_manager(%{"user" => user, "is_admin" => convert!(user_csv_entry.admin)})
