@@ -74,13 +74,16 @@ defmodule Safira.Accounts do
     Repo.all(from a in Attendee, where: not is_nil(a.user_id))
     |> Repo.preload(:badges)
     |> Repo.preload(:prizes)
-    |> Enum.map(fn x -> Map.put(x, :badge_count, length(Enum.filter(x.badges,fn x -> x.type != 0 end))) end)
+    |> Enum.map(fn x ->
+      Map.put(x, :badge_count, length(Enum.filter(x.badges, fn x -> x.type != 0 end)))
+    end)
   end
 
   def list_active_volunteers_attendees do
-    Repo.all(from a in Attendee,
-      where: not is_nil(a.user_id),
-      where: a.volunteer == ^true
+    Repo.all(
+      from a in Attendee,
+        where: not is_nil(a.user_id),
+        where: a.volunteer == ^true
     )
     |> Repo.preload(:badges)
   end
@@ -93,9 +96,17 @@ defmodule Safira.Accounts do
   end
 
   def get_attendee_with_badge_count!(id) do
-    get_attendee(id)
-    |> (fn x -> Map.put(x, :badge_count,
-     length(Enum.filter(x.badges,fn x -> x.type != 0 end))) end).()
+    case get_attendee(id) do
+      nil ->
+        nil
+
+      %Attendee{} = attendee ->
+        badges =
+          attendee.badges
+          |> Enum.filter(&(&1.type != 0))
+
+        Map.put(attendee, :badge_count, length(badges))
+    end
   end
 
   def get_attendee(id) do
@@ -113,7 +124,7 @@ defmodule Safira.Accounts do
   end
 
   def get_attendee_by_discord_id(discord_id) do
-      Repo.get_by(Attendee, discord_id: discord_id)
+    Repo.get_by(Attendee, discord_id: discord_id)
   end
 
   def create_attendee(attrs \\ %{}) do
@@ -145,7 +156,6 @@ defmodule Safira.Accounts do
     |> Attendee.volunteer_changeset(attrs)
     |> Repo.update()
   end
-
 
   def delete_attendee(%Attendee{} = attendee) do
     Repo.delete(attendee)
@@ -206,7 +216,6 @@ defmodule Safira.Accounts do
     |> Repo.insert()
   end
 
-
   def delete_company(%Company{} = company) do
     Repo.delete(company)
   end
@@ -236,9 +245,11 @@ defmodule Safira.Accounts do
 
     case manager do
       {:error} ->
-        :false
+        false
+
       {:ok, nil} ->
-        :false
+        false
+
       {:ok, man} ->
         man.is_admin
     end

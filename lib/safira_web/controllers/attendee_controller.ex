@@ -18,6 +18,9 @@ defmodule SafiraWeb.AttendeeController do
     attendee = Accounts.get_attendee_with_badge_count!(id)
 
     cond do
+      is_nil(attendee) ->
+        {:error, :not_found}
+
       is_nil(attendee.user_id) ->
         {:error, :not_registered}
 
@@ -25,7 +28,7 @@ defmodule SafiraWeb.AttendeeController do
         render(conn, "manager_show.json", attendee: attendee)
 
       true ->
-        attendee = 
+        attendee =
           attendee
           |> Map.put(:redeemables,Store.get_attendee_redeemables(attendee))
           |> Map.put(:prizes,Roulette.get_attendee_prize(attendee))
