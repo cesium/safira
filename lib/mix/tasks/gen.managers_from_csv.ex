@@ -73,9 +73,8 @@ defmodule Mix.Tasks.Gen.ManagersFromCsv do
     |> CSV.parse_stream()
     |> Stream.map(fn row ->
       %{
-        name: "#{Enum.at(row, 0)} #{Enum.at(row, 1)}",
-        username: Enum.at(row, 2),
-        admin: Enum.at(row, 3)
+        username: Enum.at(row, 0),
+        admin: Enum.at(row, 1)
       }
     end)
   end
