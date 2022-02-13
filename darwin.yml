@@ -1,7 +1,0 @@
-version: "3"
-
-services:
-  db:
-    ports:
-      - ${DB_PORT:-5432}:${DB_PORT:-5432}
-

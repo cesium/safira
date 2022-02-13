@@ -11,8 +11,11 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD:-secret}
       POSTGRES_PORT: ${DB_PORT:-5432}
       POSTGRES_HOST: ${DB_HOST:-localhost}
+    ports:
+      - ${DB_PORT:-5432}:5432
     volumes:
       - pgdata:/var/lib/postgresql/data
+    restart: always
 
 volumes:
   pgdata:
