@@ -4,7 +4,7 @@ defmodule SafiraWeb.Router do
 
   alias Safira.Guardian
 
-  if Mix.env() in [:dev, :stg} do
+  if Mix.env() in [:dev, :stg] do
     forward "/sent_emails", Bamboo.SentEmailViewerPlug
   end
 
