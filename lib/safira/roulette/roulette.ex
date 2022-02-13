@@ -355,7 +355,8 @@ defmodule Safira.Roulette do
           attendee_id: attendee.id,
           badge_id: badge.id,
           manager_id: 1
-        }
+        },
+        :admin
       )
     end)
     |> Multi.update(:attendee_balance_entries, fn %{redeem: redeem} ->
