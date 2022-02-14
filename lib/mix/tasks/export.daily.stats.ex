@@ -46,7 +46,7 @@ defmodule Mix.Tasks.Gift.Badge.Full.Participation do
   end
 
   # tokens atribuidos
-  defp get_nr_tokens_str(date) do
+  defp get_nr_tokens_atr(date) do
 
   end
 
