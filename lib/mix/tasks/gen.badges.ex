@@ -91,7 +91,7 @@ defmodule Mix.Tasks.Gen.Badges do
 
   defp check_image_filename(image_path) do
     if is_nil(image_path) do
-      "badge-missing.png"
+      "missing-badge.svg"
     else
       String.split(image_path, "/") |> List.last()
     end
@@ -99,7 +99,7 @@ defmodule Mix.Tasks.Gen.Badges do
 
   defp check_image_path(image_path) do
     if is_nil(image_path) do
-      "#{File.cwd!()}/assets/static/images/badge-missing.png"
+      "#{File.cwd!()}/assets/static/images/missing-badge.svg"
     else
       image_path
     end
