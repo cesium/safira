@@ -1,119 +1,107 @@
-Badge,Descrição / Como ganhar,Begin,End,Begin,End,Begin Badge Period,End Badge Period,Image path
-Sessão de abertura,Participa na Sessão de Abertura,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,data/badges/geral/abertura(FINAL).png,3,20
-Dia 1,Participa no evento no dia 23 de fevereiro,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,data/badges/geral/dias(FINAL).png,3,20
-Dia 2,Participa no evento no dia 24 de fevereiro,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,data/badges/geral/dias(2)(FINAL).png,3,20
-Dia 3,Participa no evento no dia 25 de fevereiro,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,data/badges/geral/dias(3)(FINAL).png,3,20
-Dia 4,Participa no evento no dia 26 de fevereiro,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,data/badges/geral/dias(4)(FINAL).png,3,20
-Ain't nobody got time fo' that,Participa em todos os dias do evento,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,data/badges/geral/dias(todos)(FINAL).png,3,50
-Damn son :o,Recebe 115 badges,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,data/badges/geral/damn(FINAL).png,3,100
-Shopaholic,Faz redeem a todos os itens da loja,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/geral/shopaholic(FINAL).png,3,50
-Talk Aficionado,Participa em todas as talks,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,data/badges/geral/talkAficionado(FINAL).png,3,50
-Workshop Enthusiast,Participa em 3 workshops,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,data/badges/geral/workshopenthusiast(FINAL).png,3,50
-Curious George,Participa em todos os pitches,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,data/badges/geral/curiousgeorge(FINAL).png,3,50
-Curriculum Vitae,Submete o teu Curriculum Vitae,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/geral/curriculumvitae(FINAL).png,3,30
-Acreditação,Entra no Discord da SEI,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/geral/acreditação(FINAL).png,3,5
-SEI Lover,Dá like em todos os posts do Instagram e Facebook da SEI,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/geral/seilover(FINAL).png,3,10
-Influencer,Partilha uma foto da SEI no Facebook e no Instagram,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/geral/influencer(FINAL).png,3,10
-Early Bird,Sê uma das primeiras 50 inscrições na SEI,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/geral/earlyBird(FINAL).png,3,10
-5 empresas,Fala com 5 empresas,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/empresa/empresa(5)(FINAL).png,4,10
-10 empresas,Fala com 10 empresas,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/empresa/empresa(10)(FINAL).png,4,30
-15 empresas,Fala com 15 empresas,2021-02-24T02:00:00Z,2021-02-27T02:00:00Z,2021-02-24T02:00:00Z,2021-02-27T02:00:00Z,data/badges/empresa/empresa(15)(FINAL).png,4,60
-20 empresas,Fala com 20 empresas,2021-02-24T02:00:00Z,2021-02-27T02:00:00Z,2021-02-24T02:00:00Z,2021-02-27T02:00:00Z,data/badges/empresa/empresa(20)(FINAL).png,4,100
-Talk Paulo Dimas,Participa na talk 'The Future of Language: Augmenting AI and Humans',2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,data/badges/talk/talk(PauloDimas)(FINAL).png,6,25
-Talk Everis,Participa na talk 'Como escolher o primeiro emprego?',2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,data/badges/talk/talk(TiagoSantos)(FINAL).png,6,25
-Talk João Oliveira,Participa na talk 'We Can Do It!',2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,data/badges/talk/talk(JoaoOliveira)(FINAL).png,6,25
-Talk João Dias,Participa na talk 'Developing Tasker - Desafios de um solo Developer',2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,data/badges/talk/talk(JoaoDias)(FINAL).png,6,25
-Talk Subvisual,Participa na talk '(don’t) use vim',2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,data/badges/talk/talk(MiguelPalhas)(FINAL).png,6,25
-Talk Accenture,Participa na talk 'Deep Dive IoT',2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,data/badges/talk/talk(AlexandreBrito)(FINAL).png,6,25
-Talk Tiago Carção,Participa na talk 'Sistemas de Larga Escala - O que esperar da indústria',2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,data/badges/talk/talk(TiagoCarcao)(FINAL).png,6,25
-Talk Juliana Carvalho,Participa na talk 'CV - Check Up',2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,data/badges/talk/talk(JulianaCarvalho)(FINAL).png,6,25
-Talk GoWithFlow,Participa na talk 'O ecossistema tecnológico da mobilidade sustentável',2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,data/badges/talk/talk(AndréDias)(FINAL).png,6,25
-Talk Francisco Maia,Participa na talk 'STAYAWAY COVID - uma ferramenta de combate à pandemia',2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,data/badges/talk/talk(FranciscoMaia)(FINAL).png,6,25
-Talk Gonçalo Silva,Participa na talk 'Developing software remotely and asynchronously',2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,data/badges/talk/talk(GoncaloSilva)(FINAL).png,6,25
-Talk KPMG,Participa na talk 'The future is KPMG',2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,data/badges/talk/talk(RuiGoncalves)(FINAL).png,6,25
-Talk Miguel Regedor,Participa na talk '7 Conselhos de um Engenheiro Informático',2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,data/badges/talk/talk(MiguelRegedor)(FINAL).png,6,25
-Talk André Lago,Participa na talk 'Como conseguires o teu emprego de sonho na Google',2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,data/badges/talk/talk(AndreLago)(FINAL).png,6,25
-The Brave One - Talk Paulo Dimas,Mantém a webcam ligada durante a atividade,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,data/badges/talk/TheBraveOne(PauloDimas)(FINAL).png,6,5
-The Brave One - Talk Everis,Mantém a webcam ligada durante a atividade,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,data/badges/talk/TheBraveOne(TiagoSantos)(FINAL).png,6,5
-The Brave One - Talk João Oliveira,Mantém a webcam ligada durante a atividade,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,data/badges/talk/TheBraveOne(JoaoOliveira)(FINAL).png,6,5
-The Brave One - Talk João Dias,Mantém a webcam ligada durante a atividade,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,data/badges/talk/TheBraveOne(JoaoDias)(FINAL).png,6,5
-The Brave One - Talk Subvisual,Mantém a webcam ligada durante a atividade,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,data/badges/talk/TheBraveOne(MiguelPalhas)(FINAL).png,6,5
-The Brave One - Talk Accenture,Mantém a webcam ligada durante a atividade,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,data/badges/talk/TheBraveOne(AlexandreBrito)(FINAL).png,6,5
-The Brave One - Talk Tiago Carção,Mantém a webcam ligada durante a atividade,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,data/badges/talk/TheBraveOne(TiagoCarcao)(FINAL).png,6,5
-The Brave One - Talk Juliana Carvalho,Mantém a webcam ligada durante a atividade,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,data/badges/talk/TheBraveOne(JulianaCarvalho)(FINAL).png,6,5
-The Brave One - Talk GoWithFlow,Mantém a webcam ligada durante a atividade,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,data/badges/talk/TheBraveOne(AndréDias)(FINAL).png,6,5
-The Brave One - Talk Francisco Maia,Mantém a webcam ligada durante a atividade,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,data/badges/talk/TheBraveOne(FranciscoMaia)(FINAL).png,6,5
-The Brave One - Talk Gonçalo Silva,Mantém a webcam ligada durante a atividade,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,data/badges/talk/TheBraveOne(GonçaloSilva)(FINAL).png,6,5
-The Brave One - Talk KPMG,Mantém a webcam ligada durante a atividade,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,data/badges/talk/TheBraveOne(RuiGoncalves)(FINAL).png,6,5
-The Brave One - Talk Miguel Regedor,Mantém a webcam ligada durante a atividade,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,data/badges/talk/TheBraveOne(MiguelRegedor)(FINAL).png,6,5
-The Brave One - Talk André Lago,Mantém a webcam ligada durante a atividade,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,data/badges/talk/TheBraveOne(AndreLago)(FINAL).png,6,5
-Inquisitor 1,Faz uma pergunta numa talk ou num pitch,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/talk/inquisitor(FINAL).png,6,10
-Inquisitor 2,Faz uma pergunta numa talk ou num pitch,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/talk/inquisitor(2)(FINAL).png,6,10
-Inquisitor 3,Faz uma pergunta numa talk ou num pitch,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/talk/inquisitor(3)(FINAL).png,6,10
-Inquisitor 4,Faz uma pergunta numa talk ou num pitch,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/talk/inquisitor(4)(FINAL).png,6,10
-Inquisitor 5,Faz uma pergunta numa talk ou num pitch,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/talk/inquisitor(5)(FINAL).png,6,10
-Workshop Everis,Participa no workshop da Everis,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,data/badges/workshop/workshop(Everis)(FINAL).png,7,30
-Workshop Subvisual,Participa no workshop da Subvisual,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,data/badges/workshop/workshop(Subvisual)(FINAL).png,7,30
-Workshop Critical Software,Participa no workshop da Critical Software,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,data/badges/workshop/workshop(CriticalSoftware)(FINAL).png,7,30
-Workshop Primavera,Participa no workshop da Primavera,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,data/badges/workshop/workshop(Primavera)(FINAL).png,7,30
-Workshop Bosch,Participa no workshop da Bosch,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,data/badges/workshop/workshop(Bosch)(FINAL).png,7,30
-Workshop Accenture,Participa no workshop da Accenture,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,data/badges/workshop/workshop(Accenture)(FINAL).png,7,30
-The Brave One - Workshop Everis,Mantém a webcam ligada durante a atividade,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,data/badges/workshop/workshop(theBraveOne)(Everis)(FINAL).png,7,5
-The Brave One - Workshop Subvisual,Mantém a webcam ligada durante a atividade,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,data/badges/workshop/workshop(theBraveOne)(Subvisual)(FINAL).png,7,5
-The Brave One - Workshop Critical Software,Mantém a webcam ligada durante a atividade,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,data/badges/workshop/workshop(theBraveOne)(CriticalSoftware)(FINAL).png,7,5
-The Brave One - Workshop Primavera,Mantém a webcam ligada durante a atividade,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,data/badges/workshop/workshop(theBraveOne)(Primavera)(FINAL).png,7,5
-The Brave One - Workshop Bosch,Mantém a webcam ligada durante a atividade,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,data/badges/workshop/workshop(theBraveOne)(Bosch)(FINAL).png,7,5
-The Brave One - Workshop Accenture,Mantém a webcam ligada durante a atividade,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,data/badges/workshop/workshop(theBraveOne)(Accenture)(FINAL).png,7,5
-Pitch Accenture,Participa no pitch,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,data/badges/pitch/pitch(Accenture)(FINAL).png,9,10
-Pitch Capgemini,Participa no pitch,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,data/badges/pitch/pitch(Capgemini)(FINAL).png,9,10
-Pitch Ubiwhere,Participa no pitch,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,data/badges/pitch/pitch(Ubiwhere)(FINAL).png,9,10
-Pitch Vilt,Participa no pitch,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,data/badges/pitch/pitch(VILT)(FINAL).png,9,10
-Pitch BNP Paribas,Participa no pitch,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,data/badges/pitch/pitch(BNP)(FINAL).png,9,10
-Pitch OutSystems,Participa no pitch,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,data/badges/pitch/pitch(Outsystems)(FINAL).png,9,10
-Pitch Eurotux,Participa no pitch,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,data/badges/pitch/pitch(Eurotux)(FINAL).png,9,10
-Pitch KPMG,Participa no pitch,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,data/badges/pitch/pitch(KPMG)(FINAL).png,9,10
-Pitch Teleperformance,Participa no pitch,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,data/badges/pitch/pitch(Teleperformance)(FINAL).png,9,10
-The Brave One - Pitch Accenture,Manter a webcam ligada durante a atividade,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,data/badges/pitch/pitch(theBraveOne)(Accenture)(FINAL).png,9,5
-The Brave One - Pitch Capgemini,Manter a webcam ligada durante a atividade,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,data/badges/pitch/pitch(theBraveOne)(Capgemini)(FINAL).png,9,5
-The Brave One - Pitch Ubiwhere,Manter a webcam ligada durante a atividade,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,data/badges/pitch/pitch(theBraveOne)(Ubiwhere)(FINAL).png,9,5
-The Brave One - Pitch Vilt,Manter a webcam ligada durante a atividade,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,data/badges/pitch/pitch(theBraveOne)(VILT)(FINAL).png,9,5
-The Brave One - Pitch BNP Paribas,Manter a webcam ligada durante a atividade,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,data/badges/pitch/pitch(theBraveOne)(BNP)(FINAL).png,9,5
-The Brave One - Pitch OutSystems,Manter a webcam ligada durante a atividade,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,data/badges/pitch/pitch(theBraveOne)(Outsystems)(FINAL).png,9,5
-The Brave One - Pitch Eurotux,Manter a webcam ligada durante a atividade,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,data/badges/pitch/pitch(theBraveOne)(Eurotux)(FINAL).png,9,5
-The Brave One - Pitch KPMG,Manter a webcam ligada durante a atividade,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,data/badges/pitch/pitch(theBraveOne)(KPMG)(FINAL).png,9,5
-The Brave One - Pitch Teleperformance,Manter a webcam ligada durante a atividade,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,data/badges/pitch/pitch(theBraveOne)(Teleperformance)(FINAL).png,9,5
-Lambe-botas,Manda uma mensagem à organização a dizer que esta é a melhor SEI de sempre!,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/discord/lambebotas(FINAL).png,8,5
-Privacy is dead,Publica (no Discord) uma foto do teu setup/workspace,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/discord/privacy(FINAL).png,8,5
-It's Corona Time,Publica (no Discord) uma foto do que te tem mantido mentalmente são durante esta pandemia (usa a hashtag #itscoronatime),2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/discord/corona(FINAL).png,8,5
-It's Corona Time :(,Publica (no Discord) uma foto do que te tem enlouquecido durante esta pandemia (usa a hashtag #fuckcorona),2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/discord/enlouquecido(FINAL).png,8,5
-Show Off,Publica (no Discord) um print da tua melhor nota,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/discord/showoff(FINAL).png,8,5
-:(,Publica (no Discord) um print da tua pior nota,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/discord/worstnote(FINAL).png,8,5
-Class Clown,Publica (no Discord) uma piada que receba mais de 10 reações (não valem repetidas!),2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/discord/clown(FINAL).png,8,5
-Meme Lord,Publica (no Discord) um meme que receba mais de 20 reações (não valem repetidos!),2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/discord/meme(FINAL).png,8,10
-CTF - Participação,Participa no CTF,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/atividades/CTFParticipação(FINAL).png,2,10
-CTF - 1.º lugar,Sê o vencedor do CTF,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,data/badges/atividades/CTF1lugar(FINAL).png,2,50
-CTF - 2.º lugar,Sê o segundo colocado do CTF,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,data/badges/atividades/CTF2lugar(FINAL).png,2,30
-CTF - 3.º lugar,Sê o terceiro colocado do CTF,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,2021-02-26T02:00:00Z,2021-02-27T02:00:00Z,data/badges/atividades/CTF3lugar(FINAL).png,2,20
-I do programming,Inscreve-te na Hackathon,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/atividades/idoprogramming(FINAL).png,2,50
-Let Me Take A #Selfie,Participa no desafio de fotografia no Instagram,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/atividades/selfie(FINAL).png,2,10
-Google Hashcode - participação,Participa no Google Hashcode (no Hub da SEI),2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,data/badges/atividades/googlehashcodeParticipação(FINAL).png,2,20
-Google Hashcode - 1.º lugar,Fica em 1.º lugar no Google Hashcode (no Hub da SEI),2021-02-25T02:00:00Z,2021-02-27T02:00:00Z,2021-02-25T02:00:00Z,2021-02-27T02:00:00Z,data/badges/atividades/googlehashcode1lugar(FINAL).png,2,20
-Torneio de Xadrez - participação,Participa no torneiro de xadrez,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,data/badges/atividades/xadrezParticipação(FINAL).png,2,10
-Torneio de Xadrez - 1.º lugar,Vence o torneiro de xadrez,2021-02-23T02:00:00Z,2021-02-25T02:00:00Z,2021-02-23T02:00:00Z,2021-02-25T02:00:00Z,data/badges/atividades/xadrez1lugar(FINAL).png,2,20
-Torneio de Xadrez - 2.º lugar,Fica em 2º lugar no torneiro de xadrez,2021-02-23T02:00:00Z,2021-02-25T02:00:00Z,2021-02-23T02:00:00Z,2021-02-25T02:00:00Z,data/badges/atividades/xadrez2lugar(FINAL).png,2,10
-Torneio CS:GO - participação,Participa no torneiro de CS:GO,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,2021-02-23T02:00:00Z,2021-02-24T02:00:00Z,data/badges/atividades/torneioCSGOParticipação(FINAL).png,2,10
-Torneio CS:GO - 1.º lugar,Vence o torneiro de CS:GO,2021-02-23T02:00:00Z,2021-02-25T02:00:00Z,2021-02-23T02:00:00Z,2021-02-25T02:00:00Z,data/badges/atividades/torneioCSGO1lugar(FINAL).png,2,20
-Torneio CS:GO - 2.º lugar,Fica em 2º lugar no torneiro de CS:GO,2021-02-23T02:00:00Z,2021-02-25T02:00:00Z,2021-02-23T02:00:00Z,2021-02-25T02:00:00Z,data/badges/atividades/torneioCSGO2lugar(FINAL).png,2,10
-Discord Master Race - participação,Participa no rally virtual,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,data/badges/atividades/discordMasterRaceParticipação(FINAL).png,2,10
-Discord Master Race - 1.º lugar,Vence o rally virtual,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,2021-02-24T02:00:00Z,2021-02-25T02:00:00Z,data/badges/atividades/discordMasterRace1lugar(FINAL).png,2,20
-Discord Social Meeting,Participa no convívio do Discord,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,2021-02-25T02:00:00Z,2021-02-26T02:00:00Z,data/badges/atividades/discordSocialMeeting(FINAL).png,2,10
-Lucky Bastard 1,Joga na 'Spin the Wheel' para te habilitares a receber este badge,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/atividades/luckybastard(FINAL).png,2,0
-Lucky Bastard 2,Joga na 'Spin the Wheel' para te habilitares a receber este badge,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/atividades/luckybastard(FINAL).png,2,0
-Lucky Bastard 3,Joga na 'Spin the Wheel' para te habilitares a receber este badge,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/atividades/luckybastard(FINAL).png,2,0
-Lucky Bastard 4,Joga na 'Spin the Wheel' para te habilitares a receber este badge,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/atividades/luckybastard(FINAL).png,2,0
-Lucky Bastard 5,Joga na 'Spin the Wheel' para te habilitares a receber este badge,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/atividades/luckybastard(FINAL).png,2,0
-Lucky Bastard 6,Joga na 'Spin the Wheel' para te habilitares a receber este badge,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/atividades/luckybastard(FINAL).png,2,0
-Lucky Bastard 7,Joga na 'Spin the Wheel' para te habilitares a receber este badge,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/atividades/luckybastard(FINAL).png,2,0
-Lucky Bastard 8,Joga na 'Spin the Wheel' para te habilitares a receber este badge,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/atividades/luckybastard(FINAL).png,2,0
-Lucky Bastard 9,Joga na 'Spin the Wheel' para te habilitares a receber este badge,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/atividades/luckybastard(FINAL).png,2,0
-Lucky Bastard 10,Joga na 'Spin the Wheel' para te habilitares a receber este badge,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,2021-02-23T02:00:00Z,2021-02-27T02:00:00Z,data/badges/atividades/luckybastard(FINAL).png,2,0
+Badge,Descrição / Como ganhar,Begin,End,Begin Badge,End Badge,Image path,Tipo,Valor (tokens)
+Sessão de abertura,Participa na Sessão de Abertura,2022-02-15T10:00:00Z,2022-02-15T11:00:00Z,2022-02-15T09:00:00Z,2022-02-15T14:00:00Z,Badges/AtividadesDesafios/abertura.svg,3,20
+Dia 1,Participa no evento no dia 15 de fevereiro,2022-02-15T09:00:00Z,2022-02-15T23:59:00Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/AtividadesDesafios/dia15.svg,3,20
+Dia 2,Participa no evento no dia 16 de fevereiro,2022-02-16T09:00:00Z,2022-02-16T23:59:00Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/AtividadesDesafios/dia16.svg,3,20
+Dia 3,Participa no evento no dia 17 de fevereiro,2022-02-17T09:00:00Z,2022-02-17T23:59:00Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/AtividadesDesafios/dia17.svg,3,20
+Dia 4,Participa no evento no dia 18 de fevereiro,2022-02-18T09:00:00Z,2022-02-18T17:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/AtividadesDesafios/dia18.svg,3,20
+Ain't nobody got time fo' that,"Participa em todos os dias do evento (15, 16, 17 e 18)",2022-02-18T09:00:00Z,2022-02-18T17:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/AtividadesDesafios/nobodygottime.svg,3,50
+Damn son :o,Recebe 100 badges,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/AtividadesDesafios/damnson.svg,3,100
+Talk Aficionado,Participa em todas as talks e tertúlias,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-14T09:00:00Z,2022-02-18T09:00:00Z,Badges/AtividadesDesafios/talkaficionado.svg,3,50
+Workshop Enthusiast,Participa em 3 workshops,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-14T09:00:00Z,2022-02-18T09:00:00Z,Badges/AtividadesDesafios/workshopenthusiast.svg,3,50
+Curious George,Participa em todos os pitches,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-14T09:00:00Z,2022-02-18T09:00:00Z,Badges/AtividadesDesafios/curriousgeorge.svg,3,50
+Acreditação,Faz o check-in no balcão do CP2,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T16:00:00Z,Badges/AtividadesDesafios/acreditacao.svg,3,5
+SEI Lover,Dá like em todos os posts do Instagram e Facebook da SEI,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/AtividadesDesafios/seilover.svg,3,10
+Influencer,Partilha uma foto da SEI no Instagram (e dá tag à conta da SEI) ou no Twitter (e dá tag à conta do CeSIUM),2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/AtividadesDesafios/influencer.svg,3,10
+Early Bird,Sê uma das primeiras 30 inscrições na SEI,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-18T09:00:00Z,2022-02-18T09:00:00Z,Badges/AtividadesDesafios/earlybird.svg,3,10
+Shopaholic,Compra um artigo de merch da loja do CeSIUM (store.cesium.di.uminho.pt),2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/AtividadesDesafios/shopaholic.svg,3,10
+Let Me Take A #Selfie,Tirar foto com a mascote,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/AtividadesDesafios/selfie.svg,3,10
+STAY SEI-FE,Usa uma máscara da cor da SEI,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/AtividadesDesafios/sensei.svg,3,5
+"First come, first served",Sê um dos primeiros 15 a fazer o check-in,2022-02-15T09:00:00Z,2022-02-15T12:00:00Z,2022-02-18T09:00:00Z,2022-02-18T09:00:00Z,Badges/AtividadesDesafios/fcfs.svg,3,10
+"Attention span, who?",Faz um reels sobre a SEI,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/AtividadesDesafios/attentionspan.svg,3,20
+Filtro,Publica um instastory com o filtro de instagram da SEI,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/AtividadesDesafios/filtro.svg,3,15
+Parede,Tira uma foto na parede da SEI,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/AtividadesDesafios/parede.svg,3,15
+5 empresas,Fala com 5 empresas,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/Empresa/5empresas.svg,3,10
+10 empresas,Fala com 10 empresas,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/Empresa/10empresas.svg,3,30
+15 empresas,Fala com 15 empresas,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/Empresa/15empresas.svg,3,60
+19 empresas,Fala com 19 empresas,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/Empresa/19empresas.svg,3,100
+Talk - Olhando para o Futuro,Participa na talk 'Olhando para o Futuro',2022-02-15T12:00:00Z,2022-02-15T13:00:00Z,2022-02-15T09:00:00Z,2022-02-15T14:00:00Z,Badges/Talk/1_TALK.svg,6,25
+Talk - Passwordless FIDO2/Webauthn 101: Strong security meets great UX,"Participa na talk 'Passwordless FIDO2/Webauthn 101: Strong security meets great UX'
+2022-02-15T15:00:00Z,2022-02-15T14:00:00Z,2022-02-15T18:00:00Z,Badges/Talk/2_TALK.svg,6,25
+Talk -  Elixir in the community,Participa na talk 'Elixir in the community',2022-02-15T15:00:00Z,2022-02-15T16:00:00Z,2022-02-15T14:00:00Z,2022-02-15T18:00:00Z,Badges/Talk/3_TALK.svg,6,25
+Tertúlia - 'De PEI a empresa',Participa na tertúia De PEI a empresa,2022-02-15T17:00:00Z,2022-02-15T18:00:00Z,2022-02-15T16:00:00Z,2022-02-15T18:00:00Z,Badges/AtividadesDesafios/tertulia_PEI.svg,6,25
+Talk Accenture,Participa na talk 'A nuvem. Um desafio e oportunidade para as empresas',2022-02-16T11:30:00Z,2022-02-16T12:30:00Z,2022-02-16T09:00:00Z,2022-02-16T14:00:00Z,Badges/Talk/4_TALK.svg,6,25
+Talk Continental,Participa na talk 'Industry 4.0 or why do we need software in a tire plant?',2022-02-16T14:00:00Z,2022-02-16T15:00:00Z,2022-02-16T14:00:00Z,2022-02-16T18:00:00Z,Badges/Talk/5_TALK.svg,6,25
+Talk Uphold,Participa na talk 'Blockchains and Cryptocurrencies',2022-02-16T15:00:00Z,2022-02-16T16:00:00Z,2022-02-16T14:00:00Z,2022-02-16T18:00:00Z,Badges/Talk/6_TALK.svg,6,25
+Tertúlia 'Batalha de Paradigmas',Participa na tertúia Batalha de Paradigmas,2022-02-16T17:00:00Z,2022-02-16T18:00:00Z,2022-02-16T16:00:00Z,2022-02-16T18:00:00Z,Badges/AtividadesDesafios/tertuliaparadigmas.svg,6,25
+Talk Emanuel Mota,Participa na talk 'Blockchain crash course and why you should care about Web 3.0',2022-02-17T11:30:00Z,2022-02-17T12:30:00Z,2022-02-17T09:00:00Z,2022-02-16T14:00:00Z,Badges/Talk/7_TALK.svg,6,25
+Talk Ana Ferreira,Participa na talk 'Cibersegurança: CID e COVID',2022-02-17T14:00:00Z,2022-02-17T15:00:00Z,2022-02-17T14:00:00Z,2022-02-17T18:00:00Z,Badges/Talk/8_TALK.svg,6,25
+Talk Retail Consult,Participa na talk 'A Inteligência Artificial no Retalho e Sistema de Processamento Inteligente de Batch',2022-02-17T15:00:00Z,2022-02-17T16:00:00Z,2022-02-17T14:00:00Z,2022-02-17T18:00:00Z,Badges/Talk/9_TALK.svg,6,25
+Tertúlia 'A Developers Guide to Web3',Participa na tertúlia  'A Developers Guide to Web3',2022-02-17T17:00:00Z,2022-02-17T18:00:00Z,2022-02-17T16:00:00Z,2022-02-17T18:00:00Z,Badges/AtividadesDesafios/tertuliaweb3.svg,6,25
+Talk Sara Vieira,Participa na talk 'From Blender to the Web - the Journey of a 3D Model',2022-02-18T11:30:00Z,2022-02-18T12:30:00Z,2022-02-18T09:00:00Z,2022-02-18T14:00:00Z,Badges/Talk/10_TALK.svg,6,25
+Talk Telmo Pires,Participa na talk 'Demythifying AI',2022-02-18T14:00:00Z,2022-02-18T15:00:00Z,2022-02-18T14:00:00Z,2022-02-18T17:00:00Z,Badges/Talk/11_TALK.svg,6,25
+Talk Rui Quelhas,Participa na talk 'How a single NPM package can ruin your business',2022-02-18T15:00:00Z,2022-02-18T16:00:00Z,2022-02-18T14:00:00Z,2022-02-18T17:00:00Z,Badges/Talk/12_TALK.svg,6,25
+Inquisitor 1,Faz uma pergunta numa talk ou num pitch,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/AtividadesDesafios/1_inquisitor.svg,2,10
+Inquisitor 2,Faz uma pergunta numa talk ou num pitch,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/AtividadesDesafios/2_inquisitor.svg,2,10
+Inquisitor 3,Faz uma pergunta numa talk ou num pitch,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/AtividadesDesafios/3_inquisitor.svg,2,10
+Inquisitor 4,Faz uma pergunta numa talk ou num pitch,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/AtividadesDesafios/4_inquisitor.svg,2,10
+Inquisitor 5,Faz uma pergunta numa talk ou num pitch,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/AtividadesDesafios/5_inquisitor.svg,2,10
+Speaker - Helder Coelho,Fala com o orador no final da talk,2022-02-15T12:00:00Z,2022-02-15T13:00:00Z,2022-02-15T09:00:00Z,2022-02-15T14:00:00Z,Badges/Speaker/hc.svg,2,5
+Speaker - Paulo Lopes,Fala com o orador no final da talk,2022-02-15T14:00:00Z,2022-02-15T15:00:00Z,2022-02-15T14:00:00Z,2022-02-15T18:00:00Z,Badges/Speaker/pl.svg,2,5
+Speaker - Bernardo Amorim,Fala com o orador no final da talk,2022-02-15T15:00:00Z,2022-02-15T16:00:00Z,2022-02-15T14:00:00Z,2022-02-15T18:00:00Z,Badges/Speaker/ba.svg,2,5
+Speaker - Francisco Prata,Fala com o orador no final da talk,2022-02-16T11:30:00Z,2022-02-16T12:30:00Z,2022-02-16T09:00:00Z,2022-02-16T14:00:00Z,Badges/Speaker/lf.svg,2,5
+Speaker -  Lars Frische,Fala com o orador no final da talk,2022-02-16T14:00:00Z,2022-02-16T15:00:00Z,2022-02-16T14:00:00Z,2022-02-16T18:00:00Z,Badges/Speaker/fp.svg,2,5
+Speaker - André Coelho,Fala com o orador no final da talk,2022-02-16T15:00:00Z,2022-02-16T16:00:00Z,2022-02-16T14:00:00Z,2022-02-16T18:00:00Z,Badges/Speaker/ac.svg,2,5
+Speaker - Emanuel Mota,Fala com o orador no final da talk,2022-02-17T11:30:00Z,2022-02-17T12:30:00Z,2022-02-17T09:00:00Z,2022-02-16T14:00:00Z,Badges/Speaker/em.svg,2,5
+Speaker - Alexandra Oliveira,Fala com o orador no final da talk,2022-02-17T14:00:00Z,2022-02-17T15:00:00Z,2022-02-17T14:00:00Z,2022-02-17T18:00:00Z,Badges/Speaker/ao.svg,2,5
+Speaker - Ana Ferreira,Fala com o orador no final da talk,2022-02-17T15:00:00Z,2022-02-17T16:00:00Z,2022-02-17T14:00:00Z,2022-02-17T18:00:00Z,Badges/Speaker/af.svg,2,5
+Speaker - Sara Vieira,Fala com o orador no final da talk,2022-02-18T11:30:00Z,2022-02-18T12:30:00Z,2022-02-18T09:00:00Z,2022-02-18T14:00:00Z,Badges/Speaker/sv.svg,2,5
+Speaker - Telmo Pires,Fala com o orador no final da talk,2022-02-18T14:00:00Z,2022-02-18T15:00:00Z,2022-02-18T14:00:00Z,2022-02-18T17:00:00Z,Badges/Speaker/tp.svg,2,5
+Speaker - Rui Quelhas,Fala com o orador no final da talk,2022-02-18T15:00:00Z,2022-02-18T16:00:00Z,2022-02-18T14:00:00Z,2022-02-18T17:00:00Z,Badges/Speaker/rq.svg,2,5
+Workshop 'Deploying ML Models in Sagemaker' | Saltpay,Participa no workshop 'Deploying ML Models in Sagemaker' | Saltpay,2022-02-16T09:00:00Z,2022-02-16T11:00:00Z,2022-02-16T09:00:00Z,2022-02-16T14:00:00Z,Badges/Workshop/saltpay_workshop.svg,7,30
+Workshop 'Agile HealthCare' | Glintt,Participa no workshop 'Agile HealthCare' | Glintt,2022-02-16T09:00:00Z,2022-02-16T11:00:00Z,2022-02-16T09:00:00Z,2022-02-16T14:00:00Z,Badges/Workshop/glintt_workshop.svg,7,30
+Workshop ' Code Rumble: #Analytics #Financial Risk' | Delloite,Workshop ' Code Rumble: #Analytics #Financial Risk' | Delloite,2022-02-17T09:00:00Z,2022-02-17T11:00:00Z,2022-02-17T09:00:00Z,2022-02-17T14:00:00Z,Badges/Workshop/deloitte_workshop.svg,7,30
+Workshop 'Salesforce Tech Session' | Accenture,Participa no workshop 'Salesforce Tech Session' | Accenture,2022-02-17T09:00:00Z,2022-02-17T11:00:00Z,2022-02-17T09:00:00Z,2022-02-17T14:00:00Z,Badges/Workshop/accenture_workshop.svg,7,30
+Workshop 'Blockchain and Smart Contracts in Action!Blockchain and Smart Contracts in Action! ' | Yari Labs,Participa no Workshop 'Blockchain and Smart Contracts in Action!Blockchain and Smart Contracts in Action!'  | Yari Labs,2022-02-18T09:00:00Z,2022-02-18T11:00:00Z,2022-02-18T09:00:00Z,2022-02-18T14:00:00Z,Badges/Workshop/yarilabs_workshop.svg,7,30
+Workshop 'Starting on Big Data with Twitter Streaming DEMO' | XpandIT,Participa no workshop 'Starting on Big Data with Twitter Streaming DEMO' | XpandIT,2022-02-18T09:00:00Z,2022-02-18T11:00:00Z,2022-02-18T09:00:00Z,2022-02-18T14:00:00Z,Badges/Workshop/xpandit_workshop.svg,7,30
+Workshop 'The role of a developer in a product team' | Subvisual,Participa no workshop 'The role of a developer in a product team' | Subvisual,2022-02-18T09:00:00Z,2022-02-18T11:00:00Z,2022-02-18T09:00:00Z,2022-02-18T14:00:00Z,Badges/Workshop/subvisual_workshop.svg,7,30
+Pitch - Accenture,Participa no pitch,2022-02-15T16:45:00Z,2022-02-15T17:00:00Z,2022-02-15T16:00:00Z,2022-02-15T18:00:00Z,Badges/Pitch/accenture_pitch.svg,9,10
+Pitch - Farfetch,Participa no pitch,2022-02-15T16:30:00Z,2022-02-15T16:45:00Z,2022-02-15T16:00:00Z,2022-02-15T18:00:00Z,Badges/Pitch/farfetch_pitch.svg,9,10
+Pitch Retail Consult,Participa no pitch,2022-02-16T16:30:00Z,2022-02-16T16:45:00Z,2022-02-16T16:00:00Z,2022-02-16T18:00:00Z,Badges/Pitch/retailconsult_pitch.svg,9,10
+Pitch Uphold,Participa no pitch,2022-02-16T16:45:00Z,2022-02-16T17:00:00Z,2022-02-16T16:00:00Z,2022-02-16T18:00:00Z,Badges/Pitch/uphold_pitch.svg,9,10
+Pitch Continental,Participa no pitch,2022-02-17T16:30:00Z,2022-02-17T16:30:00Z,2022-02-17T16:00:00Z,2022-02-17T18:00:00Z,Badges/Pitch/continental_pitch.svg,9,10
+Pitch EY,Participa no pitch,2022-02-17T16:45:00Z,2022-02-17T16:45:00Z,2022-02-17T16:00:00Z,2022-02-17T18:00:00Z,Badges/Pitch/ey_pitch.svg,9,10
+Pitch Agentifai,Participa no pitch,2022-02-18T16:30:00Z,2022-02-17T16:45:00Z,2022-02-18T16:00:00Z,2022-02-18T18:00:00Z,Badges/Pitch/agentifai_pitch.svg,9,10
+Class Clown,Publica (no Discord) uma piada que receba mais de 10 reações (não valem repetidas!),2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/Discord/classclown.svg,8,5
+Meme Lord,Publica (no Discord) um meme que receba mais de 20 reações (não valem repetidos!),2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/Discord/memelord.svg,8,10
+Jantar Empresarial - participação,Sê convidado e vem ao Jantar Empresarial com a Accenture,2022-02-16T20:00:00Z,2022-02-16T23:59:00Z,2022-02-16T20:00:00Z,2022-02-16T23:59:00Z,Badges/AtividadesDesafios/jantar.svg,2,50
+Geek Night - participação,Assiste às apresentações da Geek Night,2022-02-15T21:00:00Z,2022-02-15T23:59:00Z,2022-02-15T20:00:00Z,2022-02-15T23:59:00Z,Badges/AtividadesDesafios/geeknight.svg,2,50
+CTF - Participação,Participa no CTF,2022-02-15T09:00:00Z,2022-02-15T09:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/AtividadesDesafios/participacao_ctf.svg,2,10
+CTF - 1.º lugar,Sê o vencedor do CTF,2022-02-15T09:00:00Z,2022-02-15T09:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/AtividadesDesafios/1_CTF.svg,2,50
+CTF - 2.º lugar,Sê o segundo colocado do CTF,2022-02-15T09:00:00Z,2022-02-15T09:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/AtividadesDesafios/2_CTF.svg,2,30
+CTF - 3.º lugar,Sê o terceiro colocado do CTF,2022-02-15T09:00:00Z,2022-02-15T09:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/AtividadesDesafios/3_CTF.svg,2,20
+Curriculum Vitae,Envia o teu CV para cv@seium.org e reclama o badge na Acreditação,2022-02-15T09:00:00Z,2022-02-15T09:00:00Z,2022-02-15T09:00:00Z,2022-02-18T16:00:00Z,Badges/AtividadesDesafios/cv.svg,2,30
+Concurso de fotografia,Participa no desafio de fotografia no Instagram,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T16:00:00Z,Badges/AtividadesDesafios/fotografia.svg,2,10
+Torneio de Xadrez - participação,Participa no torneio de xadrez,2022-02-17T21:00:00Z,2022-02-17T23:59:59Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/AtividadesDesafios/participacao_xadrez.svg,2,10
+Torneio de Xadrez - 1.º lugar,Vence o torneio de xadrez,2022-02-17T21:00:00Z,2022-02-17T23:59:59Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/AtividadesDesafios/1_xadrez.svg,2,20
+Torneio de Xadrez - 2.º lugar,Fica em 2.º lugar no torneio de xadrez,2022-02-17T21:00:00Z,2022-02-17T23:59:59Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/AtividadesDesafios/2_xadrez.svg,2,10
+Torneio CS:GO - participação,Participa no torneio de CS:GO,2022-02-17T21:00:00Z,2022-02-17T23:59:59Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/AtividadesDesafios/participacao_csgo.svg,2,10
+Torneio CS:GO - 1.º lugar,Vence o torneio de CS:GO,2022-02-17T21:00:00Z,2022-02-17T23:59:59Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/AtividadesDesafios/1_csgo.svg,2,20
+Torneio CS:GO - 2.º lugar,Fica em 2.º lugar no torneio de CS:GO,2022-02-17T21:00:00Z,2022-02-17T23:59:59Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/AtividadesDesafios/2_csgo.svg,2,10
+Lucky Bastard 1,Joga na 'Spin the Wheel' para te habilitares a receber este badge,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/AtividadesDesafios/luckybastard.svg,2,0
+Lucky Bastard 2,Joga na 'Spin the Wheel' para te habilitares a receber este badge,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/AtividadesDesafios/luckybastard.svg,2,0
+Lucky Bastard 3,Joga na 'Spin the Wheel' para te habilitares a receber este badge,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/AtividadesDesafios/luckybastard.svg,2,0
+Lucky Bastard 4,Joga na 'Spin the Wheel' para te habilitares a receber este badge,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/AtividadesDesafios/luckybastard.svg,2,0
+Lucky Bastard 5,Joga na 'Spin the Wheel' para te habilitares a receber este badge,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/AtividadesDesafios/luckybastard.svg,2,0
+Lucky Bastard 6,Joga na 'Spin the Wheel' para te habilitares a receber este badge,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/AtividadesDesafios/luckybastard.svg,2,0
+Lucky Bastard 7,Joga na 'Spin the Wheel' para te habilitares a receber este badge,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/AtividadesDesafios/luckybastard.svg,2,0
+Lucky Bastard 8,Joga na 'Spin the Wheel' para te habilitares a receber este badge,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/AtividadesDesafios/luckybastard.svg,2,0
+Lucky Bastard 9,Joga na 'Spin the Wheel' para te habilitares a receber este badge,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/AtividadesDesafios/luckybastard.svg,2,0
+Lucky Bastard 10,Joga na 'Spin the Wheel' para te habilitares a receber este badge,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/AtividadesDesafios/luckybastard.svg,2,0
+Coffee Break 1,Claim your cookies!,2022-02-15T11:30:00Z,2022-02-15T12:00:00Z,2022-02-15T09:00:00Z,2022-02-15T14:00:00Z,Badges/AtividadesDesafios/coffeebreak.svg,0,0
+Coffee Break 2,Claim your cookies!,2022-02-15T16:00:00Z,2022-02-15T16:30:00Z,2022-02-15T14:00:00Z,2022-02-15T18:00:00Z,Badges/AtividadesDesafios/coffeebreak.svg,0,0
+Coffee Break 3,Claim your cookies!,2022-02-16T11:00:00Z,2022-02-16T11:30:00Z,2022-02-16T09:00:00Z,2022-02-16T14:00:00Z,Badges/AtividadesDesafios/coffeebreak.svg,0,0
+Coffee Break 4,Claim your cookies!,2022-02-16T16:00:00Z,2022-02-16T16:30:00Z,2022-02-16T14:00:00Z,2022-02-16T18:00:00Z,Badges/AtividadesDesafios/coffeebreak.svg,0,0
+Coffee Break 5,Claim your cookies!,2022-02-17T11:00:00Z,2022-02-17T11:30:00Z,2022-02-17T09:00:00Z,2022-02-17T14:00:00Z,Badges/AtividadesDesafios/coffeebreak.svg,0,0
+Coffee Break 6,Claim your cookies!,2022-02-17T16:00:00Z,2022-02-17T16:30:00Z,2022-02-17T14:00:00Z,2022-02-17T18:00:00Z,Badges/AtividadesDesafios/coffeebreak.svg,0,0
+Coffee Break 7,Claim your cookies!,2022-02-18T11:00:00Z,2022-02-18T11:30:00Z,2022-02-18T09:00:00Z,2022-02-18T14:00:00Z,Badges/AtividadesDesafios/coffeebreak.svg,0,0
+Coffee Break 8,Claim your cookies!,2022-02-18T16:00:00Z,2022-02-18T16:30:00Z,2022-02-18T14:00:00Z,2022-02-18T18:00:00Z,Badges/AtividadesDesafios/coffeebreak.svg,0,0
