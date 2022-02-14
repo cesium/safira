@@ -49,10 +49,10 @@ defmodule Mix.Tasks.Gen.Companies do
                        sponsorship,
                        channel_id
                      ] ->
-      {:ok, begin_datetime, _} = DateTime.from_iso8601("#{begin_time}T00:00:00Z")
-      {:ok, end_datetime, _} = DateTime.from_iso8601("#{end_time}T00:00:00Z")
-      {:ok, begin_badge_datetime, _} = DateTime.from_iso8601("#{begin_badge_time}T00:00:00Z")
-      {:ok, end_badge_datetime, _} = DateTime.from_iso8601("#{end_badge_time}T00:00:00Z")
+      {:ok, begin_datetime, _} = DateTime.from_iso8601(begin_time)
+      {:ok, end_datetime, _} = DateTime.from_iso8601(end_time)
+      {:ok, begin_badge_datetime, _} = DateTime.from_iso8601(begin_badge_time)
+      {:ok, end_badge_datetime, _} = DateTime.from_iso8601(end_badge_time)
 
       {
         %{
