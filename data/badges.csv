@@ -50,7 +50,7 @@ Speaker - Bernardo Amorim,Fala com o orador no final da talk,2022-02-15T15:00:00
 Speaker - Francisco Prata,Fala com o orador no final da talk,2022-02-16T11:30:00Z,2022-02-16T12:30:00Z,2022-02-16T09:00:00Z,2022-02-16T14:00:00Z,Badges/Speaker/lf.svg,2,5
 Speaker -  Lars Frische,Fala com o orador no final da talk,2022-02-16T14:00:00Z,2022-02-16T15:00:00Z,2022-02-16T14:00:00Z,2022-02-16T18:00:00Z,Badges/Speaker/fp.svg,2,5
 Speaker - André Coelho,Fala com o orador no final da talk,2022-02-16T15:00:00Z,2022-02-16T16:00:00Z,2022-02-16T14:00:00Z,2022-02-16T18:00:00Z,Badges/Speaker/ac.svg,2,5
-Speaker - Emanuel Mota,Fala com o orador no final da talk,2022-02-17T11:30:00Z,2022-02-17T12:30:00Z,2022-02-17T09:00:00Z,2022-02-16T14:00:00Z,Badges/Speaker/em.svg,2,5
+Speaker - Emanuel Mota,Fala com o orador no final da talk,2022-02-17T11:30:00Z,2022-02-17T12:30:00Z,2022-02-17T09:00:00Z,2022-02-17T14:00:00Z,Badges/Speaker/em.svg,2,5
 Speaker - Alexandra Oliveira,Fala com o orador no final da talk,2022-02-17T14:00:00Z,2022-02-17T15:00:00Z,2022-02-17T14:00:00Z,2022-02-17T18:00:00Z,Badges/Speaker/ao.svg,2,5
 Speaker - Ana Ferreira,Fala com o orador no final da talk,2022-02-17T15:00:00Z,2022-02-17T16:00:00Z,2022-02-17T14:00:00Z,2022-02-17T18:00:00Z,Badges/Speaker/af.svg,2,5
 Speaker - Sara Vieira,Fala com o orador no final da talk,2022-02-18T11:30:00Z,2022-02-18T12:30:00Z,2022-02-18T09:00:00Z,2022-02-18T14:00:00Z,Badges/Speaker/sv.svg,2,5
@@ -67,18 +67,18 @@ Pitch - Accenture,Participa no pitch,2022-02-15T16:45:00Z,2022-02-15T17:00:00Z,2
 Pitch - Farfetch,Participa no pitch,2022-02-15T16:30:00Z,2022-02-15T16:45:00Z,2022-02-15T16:00:00Z,2022-02-15T18:00:00Z,Badges/Pitch/farfetch_pitch.svg,9,10
 Pitch Retail Consult,Participa no pitch,2022-02-16T16:30:00Z,2022-02-16T16:45:00Z,2022-02-16T16:00:00Z,2022-02-16T18:00:00Z,Badges/Pitch/retailconsult_pitch.svg,9,10
 Pitch Uphold,Participa no pitch,2022-02-16T16:45:00Z,2022-02-16T17:00:00Z,2022-02-16T16:00:00Z,2022-02-16T18:00:00Z,Badges/Pitch/uphold_pitch.svg,9,10
-Pitch Continental,Participa no pitch,2022-02-17T16:30:00Z,2022-02-17T16:30:00Z,2022-02-17T16:00:00Z,2022-02-17T18:00:00Z,Badges/Pitch/continental_pitch.svg,9,10
-Pitch EY,Participa no pitch,2022-02-17T16:45:00Z,2022-02-17T16:45:00Z,2022-02-17T16:00:00Z,2022-02-17T18:00:00Z,Badges/Pitch/ey_pitch.svg,9,10
-Pitch Agentifai,Participa no pitch,2022-02-18T16:30:00Z,2022-02-17T16:45:00Z,2022-02-18T16:00:00Z,2022-02-18T18:00:00Z,Badges/Pitch/agentifai_pitch.svg,9,10
+Pitch Continental,Participa no pitch,2022-02-17T16:30:00Z,2022-02-17T16:45:00Z,2022-02-17T16:00:00Z,2022-02-17T18:00:00Z,Badges/Pitch/continental_pitch.svg,9,10
+Pitch EY,Participa no pitch,2022-02-17T16:45:00Z,2022-02-17T17:00:00Z,2022-02-17T16:00:00Z,2022-02-17T18:00:00Z,Badges/Pitch/ey_pitch.svg,9,10
+Pitch Agentifai,Participa no pitch,2022-02-18T16:30:00Z,2022-02-18T16:45:00Z,2022-02-18T16:00:00Z,2022-02-18T18:00:00Z,Badges/Pitch/agentifai_pitch.svg,9,10
 Class Clown,Publica (no Discord) uma piada que receba mais de 10 reações (não valem repetidas!),2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/Discord/classclown.svg,8,5
 Meme Lord,Publica (no Discord) um meme que receba mais de 20 reações (não valem repetidos!),2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/Discord/memelord.svg,8,10
 Jantar Empresarial - participação,Sê convidado e vem ao Jantar Empresarial com a Accenture,2022-02-16T20:00:00Z,2022-02-16T23:59:00Z,2022-02-16T20:00:00Z,2022-02-16T23:59:00Z,Badges/AtividadesDesafios/jantar.svg,2,50
 Geek Night - participação,Assiste às apresentações da Geek Night,2022-02-15T21:00:00Z,2022-02-15T23:59:00Z,2022-02-15T20:00:00Z,2022-02-15T23:59:00Z,Badges/AtividadesDesafios/geeknight.svg,2,50
-CTF - Participação,Participa no CTF,2022-02-15T09:00:00Z,2022-02-15T09:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:01:00Z,Badges/AtividadesDesafios/participacao_ctf.svg,2,10
-CTF - 1.º lugar,Sê o vencedor do CTF,2022-02-15T09:00:00Z,2022-02-15T09:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:01:00Z,Badges/AtividadesDesafios/1_CTF.svg,2,50
-CTF - 2.º lugar,Sê o segundo colocado do CTF,2022-02-15T09:00:00Z,2022-02-15T09:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:01:00Z,Badges/AtividadesDesafios/2_CTF.svg,2,30
-CTF - 3.º lugar,Sê o terceiro colocado do CTF,2022-02-15T09:00:00Z,2022-02-15T09:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:01:00Z,Badges/AtividadesDesafios/3_CTF.svg,2,20
-Curriculum Vitae,Envia o teu CV para cv@seium.org e reclama o badge na Acreditação,2022-02-15T09:00:00Z,2022-02-15T09:00:00Z,2022-02-15T09:00:00Z,2022-02-18T16:00:00Z,Badges/AtividadesDesafios/cv.svg,2,30
+CTF - Participação,Participa no CTF,2022-02-15T09:00:00Z,2022-02-15T09:01:00Z,2022-02-14T09:00:00Z,2022-02-14T09:01:00Z,Badges/AtividadesDesafios/participacao_ctf.svg,2,10
+CTF - 1.º lugar,Sê o vencedor do CTF,2022-02-15T09:00:00Z,2022-02-15T09:01:00Z,2022-02-14T09:00:00Z,2022-02-14T09:01:00Z,Badges/AtividadesDesafios/1_CTF.svg,2,50
+CTF - 2.º lugar,Sê o segundo colocado do CTF,2022-02-15T09:00:00Z,2022-02-15T09:01:00Z,2022-02-14T09:00:00Z,2022-02-14T09:01:00Z,Badges/AtividadesDesafios/2_CTF.svg,2,30
+CTF - 3.º lugar,Sê o terceiro colocado do CTF,2022-02-15T09:00:00Z,2022-02-15T09:01:00Z,2022-02-14T09:00:00Z,2022-02-14T09:01:00Z,Badges/AtividadesDesafios/3_CTF.svg,2,20
+Curriculum Vitae,Envia o teu CV para cv@seium.org e reclama o badge na Acreditação,2022-02-15T09:00:00Z,2022-02-18T16:00:00Z,2022-02-15T09:00:00Z,2022-02-18T16:00:00Z,Badges/AtividadesDesafios/cv.svg,2,30
 Concurso de fotografia,Participa no desafio de fotografia no Instagram,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T16:00:00Z,Badges/AtividadesDesafios/fotografia.svg,2,10
 Torneio de Xadrez - participação,Participa no torneio de xadrez,2022-02-17T21:00:00Z,2022-02-17T23:59:59Z,2022-02-14T09:00:00Z,2022-02-14T09:01:00Z,Badges/AtividadesDesafios/participacao_xadrez.svg,2,10
 Torneio de Xadrez - 1.º lugar,Vence o torneio de xadrez,2022-02-17T21:00:00Z,2022-02-17T23:59:59Z,2022-02-14T09:00:00Z,2022-02-14T09:01:00Z,Badges/AtividadesDesafios/1_xadrez.svg,2,20
