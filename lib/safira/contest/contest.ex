@@ -195,8 +195,16 @@ defmodule Safira.Contest do
   end
 
   def list_leaderboard do
-    Safira.Accounts.list_active_attendees
-    |> Enum.sort(&(&1.badge_count >= &2.badge_count))
+    Repo.all(
+      from a in Safira.Accounts.Attendee,
+        join: r in Redeem, on: a.id == r.attendee_id,
+        join: b in Badge, on: r.badge_id == b.id,
+        where: not(is_nil a.user_id) and b.type != ^0,
+        select: %{attendee: a, token_count: a.token_balance},
+        preload: [badges: b]
+    )
+    |> Enum.map(fn a -> Map.put(a, :badge_count, length(a.attendee.badges)) end)
+    |> Enum.sort_by(&{&1.badge_count, &1.token_count}, &>=/2)
   end
 
   def list_daily_leaderboard(date) do
