@@ -146,6 +146,10 @@ defmodule Safira.Contest do
     Repo.get_by(Redeem, [attendee_id: attendee_id, badge_id: badge_id])
   end
 
+  def get_keys_daily_token(attendee_id, day) do
+    Repo.get_by(DailyToken, [attendee_id: attendee_id, day: day])
+  end
+
   def create_redeem(attrs \\ %{}, user_type \\ :manager) do
     Multi.new()
     |> Multi.insert(:redeem, Redeem.changeset(%Redeem{}, attrs, user_type))
@@ -164,7 +168,8 @@ defmodule Safira.Contest do
     end)
     |> Multi.insert_or_update(:daily_token, fn %{attendee: attendee} ->
       {:ok, date, _} = DateTime.from_iso8601("#{Date.utc_today()}T00:00:00Z")
-      DailyToken.changeset(%DailyToken{}, %{quantity: attendee.token_balance, attendee_id: attendee.id, day: date})
+      changeset_daily = get_keys_daily_token(attendee.id, date) || %DailyToken{}
+      DailyToken.changeset(changeset_daily, %{quantity: attendee.token_balance, attendee_id: attendee.id, day: date})
     end)
     |> Repo.transaction()
     |> case do

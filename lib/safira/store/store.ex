@@ -98,7 +98,8 @@ defmodule Safira.Store do
     end)
     |> Multi.insert_or_update(:daily_token, fn %{attendee: attendee} ->
       {:ok, date, _} = DateTime.from_iso8601("#{Date.utc_today()}T00:00:00Z")
-      DailyToken.changeset(%DailyToken{}, %{quantity: attendee.token_balance, attendee_id: attendee.id, day: date})
+      changeset_daily = get_keys_daily_token(attendee.id, date) || %DailyToken{}
+      DailyToken.changeset(changeset_daily, %{quantity: attendee.token_balance, attendee_id: attendee.id, day: date})
     end) #increments the amount bought by 1
     |> serializable_transaction()
   end
