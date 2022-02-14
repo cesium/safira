@@ -26,7 +26,6 @@ defmodule Mix.Tasks.Gift.Badge.Full.Participation do
       preload: [badge: b, attendee: a])
   end
 
-
   # # of badges overall
   defp get_badges_global do
     Repo.all(from r in Redeem,
@@ -37,28 +36,22 @@ defmodule Mix.Tasks.Gift.Badge.Full.Participation do
       preload: [badge: b, attendee: a])
   end
 
-  # # of tokens spent globaly
-  defp get_spent_tokens(date) do
+  # # of entries to the final draw
+  # global
+  defp get_nr_final_entries do
     Repo.all(
-      from a in Safira.Accounts.Attendee,
-        join: r in Redeem, on: a.id == r.attendee_id,
-        join: b in Badge, on: r.badge_id == b.id,
-        join: t in DailyToken, on: a.id == t.attendee_id,
-        where: not (is_nil a.user_id) and fragment("?::date", r.inserted_at) == ^date and b.type != ^0 and fragment("?::date", t.day) == ^date,
-        select: %{attendee: a, token_count: t.quantity},
-        preload: [badges: b, daily_tokens: t]
+      from a in Attendee,
+      select: sum(a.entries)
     )
   end
 
-
-  # entradas para o sorteio final
-  defp get_nr_final_entries do
-    Repo.all()
-  end
-
-
   # tokens atribuidos
   defp get_nr_tokens_str(date) do
+
+  end
+
+  # # of tokens spent globaly
+  defp get_spent_tokens(date) do
 
   end
 
