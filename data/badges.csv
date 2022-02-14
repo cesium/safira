@@ -1,11 +1,11 @@
 Badge,Descrição / Como ganhar,Begin,End,Begin Badge,End Badge,Image path,Tipo,Valor (tokens)
 Sessão de abertura,Participa na Sessão de Abertura,2022-02-15T10:00:00Z,2022-02-15T11:00:00Z,2022-02-15T09:00:00Z,2022-02-15T14:00:00Z,Badges/AtividadesDesafios/abertura.svg,3,20
-Dia 1,Participa no evento no dia 15 de fevereiro,2022-02-15T09:00:00Z,2022-02-15T23:59:00Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/AtividadesDesafios/dia15.svg,3,20
-Dia 2,Participa no evento no dia 16 de fevereiro,2022-02-16T09:00:00Z,2022-02-16T23:59:00Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/AtividadesDesafios/dia16.svg,3,20
-Dia 3,Participa no evento no dia 17 de fevereiro,2022-02-17T09:00:00Z,2022-02-17T23:59:00Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/AtividadesDesafios/dia17.svg,3,20
-Dia 4,Participa no evento no dia 18 de fevereiro,2022-02-18T09:00:00Z,2022-02-18T17:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/AtividadesDesafios/dia18.svg,3,20
-Ain't nobody got time fo' that,Participa em todos os dias do evento,2022-02-18T09:00:00Z,2022-02-18T17:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/AtividadesDesafios/nobodygottime.svg,3,50
-Damn son :o,Recebe 100 badges,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/AtividadesDesafios/damnson.svg,3,100
+Dia 1,Participa no evento no dia 15 de fevereiro,2022-02-15T09:00:00Z,2022-02-15T23:59:00Z,2022-02-14T09:00:00Z,2022-02-14T09:01:00Z,Badges/AtividadesDesafios/dia15.svg,3,20
+Dia 2,Participa no evento no dia 16 de fevereiro,2022-02-16T09:00:00Z,2022-02-16T23:59:00Z,2022-02-14T09:00:00Z,2022-02-14T09:01:00Z,Badges/AtividadesDesafios/dia16.svg,3,20
+Dia 3,Participa no evento no dia 17 de fevereiro,2022-02-17T09:00:00Z,2022-02-17T23:59:00Z,2022-02-14T09:00:00Z,2022-02-14T09:01:00Z,Badges/AtividadesDesafios/dia17.svg,3,20
+Dia 4,Participa no evento no dia 18 de fevereiro,2022-02-18T09:00:00Z,2022-02-18T17:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:01:00Z,Badges/AtividadesDesafios/dia18.svg,3,20
+Ain't nobody got time fo' that,"Participa em todos os dias do evento (15, 16, 17 e 18)",2022-02-18T09:00:00Z,2022-02-18T17:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:01:00Z,Badges/AtividadesDesafios/nobodygottime.svg,3,50
+Damn son :o,Recebe 100 badges,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:01:00Z,Badges/AtividadesDesafios/damnson.svg,3,100
 Talk Aficionado,Participa em todas as talks e tertúlias,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-14T09:00:00Z,2022-02-18T09:00:00Z,Badges/AtividadesDesafios/talkaficionado.svg,3,50
 Workshop Enthusiast,Participa em 3 workshops,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-14T09:00:00Z,2022-02-18T09:00:00Z,Badges/AtividadesDesafios/workshopenthusiast.svg,3,50
 Curious George,Participa em todos os pitches,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-14T09:00:00Z,2022-02-18T09:00:00Z,Badges/AtividadesDesafios/curriousgeorge.svg,3,50
@@ -20,10 +20,10 @@ STAY SEI-FE,Usa uma máscara da cor da SEI,2022-02-15T09:00:00Z,2022-02-18T17:00
 "Attention span, who?",Faz um reels sobre a SEI,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/AtividadesDesafios/attentionspan.svg,3,20
 Filtro,Publica um instastory com o filtro de instagram da SEI,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/AtividadesDesafios/filtro.svg,3,15
 Parede,Tira uma foto na parede da SEI,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/AtividadesDesafios/parede.svg,3,15
-5 empresas,Fala com 5 empresas,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/Empresa/5empresas.svg,3,10
-10 empresas,Fala com 10 empresas,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/Empresa/10empresas.svg,3,30
-15 empresas,Fala com 15 empresas,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/Empresa/15empresas.svg,3,60
-19 empresas,Fala com 19 empresas,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/Empresa/19empresas.svg,3,100
+5 empresas,Fala com 5 empresas,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:01:00Z,Badges/Empresa/5empresas.svg,3,10
+10 empresas,Fala com 10 empresas,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:01:00Z,Badges/Empresa/10empresas.svg,3,30
+15 empresas,Fala com 15 empresas,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:01:00Z,Badges/Empresa/15empresas.svg,3,60
+19 empresas,Fala com 19 empresas,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:01:00Z,Badges/Empresa/19empresas.svg,3,100
 Talk - Olhando para o Futuro,Participa na talk 'Olhando para o Futuro',2022-02-15T12:00:00Z,2022-02-15T13:00:00Z,2022-02-15T09:00:00Z,2022-02-15T14:00:00Z,Badges/Talk/1_TALK.svg,6,25
 Talk - Passwordless FIDO2/Webauthn 101: Strong security meets great UX,Participa na talk 'Passwordless FIDO2/Webauthn 101: Strong security meets great UX',2022-02-15T14:00:00Z,2022-02-15T15:00:00Z,2022-02-15T14:00:00Z,2022-02-15T18:00:00Z,Badges/Talk/2_TALK.svg,6,25
 Talk -  Elixir in the community,Participa na talk 'Elixir in the community',2022-02-15T15:00:00Z,2022-02-15T16:00:00Z,2022-02-15T14:00:00Z,2022-02-15T18:00:00Z,Badges/Talk/3_TALK.svg,6,25
@@ -58,9 +58,9 @@ Speaker - Telmo Pires,Fala com o orador no final da talk,2022-02-18T14:00:00Z,20
 Speaker - Rui Quelhas,Fala com o orador no final da talk,2022-02-18T15:00:00Z,2022-02-18T16:00:00Z,2022-02-18T14:00:00Z,2022-02-18T17:00:00Z,Badges/Speaker/rq.svg,2,5
 Workshop 'Deploying ML Models in Sagemaker' | Saltpay,Participa no workshop 'Deploying ML Models in Sagemaker' | Saltpay,2022-02-16T09:00:00Z,2022-02-16T11:00:00Z,2022-02-16T09:00:00Z,2022-02-16T14:00:00Z,Badges/Workshop/saltpay_workshop.svg,7,30
 Workshop 'Agile HealthCare' | Glintt,Participa no workshop 'Agile HealthCare' | Glintt,2022-02-16T09:00:00Z,2022-02-16T11:00:00Z,2022-02-16T09:00:00Z,2022-02-16T14:00:00Z,Badges/Workshop/glintt_workshop.svg,7,30
-Workshop 'Code Rumble: #Analytics #Financial Risk' | Delloite,Workshop 'Code Rumble: #Analytics #Financial Risk' | Delloite,2022-02-17T09:00:00Z,2022-02-17T11:00:00Z,2022-02-17T09:00:00Z,2022-02-17T14:00:00Z,Badges/Workshop/deloitte_workshop.svg,7,30
+Workshop ' Code Rumble: #Analytics #Financial Risk' | Delloite,Workshop ' Code Rumble: #Analytics #Financial Risk' | Delloite,2022-02-17T09:00:00Z,2022-02-17T11:00:00Z,2022-02-17T09:00:00Z,2022-02-17T14:00:00Z,Badges/Workshop/deloitte_workshop.svg,7,30
 Workshop 'Salesforce Tech Session' | Accenture,Participa no workshop 'Salesforce Tech Session' | Accenture,2022-02-17T09:00:00Z,2022-02-17T11:00:00Z,2022-02-17T09:00:00Z,2022-02-17T14:00:00Z,Badges/Workshop/accenture_workshop.svg,7,30
-Workshop 'Blockchain and Smart Contracts in Action!Blockchain and Smart Contracts in Action!' | Yari Labs,Participa no Workshop 'Blockchain and Smart Contracts in Action!Blockchain and Smart Contracts in Action!'  | Yari Labs,2022-02-18T09:00:00Z,2022-02-18T11:00:00Z,2022-02-18T09:00:00Z,2022-02-18T14:00:00Z,Badges/Workshop/yarilabs_workshop.svg,7,30
+Workshop 'Blockchain and Smart Contracts in Action!Blockchain and Smart Contracts in Action! ' | Yari Labs,Participa no Workshop 'Blockchain and Smart Contracts in Action!Blockchain and Smart Contracts in Action!'  | Yari Labs,2022-02-18T09:00:00Z,2022-02-18T11:00:00Z,2022-02-18T09:00:00Z,2022-02-18T14:00:00Z,Badges/Workshop/yarilabs_workshop.svg,7,30
 Workshop 'Starting on Big Data with Twitter Streaming DEMO' | XpandIT,Participa no workshop 'Starting on Big Data with Twitter Streaming DEMO' | XpandIT,2022-02-18T09:00:00Z,2022-02-18T11:00:00Z,2022-02-18T09:00:00Z,2022-02-18T14:00:00Z,Badges/Workshop/xpandit_workshop.svg,7,30
 Workshop 'The role of a developer in a product team' | Subvisual,Participa no workshop 'The role of a developer in a product team' | Subvisual,2022-02-18T09:00:00Z,2022-02-18T11:00:00Z,2022-02-18T09:00:00Z,2022-02-18T14:00:00Z,Badges/Workshop/subvisual_workshop.svg,7,30
 Pitch - Accenture,Participa no pitch,2022-02-15T16:45:00Z,2022-02-15T17:00:00Z,2022-02-15T16:00:00Z,2022-02-15T18:00:00Z,Badges/Pitch/accenture_pitch.svg,9,10
@@ -74,18 +74,18 @@ Class Clown,Publica (no Discord) uma piada que receba mais de 10 reações (não
 Meme Lord,Publica (no Discord) um meme que receba mais de 20 reações (não valem repetidos!),2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/Discord/memelord.svg,8,10
 Jantar Empresarial - participação,Sê convidado e vem ao Jantar Empresarial com a Accenture,2022-02-16T20:00:00Z,2022-02-16T23:59:00Z,2022-02-16T20:00:00Z,2022-02-16T23:59:00Z,Badges/AtividadesDesafios/jantar.svg,2,50
 Geek Night - participação,Assiste às apresentações da Geek Night,2022-02-15T21:00:00Z,2022-02-15T23:59:00Z,2022-02-15T20:00:00Z,2022-02-15T23:59:00Z,Badges/AtividadesDesafios/geeknight.svg,2,50
-CTF - Participação,Participa no CTF,2022-02-15T09:00:00Z,2022-02-15T09:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/AtividadesDesafios/participacao_ctf.svg,2,10
-CTF - 1.º lugar,Sê o vencedor do CTF,2022-02-15T09:00:00Z,2022-02-15T09:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/AtividadesDesafios/1_CTF.svg,2,50
-CTF - 2.º lugar,Sê o segundo colocado do CTF,2022-02-15T09:00:00Z,2022-02-15T09:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/AtividadesDesafios/2_CTF.svg,2,30
-CTF - 3.º lugar,Sê o terceiro colocado do CTF,2022-02-15T09:00:00Z,2022-02-15T09:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/AtividadesDesafios/3_CTF.svg,2,20
+CTF - Participação,Participa no CTF,2022-02-15T09:00:00Z,2022-02-15T09:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:01:00Z,Badges/AtividadesDesafios/participacao_ctf.svg,2,10
+CTF - 1.º lugar,Sê o vencedor do CTF,2022-02-15T09:00:00Z,2022-02-15T09:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:01:00Z,Badges/AtividadesDesafios/1_CTF.svg,2,50
+CTF - 2.º lugar,Sê o segundo colocado do CTF,2022-02-15T09:00:00Z,2022-02-15T09:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:01:00Z,Badges/AtividadesDesafios/2_CTF.svg,2,30
+CTF - 3.º lugar,Sê o terceiro colocado do CTF,2022-02-15T09:00:00Z,2022-02-15T09:00:00Z,2022-02-14T09:00:00Z,2022-02-14T09:01:00Z,Badges/AtividadesDesafios/3_CTF.svg,2,20
 Curriculum Vitae,Envia o teu CV para cv@seium.org e reclama o badge na Acreditação,2022-02-15T09:00:00Z,2022-02-15T09:00:00Z,2022-02-15T09:00:00Z,2022-02-18T16:00:00Z,Badges/AtividadesDesafios/cv.svg,2,30
 Concurso de fotografia,Participa no desafio de fotografia no Instagram,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T16:00:00Z,Badges/AtividadesDesafios/fotografia.svg,2,10
-Torneio de Xadrez - participação,Participa no torneio de xadrez,2022-02-17T21:00:00Z,2022-02-17T23:59:59Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/AtividadesDesafios/participacao_xadrez.svg,2,10
-Torneio de Xadrez - 1.º lugar,Vence o torneio de xadrez,2022-02-17T21:00:00Z,2022-02-17T23:59:59Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/AtividadesDesafios/1_xadrez.svg,2,20
-Torneio de Xadrez - 2.º lugar,Fica em 2.º lugar no torneio de xadrez,2022-02-17T21:00:00Z,2022-02-17T23:59:59Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/AtividadesDesafios/2_xadrez.svg,2,10
-Torneio CS:GO - participação,Participa no torneio de CS:GO,2022-02-17T21:00:00Z,2022-02-17T23:59:59Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/AtividadesDesafios/participacao_csgo.svg,2,10
-Torneio CS:GO - 1.º lugar,Vence o torneio de CS:GO,2022-02-17T21:00:00Z,2022-02-17T23:59:59Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/AtividadesDesafios/1_csgo.svg,2,20
-Torneio CS:GO - 2.º lugar,Fica em 2.º lugar no torneio de CS:GO,2022-02-17T21:00:00Z,2022-02-17T23:59:59Z,2022-02-14T09:00:00Z,2022-02-14T09:00:00Z,Badges/AtividadesDesafios/2_csgo.svg,2,10
+Torneio de Xadrez - participação,Participa no torneio de xadrez,2022-02-17T21:00:00Z,2022-02-17T23:59:59Z,2022-02-14T09:00:00Z,2022-02-14T09:01:00Z,Badges/AtividadesDesafios/participacao_xadrez.svg,2,10
+Torneio de Xadrez - 1.º lugar,Vence o torneio de xadrez,2022-02-17T21:00:00Z,2022-02-17T23:59:59Z,2022-02-14T09:00:00Z,2022-02-14T09:01:00Z,Badges/AtividadesDesafios/1_xadrez.svg,2,20
+Torneio de Xadrez - 2.º lugar,Fica em 2.º lugar no torneio de xadrez,2022-02-17T21:00:00Z,2022-02-17T23:59:59Z,2022-02-14T09:00:00Z,2022-02-14T09:01:00Z,Badges/AtividadesDesafios/2_xadrez.svg,2,10
+Torneio CS:GO - participação,Participa no torneio de CS:GO,2022-02-17T21:00:00Z,2022-02-17T23:59:59Z,2022-02-14T09:00:00Z,2022-02-14T09:01:00Z,Badges/AtividadesDesafios/participacao_csgo.svg,2,10
+Torneio CS:GO - 1.º lugar,Vence o torneio de CS:GO,2022-02-17T21:00:00Z,2022-02-17T23:59:59Z,2022-02-14T09:00:00Z,2022-02-14T09:01:00Z,Badges/AtividadesDesafios/1_csgo.svg,2,20
+Torneio CS:GO - 2.º lugar,Fica em 2.º lugar no torneio de CS:GO,2022-02-17T21:00:00Z,2022-02-17T23:59:59Z,2022-02-14T09:00:00Z,2022-02-14T09:01:00Z,Badges/AtividadesDesafios/2_csgo.svg,2,10
 Lucky Bastard 1,Joga na 'Spin the Wheel' para te habilitares a receber este badge,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/AtividadesDesafios/luckybastard.svg,2,0
 Lucky Bastard 2,Joga na 'Spin the Wheel' para te habilitares a receber este badge,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/AtividadesDesafios/luckybastard.svg,2,0
 Lucky Bastard 3,Joga na 'Spin the Wheel' para te habilitares a receber este badge,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,Badges/AtividadesDesafios/luckybastard.svg,2,0
