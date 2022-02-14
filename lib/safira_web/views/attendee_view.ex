@@ -11,6 +11,10 @@ defmodule SafiraWeb.AttendeeView do
     %{data: render_one(attendee, AttendeeView, "attendee.json")}
   end
 
+  def render("show_simple.json", %{attendee: attendee}) do
+    %{data: render_one(attendee, AttendeeView, "attendee_simple.json")}
+  end
+
   def render("manager_show.json", %{attendee: attendee}) do
     %{data: render_one(attendee, AttendeeView, "manager_attendee.json")}
   end
@@ -66,7 +70,7 @@ defmodule SafiraWeb.AttendeeView do
       nickname: attendee.nickname,
       name: attendee.name,
       avatar: Avatar.url({attendee.avatar, attendee}, :original),
-      volunteer: attendee.volunteer,
+      #volunteer: attendee.volunteer,
       token_balance: attendee.token_balance,
       entries: attendee.entries,
     }

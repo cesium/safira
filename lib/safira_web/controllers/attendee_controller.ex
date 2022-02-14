@@ -43,7 +43,7 @@ defmodule SafiraWeb.AttendeeController do
     if user.attendee.id == attendee.id do
       with {:ok, %Attendee{} = attendee} <-
              Accounts.update_attendee(attendee, attendee_params) do
-        render(conn, "show.json", attendee: attendee)
+        render(conn, "show_simple.json", attendee: attendee)
       end
     else
       {:error, :unauthorized}
