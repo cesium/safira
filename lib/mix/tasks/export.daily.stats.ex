@@ -23,7 +23,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
 
     prizes
     |> Enum.map(fn {_,b,c} ->
-      Mix.shell.info("prize: #{b}#{c}")
+      Mix.shell.info("prize: #{b} #{c}")
     end)
   end
 
