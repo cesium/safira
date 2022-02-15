@@ -110,7 +110,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
      Repo.all(
       from p in Safira.Roulette.Prize,
         join: ap in Safira.Roulette.AttendeePrize, on: p.id == ap.prize_id,
-        select: %{prize: p.name, number: count(ap.id) }
+        select: %{id: p.id, prize: p.name, number: count(ap.id) }
      )
   end
 end
