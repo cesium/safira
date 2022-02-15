@@ -31,7 +31,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
     Repo.all(from r in Safira.Store.Redeem,
       join: b in assoc(r, :badge),
       join: a in assoc(r, :attendee),
-      where:  not(a.volunteer) and not(is_nil(a.nickname)) and fragment("?::date", r.inserted_at) == ^date and b.type != ^0 and fragment("?::date", t.day) == ^date,
+      where:  not(a.volunteer) and not(is_nil(a.nickname)) and fragment("?::date", r.inserted_at) == ^date and b.type != ^0,
       select: count(r.id),
       preload: [badge: b, attendee: a])
   end
