@@ -77,7 +77,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
     spent_store =
       Repo.all(
         from r in Safira.Store.Redeemable,
-          join: b in assoc(r, :buys),
+          join: b in Safira.Store.Buy, on r.id == b.redeemable_id,
           select: sum(r.price * b.quantity)
       )
     spent_roulette + spent_store
