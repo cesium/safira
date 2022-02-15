@@ -1,21 +1,36 @@
-defmodule Mix.Tasks.Gift.Badge.Full.Participation do
+defmodule Mix.Tasks.Export.Daily.Stats do
   use Mix.Task
 
   alias Safira.Accounts
   alias Safira.Contest
+  alias Safira.Store
+  alias Safira.Roulette
 
   def run(date) do
-
     Mix.Task.run("app.start")
 
-    Mix.shell().info("badges:")
-    Mix.shell().info("roleta:")
-    Mix.shell().info("entradas:")
-    Mix.shell().info("tokens:")
-    Mix.shell().info("premios:")
+    badges = get_nbadges()
+    entries = get_nr_final_entries()
+    tks = get_nr_tokens_atr()
+    spent = get_spent_tokens()
+    prizes = get_roulette_prizes()
 
+    Mix.shell.info("badges: #{badges}")
+    Mix.shell.info("entries: #{entries}")
+    Mix.shell.info("tokens earned: #{tks}")
+    Mix.shell.info("tokens spent: #{spent}")
+
+    Enum.map(prizes, fn entry ->
+      Mix.shell.info("prize: #{entry}"
+      end )
+    )
   end
 
+  defp csv_io(attendee) do
+    "#{attendee.id},#{attendee.name},#{Safira.Accounts.get_user!(attendee.user_id).email},#{
+      attendee.entries
+    }"
+  end
   # # badges atribuidos
   defp get_nbadges(date) do
     Repo.all(from r in Safira.Store.Redeem,
