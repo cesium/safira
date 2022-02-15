@@ -1,15 +1,15 @@
 name,max_amount_per_attendee,stock,probability,is_redeemable,path_to_image
-Raspberry Pi,1,2,0.02%,yes,data/roleta/raspberry-pi.png
-Google Nest Mini,1,2,0.03%,yes,data/roleta/nest.png
-Earbuds QCY T5 True Wireless Brancos,1,4,0.20%,yes,data/roleta/qcy.png
-Auriculares Xiaomi Mi AirDots True Wireless Earbuds Basic 2 Pretos,1,3,0.50%,yes,data/roleta/earbudsxiaomi.png
-JBL Go 3,1,2,0.10%,yes,data/roleta/jbl.png
-Powerbank Xiaomi 10000mAh,1,5,0.50%,yes,data/roleta/powerbank.png
-Cartões Dá 20€,1,5,0.10%,yes,data/roleta/cartao.png
-Cartões Dá 10€,1,10,0.75%,yes,data/roleta/cartao.png
-Chocolates,1,100,0.80%,yes,data/roleta/chocolates.png
-Badge Lucky Bastars,10,999999,0.80%,no,data/roleta/lucky_bastard.png
-Tokens,999999,999999,0.80%,no,data/roleta/question_mark.png
-1 entrada no jantar empresarial,1,1,3.00%,no,data/roleta/badge_sensei.png
-Entradas para o sorteio final,999999,999999,17.00%,no,data/roleta/badgeroleta.png
-Nada,999999,999999,60.00%,no,data/roleta/nada.png
+Raspberry Pi,1,2,0.0002,yes,data/roleta/raspberry-pi.png
+Google Nest Mini,1,2,0.0003,yes,data/roleta/nest.png
+Earbuds QCY T5 True Wireless Brancos,1,4,0.002,yes,data/roleta/qcy.png
+Auriculares Xiaomi Mi AirDots True Wireless Earbuds Basic 2 Pretos,1,3,0.005,yes,data/roleta/earbudsxiaomi.png
+JBL Go 3,1,2,0.001,yes,data/roleta/jbl.png
+Powerbank Xiaomi 10000mAh,1,5,0.005,yes,data/roleta/powerbank.png
+Cartões Dá 20€,1,5,0.001,yes,data/roleta/cartao.png
+Cartões Dá 10€,1,10,0.0075,yes,data/roleta/cartao.png
+Chocolates,1,100,0.008,yes,data/roleta/chocolates.png
+Badge Lucky Bastars,10,999999,0.1,no,data/roleta/lucky_bastard.png
+Tokens,999999,999999,0.07,no,data/roleta/question_mark.png
+1 entrada no jantar empresarial,1,1,0.03,no,data/roleta/badge_sensei.png
+Entradas para o sorteio final,999999,999999,0.17,no,data/roleta/badgeroleta.png
+Nada,999999,999999,0.6,no,data/roleta/nada.png
