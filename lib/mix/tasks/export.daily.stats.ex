@@ -60,7 +60,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
   defp get_nr_tokens_atr(date) do
     total =
       Repo.all(
-        from a in Safira.Accounts.Attendee
+        from a in Safira.Accounts.Attendee,
         select: sum( a.token_balance )
       )
     get_spent_tokens()+total
