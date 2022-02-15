@@ -10,7 +10,7 @@ defmodule SafiraWeb.DeliverPrizeView do
     %{
       id: deliver.id,
       name: deliver.name,
-      image: deliver.avatar,
+      image: Avatar.url({deliver.avatar, deliver}, :original),
       not_redeemed: deliver.not_redeemed
     }
   end
