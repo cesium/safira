@@ -34,6 +34,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
       join: a in assoc(r, :attendee),
       where:  not(a.volunteer) and not(is_nil(a.nickname)) and fragment("?::date", r.inserted_at) == ^date and b.type != ^0,
       select: count(r.id))
+      |> Enum.reduce(0, &(&1 + &2))
   end
 
   # # of badges overall
@@ -43,6 +44,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
       join: a in assoc(r, :attendee),
       where:  not(a.volunteer) and not(is_nil(a.nickname)) and  b.type != ^0,
       select: count(r.id))
+      |> Enum.reduce(0, &(&1 + &2))
   end
 
   # # of entries to the final draw
@@ -52,6 +54,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
       from a in Safira.Accounts.Attendee,
       select: sum(a.entries)
     )
+    |> Enum.reduce(0, &(&1 + &2))
   end
 
   # tokens atribuidos
@@ -62,6 +65,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
         from a in Safira.Accounts.Attendee,
         select: sum( a.token_balance )
       )
+      |> Enum.reduce(0, &(&1 + &2))
     get_spent_tokens()+total
   end
 
@@ -72,14 +76,16 @@ defmodule Mix.Tasks.Export.Daily.Stats do
     spent_roulette =
       Repo.all(
         from ap in Safira.Roulette.AttendeePrize,
-        select: sum(ap.id) * 20
+        select: count(ap.id) * 20
       )
+      |> Enum.reduce(0, &(&1 + &2))
     spent_store =
       Repo.all(
         from r in Safira.Store.Redeemable,
           join: b in Safira.Store.Buy, on: r.id == b.redeemable_id,
           select: sum(r.price * b.quantity)
       )
+      |> Enum.reduce(0, &(&1 + &2))
     spent_roulette + spent_store
 
   end
