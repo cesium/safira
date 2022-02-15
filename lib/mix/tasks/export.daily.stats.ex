@@ -96,7 +96,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
   defp get_roulette_prizes(date) do
      Repo.all(
       from a in Safira.Accounts.Attendee,
-        join: ap in Safira.Roulette.AtendeePrize, on: a.id == ap.attendee_id,
+        join: ap in Safira.Roulette.AttendeePrize, on: a.id == ap.attendee_id,
         join: p in Safira.Roulette.Prize, on: ap.prize_id == p.id,
         where: not (is_nil a.user_id) and fragment("?::date", ap.inserted_at) == ^date,
         select: %{prize: p.name, number: count(p.id) }
@@ -109,7 +109,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
   defp get_roulette_prizes_global() do
      Repo.all(
       from a in Safira.Accounts.Attendee,
-        join: ap in Safira.Roulette.AtendeePrize, on: a.id == ap.attendee_id,
+        join: ap in Safira.Roulette.AttendeePrize, on: a.id == ap.attendee_id,
         join: p in Safira.Roulette.Prize, on: ap.prize_id == p.id,
         where: not (is_nil a.user_id),
         select: %{prize: p.name, number: count(p.id) }
