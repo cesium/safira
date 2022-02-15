@@ -9,11 +9,11 @@ defmodule Mix.Tasks.Export.Daily.Stats do
   def run(date) do
     Mix.Task.run("app.start")
 
-    badges = get_nbadges()
+    badges = get_badges_global()
     entries = get_nr_final_entries()
     tks = get_nr_tokens_atr()
     spent = get_spent_tokens()
-    prizes = get_roulette_prizes()
+    prizes = get_roulette_prizes_global()
 
     Mix.shell.info("badges: #{badges}")
     Mix.shell.info("entries: #{entries}")
@@ -37,7 +37,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
   end
 
   # # of badges overall
-  defp get_badges_global do
+  defp get_badges_global() do
     Repo.all(from r in Safira.Store.Redeem,
       join: b in assoc(r, :badge),
       join: a in assoc(r, :attendee),
@@ -48,7 +48,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
 
   # # of entries to the final draw
   # global
-  defp get_nr_final_entries do
+  defp get_nr_final_entries() do
     Repo.all(
       from a in Safira.Accounts.Attendee,
       select: sum(a.entries)
@@ -101,7 +101,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
   # premios ganhos na roleta
   # SHOULD WORK
   # global task
-  defp get_roulette_prizes_global(date) do
+  defp get_roulette_prizes_global() do
      Repo.all(
       from a in Safira.Accounts.Attendee,
         join: ap in AtendeePrize, on a.id == ap.attendee_id,
