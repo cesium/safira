@@ -21,15 +21,8 @@ defmodule Mix.Tasks.Export.Daily.Stats do
     Mix.shell.info("tokens spent: #{spent}")
 
     Enum.map(prizes, fn entry ->
-      Mix.shell.info("prize: #{entry}"
+      Mix.shell.info("prize: #{entry}")
       end )
-    )
-  end
-
-  defp csv_io(attendee) do
-    "#{attendee.id},#{attendee.name},#{Safira.Accounts.get_user!(attendee.user_id).email},#{
-      attendee.entries
-    }"
   end
 
   # # badges atribuidos
