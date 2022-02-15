@@ -31,6 +31,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
       attendee.entries
     }"
   end
+
   # # badges atribuidos
   defp get_nbadges(date) do
     Repo.all(from r in Safira.Store.Redeem,
