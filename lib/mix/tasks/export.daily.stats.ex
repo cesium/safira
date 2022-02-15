@@ -4,6 +4,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
   alias Safira.Accounts
   alias Safira.Contest
   alias Safira.Store
+  alias Safira.Store.Redeem
   alias Safira.Roulette
   import Ecto.Query
 
