@@ -35,7 +35,6 @@ defmodule Mix.Tasks.Export.Daily.Stats do
       join: a in assoc(r, :attendee),
       where:  not(a.volunteer) and not(is_nil(a.nickname)) and fragment("?::date", r.inserted_at) == ^date and b.type != ^0,
       select: count(r.id),
-      preload: [badge: b, attendee: a])
   end
 
   # # of badges overall
@@ -45,7 +44,6 @@ defmodule Mix.Tasks.Export.Daily.Stats do
       join: a in assoc(r, :attendee),
       where:  not(a.volunteer) and not(is_nil(a.nickname)) and  b.type != ^0,
       select: count(r.id),
-      preload: [badge: b, attendee: a])
   end
 
   # # of entries to the final draw
@@ -112,5 +110,4 @@ defmodule Mix.Tasks.Export.Daily.Stats do
         select: %{prize: p.name, number: count(p.id) }
      )
   end
-
 end
