@@ -23,8 +23,11 @@ defmodule Mix.Tasks.Export.Daily.Stats do
 
     prizes
     |> Enum.map(fn entry ->
-      Mix.shell.info("prize: #{entry}")
-      end )
+      entry
+      |> Enum.map(fn e ->
+        Mix.shell.info("prize: #{entry}")
+      end)
+    end)
   end
 
   # # badges atribuidos
