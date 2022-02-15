@@ -30,7 +30,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
 
   # # badges atribuidos
   defp get_nbadges(date) do
-    Repo.all(from r in Safira.Store.Redeemable,
+    Repo.all(from r in Safira.Contest.Redeem,
       join: b in assoc(r, :badge),
       join: a in assoc(r, :attendee),
       where:  not(a.volunteer) and not(is_nil(a.nickname)) and fragment("?::date", r.inserted_at) == ^date and b.type != ^0,
@@ -40,7 +40,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
 
   # # of badges overall
   defp get_badges_global() do
-    Repo.all(from r in Safira.Store.Redeemable,
+    Repo.all(from r in Safira.Contest.Redeem,
       join: b in assoc(r, :badge),
       join: a in assoc(r, :attendee),
       where:  not(a.volunteer) and not(is_nil(a.nickname)) and  b.type != ^0,
