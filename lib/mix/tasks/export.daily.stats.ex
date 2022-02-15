@@ -20,7 +20,8 @@ defmodule Mix.Tasks.Export.Daily.Stats do
     Mix.shell.info("tokens earned: #{tks}")
     Mix.shell.info("tokens spent: #{spent}")
 
-    Enum.map(prizes, fn entry ->
+    prizes
+    |> Enum.map(fn entry ->
       Mix.shell.info("prize: #{entry}")
       end )
   end
