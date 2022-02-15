@@ -5,6 +5,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
   alias Safira.Contest
   alias Safira.Store
   alias Safira.Roulette
+  import Ecto.Query
 
   def run(date) do
     Mix.Task.run("app.start")
