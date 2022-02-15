@@ -58,7 +58,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
 
   # tokens atribuidos
   # global in the system + nr os tokes spent
-  defp get_nr_tokens_atr(date) do
+  defp get_nr_tokens_atr() do
     total =
       Repo.all(
         from a in Safira.Accounts.Attendee,
