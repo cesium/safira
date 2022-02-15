@@ -25,7 +25,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
     |> Enum.map(fn entry ->
       entry
       |> Enum.map(fn e ->
-        Mix.shell.info("prize: #{e}")
+        Mix.shell.info("prize: #{e |> Tuple.to_list()}") 
       end)
     end)
   end
