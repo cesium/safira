@@ -12,15 +12,14 @@ defmodule Mix.Tasks.Export.Daily.Stats do
     Mix.Task.run("app.start")
 
     badges = get_badges_global()
-    entries = get_nr_final_entries()
-    tks = get_nr_tokens_atr()
-    spent = get_spent_tokens()
-    prizes = get_roulette_prizes_global()
-
     Mix.shell.info("badges: #{badges}")
+    entries = get_nr_final_entries()
     Mix.shell.info("entries: #{entries}")
+    tks = get_nr_tokens_atr()
     Mix.shell.info("tokens earned: #{tks}")
+    spent = get_spent_tokens()
     Mix.shell.info("tokens spent: #{spent}")
+    prizes = get_roulette_prizes_global()
 
     prizes
     |> Enum.map(fn entry ->
@@ -78,7 +77,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
     spent_store =
       Repo.all(
         from r in Safira.Store.Redeemable,
-          join: b in assoc(r, :buy),
+          join: b in assoc(r, :buys),
           select: sum(r.price * b.quantity)
       )
     spent_roulette + spent_store
