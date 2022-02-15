@@ -22,11 +22,8 @@ defmodule Mix.Tasks.Export.Daily.Stats do
     prizes = get_roulette_prizes_global()
 
     prizes
-    |> Enum.map(fn entry ->
-      entry
-      |> Enum.map(fn {a,b,c} ->
-        Mix.shell.info("prize: #{b}#{c}")
-      end)
+    |> Enum.map(fn {_,b,c} ->
+      Mix.shell.info("prize: #{b}#{c}")
     end)
   end
 
