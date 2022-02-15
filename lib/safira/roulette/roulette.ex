@@ -481,9 +481,9 @@ defmodule Safira.Roulette do
     |> Map.fetch!(:prizes)
     |> Enum.filter( fn prize ->
       {_, ap} = get_keys_prize(attendee.id, prize.id)
-      ap.quantity > 0 && ap.quantity > ap.redeemed
+      IO.puts(prize.is_redeemable)
+      prize.is_redeemable && ap.quantity > 0 && ap.quantity > ap.redeemed
     end)
-    |> Enum.reject(fn prize -> not prize.is_redeemable end)
     |> Enum.map(fn prize ->
       {_, ap} = get_keys_prize(attendee.id, prize.id)
       prize2 = Map.put(prize, :quantity, ap.quantity)
