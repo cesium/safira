@@ -4,7 +4,6 @@ defmodule Mix.Tasks.Export.Daily.Stats do
   alias Safira.Accounts
   alias Safira.Contest
   alias Safira.Store
-  alias Safira.Store.Redeem
   alias Safira.Roulette
   import Ecto.Query
 
@@ -30,7 +29,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
 
   # # badges atribuidos
   defp get_nbadges(date) do
-    Repo.all(from r in Safira.Store.Redeem,
+    Repo.all(from r in Safira.Store.Redeemable,
       join: b in assoc(r, :badge),
       join: a in assoc(r, :attendee),
       where:  not(a.volunteer) and not(is_nil(a.nickname)) and fragment("?::date", r.inserted_at) == ^date and b.type != ^0,
@@ -40,7 +39,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
 
   # # of badges overall
   defp get_badges_global() do
-    Repo.all(from r in Safira.Store.Redeem,
+    Repo.all(from r in Safira.Store.Redeemable,
       join: b in assoc(r, :badge),
       join: a in assoc(r, :attendee),
       where:  not(a.volunteer) and not(is_nil(a.nickname)) and  b.type != ^0,
