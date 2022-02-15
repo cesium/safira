@@ -114,7 +114,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
       from p in Safira.Roulette.Prize,
         join: ap in Safira.Roulette.AttendeePrize, on: p.id == ap.prize_id,
         group_by: p.id,
-        select: %{id: p.id, prize: p.name, number: count(ap.id) }
+        select: {p.id, p.name, count(ap.id) }
      )
   end
 end
