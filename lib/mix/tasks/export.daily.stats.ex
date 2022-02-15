@@ -18,21 +18,21 @@ defmodule Mix.Tasks.Gift.Badge.Full.Participation do
 
   # # badges atribuidos
   defp get_nbadges(date) do
-    Repo.all(from r in Redeem,
+    Repo.all(from r in Safira.Store.Redeem,
       join: b in assoc(r, :badge),
       join: a in assoc(r, :attendee),
       where:  not(a.volunteer) and not(is_nil(a.nickname)) and fragment("?::date", r.inserted_at) == ^date and b.type != ^0 and fragment("?::date", t.day) == ^date,
-      select: count(r.id)
+      select: count(r.id),
       preload: [badge: b, attendee: a])
   end
 
   # # of badges overall
   defp get_badges_global do
-    Repo.all(from r in Redeem,
+    Repo.all(from r in Safira.Store.Redeem,
       join: b in assoc(r, :badge),
       join: a in assoc(r, :attendee),
       where:  not(a.volunteer) and not(is_nil(a.nickname)) and  b.type != ^0,
-      select: count(r.id)
+      select: count(r.id),
       preload: [badge: b, attendee: a])
   end
 
@@ -40,18 +40,38 @@ defmodule Mix.Tasks.Gift.Badge.Full.Participation do
   # global
   defp get_nr_final_entries do
     Repo.all(
-      from a in Attendee,
+      from a in Safira.Accounts.Attendee,
       select: sum(a.entries)
     )
   end
 
   # tokens atribuidos
+  # global in the system + nr os tokes spent
   defp get_nr_tokens_atr(date) do
-
+    total =
+      Repo.all(
+        from a in Safira.Accounts.Attendee
+        select: sum( a.token_balance )
+      )
+    get_spent_tokens()+total
   end
 
   # # of tokens spent globaly
-  defp get_spent_tokens(date) do
+  # count nr os roullete rolls * 20
+  # count nr sales (by total token ammount)
+  defp get_spent_tokens() do
+    spent_roulette =
+      Repo.all(
+        from ap in Safira.Roulette.AttendeePrize,
+        select: sum(ap.id) * 20
+      )
+    spent_store =
+      Repo.all(
+        from r in Safira.Store.Redeemable
+          join: b in assoc(r, :buy)
+          select: sum(r.price * b.quantity)
+      )
+    spent_roulette + spent_store
 
   end
 
