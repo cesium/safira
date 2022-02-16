@@ -76,7 +76,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
     spent_roulette =
       Repo.all(
         from ap in Safira.Roulette.AttendeePrize,
-        select: count(ap.id) * 20
+        select: sum(ap.quantity) * 20
       )
       |> Enum.reduce(0, &(&1 + &2))
     spent_store =
@@ -99,7 +99,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
         join: ap in Safira.Roulette.AttendeePrize, on: a.id == ap.attendee_id,
         join: p in Safira.Roulette.Prize, on: ap.prize_id == p.id,
         where: not (is_nil a.user_id) and fragment("?::date", ap.inserted_at) == ^date,
-        select: %{prize: p.name, number: count(p.id) }
+        select: %{prize: p.name, number: sum(ap.quantity) }
      )
   end
 
@@ -111,7 +111,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
       from p in Safira.Roulette.Prize,
         join: ap in Safira.Roulette.AttendeePrize, on: p.id == ap.prize_id,
         group_by: p.id,
-        select: {p.id, p.name, count(ap.id) }
+        select: {p.id, p.name, sum(ap.quantity) }
      )
   end
 end
