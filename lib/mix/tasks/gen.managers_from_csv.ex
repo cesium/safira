@@ -73,9 +73,8 @@ defmodule Mix.Tasks.Gen.ManagersFromCsv do
     |> CSV.parse_stream()
     |> Stream.map(fn row ->
       %{
-        name: "#{Enum.at(row, 0)} #{Enum.at(row, 1)}",
-        username: Enum.at(row, 2),
-        admin: Enum.at(row, 3)
+        username: Enum.at(row, 0),
+        admin: Enum.at(row, 1)
       }
     end)
   end
@@ -87,10 +86,8 @@ defmodule Mix.Tasks.Gen.ManagersFromCsv do
 
       user = %{
         "email" => email,
-        "name" => user_csv_entry.name,
         "password" => password,
         "password_confirmation" => password,
-        "is_admin" => convert!(user_csv_entry.admin)
       }
 
       Accounts.create_manager(%{"user" => user, "is_admin" => convert!(user_csv_entry.admin)})

@@ -25,7 +25,7 @@ defmodule Safira.Avatar do
 
   # Whitelist file extensions:
   def validate({file, _}) do
-    ~w(.jpg .jpeg .png .gif) |> Enum.member?(Path.extname(file.file_name))
+    ~w(.jpg .jpeg .png .gif .svg) |> Enum.member?(Path.extname(file.file_name))
   end
 
   # Define a thumbnail transformation:

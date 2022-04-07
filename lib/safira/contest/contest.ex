@@ -15,6 +15,7 @@ defmodule Safira.Contest do
   def list_available_badges do
     Repo.all(Badge)
     |> Enum.reject(fn x -> not badge_is_in_time(x) end)
+    |> Enum.reject(fn x -> x.type == 4 end)
   end
 
   def list_secret do
@@ -145,6 +146,10 @@ defmodule Safira.Contest do
     Repo.get_by(Redeem, [attendee_id: attendee_id, badge_id: badge_id])
   end
 
+  def get_keys_daily_token(attendee_id, day) do
+    Repo.get_by(DailyToken, [attendee_id: attendee_id, day: day])
+  end
+
   def create_redeem(attrs \\ %{}, user_type \\ :manager) do
     Multi.new()
     |> Multi.insert(:redeem, Redeem.changeset(%Redeem{}, attrs, user_type))
@@ -163,7 +168,8 @@ defmodule Safira.Contest do
     end)
     |> Multi.insert_or_update(:daily_token, fn %{attendee: attendee} ->
       {:ok, date, _} = DateTime.from_iso8601("#{Date.utc_today()}T00:00:00Z")
-      DailyToken.changeset(%DailyToken{}, %{quantity: attendee.token_balance, attendee_id: attendee.id, day: date})
+      changeset_daily = get_keys_daily_token(attendee.id, date) || %DailyToken{}
+      DailyToken.changeset(changeset_daily, %{quantity: attendee.token_balance, attendee_id: attendee.id, day: date})
     end)
     |> Repo.transaction()
     |> case do
@@ -189,8 +195,16 @@ defmodule Safira.Contest do
   end
 
   def list_leaderboard do
-    Safira.Accounts.list_active_attendees
-    |> Enum.sort(&(&1.badge_count >= &2.badge_count))
+    Repo.all(
+      from a in Safira.Accounts.Attendee,
+        join: r in Redeem, on: a.id == r.attendee_id,
+        join: b in Badge, on: r.badge_id == b.id,
+        where: not(is_nil a.user_id) and b.type != ^0,
+        select: %{attendee: a, token_count: a.token_balance},
+        preload: [badges: b]
+    )
+    |> Enum.map(fn a -> Map.put(a, :badge_count, length(a.attendee.badges)) end)
+    |> Enum.sort_by(&{&1.badge_count, &1.token_count}, &>=/2)
   end
 
   def list_daily_leaderboard(date) do

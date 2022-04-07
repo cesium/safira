@@ -55,7 +55,7 @@ defmodule Mix.Tasks.Gen.Redeemables do
 
     defp check_image_filename(image_path) do
       if String.trim(image_path) == "" do
-        "redeemable-missing.png"
+        "redeemable-missing.svg"
       else
         String.split(image_path, "/") |> List.last()
       end
@@ -63,7 +63,7 @@ defmodule Mix.Tasks.Gen.Redeemables do
 
     defp check_image_path(image_path) do
       if String.trim(image_path) == "" do
-        "#{File.cwd!()}/assets/static/images/redeemable-missing.png"
+        "#{File.cwd!()}/assets/static/images/redeemable-missing.svg"
       else
         image_path
       end
@@ -87,7 +87,7 @@ defmodule Mix.Tasks.Gen.Redeemables do
           IO.puts(error)
       end
     end
-    
+
   defp convert_bool!("yes"), do: true
   defp convert_bool!("no"), do: false
 end

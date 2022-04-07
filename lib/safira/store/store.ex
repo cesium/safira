@@ -6,6 +6,7 @@ defmodule Safira.Store do
   alias Safira.Store.Buy
   alias Safira.Accounts.Attendee
   alias Safira.Contest.DailyToken
+  alias Safira.Contest
 
   def list_redeemables do
     Repo.all(Redeemable)
@@ -98,7 +99,8 @@ defmodule Safira.Store do
     end)
     |> Multi.insert_or_update(:daily_token, fn %{attendee: attendee} ->
       {:ok, date, _} = DateTime.from_iso8601("#{Date.utc_today()}T00:00:00Z")
-      DailyToken.changeset(%DailyToken{}, %{quantity: attendee.token_balance, attendee_id: attendee.id, day: date})
+      changeset_daily = Contest.get_keys_daily_token(attendee.id, date) || %DailyToken{}
+      DailyToken.changeset(changeset_daily, %{quantity: attendee.token_balance, attendee_id: attendee.id, day: date})
     end) #increments the amount bought by 1
     |> serializable_transaction()
   end
@@ -122,7 +124,7 @@ defmodule Safira.Store do
     |> Map.fetch!(:redeemables)
     |> Enum.map(fn redeemable ->
       {_,b} = get_keys_buy(attendee.id, redeemable.id)
-      Map.put(redeemable, :quantity, b.quantity)
+      redeemable = Map.put(redeemable, :quantity, b.quantity)
       Map.put(redeemable, :not_redeemed, b.quantity - b.redeemed)
     end)
 

@@ -128,7 +128,8 @@ defmodule Mix.Tasks.Gift.Badge do
       %{attendee_id: attendee_id,
         manager_id: 1,
         badge_id: badge_id
-      }
+      },
+      :admin
     )
   end
 

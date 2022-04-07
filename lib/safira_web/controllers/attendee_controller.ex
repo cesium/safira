@@ -5,6 +5,7 @@ defmodule SafiraWeb.AttendeeController do
   alias Safira.Accounts.Attendee
   alias Safira.Accounts.User
   alias Safira.Store
+  alias Safira.Roulette
 
   action_fallback SafiraWeb.FallbackController
 
@@ -17,6 +18,9 @@ defmodule SafiraWeb.AttendeeController do
     attendee = Accounts.get_attendee_with_badge_count!(id)
 
     cond do
+      is_nil(attendee) ->
+        {:error, :not_found}
+
       is_nil(attendee.user_id) ->
         {:error, :not_registered}
 
@@ -24,9 +28,10 @@ defmodule SafiraWeb.AttendeeController do
         render(conn, "manager_show.json", attendee: attendee)
 
       true ->
-        attendee = 
+        attendee =
           attendee
           |> Map.put(:redeemables,Store.get_attendee_redeemables(attendee))
+          |> Map.put(:prizes,Roulette.get_attendee_prize(attendee))
         render(conn, "show.json", attendee: attendee)
     end
   end
@@ -38,7 +43,7 @@ defmodule SafiraWeb.AttendeeController do
     if user.attendee.id == attendee.id do
       with {:ok, %Attendee{} = attendee} <-
              Accounts.update_attendee(attendee, attendee_params) do
-        render(conn, "show.json", attendee: attendee)
+        render(conn, "show_simple.json", attendee: attendee)
       end
     else
       {:error, :unauthorized}

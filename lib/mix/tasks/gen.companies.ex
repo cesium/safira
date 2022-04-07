@@ -41,14 +41,18 @@ defmodule Mix.Tasks.Gen.Companies do
                        description,
                        begin_time,
                        end_time,
+                       begin_badge_time,
+                       end_badge_time,
                        image_path,
                        type,
                        tokens,
                        sponsorship,
                        channel_id
                      ] ->
-      {:ok, begin_datetime, _} = DateTime.from_iso8601("#{begin_time}T00:00:00Z")
-      {:ok, end_datetime, _} = DateTime.from_iso8601("#{end_time}T00:00:00Z")
+      {:ok, begin_datetime, _} = DateTime.from_iso8601(begin_time)
+      {:ok, end_datetime, _} = DateTime.from_iso8601(end_time)
+      {:ok, begin_badge_datetime, _} = DateTime.from_iso8601(begin_badge_time)
+      {:ok, end_badge_datetime, _} = DateTime.from_iso8601(end_badge_time)
 
       {
         %{
@@ -56,6 +60,8 @@ defmodule Mix.Tasks.Gen.Companies do
           description: description,
           begin: begin_datetime,
           end: end_datetime,
+          begin_badge: begin_badge_datetime,
+          end_badge: end_badge_datetime,
           type: String.to_integer(type),
           tokens: String.to_integer(tokens)
         },
@@ -77,7 +83,7 @@ defmodule Mix.Tasks.Gen.Companies do
 
   defp check_image_filename(image_path) do
     if is_nil(image_path) do
-      "badge-missing.png"
+      "missing-badge.svg"
     else
       String.split(image_path, "/") |> List.last()
     end
@@ -85,7 +91,7 @@ defmodule Mix.Tasks.Gen.Companies do
 
   defp check_image_path(image_path) do
     if is_nil(image_path) do
-      "#{File.cwd!()}/assets/static/images/badge-missing.png"
+      "#{File.cwd!()}/assets/static/images/missing-badge.svg"
     else
       image_path
     end

@@ -6,7 +6,10 @@ defmodule SafiraWeb.LeaderboardController do
   action_fallback SafiraWeb.FallbackController
 
   def index(conn, _params) do
-    attendees = Contest.list_leaderboard()
+    board = Contest.list_leaderboard()
+    attendees = board 
+                |> Enum.map(fn a -> %{badge_count: a.badge_count, attendee: Map.put(a.attendee, :token_balance, a.token_count)} end)
+                |> Enum.map(fn a -> Map.put(a.attendee, :badge_count, a.badge_count) end)
     render(conn, SafiraWeb.LeaderboardView, "index.json", attendees: attendees)
   end
 

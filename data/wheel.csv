@@ -1,23 +1,15 @@
 name,max_amount_per_attendee,stock,probability,is_redeemable,path_to_image
-Xbox Series X,1,1,0.0002,yes,data/prizes/xbox_series_x.png
-ATH-M50X Profissional Audio-technica,1,1,0.0003,yes,data/prizes/audiotechnica.png
-JBL Flip 5,1,3,0.001,yes,data/prizes/jbl_flip_5.png
-Raspberry Pi 4 2GB + carregador,1,3,0.001,yes,data/prizes/raspberry_pi_4.png
-Google Nest Mini,1,3,0.005,yes,data/prizes/google_nest_mini.png
-Xbox Game Pass Ultimate - 3 meses,1,1,0.005,yes,data/prizes/xbox_gamepass_ultimate_3m.png
-Cartão Presente 50€,1,6,0.002,yes,data/prizes/voucher50.png
-Cartão Presente 20€,1,15,0.0075,yes,data/prizes/voucher20.png
-Cartão Presente 10€,1,10,0.008,yes,data/prizes/voucher10.png
-Lucky Bastard 1,1,2147483000,0.01,no,data/badges/atividades/luckybastard(FINAL).png
-Lucky Bastard 2,1,2147483000,0.01,no,data/badges/atividades/luckybastard(FINAL).png
-Lucky Bastard 3,1,2147483000,0.01,no,data/badges/atividades/luckybastard(FINAL).png
-Lucky Bastard 4,1,2147483000,0.01,no,data/badges/atividades/luckybastard(FINAL).png
-Lucky Bastard 5,1,2147483000,0.01,no,data/badges/atividades/luckybastard(FINAL).png
-Lucky Bastard 6,1,2147483000,0.01,no,data/badges/atividades/luckybastard(FINAL).png
-Lucky Bastard 7,1,2147483000,0.01,no,data/badges/atividades/luckybastard(FINAL).png
-Lucky Bastard 8,1,2147483000,0.01,no,data/badges/atividades/luckybastard(FINAL).png
-Lucky Bastard 9,1,2147483000,0.01,no,data/badges/atividades/luckybastard(FINAL).png
-Lucky Bastard 10,1,2147483000,0.01,no,data/badges/atividades/luckybastard(FINAL).png
-Tokens,2147483000,2147483000,0.07,no,data/prizes/token.png
-Entradas para o sorteio final,2147483000,2147483000,0.2,no,data/prizes/contest_entry.png
-Nada,2147483000,2147483000,0.6,no,data/prizes/nothing.png
+Raspberry Pi,1,2,0.0002,yes,data/roulette/raspberry-pi.png
+Google Nest Mini,1,2,0.0003,yes,data/roulette/nest.png
+Earbuds QCY T5 True Wireless Brancos,1,4,0.002,yes,data/roulette/qcy.png
+Auriculares Xiaomi Mi AirDots True Wireless Earbuds Basic 2 Pretos,1,3,0.005,yes,data/roulette/earbudsxiaomi.png
+JBL Go 3,1,2,0.001,yes,data/roulette/jbl.png
+Powerbank Xiaomi 10000mAh,1,5,0.005,yes,data/roulette/powerbank.png
+Cartões Dá 20€,1,5,0.001,yes,data/roulette/cartao.png
+Cartões Dá 10€,1,10,0.0075,yes,data/roulette/cartao.png
+Chocolates,1,100,0.008,yes,data/roulette/chocolates.png
+Badge Lucky Bastars,10,999999,0.1,no,data/roulette/lucky_bastard.png
+Tokens,999999,999999,0.07,no,data/roulette/question_mark.png
+1 entrada no jantar empresarial,1,1,0.03,no,data/roulette/badge_sensei.png
+Entradas para o sorteio final,999999,999999,0.17,no,data/roulette/badgeroleta.png
+Nada,999999,999999,0.6,no,data/roulette/nada.png

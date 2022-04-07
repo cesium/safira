@@ -12,6 +12,7 @@ defmodule Safira.Roulette do
   alias Safira.Roulette.AttendeePrize
   alias Safira.Accounts.Attendee
   alias Safira.Contest.DailyToken
+  alias Safira.Contest
 
   @doc """
   Returns the list of prizes.
@@ -267,7 +268,8 @@ defmodule Safira.Roulette do
     end)
     |> Multi.insert_or_update(:daily_token, fn %{attendee: attendee} ->
       {:ok, date, _} = DateTime.from_iso8601("#{Date.utc_today()}T00:00:00Z")
-      DailyToken.changeset(%DailyToken{}, %{quantity: attendee.token_balance, attendee_id: attendee.id, day: date})
+      changeset_daily = Contest.get_keys_daily_token(attendee.id, date) || %DailyToken{}
+      DailyToken.changeset(changeset_daily, %{quantity: attendee.token_balance, attendee_id: attendee.id, day: date})
     end)
     |> serializable_transaction()
   end
@@ -355,7 +357,8 @@ defmodule Safira.Roulette do
           attendee_id: attendee.id,
           badge_id: badge.id,
           manager_id: 1
-        }
+        },
+        :admin
       )
     end)
     |> Multi.update(:attendee_balance_entries, fn %{redeem: redeem} ->
@@ -529,7 +532,8 @@ defmodule Safira.Roulette do
     |> Map.fetch!(:prizes)
     |> Enum.map(fn prize ->
       ap = get_keys_attendee_prize(attendee.id, prize.id)
-      Map.put(prize, :quantity, ap.quantity)
+      prize2 = Map.put(prize, :quantity, ap.quantity)
+      Map.put(prize2, :not_redeemed, ap.quantity - ap.redeemed)
     end)
   end
 
