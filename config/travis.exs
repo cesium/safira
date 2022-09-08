@@ -27,8 +27,7 @@ config :safira, Safira.Guardian,
   secret_key: "BnJosu+UxrCR70RWM4dhDJz2bH34D+wTbLcu7R9siQWGr8uGmB8k+ClnAEw3EkVQ"
 
 # Bamboo config
-config :safira, Safira.Mailer,
-  adapter: Bamboo.TestAdapter
+config :safira, Safira.Mailer, adapter: Bamboo.TestAdapter
 
 # Env
 System.put_env(%{"FROM_EMAIL" => "geral@safira.safira"})
