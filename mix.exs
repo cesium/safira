@@ -72,6 +72,7 @@ defmodule Safira.MixProject do
       {:torch, "~> 2.0"},
       {:pow, "~> 1.0.18"},
       {:ex_machina, "~> 2.3", only: :test},
+      {:faker, "~> 0.17", only: :test},
       {:bureaucrat, "~> 0.2.5", only: :test},
       {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false}
     ]

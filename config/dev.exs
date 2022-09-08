@@ -77,8 +77,7 @@ config :phoenix, :stacktrace_depth, 20
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
 
-config :safira, Safira.Mailer,
-  adapter: Bamboo.LocalAdapter
+config :safira, Safira.Mailer, adapter: Bamboo.LocalAdapter
 
 # Env
 System.put_env(%{"FROM_EMAIL" => "geral@safira.safira"})
