@@ -17,18 +17,6 @@ defmodule Safira.AccountFactory do
         }
       end
 
-      def company_factory do
-        name = Faker.Company.name()
-
-        %Safira.Accounts.Company{
-          name: name,
-          sponsorship: Enum.random(["exclusive", "gold", "silver", "bronze"]),
-          channel_id: String.downcase(name),
-          remaining_spotlights: Enum.random(0..10),
-          user: build(:user)
-        }
-      end
-
       def manager_factory do
         %Safira.Accounts.Manager{
           active: Enum.random([true, false]),
