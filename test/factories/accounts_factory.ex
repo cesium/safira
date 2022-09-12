@@ -1,7 +1,6 @@
-defmodule Safira.AccountFactory do
+defmodule Safira.AccountsFactory do
   @moduledoc """
-  A factory to build all account related
-  structs
+  A factory to build all accounts related structs
   """
   defmacro __using__(_opts) do
     quote do
@@ -24,8 +23,8 @@ defmodule Safira.AccountFactory do
           name: name,
           sponsorship: Enum.random(["exclusive", "gold", "silver", "bronze"]),
           channel_id: String.downcase(name),
-          remaining_spotlights: Enum.random(0..10),
-          user: build(:user)
+          user: build(:user),
+          badge: build(:badge)
         }
       end
 
