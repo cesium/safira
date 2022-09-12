@@ -20,11 +20,11 @@ defmodule SafiraWeb.BonusControllerTest do
         |> post(Routes.bonus_path(conn, :give_bonus, attendee.id))
         |> doc()
 
-      assert json_response(conn, 200)["data"] == %{
+      assert json_response(conn, 200) == %{
         "name" => attendee.name,
         "attendee_id" => attendee.id,
         "token_bonus" => Application.fetch_env!(:safira, :token_bonus),
-        "bonus_count" => conn.assigns.get_bonus.count,
+        "bonus_count" => 1,
         "company_id" => company.id
       }
     end
