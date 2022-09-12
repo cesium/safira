@@ -28,5 +28,32 @@ defmodule SafiraWeb.BonusControllerTest do
         "company_id" => company.id
       }
     end
+
+    test "with invalid token" do
+      company_user = create_user_strategy(:user)
+      attendee_user = create_user_strategy(:user)
+
+      company = insert(:company, user: company_user)
+      attendee = insert(:attendee, user: attendee_user)
+
+      conn =
+        conn
+        |> post(Routes.bonus_path(conn, :give_bonus, attendee.id))
+        |> doc()
+
+      assert json_response(conn, 401)["error"] == "unauthenticated"
+    end
+
+    test "with no token" do
+      attendee_user = create_user_strategy(:user)
+      attendee = insert(:attendee, user: attendee_user)
+
+      conn =
+        conn
+        |> post(Routes.bonus_path(conn, :give_bonus, attendee.id))
+        |> doc()
+
+      assert json_response(conn, 401)["error"] == "unauthenticated"
+    end
   end
 end
