@@ -19,6 +19,13 @@ defmodule Safira.ContestFactory do
           manager: build(:manager)
         }
       end
+
+      def referral_factory do
+        %Safira.Contest.Referral{
+          available: true,
+          badge: build(:badge)
+        }
+      end
     end
   end
 end
