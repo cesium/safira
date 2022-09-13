@@ -6,7 +6,7 @@ defmodule Safira.RouletteTest do
   describe "prizes" do
     alias Safira.Roulette.Prize
 
-    @valid_attrs %{max_amount_per_attendee: 10, name: "some name", probability: 0.42, stock: 40}
+    @valid_attrs %{max_amount_per_attendee: 10, name: "some name", probability: 0.42, stock: 40, is_redeemable: true}
     @update_attrs %{
       max_amount_per_attendee: 51,
       name: "some updated name",
