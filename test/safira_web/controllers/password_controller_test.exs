@@ -68,7 +68,7 @@ defmodule SafiraWeb.PasswordControllerTest do
 
   defp reset_password_token(user) do
     token = Auth.random_string(48)
-    sent_at = Timex.shift(DateTime.utc_now, days: -1)
+    sent_at = Timex.shift(DateTime.utc_now, days: -10)
 
     user
     |> User.password_token_changeset(
