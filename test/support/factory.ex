@@ -4,5 +4,5 @@ defmodule Safira.Factory do
   use Safira.AccountsFactory
   use Safira.ContestFactory
   use Safira.PrizeStrategy
-  use Safira.ReferralFactory
+  use Safira.PrizeFactory
 end
