@@ -160,7 +160,6 @@ defmodule Safira.Interaction do
   """
   def start_spotlight(company) do
     Multi.new()
-    # get or build a spotlight
     |> Multi.run(:get_spotlight, fn _repo, _changes ->
       {:ok,
        get_spotlight() ||
