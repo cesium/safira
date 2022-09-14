@@ -102,7 +102,7 @@ defmodule Safira.Store do
       changeset_daily = Contest.get_keys_daily_token(attendee.id, date) || %DailyToken{}
       DailyToken.changeset(changeset_daily, %{quantity: attendee.token_balance, attendee_id: attendee.id, day: date})
     end) #increments the amount bought by 1
-    |> serializable_transaction()
+    |> Repo.transaction()
   end
 
   #redeems an item for an atendee, should only be used by managers

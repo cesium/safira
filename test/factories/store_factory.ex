@@ -10,9 +10,8 @@ defmodule Safira.StoreFactory do
         %Redeemable{
           name: Faker.Commerce.product_name(),
           description: Faker.StarWars.En.quote(),
-          price: Enum.random(0..10),
-          stock: Enum.random(0..30),
-          max_per_user: Enum.random(0..3)
+          price: Enum.random(10..50),
+          max_per_user: Enum.random(1..3)
         }
       end
     end
