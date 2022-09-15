@@ -23,8 +23,7 @@ defmodule Safira.AccountsFactory do
           name: name,
           sponsorship: Enum.random(["exclusive", "gold", "silver", "bronze"]),
           channel_id: String.downcase(name),
-          user: build(:user),
-          badge: build(:badge)
+          user: build(:user)
         }
       end
 
