@@ -35,8 +35,13 @@ defmodule SafiraWeb.BuyController do
 
       redeemable_id ->
         case Store.exist_redeemable(redeemable_id) do
-          true -> 
-            Store.buy_redeemable(redeemable_id, attendee)
+          true ->
+            case Store.buy_redeemable(redeemable_id, attendee) do
+              {:ok, changes} -> {:ok, changes}
+
+              {:error, _, changes, _} ->
+                {:error, changes}
+            end
           false ->
             conn
             |> put_status(:not_found)

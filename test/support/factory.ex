@@ -5,5 +5,7 @@ defmodule Safira.Factory do
   use Safira.UserStrategy
   use Safira.ContestFactory
   use Safira.PrizeStrategy
+  use Safira.PrizeFactory
+  use Safira.StoreFactory
   use Safira.RouletteFactory
 end
