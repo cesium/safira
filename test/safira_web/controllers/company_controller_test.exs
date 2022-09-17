@@ -11,21 +11,23 @@ defmodule SafiraWeb.CompanyControllerTest do
 
   describe "index" do
     test "with valid token", %{conn: conn, user: user, company: company} do
-      %{conn: conn, user: _} = api_authenticate(user)
+      %{conn: conn, user: _user} = api_authenticate(user)
 
       conn =
         conn
         |> get(Routes.company_path(conn, :index))
 
-      assert json_response(conn, 200)["data"] == [
-               %{
-                 "id" => company.id,
-                 "name" => company.name,
-                 "sponsorship" => company.sponsorship,
-                 "channel_id" => company.channel_id,
-                 "badge_id" => company.badge.id
-               }
-             ]
+      expected_response = [
+        %{
+          "id" => company.id,
+          "name" => company.name,
+          "sponsorship" => company.sponsorship,
+          "channel_id" => company.channel_id,
+          "badge_id" => company.badge.id
+        }
+      ]
+
+      assert json_response(conn, 200)["data"] == expected_response
     end
 
     test "with invalid token" do
@@ -48,19 +50,21 @@ defmodule SafiraWeb.CompanyControllerTest do
 
   describe "show" do
     test "with valid token", %{conn: conn, user: user, company: company} do
-      %{conn: conn, user: _} = api_authenticate(user)
+      %{conn: conn, user: _user} = api_authenticate(user)
 
       conn =
         conn
         |> get(Routes.company_path(conn, :show, company.id))
 
-      assert json_response(conn, 200)["data"] == %{
-               "id" => company.id,
-               "name" => company.name,
-               "sponsorship" => company.sponsorship,
-               "channel_id" => company.channel_id,
-               "badge_id" => company.badge.id
-             }
+      expected_company = %{
+        "id" => company.id,
+        "name" => company.name,
+        "sponsorship" => company.sponsorship,
+        "channel_id" => company.channel_id,
+        "badge_id" => company.badge.id
+      }
+
+      assert json_response(conn, 200)["data"] == expected_company
     end
 
     test "with invalid token", %{company: company} do

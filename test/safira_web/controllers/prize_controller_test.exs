@@ -11,21 +11,23 @@ defmodule SafiraWeb.PrizeControllerTest do
 
   describe "index" do
     test "with valid token", %{conn: conn, user: user, prize: prize} do
-      %{conn: conn, user: _} = api_authenticate(user)
+      %{conn: conn, user: _user} = api_authenticate(user)
 
       conn =
         conn
         |> get(Routes.prize_path(conn, :index))
 
-      assert json_response(conn, 200)["data"] == [
-               %{
-                 "id" => prize.id,
-                 "name" => prize.name,
-                 "avatar" => "/images/prize-missing.png",
-                 "max_amount_per_attendee" => prize.max_amount_per_attendee,
-                 "stock" => prize.stock
-               }
-             ]
+      expected_response = [
+        %{
+          "id" => prize.id,
+          "name" => prize.name,
+          "avatar" => "/images/prize-missing.png",
+          "max_amount_per_attendee" => prize.max_amount_per_attendee,
+          "stock" => prize.stock
+        }
+      ]
+
+      assert json_response(conn, 200)["data"] == expected_response
     end
 
     test "with invalid token" do
@@ -48,19 +50,21 @@ defmodule SafiraWeb.PrizeControllerTest do
 
   describe "show" do
     test "with valid token", %{conn: conn, user: user, prize: prize} do
-      %{conn: conn, user: _} = api_authenticate(user)
+      %{conn: conn, user: _user} = api_authenticate(user)
 
       conn =
         conn
         |> get(Routes.prize_path(conn, :show, prize.id))
 
-      assert json_response(conn, 200)["data"] == %{
-               "id" => prize.id,
-               "name" => prize.name,
-               "avatar" => "/images/prize-missing.png",
-               "max_amount_per_attendee" => prize.max_amount_per_attendee,
-               "stock" => prize.stock
-             }
+      expected_prize = %{
+        "id" => prize.id,
+        "name" => prize.name,
+        "avatar" => "/images/prize-missing.png",
+        "max_amount_per_attendee" => prize.max_amount_per_attendee,
+        "stock" => prize.stock
+      }
+
+      assert json_response(conn, 200)["data"] == expected_prize
     end
 
     test "with invalid token", %{prize: prize} do

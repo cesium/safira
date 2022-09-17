@@ -17,7 +17,7 @@ defmodule SafiraWeb.BuyControllerTest do
 
   describe "create" do
     test "with valid token", %{conn: conn, user: user, attrs: attrs, redeemable: redeemable} do
-      %{conn: conn, user: _} = api_authenticate(user)
+      %{conn: conn, user: _user} = api_authenticate(user)
 
       conn =
         conn
@@ -50,7 +50,7 @@ defmodule SafiraWeb.BuyControllerTest do
 
     test "when user is not an attendee", %{attrs: attrs, redeemable: redeemable} do
       user = create_user_strategy(:user)
-      %{conn: conn, user: _} = api_authenticate(user)
+      %{conn: conn, user: _user} = api_authenticate(user)
       company = insert(:company, user: user)
 
       conn =
@@ -63,7 +63,7 @@ defmodule SafiraWeb.BuyControllerTest do
 
     test "when user doesn't have enough balance", %{attrs: attrs, redeemable: redeemable} do
       user = create_user_strategy(:user)
-      %{conn: conn, user: _} = api_authenticate(user)
+      %{conn: conn, user: _user} = api_authenticate(user)
       attendee = insert(:attendee, token_balance: redeemable.price - 1, user: user)
 
       conn =
@@ -77,7 +77,7 @@ defmodule SafiraWeb.BuyControllerTest do
     end
 
     test "when redeemable is out of stock", %{conn: conn, user: user} do
-      %{conn: conn, user: _} = api_authenticate(user)
+      %{conn: conn, user: _user} = api_authenticate(user)
       redeemable = insert(:redeemable, stock: 0)
 
       attrs = %{"redeemable" => %{"redeemable_id" => redeemable.id}}
@@ -91,7 +91,7 @@ defmodule SafiraWeb.BuyControllerTest do
     end
 
     test "with no redeemable_id param", %{conn: conn, user: user, redeemable: redeemable} do
-      %{conn: conn, user: _} = api_authenticate(user)
+      %{conn: conn, user: _user} = api_authenticate(user)
 
       attrs = %{"redeemable" => %{"name" => redeemable.name}}
 

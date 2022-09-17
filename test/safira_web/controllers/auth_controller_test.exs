@@ -2,12 +2,13 @@ defmodule SafiraWeb.AuthControllerTest do
   use SafiraWeb.ConnCase
 
   setup %{conn: conn} do
-    {:ok, conn: put_req_header(conn, "accept", "application/json")}
+    user = create_user_strategy(:user)
+
+    {:ok, conn: put_req_header(conn, "accept", "application/json"), user: user}
   end
 
   describe "me" do
-    test "attendee", %{conn: conn} do
-      user = create_user_strategy(:user)
+    test "attendee", %{user: user} do
       attendee = insert(:attendee, user: user)
 
       %{conn: conn, user: _user} = api_authenticate(user)
@@ -15,7 +16,6 @@ defmodule SafiraWeb.AuthControllerTest do
       conn =
         conn
         |> get(Routes.auth_path(conn, :attendee))
-        |> doc()
 
       expected_attendee = %{
         "avatar" => "/images/attendee-missing.png",
@@ -28,8 +28,7 @@ defmodule SafiraWeb.AuthControllerTest do
       assert json_response(conn, 200) == expected_attendee
     end
 
-    test "company", %{conn: conn} do
-      user = create_user_strategy(:user)
+    test "company", %{user: user} do
       company = insert(:company, user: user)
 
       %{conn: conn, user: _user} = api_authenticate(user)
@@ -37,7 +36,6 @@ defmodule SafiraWeb.AuthControllerTest do
       conn =
         conn
         |> get(Routes.auth_path(conn, :company))
-        |> doc()
 
       expected_company = %{
         "badge_id" => nil,
@@ -50,8 +48,7 @@ defmodule SafiraWeb.AuthControllerTest do
       assert json_response(conn, 200) == expected_company
     end
 
-    test "user", %{conn: conn} do
-      user = create_user_strategy(:user)
+    test "user", %{user: user} do
       company = insert(:company, user: user)
 
       %{conn: conn, user: _user} = api_authenticate(user)
@@ -59,7 +56,6 @@ defmodule SafiraWeb.AuthControllerTest do
       conn =
         conn
         |> get(Routes.auth_path(conn, :user))
-        |> doc()
 
       expected_user = %{
         "email" => user.email,
@@ -72,11 +68,11 @@ defmodule SafiraWeb.AuthControllerTest do
   end
 
   describe "sign_up" do
-    test "user", %{conn: conn} do
+    test "user" do
       attendee = insert(:attendee, user: nil)
       user = build(:user)
 
-      struct = %{
+      attrs = %{
         "user" => %{
           "email" => user.email,
           "password" => user.password,
@@ -91,54 +87,46 @@ defmodule SafiraWeb.AuthControllerTest do
 
       conn =
         conn
-        |> post(Routes.auth_path(conn, :sign_up), struct)
-        |> doc()
+        |> post(Routes.auth_path(conn, :sign_up), attrs)
 
-      assert json_response(conn, 200)["jwt"] != %{}
+      assert json_response(conn, 200)["jwt"] != ""
     end
   end
 
   describe "sign_in" do
-    test "user with valid credentials", %{conn: conn} do
-      user = create_user_strategy(:user)
-      struct = %{"email" => user.email, "password" => user.password}
+    test "user with valid credentials", %{user: user} do
+      attrs = %{"email" => user.email, "password" => user.password}
 
       conn =
         conn
-        |> post(Routes.auth_path(conn, :sign_in), struct)
-        |> doc()
+        |> post(Routes.auth_path(conn, :sign_in), attrs)
 
-      assert json_response(conn, 200)["jwt"] != %{}
+      assert json_response(conn, 200)["jwt"] != ""
     end
 
-    test "user with invalid credentials (wrong password)", %{conn: conn} do
-      user = create_user_strategy(:user)
+    test "user with invalid credentials (wrong password)", %{user: user} do
       struct = %{"email" => user.email, "password" => "test1234"}
 
       conn =
         conn
         |> post(Routes.auth_path(conn, :sign_in), struct)
-        |> doc()
 
-      assert json_response(conn, :unauthorized)["errors"] != %{}
+      assert json_response(conn, 401)["error"] == "Login error"
     end
 
-    test "user with invalid credentials (non existing user)", %{conn: conn} do
-      user = create_user_strategy(:user)
-      struct = %{"email" => "wrong@email.pt", "password" => user.password}
+    test "user with invalid credentials (non existing user)", %{user: user} do
+      attrs = %{"email" => "wrong@email.pt", "password" => user.password}
 
       conn =
         conn
-        |> post(Routes.auth_path(conn, :sign_in), struct)
-        |> doc()
+        |> post(Routes.auth_path(conn, :sign_in), attrs)
 
-      assert json_response(conn, :unauthorized)["errors"] != %{}
+      assert json_response(conn, 401)["error"] == "Login error"
     end
   end
 
   describe "is_registered" do
-    test "is registered", %{conn: conn} do
-      user = create_user_strategy(:user)
+    test "is registered", %{user: user} do
       attendee = insert(:attendee, user: user)
 
       %{conn: conn, user: _user} = api_authenticate(user)
@@ -146,15 +134,12 @@ defmodule SafiraWeb.AuthControllerTest do
       conn =
         conn
         |> get(Routes.auth_path(conn, :is_registered, attendee.id))
-        |> doc()
 
       assert json_response(conn, 200) == %{"is_registered" => true}
     end
 
-    test "is not registered", %{conn: conn} do
-      user = create_user_strategy(:user)
+    test "is not registered", %{user: user} do
       attendee = insert(:attendee, user: user)
-
       unregistered_attendee = insert(:attendee, user: nil)
 
       %{conn: conn, user: _user} = api_authenticate(user)
@@ -162,7 +147,6 @@ defmodule SafiraWeb.AuthControllerTest do
       conn =
         conn
         |> get(Routes.auth_path(conn, :is_registered, unregistered_attendee.id))
-        |> doc()
 
       assert json_response(conn, 200) == %{"is_registered" => false}
     end

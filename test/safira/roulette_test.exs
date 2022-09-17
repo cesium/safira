@@ -7,21 +7,27 @@ defmodule Safira.RouletteTest do
     alias Safira.Roulette.Prize
 
     @valid_attrs %{max_amount_per_attendee: 10, name: "some name", probability: 0.42, stock: 40, is_redeemable: true}
+
     @update_attrs %{
       max_amount_per_attendee: 51,
       name: "some updated name",
       probability: 0.61,
       stock: 50
     }
-    @invalid_attrs1 %{max_amount_per_attendee: nil, name: nil, probability: nil, stock: nil}
+
+    @invalid_attrs1 %{max_amount_per_attendee: nil, name: nil, probability: nil, stock: nil, is_redeemable: nil}
+
     @invalid_attrs2 %{
       max_amount_per_attendee: 11,
       name: "some name",
       probability: 0.42,
-      stock: 10
+      stock: 10,
+      is_redeemable: true
     }
-    @invalid_attrs3 %{max_amount_per_attendee: 9, name: "some name", probability: -0.7, stock: 10}
-    @invalid_attrs4 %{max_amount_per_attendee: 9, name: "some name", probability: 1.7, stock: 10}
+
+    @invalid_attrs3 %{max_amount_per_attendee: 9, name: "some name", probability: -0.7, stock: 10, is_redeemable: true}
+
+    @invalid_attrs4 %{max_amount_per_attendee: 9, name: "some name", probability: 1.7, stock: 10, is_redeemable: true}
 
     def prize_fixture(attrs \\ %{}) do
       {:ok, prize} =
@@ -92,17 +98,19 @@ defmodule Safira.RouletteTest do
   describe "attendees_prizes" do
     alias Safira.Roulette.AttendeePrize
 
-    @invalid_attrs %{attendee_id: nil, prize_id: nil, quantity: nil}
+    @invalid_attrs %{attendee_id: nil, prize_id: nil, quantity: nil, is_redeemable: nil}
 
     def setup() do
       user = create_user_strategy(:user)
-      attendee = build(:attendee) |> Map.put(:user_id, user.id) |> insert
+      attendee = insert(:attendee, user: user)
       prize = create_prize_strategy(:prize)
+
       {attendee, prize}
     end
 
     def attendee_prize_fixture(attrs \\ %{}) do
       {attendee, prize} = setup()
+
       attendee_prize = %{attendee_id: attendee.id, prize_id: prize.id, quantity: 1}
 
       {:ok, returned_attendee_prize} =
@@ -139,8 +147,8 @@ defmodule Safira.RouletteTest do
       {attendee, prize} = setup()
       # nil values
       assert {:error, %Ecto.Changeset{}} = Roulette.create_attendee_prize(@invalid_attrs)
-      # quantity 0
-      attendee_prize = %{attendee_id: attendee.id, prize_id: prize.id, quantity: 0}
+      # quantity -1
+      attendee_prize = %{attendee_id: attendee.id, prize_id: prize.id, quantity: -1}
       assert {:error, %Ecto.Changeset{}} = Roulette.create_attendee_prize(attendee_prize)
       # prize nil
       attendee_prize = %{attendee_id: attendee.id, prize_id: nil, quantity: 1}
@@ -165,7 +173,7 @@ defmodule Safira.RouletteTest do
 
       # invalid quantity
       assert {:error, %Ecto.Changeset{}} =
-               Roulette.update_attendee_prize(attendee_prize, %{quantity: 0})
+               Roulette.update_attendee_prize(attendee_prize, %{quantity: -1})
 
       assert attendee_prize == Roulette.get_attendee_prize!(attendee_prize.id)
 
