@@ -30,8 +30,7 @@ defmodule SafiraWeb.AuthControllerTest do
 
     test "company", %{conn: conn} do
       user = create_user_strategy(:user)
-      badge = insert(:badge)
-      company = insert(:company, user: user, badge: badge)
+      company = insert(:company, user: user)
 
       %{conn: conn, user: _user} = api_authenticate(user)
 
@@ -41,7 +40,7 @@ defmodule SafiraWeb.AuthControllerTest do
         |> doc()
 
       expected_company = %{
-        "badge_id" => badge.id,
+        "badge_id" => nil,
         "email" => user.email,
         "id" => company.id,
         "name" => company.name,
