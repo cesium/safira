@@ -5,7 +5,7 @@ defmodule Safira.ContestFactory do
         %Safira.Contest.Badge{
           name: Faker.Pokemon.En.name(),
           description: Faker.StarWars.En.quote(),
-          type: Enum.random(0..9),
+          type: Enum.random(1..9),
           begin_badge: Faker.DateTime.backward(2),
           end_badge: Faker.DateTime.forward(2),
           tokens: Enum.random(100..255)

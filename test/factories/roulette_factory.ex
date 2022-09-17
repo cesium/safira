@@ -3,10 +3,11 @@ defmodule Safira.RouletteFactory do
     quote do
       def prize_factory do
         %Safira.Roulette.Prize{
-          max_amount_per_attendee: Enum.random(1..10),
+          max_amount_per_attendee: 10,
           name: Faker.Commerce.product_name(),
           probability: 0.5,
-          stock: Enum.random(1..40)
+          stock: 40,
+          is_redeemable: Enum.random([true, false])
         }
       end
     end

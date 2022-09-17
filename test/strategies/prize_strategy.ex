@@ -7,7 +7,8 @@ defmodule Safira.PrizeStrategy do
         max_amount_per_attendee: record.max_amount_per_attendee,
         name: record.name,
         probability: record.probability,
-        stock: record.stock
+        stock: record.stock,
+        is_redeemable: record.is_redeemable
       })
 
     prize
