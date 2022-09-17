@@ -16,7 +16,6 @@ defmodule SafiraWeb.BadgeController do
         badges = Contest.list_available_badges()
         render(conn, "index.json", badges: badges)
       true ->
-        IO.inspect("Here")
         badges = Contest.list_badges_conservative()
         render(conn, "index.json", badges: badges)
     end
