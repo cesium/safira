@@ -492,7 +492,7 @@ defmodule Safira.Roulette do
   end
 
   def get_keys_prize(attendee_id, prize_id) do
-    ap = 
+    ap =
       Repo.get_by(AttendeePrize, attendee_id: attendee_id, prize_id: prize_id)
     case ap do
       nil ->
