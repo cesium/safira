@@ -5,75 +5,227 @@ defmodule SafiraWeb.DeliverPrizeControllerTest do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
 
-  describe "index" do
-    test "with valid token"  do
-      badge = insert(:badge)
-      %{conn: conn, user: _} = api_authenticate(create_user_strategy(:user))
+  describe "create" do
+    test "with valid token (manager)"  do
+      prize = insert(:prize, is_redeemable: true)
+      user = create_user_strategy(:user)
+      _manager = insert(:manager, user: user)
+      attendee = insert(:attendee)
+      _attendee_prize = insert(:attendee_prize, attendee: attendee, prize: prize, redeemed: 0)
+      %{conn: conn, user: _} = api_authenticate(user)
+
+      params = %{
+        "redeem" => %{
+          "attendee_id" => attendee.id,
+          "prize" => prize.id,
+          "quantity" => 1
+        }
+      }
+
       conn = conn
-        |> get(Routes.badge_path(conn, :index))
-        |> doc()
-      assert json_response(conn, 200)["data"] == [%{
-        "avatar" => "/images/badge-missing.png",
-        "begin" => badge.begin,
-        "description" => badge.description,
-        "end" => badge.end,
-        "id" => badge.id,
-        "name" => badge.name,
-        "tokens" => badge.tokens,
-        "type" => badge.type
-      }]
+        |> post(Routes.deliver_prize_path(conn, :create), params)
+
+      assert json_response(conn, 200) == %{
+        "Prize" => "#{prize.name} redeemed successfully!"
+      }
+    end
+
+    test "with valid token (not a manager)"  do
+
+      prize = insert(:prize, is_redeemable: true)
+      user = create_user_strategy(:user)
+      _attendee1 = insert(:attendee, user: user)
+      attendee = insert(:attendee)
+      _attendee_prize = insert(:attendee_prize, attendee: attendee, prize: prize, redeemed: 0)
+      %{conn: conn, user: _} = api_authenticate(user)
+
+      params = %{
+        "redeem" => %{
+          "attendee_id" => attendee.id,
+          "prize" => prize.id,
+          "quantity" => 1
+        }
+      }
+
+      conn = conn
+        |> post(Routes.deliver_prize_path(conn, :create), params)
+
+      assert json_response(conn, 401) == %{"error" => "Only managers can give prizes"}
     end
 
     test "with invalid token", %{conn: conn} do
+      prize = insert(:prize, is_redeemable: true)
+      user = create_user_strategy(:user)
+      _manager = insert(:manager, user: user)
+      attendee = insert(:attendee)
+      _attendee_prize = insert(:attendee_prize, attendee: attendee, prize: prize, redeemed: 0)
+
+      params = %{
+        "redeem" => %{
+          "attendee_id" => attendee.id,
+          "prize" => prize.id,
+          "quantity" => 1
+        }
+      }
+
       conn = conn
         |> put_req_header("authorization", "Bearer #{"invalid"}")
-        |> get(Routes.badge_path(conn, :index))
-        |> doc()
+        |> post(Routes.deliver_prize_path(conn, :create), params)
+
       assert json_response(conn, 401)["error"] == "invalid_token"
     end
 
     test "with no token", %{conn: conn} do
+      prize = insert(:prize, is_redeemable: true)
+      user = create_user_strategy(:user)
+      _manager = insert(:manager, user: user)
+      attendee = insert(:attendee)
+      _attendee_prize = insert(:attendee_prize, attendee: attendee, prize: prize, redeemed: 0)
+
+      params = %{
+        "redeem" => %{
+          "attendee_id" => attendee.id,
+          "prize" => prize.id,
+          "quantity" => 1
+        }
+      }
+
       conn = conn
-        |> get(Routes.badge_path(conn, :index))
-        |> doc()
+        |> post(Routes.deliver_prize_path(conn, :create), params)
+
       assert json_response(conn, 401)["error"] == "unauthenticated"
+    end
+
+    test "did not win the prize"  do
+
+      prize = insert(:prize, is_redeemable: true)
+      user = create_user_strategy(:user)
+      _manager = insert(:manager, user: user)
+      attendee = insert(:attendee)
+      %{conn: conn, user: _} = api_authenticate(user)
+
+      params = %{
+        "redeem" => %{
+          "attendee_id" => attendee.id,
+          "prize" => prize.id,
+          "quantity" => 1
+        }
+      }
+
+      conn = conn
+        |> post(Routes.deliver_prize_path(conn, :create), params)
+
+      assert json_response(conn, 400) == %{"Error" => "Wrong quantity"}
+    end
+
+    test "already redeemed the prize"  do
+      prize = insert(:prize, is_redeemable: true)
+      user = create_user_strategy(:user)
+      _manager = insert(:manager, user: user)
+      attendee = insert(:attendee)
+      attendee_prize = insert(:attendee_prize, attendee: attendee, prize: prize, quantity: 1, redeemed: 1)
+      %{conn: conn, user: _} = api_authenticate(user)
+
+      params = %{
+        "redeem" => %{
+          "attendee_id" => attendee.id,
+          "prize" => prize.id,
+          "quantity" => 1
+        }
+      }
+
+      conn = conn
+        |> post(Routes.deliver_prize_path(conn, :create), params)
+
+      assert json_response(conn, 400) == %{"Error" => "Wrong quantity"}
+    end
+
+    test "prize does not exist"  do
+
+      user = create_user_strategy(:user)
+      _manager = insert(:manager, user: user)
+      attendee = insert(:attendee)
+      %{conn: conn, user: _} = api_authenticate(user)
+
+      params = %{
+        "redeem" => %{
+          "attendee_id" => attendee.id,
+          "prize" => 420,
+          "quantity" => 1
+        }
+      }
+
+      conn = conn
+        |> post(Routes.deliver_prize_path(conn, :create), params)
+
+      assert json_response(conn, 404) == %{"Redeemable" => "There is no such Prize"}
+    end
+
+    test "attendee does not exist"  do
+
+      prize = insert(:prize, is_redeemable: true)
+      user = create_user_strategy(:user)
+      _manager = insert(:manager, user: user)
+      %{conn: conn, user: _} = api_authenticate(user)
+
+      params = %{
+        "redeem" => %{
+          "attendee_id" => Ecto.UUID.generate(),
+          "prize" => prize.id,
+          "quantity" => 1
+        }
+      }
+
+      conn = conn
+        |> post(Routes.deliver_prize_path(conn, :create), params)
+
+      assert json_response(conn, 404) == %{"User" => "Attendee does not exist"}
     end
   end
 
   describe "show" do
     test "with valid token"  do
-      badge = insert(:badge)
-      %{conn: conn, user: _} = api_authenticate(create_user_strategy(:user))
+      prize = insert(:prize, is_redeemable: true)
+      user = create_user_strategy(:user)
+      _manager = insert(:manager, user: user)
+      attendee = insert(:attendee)
+      _attendee_prize = insert(:attendee_prize, attendee: attendee, prize: prize, quantity: 1, redeemed: 0)
+      %{conn: conn, user: _} = api_authenticate(user)
+
       conn = conn
-        |> get(Routes.badge_path(conn, :show, badge.id))
-        |> doc()
-      assert json_response(conn, 200)["data"] == %{
-        "avatar" => "/images/badge-missing.png",
-        "begin" => badge.begin,
-        "description" => badge.description,
-        "end" => badge.end,
-        "id" => badge.id,
-        "name" => badge.name,
-        "tokens" => badge.tokens,
-        "type" => badge.type,
-        "attendees" => []
-      }
+        |> get(Routes.deliver_prize_path(conn, :show, attendee.id))
+
+        assert json_response(conn, 200)["data"] == [%{
+          "id" => prize.id,
+          "image" => "/images/prize-missing.png",
+          "name" => prize.name,
+          "not_redeemed" => 1
+        }]
     end
 
     test "with invalid token", %{conn: conn} do
-      badge = insert(:badge)
+      prize = insert(:prize, is_redeemable: true)
+      user = create_user_strategy(:user)
+      _manager = insert(:manager, user: user)
+      attendee = insert(:attendee)
+      _attendee_prize = insert(:attendee_prize, attendee: attendee, prize: prize, quantity: 1, redeemed: 0)
+
       conn = conn
         |> put_req_header("authorization", "Bearer #{"invalid"}")
-        |> get(Routes.badge_path(conn, :show, badge.id))
-        |> doc()
+        |> get(Routes.deliver_prize_path(conn, :show, attendee.id))
+
       assert json_response(conn, 401)["error"] == "invalid_token"
     end
 
     test "with no token", %{conn: conn} do
-      badge = insert(:badge)
+      prize = insert(:prize, is_redeemable: true)
+      user = create_user_strategy(:user)
+      _manager = insert(:manager, user: user)
+      attendee = insert(:attendee)
+      _attendee_prize = insert(:attendee_prize, attendee: attendee, prize: prize, quantity: 1, redeemed: 0)
+
       conn = conn
-        |> get(Routes.badge_path(conn, :show, badge.id))
-        |> doc()
+          |> get(Routes.deliver_prize_path(conn, :show, attendee.id))
       assert json_response(conn, 401)["error"] == "unauthenticated"
     end
   end

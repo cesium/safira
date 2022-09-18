@@ -12,7 +12,7 @@ defmodule SafiraWeb.DeliverPrizeController do
   {
         redeem:{
           attendee_id: id
-          redeemable: redeemable_id
+          prize: prize_id
           quantity: quantity
         }
   }
@@ -20,7 +20,7 @@ defmodule SafiraWeb.DeliverPrizeController do
   "
   def create(conn , %{"redeem" => redeem_params}) do
     cond do
-      Accounts.is_manager(conn) -> #checks the user toker to see if its a manager
+      Accounts.is_manager(conn) -> #checks the user token to see if its a manager
         validate_redeem(conn, redeem_params)
       true ->
         conn
@@ -32,7 +32,6 @@ defmodule SafiraWeb.DeliverPrizeController do
   def show(conn, %{"id" => attendee_id}) do
     attendee =
       Accounts.get_attendee!(attendee_id)
-      #I WAS HERE
     cond do
       not is_nil(attendee) ->
         prize = Roulette.get_attendee_not_redeemed(attendee)
