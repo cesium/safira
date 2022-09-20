@@ -3,7 +3,7 @@ defmodule Safira.StoreFactory do
   A factory to build all store related structs
   """
 
-  alias Safira.Store.{Redeemable}
+  alias Safira.Store.{Redeemable, Buy}
   defmacro __using__(_opts) do
     quote do
       def redeemable_factory do
@@ -11,7 +11,16 @@ defmodule Safira.StoreFactory do
           name: Faker.Commerce.product_name(),
           description: Faker.StarWars.En.quote(),
           price: Enum.random(10..50),
-          max_per_user: Enum.random(1..3)
+          max_per_user: Enum.random(1..3),
+          stock: Enum.random(0..10)
+        }
+      end
+
+      def buy_factory do
+        %Buy{
+          quantity: 1,
+          attendee: build(:attendee),
+          redeemable: build(:redeemable)
         }
       end
     end
