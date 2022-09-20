@@ -26,6 +26,14 @@ defmodule Safira.ContestFactory do
           badge: build(:badge)
         }
       end
+
+      def daily_token_factory do
+        %Safira.Contest.DailyToken{
+          attendee: build(:attendee),
+          day: DateTime.utc_now(),
+          quantity: 10
+        }
+      end
     end
   end
 end
