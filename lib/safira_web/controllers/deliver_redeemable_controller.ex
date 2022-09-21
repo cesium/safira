@@ -20,7 +20,7 @@ defmodule SafiraWeb.DeliverRedeemableController do
   "
   def create(conn , %{"redeem" => redeem_params}) do
     cond do
-      Accounts.is_manager(conn) -> #checks the user toker to see if its a manager
+      Accounts.is_manager(conn) -> #checks the user token to see if its a manager
         validate_redeem(conn, redeem_params)
       true ->
         conn
@@ -74,7 +74,7 @@ defmodule SafiraWeb.DeliverRedeemableController do
             conn
             |> put_status(:ok)
             |> json(%{Redeemable: "#{Map.get(changes, :redeemable).name} redeemed successfully!"})
-          {:error, error} ->
+          {:error, _error} ->
             conn
             |> put_status(:bad_request)
             |> json(%{Error: "Wrong quantity"})

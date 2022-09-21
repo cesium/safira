@@ -66,12 +66,13 @@ defmodule Safira.Store do
   end
 
   def get_keys_buy(attendee_id, redeemable_id) do
-    a = Repo.get_by(Buy, attendee_id: attendee_id, redeemable_id: redeemable_id)
-    case a do
+    keys = Repo.get_by(Buy, attendee_id: attendee_id, redeemable_id: redeemable_id)
+
+    case keys do
       nil ->
-        {:error, a}
+        {:error, keys}
       _ ->
-        {:ok, a}
+        {:ok, keys}
     end
 
   end
@@ -115,7 +116,7 @@ defmodule Safira.Store do
     |> Multi.update(:update_buy, fn %{buy: buy} ->
       Buy.changeset(buy, %{redeemed: buy.redeemed + quantity})
     end)
-    |> serializable_transaction()
+    |> Repo.transaction()
   end
 
   def get_attendee_redeemables(attendee) do
