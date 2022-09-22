@@ -12,7 +12,7 @@ defmodule Safira.StoreFactory do
           description: Faker.StarWars.En.quote(),
           price: Enum.random(10..50),
           max_per_user: Enum.random(1..3),
-          stock: Enum.random(0..10)
+          stock: Enum.random(4..10)
         }
       end
 
