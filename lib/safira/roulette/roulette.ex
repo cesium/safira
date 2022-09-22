@@ -220,8 +220,12 @@ defmodule Safira.Roulette do
   def spin(attendee) do
     spin_transaction(attendee)
     |> case  do
-      {:error, :spin_again} ->
-        spin(attendee)
+      {:error, :attendee, changeset, data} ->
+        if Map.get(get_errors(changeset), :token_balance) != nil do
+          {:error, :not_enough_tokens}
+        else
+          {:error, :attendee, changeset, data}
+        end
 
       result ->
         result
@@ -271,7 +275,7 @@ defmodule Safira.Roulette do
       changeset_daily = Contest.get_keys_daily_token(attendee.id, date) || %DailyToken{}
       DailyToken.changeset(changeset_daily, %{quantity: attendee.token_balance, attendee_id: attendee.id, day: date})
     end)
-    |> serializable_transaction()
+    |> Repo.transaction()
   end
 
   defp spin_prize() do

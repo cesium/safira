@@ -10,8 +10,11 @@ defmodule SafiraWeb.RouletteController do
     attendee = Accounts.get_user(conn) |> Map.fetch!(:attendee)
     cond do
        not is_nil(attendee)->
-        with {:ok, changes} <- Roulette.spin(attendee) do
-          render(conn, "roulette.json", changes)
+        case  Roulette.spin(attendee) do
+          {:ok, changes} -> render(conn, "roulette.json", changes)
+          {:error, :not_enough_tokens} -> conn
+          |> put_status(:unauthorized)
+          |> json(%{error: "Insufficient token balance"})
         end
 
       true ->
