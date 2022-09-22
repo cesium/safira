@@ -79,33 +79,11 @@ defmodule SafiraWeb.RedeemControllerTest do
       params = %{
         "redeem" => %{
           "attendee_id" => attendee.id,
-          "badge_id" => 420
+          "badge_id" => 42
         }
       }
 
       assert_error_sent 404, fn ->
-        conn =
-          conn
-          |> post(Routes.redeem_path(conn, :create), params)
-      end
-    end
-
-    test "with valid token (attendee does not exist)" do
-      user = create_user_strategy(:user)
-      insert(:manager, user: user)
-      badge = insert(:badge)
-
-      %{conn: conn, user: _user} = api_authenticate(user)
-
-      params = %{
-        "redeem" => %{
-          "attendee_id" => 420,
-          "badge_id" => badge.id
-        }
-      }
-
-      #Should be 404, needs fixing
-      assert_error_sent 500, fn ->
         conn =
           conn
           |> post(Routes.redeem_path(conn, :create), params)
