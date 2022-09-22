@@ -1,4 +1,4 @@
-defmodule SafiraWeb.BuyControllerTest do
+defmodule SafiraWeb.RouletteControllerTest do
   use SafiraWeb.ConnCase
 
   describe "spin" do
