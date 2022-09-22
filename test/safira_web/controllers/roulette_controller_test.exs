@@ -30,7 +30,7 @@ defmodule SafiraWeb.BuyControllerTest do
         |> post(Routes.roulette_path(conn, :spin))
 
       assert json_response(conn, 401) == %{
-        "error" => "Insuficient token balance"
+        "error" => "Insufficient token balance"
       }
     end
 

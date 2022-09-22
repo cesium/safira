@@ -14,7 +14,7 @@ defmodule SafiraWeb.RouletteController do
           {:ok, changes} -> render(conn, "roulette.json", changes)
           {:error, :not_enough_tokens} -> conn
           |> put_status(:unauthorized)
-          |> json(%{error: "Insuficient token balance"})
+          |> json(%{error: "Insufficient token balance"})
         end
 
       true ->
