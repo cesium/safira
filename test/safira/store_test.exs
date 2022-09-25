@@ -2,7 +2,6 @@ defmodule Safira.StoreTest do
   use Safira.DataCase
 
   alias Safira.Store
-  alias Safira.Store.Redeemable
 
   describe "list_redeemables/0" do
     test "No redeemables" do
@@ -124,6 +123,92 @@ defmodule Safira.StoreTest do
       r1 = insert(:redeemable)
       {:error, changeset} = Store.update_redeemable(r1, params_for(:redeemable, max_per_user: -1))
       assert Store.list_redeemables() == [r1]
+    end
+  end
+
+  describe "buy_redeemable/2" do
+    test "Attendee with enough tokens" do
+      r1 = insert(:redeemable, price: 0)
+      at = insert(:attendee)
+      {:ok, _data} = Store.buy_redeemable(r1.id, at)
+    end
+
+    test "Attendee without enough tokens" do
+      r1 = insert(:redeemable)
+      at = insert(:attendee)
+      {:error, :attendee, _changeset, _data} = Store.buy_redeemable(r1.id, at)
+    end
+
+    test "Out of stock" do
+      r1 = insert(:redeemable, stock: 0)
+      at = insert(:attendee)
+      {:error, :redeemable, _changeset, _data} = Store.buy_redeemable(r1.id, at)
+    end
+  end
+
+  describe "redeem_redeemable/3" do
+    test "Right amount" do
+      r1 = insert(:redeemable, price: 0)
+      at = insert(:attendee)
+      {:ok, _data} = Store.buy_redeemable(r1.id, at)
+
+      {:ok, _data} = Store.redeem_redeemable(r1.id, at, 1)
+    end
+
+    test "Too many" do
+      r1 = insert(:redeemable, price: 0)
+      at = insert(:attendee)
+      {:ok, _data} = Store.buy_redeemable(r1.id, at)
+
+      {:error, :update_buy, _changeset, _data} = Store.redeem_redeemable(r1.id, at, 2)
+    end
+
+    test "Did not buy" do
+      r1 = insert(:redeemable, stock: 0)
+      at = insert(:attendee)
+
+      {:error, :buy, nil, %{}} = Store.redeem_redeemable(r1.id, at, 1)
+    end
+  end
+
+  describe "get_attendee_redeemables/1" do
+    test "Returns all redeemables" do
+      r1 = insert(:redeemable, price: 0)
+      r2 = insert(:redeemable, price: 0)
+      at = insert(:attendee)
+      {:ok, _data} = Store.buy_redeemable(r1.id, at)
+      {:ok, _data} = Store.buy_redeemable(r2.id, at)
+      {:ok, _data} = Store.redeem_redeemable(r1.id, at, 1)
+
+      r1 = r1
+      |> Map.put(:not_redeemed, 0)
+      |> Map.put(:quantity, 1)
+      |> Map.put(:stock, r1.stock - 1)
+
+      r2 = r2
+      |> Map.put(:not_redeemed, 1)
+      |> Map.put(:quantity, 1)
+      |> Map.put(:stock, r2.stock - 1)
+
+      assert [r1, r2] == Store.get_attendee_redeemables(at)
+    end
+  end
+
+  describe "get_attendee_not_redeemed/1" do
+    test "Returns all not redeemed" do
+      r1 = insert(:redeemable, price: 0)
+      r2 = insert(:redeemable, price: 0)
+      at = insert(:attendee)
+      {:ok, _data} = Store.buy_redeemable(r1.id, at)
+      {:ok, _data} = Store.buy_redeemable(r2.id, at)
+      {:ok, _data} = Store.redeem_redeemable(r1.id, at, 1)
+
+      r2 = r2
+      |> Map.put(:not_redeemed, 1)
+      |> Map.put(:quantity, 1)
+      |> Map.put(:stock, r2.stock - 1)
+
+      assert [r2] == Store.get_attendee_not_redemed(at)
     end
   end
 end
