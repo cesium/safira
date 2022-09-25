@@ -131,7 +131,7 @@ defmodule Safira.Store do
 
   end
 
-  ## fetches every redeemabla that has yet to be redeemed
+  ## fetches every redeemable that has yet to be redeemed
   def get_attendee_not_redemed(attendee) do
     attendee
     |> Repo.preload(:redeemables)
