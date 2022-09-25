@@ -38,7 +38,7 @@ defmodule SafiraWeb.AuthControllerTest do
         |> get(Routes.auth_path(conn, :company))
 
       expected_company = %{
-        "badge_id" => nil,
+        "badge_id" => company.badge.id,
         "email" => user.email,
         "id" => company.id,
         "name" => company.name,
