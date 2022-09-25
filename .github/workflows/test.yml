@@ -23,7 +23,7 @@ jobs:
         ports:
           - 5432:5432
         env:
-          POSTGRES_USERNAME: postgres
+          POSTGRES_USERNAME: safira
           POSTGRES_PASSWORD: secret
           POSTGRES_HOSTNAME: 0.0.0.0
 
