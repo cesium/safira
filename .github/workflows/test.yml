@@ -24,7 +24,7 @@ jobs:
           - 5432:5432
         env:
           POSTGRES_USERNAME: postgres
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_PASSWORD: secret
           POSTGRES_HOSTNAME: 0.0.0.0
 
     steps:
