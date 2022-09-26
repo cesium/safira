@@ -191,6 +191,7 @@ defmodule Safira.StoreTest do
       |> Map.put(:stock, r2.stock - 1)
 
       assert [r1, r2] == Store.get_attendee_redeemables(at)
+      |> Enum.sort_by(fn x -> x.id end)
     end
   end
 
