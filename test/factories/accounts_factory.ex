@@ -39,7 +39,8 @@ defmodule Safira.AccountsFactory do
       def user_factory do
         %Safira.Accounts.User{
           email: sequence(:email, &"email#{&1}@mail.com"),
-          password: "password1234!"
+          password: "password1234!",
+          password_confirmation: "password1234!"
         }
       end
     end

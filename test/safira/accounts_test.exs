@@ -1,6 +1,7 @@
 defmodule Safira.AccountsTest do
   use Safira.DataCase
 
+  alias Safira.Repo
   alias Safira.Accounts
 
   describe "list_users/0" do
@@ -114,6 +115,90 @@ defmodule Safira.AccountsTest do
       user = create_user_strategy(:user)
 
       assert Accounts.get_user_preload_email("wrong_email@mail.com") |> is_nil
+    end
+  end
+
+  describe "create_user/1" do
+    test "with valid data" do
+      {:ok, user} =
+        params_for(:user)
+        |> Accounts.create_user()
+
+      user =
+        user
+        |> set_password_as_nil()
+
+      assert Accounts.list_users() == [user]
+    end
+
+    test "with invalid data" do
+      {:error, changeset} =
+        params_for(:user, email: "invalid_email")
+        |> Accounts.create_user()
+
+      assert Accounts.list_users() == []
+    end
+  end
+
+  describe "update_user/1" do
+    test "with valid data" do
+      user1 = create_user_strategy(:user)
+
+      {:ok, user2} =
+        user1
+        |> Accounts.update_user(params_for(:user))
+
+      user2 =
+        user2
+        |> set_password_as_nil()
+
+      assert Accounts.list_users() == [user2]
+    end
+
+    test "with invalid data" do
+      user = create_user_strategy(:user)
+
+      {:error, changeset} =
+        user
+        |> Accounts.update_user(params_for(:user, email: "invalid_email"))
+
+      user =
+        user
+        |> set_password_as_nil()
+
+      assert Accounts.list_users() == [user]
+    end
+  end
+
+  describe "delete_user/1" do
+    test "user exists" do
+      user = create_user_strategy(:user)
+
+      {:ok, _user} = Accounts.delete_user(user)
+
+      assert Accounts.list_users() == []
+    end
+  end
+
+  describe "list_attendees" do
+    test "no attendees" do
+      Accounts.list_attendees() == []
+    end
+
+    test "multiple attendees" do
+      attendees = insert_list(3, :attendee)
+
+      attendees =
+        attendees
+        |> set_password_as_nil()
+
+      assert Accounts.list_attendees() |> Repo.preload(:user) == attendees
+    end
+  end
+
+  defp set_password_as_nil(users) when is_list(users) do
+    for user <- users do
+      set_password_as_nil(user)
     end
   end
 
