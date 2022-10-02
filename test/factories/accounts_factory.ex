@@ -5,11 +5,11 @@ defmodule Safira.AccountsFactory do
   defmacro __using__(_opts) do
     quote do
       def attendee_factory do
-        first_name = Faker.Person.PtBr.first_name()
-        last_name = Faker.Person.PtBr.last_name()
+        first_name = Faker.Person.En.first_name()
+        last_name = Faker.Person.En.last_name()
 
         %Safira.Accounts.Attendee{
-          nickname: String.downcase("#{first_name}_#{last_name}"),
+          nickname: String.downcase("#{first_name}_123"),
           name: "#{first_name} #{last_name}",
           volunteer: Enum.random([true, false]),
           user: build(:user)
