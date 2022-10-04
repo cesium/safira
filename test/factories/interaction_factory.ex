@@ -9,7 +9,7 @@ defmodule Safira.InteractionFactory do
     quote do
       def bonus_factory do
         %Bonus{
-          count: Enum.random(0..10)
+          count: 1
         }
       end
     end
