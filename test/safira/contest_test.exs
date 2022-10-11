@@ -82,4 +82,108 @@ defmodule Safira.ContestTest do
       assert Contest.list_badges_conservative() == [b1, b2, b3, b4, b5]
     end
   end
+
+  describe "get_badge!/1" do
+    test "Nil" do
+      assert_raise ArgumentError, fn ->
+        Contest.get_badge!(nil)
+      end
+    end
+
+    test "Wrong id" do
+      badge = insert(:badge)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Contest.get_badge!(badge.id + 1)
+      end
+    end
+
+    test "Exists" do
+      badge = insert(:badge)
+      assert Contest.get_badge!(badge.id) == badge
+    end
+  end
+
+  describe "get_badge_name!/1" do
+    test "Nil" do
+      assert_raise ArgumentError, fn ->
+        Contest.get_badge_name!(nil)
+      end
+    end
+
+    test "Wrong name" do
+      badge = insert(:badge)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Contest.get_badge_name!("wrong name")
+      end
+    end
+
+    test "Exists" do
+      badge = insert(:badge)
+      assert Contest.get_badge_name!(badge.name) == badge
+    end
+  end
+
+  describe "get_badge_preload!/1" do
+    test "Nil" do
+      assert_raise ArgumentError, fn ->
+        Contest.get_badge_preload!(nil)
+      end
+    end
+
+    test "Wrong id" do
+      badge = insert(:badge)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Contest.get_badge_preload!(badge.id + 1)
+      end
+    end
+
+    test "Exists" do
+      a1 = insert(:attendee)
+      a2 = insert(:attendee)
+      a3 = insert(:attendee)
+
+      badge = insert(:badge)
+      insert(:redeem, badge: badge, attendee: a1)
+      insert(:redeem, badge: badge, attendee: a3)
+
+      assert Contest.get_badge_preload!(badge.id).attendees == [a1, a3]
+    end
+  end
+
+  describe "get_badge_description/1" do
+    test "Nil" do
+      assert_raise ArgumentError, fn ->
+        Contest.get_badge_description!(nil)
+      end
+    end
+
+    test "Wrong id" do
+      badge = insert(:badge)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Contest.get_badge_description!(badge.id + 1)
+      end
+    end
+
+    test "Exists" do
+      badge = insert(:badge)
+      assert Contest.get_badge_description!(badge.id) == badge.description
+    end
+  end
+
+  describe "create_badge/1" do
+    test "Valid data" do
+      {:ok, badge} = Contest.create_badge(params_for(:badge))
+      assert Contest.list_badges() == [badge]
+    end
+
+    test "Invalid data" do
+      {:ok, badge} = Contest.create_badge(params_for(:badge, type: -1))
+      assert Contest.list_badges() == []
+    end
+  end
+
 end
