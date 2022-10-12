@@ -3,6 +3,12 @@ defmodule Safira.ContestTest do
 
   alias Safira.Contest
 
+  ###############################################################
+  ###############################################################
+  ################           BADGES            ##################
+  ###############################################################
+  ###############################################################
+
   describe "list_badges/0" do
     test "no badges" do
       assert Contest.list_badges() == []
@@ -260,6 +266,95 @@ defmodule Safira.ContestTest do
         badge = insert(:badge, begin_badge: d1, end_badge: d2)
         assert not Contest.badge_is_in_time(badge)
       end
+    end
+  end
+
+  ###############################################################
+  ###############################################################
+  ################          REFERRAL           ##################
+  ###############################################################
+  ###############################################################
+
+  describe "list_referrals/0" do
+    test "no referrals" do
+      assert Contest.list_referrals() == []
+    end
+
+    test "multiple referrals" do
+      r1 = insert(:referral)
+      r2 = insert(:referral)
+
+      assert Contest.list_referrals() |> Repo.preload(:badge) == [r1, r2]
+    end
+  end
+
+  describe "get_referral!/1" do
+    test "exists" do
+      r1 = insert(:referral)
+      assert Contest.get_referral!(r1.id) |> Repo.preload(:badge) == r1
+    end
+
+    test "doesn't exist" do
+      r1 = insert(:referral)
+
+      assert_raise Ecto.NoResultsError, fn -> Contest.get_referral!(Ecto.UUID.generate()) end
+    end
+  end
+
+  describe "get_referral_preload!/1" do
+    test "exists" do
+      r1 = insert(:referral)
+      assert Contest.get_referral_preload!(r1.id) == r1
+    end
+
+    test "doesn't exist" do
+      r1 = insert(:referral)
+
+      assert_raise Ecto.NoResultsError, fn -> Contest.get_referral_preload!(Ecto.UUID.generate()) end
+    end
+  end
+
+  describe "create_referral/1" do
+    test "exists" do
+      badge = insert(:badge)
+      {:ok, referral} = Contest.create_referral(params_for(:referral, badge_id: badge.id))
+      assert Contest.list_referrals() == [referral]
+    end
+
+    test "doesn't exist" do
+      r1 = insert(:referral)
+
+      assert_raise Ecto.NoResultsError, fn -> Contest.get_referral_preload!(Ecto.UUID.generate()) end
+    end
+  end
+
+  describe "update_referral/1" do
+    test "valid data" do
+      r1 = insert(:referral)
+      {:ok, r2} = Contest.update_referral(r1, params_for(:referral))
+      assert Contest.get_referral_preload!(r1.id) == r2
+    end
+
+    test "invalid data" do
+      r1 = insert(:referral)
+
+      {:error, _changeset} = Contest.update_referral(r1, params_for(:referral, badge_id: Ecto.UUID.generate()))
+      assert Contest.get_referral_preload!(r1.id) == r1
+    end
+  end
+
+  describe "delete_referral/1" do
+    test "Valid data" do
+      r = insert(:referral)
+      {:ok, _r} = Contest.delete_referral(r)
+      assert Contest.list_referrals() == []
+    end
+  end
+
+  describe "change_referral/1" do
+    test "Valid data" do
+      referral = insert(:referral)
+      assert %Ecto.Changeset{} = Contest.change_referral(referral)
     end
   end
 end
