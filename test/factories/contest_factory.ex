@@ -2,12 +2,17 @@ defmodule Safira.ContestFactory do
   defmacro __using__(_opts) do
     quote do
       def badge_factory do
+        begin = Faker.DateTime.backward(2)
+        endof = Faker.DateTime.forward(2)
+
         %Safira.Contest.Badge{
           name: Faker.Pokemon.En.name(),
           description: Faker.StarWars.En.quote(),
           type: Enum.random(2..9),
-          begin_badge: Faker.DateTime.backward(2),
-          end_badge: Faker.DateTime.forward(2),
+          begin_badge: begin,
+          end_badge: endof,
+          begin: begin,
+          end: endof,
           tokens: Enum.random(100..255)
         }
       end

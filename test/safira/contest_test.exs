@@ -149,14 +149,15 @@ defmodule Safira.ContestTest do
       insert(:redeem, badge: badge, attendee: a1)
       insert(:redeem, badge: badge, attendee: a3)
 
-      assert Contest.get_badge_preload!(badge.id).attendees == [a1, a3]
+      assert Contest.get_badge_preload!(badge.id).attendees
+            |> Enum.map(fn x -> x.id end) == [a1.id, a3.id]
     end
   end
 
   describe "get_badge_description/1" do
     test "Nil" do
       assert_raise ArgumentError, fn ->
-        Contest.get_badge_description!(nil)
+        Contest.get_badge_description(nil)
       end
     end
 
@@ -164,13 +165,13 @@ defmodule Safira.ContestTest do
       badge = insert(:badge)
 
       assert_raise Ecto.NoResultsError, fn ->
-        Contest.get_badge_description!(badge.id + 1)
+        Contest.get_badge_description("No such badge")
       end
     end
 
     test "Exists" do
       badge = insert(:badge)
-      assert Contest.get_badge_description!(badge.id) == badge.description
+      assert Contest.get_badge_description(badge.description) == badge
     end
   end
 
@@ -181,9 +182,84 @@ defmodule Safira.ContestTest do
     end
 
     test "Invalid data" do
-      {:ok, badge} = Contest.create_badge(params_for(:badge, type: -1))
+      {:error, _changeset} = Contest.create_badge(params_for(:badge, begin: Faker.DateTime.forward(2), end: Faker.DateTime.backward(2)))
       assert Contest.list_badges() == []
     end
   end
 
+  describe "create_badges/1" do
+    test "Valid data" do
+      Contest.create_badges([params_for(:badge), params_for(:badge)])
+      |> Repo.transaction()
+      assert length(Contest.list_badges()) == 2
+    end
+
+    test "Invalid data" do
+      Contest.create_badges([params_for(:badge), params_for(:badge, begin: Faker.DateTime.forward(2), end: Faker.DateTime.backward(2))])
+      |> Repo.transaction()
+      assert Contest.list_badges() == []
+    end
+  end
+
+  describe "update_badge/1" do
+    test "Valid data" do
+      badge = insert(:badge)
+      {:ok, new_badge} = Contest.update_badge(badge, params_for(:badge))
+      assert Contest.get_badge!(badge.id) == new_badge
+    end
+
+    test "Invalid data" do
+      badge = insert(:badge)
+      {:error, _changeset} = Contest.update_badge(badge,  params_for(:badge, begin: Faker.DateTime.forward(2), end: Faker.DateTime.backward(2)))
+      assert Contest.get_badge!(badge.id) == badge
+    end
+  end
+
+  describe "delete_badge/1" do
+    test "Valid data" do
+      badge = insert(:badge)
+      {:ok, _badge} = Contest.delete_badge(badge)
+      assert Contest.list_badges() == []
+    end
+  end
+
+  describe "change_badge/1" do
+    test "Valid data" do
+      badge = insert(:badge)
+      assert %Ecto.Changeset{} = Contest.change_badge(badge)
+    end
+  end
+
+  describe "badge_is_in_time/1" do
+    test "In time" do
+      badge = insert(:badge)
+      assert Contest.badge_is_in_time(badge)
+    end
+
+    test "Too late" do
+      d1 = Faker.DateTime.backward(10)
+      d2 = Faker.DateTime.backward(2)
+
+      if DateTime.compare(d1, d2) == :gt do
+        badge = insert(:badge, begin_badge: d2, end_badge: d1)
+        assert not Contest.badge_is_in_time(badge)
+      else
+        badge = insert(:badge, begin_badge: d1, end_badge: d2)
+        assert not Contest.badge_is_in_time(badge)
+      end
+    end
+
+    test "Too early" do
+      d1 = Faker.DateTime.forward(10)
+      d2 = Faker.DateTime.forward(2)
+
+      if DateTime.compare(d1, d2) == :gt do
+        badge = insert(:badge, begin_badge: d2, end_badge: d1)
+        assert not Contest.badge_is_in_time(badge)
+      else
+        badge = insert(:badge, begin_badge: d1, end_badge: d2)
+        assert not Contest.badge_is_in_time(badge)
+      end
+    end
+  end
 end
