@@ -14,9 +14,10 @@ defmodule SafiraWeb.RouletteControllerTest do
         |> doc()
 
       assert json_response(conn, 200)["prize"] == %{
-        "avatar" => "/images/prize-missing.png",
-        "id" => prize.id, "name" => prize.name
-      }
+               "avatar" => "/images/prize-missing.png",
+               "id" => prize.id,
+               "name" => prize.name
+             }
     end
 
     test "with valid token (attendee without enough tokens)" do
@@ -30,8 +31,8 @@ defmodule SafiraWeb.RouletteControllerTest do
         |> post(Routes.roulette_path(conn, :spin))
 
       assert json_response(conn, 401) == %{
-        "error" => "Insufficient token balance"
-      }
+               "error" => "Insufficient token balance"
+             }
     end
 
     test "with invalid token" do
@@ -70,7 +71,7 @@ defmodule SafiraWeb.RouletteControllerTest do
         conn
         |> post(Routes.roulette_path(conn, :spin))
 
-        assert json_response(conn, 401)["error"] == "Only attendees can spin the wheel"
+      assert json_response(conn, 401)["error"] == "Only attendees can spin the wheel"
     end
   end
 
@@ -87,16 +88,20 @@ defmodule SafiraWeb.RouletteControllerTest do
         |> get(Routes.roulette_path(conn, :latest_wins))
         |> doc()
 
-      assert json_response(conn, 200)["data"] == [%{
-        "attendee_name" => attendee.name,
-        "date" => String.replace(NaiveDateTime.to_string(attendee_prize.updated_at), " ", "T"),
-        "prize" => %{
-          "avatar" => "/images/prize-missing.png",
-          "id" => prize.id,
-          "max_amount_per_attendee" => prize.max_amount_per_attendee,
-          "name" => prize.name,
-          "stock" => prize.stock
-        }}]
+      assert json_response(conn, 200)["data"] == [
+               %{
+                 "attendee_name" => attendee.name,
+                 "date" =>
+                   String.replace(NaiveDateTime.to_string(attendee_prize.updated_at), " ", "T"),
+                 "prize" => %{
+                   "avatar" => "/images/prize-missing.png",
+                   "id" => prize.id,
+                   "max_amount_per_attendee" => prize.max_amount_per_attendee,
+                   "name" => prize.name,
+                   "stock" => prize.stock
+                 }
+               }
+             ]
     end
 
     test "with invalid token" do
@@ -119,6 +124,7 @@ defmodule SafiraWeb.RouletteControllerTest do
       attendee = insert(:attendee, user: user, token_balance: 1000)
       prize = create_prize_strategy(:prize, probability: 1.0)
       insert(:attendee_prize, attendee: attendee, prize: prize)
+
       conn =
         conn
         |> get(Routes.roulette_path(conn, :latest_wins))

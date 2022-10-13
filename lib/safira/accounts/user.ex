@@ -6,7 +6,6 @@ defmodule Safira.Accounts.User do
   alias Safira.Accounts.Manager
   alias Safira.Accounts.Company
 
-
   schema "users" do
     field :email, :string
     field :password_hash, :string
@@ -34,7 +33,7 @@ defmodule Safira.Accounts.User do
     |> validate_required([:email, :password, :password_confirmation])
     |> validate_length(:email, min: 5, max: 255)
     |> validate_format(:email, ~r/\A([\w\.%\+\-]+)@([\w\-]+\.)+([\w]{2,})\z/)
-    |> validate_length(:password, min: 8) 
+    |> validate_length(:password, min: 8)
     |> validate_confirmation(:password)
     |> unique_constraint(:email)
     |> genput_password_hash
@@ -43,7 +42,8 @@ defmodule Safira.Accounts.User do
   def password_token_changeset(user, attrs) do
     user
     |> cast(attrs, [:reset_password_token, :reset_token_sent_at])
-    #|> validate_required([:reset_password_token, :reset_token_sent_at])
+
+    # |> validate_required([:reset_password_token, :reset_token_sent_at])
   end
 
   def update_password_changeset(user, attrs) do
@@ -59,6 +59,7 @@ defmodule Safira.Accounts.User do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{password: pass}} ->
         put_change(changeset, :password_hash, Comeonin.Bcrypt.hashpwsalt(pass))
+
       _ ->
         changeset
     end

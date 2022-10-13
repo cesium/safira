@@ -27,7 +27,7 @@ defmodule Mix.Tasks.Gen.Prizes do
     |> parse_csv()
     |> validate_probabilities()
     |> sequence()
-    |> (fn {create,update} -> {Safira.Roulette.create_prizes(create), update} end).()
+    |> (fn {create, update} -> {Safira.Roulette.create_prizes(create), update} end).()
     |> insert_prize()
   end
 
@@ -42,7 +42,7 @@ defmodule Mix.Tasks.Gen.Prizes do
           max_amount_per_attendee: String.to_integer(max_amount_per_attendee),
           stock: String.to_integer(stock),
           probability: String.to_float(probability),
-          is_redeemable: convert_bool!(is_redeemable),
+          is_redeemable: convert_bool!(is_redeemable)
         },
         %{
           avatar: %Plug.Upload{
@@ -72,7 +72,7 @@ defmodule Mix.Tasks.Gen.Prizes do
 
   defp validate_probabilities(list) do
     list
-    |> Enum.map_reduce(0, fn {prize,_}, acc -> {prize, prize.probability + acc} end)
+    |> Enum.map_reduce(0, fn {prize, _}, acc -> {prize, prize.probability + acc} end)
     |> case do
       {_, 1.0} ->
         list

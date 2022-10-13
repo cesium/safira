@@ -4,6 +4,7 @@ defmodule Safira.StoreFactory do
   """
 
   alias Safira.Store.{Redeemable, Buy}
+
   defmacro __using__(_opts) do
     quote do
       def redeemable_factory do

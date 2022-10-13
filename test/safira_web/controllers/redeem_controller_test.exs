@@ -20,8 +20,8 @@ defmodule SafiraWeb.RedeemControllerTest do
         conn
         |> post(Routes.redeem_path(conn, :create), params)
 
-      assert json_response(conn, 201)["redeem"]
-        == "Badge redeemed successfully. Tokens added to your balance"
+      assert json_response(conn, 201)["redeem"] ==
+               "Badge redeemed successfully. Tokens added to your balance"
     end
 
     test "with valid token (manager)" do
@@ -43,8 +43,8 @@ defmodule SafiraWeb.RedeemControllerTest do
         conn
         |> post(Routes.redeem_path(conn, :create), params)
 
-      assert json_response(conn, 201)["redeem"]
-        == "Badge redeemed successfully. Tokens added to your balance"
+      assert json_response(conn, 201)["redeem"] ==
+               "Badge redeemed successfully. Tokens added to your balance"
     end
 
     test "with valid token (attendee)" do
@@ -65,8 +65,8 @@ defmodule SafiraWeb.RedeemControllerTest do
         conn
         |> post(Routes.redeem_path(conn, :create), params)
 
-      assert json_response(conn, 401)["error"]
-        == "Cannot access resource"
+      assert json_response(conn, 401)["error"] ==
+               "Cannot access resource"
     end
 
     test "with valid token (badge does not exist)" do
@@ -143,7 +143,7 @@ defmodule SafiraWeb.RedeemControllerTest do
         conn
         |> post(Routes.roulette_path(conn, :spin))
 
-        assert json_response(conn, 401)["error"] == "Only attendees can spin the wheel"
+      assert json_response(conn, 401)["error"] == "Only attendees can spin the wheel"
     end
   end
 end

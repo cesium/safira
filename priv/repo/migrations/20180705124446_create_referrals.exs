@@ -11,6 +11,5 @@ defmodule Safira.Repo.Migrations.CreateReferrals do
     end
 
     create index(:referrals, [:badge_id])
-
   end
 end

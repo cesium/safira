@@ -26,11 +26,13 @@ defmodule Safira.Contest.Referral do
     {_, attendee_id} = fetch_field(changeset, :attendee_id)
 
     case {available, !attendee_id} do
-      {false, true}->
+      {false, true} ->
         add_error(changeset, :attendee_id, "A referral redeem can't have an nil attendee")
-      {true, false}->
+
+      {true, false} ->
         add_error(changeset, :attendee_id, "An available referral can't have an attendee")
-      _->
+
+      _ ->
         changeset
     end
   end

@@ -22,10 +22,9 @@ defmodule Safira.Accounts.Company do
     |> cast(attrs, [:name, :sponsorship, :badge_id, :channel_id, :remaining_spotlights])
     |> cast_assoc(:user)
     |> cast(attrs, [:name, :sponsorship, :badge_id, :channel_id, :remaining_spotlights])
-    |> validate_required([:name, :sponsorship, :badge_id, :channel_id,])
+    |> validate_required([:name, :sponsorship, :badge_id, :channel_id])
     |> unique_constraint(:channel_id)
   end
-
 
   def start_spotlight_changeset(company, attrs) do
     company

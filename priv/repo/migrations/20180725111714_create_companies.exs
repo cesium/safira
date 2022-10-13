@@ -12,6 +12,5 @@ defmodule Safira.Repo.Migrations.CreateCompanies do
     end
 
     create index(:companies, [:badge_id])
-
   end
 end

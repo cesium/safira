@@ -5,7 +5,7 @@ defmodule Safira.Avatar do
   use Arc.Ecto.Definition
 
   def __storage do
-    if Mix.env == :dev do
+    if Mix.env() == :dev do
       Arc.Storage.Local
     else
       Arc.Storage.S3
@@ -40,21 +40,25 @@ defmodule Safira.Avatar do
 
   # Override the storage directory:
   def storage_dir(version, {file, scope}) do
-    struct = scope.__struct__
-    |> Kernel.to_string
-    |> String.split(".")
-    |> List.last
-    |> String.downcase
-   "uploads/#{struct}/avatars/#{scope.id}"
+    struct =
+      scope.__struct__
+      |> Kernel.to_string()
+      |> String.split(".")
+      |> List.last()
+      |> String.downcase()
+
+    "uploads/#{struct}/avatars/#{scope.id}"
   end
 
   # Provide a default URL if there hasn't been a file uploaded
   def default_url(version, scope) do
-    struct = scope.__struct__
-    |> Kernel.to_string
-    |> String.split(".")
-    |> List.last
-    |> String.downcase
+    struct =
+      scope.__struct__
+      |> Kernel.to_string()
+      |> String.split(".")
+      |> List.last()
+      |> String.downcase()
+
     "#{System.get_env("AVATAR_URL")}/images/#{struct}-missing.png"
   end
 

@@ -58,7 +58,9 @@ defmodule SafiraWeb.PasswordControllerTest do
         conn
         |> put(Routes.password_path(conn, :update, Auth.random_string(42)), attrs)
 
-      assert json_response(conn, 400)["errors"] == [%{"detail" => "Password reset token nonexistent."}]
+      assert json_response(conn, 400)["errors"] == [
+               %{"detail" => "Password reset token nonexistent."}
+             ]
     end
 
     test "user password with expired token", %{user: user} do
@@ -69,7 +71,9 @@ defmodule SafiraWeb.PasswordControllerTest do
         conn
         |> put(Routes.password_path(conn, :update, user.reset_password_token), attrs)
 
-      assert json_response(conn, 400)["errors"] == [%{"detail" => "Password reset token expired."}]
+      assert json_response(conn, 400)["errors"] == [
+               %{"detail" => "Password reset token expired."}
+             ]
     end
   end
 

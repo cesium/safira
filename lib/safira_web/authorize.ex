@@ -1,7 +1,7 @@
 defmodule Safira.Authorize do
   import Plug.Conn
   import Phoenix.Controller
-  
+
   alias Safira.Repo
   alias Safira.Accounts.User
 
@@ -23,12 +23,12 @@ defmodule Safira.Authorize do
   end
 
   defp is_authorized(conn, param) when param in @user_types do
-    with  %User{} = user <- Guardian.Plug.current_resource(conn) do
-      user 
+    with %User{} = user <- Guardian.Plug.current_resource(conn) do
+      user
       |> Repo.preload(param)
       |> Map.fetch!(param)
-      |> is_nil 
-      |> Kernel.not
+      |> is_nil
+      |> Kernel.not()
     end
   end
 end

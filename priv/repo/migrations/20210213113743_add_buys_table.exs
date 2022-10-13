@@ -11,6 +11,5 @@ defmodule Safira.Repo.Migrations.AddBuysTable do
     end
 
     create unique_index(:buys, [:attendee_id, :redeemable_id], name: :unique_attendee_redeemable)
-  
   end
 end

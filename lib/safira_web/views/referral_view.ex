@@ -11,7 +11,6 @@ defmodule SafiraWeb.ReferralView do
   end
 
   def render("referral.json", %{referral: referral}) do
-    %{id: referral.id,
-      available: referral.available}
+    %{id: referral.id, available: referral.available}
   end
 end

@@ -316,20 +316,20 @@ defmodule Safira.Admin.Contest do
     {:ok, sort_direction} = Map.fetch(params, "sort_direction")
     {:ok, sort_field} = Map.fetch(params, "sort_field")
 
-    with {:ok, filter} <- Filtrex.parse_params(filter_config(:referrals), params["referral"] || %{}),
+    with {:ok, filter} <-
+           Filtrex.parse_params(filter_config(:referrals), params["referral"] || %{}),
          %Scrivener.Page{} = page <- do_paginate_referrals(filter, params) do
       {:ok,
-        %{
-          referrals: page.entries,
-          page_number: page.page_number,
-          page_size: page.page_size,
-          total_pages: page.total_pages,
-          total_entries: page.total_entries,
-          distance: @pagination_distance,
-          sort_field: sort_field,
-          sort_direction: sort_direction
-        }
-      }
+       %{
+         referrals: page.entries,
+         page_number: page.page_number,
+         page_size: page.page_size,
+         total_pages: page.total_pages,
+         total_entries: page.total_entries,
+         distance: @pagination_distance,
+         sort_field: sort_field,
+         sort_direction: sort_direction
+       }}
     else
       {:error, error} -> {:error, error}
       error -> {:error, error}
@@ -371,7 +371,7 @@ defmodule Safira.Admin.Contest do
       ** (Ecto.NoResultsError)
 
   """
-  def get_referral!(id) do 
+  def get_referral!(id) do
     Repo.get!(Referral, id)
     |> Repo.preload([:badge, attendee: :user])
   end
@@ -460,7 +460,7 @@ defmodule Safira.Admin.Contest do
 
   defp filter_config(:referrals) do
     defconfig do
-      boolean :available
+      boolean(:available)
     end
   end
 end

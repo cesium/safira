@@ -7,8 +7,8 @@ defmodule Safira.Roulette.AttendeePrize do
 
   schema "attendees_prizes" do
     field :quantity, :integer
-    field :redeemed, :integer, default: 0 #default 0 should mean all previous code
-
+    # default 0 should mean all previous code
+    field :redeemed, :integer, default: 0
 
     belongs_to :attendee, Attendee, foreign_key: :attendee_id, type: :binary_id
     belongs_to :prize, Prize
@@ -65,7 +65,7 @@ defmodule Safira.Roulette.AttendeePrize do
     end
   end
 
-  #ensures that the max amount of redeemed items is less than the total amount bought
+  # ensures that the max amount of redeemed items is less than the total amount bought
   defp validate_redeemed(changeset) do
     {_, prize_id} = fetch_field(changeset, :prize_id)
     {_, redeemed} = fetch_field(changeset, :redeemed)
@@ -96,5 +96,4 @@ defmodule Safira.Roulette.AttendeePrize do
         end
     end
   end
-
 end

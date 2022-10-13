@@ -18,7 +18,7 @@ defmodule Mix.Tasks.Export.Attendees do
     badges
     |> Enum.map(fn b -> b.name end)
     |> Enum.member?("Jantar domingo")
-    |> Kernel.not
+    |> Kernel.not()
   end
 
   defp housing(badges) do

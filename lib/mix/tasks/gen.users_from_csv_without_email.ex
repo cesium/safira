@@ -43,11 +43,10 @@ defmodule Mix.Tasks.Gen.UsersFromCsvWithoutMail do
           |> parse_csv
           |> create_users
         rescue
-          e in File.Error -> IO.inspect e
+          e in File.Error -> IO.inspect(e)
         end
 
-       "Remote" ->
-
+      "Remote" ->
         :inets.start()
         :ssl.start()
 
@@ -57,11 +56,10 @@ defmodule Mix.Tasks.Gen.UsersFromCsvWithoutMail do
             |> parse_csv
             |> create_users
 
-          {:error, resp} -> IO.inspect resp
+          {:error, resp} ->
+            IO.inspect(resp)
         end
     end
-
-
   end
 
   defp parse_csv(path) do

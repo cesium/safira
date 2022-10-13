@@ -16,7 +16,7 @@ defmodule SafiraWeb.CompanyView do
       name: company.name,
       sponsorship: company.sponsorship,
       channel_id: company.channel_id,
-      badge_id: company.badge_id,
+      badge_id: company.badge_id
     }
   end
 end

@@ -44,7 +44,7 @@ defmodule Mix.Tasks.Gift.Quantity.Checkpoint.Badge do
   defp validate_args(args) do
     try do
       args
-    |> Enum.map(fn x -> Integer.parse(x) |> elem(0) end)
+      |> Enum.map(fn x -> Integer.parse(x) |> elem(0) end)
     rescue
       ArgumentError ->
         Mix.shell().info("All arguments should be integers")
@@ -55,7 +55,7 @@ defmodule Mix.Tasks.Gift.Quantity.Checkpoint.Badge do
     %{
       badge_id: Enum.at(args, 0),
       badge_count: Enum.at(args, 1),
-      entries: Enum.at(args, 2),
+      entries: Enum.at(args, 2)
     }
   end
 
@@ -74,9 +74,11 @@ defmodule Mix.Tasks.Gift.Quantity.Checkpoint.Badge do
   defp get_attendees_company_badges(args) do
     Repo.all(
       from a in Attendee,
-      join: r in Redeem, on: a.id == r.attendee_id,
-      join: b in Badge, on: r.badge_id == b.id,
-      preload: [badges: b]
+        join: r in Redeem,
+        on: a.id == r.attendee_id,
+        join: b in Badge,
+        on: r.badge_id == b.id,
+        preload: [badges: b]
     )
     |> Enum.map(fn a -> Map.put(a, :badge_count, length(a.badges)) end)
     |> Enum.filter(fn x -> x.badge_count >= Map.get(args, :badge_count) end)
@@ -97,7 +99,8 @@ defmodule Mix.Tasks.Gift.Quantity.Checkpoint.Badge do
   defp create_redeem(redeem_attrs, args, attendee, badge) do
     Multi.new()
     |> Multi.insert(:redeem, Redeem.changeset(%Redeem{}, redeem_attrs, :admin))
-    |> Multi.update(:attendee,
+    |> Multi.update(
+      :attendee,
       Attendee.update_on_redeem_changeset(
         attendee,
         %{
@@ -108,5 +111,4 @@ defmodule Mix.Tasks.Gift.Quantity.Checkpoint.Badge do
     )
     |> Repo.transaction()
   end
-
 end

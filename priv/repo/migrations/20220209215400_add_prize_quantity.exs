@@ -5,6 +5,5 @@ defmodule Safira.Repo.Migrations.AddPrizeQuantity do
     alter table(:attendees_prizes) do
       add :redeemed, :integer, null: false, default: 0
     end
-
   end
 end

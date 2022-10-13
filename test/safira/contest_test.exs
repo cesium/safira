@@ -156,7 +156,7 @@ defmodule Safira.ContestTest do
       insert(:redeem, badge: badge, attendee: a3)
 
       assert Contest.get_badge_preload!(badge.id).attendees
-            |> Enum.map(fn x -> x.id end) == [a1.id, a3.id]
+             |> Enum.map(fn x -> x.id end) == [a1.id, a3.id]
     end
   end
 
@@ -188,7 +188,11 @@ defmodule Safira.ContestTest do
     end
 
     test "Invalid data" do
-      {:error, _changeset} = Contest.create_badge(params_for(:badge, begin: Faker.DateTime.forward(2), end: Faker.DateTime.backward(2)))
+      {:error, _changeset} =
+        Contest.create_badge(
+          params_for(:badge, begin: Faker.DateTime.forward(2), end: Faker.DateTime.backward(2))
+        )
+
       assert Contest.list_badges() == []
     end
   end
@@ -197,12 +201,17 @@ defmodule Safira.ContestTest do
     test "Valid data" do
       Contest.create_badges([params_for(:badge), params_for(:badge)])
       |> Repo.transaction()
+
       assert length(Contest.list_badges()) == 2
     end
 
     test "Invalid data" do
-      Contest.create_badges([params_for(:badge), params_for(:badge, begin: Faker.DateTime.forward(2), end: Faker.DateTime.backward(2))])
+      Contest.create_badges([
+        params_for(:badge),
+        params_for(:badge, begin: Faker.DateTime.forward(2), end: Faker.DateTime.backward(2))
+      ])
       |> Repo.transaction()
+
       assert Contest.list_badges() == []
     end
   end
@@ -216,7 +225,13 @@ defmodule Safira.ContestTest do
 
     test "Invalid data" do
       badge = insert(:badge)
-      {:error, _changeset} = Contest.update_badge(badge,  params_for(:badge, begin: Faker.DateTime.forward(2), end: Faker.DateTime.backward(2)))
+
+      {:error, _changeset} =
+        Contest.update_badge(
+          badge,
+          params_for(:badge, begin: Faker.DateTime.forward(2), end: Faker.DateTime.backward(2))
+        )
+
       assert Contest.get_badge!(badge.id) == badge
     end
   end
@@ -310,7 +325,9 @@ defmodule Safira.ContestTest do
     test "doesn't exist" do
       r1 = insert(:referral)
 
-      assert_raise Ecto.NoResultsError, fn -> Contest.get_referral_preload!(Ecto.UUID.generate()) end
+      assert_raise Ecto.NoResultsError, fn ->
+        Contest.get_referral_preload!(Ecto.UUID.generate())
+      end
     end
   end
 
@@ -324,7 +341,9 @@ defmodule Safira.ContestTest do
     test "doesn't exist" do
       r1 = insert(:referral)
 
-      assert_raise Ecto.NoResultsError, fn -> Contest.get_referral_preload!(Ecto.UUID.generate()) end
+      assert_raise Ecto.NoResultsError, fn ->
+        Contest.get_referral_preload!(Ecto.UUID.generate())
+      end
     end
   end
 
@@ -338,7 +357,9 @@ defmodule Safira.ContestTest do
     test "invalid data" do
       r1 = insert(:referral)
 
-      {:error, _changeset} = Contest.update_referral(r1, params_for(:referral, badge_id: Ecto.UUID.generate()))
+      {:error, _changeset} =
+        Contest.update_referral(r1, params_for(:referral, badge_id: Ecto.UUID.generate()))
+
       assert Contest.get_referral_preload!(r1.id) == r1
     end
   end
@@ -384,7 +405,7 @@ defmodule Safira.ContestTest do
 
     test "multiple redeems" do
       at = insert(:attendee, volunteer: false)
-      b  = insert(:badge, type: 1)
+      b = insert(:badge, type: 1)
       r1 = insert(:redeem, attendee: at, badge: b)
 
       assert Contest.list_redeems_stats() |> Enum.map(fn x -> x.id end) == [r1.id]
@@ -450,7 +471,7 @@ defmodule Safira.ContestTest do
 
     test "valid data" do
       at = insert(:attendee)
-      b  = insert(:badge)
+      b = insert(:badge)
       {:ok, redeem} = Contest.create_redeem(params_for(:redeem, attendee: at, badge: b))
 
       assert Contest.get_redeem!(redeem.id) == redeem
@@ -514,7 +535,8 @@ defmodule Safira.ContestTest do
       at = insert(:attendee)
       r1 = insert(:redeem, badge: b1, attendee: at)
 
-      {:error, _changeset} = Contest.update_redeem(r1, params_for(:redeem, badge: b2, attendee: at))
+      {:error, _changeset} =
+        Contest.update_redeem(r1, params_for(:redeem, badge: b2, attendee: at))
 
       assert (Contest.get_redeem!(r1.id) |> Repo.preload(:badge)).badge == b1
     end
@@ -552,8 +574,8 @@ defmodule Safira.ContestTest do
       at1 = insert(:attendee)
       at2 = insert(:attendee)
       at3 = insert(:attendee)
-      b1  = insert(:badge, type: 7)
-      b2  = insert(:badge, type: 7)
+      b1 = insert(:badge, type: 7)
+      b2 = insert(:badge, type: 7)
       insert(:daily_token, attendee: at1)
       insert(:redeem, attendee: at1, badge: b2)
       insert(:redeem, attendee: at1)
@@ -579,7 +601,8 @@ defmodule Safira.ContestTest do
       insert(:redeem, attendee: at1)
       insert(:redeem, attendee: at2)
 
-      assert Contest.list_daily_leaderboard(Date.utc_today()) |> Enum.map(fn x -> x.attendee.id end) == [at1.id, at2.id]
+      assert Contest.list_daily_leaderboard(Date.utc_today())
+             |> Enum.map(fn x -> x.attendee.id end) == [at1.id, at2.id]
     end
   end
 
@@ -597,8 +620,7 @@ defmodule Safira.ContestTest do
       insert(:daily_token, attendee: at2)
       r1 = insert(:redeem, attendee: at1)
 
-      for   _n <- Enum.to_list(1..10) do
-
+      for _n <- Enum.to_list(1..10) do
         r2 = insert(:redeem, attendee: at1)
         r3 = insert(:redeem, attendee: at2)
       end

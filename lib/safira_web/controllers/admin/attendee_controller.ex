@@ -10,6 +10,7 @@ defmodule SafiraWeb.Admin.AttendeeController do
     case Accounts.paginate_attendees(params) do
       {:ok, assigns} ->
         render(conn, "index.html", assigns)
+
       error ->
         conn
         |> put_flash(:error, "There was an error rendering Attendees. #{inspect(error)}")
@@ -28,6 +29,7 @@ defmodule SafiraWeb.Admin.AttendeeController do
         conn
         |> put_flash(:info, "Attendee created successfully.")
         |> redirect(to: Routes.admin_attendee_path(conn, :show, attendee))
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
@@ -52,6 +54,7 @@ defmodule SafiraWeb.Admin.AttendeeController do
         conn
         |> put_flash(:info, "Attendee updated successfully.")
         |> redirect(to: Routes.admin_attendee_path(conn, :show, attendee))
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", attendee: attendee, changeset: changeset)
     end

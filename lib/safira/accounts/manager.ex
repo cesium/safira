@@ -21,5 +21,4 @@ defmodule Safira.Accounts.Manager do
     |> cast_assoc(:user)
     |> validate_required([:active, :is_admin])
   end
-
 end

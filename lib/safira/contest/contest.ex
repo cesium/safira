@@ -1,5 +1,4 @@
 defmodule Safira.Contest do
-
   import Ecto.Query, warn: false
   alias Safira.Repo
   alias Safira.Contest.Redeem
@@ -19,19 +18,22 @@ defmodule Safira.Contest do
   end
 
   def list_secret do
-    Repo.all(from r in Redeem,
-      join: b in assoc(r, :badge),
-      join: a in assoc(r, :attendee),
-      where: b.type == ^1 and not(a.volunteer) and not(is_nil(a.nickname)),
-      preload: [badge: b, attendee: a],
-      distinct: :badge_id)
+    Repo.all(
+      from r in Redeem,
+        join: b in assoc(r, :badge),
+        join: a in assoc(r, :attendee),
+        where: b.type == ^1 and not a.volunteer and not is_nil(a.nickname),
+        preload: [badge: b, attendee: a],
+        distinct: :badge_id
+    )
     |> Enum.map(fn x -> x.badge end)
-
   end
 
   def list_normals do
-    Repo.all(from b in  Badge,
-      where: b.type != ^1 and b.type != ^0)
+    Repo.all(
+      from b in Badge,
+        where: b.type != ^1 and b.type != ^0
+    )
   end
 
   def list_badges_conservative do
@@ -62,8 +64,8 @@ defmodule Safira.Contest do
   def create_badges(list_badges) do
     list_badges
     |> Enum.with_index()
-    |> Enum.reduce(Multi.new,fn {x,index}, acc ->
-      Ecto.Multi.insert(acc, index, Badge.changeset(%Badge{},x))
+    |> Enum.reduce(Multi.new(), fn {x, index}, acc ->
+      Ecto.Multi.insert(acc, index, Badge.changeset(%Badge{}, x))
     end)
   end
 
@@ -87,13 +89,14 @@ defmodule Safira.Contest do
     cond do
       DateTime.compare(curr, badge.begin_badge) == :lt ->
         false
+
       DateTime.compare(curr, badge.end_badge) == :gt ->
         false
+
       true ->
         true
     end
   end
-
 
   alias Safira.Contest.Referral
 
@@ -133,28 +136,29 @@ defmodule Safira.Contest do
   end
 
   def list_redeems_stats do
-    Repo.all(from r in Redeem,
-      join: b in assoc(r, :badge),
-      join: a in assoc(r, :attendee),
-      where: b.type == ^1 and not(a.volunteer) and not(is_nil(a.nickname)),
-      preload: [badge: b, attendee: a])
+    Repo.all(
+      from r in Redeem,
+        join: b in assoc(r, :badge),
+        join: a in assoc(r, :attendee),
+        where: b.type == ^1 and not a.volunteer and not is_nil(a.nickname),
+        preload: [badge: b, attendee: a]
+    )
   end
 
   def get_redeem!(id), do: Repo.get!(Redeem, id)
 
   def get_keys_redeem(attendee_id, badge_id) do
-    Repo.get_by(Redeem, [attendee_id: attendee_id, badge_id: badge_id])
+    Repo.get_by(Redeem, attendee_id: attendee_id, badge_id: badge_id)
   end
 
   def get_keys_daily_token(attendee_id, day) do
-    Repo.get_by(DailyToken, [attendee_id: attendee_id, day: day])
+    Repo.get_by(DailyToken, attendee_id: attendee_id, day: day)
   end
 
   def create_redeem(attrs \\ %{}, user_type \\ :manager) do
     Multi.new()
     |> Multi.insert(:redeem, Redeem.changeset(%Redeem{}, attrs, user_type))
     |> Multi.update(:attendee, fn %{redeem: redeem} ->
-
       redeem = Repo.preload(redeem, [:badge, :attendee])
 
       Safira.Accounts.Attendee.update_on_redeem_changeset(
@@ -164,17 +168,22 @@ defmodule Safira.Contest do
           entries: redeem.attendee.entries + 1
         }
       )
-
     end)
     |> Multi.insert_or_update(:daily_token, fn %{attendee: attendee} ->
       {:ok, date, _} = DateTime.from_iso8601("#{Date.utc_today()}T00:00:00Z")
       changeset_daily = get_keys_daily_token(attendee.id, date) || %DailyToken{}
-      DailyToken.changeset(changeset_daily, %{quantity: attendee.token_balance, attendee_id: attendee.id, day: date})
+
+      DailyToken.changeset(changeset_daily, %{
+        quantity: attendee.token_balance,
+        attendee_id: attendee.id,
+        day: date
+      })
     end)
     |> Repo.transaction()
     |> case do
       {:ok, result} ->
         {:ok, Map.get(result, :redeem)}
+
       {:error, _failed_operation, changeset, _changes_so_far} ->
         {:error, changeset}
     end
@@ -197,9 +206,11 @@ defmodule Safira.Contest do
   def list_leaderboard do
     Repo.all(
       from a in Safira.Accounts.Attendee,
-        join: r in Redeem, on: a.id == r.attendee_id,
-        join: b in Badge, on: r.badge_id == b.id,
-        where: not(is_nil a.user_id) and b.type != ^0,
+        join: r in Redeem,
+        on: a.id == r.attendee_id,
+        join: b in Badge,
+        on: r.badge_id == b.id,
+        where: not is_nil(a.user_id) and b.type != ^0,
         select: %{attendee: a, token_count: a.token_balance},
         preload: [badges: b]
     )
@@ -210,10 +221,15 @@ defmodule Safira.Contest do
   def list_daily_leaderboard(date) do
     Repo.all(
       from a in Safira.Accounts.Attendee,
-        join: r in Redeem, on: a.id == r.attendee_id,
-        join: b in Badge, on: r.badge_id == b.id,
-        join: t in DailyToken, on: a.id == t.attendee_id,
-        where: not(is_nil a.user_id) and fragment("?::date", r.inserted_at) == ^date and b.type != ^0 and fragment("?::date", t.day) == ^date,
+        join: r in Redeem,
+        on: a.id == r.attendee_id,
+        join: b in Badge,
+        on: r.badge_id == b.id,
+        join: t in DailyToken,
+        on: a.id == t.attendee_id,
+        where:
+          not is_nil(a.user_id) and fragment("?::date", r.inserted_at) == ^date and b.type != ^0 and
+            fragment("?::date", t.day) == ^date,
         select: %{attendee: a, token_count: t.quantity},
         preload: [badges: b, daily_tokens: t]
     )
@@ -221,7 +237,7 @@ defmodule Safira.Contest do
     |> Enum.sort_by(&{&1.badge_count, &1.token_count}, &>=/2)
   end
 
-  #This does not work but is not used
+  # This does not work but is not used
   def top_list_leaderboard(n) do
     list_leaderboard()
     |> Enum.take(n)
@@ -229,19 +245,26 @@ defmodule Safira.Contest do
   end
 
   def get_winner do
-    Repo.all(from a in Safira.Accounts.Attendee,
-      where: not (is_nil a.user_id) and not(a.volunteer))
-    |> Repo.preload([badges: from(b in Badge, where: b.type != ^0)])
-    |> Enum.map(fn x -> Map.put(x, :badge_count, length(Enum.filter(x.badges,fn x -> x.type != 0 end))) end)
+    Repo.all(
+      from a in Safira.Accounts.Attendee,
+        where: not is_nil(a.user_id) and not a.volunteer
+    )
+    |> Repo.preload(badges: from(b in Badge, where: b.type != ^0))
+    |> Enum.map(fn x ->
+      Map.put(x, :badge_count, length(Enum.filter(x.badges, fn x -> x.type != 0 end)))
+    end)
     |> Enum.filter(fn a -> a.badge_count >= 10 end)
-    |> Enum.map(fn a -> Enum.map( Enum.filter(a.badges,fn b -> b.type != 0 end), fn x -> "#{a.nickname}:#{x.name}" end) end)
-    |> List.flatten
+    |> Enum.map(fn a ->
+      Enum.map(Enum.filter(a.badges, fn b -> b.type != 0 end), fn x ->
+        "#{a.nickname}:#{x.name}"
+      end)
+    end)
+    |> List.flatten()
   end
 
   defp calculate_badge_tokens(badge) do
     cond do
       Interaction.is_badge_spotlighted(badge.id) -> badge.tokens * 2
-
       true -> badge.tokens
     end
   end

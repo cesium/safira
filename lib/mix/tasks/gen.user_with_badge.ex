@@ -32,20 +32,21 @@ defmodule Mix.Tasks.Gen.UserWithBadge do
         parse_csv("/tmp/user.csv")
         |> create_user_give_badge
 
-      {:error, resp} -> resp
+      {:error, resp} ->
+        resp
     end
   end
 
   defp create_user_give_badge(list_user_csv) do
-    badge_1  = Contest.get_badge_name!("Pequeno-almoço segunda")
-    badge_2  = Contest.get_badge_name!("Pequeno-almoço terça")
-    badge_3  = Contest.get_badge_name!("Pequeno-almoço quarta")
-    badge_4  = Contest.get_badge_name!("Almoço segunda")
-    badge_5  = Contest.get_badge_name!("Almoço terça")
-    badge_6  = Contest.get_badge_name!("Almoço quarta")
-    badge_7  = Contest.get_badge_name!("Jantar domingo")
-    badge_8  = Contest.get_badge_name!("Jantar segunda (Mega febrada)")
-    badge_9  = Contest.get_badge_name!("Jantar terça")
+    badge_1 = Contest.get_badge_name!("Pequeno-almoço segunda")
+    badge_2 = Contest.get_badge_name!("Pequeno-almoço terça")
+    badge_3 = Contest.get_badge_name!("Pequeno-almoço quarta")
+    badge_4 = Contest.get_badge_name!("Almoço segunda")
+    badge_5 = Contest.get_badge_name!("Almoço terça")
+    badge_6 = Contest.get_badge_name!("Almoço quarta")
+    badge_7 = Contest.get_badge_name!("Jantar domingo")
+    badge_8 = Contest.get_badge_name!("Jantar segunda (Mega febrada)")
+    badge_9 = Contest.get_badge_name!("Jantar terça")
     badge_10 = Contest.get_badge_name!("Alojamento D. Maria II")
     badge_11 = Contest.get_badge_name!("Alojamento Alberto Sampaio")
 
@@ -77,9 +78,12 @@ defmodule Mix.Tasks.Gen.UserWithBadge do
               multi,
               fn badge, acc ->
                 give_badge(badge.id, acc)
-            end)
+              end
+            )
+
           user_csv.housing == "Alojamento D. Maria II" ->
             give_badge(badge_10.id, multi)
+
           user_csv.housing == "Alojamento Alberto Sampaio" ->
             give_badge(badge_11.id, multi)
         end
@@ -91,7 +95,8 @@ defmodule Mix.Tasks.Gen.UserWithBadge do
             multi,
             fn badge, acc ->
               give_badge(badge.id, acc)
-          end)
+            end
+          )
         else
           multi
         end
@@ -107,10 +112,14 @@ defmodule Mix.Tasks.Gen.UserWithBadge do
       {:ok, changes} ->
         user = Auth.reset_password_token(changes.user)
 
-        Safira.Email.send_registration_email(user.email, user.reset_password_token,
-        changes.attendee.discord_association_code)
+        Safira.Email.send_registration_email(
+          user.email,
+          user.reset_password_token,
+          changes.attendee.discord_association_code
+        )
 
-      _ -> transaction
+      _ ->
+        transaction
     end
   end
 

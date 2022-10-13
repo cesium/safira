@@ -21,7 +21,7 @@ defmodule SafiraWeb.BadgeView do
       begin: badge.begin,
       end: badge.end,
       type: badge.type,
-      tokens: badge.tokens,
+      tokens: badge.tokens
     }
   end
 

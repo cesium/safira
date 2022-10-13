@@ -3,7 +3,6 @@ defmodule Safira.Repo.Migrations.CreateRedeems do
 
   def change do
     create table(:redeems) do
-
       add :badge_id, references(:badges, on_delete: :delete_all)
       add :attendee_id, references(:attendees, on_delete: :delete_all, type: :uuid)
       add :manager_id, references(:managers, on_delete: :nothing)
