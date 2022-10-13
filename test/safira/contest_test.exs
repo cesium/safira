@@ -357,4 +357,183 @@ defmodule Safira.ContestTest do
       assert %Ecto.Changeset{} = Contest.change_referral(referral)
     end
   end
+
+  ###############################################################
+  ###############################################################
+  ################           REDEEM            ##################
+  ###############################################################
+  ###############################################################
+
+  describe "list_redeems/0" do
+    test "no redeems" do
+      assert Contest.list_redeems() == []
+    end
+
+    test "multiple redeems" do
+      r1 = insert(:redeem)
+      r2 = insert(:redeem)
+
+      assert Contest.list_redeems() |> Enum.map(fn x -> x.id end) == [r1.id, r2.id]
+    end
+  end
+
+  describe "list_redeems_stats/0" do
+    test "no redeems" do
+      assert Contest.list_redeems_stats() == []
+    end
+
+    test "multiple redeems" do
+      at = insert(:attendee, volunteer: false)
+      b  = insert(:badge, type: 1)
+      r1 = insert(:redeem, attendee: at, badge: b)
+
+      assert Contest.list_redeems_stats() |> Enum.map(fn x -> x.id end) == [r1.id]
+    end
+  end
+
+  describe "get_redeem!/1" do
+    test "exists" do
+      r1 = insert(:redeem)
+
+      assert Contest.get_redeem!(r1.id).id == r1.id
+    end
+
+    test "doesn't exist" do
+      r1 = insert(:redeem)
+
+      assert_raise Ecto.NoResultsError, fn -> Contest.get_redeem!(r1.id + 1) end
+    end
+  end
+
+  describe "get_keys_redeem/2" do
+    test "exists" do
+      r1 = insert(:redeem)
+
+      assert Contest.get_keys_redeem(r1.attendee.id, r1.badge.id).id == r1.id
+    end
+
+    test "doesn't exist (attendee)" do
+      r1 = insert(:redeem)
+
+      assert is_nil(Contest.get_keys_redeem(Ecto.UUID.generate(), r1.badge.id))
+    end
+
+    test "doesn't exist (badge)" do
+      r1 = insert(:redeem)
+
+      assert is_nil(Contest.get_keys_redeem(r1.attendee.id, r1.badge.id + 1))
+    end
+  end
+
+  describe "get_keys_daily_token/2" do
+    test "exists" do
+      dt = insert(:daily_token)
+
+      assert Contest.get_keys_daily_token(dt.attendee.id, dt.day).id == dt.id
+    end
+
+    test "doesn't exist (attendee)" do
+      dt = insert(:daily_token)
+
+      assert is_nil(Contest.get_keys_daily_token(Ecto.UUID.generate(), dt.day))
+    end
+
+    test "doesn't exist (day)" do
+      dt = insert(:daily_token)
+
+      assert is_nil(Contest.get_keys_daily_token(dt.attendee.id, Faker.DateTime.forward(2000)))
+    end
+  end
+
+  describe "create_redeem/1" do
+    alias Safira.Accounts
+
+    test "valid data" do
+      at = insert(:attendee)
+      b  = insert(:badge)
+      {:ok, redeem} = Contest.create_redeem(params_for(:redeem, attendee: at, badge: b))
+
+      assert Contest.get_redeem!(redeem.id) == redeem
+      assert at.token_balance + b.tokens == Accounts.get_attendee!(at.id).token_balance
+    end
+
+    test "invalid data (too soon for badge)" do
+      d1 = Faker.DateTime.forward(10)
+      d2 = Faker.DateTime.forward(2)
+      at = insert(:attendee)
+
+      if DateTime.compare(d1, d2) == :gt do
+        b = insert(:badge, begin_badge: d2, end_badge: d1)
+        {:error, _changeset} = Contest.create_redeem(params_for(:redeem, attendee: at, badge: b))
+
+        assert Contest.list_redeems() == []
+        assert at.token_balance == Accounts.get_attendee!(at.id).token_balance
+      else
+        b = insert(:badge, begin_badge: d1, end_badge: d2)
+        {:error, _changeset} = Contest.create_redeem(params_for(:redeem, attendee: at, badge: b))
+
+        assert Contest.list_redeems() == []
+        assert at.token_balance == Accounts.get_attendee!(at.id).token_balance
+      end
+    end
+
+    test "invalid data (too late for badge)" do
+      d1 = Faker.DateTime.backward(10)
+      d2 = Faker.DateTime.backward(2)
+      at = insert(:attendee)
+
+      if DateTime.compare(d1, d2) == :gt do
+        b = insert(:badge, begin_badge: d2, end_badge: d1)
+        {:error, _changeset} = Contest.create_redeem(params_for(:redeem, attendee: at, badge: b))
+
+        assert Contest.list_redeems() == []
+        assert at.token_balance == Accounts.get_attendee!(at.id).token_balance
+      else
+        b = insert(:badge, begin_badge: d1, end_badge: d2)
+        {:error, _changeset} = Contest.create_redeem(params_for(:redeem, attendee: at, badge: b))
+
+        assert Contest.list_redeems() == []
+        assert at.token_balance == Accounts.get_attendee!(at.id).token_balance
+      end
+    end
+  end
+
+  describe "update_redeem/2" do
+    test "valid data" do
+      b1 = insert(:badge, type: 4)
+      b2 = insert(:badge, type: 4)
+      r1 = insert(:redeem, badge: b1)
+      {:ok, r2} = Contest.update_redeem(r1, params_for(:redeem, badge: b2))
+
+      assert Contest.get_redeem!(r1.id).id == r2.id
+    end
+
+    test "invalid data" do
+      b1 = insert(:badge, type: 7)
+      b2 = insert(:badge, type: 7)
+      at = insert(:attendee)
+      r1 = insert(:redeem, badge: b1, attendee: at)
+
+      {:error, _changeset} = Contest.update_redeem(r1, params_for(:redeem, badge: b2, attendee: at))
+
+      assert (Contest.get_redeem!(r1.id) |> Repo.preload(:badge)).badge == b1
+    end
+  end
+
+  describe "delete_redeem/1" do
+    test "valid data" do
+      r1 = insert(:redeem)
+      Contest.delete_redeem(r1)
+
+      assert Contest.list_redeems() == []
+    end
+  end
+
+  describe "change_redeem/1" do
+    test "valid data" do
+      r1 = insert(:redeem)
+
+      assert %Ecto.Changeset{} = Contest.change_redeem(r1)
+    end
+  end
 end
