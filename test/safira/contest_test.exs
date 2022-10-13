@@ -556,6 +556,7 @@ defmodule Safira.ContestTest do
       b2  = insert(:badge, type: 7)
       insert(:daily_token, attendee: at1)
       insert(:redeem, attendee: at1, badge: b2)
+      insert(:redeem, attendee: at1)
       insert(:redeem, attendee: at2, badge: b1)
 
       assert Contest.list_leaderboard() |> Enum.map(fn x -> x.attendee.id end) == [at1.id, at2.id]
