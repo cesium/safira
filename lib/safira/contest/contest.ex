@@ -221,6 +221,7 @@ defmodule Safira.Contest do
     |> Enum.sort_by(&{&1.badge_count, &1.token_count}, &>=/2)
   end
 
+  #This does not work but is not used
   def top_list_leaderboard(n) do
     list_leaderboard()
     |> Enum.take(n)

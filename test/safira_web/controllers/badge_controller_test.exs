@@ -19,9 +19,9 @@ defmodule SafiraWeb.BadgeControllerTest do
       expected_response = [
         %{
           "avatar" => "/images/badge-missing.png",
-          "begin" => badge.begin,
+          "begin" => DateTime.to_iso8601(badge.begin),
           "description" => badge.description,
-          "end" => badge.end,
+          "end" => DateTime.to_iso8601(badge.end),
           "id" => badge.id,
           "name" => badge.name,
           "tokens" => badge.tokens,
@@ -61,9 +61,9 @@ defmodule SafiraWeb.BadgeControllerTest do
 
       expected_bage = %{
         "avatar" => "/images/badge-missing.png",
-        "begin" => badge.begin,
+        "begin" => DateTime.to_iso8601(badge.begin),
         "description" => badge.description,
-        "end" => badge.end,
+        "end" => DateTime.to_iso8601(badge.end),
         "id" => badge.id,
         "name" => badge.name,
         "tokens" => badge.tokens,
