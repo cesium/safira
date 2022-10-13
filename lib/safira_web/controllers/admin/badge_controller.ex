@@ -10,6 +10,7 @@ defmodule SafiraWeb.Admin.BadgeController do
     case Contest.paginate_badges(params) do
       {:ok, assigns} ->
         render(conn, "index.html", assigns)
+
       error ->
         conn
         |> put_flash(:error, "There was an error rendering Badges. #{inspect(error)}")
@@ -28,6 +29,7 @@ defmodule SafiraWeb.Admin.BadgeController do
         conn
         |> put_flash(:info, "Badge created successfully.")
         |> redirect(to: Routes.admin_badge_path(conn, :show, badge))
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
@@ -52,6 +54,7 @@ defmodule SafiraWeb.Admin.BadgeController do
         conn
         |> put_flash(:info, "Badge updated successfully.")
         |> redirect(to: Routes.admin_badge_path(conn, :show, badge))
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", badge: badge, changeset: changeset)
     end

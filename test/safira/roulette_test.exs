@@ -6,7 +6,13 @@ defmodule Safira.RouletteTest do
   describe "prizes" do
     alias Safira.Roulette.Prize
 
-    @valid_attrs %{max_amount_per_attendee: 10, name: "some name", probability: 0.42, stock: 40, is_redeemable: true}
+    @valid_attrs %{
+      max_amount_per_attendee: 10,
+      name: "some name",
+      probability: 0.42,
+      stock: 40,
+      is_redeemable: true
+    }
 
     @update_attrs %{
       max_amount_per_attendee: 51,
@@ -15,7 +21,13 @@ defmodule Safira.RouletteTest do
       stock: 50
     }
 
-    @invalid_attrs1 %{max_amount_per_attendee: nil, name: nil, probability: nil, stock: nil, is_redeemable: nil}
+    @invalid_attrs1 %{
+      max_amount_per_attendee: nil,
+      name: nil,
+      probability: nil,
+      stock: nil,
+      is_redeemable: nil
+    }
 
     @invalid_attrs2 %{
       max_amount_per_attendee: 11,
@@ -25,9 +37,21 @@ defmodule Safira.RouletteTest do
       is_redeemable: true
     }
 
-    @invalid_attrs3 %{max_amount_per_attendee: 9, name: "some name", probability: -0.7, stock: 10, is_redeemable: true}
+    @invalid_attrs3 %{
+      max_amount_per_attendee: 9,
+      name: "some name",
+      probability: -0.7,
+      stock: 10,
+      is_redeemable: true
+    }
 
-    @invalid_attrs4 %{max_amount_per_attendee: 9, name: "some name", probability: 1.7, stock: 10, is_redeemable: true}
+    @invalid_attrs4 %{
+      max_amount_per_attendee: 9,
+      name: "some name",
+      probability: 1.7,
+      stock: 10,
+      is_redeemable: true
+    }
 
     def prize_fixture(attrs \\ %{}) do
       {:ok, prize} =

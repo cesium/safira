@@ -3,18 +3,20 @@ defmodule Mix.Tasks.Doc.Api do
 
   def run(args) do
     if Enum.empty?(args) do
-      Mix.shell.info "Needs to receive an ENV flag."
+      Mix.shell().info("Needs to receive an ENV flag.")
     else
       args |> create
     end
   end
 
   defp create(args) do
-    Mix.Task.run "app.start"
-    System.cmd("bash", ["-c", "#{List.first args} mix test"])
-    System.cmd("bash",
+    Mix.Task.run("app.start")
+    System.cmd("bash", ["-c", "#{List.first(args)} mix test"])
+
+    System.cmd(
+      "bash",
       [
-        "-c", 
+        "-c",
         "aglio -i doc/api/documentation.md -o doc/api/documentation.html"
       ]
     )

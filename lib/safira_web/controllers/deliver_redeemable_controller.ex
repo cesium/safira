@@ -6,7 +6,7 @@ defmodule SafiraWeb.DeliverRedeemableController do
 
   action_fallback SafiraWeb.FallbackController
 
-    # redeem params:
+  # redeem params:
   @doc "
       json
   {
@@ -18,10 +18,12 @@ defmodule SafiraWeb.DeliverRedeemableController do
   }
 
   "
-  def create(conn , %{"redeem" => redeem_params}) do
+  def create(conn, %{"redeem" => redeem_params}) do
     cond do
-      Accounts.is_manager(conn) -> #checks the user token to see if its a manager
+      # checks the user token to see if its a manager
+      Accounts.is_manager(conn) ->
         validate_redeem(conn, redeem_params)
+
       true ->
         conn
         |> put_status(:unauthorized)
@@ -30,8 +32,8 @@ defmodule SafiraWeb.DeliverRedeemableController do
   end
 
   def show(conn, %{"id" => attendee_id}) do
-    attendee =
-      Accounts.get_attendee!(attendee_id)
+    attendee = Accounts.get_attendee!(attendee_id)
+
     cond do
       not is_nil(attendee) ->
         if Accounts.is_manager(conn) do
@@ -41,6 +43,7 @@ defmodule SafiraWeb.DeliverRedeemableController do
           redeemables = Store.get_attendee_redeemables(attendee)
           render(conn, "index.json", delivers: redeemables)
         end
+
       true ->
         conn
         |> put_status(:bad_request)
@@ -51,29 +54,35 @@ defmodule SafiraWeb.DeliverRedeemableController do
   def validate_redeem(conn, json) do
     attendee =
       Map.get(json, "attendee_id")
-      |> Accounts.get_attendee() #fetch user by id
+      # fetch user by id
+      |> Accounts.get_attendee()
+
     redeemable_id = Map.get(json, "redeemable")
     quant = Map.get(json, "quantity")
 
-    case {attendee,Store.exist_redeemable(redeemable_id),quant} do
-      {nil,_,_} ->
+    case {attendee, Store.exist_redeemable(redeemable_id), quant} do
+      {nil, _, _} ->
         conn
         |> put_status(:not_found)
         |> json(%{User: "Attendee does not exist"})
-      {_,false,_} ->
+
+      {_, false, _} ->
         conn
         |> put_status(:not_found)
         |> json(%{Redeemable: "There is no such redeemable"})
-      {_,_,nil} ->
+
+      {_, _, nil} ->
         conn
         |> put_status(:bad_request)
         |> json(%{Redeemable: "Json does not have `quantity` param"})
-      {_,_,_} ->
+
+      {_, _, _} ->
         case Store.redeem_redeemable(redeemable_id, attendee, quant) do
           {:ok, changes} ->
             conn
             |> put_status(:ok)
             |> json(%{Redeemable: "#{Map.get(changes, :redeemable).name} redeemed successfully!"})
+
           {:error, _error} ->
             conn
             |> put_status(:bad_request)

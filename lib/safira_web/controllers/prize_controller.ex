@@ -12,5 +12,4 @@ defmodule SafiraWeb.PrizeController do
     prize = Roulette.get_prize!(id)
     render(conn, "show.json", prize: prize)
   end
-
 end

@@ -46,11 +46,10 @@ defmodule Mix.Tasks.Gen.ManagersFromCsv do
           |> parse_csv
           |> create_users
         rescue
-          e in File.Error -> IO.inspect e
+          e in File.Error -> IO.inspect(e)
         end
 
-       "Remote" ->
-
+      "Remote" ->
         :inets.start()
         :ssl.start()
 
@@ -60,11 +59,10 @@ defmodule Mix.Tasks.Gen.ManagersFromCsv do
             |> parse_csv
             |> create_users
 
-          {:error, resp} -> IO.inspect resp
+          {:error, resp} ->
+            IO.inspect(resp)
         end
     end
-
-
   end
 
   defp parse_csv(path) do
@@ -87,7 +85,7 @@ defmodule Mix.Tasks.Gen.ManagersFromCsv do
       user = %{
         "email" => email,
         "password" => password,
-        "password_confirmation" => password,
+        "password_confirmation" => password
       }
 
       Accounts.create_manager(%{"user" => user, "is_admin" => convert!(user_csv_entry.admin)})

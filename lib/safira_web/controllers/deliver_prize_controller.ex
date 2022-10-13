@@ -6,7 +6,7 @@ defmodule SafiraWeb.DeliverPrizeController do
 
   action_fallback SafiraWeb.FallbackController
 
-    # redeem params:
+  # redeem params:
   @doc "
       json
   {
@@ -18,10 +18,12 @@ defmodule SafiraWeb.DeliverPrizeController do
   }
 
   "
-  def create(conn , %{"redeem" => redeem_params}) do
+  def create(conn, %{"redeem" => redeem_params}) do
     cond do
-      Accounts.is_manager(conn) -> #checks the user token to see if its a manager
+      # checks the user token to see if its a manager
+      Accounts.is_manager(conn) ->
         validate_redeem(conn, redeem_params)
+
       true ->
         conn
         |> put_status(:unauthorized)
@@ -30,12 +32,13 @@ defmodule SafiraWeb.DeliverPrizeController do
   end
 
   def show(conn, %{"id" => attendee_id}) do
-    attendee =
-      Accounts.get_attendee!(attendee_id)
+    attendee = Accounts.get_attendee!(attendee_id)
+
     cond do
       not is_nil(attendee) ->
         prize = Roulette.get_attendee_not_redeemed(attendee)
         render(conn, "index.json", delivers: prize)
+
       true ->
         conn
         |> put_status(:bad_request)
@@ -46,25 +49,30 @@ defmodule SafiraWeb.DeliverPrizeController do
   def validate_redeem(conn, json) do
     attendee =
       Map.get(json, "attendee_id")
-      |> Accounts.get_attendee() #fetch user by id
+      # fetch user by id
+      |> Accounts.get_attendee()
+
     prize_id = Map.get(json, "prize")
     quant = Map.get(json, "quantity")
     exist = Roulette.exist_prize(prize_id)
 
     case {attendee, exist, quant} do
-      {nil,_,_} ->
+      {nil, _, _} ->
         conn
         |> put_status(:not_found)
         |> json(%{User: "Attendee does not exist"})
-      {_,false,_} ->
+
+      {_, false, _} ->
         conn
         |> put_status(:not_found)
         |> json(%{Redeemable: "There is no such Prize"})
-      {_,_,nil} ->
+
+      {_, _, nil} ->
         conn
         |> put_status(:bad_request)
         |> json(%{Redeemable: "Json does not have `quantity` param"})
-      {_,_,_} ->
+
+      {_, _, _} ->
         rp = Roulette.redeem_prize(prize_id, attendee, quant)
 
         case rp do
@@ -72,6 +80,7 @@ defmodule SafiraWeb.DeliverPrizeController do
             conn
             |> put_status(:ok)
             |> json(%{Prize: "#{Map.get(changes, :prizes).name} redeemed successfully!"})
+
           _ ->
             conn
             |> put_status(:bad_request)

@@ -138,14 +138,21 @@ defmodule Mix.Tasks.Gen.Companies do
   end
 
   defp create_user(name) do
-    email = Enum.join([
-      name
-      |> String.downcase()
-      |> String.replace(" ", "")
-      |> String.replace("&", "_")
-      |> String.replace("/", "_")
-      |> String.split("(")
-      |> List.first(), @domain], "@")
+    email =
+      Enum.join(
+        [
+          name
+          |> String.downcase()
+          |> String.replace(" ", "")
+          |> String.replace("&", "_")
+          |> String.replace("/", "_")
+          |> String.split("(")
+          |> List.first(),
+          @domain
+        ],
+        "@"
+      )
+
     password = random_string(8)
 
     %{

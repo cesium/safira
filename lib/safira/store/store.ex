@@ -18,9 +18,12 @@ defmodule Safira.Store do
     case redeemable_id do
       nil ->
         false
+
       _ ->
-        query = from r in Redeemable,
+        query =
+          from r in Redeemable,
             where: r.id == ^redeemable_id
+
         Repo.exists?(query)
     end
   end
@@ -31,17 +34,22 @@ defmodule Safira.Store do
     |> Enum.map(fn redeemable -> add_can_buy(redeemable, attendee.id) end)
   end
 
-  def get_redeemable_attendee(redeemable_id,attendee) do
+  def get_redeemable_attendee(redeemable_id, attendee) do
     redeemable = get_redeemable!(redeemable_id)
     add_can_buy(redeemable, attendee.id)
   end
 
-  defp add_can_buy(redeemable,attendee_id) do
+  defp add_can_buy(redeemable, attendee_id) do
     case get_keys_buy(attendee_id, redeemable.id) do
       {_, nil} ->
-        Map.put(redeemable,:can_buy,Kernel.min(redeemable.max_per_user, redeemable.stock))
+        Map.put(redeemable, :can_buy, Kernel.min(redeemable.max_per_user, redeemable.stock))
+
       {_, buy} ->
-        Map.put(redeemable,:can_buy, Kernel.min(redeemable.max_per_user - buy.quantity, redeemable.stock))
+        Map.put(
+          redeemable,
+          :can_buy,
+          Kernel.min(redeemable.max_per_user - buy.quantity, redeemable.stock)
+        )
     end
   end
 
@@ -54,8 +62,8 @@ defmodule Safira.Store do
   def create_redeemables(list_redeemables) do
     list_redeemables
     |> Enum.with_index()
-    |> Enum.reduce(Multi.new,fn {x,index}, acc ->
-      Multi.insert(acc, index, Redeemable.changeset(%Redeemable{},x))
+    |> Enum.reduce(Multi.new(), fn {x, index}, acc ->
+      Multi.insert(acc, index, Redeemable.changeset(%Redeemable{}, x))
     end)
   end
 
@@ -71,10 +79,10 @@ defmodule Safira.Store do
     case keys do
       nil ->
         {:error, keys}
+
       _ ->
         {:ok, keys}
     end
-
   end
 
   def buy_redeemable(redeemable_id, attendee) do
@@ -82,31 +90,44 @@ defmodule Safira.Store do
     # check if the redeemable in question exists
     |> Multi.run(:redeemable_info, fn _repo, _var -> {:ok, get_redeemable!(redeemable_id)} end)
     |> Multi.update(:redeemable, fn %{redeemable_info: redeemable} ->
-      Redeemable.changeset(redeemable, %{stock: redeemable.stock - 1}) #removes 1 from the redeemable's stock
+      # removes 1 from the redeemable's stock
+      Redeemable.changeset(redeemable, %{stock: redeemable.stock - 1})
     end)
     |> Multi.update(:attendee, fn %{redeemable: redeemable} ->
       Attendee.update_token_balance_changeset(attendee, %{
         token_balance: attendee.token_balance - redeemable.price
       })
-    end) #Removes the redeemable's price from the atendee's total balance
+    end)
+
+    # Removes the redeemable's price from the atendee's total balance
     |> Multi.run(:buy, fn _repo, %{attendee: attendee, redeemable: redeemable} ->
       {_, keys_buy} = get_keys_buy(attendee.id, redeemable_id)
+
       {:ok,
        keys_buy ||
          %Buy{attendee_id: attendee.id, redeemable_id: redeemable.id, quantity: 0}}
-    end) # fetches the buy repo if it exists or creates a new one if it doest exist
+    end)
+
+    # fetches the buy repo if it exists or creates a new one if it doest exist
     |> Multi.insert_or_update(:upsert_buy, fn %{buy: buy} ->
       Buy.changeset(buy, %{quantity: buy.quantity + 1})
     end)
     |> Multi.insert_or_update(:daily_token, fn %{attendee: attendee} ->
       {:ok, date, _} = DateTime.from_iso8601("#{Date.utc_today()}T00:00:00Z")
       changeset_daily = Contest.get_keys_daily_token(attendee.id, date) || %DailyToken{}
-      DailyToken.changeset(changeset_daily, %{quantity: attendee.token_balance, attendee_id: attendee.id, day: date})
-    end) #increments the amount bought by 1
+
+      DailyToken.changeset(changeset_daily, %{
+        quantity: attendee.token_balance,
+        attendee_id: attendee.id,
+        day: date
+      })
+    end)
+
+    # increments the amount bought by 1
     |> Repo.transaction()
   end
 
-  #redeems an item for an atendee, should only be used by managers
+  # redeems an item for an atendee, should only be used by managers
   def redeem_redeemable(redeemable_id, attendee, quantity) do
     Multi.new()
     |> Multi.run(:buy, fn _repo, _changes ->
@@ -124,11 +145,10 @@ defmodule Safira.Store do
     |> Repo.preload(:redeemables)
     |> Map.fetch!(:redeemables)
     |> Enum.map(fn redeemable ->
-      {_,b} = get_keys_buy(attendee.id, redeemable.id)
+      {_, b} = get_keys_buy(attendee.id, redeemable.id)
       redeemable = Map.put(redeemable, :quantity, b.quantity)
       Map.put(redeemable, :not_redeemed, b.quantity - b.redeemed)
     end)
-
   end
 
   ## fetches every redeemable that has yet to be redeemed
@@ -136,17 +156,16 @@ defmodule Safira.Store do
     attendee
     |> Repo.preload(:redeemables)
     |> Map.fetch!(:redeemables)
-    |> Enum.filter( fn redeemable ->
-      {_,b} = get_keys_buy(attendee.id, redeemable.id)
+    |> Enum.filter(fn redeemable ->
+      {_, b} = get_keys_buy(attendee.id, redeemable.id)
       b.quantity > 0 && b.quantity > b.redeemed
     end)
     |> Enum.map(fn redeemable ->
-      {_,b} = get_keys_buy(attendee.id, redeemable.id)
+      {_, b} = get_keys_buy(attendee.id, redeemable.id)
       redeemable = Map.put(redeemable, :quantity, b.quantity)
       Map.put(redeemable, :not_redeemed, b.quantity - b.redeemed)
     end)
   end
-
 
   def serializable_transaction(multi) do
     try do

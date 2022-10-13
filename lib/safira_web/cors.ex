@@ -8,6 +8,6 @@ defmodule SafiraWeb.CORS do
     allow_credentials: true,
     max_age: 600
 
-  resource "/*"
-  resource "/api/v1/referrals/*", origins: "*"
+  resource("/*")
+  resource("/api/v1/referrals/*", origins: "*")
 end

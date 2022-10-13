@@ -26,8 +26,8 @@ defmodule SafiraWeb.Endpoint do
 
   if Mix.env() == :dev do
     plug Plug.Static,
-      at: "uploads/", 
-      from: "uploads/", 
+      at: "uploads/",
+      from: "uploads/",
       gzip: false
   end
 

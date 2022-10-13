@@ -13,19 +13,19 @@ defmodule SafiraWeb.RouletteView do
     }
 
     resp =
-    cond do
-      not is_nil attendee_token_balance ->
-        Map.put(resp, :tokens, (attendee_token_balance.token_balance - attendee.token_balance))
+      cond do
+        not is_nil(attendee_token_balance) ->
+          Map.put(resp, :tokens, attendee_token_balance.token_balance - attendee.token_balance)
 
-      not is_nil attendee_entries ->
-        Map.put(resp, :entries, 1)
+        not is_nil(attendee_entries) ->
+          Map.put(resp, :entries, 1)
 
-      not is_nil badge ->
-        Map.put(resp, :badge, render_one(badge, SafiraWeb.BadgeView, "badge.json"))
+        not is_nil(badge) ->
+          Map.put(resp, :badge, render_one(badge, SafiraWeb.BadgeView, "badge.json"))
 
-      true ->
-        resp
-    end
+        true ->
+          resp
+      end
 
     resp
   end

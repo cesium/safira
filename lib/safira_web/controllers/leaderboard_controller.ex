@@ -7,9 +7,17 @@ defmodule SafiraWeb.LeaderboardController do
 
   def index(conn, _params) do
     board = Contest.list_leaderboard()
-    attendees = board
-                |> Enum.map(fn a -> %{badge_count: a.badge_count, attendee: Map.put(a.attendee, :token_balance, a.token_count)} end)
-                |> Enum.map(fn a -> Map.put(a.attendee, :badge_count, a.badge_count) end)
+
+    attendees =
+      board
+      |> Enum.map(fn a ->
+        %{
+          badge_count: a.badge_count,
+          attendee: Map.put(a.attendee, :token_balance, a.token_count)
+        }
+      end)
+      |> Enum.map(fn a -> Map.put(a.attendee, :badge_count, a.badge_count) end)
+
     render(conn, SafiraWeb.LeaderboardView, "index.json", attendees: attendees)
   end
 
@@ -17,9 +25,17 @@ defmodule SafiraWeb.LeaderboardController do
     case Date.from_iso8601(date_params) do
       {:ok, result} ->
         board = Contest.list_daily_leaderboard(result)
-        attendees = board
-                    |> Enum.map(fn a -> %{badge_count: a.badge_count, attendee: Map.put(a.attendee, :token_balance, a.token_count)} end)
-                    |> Enum.map(fn a -> Map.put(a.attendee, :badge_count, a.badge_count) end)
+
+        attendees =
+          board
+          |> Enum.map(fn a ->
+            %{
+              badge_count: a.badge_count,
+              attendee: Map.put(a.attendee, :token_balance, a.token_count)
+            }
+          end)
+          |> Enum.map(fn a -> Map.put(a.attendee, :badge_count, a.badge_count) end)
+
         render(conn, SafiraWeb.LeaderboardView, "index.json", attendees: attendees)
 
       {:error, _error} ->

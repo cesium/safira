@@ -147,8 +147,9 @@ defmodule Mix.Tasks.Remove.Badge.Conflicts do
     Enum.each(attendee.badges, fn b -> badge_conflits(conflicts, attendee.id, b) end)
   end
 
-  defp badge_conflits(conflicts, attendee_id, badge) do    
+  defp badge_conflits(conflicts, attendee_id, badge) do
     conflict = Map.get(conflicts, badge.id)
+
     if !is_nil(conflict) do
       Enum.each(conflict, fn c -> remove_conflits(c, attendee_id) end)
     end

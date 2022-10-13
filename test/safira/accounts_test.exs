@@ -322,7 +322,7 @@ defmodule Safira.AccountsTest do
     end
 
     test "with invalid data" do
-     attendee = insert(:attendee)
+      attendee = insert(:attendee)
 
       {:error, _changeset} =
         attendee

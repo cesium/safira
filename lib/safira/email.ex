@@ -1,5 +1,5 @@
 defmodule Safira.Email do
-  #use Bamboo.Phoenix, view: Safira.FeedbackView
+  # use Bamboo.Phoenix, view: Safira.FeedbackView
   import Bamboo.Email
 
   def send_reset_email(to_email, token) do
@@ -7,25 +7,35 @@ defmodule Safira.Email do
     |> to(to_email)
     |> from(System.get_env("FROM_EMAIL"))
     |> subject("Reset Password Instructions")
-    |> text_body("Please visit #{System.get_env("FRONTEND_URL")}/reset?token=#{token} to reset your password")
+    |> text_body(
+      "Please visit #{System.get_env("FRONTEND_URL")}/reset?token=#{token} to reset your password"
+    )
     |> Safira.Mailer.deliver_now()
   end
 
   def send_discord_registration_email(to_email, token, discord_association_code) do
-    Mix.shell().info to_email
+    Mix.shell().info(to_email)
+
     new_email()
     |> to(to_email)
-    |> from({Application.fetch_env!(:safira, :from_email_name), Application.fetch_env!(:safira, :from_email)})
+    |> from(
+      {Application.fetch_env!(:safira, :from_email_name),
+       Application.fetch_env!(:safira, :from_email)}
+    )
     |> subject("[SEI'22] Finalizar Registo e Informações")
     |> html_body(build_discord_email_text(token, discord_association_code))
     |> Safira.Mailer.deliver_now()
   end
 
   def send_registration_email(to_email, token) do
-    Mix.shell().info to_email
+    Mix.shell().info(to_email)
+
     new_email()
     |> to(to_email)
-    |> from({Application.fetch_env!(:safira, :from_email_name), Application.fetch_env!(:safira, :from_email)})
+    |> from(
+      {Application.fetch_env!(:safira, :from_email_name),
+       Application.fetch_env!(:safira, :from_email)}
+    )
     |> subject("[SEI'22] Finalizar Registo e Informações")
     |> html_body(build_email_text(token))
     |> Safira.Mailer.deliver_now()
@@ -42,7 +52,6 @@ defmodule Safira.Email do
     Your Discord Association Code is: #{discord_association_code}
     """
   end
-
 
   defp build_email_text(token) do
     password_reset_link = "#{System.get_env("FRONTEND_URL")}/reset?token=#{token}"

@@ -13,7 +13,7 @@ defmodule Safira.Store.Redeemable do
     field :price, :integer
     field :stock, :integer
     field :max_per_user, :integer
-    field :is_redeemable, :boolean, default: :true
+    field :is_redeemable, :boolean, default: true
 
     many_to_many :attendees, Attendee, join_through: Buy
 

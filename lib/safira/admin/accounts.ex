@@ -62,7 +62,7 @@ defmodule Safira.Admin.Accounts do
   defp do_paginate_attendees(filter, params) do
     Attendee
     |> Filtrex.query(filter)
-    |> where([a], not(is_nil(a.user_id)))
+    |> where([a], not is_nil(a.user_id))
     |> preload(:user)
     |> order_by(^sort(params))
     |> paginate(Repo, params, @pagination)
@@ -96,9 +96,9 @@ defmodule Safira.Admin.Accounts do
 
   """
   def get_attendee!(id) do
-     Repo.get!(Attendee, id) 
-     |> Repo.preload(:user)
-     |> Repo.preload(:badges)
+    Repo.get!(Attendee, id)
+    |> Repo.preload(:user)
+    |> Repo.preload(:badges)
   end
 
   @doc """
@@ -185,20 +185,20 @@ defmodule Safira.Admin.Accounts do
     {:ok, sort_direction} = Map.fetch(params, "sort_direction")
     {:ok, sort_field} = Map.fetch(params, "sort_field")
 
-    with {:ok, filter} <- Filtrex.parse_params(filter_config(:managers), params["manager"] || %{}),
+    with {:ok, filter} <-
+           Filtrex.parse_params(filter_config(:managers), params["manager"] || %{}),
          %Scrivener.Page{} = page <- do_paginate_managers(filter, params) do
       {:ok,
-        %{
-          managers: page.entries,
-          page_number: page.page_number,
-          page_size: page.page_size,
-          total_pages: page.total_pages,
-          total_entries: page.total_entries,
-          distance: @pagination_distance,
-          sort_field: sort_field,
-          sort_direction: sort_direction
-        }
-      }
+       %{
+         managers: page.entries,
+         page_number: page.page_number,
+         page_size: page.page_size,
+         total_pages: page.total_pages,
+         total_entries: page.total_entries,
+         distance: @pagination_distance,
+         sort_field: sort_field,
+         sort_direction: sort_direction
+       }}
     else
       {:error, error} -> {:error, error}
       error -> {:error, error}
@@ -208,7 +208,7 @@ defmodule Safira.Admin.Accounts do
   defp do_paginate_managers(filter, params) do
     Manager
     |> Filtrex.query(filter)
-    |> where([m], not(is_nil(m.user_id)))
+    |> where([m], not is_nil(m.user_id))
     |> preload(:user)
     |> order_by(^sort(params))
     |> paginate(Repo, params, @pagination)
@@ -241,8 +241,8 @@ defmodule Safira.Admin.Accounts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_manager!(id) do 
-    Repo.get!(Manager, id) 
+  def get_manager!(id) do
+    Repo.get!(Manager, id)
     |> Repo.preload(:user)
   end
 
@@ -330,20 +330,20 @@ defmodule Safira.Admin.Accounts do
     {:ok, sort_direction} = Map.fetch(params, "sort_direction")
     {:ok, sort_field} = Map.fetch(params, "sort_field")
 
-    with {:ok, filter} <- Filtrex.parse_params(filter_config(:companies), params["company"] || %{}),
+    with {:ok, filter} <-
+           Filtrex.parse_params(filter_config(:companies), params["company"] || %{}),
          %Scrivener.Page{} = page <- do_paginate_companies(filter, params) do
       {:ok,
-        %{
-          companies: page.entries,
-          page_number: page.page_number,
-          page_size: page.page_size,
-          total_pages: page.total_pages,
-          total_entries: page.total_entries,
-          distance: @pagination_distance,
-          sort_field: sort_field,
-          sort_direction: sort_direction
-        }
-      }
+       %{
+         companies: page.entries,
+         page_number: page.page_number,
+         page_size: page.page_size,
+         total_pages: page.total_pages,
+         total_entries: page.total_entries,
+         distance: @pagination_distance,
+         sort_field: sort_field,
+         sort_direction: sort_direction
+       }}
     else
       {:error, error} -> {:error, error}
       error -> {:error, error}
@@ -385,8 +385,8 @@ defmodule Safira.Admin.Accounts do
       ** (Ecto.NoResultsError)
 
   """
-  def get_company!(id) do 
-    Repo.get!(Company, id) 
+  def get_company!(id) do
+    Repo.get!(Company, id)
     |> Repo.preload([:user, :badge])
   end
 
@@ -457,21 +457,21 @@ defmodule Safira.Admin.Accounts do
 
   defp filter_config(:attendees) do
     defconfig do
-      text :nickname
-      text :name
+      text(:nickname)
+      text(:name)
     end
   end
 
   defp filter_config(:managers) do
     defconfig do
-      boolean :active
+      boolean(:active)
     end
   end
 
   defp filter_config(:companies) do
     defconfig do
-      text :name
-      text :sponsorship
+      text(:name)
+      text(:sponsorship)
     end
   end
 end

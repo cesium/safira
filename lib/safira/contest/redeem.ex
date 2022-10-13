@@ -32,9 +32,10 @@ defmodule Safira.Contest.Redeem do
 
   # verificar se não tem já um badge de uma talk ou workshop nessa hora
   def simultaneous_constraint(changeset, user_type) do
-    case user_type do 
+    case user_type do
       :admin ->
         changeset
+
       _ ->
         {_, attendee_id} = fetch_field(changeset, :attendee_id)
         {_, badge_id} = fetch_field(changeset, :badge_id)
@@ -61,7 +62,7 @@ defmodule Safira.Contest.Redeem do
 
   # verifica se os badges sao simultaneos e algum deles é um workshop
   def coincidental(badge_a, badge_b, user_type) do
-    user_type != :admin and 
+    user_type != :admin and
       DateTime.compare(badge_a.begin, badge_b.end) == :lt and
       DateTime.compare(badge_b.begin, badge_a.end) == :lt and
       is_unique_type(badge_a.type) and is_unique_type(badge_b.type)
@@ -71,6 +72,7 @@ defmodule Safira.Contest.Redeem do
     case user_type do
       :admin ->
         changeset
+
       _ ->
         is_within_period(changeset)
     end

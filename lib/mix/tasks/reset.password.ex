@@ -8,21 +8,22 @@ defmodule Mix.Tasks.Reset.Password do
   def run(args) do
     cond do
       length(args) == 0 ->
-        Mix.shell.info "Needs to receive an user email."
+        Mix.shell().info("Needs to receive an user email.")
+
       true ->
-        args |> List.first |> create
+        args |> List.first() |> create
     end
   end
 
   defp create(email) do
-    Mix.Task.run "app.start"
+    Mix.Task.run("app.start")
 
-    with  %User{} = user <- Repo.get_by(User, email: email) do
+    with %User{} = user <- Repo.get_by(User, email: email) do
       user
       |> Accounts.update_user(%{
-          password: (password_get("Password:", true) |> String.trim),
-          password_confirmation: (password_get("Password confirmation:", true) |> String.trim)
-        })
+        password: password_get("Password:", true) |> String.trim(),
+        password_confirmation: password_get("Password confirmation:", true) |> String.trim()
+      })
     end
   end
 
@@ -32,13 +33,14 @@ defmodule Mix.Tasks.Reset.Password do
   def password_get(prompt, false) do
     IO.gets(prompt <> " ")
   end
+
   def password_get(prompt, true) do
-    pid   = spawn_link(fn -> loop(prompt) end)
-    ref   = make_ref()
+    pid = spawn_link(fn -> loop(prompt) end)
+    ref = make_ref()
     value = IO.gets(prompt <> " ")
 
-    send pid, {:done, self(), ref}
-    receive do: ({:done, ^pid, ^ref}  -> :ok)
+    send(pid, {:done, self(), ref})
+    receive do: ({:done, ^pid, ^ref} -> :ok)
 
     value
   end
@@ -46,11 +48,11 @@ defmodule Mix.Tasks.Reset.Password do
   defp loop(prompt) do
     receive do
       {:done, parent, ref} ->
-        send parent, {:done, self, ref}
-        IO.write :standard_error, "\e[2K\r"
+        send(parent, {:done, self, ref})
+        IO.write(:standard_error, "\e[2K\r")
     after
       1 ->
-        IO.write :standard_error, "\e[2K\r#{prompt} "
+        IO.write(:standard_error, "\e[2K\r#{prompt} ")
         loop(prompt)
     end
   end

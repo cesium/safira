@@ -65,10 +65,15 @@ defmodule Safira.StoreTest do
     test "Multiple redeemables" do
       at = insert(:attendee)
       r1 = insert(:redeemable, is_redeemable: true)
-      r1 = r1
-      |> Map.put(:can_buy, Kernel.min(r1.stock, r1.max_per_user))
-      r2 = insert(:redeemable, is_redeemable: true, stock: 0)
-      |> Map.put(:can_buy, 0)
+
+      r1 =
+        r1
+        |> Map.put(:can_buy, Kernel.min(r1.stock, r1.max_per_user))
+
+      r2 =
+        insert(:redeemable, is_redeemable: true, stock: 0)
+        |> Map.put(:can_buy, 0)
+
       r3 = insert(:redeemable, is_redeemable: false)
 
       assert Store.list_store_redeemables(at) == [r1, r2]
@@ -78,6 +83,7 @@ defmodule Safira.StoreTest do
   describe "get_redeemable_attendee/2" do
     test "Nil redeemable" do
       at = insert(:attendee)
+
       assert_raise ArgumentError, fn ->
         Store.get_redeemable_attendee(nil, at.id)
       end
@@ -85,6 +91,7 @@ defmodule Safira.StoreTest do
 
     test "No redeemable" do
       at = insert(:attendee)
+
       assert_raise Ecto.NoResultsError, fn ->
         Store.get_redeemable_attendee(42, at.id)
       end
@@ -93,8 +100,10 @@ defmodule Safira.StoreTest do
     test "Redeemable exists" do
       at = insert(:attendee)
       r1 = insert(:redeemable, is_redeemable: true)
-      r1 = r1
-      |> Map.put(:can_buy, Kernel.min(r1.stock, r1.max_per_user))
+
+      r1 =
+        r1
+        |> Map.put(:can_buy, Kernel.min(r1.stock, r1.max_per_user))
 
       assert Store.get_redeemable_attendee(r1.id, at) == r1
     end
@@ -180,18 +189,21 @@ defmodule Safira.StoreTest do
       {:ok, _data} = Store.buy_redeemable(r2.id, at)
       {:ok, _data} = Store.redeem_redeemable(r1.id, at, 1)
 
-      r1 = r1
-      |> Map.put(:not_redeemed, 0)
-      |> Map.put(:quantity, 1)
-      |> Map.put(:stock, r1.stock - 1)
+      r1 =
+        r1
+        |> Map.put(:not_redeemed, 0)
+        |> Map.put(:quantity, 1)
+        |> Map.put(:stock, r1.stock - 1)
 
-      r2 = r2
-      |> Map.put(:not_redeemed, 1)
-      |> Map.put(:quantity, 1)
-      |> Map.put(:stock, r2.stock - 1)
+      r2 =
+        r2
+        |> Map.put(:not_redeemed, 1)
+        |> Map.put(:quantity, 1)
+        |> Map.put(:stock, r2.stock - 1)
 
-      assert [r1, r2] == Store.get_attendee_redeemables(at)
-      |> Enum.sort_by(fn x -> x.id end)
+      assert [r1, r2] ==
+               Store.get_attendee_redeemables(at)
+               |> Enum.sort_by(fn x -> x.id end)
     end
   end
 
@@ -204,10 +216,11 @@ defmodule Safira.StoreTest do
       {:ok, _data} = Store.buy_redeemable(r2.id, at)
       {:ok, _data} = Store.redeem_redeemable(r1.id, at, 1)
 
-      r2 = r2
-      |> Map.put(:not_redeemed, 1)
-      |> Map.put(:quantity, 1)
-      |> Map.put(:stock, r2.stock - 1)
+      r2 =
+        r2
+        |> Map.put(:not_redeemed, 1)
+        |> Map.put(:quantity, 1)
+        |> Map.put(:stock, r2.stock - 1)
 
       assert [r2] == Store.get_attendee_not_redemed(at)
     end

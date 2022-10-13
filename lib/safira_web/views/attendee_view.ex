@@ -31,7 +31,8 @@ defmodule SafiraWeb.AttendeeView do
       token_balance: attendee.token_balance,
       prizes: render_many(attendee.prizes, SafiraWeb.PrizeView, "prize_attendee.json"),
       entries: attendee.entries,
-      redeemables: render_many(attendee.redeemables, SafiraWeb.RedeemableView, "my_redeemables.json")
+      redeemables:
+        render_many(attendee.redeemables, SafiraWeb.RedeemableView, "my_redeemables.json")
     }
   end
 
@@ -45,9 +46,9 @@ defmodule SafiraWeb.AttendeeView do
       badge_count: attendee.badge_count,
       volunteer: attendee.volunteer,
       token_balance: attendee.token_balance,
-      #prizes: render_many(attendee.prizes, SafiraWeb.PrizeView, "prize.json"),
-      entries: attendee.entries,
-      #redeemables: render_many(attendee.redeemables, SafiraWeb.RedeemableView, "my_redeemables.json")
+      # prizes: render_many(attendee.prizes, SafiraWeb.PrizeView, "prize.json"),
+      entries: attendee.entries
+      # redeemables: render_many(attendee.redeemables, SafiraWeb.RedeemableView, "my_redeemables.json")
     }
   end
 
@@ -70,9 +71,9 @@ defmodule SafiraWeb.AttendeeView do
       nickname: attendee.nickname,
       name: attendee.name,
       avatar: Avatar.url({attendee.avatar, attendee}, :original),
-      #volunteer: attendee.volunteer,
+      # volunteer: attendee.volunteer,
       token_balance: attendee.token_balance,
-      entries: attendee.entries,
+      entries: attendee.entries
     }
   end
 end

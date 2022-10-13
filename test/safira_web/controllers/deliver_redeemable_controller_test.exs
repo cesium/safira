@@ -76,7 +76,7 @@ defmodule SafiraWeb.DeliverRedeemableControllerTest do
         conn
         |> post(Routes.deliver_redeemable_path(conn, :create), params)
 
-        assert json_response(conn, 404)["User"] == "Attendee does not exist"
+      assert json_response(conn, 404)["User"] == "Attendee does not exist"
     end
 
     test "redeemable does not exist" do
@@ -185,12 +185,14 @@ defmodule SafiraWeb.DeliverRedeemableControllerTest do
         conn
         |> get(Routes.deliver_redeemable_path(conn, :show, attendee.id))
 
-      expected_response = [%{
-        "id" => redeemable.id,
-        "image" => "/images/redeemable-missing.png",
-        "name" => redeemable.name,
-        "not_redeemed" => 1
-      }]
+      expected_response = [
+        %{
+          "id" => redeemable.id,
+          "image" => "/images/redeemable-missing.png",
+          "name" => redeemable.name,
+          "not_redeemed" => 1
+        }
+      ]
 
       assert json_response(conn, 200)["data"] == expected_response
     end

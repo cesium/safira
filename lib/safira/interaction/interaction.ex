@@ -6,7 +6,6 @@ defmodule Safira.Interaction do
   import Ecto.Query, warn: false
   alias Safira.Repo
 
-
   alias Safira.Interaction.Bonus
   alias Safira.Accounts.Attendee
   alias Safira.Accounts.Company
@@ -136,7 +135,12 @@ defmodule Safira.Interaction do
     )
     |> Multi.insert_or_update(:daily_token, fn %{update_attendee: attendee} ->
       {:ok, date, _} = DateTime.from_iso8601("#{Date.utc_today()}T00:00:00Z")
-      DailyToken.changeset(%DailyToken{}, %{quantity: attendee.token_balance, attendee_id: attendee.id, day: date})
+
+      DailyToken.changeset(%DailyToken{}, %{
+        quantity: attendee.token_balance,
+        attendee_id: attendee.id,
+        day: date
+      })
     end)
     |> Repo.transaction()
     |> case do
@@ -173,8 +177,10 @@ defmodule Safira.Interaction do
     # update company's remaining_spotlights
     |> Multi.update(
       :update_company,
-      Company.start_spotlight_changeset(company,
-      %{remaining_spotlights: company.remaining_spotlights - 1})
+      Company.start_spotlight_changeset(
+        company,
+        %{remaining_spotlights: company.remaining_spotlights - 1}
+      )
     )
     |> apply_transaction()
   end
@@ -191,13 +197,12 @@ defmodule Safira.Interaction do
   def is_badge_spotlighted(badge_id) do
     spotlight = get_spotlight()
 
-    !is_nil(spotlight) and spotlight.active and spotlight.badge_id==badge_id
+    !is_nil(spotlight) and spotlight.active and spotlight.badge_id == badge_id
   end
 
   defp apply_transaction(multi) do
     try do
       Repo.transaction(fn ->
-
         Repo.transaction(multi)
         |> case do
           {:ok, result} ->

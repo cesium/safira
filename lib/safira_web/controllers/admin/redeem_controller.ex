@@ -10,6 +10,7 @@ defmodule SafiraWeb.Admin.RedeemController do
     case Contest.paginate_redeems(params) do
       {:ok, assigns} ->
         render(conn, "index.html", assigns)
+
       error ->
         conn
         |> put_flash(:error, "There was an error rendering Redeems. #{inspect(error)}")
@@ -28,6 +29,7 @@ defmodule SafiraWeb.Admin.RedeemController do
         conn
         |> put_flash(:info, "Redeem created successfully.")
         |> redirect(to: Routes.admin_redeem_path(conn, :show, redeem))
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
     end
@@ -52,6 +54,7 @@ defmodule SafiraWeb.Admin.RedeemController do
         conn
         |> put_flash(:info, "Redeem updated successfully.")
         |> redirect(to: Routes.admin_redeem_path(conn, :show, redeem))
+
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "edit.html", redeem: redeem, changeset: changeset)
     end

@@ -30,8 +30,9 @@ defmodule SafiraWeb.AttendeeController do
       true ->
         attendee =
           attendee
-          |> Map.put(:redeemables,Store.get_attendee_redeemables(attendee))
-          |> Map.put(:prizes,Roulette.get_attendee_prize(attendee))
+          |> Map.put(:redeemables, Store.get_attendee_redeemables(attendee))
+          |> Map.put(:prizes, Roulette.get_attendee_prize(attendee))
+
         render(conn, "show.json", attendee: attendee)
     end
   end

@@ -14,17 +14,17 @@ defmodule SafiraWeb.RedeemableControllerTest do
         |> get(Routes.redeemable_path(conn, :index))
 
       assert json_response(conn, 200)["data"] == [
-        %{
-          "can_buy" => redeemable.max_per_user,
-          "description" => redeemable.description,
-          "id" => redeemable.id,
-          "image" => "/images/redeemable-missing.png",
-          "max_per_user" => redeemable.max_per_user,
-          "name" => redeemable.name,
-          "price" => redeemable.price,
-          "stock" => redeemable.stock
-        }
-      ]
+               %{
+                 "can_buy" => redeemable.max_per_user,
+                 "description" => redeemable.description,
+                 "id" => redeemable.id,
+                 "image" => "/images/redeemable-missing.png",
+                 "max_per_user" => redeemable.max_per_user,
+                 "name" => redeemable.name,
+                 "price" => redeemable.price,
+                 "stock" => redeemable.stock
+               }
+             ]
     end
 
     test "with valid token (not attendee)" do
@@ -39,18 +39,19 @@ defmodule SafiraWeb.RedeemableControllerTest do
         |> get(Routes.redeemable_path(conn, :index))
 
       assert json_response(conn, 200)["data"] == [
-        %{
-          "can_buy" => 0,
-          "description" => redeemable.description,
-          "id" => redeemable.id,
-          "image" => "/images/redeemable-missing.png",
-          "max_per_user" => redeemable.max_per_user,
-          "name" => redeemable.name,
-          "price" => redeemable.price,
-          "stock" => redeemable.stock
-        }
-      ]
+               %{
+                 "can_buy" => 0,
+                 "description" => redeemable.description,
+                 "id" => redeemable.id,
+                 "image" => "/images/redeemable-missing.png",
+                 "max_per_user" => redeemable.max_per_user,
+                 "name" => redeemable.name,
+                 "price" => redeemable.price,
+                 "stock" => redeemable.stock
+               }
+             ]
     end
+
     test "with invalid token" do
       user = create_user_strategy(:user)
       redeemable = insert(:redeemable)
@@ -92,15 +93,15 @@ defmodule SafiraWeb.RedeemableControllerTest do
         |> get(Routes.redeemable_path(conn, :show, redeemable.id))
 
       assert json_response(conn, 200)["data"] == %{
-          "can_buy" => redeemable.max_per_user,
-          "description" => redeemable.description,
-          "id" => redeemable.id,
-          "image" => "/images/redeemable-missing.png",
-          "max_per_user" => redeemable.max_per_user,
-          "name" => redeemable.name,
-          "price" => redeemable.price,
-          "stock" => redeemable.stock
-      }
+               "can_buy" => redeemable.max_per_user,
+               "description" => redeemable.description,
+               "id" => redeemable.id,
+               "image" => "/images/redeemable-missing.png",
+               "max_per_user" => redeemable.max_per_user,
+               "name" => redeemable.name,
+               "price" => redeemable.price,
+               "stock" => redeemable.stock
+             }
     end
 
     test "with valid token (not attendee)" do
@@ -115,16 +116,17 @@ defmodule SafiraWeb.RedeemableControllerTest do
         |> get(Routes.redeemable_path(conn, :show, redeemable.id))
 
       assert json_response(conn, 200)["data"] == %{
-          "can_buy" => 0,
-          "description" => redeemable.description,
-          "id" => redeemable.id,
-          "image" => "/images/redeemable-missing.png",
-          "max_per_user" => redeemable.max_per_user,
-          "name" => redeemable.name,
-          "price" => redeemable.price,
-          "stock" => redeemable.stock
-      }
+               "can_buy" => 0,
+               "description" => redeemable.description,
+               "id" => redeemable.id,
+               "image" => "/images/redeemable-missing.png",
+               "max_per_user" => redeemable.max_per_user,
+               "name" => redeemable.name,
+               "price" => redeemable.price,
+               "stock" => redeemable.stock
+             }
     end
+
     test "with invalid token" do
       user = create_user_strategy(:user)
       redeemable = insert(:redeemable)
