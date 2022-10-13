@@ -536,4 +536,73 @@ defmodule Safira.ContestTest do
       assert %Ecto.Changeset{} = Contest.change_redeem(r1)
     end
   end
+
+  ###############################################################
+  ###############################################################
+  ################         LEADERBOARD         ##################
+  ###############################################################
+  ###############################################################
+
+  describe "list_leaderboard/0" do
+    test "no one" do
+      assert Contest.list_leaderboard() == []
+    end
+
+    test "multiple people" do
+      at1 = insert(:attendee)
+      at2 = insert(:attendee)
+      at3 = insert(:attendee)
+      b1  = insert(:badge, type: 7)
+      b2  = insert(:badge, type: 7)
+      insert(:daily_token, attendee: at1)
+      insert(:redeem, attendee: at1, badge: b2)
+      insert(:redeem, attendee: at2, badge: b1)
+
+      assert Contest.list_leaderboard() |> Enum.map(fn x -> x.attendee.id end) == [at1.id, at2.id]
+    end
+  end
+
+  describe "list_daily_leaderboard/1" do
+    test "no one" do
+      assert Contest.list_daily_leaderboard(Date.utc_today()) == []
+    end
+
+    test "multiple people" do
+      at1 = insert(:attendee)
+      at2 = insert(:attendee)
+      at3 = insert(:attendee)
+
+      insert(:daily_token, attendee: at1)
+      insert(:daily_token, attendee: at2)
+      insert(:redeem, attendee: at1)
+      insert(:redeem, attendee: at1)
+      insert(:redeem, attendee: at2)
+
+      assert Contest.list_daily_leaderboard(Date.utc_today()) |> Enum.map(fn x -> x.attendee.id end) == [at1.id, at2.id]
+    end
+  end
+
+  describe "get_winner/0" do
+    test "no one" do
+      assert Contest.get_winner() == []
+    end
+
+    test "multiple people" do
+      at1 = insert(:attendee, volunteer: false)
+      at2 = insert(:attendee, volunteer: false)
+      at3 = insert(:attendee, volunteer: false)
+
+      insert(:daily_token, attendee: at1)
+      insert(:daily_token, attendee: at2)
+      r1 = insert(:redeem, attendee: at1)
+
+      for   _n <- Enum.to_list(1..10) do
+
+        r2 = insert(:redeem, attendee: at1)
+        r3 = insert(:redeem, attendee: at2)
+      end
+
+      assert Contest.get_winner() |> length() == 21
+    end
+  end
 end
