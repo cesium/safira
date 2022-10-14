@@ -74,7 +74,7 @@ defmodule Safira.MixProject do
       {:ex_machina, "~> 2.3", only: :test},
       {:faker, "~> 0.17", only: :test},
       {:bureaucrat, "~> 0.2.5", only: :test},
-      {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false}
     ]
   end
 
@@ -88,7 +88,8 @@ defmodule Safira.MixProject do
     [
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate", "test"],
+      lint: ["credo --strict --all"]
     ]
   end
 end
