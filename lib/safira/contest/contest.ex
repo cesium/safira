@@ -1,11 +1,16 @@
 defmodule Safira.Contest do
   import Ecto.Query, warn: false
-  alias Safira.Repo
-  alias Safira.Contest.Redeem
-  alias Safira.Contest.Badge
-  alias Safira.Interaction
+
   alias Ecto.Multi
+
+  alias Safira.Accounts.Attendee
+  alias Safira.Contest.Badge
   alias Safira.Contest.DailyToken
+  alias Safira.Contest.Redeem
+
+  alias Safira.Interaction
+
+  alias Safira.Repo
 
   def list_badges do
     Repo.all(Badge)
@@ -161,7 +166,7 @@ defmodule Safira.Contest do
     |> Multi.update(:attendee, fn %{redeem: redeem} ->
       redeem = Repo.preload(redeem, [:badge, :attendee])
 
-      Safira.Accounts.Attendee.update_on_redeem_changeset(
+      Attendee.update_on_redeem_changeset(
         redeem.attendee,
         %{
           token_balance: redeem.attendee.token_balance + calculate_badge_tokens(redeem.badge),
@@ -205,7 +210,7 @@ defmodule Safira.Contest do
 
   def list_leaderboard do
     Repo.all(
-      from a in Safira.Accounts.Attendee,
+      from a in Attendee,
         join: r in Redeem,
         on: a.id == r.attendee_id,
         join: b in Badge,
@@ -220,7 +225,7 @@ defmodule Safira.Contest do
 
   def list_daily_leaderboard(date) do
     Repo.all(
-      from a in Safira.Accounts.Attendee,
+      from a in Attendee,
         join: r in Redeem,
         on: a.id == r.attendee_id,
         join: b in Badge,
@@ -246,7 +251,7 @@ defmodule Safira.Contest do
 
   def get_winner do
     Repo.all(
-      from a in Safira.Accounts.Attendee,
+      from a in Attendee,
         where: not is_nil(a.user_id) and not a.volunteer
     )
     |> Repo.preload(badges: from(b in Badge, where: b.type != ^0))

@@ -16,6 +16,8 @@ defmodule Safira.DataCase do
 
   use ExUnit.CaseTemplate
 
+  alias Ecto.Adapters.SQL.Sandbox
+
   using do
     quote do
       alias Safira.Repo
@@ -29,10 +31,10 @@ defmodule Safira.DataCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Safira.Repo)
+    :ok = Sandbox.checkout(Safira.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Safira.Repo, {:shared, self()})
+      Sandbox.mode(Safira.Repo, {:shared, self()})
     end
 
     :ok

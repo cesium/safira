@@ -1,5 +1,7 @@
 defmodule Mix.Tasks.Gen.Admins do
   use Mix.Task
+
+  alias Pow.Ecto.Context
   alias Safira.Admin.Accounts
 
   @domain "seium.org"
@@ -30,7 +32,7 @@ defmodule Mix.Tasks.Gen.Admins do
         "password_confirmation" => password
       }
 
-      Pow.Ecto.Context.create(admin_user, otp_app: :safira)
+      Context.create(admin_user, otp_app: :safira)
 
       IO.puts("#{email}:#{password}")
     end)

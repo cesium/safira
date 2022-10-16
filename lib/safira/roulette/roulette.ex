@@ -4,15 +4,19 @@ defmodule Safira.Roulette do
   """
 
   import Ecto.Query, warn: false
-  alias Safira.Repo
-  alias Ecto.Multi
-  alias Safira.Store
 
-  alias Safira.Roulette.Prize
-  alias Safira.Roulette.AttendeePrize
+  alias Ecto.Multi
+
   alias Safira.Accounts.Attendee
-  alias Safira.Contest.DailyToken
+
   alias Safira.Contest
+  alias Safira.Contest.DailyToken
+  alias Safira.Contest.Redeem
+
+  alias Safira.Repo
+  alias Safira.Roulette.AttendeePrize
+  alias Safira.Roulette.Prize
+  alias Safira.Store
 
   @doc """
   Returns the list of prizes.
@@ -361,8 +365,8 @@ defmodule Safira.Roulette do
       {:ok, Safira.Contest.get_badge_name!(prize.name)}
     end)
     |> Multi.insert(:redeem, fn %{badge: badge} ->
-      Safira.Contest.Redeem.changeset(
-        %Safira.Contest.Redeem{},
+      Redeem.changeset(
+        %Redeem{},
         %{
           attendee_id: attendee.id,
           badge_id: badge.id,
@@ -374,7 +378,7 @@ defmodule Safira.Roulette do
     |> Multi.update(:attendee_balance_entries, fn %{redeem: redeem} ->
       redeem = Repo.preload(redeem, [:badge, :attendee])
 
-      Safira.Accounts.Attendee.update_on_redeem_changeset(
+      Attendee.update_on_redeem_changeset(
         redeem.attendee,
         %{
           token_balance: redeem.attendee.token_balance + redeem.badge.tokens,

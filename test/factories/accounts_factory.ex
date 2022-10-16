@@ -2,11 +2,14 @@ defmodule Safira.AccountsFactory do
   @moduledoc """
   A factory to build all accounts related structs
   """
+
+  alias Faker.Person.En
+
   defmacro __using__(_opts) do
     quote do
       def attendee_factory do
-        first_name = Faker.Person.En.first_name()
-        last_name = Faker.Person.En.last_name()
+        first_name = En.first_name()
+        last_name = En.last_name()
 
         %Safira.Accounts.Attendee{
           nickname: String.downcase("#{first_name}_123"),

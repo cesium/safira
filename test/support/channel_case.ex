@@ -17,6 +17,8 @@ defmodule SafiraWeb.ChannelCase do
 
   use ExUnit.CaseTemplate
 
+  alias Ecto.Adapters.SQL.Sandbox
+
   using do
     quote do
       # Import conveniences for testing with channels
@@ -28,10 +30,10 @@ defmodule SafiraWeb.ChannelCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Safira.Repo)
+    :ok = Sandbox.checkout(Safira.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Safira.Repo, {:shared, self()})
+      Sandbox.mode(Safira.Repo, {:shared, self()})
     end
 
     :ok
