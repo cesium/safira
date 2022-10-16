@@ -6,7 +6,7 @@ defmodule Mix.Tasks.Ban.User do
 
   def run(args) do
     cond do
-      length(args) == 0 ->
+      Enum.empty?(args) ->
         Mix.shell().info("Needs to receive one user email.")
 
       true ->

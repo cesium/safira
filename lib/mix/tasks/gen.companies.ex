@@ -12,7 +12,7 @@ defmodule Mix.Tasks.Gen.Companies do
 
   def run(args) do
     cond do
-      length(args) == 0 ->
+      Enum.empty?(args) ->
         Mix.shell().info("Needs to receive atleast one file path.")
 
       true ->

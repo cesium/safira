@@ -7,7 +7,7 @@ defmodule Mix.Tasks.Reset.Password do
 
   def run(args) do
     cond do
-      length(args) == 0 ->
+      Enum.empty?(args) ->
         Mix.shell().info("Needs to receive an user email.")
 
       true ->

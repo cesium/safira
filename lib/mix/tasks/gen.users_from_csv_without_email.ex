@@ -43,6 +43,7 @@ defmodule Mix.Tasks.Gen.UsersFromCsvWithoutMail do
           |> parse_csv
           |> create_users
         rescue
+          # credo:disable-for-next-line
           e in File.Error -> IO.inspect(e)
         end
 
@@ -57,6 +58,7 @@ defmodule Mix.Tasks.Gen.UsersFromCsvWithoutMail do
             |> create_users
 
           {:error, resp} ->
+            # credo:disable-for-next-line
             IO.inspect(resp)
         end
     end

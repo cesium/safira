@@ -1,5 +1,5 @@
 defmodule SafiraWeb.CORS do
-  @domain Application.fetch_env!(:safira, SafiraWeb.CORS)[:domain]
+  @domain System.get_env("CORS_DOMAIN")
 
   use Corsica.Router,
     origins: ~r{^https?://#{@domain}},

@@ -85,9 +85,10 @@ defmodule Mix.Tasks.Gift.Badge do
             {:ok, _resp} ->
               "/tmp/user2.csv"
               |> File.stream!()
-              |> Enum.map(fn x -> give_check(x |> String.trim(), badge_id) end)
+              |> Enum.each(fn x -> give_check(x |> String.trim(), badge_id) end)
 
             {:error, resp} ->
+              # credo:disable-for-next-line
               IO.inspect(resp)
           end
 

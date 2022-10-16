@@ -50,10 +50,10 @@ defmodule SafiraWeb.DiscordAssociationController do
 
   defp association_aux(
          conn,
-         association_params = %{
+         %{
            "discord_association_code" => discord_association_code,
            "discord_id" => _discord_id
-         }
+         } = association_params
        ) do
     company_code = Application.fetch_env!(:safira, :company_code)
     staff_code = Application.fetch_env!(:safira, :staff_code)

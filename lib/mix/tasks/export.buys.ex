@@ -5,7 +5,7 @@ defmodule Mix.Tasks.Export.Buys do
     Mix.Task.run("app.start")
 
     cond do
-      length(args) == 0 ->
+      Enum.empty?(args) ->
         Mix.shell().info("Output: Screen")
         export()
 
