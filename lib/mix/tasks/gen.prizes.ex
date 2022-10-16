@@ -27,8 +27,12 @@ defmodule Mix.Tasks.Gen.Prizes do
     |> parse_csv()
     |> validate_probabilities()
     |> sequence()
-    |> (fn {create, update} -> {Safira.Roulette.create_prizes(create), update} end).()
+    |> create_prizes()
     |> insert_prize()
+  end
+
+  defp create_prizes({create, update}) do
+    {Safira.Roulette.create_prizes(create), update}
   end
 
   defp parse_csv(path) do

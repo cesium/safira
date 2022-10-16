@@ -205,22 +205,20 @@ defmodule Safira.Interaction do
   end
 
   defp apply_transaction(multi) do
-    try do
-      Repo.transaction(fn ->
-        Repo.transaction(multi)
-        |> case do
-          {:ok, result} ->
-            result
+    Repo.transaction(fn ->
+      Repo.transaction(multi)
+      |> case do
+        {:ok, result} ->
+          result
 
-          {:error, _failed_operation, changeset, _changes_so_far} ->
-            # That's the way to retrieve the changeset as a value
-            Repo.rollback(changeset)
-        end
-      end)
-    rescue
-      _ ->
-        # Transaction may raise Ecto.StaleEntryError when optimistic locking fails
-        apply_transaction(multi)
-    end
+        {:error, _failed_operation, changeset, _changes_so_far} ->
+          # That's the way to retrieve the changeset as a value
+          Repo.rollback(changeset)
+      end
+    end)
+  rescue
+    _ ->
+      # Transaction may raise Ecto.StaleEntryError when optimistic locking fails
+      apply_transaction(multi)
   end
 end

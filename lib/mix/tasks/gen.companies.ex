@@ -25,12 +25,14 @@ defmodule Mix.Tasks.Gen.Companies do
     Mix.Task.run("app.start")
 
     path
-    |> parse_csv
-    |> sequence
-    |> (fn {create, update, accounts_info} ->
-          {Safira.Contest.create_badges(create), update, accounts_info}
-        end).()
-    |> insert_companies
+    |> parse_csv()
+    |> sequence()
+    |> create_badges()
+    |> insert_companies()
+  end
+
+  defp create_badges({create, update, accounts_info}) do
+    {Safira.Contest.create_badges(create), update, accounts_info}
   end
 
   defp parse_csv(path) do

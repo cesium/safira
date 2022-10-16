@@ -431,38 +431,36 @@ defmodule Safira.Roulette do
   end
 
   defp serializable_transaction(multi) do
-    try do
-      Repo.transaction(fn ->
-        Repo.query!("set transaction isolation level serializable;")
+    Repo.transaction(fn ->
+      Repo.query!("set transaction isolation level serializable;")
 
-        Repo.transaction(multi)
-        |> case do
-          {:ok, result} ->
-            result
+      Repo.transaction(multi)
+      |> case do
+        {:ok, result} ->
+          result
 
-          {:error, _failed_operation, changeset, _changes_so_far} ->
-            token_balance_error =
-              get_errors(changeset)
-              |> Map.get(:token_balance)
+        {:error, _failed_operation, changeset, _changes_so_far} ->
+          token_balance_error =
+            get_errors(changeset)
+            |> Map.get(:token_balance)
 
-            cond do
-              not is_nil(token_balance_error) ->
-                # That's the way to retrieve the changeset as a value
-                Repo.rollback(changeset)
+          cond do
+            not is_nil(token_balance_error) ->
+              # That's the way to retrieve the changeset as a value
+              Repo.rollback(changeset)
 
-              true ->
-                # should repeat spinning unless it has no token_balance
-                Repo.rollback(:spin_again)
-            end
-        end
-      end)
-    rescue
-      _ ->
-        # When transaction raises a serialization error means that
-        # could not serialize access due to concurrent update which
-        # is a correct error. After that the spinning should be repeated.
-        serializable_transaction(multi)
-    end
+            true ->
+              # should repeat spinning unless it has no token_balance
+              Repo.rollback(:spin_again)
+          end
+      end
+    end)
+  rescue
+    _ ->
+      # When transaction raises a serialization error means that
+      # could not serialize access due to concurrent update which
+      # is a correct error. After that the spinning should be repeated.
+      serializable_transaction(multi)
   end
 
   defp get_errors(changeset) do

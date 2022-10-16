@@ -172,22 +172,20 @@ defmodule Safira.Store do
   end
 
   def serializable_transaction(multi) do
-    try do
-      Repo.transaction(fn ->
-        Repo.query!("set transaction isolation level serializable;")
+    Repo.transaction(fn ->
+      Repo.query!("set transaction isolation level serializable;")
 
-        Repo.transaction(multi)
-        |> case do
-          {:ok, result} ->
-            result
+      Repo.transaction(multi)
+      |> case do
+        {:ok, result} ->
+          result
 
-          {:error, _failed_operation, changeset, _changes_so_far} ->
-            Repo.rollback(changeset)
-        end
-      end)
-    rescue
-      _error ->
-        serializable_transaction(multi)
-    end
+        {:error, _failed_operation, changeset, _changes_so_far} ->
+          Repo.rollback(changeset)
+      end
+    end)
+  rescue
+    _error ->
+      serializable_transaction(multi)
   end
 end

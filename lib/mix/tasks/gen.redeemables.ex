@@ -26,8 +26,12 @@ defmodule Mix.Tasks.Gen.Redeemables do
     path
     |> parse_csv
     |> sequence()
-    |> (fn {create, update} -> {Safira.Store.create_redeemables(create), update} end).()
+    |> create_redeemables()
     |> insert_redeemable()
+  end
+
+  defp create_redeemables({create, update}) do
+    {Safira.Store.create_redeemables(create), update}
   end
 
   defp parse_csv(path) do

@@ -47,13 +47,11 @@ defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge.With.Redeemable do
   end
 
   defp validate_args(args) do
-    try do
-      args
-      |> Enum.map(fn x -> Integer.parse(x) |> elem(0) end)
-    rescue
-      ArgumentError ->
-        Mix.shell().info("All arguments should be integers")
-    end
+    args
+    |> Enum.map(fn x -> Integer.parse(x) |> elem(0) end)
+  rescue
+    ArgumentError ->
+      Mix.shell().info("All arguments should be integers")
   end
 
   defp map_args(args) do

@@ -22,8 +22,12 @@ defmodule Mix.Tasks.Gen.Badges do
     path
     |> parse_csv()
     |> sequence()
-    |> (fn {create, update} -> {Safira.Contest.create_badges(create), update} end).()
+    |> create_badges()
     |> insert_badge()
+  end
+
+  defp create_badges({create, update}) do
+    {Safira.Contest.create_badges(create), update}
   end
 
   defp sequence(list) do
