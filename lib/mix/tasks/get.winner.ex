@@ -13,7 +13,7 @@ defmodule Mix.Tasks.Get.Winner do
     end
   end
 
-  defp create() do
+  defp create do
     Mix.Task.run("app.start")
 
     Contest.get_winner()

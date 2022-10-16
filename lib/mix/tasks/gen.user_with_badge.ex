@@ -1,12 +1,17 @@
 defmodule Mix.Tasks.Gen.UserWithBadge do
   use Mix.Task
+
   alias Ecto.Multi
-  alias Safira.Accounts.Attendee
-  alias Safira.Contest.Redeem
-  alias Safira.Contest
-  alias Safira.Repo
-  alias Safira.Accounts.User
+
   alias Safira.Auth
+
+  alias Safira.Accounts.Attendee
+  alias Safira.Accounts.User
+
+  alias Safira.Contest
+  alias Safira.Contest.Redeem
+
+  alias Safira.Repo
 
   NimbleCSV.define(EneiParser, separator: ",", escape: "\"")
   # Use header

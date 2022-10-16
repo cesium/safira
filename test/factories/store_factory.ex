@@ -4,7 +4,7 @@ defmodule Safira.StoreFactory do
   """
 
   alias Faker.StarWars.En
-  alias Safira.Store.{Redeemable, Buy}
+  alias Safira.Store.{Buy, Redeemable}
 
   defmacro __using__(_opts) do
     quote do

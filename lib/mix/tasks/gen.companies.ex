@@ -1,8 +1,9 @@
 defmodule Mix.Tasks.Gen.Companies do
   use Mix.Task
 
-  alias Safira.Accounts
   alias NimbleCSV.RFC4180, as: CSV
+
+  alias Safira.Accounts
 
   # Its waiting for an header or an empty line on the beggining of the file
 

@@ -1,11 +1,13 @@
 defmodule Safira.Contest.Redeem do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Safira.Contest.Badge
-  alias Safira.Contest
+
+  alias Safira.Accounts
   alias Safira.Accounts.Attendee
   alias Safira.Accounts.Manager
-  alias Safira.Accounts
+
+  alias Safira.Contest
+  alias Safira.Contest.Badge
 
   schema "redeems" do
     belongs_to(:attendee, Attendee, foreign_key: :attendee_id, type: :binary_id)

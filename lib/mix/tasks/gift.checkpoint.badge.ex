@@ -3,13 +3,13 @@ defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge do
 
   import Ecto.Query, warn: false
 
+  alias Ecto.Multi
+
   alias Safira.Accounts.Attendee
   alias Safira.Contest.Badge
   alias Safira.Contest.Redeem
 
   alias Safira.Repo
-  alias Ecto.Multi
-  alias Ecto.Multi
 
   @shortdoc "Gives checkpoint badge to attendees that reach that checkpoint"
 
@@ -43,13 +43,11 @@ defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge do
   end
 
   defp validate_args(args) do
-    try do
-      args
-      |> Enum.map(fn x -> Integer.parse(x) |> elem(0) end)
-    rescue
-      ArgumentError ->
-        Mix.shell().info("All arguments should be integers")
-    end
+    args
+    |> Enum.map(fn x -> Integer.parse(x) |> elem(0) end)
+  rescue
+    ArgumentError ->
+      Mix.shell().info("All arguments should be integers")
   end
 
   defp map_args(args) do

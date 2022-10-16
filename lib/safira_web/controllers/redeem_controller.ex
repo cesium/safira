@@ -1,10 +1,11 @@
 defmodule SafiraWeb.RedeemController do
   use SafiraWeb, :controller
 
-  alias Safira.Contest
-  alias Safira.Contest.Redeem
   alias Safira.Accounts
   alias Safira.Accounts.User
+
+  alias Safira.Contest
+  alias Safira.Contest.Redeem
 
   action_fallback SafiraWeb.FallbackController
 

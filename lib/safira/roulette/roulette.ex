@@ -287,7 +287,7 @@ defmodule Safira.Roulette do
     |> Repo.transaction()
   end
 
-  defp spin_prize() do
+  defp spin_prize do
     random_prize = strong_randomizer() |> Float.round(12)
 
     prizes =
@@ -388,7 +388,7 @@ defmodule Safira.Roulette do
     end)
   end
 
-  defp strong_randomizer() do
+  defp strong_randomizer do
     <<i1::unsigned-integer-32, i2::unsigned-integer-32, i3::unsigned-integer-32>> =
       :crypto.strong_rand_bytes(12)
 
@@ -473,7 +473,7 @@ defmodule Safira.Roulette do
     end)
   end
 
-  def latest_five_wins() do
+  def latest_five_wins do
     query =
       from ap in AttendeePrize,
         join: a in Safira.Accounts.Attendee,

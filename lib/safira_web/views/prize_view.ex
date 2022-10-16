@@ -1,8 +1,8 @@
 defmodule SafiraWeb.PrizeView do
   use SafiraWeb, :view
 
-  alias SafiraWeb.PrizeView
   alias Safira.Avatar
+  alias SafiraWeb.PrizeView
 
   def render("index.json", %{prizes: prizes}) do
     %{data: render_many(prizes, PrizeView, "prize_show.json")}

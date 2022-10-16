@@ -3,8 +3,8 @@ defmodule Safira.Accounts.User do
   import Ecto.Changeset
 
   alias Safira.Accounts.Attendee
-  alias Safira.Accounts.Manager
   alias Safira.Accounts.Company
+  alias Safira.Accounts.Manager
 
   schema "users" do
     field :email, :string

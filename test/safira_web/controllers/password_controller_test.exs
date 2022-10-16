@@ -2,10 +2,13 @@ defmodule SafiraWeb.PasswordControllerTest do
   use SafiraWeb.ConnCase
   use Bamboo.Test
   use Timex
-  alias Safira.Auth
-  alias Safira.Email
+
   alias Safira.Accounts
   alias Safira.Accounts.User
+
+  alias Safira.Auth
+  alias Safira.Email
+
   alias Safira.Repo
 
   setup %{conn: conn} do

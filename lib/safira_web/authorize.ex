@@ -2,8 +2,9 @@ defmodule Safira.Authorize do
   import Plug.Conn
   import Phoenix.Controller
 
-  alias Safira.Repo
   alias Safira.Accounts.User
+
+  alias Safira.Repo
 
   @user_types [:attendee, :company, :manager]
 

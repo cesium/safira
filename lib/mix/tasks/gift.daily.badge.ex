@@ -4,9 +4,10 @@ defmodule Mix.Tasks.Gift.Daily.Badge do
   import Ecto.Query, warn: false
 
   alias Safira.Accounts.Attendee
+
   alias Safira.Contest
-  alias Safira.Contest.Redeem
   alias Safira.Contest.Badge
+  alias Safira.Contest.Redeem
 
   alias Safira.Repo
 

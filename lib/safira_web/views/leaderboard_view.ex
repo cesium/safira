@@ -1,7 +1,9 @@
 defmodule SafiraWeb.LeaderboardView do
   use SafiraWeb, :view
-  alias SafiraWeb.LeaderboardView
+
   alias Safira.Avatar
+
+  alias SafiraWeb.LeaderboardView
 
   def render("index.json", %{attendees: attendees}) do
     %{data: render_many(attendees, LeaderboardView, "attendee.json", as: :attendee)}

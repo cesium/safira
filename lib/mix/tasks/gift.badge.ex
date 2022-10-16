@@ -1,9 +1,10 @@
 defmodule Mix.Tasks.Gift.Badge do
   use Mix.Task
 
+  alias Safira.Accounts
+
   alias Safira.Contest
   alias Safira.Contest.Badge
-  alias Safira.Accounts
 
   # Note: the flag must always be present even though it is only used when a file is given
   def run(args) do

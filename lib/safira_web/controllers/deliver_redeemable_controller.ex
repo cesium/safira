@@ -1,8 +1,9 @@
 defmodule SafiraWeb.DeliverRedeemableController do
   use SafiraWeb, :controller
 
-  alias Safira.Store
   alias Safira.Accounts
+
+  alias Safira.Store
 
   action_fallback SafiraWeb.FallbackController
 

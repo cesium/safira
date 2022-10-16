@@ -4,14 +4,18 @@ defmodule Safira.Interaction do
   """
 
   import Ecto.Query, warn: false
-  alias Safira.Repo
 
-  alias Safira.Interaction.Bonus
+  alias Ecto.Multi
+
+  alias Safira.Contest.DailyToken
+
   alias Safira.Accounts.Attendee
   alias Safira.Accounts.Company
+
+  alias Safira.Interaction.Bonus
   alias Safira.Interaction.Spotlight
-  alias Safira.Contest.DailyToken
-  alias Ecto.Multi
+
+  alias Safira.Repo
 
   @doc """
   Returns the list of bonuses.
@@ -155,7 +159,7 @@ defmodule Safira.Interaction do
   @doc """
   Returns the only existing Spotlight
   """
-  def get_spotlight() do
+  def get_spotlight do
     Repo.all(Spotlight) |> List.first()
   end
 
@@ -188,7 +192,7 @@ defmodule Safira.Interaction do
   @doc """
   Signals spotlight as inactive
   """
-  def finish_spotlight() do
+  def finish_spotlight do
     get_spotlight()
     |> Spotlight.finish_changeset(%{active: false})
     |> Repo.update()

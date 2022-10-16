@@ -1,12 +1,16 @@
 defmodule Safira.Store do
   import Ecto.Query, warn: false
   alias Ecto.Multi
-  alias Safira.Repo
-  alias Safira.Store.Redeemable
-  alias Safira.Store.Buy
+
   alias Safira.Accounts.Attendee
-  alias Safira.Contest.DailyToken
+
   alias Safira.Contest
+  alias Safira.Contest.DailyToken
+
+  alias Safira.Repo
+
+  alias Safira.Store.Buy
+  alias Safira.Store.Redeemable
 
   def list_redeemables do
     Repo.all(Redeemable)

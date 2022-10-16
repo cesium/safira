@@ -1,8 +1,10 @@
 defmodule Safira.Contest.Referral do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Safira.Contest.Badge
+
   alias Safira.Accounts.Attendee
+
+  alias Safira.Contest.Badge
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @derive {Phoenix.Param, key: :id}

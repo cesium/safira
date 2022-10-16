@@ -14,7 +14,7 @@ defmodule Mix.Tasks.Remove.Badge.Conflicts do
     end
   end
 
-  defp create() do
+  defp create do
     Mix.Task.run("app.start")
 
     b1 =

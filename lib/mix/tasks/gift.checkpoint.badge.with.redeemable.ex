@@ -3,14 +3,14 @@ defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge.With.Redeemable do
 
   import Ecto.Query, warn: false
 
+  alias Ecto.Multi
+
   alias Safira.Accounts.Attendee
   alias Safira.Contest.Badge
   alias Safira.Contest.Redeem
 
-  alias Safira.Store
   alias Safira.Repo
-  alias Ecto.Multi
-  alias Ecto.Multi
+  alias Safira.Store
 
   @shortdoc "Gives checkpoint badge to attendees that reach that checkpoint"
 

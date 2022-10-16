@@ -38,7 +38,7 @@ defmodule Mix.Tasks.Gen.Admins do
     end)
   end
 
-  defp man_num() do
+  defp man_num do
     Accounts.list_admin_users()
     |> List.last()
     |> give_num

@@ -1,8 +1,10 @@
 defmodule SafiraWeb.BadgeView do
   use SafiraWeb, :view
-  alias SafiraWeb.BadgeView
-  alias SafiraWeb.AttendeeView
+
   alias Safira.Avatar
+
+  alias SafiraWeb.AttendeeView
+  alias SafiraWeb.BadgeView
 
   def render("index.json", %{badges: badges}) do
     %{data: render_many(badges, BadgeView, "badge.json")}

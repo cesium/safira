@@ -1,8 +1,9 @@
 defmodule SafiraWeb.DeliverPrizeController do
   use SafiraWeb, :controller
 
-  alias Safira.Roulette
   alias Safira.Accounts
+
+  alias Safira.Roulette
 
   action_fallback SafiraWeb.FallbackController
 

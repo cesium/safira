@@ -4,14 +4,17 @@ defmodule Safira.Admin.Accounts do
   """
 
   import Ecto.Query, warn: false
-  alias Safira.Repo
-  alias Safira.Admin.Accounts.AdminUser
+
   import Torch.Helpers, only: [sort: 1, paginate: 4]
   import Filtrex.Type.Config
 
   alias Safira.Accounts.Attendee
-  alias Safira.Accounts.Manager
   alias Safira.Accounts.Company
+  alias Safira.Accounts.Manager
+
+  alias Safira.Admin.Accounts.AdminUser
+
+  alias Safira.Repo
 
   @pagination [page_size: 15]
   @pagination_distance 5

@@ -13,7 +13,7 @@ defmodule Mix.Tasks.Gen.Stats do
     end
   end
 
-  defp create() do
+  defp create do
     Mix.Task.run("app.start")
 
     Contest.list_redeems_stats()

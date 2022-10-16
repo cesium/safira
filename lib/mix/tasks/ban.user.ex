@@ -1,8 +1,8 @@
 defmodule Mix.Tasks.Ban.User do
   use Mix.Task
 
-  alias Safira.Accounts.User
   alias Safira.Accounts
+  alias Safira.Accounts.User
 
   def run(args) do
     cond do

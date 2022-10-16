@@ -1,9 +1,12 @@
 defmodule Safira.Roulette.AttendeePrize do
   use Ecto.Schema
   import Ecto.Changeset
+
   alias Safira.Accounts.Attendee
-  alias Safira.Roulette.Prize
+
   alias Safira.Repo
+
+  alias Safira.Roulette.Prize
 
   schema "attendees_prizes" do
     field :quantity, :integer

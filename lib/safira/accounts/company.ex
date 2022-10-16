@@ -2,8 +2,9 @@ defmodule Safira.Accounts.Company do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias Safira.Contest.Badge
   alias Safira.Accounts.User
+
+  alias Safira.Contest.Badge
 
   schema "companies" do
     field :name, :string

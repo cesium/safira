@@ -1,9 +1,10 @@
 defmodule Mix.Tasks.Reset.Password do
   use Mix.Task
 
-  alias Safira.Repo
   alias Safira.Accounts
   alias Safira.Accounts.User
+
+  alias Safira.Repo
 
   def run(args) do
     cond do

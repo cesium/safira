@@ -3,8 +3,9 @@ defmodule Safira.Store.Redeemable do
   use Arc.Ecto.Schema
   import Ecto.Changeset
 
-  alias Safira.Store.Buy
   alias Safira.Accounts.Attendee
+
+  alias Safira.Store.Buy
 
   schema "redeemables" do
     field :img, Safira.Avatar.Type

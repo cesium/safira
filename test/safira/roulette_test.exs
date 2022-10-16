@@ -124,7 +124,7 @@ defmodule Safira.RouletteTest do
 
     @invalid_attrs %{attendee_id: nil, prize_id: nil, quantity: nil, is_redeemable: nil}
 
-    def setup() do
+    def setup do
       user = create_user_strategy(:user)
       attendee = insert(:attendee, user: user)
       prize = create_prize_strategy(:prize)

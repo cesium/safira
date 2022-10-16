@@ -34,7 +34,7 @@ defmodule Mix.Tasks.Export.Buys do
     )
   end
 
-  defp export() do
+  defp export do
     Enum.each(
       Safira.Accounts.list_active_attendees(),
       fn a ->

@@ -36,7 +36,7 @@ defmodule Mix.Tasks.Gen.Managers do
     end)
   end
 
-  defp man_num() do
+  defp man_num do
     Accounts.list_managers()
     |> List.last()
     |> give_num

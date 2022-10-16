@@ -1,12 +1,15 @@
 defmodule Mix.Tasks.Gen.UsersFromCsv do
   use Mix.Task
   alias Ecto.Multi
-  alias Safira.Repo
-  alias Safira.Auth
-  alias Safira.Accounts.User
-  alias Safira.Accounts.Attendee
 
   alias NimbleCSV.RFC4180, as: CSV
+
+  alias Safira.Accounts.Attendee
+  alias Safira.Accounts.User
+
+  alias Safira.Auth
+
+  alias Safira.Repo
 
   @shortdoc "Generates the attendees from a CSV and sends emails to finish registration"
 

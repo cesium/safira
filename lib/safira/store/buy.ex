@@ -1,9 +1,12 @@
 defmodule Safira.Store.Buy do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Safira.Store.Redeemable
+
   alias Safira.Accounts.Attendee
+
   alias Safira.Repo
+
+  alias Safira.Store.Redeemable
 
   schema "buys" do
     field :quantity, :integer
