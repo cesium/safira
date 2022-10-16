@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.Gen.Badges do
+  @moduledoc """
+  Task to generate badges
+  """
   use Mix.Task
 
   alias NimbleCSV.RFC4180, as: CSV

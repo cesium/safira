@@ -1,4 +1,7 @@
 defmodule Safira.RouletteFactory do
+  @moduledoc """
+  A factory to build all roulette related structs
+  """
   defmacro __using__(_opts) do
     quote do
       def attendee_prize_factory do

@@ -1,4 +1,7 @@
 defmodule Safira.Accounts.User do
+  @moduledoc """
+  A generic user of Safira
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

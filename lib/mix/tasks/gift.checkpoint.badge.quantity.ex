@@ -1,4 +1,14 @@
 defmodule Mix.Tasks.Gift.Quantity.Checkpoint.Badge do
+  @shortdoc "Gives checkpoint badge to attendees that reach that checkpoint"
+
+  @moduledoc """
+    This task needs to receive:
+      - badge_id: Badge's ID to give
+      - badge_count: Number of Badges thar an attendee must have
+          to receive the checkpoint basge
+      - entries: Number of entries that an attendee receives for
+          having this badge
+  """
   use Mix.Task
 
   import Ecto.Query, warn: false
@@ -10,17 +20,6 @@ defmodule Mix.Tasks.Gift.Quantity.Checkpoint.Badge do
   alias Safira.Contest.Redeem
 
   alias Safira.Repo
-
-  @shortdoc "Gives checkpoint badge to attendees that reach that checkpoint"
-
-  @moduledoc """
-    This task needs to receive:
-      - badge_id: Badge's ID to give
-      - badge_count: Number of Badges thar an attendee must have
-          to receive the checkpoint basge
-      - entries: Number of entries that an attendee receives for
-          having this badge
-  """
 
   def run(args) do
     cond do

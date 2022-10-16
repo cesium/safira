@@ -1,4 +1,7 @@
 defmodule Safira.Contest.Referral do
+  @moduledoc """
+  I have no fucking idea. Need to ask around
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

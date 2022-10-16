@@ -1,14 +1,12 @@
 defmodule Mix.Tasks.Gen.Prizes do
-  use Mix.Task
-
-  alias NimbleCSV.RFC4180, as: CSV
-
   @shortdoc "Generates the event Prizes from a CSV"
-
   @moduledoc """
   This CSV is waiting for:
     name,max_amount_per_attendee,stock,probability,path_to_image
   """
+  use Mix.Task
+
+  alias NimbleCSV.RFC4180, as: CSV
 
   def run(args) do
     cond do

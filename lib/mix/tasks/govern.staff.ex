@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.Govern.Staff do
+  @moduledoc """
+  Deprecated
+  """
   use Mix.Task
 
   def run(args) do

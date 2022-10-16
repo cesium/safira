@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.Export.Attendees do
+  @moduledoc """
+  Task to export all attendees
+  """
   use Mix.Task
 
   def run(_) do

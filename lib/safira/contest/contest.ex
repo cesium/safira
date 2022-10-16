@@ -1,4 +1,9 @@
 defmodule Safira.Contest do
+  @moduledoc """
+  The gamification context. Attendees can win badges, which in
+  turn give them tokens, which they can spend on the store on
+  playing in the roulette
+  """
   import Ecto.Query, warn: false
 
   alias Ecto.Multi

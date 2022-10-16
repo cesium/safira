@@ -1,6 +1,6 @@
 defmodule Safira.Interaction do
   @moduledoc """
-  The Interaction context.
+  The Interaction context (deprecated).
   """
 
   import Ecto.Query, warn: false

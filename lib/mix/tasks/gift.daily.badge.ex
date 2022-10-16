@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.Gift.Daily.Badge do
+  @moduledoc """
+  Task to gift the daily badge to all attendees
+  """
   use Mix.Task
 
   import Ecto.Query, warn: false

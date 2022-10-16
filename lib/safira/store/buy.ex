@@ -1,4 +1,7 @@
 defmodule Safira.Store.Buy do
+  @moduledoc """
+  Schema registering the purchases an attendee makes in the store
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

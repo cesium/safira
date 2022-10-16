@@ -1,4 +1,8 @@
 defmodule Safira.Contest.Badge do
+  @moduledoc """
+  The badge that attendees can win by participating in the different
+  activities that happen during SEI
+  """
   use Ecto.Schema
   use Arc.Ecto.Schema
   import Ecto.Changeset

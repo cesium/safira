@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.Ban.User do
+  @moduledoc """
+  Task for banning users
+  """
   use Mix.Task
 
   alias Safira.Accounts

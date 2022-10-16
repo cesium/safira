@@ -1,4 +1,7 @@
 defmodule Safira.Accounts.Attendee do
+  @moduledoc """
+  An attendee is someone who is participating in SEI
+  """
   use Ecto.Schema
   use Arc.Ecto.Schema
   import Ecto.Changeset

@@ -1,4 +1,8 @@
 defmodule Mix.Tasks.Gen.Managers do
+  @moduledoc """
+  Task to generate managers
+  """
+
   use Mix.Task
   alias Safira.Accounts
 

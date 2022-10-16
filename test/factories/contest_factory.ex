@@ -1,4 +1,8 @@
 defmodule Safira.ContestFactory do
+  @moduledoc """
+  The factory to build all contest related structs
+  """
+
   defmacro __using__(_opts) do
     quote do
       def badge_factory do

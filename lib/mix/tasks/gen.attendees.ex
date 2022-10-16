@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.Gen.Attendees do
+  @moduledoc """
+  Task to generate attendees
+  """
   use Mix.Task
 
   def run(args) do

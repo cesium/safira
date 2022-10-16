@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.Reset.Password do
+  @moduledoc """
+  Task to reset the password of a user
+  """
   use Mix.Task
 
   alias Safira.Accounts

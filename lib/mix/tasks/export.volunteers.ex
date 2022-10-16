@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.Export.Volunteers do
+  @moduledoc """
+  Task to export all volunteers
+  """
   use Mix.Task
 
   def run(_) do

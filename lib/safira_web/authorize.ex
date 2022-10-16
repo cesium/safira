@@ -1,4 +1,5 @@
 defmodule Safira.Authorize do
+  @moduledoc false
   import Plug.Conn
   import Phoenix.Controller
 

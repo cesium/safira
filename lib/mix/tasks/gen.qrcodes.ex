@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.Gen.QrCodes do
+  @moduledoc """
+  Task to generate the QR codes for the attendees
+  """
   use Mix.Task
 
   alias Safira.Accounts

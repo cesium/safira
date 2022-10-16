@@ -1,4 +1,7 @@
 defmodule Safira.Accounts.Company do
+  @moduledoc """
+  A company participating in SEI
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

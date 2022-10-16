@@ -1,4 +1,8 @@
 defmodule Safira.Contest.Redeem do
+  @moduledoc """
+  A redeem happens when a manager / company
+   gives a badge to an attendee
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

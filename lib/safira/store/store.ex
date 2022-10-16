@@ -1,4 +1,8 @@
 defmodule Safira.Store do
+  @moduledoc """
+  The store context. In the store attendees can spend
+  tokens to buy stuff
+  """
   import Ecto.Query, warn: false
   alias Ecto.Multi
 

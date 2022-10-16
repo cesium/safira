@@ -1,14 +1,13 @@
 defmodule Mix.Tasks.Gen.Redeemables do
-  use Mix.Task
-
-  alias NimbleCSV.RFC4180, as: CSV
-
   @shortdoc "Generates the event Redeemables from a CSV"
 
   @moduledoc """
   This CSV is waiting for:
     name,price,stock,max_per_user,description,is_redeemable,path_to_image
   """
+  use Mix.Task
+
+  alias NimbleCSV.RFC4180, as: CSV
 
   def run(args) do
     cond do

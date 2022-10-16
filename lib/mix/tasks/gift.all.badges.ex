@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.Gift.All.Badges do
+  @moduledoc """
+  Task to gift all badges to an attendee
+  """
   use Mix.Task
 
   def run(args) do

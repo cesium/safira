@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.Gift.Badge.Full.Participation do
+  @moduledoc """
+  Task to gift all badges to an attendee
+  """
   use Mix.Task
 
   alias Safira.Accounts

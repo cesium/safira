@@ -1,4 +1,7 @@
 defmodule Safira.UserStrategy do
+  @moduledoc """
+  ExMachina strategy for creating users
+  """
   use ExMachina.Strategy, function_name: :create_user_strategy
 
   def handle_create_user_strategy(record, _opts) do

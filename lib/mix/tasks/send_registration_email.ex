@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.Send.RegistrationEmails do
+  @moduledoc """
+  Task to send registration emails to every attendee
+  """
   use Mix.Task
 
   alias Safira.Accounts

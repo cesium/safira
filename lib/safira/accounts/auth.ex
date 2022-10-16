@@ -1,4 +1,7 @@
 defmodule Safira.Auth do
+  @moduledoc """
+  Authentication related functions
+  """
   import Ecto.Query, warn: false
 
   alias Ecto.Multi

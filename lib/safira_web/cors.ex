@@ -1,4 +1,5 @@
 defmodule SafiraWeb.CORS do
+  @moduledoc false
   @domain System.get_env("CORS_DOMAIN")
 
   use Corsica.Router,

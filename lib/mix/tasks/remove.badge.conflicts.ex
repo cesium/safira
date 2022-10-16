@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.Remove.Badge.Conflicts do
+  @moduledoc """
+  Task to remove badge conflicts (deprecated)
+  """
   use Mix.Task
 
   alias Safira.Accounts

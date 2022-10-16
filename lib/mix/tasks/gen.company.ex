@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.Gen.Company do
+  @moduledoc """
+  Task to generate a company
+  """
   use Mix.Task
   alias Safira.Accounts
 

@@ -1,4 +1,16 @@
 defmodule Mix.Tasks.Gen.ManagersFromCsv do
+  @shortdoc "Generates the mangers from a CSV"
+
+  @moduledoc """
+  This task is waiting for a CSV where the 3rd collumn is name,
+   4th collumn is last name and 5th collumn is email
+  and a flag ("Local"/"Remote") indicating if the file is local or remote
+
+  ## Examples
+        $ mix gen.managers_from_csv "assets/managers_sei_exemplo.csv" "Local"
+        $ mix gen.managers_from_csv "https://sample.url.managers_sei_exemplo.csv" "Remote"
+  """
+
   use Mix.Task
   alias Ecto.Multi
 
@@ -12,18 +24,6 @@ defmodule Mix.Tasks.Gen.ManagersFromCsv do
   alias Safira.Repo
 
   @domain "seium.org"
-
-  @shortdoc "Generates the mangers from a CSV"
-
-  @moduledoc """
-  This task is waiting for a CSV where the 3rd collumn is name,
-   4th collumn is last name and 5th collumn is email
-  and a flag ("Local"/"Remote") indicating if the file is local or remote
-
-  ## Examples
-        $ mix gen.managers_from_csv "assets/managers_sei_exemplo.csv" "Local"
-        $ mix gen.managers_from_csv "https://sample.url.managers_sei_exemplo.csv" "Remote"
-  """
 
   def run(args) do
     cond do

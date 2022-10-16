@@ -1,4 +1,5 @@
 defmodule Safira.Guardian.AuthPipeline do
+  @moduledoc false
   use Guardian.Plug.Pipeline,
     otp_app: :safira,
     module: Safira.Guardian,

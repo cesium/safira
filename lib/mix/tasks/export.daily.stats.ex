@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.Export.Daily.Stats do
+  @moduledoc """
+  Task to export daily stats
+  """
   use Mix.Task
 
   alias Safira.Accounts

@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.Get.Winner do
+  @moduledoc """
+  Task to get the winner of the contest
+  """
   use Mix.Task
 
   alias Safira.Contest

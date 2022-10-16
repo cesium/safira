@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.Gen.Stats do
+  @moduledoc """
+  Task to generate redeem stats
+  """
   use Mix.Task
 
   alias Safira.Contest

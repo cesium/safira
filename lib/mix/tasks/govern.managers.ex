@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.Govern.Managers do
+  @moduledoc """
+  Task to activate all manager accounts
+  """
   use Mix.Task
 
   def run(args) do

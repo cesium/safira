@@ -1,16 +1,4 @@
 defmodule Mix.Tasks.Gen.UsersFromCsvWithoutMail do
-  use Mix.Task
-
-  alias Ecto.Multi
-
-  alias NimbleCSV.RFC4180, as: CSV
-
-  alias Safira.Accounts.Attendee
-  alias Safira.Accounts.User
-  alias Safira.Auth
-
-  alias Safira.Repo
-
   @shortdoc "Generates the attendees from a CSV"
 
   @moduledoc """
@@ -22,6 +10,17 @@ defmodule Mix.Tasks.Gen.UsersFromCsvWithoutMail do
   mix gen.users_from_csv "assets/participantes_sei_exemplo.csv" "Local"
   mix gen.users_from_csv "https://sample.url.participantes_sei_exemplo.csv" "Remote"
   """
+  use Mix.Task
+
+  alias Ecto.Multi
+
+  alias NimbleCSV.RFC4180, as: CSV
+
+  alias Safira.Accounts.Attendee
+  alias Safira.Accounts.User
+  alias Safira.Auth
+
+  alias Safira.Repo
 
   def run(args) do
     cond do

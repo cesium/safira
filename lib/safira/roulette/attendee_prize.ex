@@ -1,4 +1,7 @@
 defmodule Safira.Roulette.AttendeePrize do
+  @moduledoc """
+  Intermediate schema to register the prizes won by attendees
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

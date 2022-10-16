@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.Gen.Admins do
+  @moduledoc """
+  Task to generate admins
+  """
   use Mix.Task
 
   alias Pow.Ecto.Context

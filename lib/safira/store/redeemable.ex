@@ -1,4 +1,7 @@
 defmodule Safira.Store.Redeemable do
+  @moduledoc """
+  The different things attendees can buy in the store
+  """
   use Ecto.Schema
   use Arc.Ecto.Schema
   import Ecto.Changeset

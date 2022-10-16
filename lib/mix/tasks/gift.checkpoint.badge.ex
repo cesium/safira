@@ -1,16 +1,4 @@
 defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge do
-  use Mix.Task
-
-  import Ecto.Query, warn: false
-
-  alias Ecto.Multi
-
-  alias Safira.Accounts.Attendee
-  alias Safira.Contest.Badge
-  alias Safira.Contest.Redeem
-
-  alias Safira.Repo
-
   @shortdoc "Gives checkpoint badge to attendees that reach that checkpoint"
 
   @moduledoc """
@@ -22,6 +10,17 @@ defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge do
           having this badge
       - badge_type: type of badge to confirm
   """
+  use Mix.Task
+
+  import Ecto.Query, warn: false
+
+  alias Ecto.Multi
+
+  alias Safira.Accounts.Attendee
+  alias Safira.Contest.Badge
+  alias Safira.Contest.Redeem
+
+  alias Safira.Repo
 
   def run(args) do
     cond do

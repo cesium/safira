@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.Gen.UserWithBadge do
+  @moduledoc """
+  Task to generate a user with a badge
+  """
   use Mix.Task
 
   alias Ecto.Multi

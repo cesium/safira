@@ -1,4 +1,7 @@
 defmodule Safira.Email do
+  @moduledoc """
+  The emails used by safira
+  """
   # use Bamboo.Phoenix, view: Safira.FeedbackView
   import Bamboo.Email
 

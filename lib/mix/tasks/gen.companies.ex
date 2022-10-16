@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.Gen.Companies do
+  @moduledoc """
+  Task to generate companies
+  """
   use Mix.Task
 
   alias NimbleCSV.RFC4180, as: CSV

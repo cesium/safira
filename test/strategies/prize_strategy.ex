@@ -1,4 +1,7 @@
 defmodule Safira.PrizeStrategy do
+  @moduledoc """
+  ExMachina strategy for creating prizes
+  """
   use ExMachina.Strategy, function_name: :create_prize_strategy
 
   def handle_create_prize_strategy(record, _opts) do

@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.Export.Buys do
+  @moduledoc """
+  Task to export every sale from the store
+  """
   use Mix.Task
 
   def run(args) do

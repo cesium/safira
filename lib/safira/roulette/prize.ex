@@ -1,4 +1,7 @@
 defmodule Safira.Roulette.Prize do
+  @moduledoc """
+  The prizes that can be won by spinning the roulette
+  """
   use Ecto.Schema
   use Arc.Ecto.Schema
   import Ecto.Changeset
