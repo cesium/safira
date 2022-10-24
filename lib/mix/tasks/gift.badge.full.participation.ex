@@ -8,12 +8,10 @@ defmodule Mix.Tasks.Gift.Badge.Full.Participation do
   alias Safira.Contest
 
   def run(args) do
-    cond do
-      Enum.empty?(args) ->
-        Mix.shell().info("Needs badge_id.")
-
-      true ->
-        create(args)
+    if Enum.empty?(args) do
+      Mix.shell().info("Needs badge_id.")
+    else
+      create(args)
     end
   end
 

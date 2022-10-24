@@ -8,12 +8,10 @@ defmodule Mix.Tasks.Ban.User do
   alias Safira.Accounts.User
 
   def run(args) do
-    cond do
-      Enum.empty?(args) ->
-        Mix.shell().info("Needs to receive one user email.")
-
-      true ->
-        args |> create
+    if Enum.empty?(args) do
+      Mix.shell().info("Needs to receive one user email.")
+    else
+      args |> create
     end
   end
 

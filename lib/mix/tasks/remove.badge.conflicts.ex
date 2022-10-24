@@ -8,12 +8,10 @@ defmodule Mix.Tasks.Remove.Badge.Conflicts do
   alias Safira.Contest
 
   def run(args) do
-    cond do
-      !Enum.empty?(args) ->
-        Mix.shell().info("Needs no arguments.")
-
-      true ->
-        create()
+    if Enum.empty?(args) do
+      create()
+    else
+      Mix.shell().info("Needs no arguments.")
     end
   end
 

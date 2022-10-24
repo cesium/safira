@@ -10,12 +10,10 @@ defmodule Mix.Tasks.Reset.Password do
   alias Safira.Repo
 
   def run(args) do
-    cond do
-      Enum.empty?(args) ->
-        Mix.shell().info("Needs to receive an user email.")
-
-      true ->
-        args |> List.first() |> create
+    if Enum.empty?(args) do
+      Mix.shell().info("Needs to receive an user email.")
+    else
+      args |> List.first() |> create
     end
   end
 

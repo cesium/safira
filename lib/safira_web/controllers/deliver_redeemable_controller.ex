@@ -20,35 +20,31 @@ defmodule SafiraWeb.DeliverRedeemableController do
 
   "
   def create(conn, %{"redeem" => redeem_params}) do
-    cond do
-      # checks the user token to see if its a manager
-      Accounts.is_manager(conn) ->
-        validate_redeem(conn, redeem_params)
-
-      true ->
-        conn
-        |> put_status(:unauthorized)
-        |> json(%{error: "Only managers can deliver redeemables"})
+    # checks the user token to see if its a manager
+    if Accounts.is_manager(conn) do
+      validate_redeem(conn, redeem_params)
+    else
+      conn
+      |> put_status(:unauthorized)
+      |> json(%{error: "Only managers can deliver redeemables"})
     end
   end
 
   def show(conn, %{"id" => attendee_id}) do
     attendee = Accounts.get_attendee!(attendee_id)
 
-    cond do
-      not is_nil(attendee) ->
-        if Accounts.is_manager(conn) do
-          redeemables = Store.get_attendee_not_redemed(attendee)
-          render(conn, "index.json", delivers: redeemables)
-        else
-          redeemables = Store.get_attendee_redeemables(attendee)
-          render(conn, "index.json", delivers: redeemables)
-        end
-
-      true ->
-        conn
-        |> put_status(:bad_request)
-        |> json(%{Error: "Wrong attendee"})
+    if is_nil(attendee) do
+      conn
+      |> put_status(:bad_request)
+      |> json(%{Error: "Wrong attendee"})
+    else
+      if Accounts.is_manager(conn) do
+        redeemables = Store.get_attendee_not_redemed(attendee)
+        render(conn, "index.json", delivers: redeemables)
+      else
+        redeemables = Store.get_attendee_redeemables(attendee)
+        render(conn, "index.json", delivers: redeemables)
+      end
     end
   end
 

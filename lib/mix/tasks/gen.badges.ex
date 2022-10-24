@@ -10,12 +10,10 @@ defmodule Mix.Tasks.Gen.Badges do
   # format Coffee break;badge do lanche;2019-02-11;2019-02-12;/tmp/goraster.png
 
   def run(args) do
-    cond do
-      Enum.empty?(args) ->
-        Mix.shell().info("Needs to receive a file URL.")
-
-      true ->
-        args |> List.first() |> create
+    if Enum.empty?(args) do
+      Mix.shell().info("Needs to receive a file URL.")
+    else
+      args |> List.first() |> create
     end
   end
 

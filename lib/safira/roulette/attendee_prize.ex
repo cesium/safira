@@ -57,16 +57,14 @@ defmodule Safira.Roulette.AttendeePrize do
           Prize
           |> Repo.get(prize_id)
 
-        cond do
-          prize.max_amount_per_attendee >= quantity ->
-            changeset
-
-          true ->
-            add_error(
-              changeset,
-              :quantity,
-              "Quantity is greater than the maximum amount permitted per attendee"
-            )
+        if prize.max_amount_per_attendee >= quantity do
+          changeset
+        else
+          add_error(
+            changeset,
+            :quantity,
+            "Quantity is greater than the maximum amount permitted per attendee"
+          )
         end
     end
   end
@@ -89,16 +87,14 @@ defmodule Safira.Roulette.AttendeePrize do
         add_error(changeset, :redeemed, "Redeemed shouldn't be nil")
 
       {_, _} ->
-        cond do
-          quantity >= redeemed ->
-            changeset
-
-          true ->
-            add_error(
-              changeset,
-              :quantity,
-              "Redeemed is greater than the quantity bought by the atendee"
-            )
+        if quantity >= redeemed do
+          changeset
+        else
+          add_error(
+            changeset,
+            :quantity,
+            "Redeemed is greater than the quantity bought by the atendee"
+          )
         end
     end
   end

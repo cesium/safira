@@ -5,12 +5,10 @@ defmodule Mix.Tasks.Gift.All.Badges do
   use Mix.Task
 
   def run(args) do
-    cond do
-      length(args) != 1 ->
-        Mix.shell().info("Needs to receive only an id.")
-
-      true ->
-        args |> List.first() |> create
+    if length(args) != 1 do
+      Mix.shell().info("Needs to receive only an id.")
+    else
+      args |> List.first() |> create
     end
   end
 

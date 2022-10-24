@@ -149,12 +149,12 @@ defmodule Mix.Tasks.Gift.Badge do
   defp give_email(email, badge_id) do
     user = Accounts.get_user_preload_email(email)
 
-    if not is_nil(user) do
+    if is_nil(user) do
+      Mix.shell().info("Invalid email: #{email}")
+    else
       with {:error, _changeset} <- give(user.attendee.id, badge_id) do
         Mix.shell().info("Duplicate badge for #{email}")
       end
-    else
-      Mix.shell().info("Invalid email: #{email}")
     end
   end
 

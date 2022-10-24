@@ -7,12 +7,10 @@ defmodule Mix.Tasks.Get.Winner do
   alias Safira.Contest
 
   def run(args) do
-    cond do
-      not Enum.empty?(args) ->
-        Mix.shell().info("No arguments needed")
-
-      true ->
-        create()
+    if Enum.empty?(args) do
+      create()
+    else
+      Mix.shell().info("No arguments needed")
     end
   end
 

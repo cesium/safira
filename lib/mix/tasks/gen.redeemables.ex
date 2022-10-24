@@ -10,12 +10,10 @@ defmodule Mix.Tasks.Gen.Redeemables do
   alias NimbleCSV.RFC4180, as: CSV
 
   def run(args) do
-    cond do
-      Enum.empty?(args) ->
-        Mix.shell().info("Needs to receive a file URL.")
-
-      true ->
-        args |> List.first() |> create
+    if Enum.empty?(args) do
+      Mix.shell().info("Needs to receive a file URL.")
+    else
+      args |> List.first() |> create
     end
   end
 

@@ -6,45 +6,39 @@ defmodule SafiraWeb.DiscordAssociationController do
   action_fallback SafiraWeb.FallbackController
 
   def show(conn, %{"id" => discord_id}) do
-    cond do
-      Accounts.is_company(conn) || Accounts.is_manager(conn) ->
-        show_aux(conn, discord_id)
-
-      true ->
-        conn
-        |> put_status(:unauthorized)
-        |> json(%{error: "Cannot access resource"})
-        |> halt()
+    if Accounts.is_company(conn) || Accounts.is_manager(conn) do
+      show_aux(conn, discord_id)
+    else
+      conn
+      |> put_status(:unauthorized)
+      |> json(%{error: "Cannot access resource"})
+      |> halt()
     end
   end
 
   # association_params= %{"discord_association_code" => discord_association_code, "discord_id" => discord_id}
   def create(conn, association_params) do
-    cond do
-      Accounts.is_manager(conn) ->
-        association_aux(conn, association_params)
-
-      true ->
-        conn
-        |> put_status(:unauthorized)
-        |> json(%{error: "Cannot access resource"})
-        |> halt()
+    if Accounts.is_manager(conn) do
+      association_aux(conn, association_params)
+    else
+      conn
+      |> put_status(:unauthorized)
+      |> json(%{error: "Cannot access resource"})
+      |> halt()
     end
   end
 
   defp show_aux(conn, discord_id) do
     attendee = Accounts.get_attendee_by_discord_id(discord_id)
 
-    cond do
-      not is_nil(attendee) ->
-        conn
-        |> put_status(:ok)
-        |> json(%{id: attendee.id})
-
-      true ->
-        conn
-        |> put_status(:not_found)
-        |> json(%{error: "No attendee with that discord_id"})
+    if is_nil(attendee) do
+      conn
+      |> put_status(:not_found)
+      |> json(%{error: "No attendee with that discord_id"})
+    else
+      conn
+      |> put_status(:ok)
+      |> json(%{id: attendee.id})
     end
   end
 
@@ -73,17 +67,15 @@ defmodule SafiraWeb.DiscordAssociationController do
        }) do
     attendee = Accounts.get_attendee_by_discord_association_code(discord_association_code)
 
-    cond do
-      not is_nil(attendee) ->
-        # no need for checking if discord_id is valid
-        # since the the user's discord_id is obtained by the bot through the discord API
-        Accounts.update_attendee_association(attendee, %{discord_id: discord_id})
-        notify_succesful_association(conn, "participante")
-
-      true ->
-        conn
-        |> put_status(:not_found)
-        |> json(%{error: "Unable to associate"})
+    if is_nil(attendee) do
+      conn
+      |> put_status(:not_found)
+      |> json(%{error: "Unable to associate"})
+    else
+      # no need for checking if discord_id is valid
+      # since the the user's discord_id is obtained by the bot through the discord API
+      Accounts.update_attendee_association(attendee, %{discord_id: discord_id})
+      notify_succesful_association(conn, "participante")
     end
   end
 

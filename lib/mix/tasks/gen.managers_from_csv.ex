@@ -26,12 +26,10 @@ defmodule Mix.Tasks.Gen.ManagersFromCsv do
   @domain "seium.org"
 
   def run(args) do
-    cond do
-      length(args) != 2 ->
-        Mix.shell().info("Needs to receive a file URL and a flag.")
-
-      true ->
-        args |> create
+    if length(args) != 2 do
+      Mix.shell().info("Needs to receive a file URL and a flag.")
+    else
+      args |> create
     end
   end
 

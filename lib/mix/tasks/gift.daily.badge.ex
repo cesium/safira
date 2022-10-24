@@ -18,12 +18,10 @@ defmodule Mix.Tasks.Gift.Daily.Badge do
   def run(args) do
     Mix.Task.run("app.start")
 
-    cond do
-      length(args) != 2 ->
-        Mix.shell().info("Needs to receive badge_id and the date of the day.")
-
-      true ->
-        args |> create()
+    if length(args) != 2 do
+      Mix.shell().info("Needs to receive badge_id and the date of the day.")
+    else
+      args |> create()
     end
   end
 

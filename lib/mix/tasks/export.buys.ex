@@ -7,14 +7,12 @@ defmodule Mix.Tasks.Export.Buys do
   def run(args) do
     Mix.Task.run("app.start")
 
-    cond do
-      Enum.empty?(args) ->
-        Mix.shell().info("Output: Screen")
-        export()
-
-      true ->
-        Mix.shell().info("Output: File (#{args |> List.first()})")
-        args |> List.first() |> export
+    if Enum.empty?(args) do
+      Mix.shell().info("Output: Screen")
+      export()
+    else
+      Mix.shell().info("Output: File (#{args |> List.first()})")
+      args |> List.first() |> export
     end
   end
 
@@ -22,7 +20,7 @@ defmodule Mix.Tasks.Export.Buys do
     Enum.each(
       Safira.Accounts.list_active_attendees(),
       fn a ->
-        with {:ok, file} = File.open(path, [:append]) do
+        with {:ok, file} <- File.open(path, [:append]) do
           IO.binwrite(
             file,
             create_line(

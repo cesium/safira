@@ -7,12 +7,10 @@ defmodule Mix.Tasks.Gen.Stats do
   alias Safira.Contest
 
   def run(args) do
-    cond do
-      length(args) != 0 ->
-        Mix.shell().info("No arguments needed")
-
-      true ->
-        create()
+    if length(args) != 0 do
+      Mix.shell().info("No arguments needed")
+    else
+      create()
     end
   end
 

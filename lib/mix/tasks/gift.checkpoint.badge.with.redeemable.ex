@@ -25,14 +25,12 @@ defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge.With.Redeemable do
   alias Safira.Store
 
   def run(args) do
-    cond do
-      length(args) != 5 ->
-        Mix.shell().info(
-          "Needs to receive badge_id, badge_count, entries ,badge_type and redeemable_id."
-        )
-
-      true ->
-        create(args)
+    if length(args) != 5 do
+      Mix.shell().info(
+        "Needs to receive badge_id, badge_count, entries ,badge_type and redeemable_id."
+      )
+    else
+      create(args)
     end
   end
 

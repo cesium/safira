@@ -10,12 +10,10 @@ defmodule Mix.Tasks.Gen.QrCodes do
   @arg_types ["attendees", "referrals"]
 
   def run(args) do
-    cond do
-      args |> List.first() |> (&Enum.member?(@arg_types, &1)).() |> Kernel.not() ->
-        Mix.shell().info("Needs to receive attendees or referrals.")
-
-      true ->
-        args |> List.first() |> create
+    if args |> List.first() |> (&Enum.member?(@arg_types, &1)).() |> Kernel.not() do
+      Mix.shell().info("Needs to receive attendees or referrals.")
+    else
+      args |> List.first() |> create
     end
   end
 

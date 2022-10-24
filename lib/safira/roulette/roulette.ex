@@ -400,68 +400,62 @@ defmodule Safira.Roulette do
     attrs = %{stock: prize.stock - 1}
 
     attrs =
-      cond do
-        Map.get(attrs, :stock) == 0 ->
-          Map.put(attrs, :probability, 0)
-
-        true ->
-          attrs
+      if Map.get(attrs, :stock) == 0 do
+        Map.put(attrs, :probability, 0)
+      else
+        attrs
       end
 
     Prize.update_changeset(prize, attrs)
   end
 
   defp update_probabilities(prize_stock, prize) do
-    cond do
-      prize_stock.stock == 0 ->
-        Repo.all(Prize)
-        |> Enum.filter(fn x -> x.id != prize.id end)
-        |> Enum.with_index()
-        |> Enum.reduce(Multi.new(), fn {x, index}, acc ->
-          Multi.update(
-            acc,
-            index,
-            Prize.update_changeset(x, %{probability: x.probability / (1 - prize.probability)})
-          )
-        end)
-
-      true ->
-        Multi.new()
+    if prize_stock.stock == 0 do
+      Repo.all(Prize)
+      |> Enum.filter(fn x -> x.id != prize.id end)
+      |> Enum.with_index()
+      |> Enum.reduce(Multi.new(), fn {x, index}, acc ->
+        Multi.update(
+          acc,
+          index,
+          Prize.update_changeset(x, %{probability: x.probability / (1 - prize.probability)})
+        )
+      end)
+    else
+      Multi.new()
     end
   end
 
-  defp serializable_transaction(multi) do
-    Repo.transaction(fn ->
-      Repo.query!("set transaction isolation level serializable;")
+  # defp serializable_transaction(multi) do
+  #   Repo.transaction(fn ->
+  #     Repo.query!("set transaction isolation level serializable;")
 
-      Repo.transaction(multi)
-      |> case do
-        {:ok, result} ->
-          result
+  #     Repo.transaction(multi)
+  #     |> case do
+  #       {:ok, result} ->
+  #         result
 
-        {:error, _failed_operation, changeset, _changes_so_far} ->
-          token_balance_error =
-            get_errors(changeset)
-            |> Map.get(:token_balance)
+  #       {:error, _failed_operation, changeset, _changes_so_far} ->
+  #         token_balance_error =
+  #           get_errors(changeset)
+  #           |> Map.get(:token_balance)
 
-          cond do
-            not is_nil(token_balance_error) ->
-              # That's the way to retrieve the changeset as a value
-              Repo.rollback(changeset)
-
-            true ->
-              # should repeat spinning unless it has no token_balance
-              Repo.rollback(:spin_again)
-          end
-      end
-    end)
-  rescue
-    _ ->
-      # When transaction raises a serialization error means that
-      # could not serialize access due to concurrent update which
-      # is a correct error. After that the spinning should be repeated.
-      serializable_transaction(multi)
-  end
+  #         if is_nil(token_balance_error) do
+  #           # should repeat spinning unless it has no token_balance
+  #           Repo.rollback(:spin_again)
+  #         else
+  #             # That's the way to retrieve the changeset as a value
+  #             Repo.rollback(changeset)
+  #         end
+  #     end
+  #   end)
+  # rescue
+  #   _ ->
+  #     # When transaction raises a serialization error means that
+  #     # could not serialize access due to concurrent update which
+  #     # is a correct error. After that the spinning should be repeated.
+  #     serializable_transaction(multi)
+  # end
 
   defp get_errors(changeset) do
     Ecto.Changeset.traverse_errors(changeset, fn {msg, opts} ->
@@ -493,9 +487,8 @@ defmodule Safira.Roulette do
     |> Map.fetch!(:prizes)
     |> Enum.filter(fn prize ->
       {_, ap} = get_keys_prize(attendee.id, prize.id)
-      ap.quantity > 0 && ap.quantity > ap.redeemed
+      ap.quantity > 0 && ap.quantity > ap.redeemed && prize.is_redeemable
     end)
-    |> Enum.filter(fn prize -> prize.is_redeemable end)
     |> Enum.map(fn prize ->
       {_, ap} = get_keys_prize(attendee.id, prize.id)
       prize2 = Map.put(prize, :quantity, ap.quantity)

@@ -23,8 +23,7 @@ defmodule Safira.Contest do
 
   def list_available_badges do
     Repo.all(Badge)
-    |> Enum.reject(fn x -> not badge_is_in_time(x) end)
-    |> Enum.reject(fn x -> x.type == 4 end)
+    |> Enum.reject(fn x -> not badge_is_in_time(x) or x.type == 4 end)
   end
 
   def list_secret do
@@ -273,9 +272,10 @@ defmodule Safira.Contest do
   end
 
   defp calculate_badge_tokens(badge) do
-    cond do
-      Interaction.is_badge_spotlighted(badge.id) -> badge.tokens * 2
-      true -> badge.tokens
+    if Interaction.is_badge_spotlighted(badge.id) do
+      badge.tokens * 2
+    else
+      badge.tokens
     end
   end
 end

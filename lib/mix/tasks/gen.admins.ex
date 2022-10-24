@@ -48,10 +48,10 @@ defmodule Mix.Tasks.Gen.Admins do
   end
 
   defp give_num(n) do
-    unless is_nil(n) do
-      Map.get(n, :id)
-    else
+    if is_nil(n) do
       0
+    else
+      Map.get(n, :id)
     end
   end
 
