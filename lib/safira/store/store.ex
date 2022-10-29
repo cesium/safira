@@ -188,8 +188,5 @@ defmodule Safira.Store do
           Repo.rollback(changeset)
       end
     end)
-  rescue
-    _error ->
-      serializable_transaction(multi)
   end
 end
