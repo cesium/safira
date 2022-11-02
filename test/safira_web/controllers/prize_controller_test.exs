@@ -30,7 +30,7 @@ defmodule SafiraWeb.PrizeControllerTest do
       assert json_response(conn, 200)["data"] == expected_response
     end
 
-    test "with invalid token" do
+    test "with invalid token", %{conn: conn} do
       conn =
         conn
         |> put_req_header("authorization", "Bearer #{"invalid"}")
@@ -39,7 +39,7 @@ defmodule SafiraWeb.PrizeControllerTest do
       assert json_response(conn, 401)["error"] == "invalid_token"
     end
 
-    test "with no token" do
+    test "with no token", %{conn: conn} do
       conn =
         conn
         |> get(Routes.prize_path(conn, :index))
@@ -67,7 +67,7 @@ defmodule SafiraWeb.PrizeControllerTest do
       assert json_response(conn, 200)["data"] == expected_prize
     end
 
-    test "with invalid token", %{prize: prize} do
+    test "with invalid token", %{conn: conn, prize: prize} do
       conn =
         conn
         |> put_req_header("authorization", "Bearer #{"invalid"}")
@@ -76,7 +76,7 @@ defmodule SafiraWeb.PrizeControllerTest do
       assert json_response(conn, 401)["error"] == "invalid_token"
     end
 
-    test "with no token", %{prize: prize} do
+    test "with no token", %{conn: conn, prize: prize} do
       conn =
         conn
         |> get(Routes.prize_path(conn, :show, prize.id))

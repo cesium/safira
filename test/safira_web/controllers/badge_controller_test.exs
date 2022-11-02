@@ -32,7 +32,7 @@ defmodule SafiraWeb.BadgeControllerTest do
       assert json_response(conn, 200)["data"] == expected_response
     end
 
-    test "with invalid token" do
+    test "with invalid token", %{conn: conn} do
       conn =
         conn
         |> put_req_header("authorization", "Bearer #{"invalid"}")
@@ -45,7 +45,6 @@ defmodule SafiraWeb.BadgeControllerTest do
       conn =
         conn
         |> get(Routes.badge_path(conn, :index))
-        |> doc()
 
       assert json_response(conn, 401)["error"] == "unauthenticated"
     end
@@ -74,7 +73,7 @@ defmodule SafiraWeb.BadgeControllerTest do
       assert json_response(conn, 200)["data"] == expected_bage
     end
 
-    test "with invalid token", %{badge: badge} do
+    test "with invalid token", %{conn: conn, badge: badge} do
       conn =
         conn
         |> put_req_header("authorization", "Bearer #{"invalid"}")
@@ -83,7 +82,7 @@ defmodule SafiraWeb.BadgeControllerTest do
       assert json_response(conn, 401)["error"] == "invalid_token"
     end
 
-    test "with no token", %{badge: badge} do
+    test "with no token", %{conn: conn, badge: badge} do
       conn =
         conn
         |> get(Routes.badge_path(conn, :show, badge.id))

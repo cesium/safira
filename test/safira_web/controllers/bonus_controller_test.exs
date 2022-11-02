@@ -33,7 +33,7 @@ defmodule SafiraWeb.BonusControllerTest do
       assert json_response(conn, 200) == expected_bonus
     end
 
-    test "with invalid token", %{attendee: attendee} do
+    test "with invalid token", %{conn: conn, attendee: attendee} do
       conn =
         conn
         |> post(Routes.bonus_path(conn, :give_bonus, attendee.id))
@@ -41,7 +41,7 @@ defmodule SafiraWeb.BonusControllerTest do
       assert json_response(conn, 401)["error"] == "unauthenticated"
     end
 
-    test "with no token", %{attendee: attendee} do
+    test "with no token", %{conn: conn, attendee: attendee} do
       conn =
         conn
         |> post(Routes.bonus_path(conn, :give_bonus, attendee.id))
@@ -49,7 +49,7 @@ defmodule SafiraWeb.BonusControllerTest do
       assert json_response(conn, 401)["error"] == "unauthenticated"
     end
 
-    test "being an attendee user", %{attendee: attendee} do
+    test "being an attendee user", %{conn: conn, attendee: attendee} do
       %{conn: conn, user: _user} = api_authenticate(attendee.user)
 
       conn =

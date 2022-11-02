@@ -67,7 +67,7 @@ defmodule Safira.Auth do
   defp get_by_email(email) when is_binary(email) do
     case Repo.get_by(User, email: email) do
       nil ->
-        Comeonin.Bcrypt.dummy_checkpw()
+        Bcrypt.no_user_verify()
         {:error, "Login error."}
 
       user ->
@@ -76,7 +76,7 @@ defmodule Safira.Auth do
   end
 
   defp verify_password(password, %User{} = user) when is_binary(password) do
-    if Comeonin.Bcrypt.checkpw(password, user.password_hash) do
+    if Bcrypt.verify_pass(password, user.password_hash) do
       {:ok, user}
     else
       {:error, :invalid_password}

@@ -68,7 +68,7 @@ defmodule SafiraWeb.AuthControllerTest do
   end
 
   describe "sign_up" do
-    test "user" do
+    test "user", %{conn: conn} do
       attendee = insert(:attendee, user: nil)
       user = build(:user)
 
@@ -94,7 +94,7 @@ defmodule SafiraWeb.AuthControllerTest do
   end
 
   describe "sign_in" do
-    test "user with valid credentials", %{user: user} do
+    test "user with valid credentials", %{conn: conn, user: user} do
       attrs = %{"email" => user.email, "password" => user.password}
 
       conn =
@@ -104,7 +104,7 @@ defmodule SafiraWeb.AuthControllerTest do
       assert json_response(conn, 200)["jwt"] != ""
     end
 
-    test "user with invalid credentials (wrong password)", %{user: user} do
+    test "user with invalid credentials (wrong password)", %{conn: conn, user: user} do
       struct = %{"email" => user.email, "password" => "test1234"}
 
       conn =
@@ -114,7 +114,7 @@ defmodule SafiraWeb.AuthControllerTest do
       assert json_response(conn, 401)["error"] == "Login error"
     end
 
-    test "user with invalid credentials (non existing user)", %{user: user} do
+    test "user with invalid credentials (non existing user)", %{conn: conn, user: user} do
       attrs = %{"email" => "wrong@email.pt", "password" => user.password}
 
       conn =

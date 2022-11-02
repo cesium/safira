@@ -34,7 +34,6 @@ defmodule SafiraWeb.BuyControllerTest do
         conn
         |> put_req_header("authorization", "Bearer #{"invalid"}")
         |> post(Routes.buy_path(conn, :create, attrs))
-        |> doc()
 
       assert json_response(conn, 401)["error"] == "invalid_token"
     end
@@ -43,7 +42,6 @@ defmodule SafiraWeb.BuyControllerTest do
       conn =
         conn
         |> post(Routes.buy_path(conn, :create, attrs))
-        |> doc()
 
       assert json_response(conn, 401)["error"] == "unauthenticated"
     end

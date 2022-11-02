@@ -10,6 +10,8 @@ defmodule Safira.Application do
     children = [
       # Start the Ecto repository
       Safira.Repo,
+      # Start the PubSub system
+      {Phoenix.PubSub, name: Safira.PubSub},
       # Start the endpoint when the application starts
       SafiraWeb.Endpoint
       # Starts a worker by calling: Safira.Worker.start_link(arg)
