@@ -1,19 +1,20 @@
 defmodule Mix.Tasks.Get.Winner do
+  @moduledoc """
+  Task to get the winner of the contest
+  """
   use Mix.Task
 
   alias Safira.Contest
 
   def run(args) do
-    cond do
-      not Enum.empty?(args) ->
-        Mix.shell().info("No arguments needed")
-
-      true ->
-        create()
+    if Enum.empty?(args) do
+      create()
+    else
+      Mix.shell().info("No arguments needed")
     end
   end
 
-  defp create() do
+  defp create do
     Mix.Task.run("app.start")
 
     Contest.get_winner()

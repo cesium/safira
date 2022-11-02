@@ -1,22 +1,19 @@
 defmodule Mix.Tasks.Gen.Redeemables do
-  use Mix.Task
-
-  alias NimbleCSV.RFC4180, as: CSV
-
   @shortdoc "Generates the event Redeemables from a CSV"
 
   @moduledoc """
   This CSV is waiting for:
     name,price,stock,max_per_user,description,is_redeemable,path_to_image
   """
+  use Mix.Task
+
+  alias NimbleCSV.RFC4180, as: CSV
 
   def run(args) do
-    cond do
-      Enum.empty?(args) ->
-        Mix.shell().info("Needs to receive a file URL.")
-
-      true ->
-        args |> List.first() |> create
+    if Enum.empty?(args) do
+      Mix.shell().info("Needs to receive a file URL.")
+    else
+      args |> List.first() |> create
     end
   end
 
@@ -26,8 +23,12 @@ defmodule Mix.Tasks.Gen.Redeemables do
     path
     |> parse_csv
     |> sequence()
-    |> (fn {create, update} -> {Safira.Store.create_redeemables(create), update} end).()
+    |> create_redeemables()
     |> insert_redeemable()
+  end
+
+  defp create_redeemables({create, update}) do
+    {Safira.Store.create_redeemables(create), update}
   end
 
   defp parse_csv(path) do

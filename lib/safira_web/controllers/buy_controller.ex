@@ -1,8 +1,9 @@
 defmodule SafiraWeb.BuyController do
   use SafiraWeb, :controller
 
-  alias Safira.Store
   alias Safira.Accounts
+
+  alias Safira.Store
 
   action_fallback SafiraWeb.FallbackController
 
@@ -11,18 +12,16 @@ defmodule SafiraWeb.BuyController do
       Accounts.get_user(conn)
       |> Map.fetch!(:attendee)
 
-    cond do
-      not is_nil(attendee) ->
-        with {:ok, changes} <- buy_aux(conn, attendee, redeemable_params) do
-          conn
-          |> put_status(:ok)
-          |> json(%{Redeemable: "#{Map.get(changes, :redeemable).name} bought successfully!"})
-        end
-
-      true ->
+    if is_nil(attendee) do
+      conn
+      |> put_status(:unauthorized)
+      |> json(%{error: "Only attendees can buy products!"})
+    else
+      with {:ok, changes} <- buy_aux(conn, attendee, redeemable_params) do
         conn
-        |> put_status(:unauthorized)
-        |> json(%{error: "Only attendees can buy products!"})
+        |> put_status(:ok)
+        |> json(%{Redeemable: "#{Map.get(changes, :redeemable).name} bought successfully!"})
+      end
     end
   end
 
@@ -34,20 +33,18 @@ defmodule SafiraWeb.BuyController do
         |> json(%{Redeemable: "No 'redeemable_id' param"})
 
       redeemable_id ->
-        case Store.exist_redeemable(redeemable_id) do
-          true ->
-            case Store.buy_redeemable(redeemable_id, attendee) do
-              {:ok, changes} ->
-                {:ok, changes}
+        if Store.exist_redeemable(redeemable_id) do
+          case Store.buy_redeemable(redeemable_id, attendee) do
+            {:ok, changes} ->
+              {:ok, changes}
 
-              {:error, _, changes, _} ->
-                {:error, changes}
-            end
-
-          false ->
-            conn
-            |> put_status(:not_found)
-            |> json(%{Redeemable: "There is no such redeemable"})
+            {:error, _, changes, _} ->
+              {:error, changes}
+          end
+        else
+          conn
+          |> put_status(:not_found)
+          |> json(%{Redeemable: "There is no such redeemable"})
         end
     end
   end

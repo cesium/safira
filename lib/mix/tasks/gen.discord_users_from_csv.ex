@@ -1,13 +1,4 @@
 defmodule Mix.Tasks.Gen.DiscordUsersFromCsv do
-  use Mix.Task
-  alias Ecto.Multi
-  alias Safira.Repo
-  alias Safira.Auth
-  alias Safira.Accounts.User
-  alias Safira.Accounts.Attendee
-
-  alias NimbleCSV.RFC4180, as: CSV
-
   @shortdoc "Generates the attendees from a CSV and sends emails to finish registration"
 
   @moduledoc """
@@ -19,14 +10,24 @@ defmodule Mix.Tasks.Gen.DiscordUsersFromCsv do
   mix gen.users_from_csv "assets/participantes_sei_exemplo.csv" "Local"
   mix gen.users_from_csv "https://sample.url.participantes_sei_exemplo.csv" "Remote"
   """
+  use Mix.Task
+
+  alias NimbleCSV.RFC4180, as: CSV
+
+  alias Ecto.Multi
+
+  alias Safira.Accounts.Attendee
+  alias Safira.Accounts.User
+
+  alias Safira.Auth
+
+  alias Safira.Repo
 
   def run(args) do
-    cond do
-      length(args) != 2 ->
-        Mix.shell().info("Needs to receive a file URL and a flag.")
-
-      true ->
-        args |> create
+    if length(args) != 2 do
+      Mix.shell().info("Needs to receive a file URL and a flag.")
+    else
+      args |> create
     end
   end
 
@@ -43,6 +44,7 @@ defmodule Mix.Tasks.Gen.DiscordUsersFromCsv do
           |> parse_csv
           |> create_users
         rescue
+          # credo:disable-for-next-line
           e in File.Error -> IO.inspect(e)
         end
 
@@ -57,6 +59,7 @@ defmodule Mix.Tasks.Gen.DiscordUsersFromCsv do
             |> create_users
 
           {:error, resp} ->
+            # credo:disable-for-next-line
             IO.inspect(resp)
         end
     end

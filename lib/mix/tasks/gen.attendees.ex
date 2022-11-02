@@ -1,9 +1,12 @@
 defmodule Mix.Tasks.Gen.Attendees do
+  @moduledoc """
+  Task to generate attendees
+  """
   use Mix.Task
 
   def run(args) do
     cond do
-      length(args) == 0 ->
+      Enum.empty?(args) ->
         Mix.shell().info("Needs to receive a number greater than 0.")
 
       args |> List.first() |> String.to_integer() <= 0 ->

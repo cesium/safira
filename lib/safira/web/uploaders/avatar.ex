@@ -1,4 +1,7 @@
 defmodule Safira.Avatar do
+  @moduledoc """
+  Upload for user profile pictures
+  """
   use Arc.Definition
 
   # Include ecto support (requires package arc_ecto installed):

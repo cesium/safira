@@ -1,11 +1,16 @@
 defmodule Safira.Contest.Badge do
+  @moduledoc """
+  The badge that attendees can win by participating in the different
+  activities that happen during SEI
+  """
   use Ecto.Schema
   use Arc.Ecto.Schema
   import Ecto.Changeset
 
-  alias Safira.Contest.Referral
-  alias Safira.Contest.Redeem
   alias Safira.Accounts.Attendee
+
+  alias Safira.Contest.Redeem
+  alias Safira.Contest.Referral
 
   schema "badges" do
     field(:name, :string)
@@ -18,7 +23,8 @@ defmodule Safira.Contest.Badge do
 
     field(:avatar, Safira.Avatar.Type)
 
-    # %{verificações: 0, secret: 1, desafios: 2, geral: 3, empresas: 4, oradores: 5, talks: 6, workshops: 7, discord: 8, pitches: 9}
+    # %{verificações: 0, secret: 1, desafios: 2, geral: 3, empresas: 4, oradores: 5,
+    # talks: 6, workshops: 7, discord: 8, pitches: 9}
     field(:type, :integer)
     field(:tokens, :integer)
 

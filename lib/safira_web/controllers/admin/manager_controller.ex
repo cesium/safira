@@ -1,8 +1,8 @@
 defmodule SafiraWeb.Admin.ManagerController do
   use SafiraWeb, :controller
 
-  alias Safira.Admin.Accounts
   alias Safira.Accounts.Manager
+  alias Safira.Admin.Accounts
 
   plug(:put_layout, {SafiraWeb.LayoutView, "torch.html"})
 

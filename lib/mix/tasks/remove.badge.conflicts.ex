@@ -1,20 +1,21 @@
 defmodule Mix.Tasks.Remove.Badge.Conflicts do
+  @moduledoc """
+  Task to remove badge conflicts (deprecated)
+  """
   use Mix.Task
 
   alias Safira.Accounts
   alias Safira.Contest
 
   def run(args) do
-    cond do
-      !Enum.empty?(args) ->
-        Mix.shell().info("Needs no arguments.")
-
-      true ->
-        create()
+    if Enum.empty?(args) do
+      create()
+    else
+      Mix.shell().info("Needs no arguments.")
     end
   end
 
-  defp create() do
+  defp create do
     Mix.Task.run("app.start")
 
     b1 =

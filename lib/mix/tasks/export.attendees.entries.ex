@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.Export.Attendees.Entries do
+  @moduledoc """
+  Task to export the entries for the final draw
+  """
   use Mix.Task
 
   def run(_) do

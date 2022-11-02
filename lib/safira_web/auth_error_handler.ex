@@ -1,4 +1,5 @@
 defmodule Safira.AuthErrorHandler do
+  @moduledoc false
   import Plug.Conn
 
   def auth_error(conn, {type, _reason}, _opts) do
@@ -6,6 +7,6 @@ defmodule Safira.AuthErrorHandler do
 
     conn
     |> put_resp_content_type("application/json")
-    |> send_resp(401, body)
+    |> send_resp(:unauthorized, body)
   end
 end

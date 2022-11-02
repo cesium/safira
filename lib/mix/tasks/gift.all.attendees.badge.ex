@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.Gift.All.Attendees.Badge do
+  @moduledoc """
+  Task to give a badge to all attendees
+  """
   use Mix.Task
 
   alias Safira.Accounts
@@ -6,12 +9,10 @@ defmodule Mix.Tasks.Gift.All.Attendees.Badge do
   alias Safira.Contest.Badge
 
   def run(args) do
-    cond do
-      length(args) != 1 ->
-        Mix.shell().info("Needs to receive only an id.")
-
-      true ->
-        args |> List.first() |> String.to_integer() |> create
+    if length(args) != 1 do
+      Mix.shell().info("Needs to receive only an id.")
+    else
+      args |> List.first() |> String.to_integer() |> create
     end
   end
 

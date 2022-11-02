@@ -1,17 +1,19 @@
 defmodule Mix.Tasks.Reset.Password do
+  @moduledoc """
+  Task to reset the password of a user
+  """
   use Mix.Task
 
-  alias Safira.Repo
   alias Safira.Accounts
   alias Safira.Accounts.User
 
-  def run(args) do
-    cond do
-      length(args) == 0 ->
-        Mix.shell().info("Needs to receive an user email.")
+  alias Safira.Repo
 
-      true ->
-        args |> List.first() |> create
+  def run(args) do
+    if Enum.empty?(args) do
+      Mix.shell().info("Needs to receive an user email.")
+    else
+      args |> List.first() |> create
     end
   end
 

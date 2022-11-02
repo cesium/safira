@@ -1,17 +1,4 @@
 defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge.With.Redeemable do
-  use Mix.Task
-
-  import Ecto.Query, warn: false
-
-  alias Safira.Accounts.Attendee
-  alias Safira.Contest.Badge
-  alias Safira.Contest.Redeem
-
-  alias Safira.Store
-  alias Safira.Repo
-  alias Ecto.Multi
-  alias Ecto.Multi
-
   @shortdoc "Gives checkpoint badge to attendees that reach that checkpoint"
 
   @moduledoc """
@@ -24,16 +11,26 @@ defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge.With.Redeemable do
       - badge_type: type of badge to confirm
       - redeemable_id: Redeemable's ID that is associated with the given badge
   """
+  use Mix.Task
+
+  import Ecto.Query, warn: false
+
+  alias Ecto.Multi
+
+  alias Safira.Accounts.Attendee
+  alias Safira.Contest.Badge
+  alias Safira.Contest.Redeem
+
+  alias Safira.Repo
+  alias Safira.Store
 
   def run(args) do
-    cond do
-      length(args) != 5 ->
-        Mix.shell().info(
-          "Needs to receive badge_id, badge_count, entries ,badge_type and redeemable_id."
-        )
-
-      true ->
-        create(args)
+    if length(args) != 5 do
+      Mix.shell().info(
+        "Needs to receive badge_id, badge_count, entries ,badge_type and redeemable_id."
+      )
+    else
+      create(args)
     end
   end
 
@@ -47,13 +44,11 @@ defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge.With.Redeemable do
   end
 
   defp validate_args(args) do
-    try do
-      args
-      |> Enum.map(fn x -> Integer.parse(x) |> elem(0) end)
-    rescue
-      ArgumentError ->
-        Mix.shell().info("All arguments should be integers")
-    end
+    args
+    |> Enum.map(fn x -> Integer.parse(x) |> elem(0) end)
+  rescue
+    ArgumentError ->
+      Mix.shell().info("All arguments should be integers")
   end
 
   defp map_args(args) do

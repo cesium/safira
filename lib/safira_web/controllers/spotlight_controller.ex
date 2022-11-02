@@ -9,24 +9,22 @@ defmodule SafiraWeb.SpotlightController do
   def create(conn, _params) do
     user = Accounts.get_user(conn)
 
-    cond do
-      Accounts.is_company(conn) ->
-        with {:ok, _struct} <- Interaction.start_spotlight(user.company) do
-          # to signal discord to start the spotlight
-          spotlight_discord_request(user.company.name, :post)
+    if Accounts.is_company(conn) do
+      with {:ok, _struct} <- Interaction.start_spotlight(user.company) do
+        # to signal discord to start the spotlight
+        spotlight_discord_request(user.company.name, :post)
 
-          schedule_spotlight_finish(user.company.name)
+        schedule_spotlight_finish(user.company.name)
 
-          conn
-          |> put_status(:created)
-          |> json(%{spotlight: "Spotlight requested succesfully"})
-        end
-
-      true ->
         conn
-        |> put_status(:unauthorized)
-        |> json(%{error: "Cannot access resource"})
-        |> halt()
+        |> put_status(:created)
+        |> json(%{spotlight: "Spotlight requested succesfully"})
+      end
+    else
+      conn
+      |> put_status(:unauthorized)
+      |> json(%{error: "Cannot access resource"})
+      |> halt()
     end
   end
 

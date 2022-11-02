@@ -1,11 +1,17 @@
 defmodule Mix.Tasks.Export.Daily.Stats do
+  @moduledoc """
+  Task to export daily stats
+  """
   use Mix.Task
 
   alias Safira.Accounts
   alias Safira.Contest
-  alias Safira.Store
-  alias Safira.Roulette
+
   alias Safira.Repo
+  alias Safira.Roulette
+
+  alias Safira.Store
+
   import Ecto.Query
 
   def run(date) do
@@ -42,7 +48,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
   end
 
   # # of badges overall
-  defp get_badges_global() do
+  defp get_badges_global do
     Repo.all(
       from r in Safira.Contest.Redeem,
         join: b in assoc(r, :badge),
@@ -55,7 +61,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
 
   # # of entries to the final draw
   # global
-  defp get_nr_final_entries() do
+  defp get_nr_final_entries do
     Repo.all(
       from a in Safira.Accounts.Attendee,
         select: sum(a.entries)
@@ -65,7 +71,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
 
   # tokens atribuidos
   # global in the system + nr os tokes spent
-  defp get_nr_tokens_atr() do
+  defp get_nr_tokens_atr do
     total =
       Repo.all(
         from a in Safira.Accounts.Attendee,
@@ -79,7 +85,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
   # # of tokens spent globaly
   # count nr os roullete rolls * 20
   # count nr sales (by total token ammount)
-  defp get_spent_tokens() do
+  defp get_spent_tokens do
     spent_roulette =
       Repo.all(
         from ap in Safira.Roulette.AttendeePrize,
@@ -117,7 +123,7 @@ defmodule Mix.Tasks.Export.Daily.Stats do
   # premios ganhos na roleta
   # SHOULD WORK
   # global task
-  defp get_roulette_prizes_global() do
+  defp get_roulette_prizes_global do
     Repo.all(
       from p in Safira.Roulette.Prize,
         join: ap in Safira.Roulette.AttendeePrize,

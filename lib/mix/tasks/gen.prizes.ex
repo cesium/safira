@@ -1,22 +1,18 @@
 defmodule Mix.Tasks.Gen.Prizes do
-  use Mix.Task
-
-  alias NimbleCSV.RFC4180, as: CSV
-
   @shortdoc "Generates the event Prizes from a CSV"
-
   @moduledoc """
   This CSV is waiting for:
     name,max_amount_per_attendee,stock,probability,path_to_image
   """
+  use Mix.Task
+
+  alias NimbleCSV.RFC4180, as: CSV
 
   def run(args) do
-    cond do
-      Enum.empty?(args) ->
-        Mix.shell().info("Needs to receive a file URL.")
-
-      true ->
-        args |> List.first() |> create
+    if Enum.empty?(args) do
+      Mix.shell().info("Needs to receive a file URL.")
+    else
+      args |> List.first() |> create
     end
   end
 
@@ -27,8 +23,12 @@ defmodule Mix.Tasks.Gen.Prizes do
     |> parse_csv()
     |> validate_probabilities()
     |> sequence()
-    |> (fn {create, update} -> {Safira.Roulette.create_prizes(create), update} end).()
+    |> create_prizes()
     |> insert_prize()
+  end
+
+  defp create_prizes({create, update}) do
+    {Safira.Roulette.create_prizes(create), update}
   end
 
   defp parse_csv(path) do

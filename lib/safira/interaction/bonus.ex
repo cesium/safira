@@ -1,4 +1,8 @@
 defmodule Safira.Interaction.Bonus do
+  @moduledoc """
+  Companies can give a bonus to attendees who stood out to them
+  (Deprecated used for online SEI)
+  """
   use Ecto.Schema
   import Ecto.Changeset
   alias Safira.Accounts.Attendee

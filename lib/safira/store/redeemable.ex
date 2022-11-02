@@ -1,10 +1,14 @@
 defmodule Safira.Store.Redeemable do
+  @moduledoc """
+  The different things attendees can buy in the store
+  """
   use Ecto.Schema
   use Arc.Ecto.Schema
   import Ecto.Changeset
 
-  alias Safira.Store.Buy
   alias Safira.Accounts.Attendee
+
+  alias Safira.Store.Buy
 
   schema "redeemables" do
     field :img, Safira.Avatar.Type

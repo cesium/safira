@@ -1,7 +1,8 @@
 defmodule SafiraWeb.RedeemableView do
   use SafiraWeb, :view
-  alias SafiraWeb.RedeemableView
+
   alias Safira.Avatar
+  alias SafiraWeb.RedeemableView
 
   def render("index.json", %{redeemables: redeemables}) do
     %{data: render_many(redeemables, RedeemableView, "redeemables.json")}

@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.Doc.Api do
+  @moduledoc """
+  Task to generate documentation
+  """
   use Mix.Task
 
   def run(args) do

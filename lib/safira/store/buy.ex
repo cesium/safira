@@ -1,9 +1,15 @@
 defmodule Safira.Store.Buy do
+  @moduledoc """
+  Schema registering the purchases an attendee makes in the store
+  """
   use Ecto.Schema
   import Ecto.Changeset
-  alias Safira.Store.Redeemable
+
   alias Safira.Accounts.Attendee
+
   alias Safira.Repo
+
+  alias Safira.Store.Redeemable
 
   schema "buys" do
     field :quantity, :integer
@@ -49,16 +55,14 @@ defmodule Safira.Store.Buy do
           Redeemable
           |> Repo.get!(redeemable_id)
 
-        cond do
-          redeemable.max_per_user >= quantity ->
-            changeset
-
-          true ->
-            add_error(
-              changeset,
-              :quantity,
-              "Quantity is greater than the maximum amount permitted per attendee"
-            )
+        if redeemable.max_per_user >= quantity do
+          changeset
+        else
+          add_error(
+            changeset,
+            :quantity,
+            "Quantity is greater than the maximum amount permitted per attendee"
+          )
         end
     end
   end
@@ -81,16 +85,14 @@ defmodule Safira.Store.Buy do
         add_error(changeset, :redeemed, "Redeemed shouldn't be nil")
 
       {_, _} ->
-        cond do
-          quantity >= redeemed ->
-            changeset
-
-          true ->
-            add_error(
-              changeset,
-              :quantity,
-              "Redeemed is greater than the quantity bought by the atendee"
-            )
+        if quantity >= redeemed do
+          changeset
+        else
+          add_error(
+            changeset,
+            :quantity,
+            "Redeemed is greater than the quantity bought by the atendee"
+          )
         end
     end
   end

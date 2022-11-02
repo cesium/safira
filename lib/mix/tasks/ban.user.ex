@@ -1,16 +1,17 @@
 defmodule Mix.Tasks.Ban.User do
+  @moduledoc """
+  Task for banning users
+  """
   use Mix.Task
 
-  alias Safira.Accounts.User
   alias Safira.Accounts
+  alias Safira.Accounts.User
 
   def run(args) do
-    cond do
-      length(args) == 0 ->
-        Mix.shell().info("Needs to receive one user email.")
-
-      true ->
-        args |> create
+    if Enum.empty?(args) do
+      Mix.shell().info("Needs to receive one user email.")
+    else
+      args |> create
     end
   end
 

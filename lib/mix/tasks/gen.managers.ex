@@ -1,4 +1,8 @@
 defmodule Mix.Tasks.Gen.Managers do
+  @moduledoc """
+  Task to generate managers
+  """
+
   use Mix.Task
   alias Safira.Accounts
 
@@ -6,7 +10,7 @@ defmodule Mix.Tasks.Gen.Managers do
 
   def run(args) do
     cond do
-      length(args) == 0 ->
+      Enum.empty?(args) ->
         Mix.shell().info("Needs to receive a number greater than 0.")
 
       args |> List.first() |> String.to_integer() <= 0 ->
@@ -36,17 +40,17 @@ defmodule Mix.Tasks.Gen.Managers do
     end)
   end
 
-  defp man_num() do
+  defp man_num do
     Accounts.list_managers()
     |> List.last()
     |> give_num
   end
 
   defp give_num(n) do
-    unless is_nil(n) do
-      Map.get(n, :id)
-    else
+    if is_nil(n) do
       0
+    else
+      Map.get(n, :id)
     end
   end
 

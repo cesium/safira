@@ -1,9 +1,12 @@
 defmodule Mix.Tasks.Govern.Managers do
+  @moduledoc """
+  Task to activate all manager accounts
+  """
   use Mix.Task
 
   def run(args) do
     cond do
-      length(args) == 0 || length(args) > 2 ->
+      Enum.empty?(args) || length(args) > 2 ->
         Mix.shell().info("Needs to receive a email and the active value.")
 
       List.last(args) != "false" && List.last(args) != "true" ->

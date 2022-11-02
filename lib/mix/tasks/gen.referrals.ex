@@ -1,4 +1,7 @@
 defmodule Mix.Tasks.Gen.Referrals do
+  @moduledoc """
+  Task to generate referrals
+  """
   use Mix.Task
   alias Safira.Contest
 

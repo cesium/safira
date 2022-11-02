@@ -10,19 +10,17 @@ defmodule SafiraWeb.BonusController do
     user = Accounts.get_user(conn)
     attendee = Accounts.get_attendee(attendee_id)
 
-    cond do
-      Accounts.is_company(conn) && !is_nil(attendee) ->
-        company = user |> Map.fetch!(:company)
+    if Accounts.is_company(conn) && !is_nil(attendee) do
+      company = user |> Map.fetch!(:company)
 
-        with {:ok, changes} <- Interaction.give_bonus(attendee, company) do
-          render(conn, "bonus.json", changes)
-        end
-
-      true ->
-        conn
-        |> put_status(:unauthorized)
-        |> json(%{error: "Cannot access resource"})
-        |> halt()
+      with {:ok, changes} <- Interaction.give_bonus(attendee, company) do
+        render(conn, "bonus.json", changes)
+      end
+    else
+      conn
+      |> put_status(:unauthorized)
+      |> json(%{error: "Cannot access resource"})
+      |> halt()
     end
   end
 end

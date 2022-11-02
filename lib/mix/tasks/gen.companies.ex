@@ -1,8 +1,12 @@
 defmodule Mix.Tasks.Gen.Companies do
+  @moduledoc """
+  Task to generate companies
+  """
   use Mix.Task
 
-  alias Safira.Accounts
   alias NimbleCSV.RFC4180, as: CSV
+
+  alias Safira.Accounts
 
   # Its waiting for an header or an empty line on the beggining of the file
 
@@ -11,12 +15,10 @@ defmodule Mix.Tasks.Gen.Companies do
   @domain "seium.org"
 
   def run(args) do
-    cond do
-      length(args) == 0 ->
-        Mix.shell().info("Needs to receive atleast one file path.")
-
-      true ->
-        args |> create
+    if Enum.empty?(args) do
+      Mix.shell().info("Needs to receive atleast one file path.")
+    else
+      args |> create
     end
   end
 
@@ -24,12 +26,14 @@ defmodule Mix.Tasks.Gen.Companies do
     Mix.Task.run("app.start")
 
     path
-    |> parse_csv
-    |> sequence
-    |> (fn {create, update, accounts_info} ->
-          {Safira.Contest.create_badges(create), update, accounts_info}
-        end).()
-    |> insert_companies
+    |> parse_csv()
+    |> sequence()
+    |> create_badges()
+    |> insert_companies()
+  end
+
+  defp create_badges({create, update, accounts_info}) do
+    {Safira.Contest.create_badges(create), update, accounts_info}
   end
 
   defp parse_csv(path) do
@@ -110,18 +114,20 @@ defmodule Mix.Tasks.Gen.Companies do
         Enum.zip([result, updates, accounts_info])
         |> update_badges
         |> Enum.map(fn acc_struct -> Accounts.create_company(acc_struct) end)
-        |> Enum.each(fn res ->
-          case res do
-            {:ok, acc_details} ->
-              Mix.shell().info("#{acc_details.user.email}:#{acc_details.user.password}")
-
-            {:error, changeset} ->
-              Mix.shell().info("Error creating account for #{changeset.changes.name}")
-          end
-        end)
+        |> Enum.each(&print_insert_company/1)
 
       {:error, error} ->
         Mix.shell().info(error)
+    end
+  end
+
+  defp print_insert_company(res) do
+    case res do
+      {:ok, acc_details} ->
+        Mix.shell().info("#{acc_details.user.email}:#{acc_details.user.password}")
+
+      {:error, changeset} ->
+        Mix.shell().info("Error creating account for #{changeset.changes.name}")
     end
   end
 
@@ -129,7 +135,7 @@ defmodule Mix.Tasks.Gen.Companies do
   defp update_badges(information_zip) do
     information_zip
     |> Enum.map(fn {insertion_results, update, account_info} ->
-      with {:ok, badge} = Safira.Contest.update_badge(elem(insertion_results, 1), update) do
+      with {:ok, badge} <- Safira.Contest.update_badge(elem(insertion_results, 1), update) do
         account_info
         |> Map.put(:badge_id, badge.id)
         |> Map.put(:user, create_user(account_info.name))

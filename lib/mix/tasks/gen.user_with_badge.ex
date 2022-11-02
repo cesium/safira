@@ -1,23 +1,29 @@
 defmodule Mix.Tasks.Gen.UserWithBadge do
+  @moduledoc """
+  Task to generate a user with a badge
+  """
   use Mix.Task
+
   alias Ecto.Multi
-  alias Safira.Accounts.Attendee
-  alias Safira.Contest.Redeem
-  alias Safira.Contest
-  alias Safira.Repo
-  alias Safira.Accounts.User
+
   alias Safira.Auth
+
+  alias Safira.Accounts.Attendee
+  alias Safira.Accounts.User
+
+  alias Safira.Contest
+  alias Safira.Contest.Redeem
+
+  alias Safira.Repo
 
   NimbleCSV.define(EneiParser, separator: ",", escape: "\"")
   # Use header
 
   def run(args) do
-    cond do
-      Enum.empty?(args) ->
-        Mix.shell().info("Needs to receive a file URL.")
-
-      true ->
-        args |> List.first() |> create
+    if Enum.empty?(args) do
+      Mix.shell().info("Needs to receive a file URL.")
+    else
+      args |> List.first() |> create
     end
   end
 
@@ -76,9 +82,7 @@ defmodule Mix.Tasks.Gen.UserWithBadge do
             Enum.reduce(
               [badge_1, badge_2, badge_3],
               multi,
-              fn badge, acc ->
-                give_badge(badge.id, acc)
-              end
+              &give_badge_aux/2
             )
 
           user_csv.housing == "Alojamento D. Maria II" ->
@@ -105,6 +109,10 @@ defmodule Mix.Tasks.Gen.UserWithBadge do
       |> Repo.transaction()
       |> send_mail()
     end)
+  end
+
+  defp give_badge_aux(badge, acc) do
+    give_badge(badge.id, acc)
   end
 
   defp send_mail(transaction) do

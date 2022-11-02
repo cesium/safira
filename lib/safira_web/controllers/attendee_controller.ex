@@ -4,8 +4,10 @@ defmodule SafiraWeb.AttendeeController do
   alias Safira.Accounts
   alias Safira.Accounts.Attendee
   alias Safira.Accounts.User
-  alias Safira.Store
+
   alias Safira.Roulette
+
+  alias Safira.Store
 
   action_fallback SafiraWeb.FallbackController
 

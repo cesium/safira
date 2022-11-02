@@ -1,12 +1,17 @@
 defmodule Mix.Tasks.Gen.Admins do
+  @moduledoc """
+  Task to generate admins
+  """
   use Mix.Task
+
+  alias Pow.Ecto.Context
   alias Safira.Admin.Accounts
 
   @domain "seium.org"
 
   def run(args) do
     cond do
-      length(args) == 0 ->
+      Enum.empty?(args) ->
         Mix.shell().info("Needs to receive a number greater than 0.")
 
       args |> List.first() |> String.to_integer() <= 0 ->
@@ -30,23 +35,23 @@ defmodule Mix.Tasks.Gen.Admins do
         "password_confirmation" => password
       }
 
-      Pow.Ecto.Context.create(admin_user, otp_app: :safira)
+      Context.create(admin_user, otp_app: :safira)
 
       IO.puts("#{email}:#{password}")
     end)
   end
 
-  defp man_num() do
+  defp man_num do
     Accounts.list_admin_users()
     |> List.last()
     |> give_num
   end
 
   defp give_num(n) do
-    unless is_nil(n) do
-      Map.get(n, :id)
-    else
+    if is_nil(n) do
       0
+    else
+      Map.get(n, :id)
     end
   end
 

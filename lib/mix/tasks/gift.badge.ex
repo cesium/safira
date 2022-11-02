@@ -1,9 +1,13 @@
 defmodule Mix.Tasks.Gift.Badge do
+  @moduledoc """
+  Task to gift a badge to an attendee
+  """
   use Mix.Task
+
+  alias Safira.Accounts
 
   alias Safira.Contest
   alias Safira.Contest.Badge
-  alias Safira.Accounts
 
   # Note: the flag must always be present even though it is only used when a file is given
   def run(args) do
@@ -85,9 +89,10 @@ defmodule Mix.Tasks.Gift.Badge do
             {:ok, _resp} ->
               "/tmp/user2.csv"
               |> File.stream!()
-              |> Enum.map(fn x -> give_check(x |> String.trim(), badge_id) end)
+              |> Enum.each(fn x -> give_check(x |> String.trim(), badge_id) end)
 
             {:error, resp} ->
+              # credo:disable-for-next-line
               IO.inspect(resp)
           end
 
@@ -144,12 +149,12 @@ defmodule Mix.Tasks.Gift.Badge do
   defp give_email(email, badge_id) do
     user = Accounts.get_user_preload_email(email)
 
-    if not is_nil(user) do
+    if is_nil(user) do
+      Mix.shell().info("Invalid email: #{email}")
+    else
       with {:error, _changeset} <- give(user.attendee.id, badge_id) do
         Mix.shell().info("Duplicate badge for #{email}")
       end
-    else
-      Mix.shell().info("Invalid email: #{email}")
     end
   end
 

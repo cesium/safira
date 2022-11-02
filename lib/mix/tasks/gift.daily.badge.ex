@@ -1,12 +1,16 @@
 defmodule Mix.Tasks.Gift.Daily.Badge do
+  @moduledoc """
+  Task to gift the daily badge to all attendees
+  """
   use Mix.Task
 
   import Ecto.Query, warn: false
 
   alias Safira.Accounts.Attendee
+
   alias Safira.Contest
-  alias Safira.Contest.Redeem
   alias Safira.Contest.Badge
+  alias Safira.Contest.Redeem
 
   alias Safira.Repo
 
@@ -14,12 +18,10 @@ defmodule Mix.Tasks.Gift.Daily.Badge do
   def run(args) do
     Mix.Task.run("app.start")
 
-    cond do
-      length(args) != 2 ->
-        Mix.shell().info("Needs to receive badge_id and the date of the day.")
-
-      true ->
-        args |> create()
+    if length(args) != 2 do
+      Mix.shell().info("Needs to receive badge_id and the date of the day.")
+    else
+      args |> create()
     end
   end
 

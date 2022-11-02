@@ -1,13 +1,18 @@
 defmodule Safira.Auth do
+  @moduledoc """
+  Authentication related functions
+  """
   import Ecto.Query, warn: false
-  alias Safira.Repo
+
   alias Ecto.Multi
 
-  alias Safira.Accounts.User
-  alias Safira.Accounts.Attendee
   alias Safira.Accounts
+  alias Safira.Accounts.Attendee
+  alias Safira.Accounts.User
 
   alias Safira.Guardian
+
+  alias Safira.Repo
 
   def create_user_uuid(attrs) do
     if is_nil(attrs["attendee"]["id"]) do

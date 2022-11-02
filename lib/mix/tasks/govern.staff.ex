@@ -1,13 +1,14 @@
 defmodule Mix.Tasks.Govern.Staff do
+  @moduledoc """
+  Deprecated
+  """
   use Mix.Task
 
   def run(args) do
-    cond do
-      length(args) != 1 ->
-        Mix.shell().info("Needs id")
-
-      true ->
-        args |> List.first() |> create
+    if length(args) != 1 do
+      Mix.shell().info("Needs id")
+    else
+      args |> List.first() |> create
     end
   end
 

@@ -1,9 +1,10 @@
 defmodule SafiraWeb.BadgeController do
   use SafiraWeb, :controller
 
-  alias Safira.Contest
-  alias Safira.Accounts.User
   alias Safira.Accounts
+  alias Safira.Accounts.User
+
+  alias Safira.Contest
 
   action_fallback SafiraWeb.FallbackController
 

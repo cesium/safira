@@ -1,16 +1,4 @@
 defmodule Mix.Tasks.Gift.Quantity.Checkpoint.Badge do
-  use Mix.Task
-
-  import Ecto.Query, warn: false
-
-  alias Safira.Accounts.Attendee
-  alias Safira.Contest.Badge
-  alias Safira.Contest.Redeem
-
-  alias Safira.Repo
-  alias Ecto.Multi
-  alias Ecto.Multi
-
   @shortdoc "Gives checkpoint badge to attendees that reach that checkpoint"
 
   @moduledoc """
@@ -21,14 +9,23 @@ defmodule Mix.Tasks.Gift.Quantity.Checkpoint.Badge do
       - entries: Number of entries that an attendee receives for
           having this badge
   """
+  use Mix.Task
+
+  import Ecto.Query, warn: false
+
+  alias Ecto.Multi
+
+  alias Safira.Accounts.Attendee
+  alias Safira.Contest.Badge
+  alias Safira.Contest.Redeem
+
+  alias Safira.Repo
 
   def run(args) do
-    cond do
-      length(args) != 3 ->
-        Mix.shell().info("Needs to receive badge_id, badge_count, entries.")
-
-      true ->
-        args |> create()
+    if length(args) != 3 do
+      Mix.shell().info("Needs to receive badge_id, badge_count, entries.")
+    else
+      args |> create()
     end
   end
 
@@ -42,13 +39,11 @@ defmodule Mix.Tasks.Gift.Quantity.Checkpoint.Badge do
   end
 
   defp validate_args(args) do
-    try do
-      args
-      |> Enum.map(fn x -> Integer.parse(x) |> elem(0) end)
-    rescue
-      ArgumentError ->
-        Mix.shell().info("All arguments should be integers")
-    end
+    args
+    |> Enum.map(fn x -> Integer.parse(x) |> elem(0) end)
+  rescue
+    ArgumentError ->
+      Mix.shell().info("All arguments should be integers")
   end
 
   defp map_args(args) do

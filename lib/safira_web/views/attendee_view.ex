@@ -1,7 +1,8 @@
 defmodule SafiraWeb.AttendeeView do
   use SafiraWeb, :view
-  alias SafiraWeb.AttendeeView
+
   alias Safira.Avatar
+  alias SafiraWeb.AttendeeView
 
   def render("index.json", %{attendees: attendees}) do
     %{data: render_many(attendees, AttendeeView, "attendees.json")}

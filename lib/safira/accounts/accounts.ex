@@ -4,12 +4,13 @@ defmodule Safira.Accounts do
   """
 
   import Ecto.Query, warn: false
-  alias Safira.Repo
 
-  alias Safira.Accounts.User
   alias Safira.Accounts.Attendee
-  alias Safira.Accounts.Manager
   alias Safira.Accounts.Company
+  alias Safira.Accounts.Manager
+  alias Safira.Accounts.User
+
+  alias Safira.Repo
 
   def list_users do
     Repo.all(User)

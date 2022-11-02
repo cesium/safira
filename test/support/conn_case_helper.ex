@@ -1,4 +1,5 @@
 defmodule SafiraWeb.ConnCaseHelper do
+  @moduledoc false
   import Safira.Factory
   import Phoenix.ConnTest
   import Plug.Conn

@@ -3,7 +3,7 @@ defmodule Safira.InteractionFactory do
   A factory to build all interaction related structs
   """
 
-  alias Safira.Interaction.{Bonus}
+  alias Safira.Interaction.Bonus
 
   defmacro __using__(_opts) do
     quote do

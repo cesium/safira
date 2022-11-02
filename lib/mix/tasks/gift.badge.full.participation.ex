@@ -1,16 +1,17 @@
 defmodule Mix.Tasks.Gift.Badge.Full.Participation do
+  @moduledoc """
+  Task to gift all badges to an attendee
+  """
   use Mix.Task
 
   alias Safira.Accounts
   alias Safira.Contest
 
   def run(args) do
-    cond do
-      Enum.empty?(args) ->
-        Mix.shell().info("Needs badge_id.")
-
-      true ->
-        create(args)
+    if Enum.empty?(args) do
+      Mix.shell().info("Needs badge_id.")
+    else
+      create(args)
     end
   end
 

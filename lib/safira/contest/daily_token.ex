@@ -1,4 +1,7 @@
 defmodule Safira.Contest.DailyToken do
+  @moduledoc """
+  Attendees gain tokens for every day they participate in SEI
+  """
   use Ecto.Schema
   use Arc.Ecto.Schema
   import Ecto.Changeset

@@ -1,8 +1,8 @@
 defmodule Safira.AccountsTest do
   use Safira.DataCase
 
-  alias Safira.Repo
   alias Safira.Accounts
+  alias Safira.Repo
 
   describe "list_users/0" do
     test "no users" do

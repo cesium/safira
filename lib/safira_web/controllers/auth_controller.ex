@@ -1,8 +1,8 @@
 defmodule SafiraWeb.AuthController do
   use SafiraWeb, :controller
 
-  alias Safira.Auth
   alias Safira.Accounts
+  alias Safira.Auth
   alias Safira.Guardian
 
   action_fallback SafiraWeb.FallbackController

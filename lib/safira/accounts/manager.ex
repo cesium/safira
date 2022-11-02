@@ -1,4 +1,8 @@
 defmodule Safira.Accounts.Manager do
+  @moduledoc """
+  A manager is a staff member who can give attendees badges and
+  deliver them prizes they win throughout the event
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

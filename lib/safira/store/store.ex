@@ -1,12 +1,20 @@
 defmodule Safira.Store do
+  @moduledoc """
+  The store context. In the store attendees can spend
+  tokens to buy stuff
+  """
   import Ecto.Query, warn: false
   alias Ecto.Multi
-  alias Safira.Repo
-  alias Safira.Store.Redeemable
-  alias Safira.Store.Buy
+
   alias Safira.Accounts.Attendee
-  alias Safira.Contest.DailyToken
+
   alias Safira.Contest
+  alias Safira.Contest.DailyToken
+
+  alias Safira.Repo
+
+  alias Safira.Store.Buy
+  alias Safira.Store.Redeemable
 
   def list_redeemables do
     Repo.all(Redeemable)
@@ -168,22 +176,17 @@ defmodule Safira.Store do
   end
 
   def serializable_transaction(multi) do
-    try do
-      Repo.transaction(fn ->
-        Repo.query!("set transaction isolation level serializable;")
+    Repo.transaction(fn ->
+      Repo.query!("set transaction isolation level serializable;")
 
-        Repo.transaction(multi)
-        |> case do
-          {:ok, result} ->
-            result
+      Repo.transaction(multi)
+      |> case do
+        {:ok, result} ->
+          result
 
-          {:error, _failed_operation, changeset, _changes_so_far} ->
-            Repo.rollback(changeset)
-        end
-      end)
-    rescue
-      _error ->
-        serializable_transaction(multi)
-    end
+        {:error, _failed_operation, changeset, _changes_so_far} ->
+          Repo.rollback(changeset)
+      end
+    end)
   end
 end

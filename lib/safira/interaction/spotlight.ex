@@ -1,4 +1,9 @@
 defmodule Safira.Interaction.Spotlight do
+  @moduledoc """
+  Spotlight was a feature that would highlight a company
+  for a given amount of time in discord
+  (Deprecated, used for online SEI)
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

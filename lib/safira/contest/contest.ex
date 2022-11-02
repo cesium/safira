@@ -1,11 +1,21 @@
 defmodule Safira.Contest do
+  @moduledoc """
+  The gamification context. Attendees can win badges, which in
+  turn give them tokens, which they can spend on the store on
+  playing in the roulette
+  """
   import Ecto.Query, warn: false
-  alias Safira.Repo
-  alias Safira.Contest.Redeem
-  alias Safira.Contest.Badge
-  alias Safira.Interaction
+
   alias Ecto.Multi
+
+  alias Safira.Accounts.Attendee
+  alias Safira.Contest.Badge
   alias Safira.Contest.DailyToken
+  alias Safira.Contest.Redeem
+
+  alias Safira.Interaction
+
+  alias Safira.Repo
 
   def list_badges do
     Repo.all(Badge)
@@ -13,8 +23,7 @@ defmodule Safira.Contest do
 
   def list_available_badges do
     Repo.all(Badge)
-    |> Enum.reject(fn x -> not badge_is_in_time(x) end)
-    |> Enum.reject(fn x -> x.type == 4 end)
+    |> Enum.reject(fn x -> not badge_is_in_time(x) or x.type == 4 end)
   end
 
   def list_secret do
@@ -161,7 +170,7 @@ defmodule Safira.Contest do
     |> Multi.update(:attendee, fn %{redeem: redeem} ->
       redeem = Repo.preload(redeem, [:badge, :attendee])
 
-      Safira.Accounts.Attendee.update_on_redeem_changeset(
+      Attendee.update_on_redeem_changeset(
         redeem.attendee,
         %{
           token_balance: redeem.attendee.token_balance + calculate_badge_tokens(redeem.badge),
@@ -205,7 +214,7 @@ defmodule Safira.Contest do
 
   def list_leaderboard do
     Repo.all(
-      from a in Safira.Accounts.Attendee,
+      from a in Attendee,
         join: r in Redeem,
         on: a.id == r.attendee_id,
         join: b in Badge,
@@ -220,7 +229,7 @@ defmodule Safira.Contest do
 
   def list_daily_leaderboard(date) do
     Repo.all(
-      from a in Safira.Accounts.Attendee,
+      from a in Attendee,
         join: r in Redeem,
         on: a.id == r.attendee_id,
         join: b in Badge,
@@ -246,7 +255,7 @@ defmodule Safira.Contest do
 
   def get_winner do
     Repo.all(
-      from a in Safira.Accounts.Attendee,
+      from a in Attendee,
         where: not is_nil(a.user_id) and not a.volunteer
     )
     |> Repo.preload(badges: from(b in Badge, where: b.type != ^0))
@@ -263,9 +272,10 @@ defmodule Safira.Contest do
   end
 
   defp calculate_badge_tokens(badge) do
-    cond do
-      Interaction.is_badge_spotlighted(badge.id) -> badge.tokens * 2
-      true -> badge.tokens
+    if Interaction.is_badge_spotlighted(badge.id) do
+      badge.tokens * 2
+    else
+      badge.tokens
     end
   end
 end

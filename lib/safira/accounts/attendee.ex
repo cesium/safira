@@ -1,17 +1,23 @@
 defmodule Safira.Accounts.Attendee do
+  @moduledoc """
+  An attendee is someone who is participating in SEI
+  """
   use Ecto.Schema
   use Arc.Ecto.Schema
   import Ecto.Changeset
 
   alias Safira.Accounts.User
-  alias Safira.Contest.Redeem
+
   alias Safira.Contest.Badge
-  alias Safira.Contest.Referral
   alias Safira.Contest.DailyToken
-  alias Safira.Store.Redeemable
+  alias Safira.Contest.Redeem
+  alias Safira.Contest.Referral
+
   alias Safira.Store.Buy
-  alias Safira.Roulette.Prize
+  alias Safira.Store.Redeemable
+
   alias Safira.Roulette.AttendeePrize
+  alias Safira.Roulette.Prize
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @derive {Phoenix.Param, key: :id}
