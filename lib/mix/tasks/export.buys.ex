@@ -59,8 +59,6 @@ defmodule Mix.Tasks.Export.Buys do
   end
 
   defp header(attendee) do
-    "id : #{attendee.id}, name: #{attendee.name} , email: #{
-      Safira.Accounts.get_user!(attendee.user_id).email
-    }"
+    "id : #{attendee.id}, name: #{attendee.name} , email: #{Safira.Accounts.get_user!(attendee.user_id).email}"
   end
 end

@@ -26,8 +26,9 @@ defmodule SafiraWeb.PasswordControllerTest do
         |> post(Routes.password_path(conn, :create), attrs)
 
       assert json_response(conn, 201)["data"]["attributes"] != %{}
-      #TODO: Use assert_delivered_email
-      assert {:ok, email = %Bamboo.Email{}} = (Email.send_reset_email(user.email, user.reset_password_token))
+      # TODO: Use assert_delivered_email
+      assert {:ok, email = %Bamboo.Email{}} =
+               Email.send_reset_email(user.email, user.reset_password_token)
     end
 
     test "password reset with invalid user", %{conn: conn} do
