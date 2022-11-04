@@ -12,8 +12,8 @@ jobs:
 
     strategy:
       matrix:
-        otp: [22.x]
-        elixir: [1.9.x]
+        otp: [25.x]
+        elixir: [1.14.x]
 
     steps:
       - name: Checkout repository
