@@ -33,11 +33,6 @@
       </li>
 
       <li>
-        <div class="torch-show-label">Volunteer:</div>
-        <div class="torch-show-data"><%= @attendee.volunteer %></div>
-      </li>
-
-      <li>
         <div class="torch-show-label">Avatar:</div>
         <div class="torch-show-data">
             <%= img_tag(Safira.Avatar.url({@attendee.avatar, @attendee}, :original)) %>

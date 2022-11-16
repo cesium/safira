@@ -31,7 +31,7 @@ defmodule Safira.Contest do
       from r in Redeem,
         join: b in assoc(r, :badge),
         join: a in assoc(r, :attendee),
-        where: b.type == ^1 and not a.volunteer and not is_nil(a.nickname),
+        where: b.type == ^1 and not is_nil(a.nickname),
         preload: [badge: b, attendee: a],
         distinct: :badge_id
     )
@@ -149,7 +149,7 @@ defmodule Safira.Contest do
       from r in Redeem,
         join: b in assoc(r, :badge),
         join: a in assoc(r, :attendee),
-        where: b.type == ^1 and not a.volunteer and not is_nil(a.nickname),
+        where: b.type == ^1 and not is_nil(a.nickname),
         preload: [badge: b, attendee: a]
     )
   end
@@ -256,7 +256,7 @@ defmodule Safira.Contest do
   def get_winner do
     Repo.all(
       from a in Attendee,
-        where: not is_nil(a.user_id) and not a.volunteer
+        where: not is_nil(a.user_id)
     )
     |> Repo.preload(badges: from(b in Badge, where: b.type != ^0))
     |> Enum.map(fn x ->

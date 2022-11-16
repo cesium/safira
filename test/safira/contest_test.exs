@@ -58,8 +58,8 @@ defmodule Safira.ContestTest do
     test "multiple badges" do
       b1 = insert(:badge, type: 1)
       b2 = insert(:badge, type: 2)
-      a1 = insert(:attendee, volunteer: false)
-      a2 = insert(:attendee, volunteer: true)
+      a1 = insert(:attendee)
+      a2 = insert(:attendee)
       r1 = insert(:redeem, badge: b1, attendee: a1)
       r2 = insert(:redeem, badge: b1, attendee: a2)
       r3 = insert(:redeem, badge: b2)
@@ -79,8 +79,8 @@ defmodule Safira.ContestTest do
       b3 = insert(:badge, type: 3)
       b4 = insert(:badge, type: 4)
       b5 = insert(:badge, type: 3, begin_badge: Faker.DateTime.forward(2))
-      a1 = insert(:attendee, volunteer: false)
-      a2 = insert(:attendee, volunteer: true)
+      a1 = insert(:attendee)
+      a2 = insert(:attendee)
       r1 = insert(:redeem, badge: b1, attendee: a1)
       r2 = insert(:redeem, badge: b1, attendee: a2)
       r3 = insert(:redeem, badge: b2)
@@ -404,7 +404,7 @@ defmodule Safira.ContestTest do
     end
 
     test "multiple redeems" do
-      at = insert(:attendee, volunteer: false)
+      at = insert(:attendee)
       b = insert(:badge, type: 1)
       r1 = insert(:redeem, attendee: at, badge: b)
 
@@ -612,9 +612,9 @@ defmodule Safira.ContestTest do
     end
 
     test "multiple people" do
-      at1 = insert(:attendee, volunteer: false)
-      at2 = insert(:attendee, volunteer: false)
-      at3 = insert(:attendee, volunteer: false)
+      at1 = insert(:attendee)
+      at2 = insert(:attendee)
+      at3 = insert(:attendee)
 
       insert(:daily_token, attendee: at1)
       insert(:daily_token, attendee: at2)

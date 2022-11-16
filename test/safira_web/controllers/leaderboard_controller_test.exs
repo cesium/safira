@@ -30,8 +30,7 @@ defmodule SafiraWeb.LeaderboardControllerTest do
           "id" => attendee1.id,
           "name" => attendee1.name,
           "nickname" => attendee1.nickname,
-          "token_balance" => attendee1.token_balance,
-          "volunteer" => attendee1.volunteer
+          "token_balance" => attendee1.token_balance
         },
         %{
           "avatar" => "/images/attendee-missing.png",
@@ -39,8 +38,7 @@ defmodule SafiraWeb.LeaderboardControllerTest do
           "id" => attendee2.id,
           "name" => attendee2.name,
           "nickname" => attendee2.nickname,
-          "token_balance" => attendee2.token_balance,
-          "volunteer" => attendee2.volunteer
+          "token_balance" => attendee2.token_balance
         }
       ]
 
@@ -66,8 +64,7 @@ defmodule SafiraWeb.LeaderboardControllerTest do
           "id" => attendee1.id,
           "name" => attendee1.name,
           "nickname" => attendee1.nickname,
-          "token_balance" => attendee1.token_balance,
-          "volunteer" => attendee1.volunteer
+          "token_balance" => attendee1.token_balance
         },
         %{
           "avatar" => "/images/attendee-missing.png",
@@ -75,8 +72,7 @@ defmodule SafiraWeb.LeaderboardControllerTest do
           "id" => attendee2.id,
           "name" => attendee2.name,
           "nickname" => attendee2.nickname,
-          "token_balance" => attendee2.token_balance,
-          "volunteer" => attendee2.volunteer
+          "token_balance" => attendee2.token_balance
         }
       ]
 
@@ -134,8 +130,7 @@ defmodule SafiraWeb.LeaderboardControllerTest do
           "id" => attendee1.id,
           "name" => attendee1.name,
           "nickname" => attendee1.nickname,
-          "token_balance" => 10,
-          "volunteer" => attendee1.volunteer
+          "token_balance" => 10
         },
         %{
           "avatar" => "/images/attendee-missing.png",
@@ -143,8 +138,7 @@ defmodule SafiraWeb.LeaderboardControllerTest do
           "id" => attendee2.id,
           "name" => attendee2.name,
           "nickname" => attendee2.nickname,
-          "token_balance" => 10,
-          "volunteer" => attendee2.volunteer
+          "token_balance" => 10
         }
       ]
 
@@ -179,8 +173,7 @@ defmodule SafiraWeb.LeaderboardControllerTest do
           "id" => attendee1.id,
           "name" => attendee1.name,
           "nickname" => attendee1.nickname,
-          "token_balance" => 20,
-          "volunteer" => attendee1.volunteer
+          "token_balance" => 20
         },
         %{
           "avatar" => "/images/attendee-missing.png",
@@ -188,8 +181,7 @@ defmodule SafiraWeb.LeaderboardControllerTest do
           "id" => attendee2.id,
           "name" => attendee2.name,
           "nickname" => attendee2.nickname,
-          "token_balance" => 10,
-          "volunteer" => attendee2.volunteer
+          "token_balance" => 10
         }
       ]
 
