@@ -23,7 +23,6 @@ defmodule Safira.Accounts.Attendee do
   @derive {Phoenix.Param, key: :id}
   schema "attendees" do
     field :nickname, :string
-    field :volunteer, :boolean, default: false
     field :avatar, Safira.Avatar.Type
     field :name, :string
     field :token_balance, :integer, default: 0
@@ -45,10 +44,10 @@ defmodule Safira.Accounts.Attendee do
 
   def changeset(attendee, attrs) do
     attendee
-    |> cast(attrs, [:name, :nickname, :volunteer, :user_id])
+    |> cast(attrs, [:name, :nickname, :user_id])
     |> cast_attachments(attrs, [:avatar])
     |> cast_assoc(:user)
-    |> validate_required([:name, :nickname, :volunteer])
+    |> validate_required([:name, :nickname])
     |> validate_length(:nickname, min: 2, max: 15)
     |> validate_format(:nickname, ~r/^[a-zA-Z0-9]+([a-zA-Z0-9](_|-)[a-zA-Z0-9])*[a-zA-Z0-9]+$/)
     |> unique_constraint(:nickname)
@@ -78,12 +77,6 @@ defmodule Safira.Accounts.Attendee do
   def update_changeset_discord_association(attendee, attrs) do
     attendee
     |> cast(attrs, [:discord_id])
-  end
-
-  def volunteer_changeset(attendee, attrs) do
-    attendee
-    |> cast(attrs, [:volunteer])
-    |> validate_required([:volunteer])
   end
 
   def only_user_changeset(attendee, attrs) do

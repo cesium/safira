@@ -16,8 +16,7 @@ defmodule SafiraWeb.LeaderboardView do
       name: attendee.name,
       avatar: Avatar.url({attendee.avatar, attendee}, :original),
       badges: attendee.badge_count,
-      token_balance: attendee.token_balance,
-      volunteer: attendee.volunteer
+      token_balance: attendee.token_balance
     }
   end
 end

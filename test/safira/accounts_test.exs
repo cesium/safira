@@ -214,30 +214,6 @@ defmodule Safira.AccountsTest do
     end
   end
 
-  describe "list_active_volunteers_attendees/0" do
-    test "no attendees" do
-      assert Accounts.list_active_volunteers_attendees() == []
-    end
-
-    test "multiple volunteer attendees" do
-      attendees = insert_list(3, :attendee, volunteer: true)
-      list = Accounts.list_active_volunteers_attendees()
-
-      for i <- 0..2 do
-        assert Enum.at(attendees, i).id == Enum.at(list, i).id
-      end
-    end
-
-    test "one voluteer attendee" do
-      volunteer = insert(:attendee, volunteer: true)
-      insert_list(2, :attendee, volunteer: false)
-      list = Accounts.list_active_volunteers_attendees()
-
-      assert length(list) == 1
-      assert Enum.at(list, 0).id == volunteer.id
-    end
-  end
-
   describe "get_attendee!/1" do
     test "attendee exists" do
       attendee = insert(:attendee)
@@ -343,20 +319,6 @@ defmodule Safira.AccountsTest do
       {:ok, _attendee} = Accounts.delete_attendee(attendee)
 
       assert Accounts.list_attendees() == []
-    end
-  end
-
-  describe "is_volunteer/1" do
-    test "attendee is volunteer" do
-      attendee = insert(:attendee, volunteer: true)
-
-      assert Accounts.is_volunteer(attendee) == true
-    end
-
-    test "attendee is not a volunteer" do
-      attendee = insert(:attendee, volunteer: false)
-
-      assert Accounts.is_volunteer(attendee) == false
     end
   end
 

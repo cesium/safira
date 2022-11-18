@@ -80,15 +80,6 @@ defmodule Safira.Accounts do
     end)
   end
 
-  def list_active_volunteers_attendees do
-    Repo.all(
-      from a in Attendee,
-        where: not is_nil(a.user_id),
-        where: a.volunteer == ^true
-    )
-    |> Repo.preload(:badges)
-  end
-
   def get_attendee!(id) do
     Repo.get!(Attendee, id)
     |> Repo.preload(:badges)
@@ -152,22 +143,12 @@ defmodule Safira.Accounts do
     |> Repo.update()
   end
 
-  def volunteer_update_attendee(%Attendee{} = attendee, attrs) do
-    attendee
-    |> Attendee.volunteer_changeset(attrs)
-    |> Repo.update()
-  end
-
   def delete_attendee(%Attendee{} = attendee) do
     Repo.delete(attendee)
   end
 
   def change_attendee(%Attendee{} = attendee) do
     Attendee.changeset(attendee, %{})
-  end
-
-  def is_volunteer(%Attendee{} = attendee) do
-    attendee.volunteer
   end
 
   def list_managers do

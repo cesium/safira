@@ -14,7 +14,6 @@ defmodule Safira.AccountsFactory do
         %Safira.Accounts.Attendee{
           nickname: String.downcase("#{first_name}_123"),
           name: "#{first_name} #{last_name}",
-          volunteer: Enum.random([true, false]),
           user: build(:user)
         }
       end
