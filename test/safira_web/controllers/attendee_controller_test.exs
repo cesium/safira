@@ -46,7 +46,7 @@ defmodule SafiraWeb.AttendeeControllerTest do
       end
     end
 
-    test "with invalid token", %{attendee: attendee} do
+    test "with invalid token", %{conn: conn, attendee: attendee} do
       conn =
         conn
         |> put_req_header("authorization", "Bearer #{"invalid"}")
@@ -55,7 +55,7 @@ defmodule SafiraWeb.AttendeeControllerTest do
       assert json_response(conn, 401)["error"] == "invalid_token"
     end
 
-    test "with no token", %{attendee: attendee} do
+    test "with no token", %{conn: conn, attendee: attendee} do
       conn =
         conn
         |> delete(Routes.attendee_path(conn, :delete, attendee.id))
@@ -102,7 +102,7 @@ defmodule SafiraWeb.AttendeeControllerTest do
       assert json_response(conn, 200)["data"] == expected_response
     end
 
-    test "with invalid token" do
+    test "with invalid token", %{conn: conn} do
       conn =
         conn
         |> put_req_header("authorization", "Bearer #{"invalid"}")
@@ -111,7 +111,7 @@ defmodule SafiraWeb.AttendeeControllerTest do
       assert json_response(conn, 401)["error"] == "invalid_token"
     end
 
-    test "with no token" do
+    test "with no token", %{conn: conn} do
       conn =
         conn
         |> get(Routes.attendee_path(conn, :index))
@@ -144,7 +144,7 @@ defmodule SafiraWeb.AttendeeControllerTest do
       assert json_response(conn, 200)["data"] == expected_attendee
     end
 
-    test "with invalid token", %{attendee: attendee} do
+    test "with invalid token", %{conn: conn, attendee: attendee} do
       conn =
         conn
         |> put_req_header("authorization", "Bearer #{"invalid"}")
@@ -153,7 +153,7 @@ defmodule SafiraWeb.AttendeeControllerTest do
       assert json_response(conn, 401)["error"] == "invalid_token"
     end
 
-    test "with no token", %{attendee: attendee} do
+    test "with no token", %{conn: conn, attendee: attendee} do
       conn =
         conn
         |> get(Routes.attendee_path(conn, :show, attendee.id))
@@ -182,7 +182,7 @@ defmodule SafiraWeb.AttendeeControllerTest do
       assert json_response(conn, 200)["data"] == expected_attendee
     end
 
-    test "with invalid token", %{attendee: attendee, attrs: attrs} do
+    test "with invalid token", %{conn: conn, attendee: attendee, attrs: attrs} do
       conn =
         conn
         |> put_req_header("authorization", "Bearer #{"invalid"}")
@@ -191,7 +191,7 @@ defmodule SafiraWeb.AttendeeControllerTest do
       assert json_response(conn, 401)["error"] == "invalid_token"
     end
 
-    test "with no token", %{attendee: attendee, attrs: attrs} do
+    test "with no token", %{conn: conn, attendee: attendee, attrs: attrs} do
       conn =
         conn
         |> put(Routes.attendee_path(conn, :update, attendee.id), attrs)

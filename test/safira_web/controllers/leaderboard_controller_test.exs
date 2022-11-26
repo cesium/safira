@@ -83,7 +83,7 @@ defmodule SafiraWeb.LeaderboardControllerTest do
       assert json_response(conn, 200)["data"] == expected_response
     end
 
-    test "with invalid token" do
+    test "with invalid token", %{conn: conn} do
       conn =
         conn
         |> put_req_header("authorization", "Bearer #{"invalid"}")
@@ -92,7 +92,7 @@ defmodule SafiraWeb.LeaderboardControllerTest do
       assert json_response(conn, 401)["error"] == "invalid_token"
     end
 
-    test "with no token" do
+    test "with no token", %{conn: conn} do
       conn =
         conn
         |> get(Routes.leaderboard_path(conn, :index))

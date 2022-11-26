@@ -67,7 +67,7 @@ defmodule SafiraWeb.RedeemableControllerTest do
       assert json_response(conn, 401)["error"] == "invalid_token"
     end
 
-    test "with no token" do
+    test "with no token", %{conn: conn} do
       user = create_user_strategy(:user)
       redeemable = insert(:redeemable)
       insert(:attendee, user: user)
@@ -142,7 +142,7 @@ defmodule SafiraWeb.RedeemableControllerTest do
       assert json_response(conn, 401)["error"] == "invalid_token"
     end
 
-    test "with no token" do
+    test "with no token", %{conn: conn} do
       user = create_user_strategy(:user)
       redeemable = insert(:redeemable)
       insert(:attendee, user: user)

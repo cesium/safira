@@ -14,8 +14,6 @@ defmodule Mix.Tasks.Export.Attendees.Entries do
   end
 
   defp csv_io(attendee) do
-    "#{attendee.id},#{attendee.name},#{Safira.Accounts.get_user!(attendee.user_id).email},#{
-      attendee.entries
-    }"
+    "#{attendee.id},#{attendee.name},#{Safira.Accounts.get_user!(attendee.user_id).email},#{attendee.entries}"
   end
 end

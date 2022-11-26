@@ -125,7 +125,7 @@ defmodule SafiraWeb.DeliverRedeemableControllerTest do
       assert json_response(conn, 400)["Redeemable"] == "Json does not have `quantity` param"
     end
 
-    test "with invalid token" do
+    test "with invalid token", %{conn: conn} do
       user = create_user_strategy(:user)
       insert(:manager, user: user)
       attendee = insert(:attendee)
@@ -148,7 +148,7 @@ defmodule SafiraWeb.DeliverRedeemableControllerTest do
       assert json_response(conn, 401)["error"] == "invalid_token"
     end
 
-    test "with no token" do
+    test "with no token", %{conn: conn} do
       user = create_user_strategy(:user)
       insert(:manager, user: user)
       attendee = insert(:attendee)
@@ -222,7 +222,7 @@ defmodule SafiraWeb.DeliverRedeemableControllerTest do
       assert json_response(conn, 200)["data"] == []
     end
 
-    test "with invalid token" do
+    test "with invalid token", %{conn: conn} do
       user = create_user_strategy(:user)
       insert(:manager, user: user)
       attendee = insert(:attendee)
@@ -235,7 +235,7 @@ defmodule SafiraWeb.DeliverRedeemableControllerTest do
       assert json_response(conn, 401)["error"] == "invalid_token"
     end
 
-    test "with no token" do
+    test "with no token", %{conn: conn} do
       user = create_user_strategy(:user)
       insert(:manager, user: user)
       attendee = insert(:attendee)
