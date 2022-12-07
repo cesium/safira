@@ -29,6 +29,7 @@ defmodule Safira.Accounts.Attendee do
     field :entries, :integer, default: 0
     field :discord_association_code, Ecto.UUID, autogenerate: true
     field :discord_id, :string
+    field :cv, Safira.CV.Type
 
     belongs_to :user, User
     many_to_many :badges, Badge, join_through: Redeem
@@ -45,7 +46,7 @@ defmodule Safira.Accounts.Attendee do
   def changeset(attendee, attrs) do
     attendee
     |> cast(attrs, [:name, :nickname, :user_id])
-    |> cast_attachments(attrs, [:avatar])
+    |> cast_attachments(attrs, [:avatar, :cv])
     |> cast_assoc(:user)
     |> validate_required([:name, :nickname])
     |> validate_length(:nickname, min: 2, max: 15)
@@ -56,7 +57,7 @@ defmodule Safira.Accounts.Attendee do
   def update_changeset_sign_up(attendee, attrs) do
     attendee
     |> cast(attrs, [:name, :nickname, :user_id])
-    |> cast_attachments(attrs, [:avatar])
+    |> cast_attachments(attrs, [:avatar, :cv])
     |> cast_assoc(:user)
     |> validate_required([:name, :nickname])
     |> validate_length(:nickname, min: 2, max: 15)
@@ -67,7 +68,7 @@ defmodule Safira.Accounts.Attendee do
   def update_changeset(attendee, attrs) do
     attendee
     |> cast(attrs, [:nickname])
-    |> cast_attachments(attrs, [:avatar])
+    |> cast_attachments(attrs, [:avatar, :cv])
     |> validate_required([:nickname])
     |> validate_length(:nickname, min: 2, max: 15)
     |> validate_format(:nickname, ~r/^[a-zA-Z0-9]+([a-zA-Z0-9](_|-)[a-zA-Z0-9])*[a-zA-Z0-9]+$/)
