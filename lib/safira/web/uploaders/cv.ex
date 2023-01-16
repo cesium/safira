@@ -16,9 +16,30 @@ defmodule Safira.CV do
 
   @versions [:original]
   @acl :public_read
+  @max_file_size 8_000_000
 
   def validate({file, _}) do
-    ~w(.pdf) |> Enum.member?(Path.extname(file.file_name))
+
+    size = file_size(file)
+
+    if file.file_name |> Path.extname() |> String.downcase() |> then(&Enum.member?(~w(.pdf), &1)) do
+      check_file_size(size)
+    else
+      {:error, "File extension isn't valid"}
+    end
+  end
+
+  defp check_file_size(size) do
+    if size > @max_file_size do
+      {:error, "File size is too large"}
+    else
+      :ok
+    end
+  end
+
+  defp file_size(file) do
+    File.stat!(file.path)
+    |> Map.get(:size)
   end
 
   def filename(version, _) do
