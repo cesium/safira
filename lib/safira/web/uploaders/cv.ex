@@ -22,19 +22,16 @@ defmodule Safira.CV do
 
     size = file_size(file)
 
-    if file.file_name |> Path.extname() |> String.downcase() |> then(&Enum.member?(~w(.pdf), &1)) do
-      check_file_size(size)
+    valid = file.file_name |> Path.extname() |> String.downcase() |> check_file_size(size)
+    if valid do
+      Enum.member?(~w(.pdf), file.file_name)
     else
-      {:error, "File extension isn't valid"}
+      valid
     end
   end
 
-  defp check_file_size(size) do
-    if size > @max_file_size do
-      {:error, "File size is too large"}
-    else
-      :ok
-    end
+  defp check_file_size(_, size) do
+    size <= @max_file_size
   end
 
   defp file_size(file) do
