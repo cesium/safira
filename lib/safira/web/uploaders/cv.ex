@@ -16,21 +16,21 @@ defmodule Safira.CV do
 
   @versions [:original]
   @acl :public_read
-  @max_file_size 8_000_000
+  @max_file_size Application.compile_env(:safira, :max_cv_file_size)
 
   def validate({file, _}) do
 
     size = file_size(file)
 
-    valid = file.file_name |> Path.extname() |> String.downcase() |> check_file_size(size)
+    valid = file.file_name |> Path.extname() |> String.downcase() |> then(&Enum.member?(~w(.pdf), &1)) 
     if valid do
-      Enum.member?(~w(.pdf), file.file_name)
+      check_file_size(size)
     else
       valid
     end
   end
 
-  defp check_file_size(_, size) do
+  defp check_file_size(size) do
     size <= @max_file_size
   end
 

@@ -21,7 +21,8 @@ config :safira,
   spotlight_duration: String.to_integer(System.get_env("SPOTLIGHT_DURATION") || "30"),
   discord_bot_url: System.get_env("DISCORD_BOT_URL"),
   discord_bot_api_key: System.get_env("DISCORD_BOT_API_KEY"),
-  discord_invite_url: System.get_env("DISCORD_INVITE_URL")
+  discord_invite_url: System.get_env("DISCORD_INVITE_URL"),
+  max_cv_file_size: String.to_integer(System.get_env("MAX_CV_FILE_SIZE") || "8000000")
 
 # Configures the endpoint
 config :safira, SafiraWeb.Endpoint,
