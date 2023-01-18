@@ -494,12 +494,4 @@ defmodule Safira.AccountsTest do
         }
     }
   end
-
-  describe "add_cv/1" do
-    test "invalid_pdf_ext_name" do
-      attendee = insert(:atendee)
-
-      {:error, }
-    end
-  end
 end
