@@ -1,7 +1,7 @@
 defmodule Safira.CV do
   @moduledoc """
-    Upload for cv
-    """
+  Upload for cv
+  """
   use Arc.Definition
 
   use Arc.Ecto.Definition
@@ -19,10 +19,11 @@ defmodule Safira.CV do
   @max_file_size String.to_integer(System.get_env("MAX_CV_FILE_SIZE") || "8000000")
 
   def validate({file, _}) do
-
     size = file_size(file)
 
-    valid = file.file_name |> Path.extname() |> String.downcase() |> then(&Enum.member?(~w(.pdf), &1)) 
+    valid =
+      file.file_name |> Path.extname() |> String.downcase() |> then(&Enum.member?(~w(.pdf), &1))
+
     if valid do
       check_file_size(size)
     else
@@ -44,11 +45,12 @@ defmodule Safira.CV do
   end
 
   def storage_dir(version, {file, scope}) do
-    struct = scope.__struct__
-    |> Kernel.to_string()
-    |> String.split(".")
-    |> List.last()
-    |> String.downcase()
+    struct =
+      scope.__struct__
+      |> Kernel.to_string()
+      |> String.split(".")
+      |> List.last()
+      |> String.downcase()
 
     "uploads/#{struct}/cvs/#{scope.id}"
   end
@@ -56,5 +58,4 @@ defmodule Safira.CV do
   def s3_object_headers(version, {file, scope}) do
     [content_type: MIME.from_path(file.file_name)]
   end
-
 end

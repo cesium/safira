@@ -221,13 +221,16 @@ defmodule SafiraWeb.AttendeeControllerTest do
         path: "priv/fake/ValidCV.pdf",
         content_type: "application/pdf"
       }
+
       attrs = %{"id" => attendee.id, "attendee" => %{"nickname" => "john_doe123", "cv" => cv}}
-      IO.inspect attrs
+      IO.inspect(attrs)
       %{conn: conn, user: _user} = api_authenticate(user)
+
       conn =
         conn
         |> put(Routes.attendee_path(conn, :update, attendee.id), attrs)
-        IO.inspect conn
+
+      IO.inspect(conn)
 
       IO.puts("json_data")
       IO.inspect(json_response(conn, 200)["data"])
