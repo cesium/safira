@@ -7,7 +7,7 @@ defmodule Safira.CV do
   use Arc.Ecto.Definition
 
   def __storage do
-    if Mix.env() == :dev do
+    if Mix.env() == :dev or Mix.env() == :test do
       Arc.Storage.Local
     else
       Arc.Storage.S3
