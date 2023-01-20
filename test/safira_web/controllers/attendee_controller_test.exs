@@ -227,6 +227,7 @@ defmodule SafiraWeb.AttendeeControllerTest do
       attrs = Map.put(attrs, "attendee", attendee_attrs)
 
       %{conn: conn, user: _user} = api_authenticate(user)
+
       conn =
         conn
         |> put(Routes.attendee_path(conn, :update, attendee.id), attrs)
@@ -247,6 +248,7 @@ defmodule SafiraWeb.AttendeeControllerTest do
       attrs = Map.put(attrs, "attendee", attendee_attrs)
 
       %{conn: conn, user: _user} = api_authenticate(user)
+
       conn =
         conn
         |> put(Routes.attendee_path(conn, :update, attendee.id), attrs)
@@ -267,6 +269,7 @@ defmodule SafiraWeb.AttendeeControllerTest do
       attrs = Map.put(attrs, "attendee", attendee_attrs)
 
       %{conn: conn, user: _user} = api_authenticate(user)
+
       conn =
         conn
         |> put(Routes.attendee_path(conn, :update, attendee.id), attrs)
