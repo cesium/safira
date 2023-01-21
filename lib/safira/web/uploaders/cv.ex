@@ -35,7 +35,7 @@ defmodule Safira.CV do
     size <= @max_file_size
   end
 
-  defp file_size(file) do
+  defp file_size(%Waffle.File{} = file) do
     File.stat!(file.path)
     |> Map.get(:size)
   end
