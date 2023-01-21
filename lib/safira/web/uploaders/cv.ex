@@ -21,27 +21,23 @@ defmodule Safira.CV do
   def validate({file, _}) do
     size = file_size(file)
 
-    valid =
-      file.file_name |> Path.extname() |> String.downcase() |> then(&Enum.member?(~w(.pdf), &1))
+    file_extension =
+      file.file_name
+      |> Path.extname()
+      |> String.downcase()
 
-    if valid do
-      check_file_size(size)
-    else
-      valid
-    end
+    Enum.member?(~w(.pdf), file_extension) and check_file_size(size) == :ok
   end
 
-defp check_file_size(_, size) do
+  defp check_file_size(size) do
     if size > @max_file_size do
       {:error, "File size is too large"}
     else
       :ok
     end
   end
-    size <= @max_file_size
-  end
 
-  defp file_size(%Waffle.File{} = file) do
+  defp file_size(file) do
     File.stat!(file.path)
     |> Map.get(:size)
   end
