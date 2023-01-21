@@ -31,7 +31,13 @@ defmodule Safira.CV do
     end
   end
 
-  defp check_file_size(size) do
+defp check_file_size(_, size) do
+    if size > @max_file_size do
+      {:error, "File size is too large"}
+    else
+      :ok
+    end
+  end
     size <= @max_file_size
   end
 
