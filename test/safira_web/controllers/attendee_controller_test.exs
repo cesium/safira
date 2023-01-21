@@ -237,7 +237,7 @@ defmodule SafiraWeb.AttendeeControllerTest do
       assert updated_attendee.cv != nil and updated_attendee.cv.file_name == "ValidCV.pdf"
     end
 
-    test "invalid_cv_ext", %{user: user, attendee: attendee, attrs: attrs} do
+    test "invalid_cv_text", %{user: user, attendee: attendee, attrs: attrs} do
       cv = %Plug.Upload{
         filename: "InvalidCVExt.txt",
         path: "priv/fake/InvalidCVExt.txt",
