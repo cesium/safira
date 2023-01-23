@@ -1,4 +1,5 @@
 defmodule SafiraWeb.AttendeeControllerTest do
+  alias Safira.Admin.Accounts
   use SafiraWeb.ConnCase
 
   setup %{conn: conn} do
@@ -211,6 +212,71 @@ defmodule SafiraWeb.AttendeeControllerTest do
         |> put(Routes.attendee_path(conn, :update, attendee2.id), attrs)
 
       assert json_response(conn, 401)["error"] == "Login error"
+    end
+  end
+
+  describe "add_cv/1" do
+    test "valid_cv", %{user: user, attendee: attendee, attrs: attrs} do
+      cv = %Plug.Upload{
+        filename: "ValidCV.pdf",
+        path: "priv/fake/ValidCV.pdf",
+        content_type: "application/pdf"
+      }
+
+      attendee_attrs = Map.get(attrs, "attendee") |> Map.put("cv", cv)
+      attrs = Map.put(attrs, "attendee", attendee_attrs)
+
+      %{conn: conn, user: _user} = api_authenticate(user)
+
+      conn =
+        conn
+        |> put(Routes.attendee_path(conn, :update, attendee.id), attrs)
+
+      updated_attendee = Accounts.get_attendee!(attendee.id)
+
+      assert updated_attendee.cv != nil and updated_attendee.cv.file_name == "ValidCV.pdf"
+    end
+
+    test "invalid_cv_text", %{user: user, attendee: attendee, attrs: attrs} do
+      cv = %Plug.Upload{
+        filename: "InvalidCVExt.txt",
+        path: "priv/fake/InvalidCVExt.txt",
+        content_type: "application/txt"
+      }
+
+      attendee_attrs = Map.get(attrs, "attendee") |> Map.put("cv", cv)
+      attrs = Map.put(attrs, "attendee", attendee_attrs)
+
+      %{conn: conn, user: _user} = api_authenticate(user)
+
+      conn =
+        conn
+        |> put(Routes.attendee_path(conn, :update, attendee.id), attrs)
+
+      updated_attendee = Accounts.get_attendee!(attendee.id)
+
+      assert updated_attendee.cv == nil
+    end
+
+    test "invalid_cv_size", %{user: user, attendee: attendee, attrs: attrs} do
+      cv = %Plug.Upload{
+        filename: "InvalidCVSize.pdf",
+        path: "priv/fake/InvalidCVSize.pdf",
+        content_type: "application/pdf"
+      }
+
+      attendee_attrs = Map.get(attrs, "attendee") |> Map.put("cv", cv)
+      attrs = Map.put(attrs, "attendee", attendee_attrs)
+
+      %{conn: conn, user: _user} = api_authenticate(user)
+
+      conn =
+        conn
+        |> put(Routes.attendee_path(conn, :update, attendee.id), attrs)
+
+      updated_attendee = Accounts.get_attendee!(attendee.id)
+
+      assert updated_attendee.cv == nil
     end
   end
 end
