@@ -8,6 +8,7 @@ defmodule Safira.Contest do
 
   alias Ecto.Multi
 
+  alias Safira.Accounts.Attendee
   alias Safira.Contest.Badge
   alias Safira.Contest.DailyToken
   alias Safira.Contest.Redeem
