@@ -478,6 +478,68 @@ defmodule Safira.AccountsTest do
     end
   end
 
+  describe "list_company_attendees" do
+    test "no attendees" do
+      company = insert(:company)
+
+      assert Accounts.list_company_attendees(company.id) == []
+    end
+
+    test "one attendee" do
+      company = insert(:company)
+      attendee = insert(:attendee)
+
+      insert(:redeem, attendee: attendee, badge: company.badge)
+
+      attendee =
+        attendee
+        |> forget(:user)
+
+      assert Accounts.list_company_attendees(company.id) == [attendee]
+    end
+
+    test "multiple attendees" do
+      company = insert(:company)
+      [attendee1, attendee2] = insert_pair(:attendee)
+
+      insert(:redeem, attendee: attendee1, badge: company.badge)
+      insert(:redeem, attendee: attendee2, badge: company.badge)
+
+      attendee1 =
+        attendee1
+        |> forget(:user)
+
+      attendee2 =
+        attendee2
+        |> forget(:user)
+
+      assert Accounts.list_company_attendees(company.id) == [attendee1, attendee2]
+    end
+
+    test "attendee redeemed another company's badge" do
+      company = insert(:company)
+      attendee = insert(:attendee)
+
+      insert(:redeem, attendee: attendee)
+
+      assert Accounts.list_company_attendees(company.id) == []
+    end
+
+    test "one attendee redeemed and one not" do
+      company = insert(:company)
+      [attendee1, attendee2] = insert_pair(:attendee)
+
+      insert(:redeem, attendee: attendee1, badge: company.badge)
+      insert(:redeem, attendee: attendee2)
+
+      attendee1 =
+        attendee1
+        |> forget(:user)
+
+      assert Accounts.list_company_attendees(company.id) == [attendee1]
+    end
+  end
+
   defp set_password_as_nil(user) do
     user
     |> Map.put(:password, nil)

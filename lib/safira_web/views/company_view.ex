@@ -2,6 +2,8 @@ defmodule SafiraWeb.CompanyView do
   use SafiraWeb, :view
   alias SafiraWeb.CompanyView
 
+  alias SafiraWeb.AttendeeView
+
   def render("index.json", %{companies: companies}) do
     %{data: render_many(companies, CompanyView, "company.json")}
   end
@@ -18,5 +20,9 @@ defmodule SafiraWeb.CompanyView do
       channel_id: company.channel_id,
       badge_id: company.badge_id
     }
+  end
+
+  def render("index_attendees.json", %{attendees: attendees}) do
+    %{data: render_many(attendees, AttendeeView, "attendee_simple.json")}
   end
 end

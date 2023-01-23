@@ -206,6 +206,26 @@ defmodule Safira.Accounts do
     Company.changeset(company, %{})
   end
 
+  alias Safira.Contest.Redeem
+
+  @doc """
+  Returns the list of attendees that have a badge from the given company
+  """
+  def list_company_attendees(company_id) do
+    badge_id =
+      company_id
+      |> get_company!()
+      |> then(fn x -> x.badge_id end)
+
+    Repo.all(
+      from r in Redeem,
+        where: r.badge_id == ^badge_id,
+        join: a in assoc(r, :attendee),
+        preload: [attendee: a]
+    )
+    |> Enum.map(fn x -> x.attendee end)
+  end
+
   def is_company(conn) do
     get_user(conn)
     |> Map.fetch!(:company)
