@@ -73,7 +73,7 @@ defmodule SafiraWeb.Router do
       resources "/store/buy", BuyController, only: [:create]
       resources "/roulette/prizes", PrizeController, only: [:index, :show]
 
-      get "/company/attendees", CompanyController, :company_attendees
+      get "/company/attendees/:id", CompanyController, :company_attendees
     end
   end
 

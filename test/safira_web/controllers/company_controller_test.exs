@@ -84,4 +84,107 @@ defmodule SafiraWeb.CompanyControllerTest do
       assert json_response(conn, 401)["error"] == "unauthenticated"
     end
   end
+
+  describe "company_attendees" do
+    test "company has not given any badge", %{conn: conn, user: user, company: company} do
+      %{conn: conn, user: _user} = api_authenticate(user)
+
+      conn =
+        conn
+        |> get(Routes.company_path(conn, :company_attendees, company.id))
+
+      assert json_response(conn, 200)["data"] == []
+    end
+
+    test "attendee redeemed the company's badge", %{conn: conn, user: user, company: company} do
+      %{conn: conn, user: _user} = api_authenticate(user)
+
+      attendee = insert(:attendee)
+      insert(:redeem, attendee: attendee, badge: company.badge)
+
+      conn =
+        conn
+        |> get(Routes.company_path(conn, :company_attendees, company.id))
+
+      expected_response = [
+        %{
+          "id" => attendee.id,
+          "nickname" => attendee.nickname,
+          "name" => attendee.name,
+          "avatar" => "/images/attendee-missing.png",
+          "token_balance" => attendee.token_balance,
+          "entries" => attendee.entries
+        }
+      ]
+
+      assert json_response(conn, 200)["data"] == expected_response
+    end
+
+    test "multiple attendees redeemed the company's badge", %{
+      conn: conn,
+      user: user,
+      company: company
+    } do
+      %{conn: conn, user: _user} = api_authenticate(user)
+
+      [attendee1, attendee2] = insert_pair(:attendee)
+      insert(:redeem, attendee: attendee1, badge: company.badge)
+      insert(:redeem, attendee: attendee2, badge: company.badge)
+
+      conn =
+        conn
+        |> get(Routes.company_path(conn, :company_attendees, company.id))
+
+      expected_response = [
+        %{
+          "id" => attendee1.id,
+          "nickname" => attendee1.nickname,
+          "name" => attendee1.name,
+          "avatar" => "/images/attendee-missing.png",
+          "token_balance" => attendee1.token_balance,
+          "entries" => attendee1.entries
+        },
+        %{
+          "id" => attendee2.id,
+          "nickname" => attendee2.nickname,
+          "name" => attendee2.name,
+          "avatar" => "/images/attendee-missing.png",
+          "token_balance" => attendee2.token_balance,
+          "entries" => attendee2.entries
+        }
+      ]
+
+      assert json_response(conn, 200)["data"] == expected_response
+    end
+
+    test "attendee redeemed another company's badge", %{conn: conn, user: user, company: company} do
+      %{conn: conn, user: _user} = api_authenticate(user)
+
+      attendee = insert(:attendee)
+      insert(:redeem, attendee: attendee)
+
+      conn =
+        conn
+        |> get(Routes.company_path(conn, :company_attendees, company.id))
+
+      assert json_response(conn, 200)["data"] == []
+    end
+
+    test "with invalid token", %{conn: conn, company: company} do
+      conn =
+        conn
+        |> put_req_header("authorization", "Bearer #{"invalid"}")
+        |> get(Routes.company_path(conn, :company_attendees, company.id))
+
+      assert json_response(conn, 401)["error"] == "invalid_token"
+    end
+
+    test "with no token", %{conn: conn, company: company} do
+      conn =
+        conn
+        |> get(Routes.company_path(conn, :company_attendees, company.id))
+
+      assert json_response(conn, 401)["error"] == "unauthenticated"
+    end
+  end
 end

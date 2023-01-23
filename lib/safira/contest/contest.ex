@@ -8,7 +8,6 @@ defmodule Safira.Contest do
 
   alias Ecto.Multi
 
-  alias Safira.Accounts.Attendee
   alias Safira.Contest.Badge
   alias Safira.Contest.DailyToken
   alias Safira.Contest.Redeem
@@ -47,21 +46,6 @@ defmodule Safira.Contest do
 
   def list_badges_conservative do
     list_secret() ++ list_normals()
-  end
-
-  @doc """
-  Returns the list of attendees that have a badge from the given company
-  """
-  def list_company_attendees(company_id) do
-    Repo.all(
-      from r in Redeem,
-        join: b in assoc(r, :badge),
-        join: a in assoc(r, :attendee),
-        where: b.company_id == ^company_id and not is_nil(a.nickname),
-        preload: [badge: b, attendee: a],
-        distinct: :badge_id
-    )
-    |> Enum.map(fn x -> x.attendee end)
   end
 
   def get_badge!(id), do: Repo.get!(Badge, id)
