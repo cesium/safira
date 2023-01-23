@@ -108,6 +108,8 @@
       - DELETE /:id
     - /company
       - GET /
+      - /attendees
+        - GET /:id
     - /companies
       - GET /
       - GET /:id
@@ -520,6 +522,21 @@ Removes an attendee.
         "sponsorship": "ola",
         "name": "ola",
         "id": 1
+    }
+}
+```
+
+## GET /attendees/:id
+### Valid:
+```json
+{
+    "data": {
+        "id": 1,
+        "nickname": "AttendeeMega2",
+        "name": "Attendee Mega 2",
+        "avatar": "/images/default/attendee-missing.png",
+        "token_balance": 10,
+        "entries": 0,
     }
 }
 ```

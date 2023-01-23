@@ -170,6 +170,32 @@ defmodule SafiraWeb.CompanyControllerTest do
       assert json_response(conn, 200)["data"] == []
     end
 
+    test "one attendee reedem and one not", %{conn: conn, user: user, company: company} do
+      %{conn: conn, user: _user} = api_authenticate(user)
+
+      attendee1 = insert(:attendee)
+      attendee2 = insert(:attendee)
+      insert(:redeem, attendee: attendee1, badge: company.badge)
+      insert(:redeem, attendee: attendee2)
+
+      conn =
+        conn
+        |> get(Routes.company_path(conn, :company_attendees, company.id))
+
+      expected_response = [
+        %{
+          "id" => attendee1.id,
+          "nickname" => attendee1.nickname,
+          "name" => attendee1.name,
+          "avatar" => "/images/attendee-missing.png",
+          "token_balance" => attendee1.token_balance,
+          "entries" => attendee1.entries
+        }
+      ]
+
+      assert json_response(conn, 200)["data"] == expected_response
+    end
+
     test "with invalid token", %{conn: conn, company: company} do
       conn =
         conn
