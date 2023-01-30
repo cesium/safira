@@ -5,6 +5,8 @@ defmodule SafiraWeb.DeliverRedeemableController do
 
   alias Safira.Store
 
+  alias Safira.Contest
+
   action_fallback SafiraWeb.FallbackController
 
   # redeem params:

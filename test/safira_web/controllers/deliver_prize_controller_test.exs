@@ -249,4 +249,10 @@ defmodule SafiraWeb.DeliverPrizeControllerTest do
       assert json_response(conn, 401)["error"] == "unauthenticated"
     end
   end
+
+  describe "delete" do
+    test "attendee_does_not_exist" do
+
+    end
+  end
 end
