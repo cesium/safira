@@ -53,6 +53,7 @@ defmodule Safira.CV do
   def storage_dir(_version, {_file, scope}) do
     storage_dir(scope)
   end
+
   def s3_object_headers(version, {file, scope}) do
     [content_type: MIME.from_path(file.file_name)]
   end

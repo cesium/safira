@@ -28,7 +28,8 @@ defmodule SafiraWeb.CVController do
         |> Enum.map(fn {nickname, storage_dir} ->
           {nickname,
            File.ls!(storage_dir)
-           |> List.first() # should never return nil because we enure the attendee has a CV
+           # should never return nil because we enure the attendee has a CV
+           |> List.first()
            |> (fn file_name -> Path.join(storage_dir, file_name) end).()
            |> File.read()}
         end)
@@ -47,7 +48,8 @@ defmodule SafiraWeb.CVController do
       conn
       |> put_status(:unauthorized)
       |> json(%{
-        error: "The CVs of a company's attendees can only be accessed by the company or by the admin",
+        error:
+          "The CVs of a company's attendees can only be accessed by the company or by the admin",
         company_id: company_id,
         user: curr_company_id
       })
