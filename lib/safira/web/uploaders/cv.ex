@@ -46,17 +46,13 @@ defmodule Safira.CV do
     version
   end
 
-  def storage_dir(version, {file, scope}) do
-    struct =
-      scope.__struct__
-      |> Kernel.to_string()
-      |> String.split(".")
-      |> List.last()
-      |> String.downcase()
-
-    "uploads/#{struct}/cvs/#{scope.id}"
+  def storage_dir(scope) do
+    "uploads/attendee/cvs/" <> "#{scope.id}"
   end
 
+  def storage_dir(_version, {_file, scope}) do
+    storage_dir(scope)
+  end
   def s3_object_headers(version, {file, scope}) do
     [content_type: MIME.from_path(file.file_name)]
   end
