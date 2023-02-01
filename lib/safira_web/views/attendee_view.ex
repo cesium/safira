@@ -2,6 +2,7 @@ defmodule SafiraWeb.AttendeeView do
   use SafiraWeb, :view
 
   alias Safira.Avatar
+  alias Safira.CV
   alias SafiraWeb.AttendeeView
 
   def render("index.json", %{attendees: attendees}) do
@@ -42,6 +43,7 @@ defmodule SafiraWeb.AttendeeView do
       nickname: attendee.nickname,
       name: attendee.name,
       avatar: Avatar.url({attendee.avatar, attendee}, :original),
+      cv: CV.url({attendee.cv, attendee}, :original),
       badges: render_many(attendee.badges, SafiraWeb.BadgeView, "badge.json"),
       badge_count: attendee.badge_count,
       token_balance: attendee.token_balance,
@@ -58,6 +60,7 @@ defmodule SafiraWeb.AttendeeView do
       name: attendee.name,
       email: attendee.user.email,
       avatar: Avatar.url({attendee.avatar, attendee}, :original),
+      cv: CV.url({attendee.cv, attendee}, :original),
       badges: render_many(attendee.badges, SafiraWeb.BadgeView, "badge.json"),
       badge_count: attendee.badge_count
     }
@@ -69,6 +72,7 @@ defmodule SafiraWeb.AttendeeView do
       nickname: attendee.nickname,
       name: attendee.name,
       avatar: Avatar.url({attendee.avatar, attendee}, :original),
+      cv: CV.url({attendee.cv, attendee}, :original),
       token_balance: attendee.token_balance,
       entries: attendee.entries
     }
