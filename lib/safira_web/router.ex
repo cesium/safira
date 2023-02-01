@@ -63,7 +63,7 @@ defmodule SafiraWeb.Router do
       post "/store/redeem", DeliverRedeemableController, :create
       post "/roulette/redeem", DeliverPrizeController, :create
 
-      delete "/roulette/redeem/:attendee_id/:badge_id", DeliverPrizeController, :delete
+      delete "/roulette/redeem/:badge_id/:user_id", DeliverPrizeController, :delete
 
       resources "/badges", BadgeController, only: [:index, :show]
       resources "/attendees", AttendeeController, except: [:create]

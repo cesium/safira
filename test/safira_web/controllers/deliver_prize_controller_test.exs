@@ -1,6 +1,8 @@
 defmodule SafiraWeb.DeliverPrizeControllerTest do
   use SafiraWeb.ConnCase
 
+  alias Safira.Contest
+
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
@@ -251,8 +253,33 @@ defmodule SafiraWeb.DeliverPrizeControllerTest do
   end
 
   describe "delete" do
-    test "attendee_does_not_exist" do
+    test "not a admin" do
+      user = create_user_strategy(:user)
+      _manager = insert(:manager, user: user, is_admin: false)
+      %{conn: conn, user: _} = api_authenticate(user)
 
+      conn =
+        conn
+        |> delete(Routes.deliver_prize_path(conn, :delete, 0, 0))
+
+      assert json_response(conn, 401)["error"] == "Only admins can remove prizes"
+    end
+
+    test "valid badge and attendee" do
+      user = create_user_strategy(:user)
+      _manager = insert(:manager, user: user, is_admin: true)
+      badge = insert(:badge)
+
+      attendee = insert(:attendee)
+      redeem = insert(:redeem, attendee: attendee, badge: badge)
+
+      %{conn: conn, user: _} = api_authenticate(user)
+
+      conn =
+        conn
+        |> delete(Routes.deliver_prize_path(conn, :delete, badge.id, attendee.id))
+
+      assert json_response(conn, 200) == %{"Badge" => "badge removed sucessfully from attendee"}
     end
   end
 end

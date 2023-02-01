@@ -47,14 +47,42 @@ defmodule SafiraWeb.DeliverPrizeController do
 
   def delete(conn, %{"badge_id" => badge_id, "user_id" => user_id}) do
     if Accounts.is_admin(conn) do
-      badge = Contest.get_keys_redeem(user_id, badge_id)
+      redeem = Contest.get_keys_redeem(user_id, badge_id)
+      referral = Contest.get_keys_referral(user_id, badge_id)
+      attendee = Accounts.get_attendee(user_id)
+      IO.inspect(redeem, label: "redeem")
+      IO.inspect(attendee, label: "attendee")
+      IO.inspect(referral, label: "referral")
 
-      if badge != nil do
-        Contest.delete_redeem(badge)
-      else
-        conn
-        |> put_status(:bad_request)
-        |> json(%{Error: "Badge doesn not exist"})
+      case {redeem, attendee} do
+        {_, nil} ->
+          conn
+          |> put_status(:bad_request)
+          |> json(%{error: "Attendee does not exist"})
+
+        {nil, _} ->
+          conn
+          |> put_status(:bad_request)
+          |> json(%{error: "Attendee does not have this badge"})
+
+        {_, _} ->
+          status = Contest.delete_redeem(redeem)
+
+          case status do
+            {:ok, _} ->
+              if referral != nil do
+                Contest.delete_referral(referral)
+              end
+
+              conn
+              |> put_status(:ok)
+              |> json(%{Badge: "badge removed sucessfully from attendee"})
+
+            {:error, _} ->
+              conn
+              |> put_status(:not_found)
+              |> json(%{Error: "Error removing badge to attendee"})
+          end
       end
     else
       conn
