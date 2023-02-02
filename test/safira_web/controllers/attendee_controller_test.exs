@@ -90,6 +90,7 @@ defmodule SafiraWeb.AttendeeControllerTest do
       expected_response = [
         %{
           "avatar" => "/images/attendee-missing.png",
+          "cv" => nil,
           "entries" => 0,
           "id" => attendee.id,
           "name" => attendee.name,
@@ -131,6 +132,7 @@ defmodule SafiraWeb.AttendeeControllerTest do
 
       expected_attendee = %{
         "avatar" => "/images/attendee-missing.png",
+        "cv" => nil,
         "entries" => 0,
         "id" => attendee.id,
         "name" => attendee.name,
@@ -173,6 +175,7 @@ defmodule SafiraWeb.AttendeeControllerTest do
 
       expected_attendee = %{
         "avatar" => "/images/attendee-missing.png",
+        "cv" => nil,
         "entries" => 0,
         "id" => attendee.id,
         "name" => attendee.name,

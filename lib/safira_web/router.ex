@@ -74,6 +74,7 @@ defmodule SafiraWeb.Router do
       resources "/roulette/prizes", PrizeController, only: [:index, :show]
 
       get "/company/attendees/:id", CompanyController, :company_attendees
+      get "/company/attendees/cvs/:id", CVController, :company_cvs
     end
   end
 
