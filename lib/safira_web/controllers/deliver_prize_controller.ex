@@ -50,9 +50,6 @@ defmodule SafiraWeb.DeliverPrizeController do
       redeem = Contest.get_keys_redeem(user_id, badge_id)
       referral = Contest.get_keys_referral(user_id, badge_id)
       attendee = Accounts.get_attendee(user_id)
-      IO.inspect(redeem, label: "redeem")
-      IO.inspect(attendee, label: "attendee")
-      IO.inspect(referral, label: "referral")
 
       case {redeem, attendee} do
         {_, nil} ->
