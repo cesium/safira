@@ -1,8 +1,6 @@
 defmodule SafiraWeb.DeliverPrizeControllerTest do
   use SafiraWeb.ConnCase
 
-  alias Safira.Contest
-
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
