@@ -160,6 +160,10 @@ defmodule Safira.Contest do
     Repo.get_by(Redeem, attendee_id: attendee_id, badge_id: badge_id)
   end
 
+  def get_keys_referral(attendee_id, badge_id) do
+    Repo.get_by(Referral, attendee_id: attendee_id, badge_id: badge_id)
+  end
+
   def get_keys_daily_token(attendee_id, day) do
     Repo.get_by(DailyToken, attendee_id: attendee_id, day: day)
   end
