@@ -22,7 +22,7 @@ defmodule SafiraWeb.CVController do
 
     if Accounts.is_admin(conn) or curr_company_id == company.id do
       require Logger
-      Logger.warn({:system, "CV_URL"})
+      Logger.warn(System.get_env("CV_URL"))
       zip =
         Accounts.list_company_attendees(company_id)
         |> Enum.filter(fn x -> x.cv != nil end)
@@ -30,7 +30,7 @@ defmodule SafiraWeb.CVController do
           Zstream.entry(
             x.nickname <> ".pdf",
             CV.url({x.cv, x})
-            |> (fn url -> {:system, "CV_URL"}  <> url end).()
+            |> (fn url -> System.get_env("CV_URL") <> url end).()
             |> HTTPStream.get()
           )
         end)
