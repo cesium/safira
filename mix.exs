@@ -74,7 +74,9 @@ defmodule Safira.MixProject do
       {:ex_machina, "~> 2.7", only: :test},
       {:faker, "~> 0.17", only: :test},
       {:bureaucrat, "~> 0.2.9", only: :test},
-      {:credo, "~> 1.6.7", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.6.7", only: [:dev, :test], runtime: false},
+      {:http_stream, "~> 1.0.0", git: "https://github.com/coders51/http_stream"},
+      {:zstream, "~> 0.6"}
     ]
   end
 
