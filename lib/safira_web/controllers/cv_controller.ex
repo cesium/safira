@@ -30,7 +30,7 @@ defmodule SafiraWeb.CVController do
           Zstream.entry(
             x.nickname <> ".pdf",
             CV.url({x.cv, x})
-            |> (fn url -> System.get_env("CV_URL") <> url end).()
+            |> compose_url()
             |> HTTPStream.get()
           )
         end)
@@ -50,5 +50,12 @@ defmodule SafiraWeb.CVController do
         user: curr_company_id
       })
     end
+  end
+
+  defp compose_url(url) do
+    res = System.get_env("CV_URL") <> url
+    require Logger
+    Logger.warn(res)
+    res
   end
 end
