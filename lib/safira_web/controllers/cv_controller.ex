@@ -56,6 +56,6 @@ defmodule SafiraWeb.CVController do
     res = System.get_env("CV_URL") <> url
     require Logger
     Logger.warn(res)
-    res
+    url
   end
 end
