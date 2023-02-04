@@ -1,10 +1,6 @@
 defmodule SafiraWeb.CVControllerTest do
   use SafiraWeb.ConnCase
 
-  alias Safira.CV
-  alias SafiraWeb.CVController
-  alias Safira.Accounts
-
   setup %{conn: conn} do
     badge = insert(:badge)
 
@@ -74,7 +70,7 @@ defmodule SafiraWeb.CVControllerTest do
       attendee_with_badge: attendee
     } do
       user = create_user_strategy(:user)
-      admin = insert(:manager, user: user, is_admin: true)
+      insert(:manager, user: user, is_admin: true)
 
       %{conn: conn, user: _user} = api_authenticate(user)
 
@@ -93,8 +89,7 @@ defmodule SafiraWeb.CVControllerTest do
     end
 
     test "company downloads the CVs of other company's attendees", %{
-      user_company: user_company,
-      company: company
+      user_company: user_company
     } do
       other_company = insert(:company)
 

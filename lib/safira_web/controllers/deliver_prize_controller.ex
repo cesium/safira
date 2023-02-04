@@ -5,6 +5,8 @@ defmodule SafiraWeb.DeliverPrizeController do
 
   alias Safira.Roulette
 
+  alias Safira.Contest
+
   action_fallback SafiraWeb.FallbackController
 
   # redeem params:
@@ -40,6 +42,49 @@ defmodule SafiraWeb.DeliverPrizeController do
     else
       prize = Roulette.get_attendee_not_redeemed(attendee)
       render(conn, "index.json", delivers: prize)
+    end
+  end
+
+  def delete(conn, %{"badge_id" => badge_id, "user_id" => user_id}) do
+    if Accounts.is_admin(conn) do
+      redeem = Contest.get_keys_redeem(user_id, badge_id)
+      referral = Contest.get_keys_referral(user_id, badge_id)
+      attendee = Accounts.get_attendee(user_id)
+
+      case {redeem, attendee} do
+        {_, nil} ->
+          conn
+          |> put_status(:bad_request)
+          |> json(%{error: "Attendee does not exist"})
+
+        {nil, _} ->
+          conn
+          |> put_status(:bad_request)
+          |> json(%{error: "Attendee does not have this badge"})
+
+        {_, _} ->
+          status = Contest.delete_redeem(redeem)
+
+          case status do
+            {:ok, _} ->
+              if referral != nil do
+                Contest.delete_referral(referral)
+              end
+
+              conn
+              |> put_status(:ok)
+              |> json(%{Badge: "badge removed sucessfully from attendee"})
+
+            {:error, _} ->
+              conn
+              |> put_status(:not_found)
+              |> json(%{Error: "Error removing badge to attendee"})
+          end
+      end
+    else
+      conn
+      |> put_status(:unauthorized)
+      |> json(%{error: "Only admins can remove prizes"})
     end
   end
 
