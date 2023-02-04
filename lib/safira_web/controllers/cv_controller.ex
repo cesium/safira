@@ -21,6 +21,8 @@ defmodule SafiraWeb.CVController do
     company = Accounts.get_company!(company_id)
 
     if Accounts.is_admin(conn) or curr_company_id == company.id do
+      require Logger
+      Logger.warn({:system, "CV_URL"})
       zip =
         Accounts.list_company_attendees(company_id)
         |> Enum.filter(fn x -> x.cv != nil end)
