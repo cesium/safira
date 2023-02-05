@@ -21,29 +21,23 @@ defmodule SafiraWeb.CVController do
     company = Accounts.get_company!(company_id)
 
     if Accounts.is_admin(conn) or curr_company_id == company.id do
-      attendees_cvs =
+      zip =
         Accounts.list_company_attendees(company_id)
         |> Enum.filter(fn x -> x.cv != nil end)
-        |> Enum.map(fn x -> {x.nickname, CV.storage_dir(x)} end)
-        |> Enum.map(fn {nickname, storage_dir} ->
-          {nickname,
-           File.ls!(storage_dir)
-           # should never return nil because we enure the attendee has a CV
-           |> List.first()
-           |> (fn file_name -> Path.join(storage_dir, file_name) end).()
-           |> File.read()}
+        |> Enum.map(fn x ->
+          Zstream.entry(
+            x.nickname <> ".pdf",
+            CV.url({x.cv, x})
+            |> (fn url -> System.get_env("CV_URL", "") <> url end).()
+            |> HTTPStream.get()
+          )
         end)
-        |> Enum.filter(fn {_, {s, _}} -> s == :ok end)
-        |> Enum.map(fn {nickname, {_, data}} ->
-          {(nickname <> ".pdf")
-           |> String.to_charlist(), data}
-        end)
-
-      {:ok, {zip_filename, zip_bin}} = :zip.create('cvs.zip', attendees_cvs, [:memory])
+        |> Zstream.zip()
+        |> Enum.to_list()
 
       conn
       |> put_status(:ok)
-      |> send_download({:binary, zip_bin}, [{:filename, "#{zip_filename}"}])
+      |> send_download({:binary, zip}, [{:filename, "cvs.zip"}])
     else
       conn
       |> put_status(:unauthorized)

@@ -4,7 +4,7 @@ use Mix.Config
 # you can enable the server option below.
 config :safira, SafiraWeb.Endpoint,
   http: [port: 4001],
-  server: false
+  server: true
 
 # Print only warnings and errors during test
 config :logger, level: :warn
@@ -33,3 +33,4 @@ config :safira, Safira.Mailer, adapter: Bamboo.TestAdapter
 # Env
 System.put_env(%{"FROM_EMAIL" => "geral@safira.safira"})
 System.put_env(%{"FRONTEND_URL" => "www.safira.safira"})
+System.put_env(%{"CV_URL" => "http://localhost:4001"})

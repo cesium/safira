@@ -71,6 +71,8 @@ config :safira, :pow,
   repo: Safira.Repo,
   web_module: SafiraWeb
 
+config :http_stream, adapter: HTTPStream.Adapter.HTTPoison
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
