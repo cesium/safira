@@ -23,7 +23,8 @@ defmodule SafiraWeb.CompanyControllerTest do
           "name" => company.name,
           "sponsorship" => company.sponsorship,
           "channel_id" => company.channel_id,
-          "badge_id" => company.badge.id
+          "badge_id" => company.badge.id,
+          "has_cv_access" => company.has_cv_access
         }
       ]
 
@@ -61,7 +62,8 @@ defmodule SafiraWeb.CompanyControllerTest do
         "name" => company.name,
         "sponsorship" => company.sponsorship,
         "channel_id" => company.channel_id,
-        "badge_id" => company.badge.id
+        "badge_id" => company.badge.id,
+        "has_cv_access" => company.has_cv_access
       }
 
       assert json_response(conn, 200)["data"] == expected_company
@@ -160,7 +162,7 @@ defmodule SafiraWeb.CompanyControllerTest do
       assert json_response(conn, 200)["data"] == expected_response
     end
 
-    test "attendee redeemed another company's badge", %{conn: conn, user: user, company: company} do
+    test "list attendees of other company", %{conn: conn, user: user, company: company} do
       %{conn: conn, user: _user} = api_authenticate(user)
 
       attendee = insert(:attendee)

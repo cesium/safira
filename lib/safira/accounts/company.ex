@@ -14,6 +14,7 @@ defmodule Safira.Accounts.Company do
     field :sponsorship, :string
     field :channel_id, :string
     field :remaining_spotlights, :integer
+    field :has_cv_access, :boolean
     belongs_to :user, User
     belongs_to :badge, Badge
 
@@ -23,10 +24,24 @@ defmodule Safira.Accounts.Company do
   @doc false
   def changeset(company, attrs) do
     company
-    |> cast(attrs, [:name, :sponsorship, :badge_id, :channel_id, :remaining_spotlights])
+    |> cast(attrs, [
+      :name,
+      :sponsorship,
+      :badge_id,
+      :channel_id,
+      :remaining_spotlights,
+      :has_cv_access
+    ])
     |> cast_assoc(:user)
-    |> cast(attrs, [:name, :sponsorship, :badge_id, :channel_id, :remaining_spotlights])
-    |> validate_required([:name, :sponsorship, :badge_id, :channel_id])
+    |> cast(attrs, [
+      :name,
+      :sponsorship,
+      :badge_id,
+      :channel_id,
+      :remaining_spotlights,
+      :has_cv_access
+    ])
+    |> validate_required([:name, :sponsorship, :badge_id, :channel_id, :has_cv_access])
     |> unique_constraint(:channel_id)
   end
 

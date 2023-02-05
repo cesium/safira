@@ -78,4 +78,16 @@ defmodule SafiraWeb.AttendeeView do
       entries: attendee.entries
     }
   end
+
+  def render("attendee_no_cv.json", %{attendee: attendee}) do
+    %{
+      id: attendee.id,
+      nickname: attendee.nickname,
+      name: attendee.name,
+      avatar: Avatar.url({attendee.avatar, attendee}, :original),
+      cv: nil,
+      token_balance: attendee.token_balance,
+      entries: attendee.entries
+    }
+  end
 end
