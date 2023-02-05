@@ -28,7 +28,7 @@ defmodule SafiraWeb.CVController do
           Zstream.entry(
             x.nickname <> ".pdf",
             CV.url({x.cv, x})
-            |> (fn url -> SafiraWeb.Endpoint.url() <> url end).()
+            |> (fn url -> System.get_env("CV_URL", "") <> url end).()
             |> HTTPStream.get()
           )
         end)
