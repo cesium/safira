@@ -32,3 +32,4 @@ config :safira, Safira.Mailer, adapter: Bamboo.TestAdapter
 # Env
 System.put_env(%{"FROM_EMAIL" => "geral@safira.safira"})
 System.put_env(%{"FRONTEND_URL" => "www.safira.safira"})
+System.put_env(%{"CV_URL" => "http://localhost:4001"})

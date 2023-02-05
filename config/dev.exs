@@ -82,3 +82,4 @@ config :safira, Safira.Mailer, adapter: Bamboo.LocalAdapter
 # Env
 System.put_env(%{"FROM_EMAIL" => "geral@safira.safira"})
 System.put_env(%{"FRONTEND_URL" => "http://localhost:3000"})
+System.put_env(%{"CV_URL" => "http://localhost:4000"})
