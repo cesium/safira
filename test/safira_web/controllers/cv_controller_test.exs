@@ -5,7 +5,9 @@ defmodule SafiraWeb.CVControllerTest do
     badge = insert(:badge)
 
     user_company = create_user_strategy(:user)
-    company = insert(:company, user: user_company, badge: badge)
+    user_company_no_access = create_user_strategy(:user)
+    company = insert(:company, user: user_company, badge: badge, has_cv_access: true)
+    company_no_access = insert(:company, user: user_company_no_access, has_cv_access: false)
 
     user_attendee_with_badge = create_user_strategy(:user)
     attendee_with_badge = insert(:attendee, user: user_attendee_with_badge)
@@ -40,7 +42,9 @@ defmodule SafiraWeb.CVControllerTest do
      conn: put_req_header(conn, "accept", "application/json"),
      user_company: user_company,
      company: company,
-     attendee_with_badge: attendee_with_badge}
+     attendee_with_badge: attendee_with_badge,
+     user_company_no_access: user_company_no_access,
+     company_no_access: company_no_access}
   end
 
   describe "company_cvs" do
@@ -63,6 +67,20 @@ defmodule SafiraWeb.CVControllerTest do
 
       assert List.first(files) |> Kernel.elem(0) ==
                (attendee.nickname <> ".pdf") |> String.to_charlist()
+    end
+
+    test "company does not have access to CV", %{
+      user_company_no_access: user_company,
+      company_no_access: company,
+      attendee_with_badge: attendee
+    } do
+      %{conn: conn, user: _user} = api_authenticate(user_company)
+
+      conn =
+        conn
+        |> get(Routes.cv_path(conn, :company_cvs, company.id))
+
+      assert response(conn, 403)
     end
 
     test "admin downloads the CVs of a company's attendees", %{
@@ -99,7 +117,7 @@ defmodule SafiraWeb.CVControllerTest do
         conn
         |> get(Routes.cv_path(conn, :company_cvs, other_company.id))
 
-      assert response(conn, 401)
+      assert response(conn, 403)
     end
   end
 end

@@ -18,11 +18,16 @@ defmodule SafiraWeb.CompanyView do
       name: company.name,
       sponsorship: company.sponsorship,
       channel_id: company.channel_id,
-      badge_id: company.badge_id
+      badge_id: company.badge_id,
+      has_cv_access: company.has_cv_access
     }
   end
 
-  def render("index_attendees.json", %{attendees: attendees}) do
-    %{data: render_many(attendees, AttendeeView, "attendee_simple.json")}
+  def render("index_attendees.json", %{attendees: attendees, show_cv: show_cv}) do
+    if show_cv do
+      %{data: render_many(attendees, AttendeeView, "attendee_simple.json")}
+    else
+      %{data: render_many(attendees, AttendeeView, "attendee_no_cv.json")}
+    end
   end
 end

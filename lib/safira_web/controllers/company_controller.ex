@@ -17,6 +17,18 @@ defmodule SafiraWeb.CompanyController do
 
   def company_attendees(conn, %{"id" => company_id}) do
     attendees = Accounts.list_company_attendees(company_id)
-    render(conn, "index_attendees.json", attendees: attendees)
+    current_user = Accounts.get_user(conn)
+
+    if Accounts.is_company(conn) and current_user.company.id == String.to_integer(company_id) do
+      render(conn, "index_attendees.json",
+        attendees: attendees,
+        show_cv: current_user.company.has_cv_access
+      )
+    else
+      conn
+      |> put_status(:forbidden)
+      |> json(%{error: "Cannot access resource"})
+      |> halt()
+    end
   end
 end
