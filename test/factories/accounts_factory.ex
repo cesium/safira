@@ -26,7 +26,8 @@ defmodule Safira.AccountsFactory do
           sponsorship: Enum.random(["exclusive", "gold", "silver", "bronze"]),
           channel_id: String.downcase(name),
           user: build(:user),
-          badge: build(:badge)
+          badge: build(:badge),
+          has_cv_access: Enum.random([true, false])
         }
       end
 

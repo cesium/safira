@@ -51,7 +51,8 @@ defmodule Mix.Tasks.Gen.Companies do
                        type,
                        tokens,
                        sponsorship,
-                       channel_id
+                       channel_id,
+                       cv_access
                      ] ->
       {:ok, begin_datetime, _} = DateTime.from_iso8601(begin_time)
       {:ok, end_datetime, _} = DateTime.from_iso8601(end_time)
@@ -79,7 +80,8 @@ defmodule Mix.Tasks.Gen.Companies do
           name: name,
           sponsorship: sponsorship,
           channel_id: channel_id,
-          remaining_spotlights: sponsorship_to_spotlights(sponsorship)
+          remaining_spotlights: sponsorship_to_spotlights(sponsorship),
+          has_cv_access: String.to_integer(cv_access) != 0
         }
       }
     end)

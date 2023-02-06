@@ -20,7 +20,7 @@ defmodule SafiraWeb.CVController do
 
     company = Accounts.get_company!(company_id)
 
-    if Accounts.is_admin(conn) or curr_company_id == company.id do
+    if Accounts.is_admin(conn) or (curr_company_id == company.id and company.has_cv_access) do
       zip =
         Accounts.list_company_attendees(company_id)
         |> Enum.filter(fn x -> x.cv != nil end)
@@ -40,7 +40,7 @@ defmodule SafiraWeb.CVController do
       |> send_download({:binary, zip}, [{:filename, "cvs.zip"}])
     else
       conn
-      |> put_status(:unauthorized)
+      |> put_status(:forbidden)
       |> json(%{
         error:
           "The CVs of a company's attendees can only be accessed by the company or by the admin",
