@@ -73,6 +73,15 @@ config :safira, :pow,
 
 config :http_stream, adapter: HTTPStream.Adapter.HTTPoison
 
+
+config :safira, Safira.Mailer,
+  adapter: Bamboo.MailgunAdapter,
+  api_key: {:system, "MAILGUN_API_KEY"},
+  domain: {:system, "MAILGUN_DOMAIN"},
+  hackney_opts: [
+    recv_timeout: :timer.minutes(1)
+  ]
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"
