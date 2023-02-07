@@ -47,7 +47,7 @@ defmodule Safira.Email do
     password_reset_link = "#{System.get_env("FRONTEND_URL")}/reset?token=#{token}"
 
     """
-    Please visit #{password_reset_link} to reset your password
+    Please visit <a href="#{password_reset_link}">Reset Your Password</a> to reset your password
     """
   end
 
