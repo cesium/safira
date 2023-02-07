@@ -5,14 +5,13 @@ defmodule Safira.Email do
   # use Bamboo.Phoenix, view: Safira.FeedbackView
   import Bamboo.Email
 
+
   def send_reset_email(to_email, token) do
     new_email()
     |> to(to_email)
     |> from(System.get_env("FROM_EMAIL"))
     |> subject("Reset Password Instructions")
-    |> html_body(
-      "<p>Please click <a href='#{System.get_env("FRONTEND_URL")}/reset?token=#{token}'>here</a> to reset your password</p>"
-    )
+    |> html_body(build_reset_password_email_text(token))
     |> Safira.Mailer.deliver_now()
   end
 
@@ -42,6 +41,14 @@ defmodule Safira.Email do
     |> subject("[SEI'22] Finalizar Registo e Informações")
     |> html_body(build_email_text(token))
     |> Safira.Mailer.deliver_now()
+  end
+
+  defp build_reset_password_email_text(token) do
+    password_reset_link = "#{System.get_env("FRONTEND_URL")}/reset?token=#{token}"
+
+    """
+    Please visit #{password_reset_link} to reset your password
+    """
   end
 
   defp build_discord_email_text(token, discord_association_code) do
