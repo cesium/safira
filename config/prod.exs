@@ -66,8 +66,8 @@ config :logger, level: :info
 
 config :safira, MyApp.Mailer,
   adapter: Bamboo.MailgunAdapter,
-  api_key: {:system, "MAILGUN_API_KEY"},
-  domain: {:system, "MAILGUN_DOMAIN"},
+  api_key: System.get_env("MAILGUN_API_KEY"),
+  domain: System.get_env("MAILGUN_DOMAIN")
   hackney_opts: [
     recv_timeout: :timer.minutes(1)
   ]
