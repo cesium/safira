@@ -65,8 +65,9 @@ config :logger, level: :info
 #
 
 config :safira, Safira.Mailer,
-  adapter: Bamboo.SendGridAdapter,
-  api_key: Map.fetch!(System.get_env(), "EMAIL_API_KEY"),
+  adapter: Bamboo.MailgunAdapter,
+  api_key: {:system, "MAILGUN_API_KEY"},
+  domain: {:system, "MAILGUN_DOMAIN"},
   hackney_opts: [
     recv_timeout: :timer.minutes(1)
   ]
