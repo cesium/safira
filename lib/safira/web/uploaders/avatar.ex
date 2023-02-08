@@ -53,18 +53,6 @@ defmodule Safira.Avatar do
     "uploads/#{struct}/avatars/#{scope.id}"
   end
 
-  # Provide a default URL if there hasn't been a file uploaded
-  def default_url(version, scope) do
-    struct =
-      scope.__struct__
-      |> Kernel.to_string()
-      |> String.split(".")
-      |> List.last()
-      |> String.downcase()
-
-    "#{System.get_env("AVATAR_URL")}/images/#{struct}-missing.png"
-  end
-
   # Specify custom headers for s3 objects
   # Available options are [:cache_control, :content_disposition,
   #    :content_encoding, :content_length, :content_type,

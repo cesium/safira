@@ -113,7 +113,7 @@ defmodule SafiraWeb.CompanyControllerTest do
           "id" => attendee.id,
           "nickname" => attendee.nickname,
           "name" => attendee.name,
-          "avatar" => "/images/attendee-missing.png",
+          "avatar" => nil,
           "cv" => nil,
           "token_balance" => attendee.token_balance,
           "entries" => attendee.entries
@@ -143,7 +143,7 @@ defmodule SafiraWeb.CompanyControllerTest do
           "id" => attendee1.id,
           "nickname" => attendee1.nickname,
           "name" => attendee1.name,
-          "avatar" => "/images/attendee-missing.png",
+          "avatar" => nil,
           "cv" => nil,
           "token_balance" => attendee1.token_balance,
           "entries" => attendee1.entries
@@ -152,7 +152,7 @@ defmodule SafiraWeb.CompanyControllerTest do
           "id" => attendee2.id,
           "nickname" => attendee2.nickname,
           "name" => attendee2.name,
-          "avatar" => "/images/attendee-missing.png",
+          "avatar" => nil,
           "cv" => nil,
           "token_balance" => attendee2.token_balance,
           "entries" => attendee2.entries
@@ -192,7 +192,7 @@ defmodule SafiraWeb.CompanyControllerTest do
           "id" => attendee1.id,
           "nickname" => attendee1.nickname,
           "name" => attendee1.name,
-          "avatar" => "/images/attendee-missing.png",
+          "avatar" => nil,
           "cv" => nil,
           "token_balance" => attendee1.token_balance,
           "entries" => attendee1.entries

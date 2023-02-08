@@ -89,7 +89,7 @@ defmodule SafiraWeb.AttendeeControllerTest do
 
       expected_response = [
         %{
-          "avatar" => "/images/attendee-missing.png",
+          "avatar" => nil,
           "cv" => nil,
           "entries" => 0,
           "id" => attendee.id,
@@ -131,7 +131,7 @@ defmodule SafiraWeb.AttendeeControllerTest do
         |> get(Routes.attendee_path(conn, :show, attendee.id))
 
       expected_attendee = %{
-        "avatar" => "/images/attendee-missing.png",
+        "avatar" => nil,
         "cv" => nil,
         "entries" => 0,
         "id" => attendee.id,
@@ -174,7 +174,7 @@ defmodule SafiraWeb.AttendeeControllerTest do
         |> put(Routes.attendee_path(conn, :update, attendee.id), attrs)
 
       expected_attendee = %{
-        "avatar" => "/images/attendee-missing.png",
+        "avatar" => nil,
         "cv" => nil,
         "entries" => 0,
         "id" => attendee.id,

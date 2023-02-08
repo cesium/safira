@@ -21,7 +21,7 @@ defmodule SafiraWeb.PrizeControllerTest do
         %{
           "id" => prize.id,
           "name" => prize.name,
-          "avatar" => "/images/prize-missing.png",
+          "avatar" => nil,
           "max_amount_per_attendee" => prize.max_amount_per_attendee,
           "stock" => prize.stock
         }
@@ -59,7 +59,7 @@ defmodule SafiraWeb.PrizeControllerTest do
       expected_prize = %{
         "id" => prize.id,
         "name" => prize.name,
-        "avatar" => "/images/prize-missing.png",
+        "avatar" => nil,
         "max_amount_per_attendee" => prize.max_amount_per_attendee,
         "stock" => prize.stock
       }
