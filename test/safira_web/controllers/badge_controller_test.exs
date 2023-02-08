@@ -18,7 +18,7 @@ defmodule SafiraWeb.BadgeControllerTest do
 
       expected_response = [
         %{
-          "avatar" => "/images/badge-missing.png",
+          "avatar" => nil,
           "begin" => DateTime.to_iso8601(badge.begin),
           "description" => badge.description,
           "end" => DateTime.to_iso8601(badge.end),
@@ -59,7 +59,7 @@ defmodule SafiraWeb.BadgeControllerTest do
         |> get(Routes.badge_path(conn, :show, badge.id))
 
       expected_bage = %{
-        "avatar" => "/images/badge-missing.png",
+        "avatar" => nil,
         "begin" => DateTime.to_iso8601(badge.begin),
         "description" => badge.description,
         "end" => DateTime.to_iso8601(badge.end),

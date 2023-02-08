@@ -25,7 +25,7 @@ defmodule SafiraWeb.LeaderboardControllerTest do
 
       expected_response = [
         %{
-          "avatar" => "/images/attendee-missing.png",
+          "avatar" => nil,
           "badges" => 2,
           "id" => attendee1.id,
           "name" => attendee1.name,
@@ -33,7 +33,7 @@ defmodule SafiraWeb.LeaderboardControllerTest do
           "token_balance" => attendee1.token_balance
         },
         %{
-          "avatar" => "/images/attendee-missing.png",
+          "avatar" => nil,
           "badges" => 1,
           "id" => attendee2.id,
           "name" => attendee2.name,
@@ -59,7 +59,7 @@ defmodule SafiraWeb.LeaderboardControllerTest do
 
       expected_response = [
         %{
-          "avatar" => "/images/attendee-missing.png",
+          "avatar" => nil,
           "badges" => 1,
           "id" => attendee1.id,
           "name" => attendee1.name,
@@ -67,7 +67,7 @@ defmodule SafiraWeb.LeaderboardControllerTest do
           "token_balance" => attendee1.token_balance
         },
         %{
-          "avatar" => "/images/attendee-missing.png",
+          "avatar" => nil,
           "badges" => 1,
           "id" => attendee2.id,
           "name" => attendee2.name,
@@ -125,7 +125,7 @@ defmodule SafiraWeb.LeaderboardControllerTest do
 
       expected_response = [
         %{
-          "avatar" => "/images/attendee-missing.png",
+          "avatar" => nil,
           "badges" => 2,
           "id" => attendee1.id,
           "name" => attendee1.name,
@@ -133,7 +133,7 @@ defmodule SafiraWeb.LeaderboardControllerTest do
           "token_balance" => 10
         },
         %{
-          "avatar" => "/images/attendee-missing.png",
+          "avatar" => nil,
           "badges" => 1,
           "id" => attendee2.id,
           "name" => attendee2.name,
@@ -168,7 +168,7 @@ defmodule SafiraWeb.LeaderboardControllerTest do
 
       expected_response = [
         %{
-          "avatar" => "/images/attendee-missing.png",
+          "avatar" => nil,
           "badges" => 2,
           "id" => attendee1.id,
           "name" => attendee1.name,
@@ -176,7 +176,7 @@ defmodule SafiraWeb.LeaderboardControllerTest do
           "token_balance" => 20
         },
         %{
-          "avatar" => "/images/attendee-missing.png",
+          "avatar" => nil,
           "badges" => 1,
           "id" => attendee2.id,
           "name" => attendee2.name,

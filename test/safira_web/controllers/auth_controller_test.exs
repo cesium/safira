@@ -18,7 +18,7 @@ defmodule SafiraWeb.AuthControllerTest do
         |> get(Routes.auth_path(conn, :attendee))
 
       expected_attendee = %{
-        "avatar" => "/images/attendee-missing.png",
+        "avatar" => nil,
         "email" => user.email,
         "id" => attendee.id,
         "name" => attendee.name,

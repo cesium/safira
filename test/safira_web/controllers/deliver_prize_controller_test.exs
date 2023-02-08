@@ -209,7 +209,7 @@ defmodule SafiraWeb.DeliverPrizeControllerTest do
       assert json_response(conn, 200)["data"] == [
                %{
                  "id" => prize.id,
-                 "image" => "/images/prize-missing.png",
+                 "image" => nil,
                  "name" => prize.name,
                  "not_redeemed" => 1
                }

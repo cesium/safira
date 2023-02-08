@@ -14,7 +14,7 @@ defmodule SafiraWeb.RouletteControllerTest do
         |> doc()
 
       assert json_response(conn, 200)["prize"] == %{
-               "avatar" => "/images/prize-missing.png",
+               "avatar" => nil,
                "id" => prize.id,
                "name" => prize.name
              }
@@ -94,7 +94,7 @@ defmodule SafiraWeb.RouletteControllerTest do
                  "date" =>
                    String.replace(NaiveDateTime.to_string(attendee_prize.updated_at), " ", "T"),
                  "prize" => %{
-                   "avatar" => "/images/prize-missing.png",
+                   "avatar" => nil,
                    "id" => prize.id,
                    "max_amount_per_attendee" => prize.max_amount_per_attendee,
                    "name" => prize.name,

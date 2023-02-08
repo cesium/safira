@@ -188,7 +188,7 @@ defmodule SafiraWeb.DeliverRedeemableControllerTest do
       expected_response = [
         %{
           "id" => redeemable.id,
-          "image" => "/images/redeemable-missing.png",
+          "image" => nil,
           "name" => redeemable.name,
           "not_redeemed" => 1
         }
