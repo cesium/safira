@@ -73,7 +73,6 @@ config :safira, :pow,
 
 config :http_stream, adapter: HTTPStream.Adapter.HTTPoison
 
-
 config :safira, Safira.Mailer,
   adapter: Bamboo.MailgunAdapter,
   api_key: {:system, "MAILGUN_API_KEY"},
