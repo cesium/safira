@@ -10,7 +10,7 @@ defmodule Safira.Email do
     |> to(to_email)
     |> from(System.get_env("FROM_EMAIL"))
     |> subject("Reset Password Instructions")
-    |> html_body(build_email_text(token))
+    |> html_body(build_reset_password_email_text(token))
     |> Safira.Mailer.deliver_now()
   end
 
