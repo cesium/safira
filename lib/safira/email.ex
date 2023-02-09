@@ -23,7 +23,7 @@ defmodule Safira.Email do
       {Application.fetch_env!(:safira, :from_email_name),
        Application.fetch_env!(:safira, :from_email)}
     )
-    |> subject("[SEI'22] Finalizar Registo e Informações")
+    |> subject("[SEI'23] Finalizar Registo e Informações")
     |> html_body(build_discord_email_text(token, discord_association_code))
     |> Safira.Mailer.deliver_now()
   end
@@ -37,7 +37,7 @@ defmodule Safira.Email do
       {Application.fetch_env!(:safira, :from_email_name),
        Application.fetch_env!(:safira, :from_email)}
     )
-    |> subject("[SEI'22] Finalizar Registo e Informações")
+    |> subject("[SEI'23] Finalizar Registo e Informações")
     |> html_body(build_email_text(token))
     |> Safira.Mailer.deliver_now()
   end
@@ -482,7 +482,7 @@ defmodule Safira.Email do
                                                                   "
                                                                   >Está tudo pronto
                                                                   para o início da
-                                                                  SEI'22!</span
+                                                                  SEI'23!</span
                                                                 >
                                                               </div>
                                                               <div
@@ -972,7 +972,7 @@ defmodule Safira.Email do
                                                                   balcão da
                                                                   Acreditação, no
                                                                   CP2, a partir das
-                                                                  09h15 do dia 15 de
+                                                                  09h15 do dia 14 de
                                                                   fevereiro, para </span
                                                                 ><span
                                                                   style="
@@ -1073,50 +1073,6 @@ defmodule Safira.Email do
                                                             role="module-content"
                                                           >
                                                             <div>
-                                                              <div
-                                                                style="
-                                                                  font-family: inherit;
-                                                                  text-align: center;
-                                                                "
-                                                              >
-                                                                <span
-                                                                  style="
-                                                                    font-style: normal;
-                                                                    font-variant-ligatures: normal;
-                                                                    font-variant-caps: normal;
-                                                                    font-weight: 400;
-                                                                    letter-spacing: normal;
-                                                                    text-align: left;
-                                                                    text-indent: 0px;
-                                                                    text-transform: none;
-                                                                    white-space: normal;
-                                                                    word-spacing: 0px;
-                                                                    -webkit-text-stroke-width: 0px;
-                                                                    text-decoration-thickness: initial;
-                                                                    text-decoration-style: initial;
-                                                                    text-decoration-color: initial;
-                                                                    float: none;
-                                                                    display: inline;
-                                                                    color: #36dbee;
-                                                                    font-family: arial,
-                                                                      helvetica,
-                                                                      sans-serif;
-                                                                    font-size: 18px;
-                                                                  "
-                                                                  ><strong
-                                                                    >É obrigatório
-                                                                    apresentar um
-                                                                    certificado de
-                                                                    vacinação,
-                                                                    recuperação ou
-                                                                    testagem válido
-                                                                    no momento da
-                                                                    acreditação.</strong
-                                                                  ></span
-                                                                >
-                                                              </div>
-                                                              <div></div>
-                                                            </div>
                                                           </td>
                                                         </tr>
                                                       </tbody>
@@ -1567,57 +1523,6 @@ defmodule Safira.Email do
                                                             bgcolor=""
                                                             role="module-content"
                                                           >
-                                                            <div>
-                                                              <div
-                                                                style="
-                                                                  font-family: inherit;
-                                                                  text-align: center;
-                                                                "
-                                                              >
-                                                                <span
-                                                                  style="
-                                                                    color: #ffffff;
-                                                                    font-family: Colfax,
-                                                                      Helvetica,
-                                                                      Arial,
-                                                                      sans-serif;
-                                                                    font-style: normal;
-                                                                    font-variant-ligatures: normal;
-                                                                    font-variant-caps: normal;
-                                                                    font-weight: 400;
-                                                                    letter-spacing: normal;
-                                                                    text-align: left;
-                                                                    text-indent: 0px;
-                                                                    text-transform: none;
-                                                                    white-space: normal;
-                                                                    word-spacing: 0px;
-                                                                    -webkit-text-stroke-width: 0px;
-                                                                    background-color: rgb(
-                                                                      1,
-                                                                      37,
-                                                                      61
-                                                                    );
-                                                                    text-decoration-thickness: initial;
-                                                                    text-decoration-style: initial;
-                                                                    text-decoration-color: initial;
-                                                                    float: none;
-                                                                    display: inline;
-                                                                    font-size: 18px;
-                                                                  "
-                                                                  >...e junta-te ao
-                                                                  Discord!&nbsp;</span
-                                                                >
-                                                              </div>
-                                                              <div
-                                                                style="
-                                                                  font-family: inherit;
-                                                                  text-align: center;
-                                                                "
-                                                              >
-                                                                <br />
-                                                              </div>
-                                                              <div></div>
-                                                            </div>
                                                           </td>
                                                         </tr>
                                                       </tbody>
@@ -1667,32 +1572,6 @@ defmodule Safira.Email do
                                                                       background-color: inherit;
                                                                     "
                                                                   >
-                                                                    <a
-                                                                      href="#{discord_invite_url}"
-                                                                      style="
-                                                                        background-color: #01253d;
-                                                                        border: 2px
-                                                                          solid
-                                                                          #ffffff;
-                                                                        border-color: #ffffff;
-                                                                        border-radius: 30px;
-                                                                        border-width: 2px;
-                                                                        color: #ffffff;
-                                                                        display: inline-block;
-                                                                        font-size: 17px;
-                                                                        font-weight: bold;
-                                                                        letter-spacing: 0px;
-                                                                        line-height: normal;
-                                                                        padding: 12px
-                                                                          40px 12px
-                                                                          40px;
-                                                                        text-align: center;
-                                                                        text-decoration: none;
-                                                                        border-style: solid;
-                                                                      "
-                                                                      target="_blank"
-                                                                      >DISCORD</a
-                                                                    >
                                                                   </td>
                                                                 </tr>
                                                               </tbody>
@@ -1772,32 +1651,6 @@ defmodule Safira.Email do
                                               >
                                                 <span
                                                   style="
-                                                    color: #ffffff;
-                                                    font-size: 34px;
-                                                  "
-                                                  ><strong>AND STAY </strong></span
-                                                ><span
-                                                  style="
-                                                    font-size: 34px;
-                                                    color: #063d66;
-                                                  "
-                                                  ><strong>SEI</strong></span
-                                                ><span
-                                                  style="
-                                                    color: #ffffff;
-                                                    font-size: 34px;
-                                                  "
-                                                  ><strong>-FE!</strong></span
-                                                >
-                                              </div>
-                                              <div
-                                                style="
-                                                  font-family: inherit;
-                                                  text-align: center;
-                                                "
-                                              >
-                                                <span
-                                                  style="
                                                     box-sizing: border-box;
                                                     padding-top: 0px;
                                                     padding-right: 0px;
@@ -1853,7 +1706,7 @@ defmodule Safira.Email do
                                                     color: #ffffff;
                                                   "
                                                   >A equipa organizadora da
-                                                  SEI'22</span
+                                                  SEI'23</span
                                                 ><span style="color: #ffffff">
                                                   &nbsp;</span
                                                 >
