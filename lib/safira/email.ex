@@ -9,7 +9,7 @@ defmodule Safira.Email do
     new_email()
     |> to(to_email)
     |> from(System.get_env("FROM_EMAIL"))
-    |> subject("Reset Password Instructions")
+    |> subject("[SEI '23] Reset password instructions")
     |> html_body(build_reset_password_email_text(token))
     |> Safira.Mailer.deliver_now()
   end
@@ -58,7 +58,10 @@ defmodule Safira.Email do
     password_reset_link = "#{System.get_env("FRONTEND_URL")}/reset?token=#{token}"
 
     """
-    Please visit <a href="#{password_reset_link}">Reset Your Password</a> to reset your password
+    Hi 👋
+    Forgot your password? No worries, happens to the best of us.
+    Please visit <a href="#{password_reset_link}">reset your password</a> in order to continue.
+    If you didn't request a password reset, please ignore this email.
     """
   end
 
