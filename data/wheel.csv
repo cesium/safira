@@ -8,8 +8,8 @@ JBL GO Essential,1,5,0.0015,yes,data/roulette/jbl.png
 Gift Card 20€,1,5,0.0015,yes,data/roulette/cartao.png
 Gift Card 10€,1,10,0.0075,yes,data/roulette/cartao.png
 Chocolates,1,100,0.019,yes,data/roulette/chocolates.png
-Badge Lucky Bastard,10,999999,0.1,no,data/roulette/lucky_bastard.png
+Badge Lucky Bastard,10,999999,0.1,no,data/roulette/luckybastard.png
 Tokens,999999,999999,0.07,no,data/roulette/tokens.png
 1 entrada no jantar empresarial,1,1,0.0145,no,data/roulette/dinner.png
 Entradas para o sorteio final,999999,999999,0.17,no,data/roulette/entries.png
-Nada,999999,999999,0.6,no,data/roulette/nothing.png
+Nada,999999,999999,0.6,no,data/roulette/nada.png
