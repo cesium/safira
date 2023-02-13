@@ -1,22 +1,25 @@
 Nome,Descrição,Begin,End,Begin Badge,End Badge,Image Path,Type,Tokens,Sponsorship,Channel ID,CV Access
-Accenture,Visita o stand da Accenture,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,2022-02-15T09:00:00Z,2022-02-18T17:00:00Z,data/Badges/Empresa/accenture.svg,4,60,Exclusive,0,1
-Retail Consult,Visita o stand da Retail Consult,2022-02-15T09:00:00Z,2022-02-17T19:00:00Z,2022-02-15T09:00:00Z,2022-02-17T19:00:00Z,data/Badges/Empresa/retailconsult.svg,4,40,Gold,1,1
-Uphold,Visita o stand da Uphold,2022-02-15T09:00:00Z,2022-02-17T19:00:00Z,2022-02-15T09:00:00Z,2022-02-17T19:00:00Z,data/Badges/Empresa/uphold.svg,4,40,Gold,2,1
-SaltPay,Visita o stand da SaltPay,2022-02-16T09:00:00Z,2022-02-18T17:00:00Z,2022-02-16T09:00:00Z,2022-02-18T17:00:00Z,data/Badges/Empresa/saltpay.svg,4,40,Gold,3,1
-Continental,Visita o stand da Continental,2022-02-16T09:00:00Z,2022-02-18T17:00:00Z,2022-02-16T09:00:00Z,2022-02-18T17:00:00Z,data/Badges/Empresa/continental.svg,4,40,Gold,4,1
-Deloitte,Visita o stand da Deloitte,2022-02-16T09:00:00Z,2022-02-17T19:00:00Z,2022-02-16T09:00:00Z,2022-02-17T19:00:00Z,data/Badges/Empresa/deloitte.svg,4,30,Silver,5,1
-EY,Visita o stand da EY,2022-02-17T09:00:00Z,2022-02-18T17:00:00Z,2022-02-17T09:00:00Z,2022-02-18T17:00:00Z,data/Badges/Empresa/ey.svg,4,30,Silver,6,1
-FARFETCH,Visita o stand da FARFETCH,2022-02-15T09:00:00Z,2022-02-16T19:00:00Z,2022-02-15T09:00:00Z,2022-02-16T19:00:00Z,data/Badges/Empresa/farfetch.svg,4,30,Silver,7,1
-Glintt,Visita o stand da Glintt,2022-02-15T09:00:00Z,2022-02-16T19:00:00Z,2022-02-15T09:00:00Z,2022-02-16T19:00:00Z,data/Badges/Empresa/glintt.svg,4,30,Silver,8,1
-XpandIT,Visita o stand da XpandIT,2022-02-17T09:00:00Z,2022-02-18T17:00:00Z,2022-02-17T09:00:00Z,2022-02-18T17:00:00Z,data/Badges/Empresa/xpandit.svg,4,30,Silver,9,1
-Yari Labs,Visita o stand da Yari Labs,2022-02-17T09:00:00Z,2022-02-18T17:00:00Z,2022-02-17T09:00:00Z,2022-02-18T17:00:00Z,data/Badges/Empresa/yarilabs.svg,4,30,Silver,10,1
-Seegno,Visita o stand da Seegno,2022-02-16T09:00:00Z,2022-02-16T19:00:00Z,2022-02-16T09:00:00Z,2022-02-16T19:00:00Z,data/Badges/Empresa/seegno.svg,4,30,Silver,11,1
-IT Sector,Visita o stand da IT Sector,2022-02-15T09:00:00Z,2022-02-15T19:00:00Z,2022-02-15T09:00:00Z,2022-02-15T19:00:00Z,data/Badges/Empresa/itsector.svg,4,30,Silver,12,1
-GoWithFlow,Visita o stand da GoWithFlow,2022-02-17T09:00:00Z,2022-02-17T19:00:00Z,2022-02-17T09:00:00Z,2022-02-17T19:00:00Z,data/Badges/Empresa/flow.svg,4,20,Bronze,13,0
-Vilt,Visita o stand da Vilt,2022-02-15T09:00:00Z,2022-02-15T19:00:00Z,2022-02-15T09:00:00Z,2022-02-15T19:00:00Z,data/Badges/Empresa/vilt.svg,4,20,Bronze,14,0
-Primavera,Visita o stand da Primavera,2022-02-16T09:00:00Z,2022-02-16T19:00:00Z,2022-02-16T09:00:00Z,2022-02-16T19:00:00Z,data/Badges/Empresa/primavera.svg,4,20,Bronze,15,0
-Celfocus,Visita o stand da Celfocus,2022-02-15T09:00:00Z,2022-02-15T19:00:00Z,2022-02-15T09:00:00Z,2022-02-15T19:00:00Z,data/Badges/Empresa/celfocus.svg,4,20,Bronze,16,0
-KPMG,Visita o stand da KPMG,2022-02-18T09:00:00Z,2022-02-18T17:00:00Z,2022-02-18T09:00:00Z,2022-02-18T17:00:00Z,data/Badges/Empresa/kpmg.svg,4,20,Bronze,17,0
-Checkmarx,Visita o stand da Checkmarx,2022-02-15T09:00:00Z,2022-02-15T19:00:00Z,2022-02-15T09:00:00Z,2022-02-15T19:00:00Z,data/Badges/Empresa/checkmarx.svg,4,20,Bronze,18,0
-SteelEye,Visita o stand da SteelEye,2022-02-18T09:00:00Z,2022-02-18T17:00:00Z,2022-02-18T09:00:00Z,2022-02-18T17:00:00Z,data/Badges/Empresa/steeleye.svg,4,20,Bronze,19,0
-Eurotux,Visita o stand da Eurotux,2022-02-18T09:00:00Z,2022-02-18T17:00:00Z,2022-02-18T09:00:00Z,2022-02-18T17:00:00Z,data/Badges/Empresa/eurotux.svg,4,20,Bronze,20,0
+Subvisual,Visita o stand da Subvisual,2023-02-14T09:00:00Z,2023-02-17T17:00:00Z,2023-02-14T09:00:00Z,2023-02-17T17:00:00Z,data/Badges/Empresas/Exclusive/exclusive.png,4,60,Exclusive,0,1
+Retail Consult,Visita o stand da Retail Consult,2023-02-14T09:00:00Z,2023-02-16T19:00:00Z,2023-02-14T09:00:00Z,2023-02-16T19:00:00Z,data/Badges/Empresas/Gold/RetailConsult.png,4,40,Gold,1,1
+Accenture,Visita o stand da Accenture,2023-02-15T09:00:00Z,2023-02-17T17:00:00Z,2023-02-15T09:00:00Z,2023-02-17T17:00:00Z,data/Badges/Empresas/Gold/Accenture.png,4,40,Gold,2,1
+IT Sector,Visita o stand da IT Sector,2023-02-14T09:00:00Z,2023-02-16T19:00:00Z,2023-02-14T09:00:00Z,2023-02-16T19:00:00Z,data/Badges/Empresas/Gold/ITSector.png,4,40,Gold,3,1
+Continental,Visita o stand da Continental,2023-02-15T09:00:00Z,2023-02-17T17:00:00Z,2023-02-15T09:00:00Z,2023-02-17T17:00:00Z,data/Badges/Empresas/Gold/Continental.png,4,40,Gold,4,1
+Checkmarx,Visita o stand da Checkmarx,2023-02-14T09:00:00Z,2023-02-16T19:00:00Z,2023-02-14T09:00:00Z,2023-02-16T19:00:00Z,data/Badges/Empresas/Gold/Checkmarx.png,4,40,Gold,5,1
+Eurotux,Visita o stand da Eurotux,2023-02-16T09:00:00Z,2023-02-17T17:00:00Z,2023-02-16T09:00:00Z,2023-02-17T17:00:00Z,data/Badges/Empresas/Silver/Eurotux.png,4,30,Silver,6,1
+Glintt,Visita o stand da Glintt,2023-02-16T09:00:00Z,2023-02-17T17:00:00Z,2023-02-16T09:00:00Z,2023-02-17T17:00:00Z,data/Badges/Empresas/Silver/Glintt.png,4,30,Silver,7,1
+XpandIT,Visita o stand da XpandIT,2023-02-14T09:00:00Z,2023-02-15T19:00:00Z,2023-02-14T09:00:00Z,2023-02-15T19:00:00Z,data/Badges/Empresas/Silver/Xpandit.png,4,30,Silver,8,1
+Deloitte,Visita o stand da Deloitte,2023-02-14T09:00:00Z,2023-02-15T19:00:00Z,2023-02-14T09:00:00Z,2023-02-15T19:00:00Z,data/Badges/Empresas/Silver/Deloitte.png,4,30,Silver,9,1
+Fujitsu,Visita o stand da Fujitsu,2023-02-16T09:00:00Z,2023-02-17T17:00:00Z,2023-02-16T09:00:00Z,2023-02-17T17:00:00Z,data/Badges/Empresas/Silver/Fujitsu.png,4,30,Silver,10,1
+KPMG,Visita o stand da KPMG,2023-02-14T09:00:00Z,2023-02-15T19:00:00Z,2023-02-14T09:00:00Z,2023-02-15T19:00:00Z,data/Badges/Empresas/Silver/KPMG.png,4,30,Silver,11,1
+Bosch,Visita o stand da Bosch,2023-02-14T09:00:00Z,2023-02-15T19:00:00Z,2023-02-14T09:00:00Z,2023-02-15T19:00:00Z,data/Badges/Empresas/Silver/Bosch.png,4,30,Silver,12,1
+Farfetch,Visita o stand da Farfetch,2023-02-16T09:00:00Z,2023-02-17T17:00:00Z,2023-02-16T09:00:00Z,2023-02-17T17:00:00Z,data/Badges/Empresas/Silver/Farfetch.png,4,30,Silver,13,1
+Seegno,Visita o stand da Seegno,2023-02-14T09:00:00Z,2023-02-14T19:00:00Z,2023-02-14T09:00:00Z,2023-02-14T19:00:00Z,data/Badges/Empresas/Bronze/Seegno.png,4,20,Bronze,14,0
+Yarilabs,Visita o stand da Yarilabs,2023-02-15T09:00:00Z,2023-02-15T19:00:00Z,2023-02-15T09:00:00Z,2023-02-15T19:00:00Z,data/Badges/Empresas/Bronze/Yarilabs.png,4,20,Bronze,15,0
+Axians,Visita o stand da Axians,2023-02-14T09:00:00Z,2023-02-14T19:00:00Z,2023-02-14T09:00:00Z,2023-02-14T19:00:00Z,data/Badges/Empresas/Bronze/Axians.png,4,20,Bronze,16,1
+OpenVia,Visita o stand da OpenVia,2023-02-16T09:00:00Z,2023-02-16T19:00:00Z,2023-02-16T09:00:00Z,2023-02-16T19:00:00Z,data/Badges/Empresas/Bronze/Openvia.png,4,20,Bronze,17,0
+Celfocus,Visita o stand da Celfocus,2023-02-15T09:00:00Z,2023-02-15T19:00:00Z,2023-02-15T09:00:00Z,2023-02-15T19:00:00Z,data/Badges/Empresas/Bronze/Celfocus.png,4,20,Bronze,18,0
+KonkConsulting,Visita o stand da KonkConsulting,2023-02-15T09:00:00Z,2023-02-15T19:00:00Z,2023-02-15T09:00:00Z,2023-02-15T19:00:00Z,data/Badges/Empresas/Bronze/KonkConsulting.png,4,20,Bronze,19,0
+Issuu,Visita o stand da Issuu,2023-02-14T09:00:00Z,2023-02-14T19:00:00Z,2023-02-14T09:00:00Z,2023-02-14T19:00:00Z,data/Badges/Empresas/Bronze/Issuu.png,4,20,Bronze,20,0
+Cegid,Visita o stand da Cegid,2023-02-16T09:00:00Z,2023-02-16T19:00:00Z,2023-02-16T09:00:00Z,2023-02-16T19:00:00Z,data/Badges/Empresas/Bronze/Cegid.png,4,20,Bronze,21,0
+Ey,Visita o stand da Ey,2023-02-17T09:00:00Z,2023-02-17T17:00:00Z,2023-02-17T09:00:00Z,2023-02-17T17:00:00Z,data/Badges/Empresas/Bronze/Ey.png,4,20,Bronze,22,0
+Saber,Visita o stand da Saber,2023-02-17T09:00:00Z,2023-02-17T17:00:00Z,2023-02-17T09:00:00Z,2023-02-17T17:00:00Z,data/Badges/Empresas/Bronze/Saber.png,4,20,Bronze,23,0
