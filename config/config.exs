@@ -77,7 +77,7 @@ config :safira, Safira.Mailer,
   adapter: Bamboo.MailgunAdapter,
   api_key: {:system, "MAILGUN_API_KEY"},
   domain: {:system, "MAILGUN_DOMAIN"},
-  base_url: {:system, "MAILGUN_BASE_URL"},
+  base_uri: {:system, "MAILGUN_BASE_URL"},
   hackney_opts: [
     recv_timeout: :timer.minutes(1)
   ]
