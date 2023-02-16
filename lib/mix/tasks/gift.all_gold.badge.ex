@@ -1,24 +1,29 @@
-defmodule Mix.Tasks.Gift.User.Badge do
+defmodule Mix.Tasks.Gift.AllGold.Badge do
   @moduledoc """
-  Task to generate a user with a badge
+  Task to give a badge to a list of users which have all company gold badges and exclusive badges
   """
   use Mix.Task
 
   import Ecto.Query, warn: false
+
+  alias Safira.Contest
   alias Safira.Contest.Redeem
   alias Safira.Accounts.Company
   alias Safira.Contest.Badge
   alias Safira.Accounts.Attendee
   alias Safira.Repo
 
-  def run(args) do
+  def run(args) when length(args) == 1 do
     Mix.Task.run("app.start")
-    create(args)
+
+    args |> List.first() |> String.to_integer() |> create()
+  end
+
+  def run(_args) do
+    Mix.shell().error("You must provide a badge_id")
   end
 
   def create(badge_id) do
-    # give a badge to a list of users which have all company gold badges and exclusive badges
-
     companies =
       Badge
       |> where([b], b.type == 4)
@@ -38,10 +43,10 @@ defmodule Mix.Tasks.Gift.User.Badge do
       |> select([b, c, r, a], a.id)
       |> Repo.all()
 
-    # TODO: Transaction
+    # TODO: Multi transaction
     attendees
     |> Enum.each(fn id ->
-      Repo.insert(%Redeem{attendee_id: id, badge_id: badge_id, manager_id: 1})
+      Contest.create_redeem(%{attendee_id: id, badge_id: badge_id, manager_id: 1}, :admin)
     end)
   end
 end
