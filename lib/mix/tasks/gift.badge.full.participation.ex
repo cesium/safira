@@ -11,7 +11,7 @@ defmodule Mix.Tasks.Gift.Badge.Full.Participation do
     if Enum.empty?(args) do
       Mix.shell().info("Needs badge_id.")
     else
-      create(args)
+      args |> List.first() |> String.to_integer() |> create()
     end
   end
 
