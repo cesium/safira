@@ -20,6 +20,10 @@ defmodule Safira.Accounts.Attendee do
   alias Safira.Roulette.Prize
 
   @primary_key {:id, :binary_id, autogenerate: true}
+
+  # Any sequence of 3-15 characters that are either letters, numbers, - or _
+  @nickname_regex ~r/^[\w\d-_]{3,15}$/
+
   @derive {Phoenix.Param, key: :id}
   schema "attendees" do
     field :nickname, :string
@@ -49,8 +53,7 @@ defmodule Safira.Accounts.Attendee do
     |> cast_attachments(attrs, [:avatar, :cv])
     |> cast_assoc(:user)
     |> validate_required([:name, :nickname])
-    |> validate_length(:nickname, min: 2, max: 15)
-    |> validate_format(:nickname, ~r/^[a-zA-Z0-9]+([a-zA-Z0-9](_|-)[a-zA-Z0-9])*[a-zA-Z0-9]+$/)
+    |> validate_format(:nickname, @nickname_regex)
     |> unique_constraint(:nickname)
   end
 
@@ -60,8 +63,7 @@ defmodule Safira.Accounts.Attendee do
     |> cast_attachments(attrs, [:avatar, :cv])
     |> cast_assoc(:user)
     |> validate_required([:name, :nickname])
-    |> validate_length(:nickname, min: 2, max: 15)
-    |> validate_format(:nickname, ~r/^[a-zA-Z0-9]+([a-zA-Z0-9](_|-)[a-zA-Z0-9])*[a-zA-Z0-9]+$/)
+    |> validate_format(:nickname, @nickname_regex)
     |> unique_constraint(:nickname)
   end
 
@@ -70,8 +72,7 @@ defmodule Safira.Accounts.Attendee do
     |> cast(attrs, [:nickname])
     |> cast_attachments(attrs, [:avatar, :cv])
     |> validate_required([:nickname])
-    |> validate_length(:nickname, min: 2, max: 15)
-    |> validate_format(:nickname, ~r/^[a-zA-Z0-9]+([a-zA-Z0-9](_|-)[a-zA-Z0-9])*[a-zA-Z0-9]+$/)
+    |> validate_format(:nickname, @nickname_regex)
     |> unique_constraint(:nickname)
   end
 
