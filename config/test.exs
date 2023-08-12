@@ -13,8 +13,8 @@ config :logger, level: :warn
 config :safira, Safira.Repo,
   adapter: Ecto.Adapters.Postgres,
   database: "safira_test",
-  username: System.get_env("DB_USERNAME", "postgres"),
-  password: System.get_env("DB_PASSWORD", "postgres"),
+  username: System.get_env("DB_USERNAME", "safira"),
+  password: System.get_env("DB_PASSWORD", "secret"),
   port: System.get_env("DB_PORT", "5432"),
   hostname: System.get_env("DB_HOST", "localhost"),
   pool: Ecto.Adapters.SQL.Sandbox
