@@ -72,7 +72,7 @@ defmodule SafiraWeb.CVControllerTest do
     test "company does not have access to CV", %{
       user_company_no_access: user_company,
       company_no_access: company,
-      attendee_with_badge: attendee
+      attendee_with_badge: _attendee
     } do
       %{conn: conn, user: _user} = api_authenticate(user_company)
 

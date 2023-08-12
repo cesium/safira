@@ -231,9 +231,8 @@ defmodule SafiraWeb.AttendeeControllerTest do
 
       %{conn: conn, user: _user} = api_authenticate(user)
 
-      conn =
-        conn
-        |> put(Routes.attendee_path(conn, :update, attendee.id), attrs)
+      conn
+      |> put(Routes.attendee_path(conn, :update, attendee.id), attrs)
 
       updated_attendee = Accounts.get_attendee!(attendee.id)
 
@@ -252,9 +251,8 @@ defmodule SafiraWeb.AttendeeControllerTest do
 
       %{conn: conn, user: _user} = api_authenticate(user)
 
-      conn =
-        conn
-        |> put(Routes.attendee_path(conn, :update, attendee.id), attrs)
+      conn
+      |> put(Routes.attendee_path(conn, :update, attendee.id), attrs)
 
       updated_attendee = Accounts.get_attendee!(attendee.id)
 
@@ -273,9 +271,8 @@ defmodule SafiraWeb.AttendeeControllerTest do
 
       %{conn: conn, user: _user} = api_authenticate(user)
 
-      conn =
-        conn
-        |> put(Routes.attendee_path(conn, :update, attendee.id), attrs)
+      conn
+      |> put(Routes.attendee_path(conn, :update, attendee.id), attrs)
 
       updated_attendee = Accounts.get_attendee!(attendee.id)
 

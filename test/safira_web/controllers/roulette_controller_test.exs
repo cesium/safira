@@ -23,7 +23,7 @@ defmodule SafiraWeb.RouletteControllerTest do
     test "with valid token (attendee without enough tokens)" do
       user = create_user_strategy(:user)
       insert(:attendee, user: user, token_balance: 0)
-      prize = create_prize_strategy(:prize, probability: 1.0)
+      create_prize_strategy(:prize, probability: 1.0)
       %{conn: conn, user: _user} = api_authenticate(user)
 
       conn =
@@ -38,7 +38,7 @@ defmodule SafiraWeb.RouletteControllerTest do
     test "with invalid token" do
       user = create_user_strategy(:user)
       insert(:attendee, user: user, token_balance: 1000)
-      prize = create_prize_strategy(:prize, probability: 1.0)
+      create_prize_strategy(:prize, probability: 1.0)
       %{conn: conn, user: _user} = api_authenticate(user)
 
       conn =
@@ -52,7 +52,7 @@ defmodule SafiraWeb.RouletteControllerTest do
     test "with no token", %{conn: conn} do
       user = create_user_strategy(:user)
       insert(:attendee, user: user)
-      prize = create_prize_strategy(:prize, probability: 1.0)
+      create_prize_strategy(:prize, probability: 1.0)
 
       conn =
         conn
@@ -64,7 +64,7 @@ defmodule SafiraWeb.RouletteControllerTest do
     test "when user is not an attendee" do
       user = create_user_strategy(:user)
       insert(:manager, user: user)
-      prize = create_prize_strategy(:prize, probability: 1.0)
+      create_prize_strategy(:prize, probability: 1.0)
       %{conn: conn, user: _user} = api_authenticate(user)
 
       conn =

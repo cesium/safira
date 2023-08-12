@@ -54,7 +54,7 @@ defmodule SafiraWeb.RedeemableControllerTest do
 
     test "with invalid token" do
       user = create_user_strategy(:user)
-      redeemable = insert(:redeemable)
+      insert(:redeemable)
       insert(:attendee, user: user)
 
       %{conn: conn, user: _user} = api_authenticate(user)
@@ -69,7 +69,7 @@ defmodule SafiraWeb.RedeemableControllerTest do
 
     test "with no token", %{conn: conn} do
       user = create_user_strategy(:user)
-      redeemable = insert(:redeemable)
+      insert(:redeemable)
       insert(:attendee, user: user)
 
       conn =

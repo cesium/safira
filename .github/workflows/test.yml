@@ -38,4 +38,4 @@ jobs:
           elixir-version: ${{matrix.elixir}}
 
       - name: Run the tests
-        run: mix test
+        run: mix test --warnings-as-errors

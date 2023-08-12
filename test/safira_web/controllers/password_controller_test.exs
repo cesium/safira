@@ -3,7 +3,6 @@ defmodule SafiraWeb.PasswordControllerTest do
   use Bamboo.Test
   use Timex
 
-  alias Safira.Accounts
   alias Safira.Accounts.User
 
   alias Safira.Auth
@@ -27,7 +26,7 @@ defmodule SafiraWeb.PasswordControllerTest do
 
       assert json_response(conn, 201)["data"]["attributes"] != %{}
       # TODO: Use assert_delivered_email
-      assert {:ok, email = %Bamboo.Email{}} =
+      assert {:ok, _email = %Bamboo.Email{}} =
                Email.send_reset_email(user.email, user.reset_password_token)
     end
 
