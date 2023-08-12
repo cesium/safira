@@ -20,7 +20,9 @@ defmodule Safira.Accounts.Attendee do
   alias Safira.Roulette.Prize
 
   @primary_key {:id, :binary_id, autogenerate: true}
-  @nickname_regex  ~r/^[\w\d-_]{3,15}$/
+
+  # Any sequence of 3-15 characters that are either letters, numbers, - or _
+  @nickname_regex ~r/^[\w\d-_]{3,15}$/
 
   @derive {Phoenix.Param, key: :id}
   schema "attendees" do
