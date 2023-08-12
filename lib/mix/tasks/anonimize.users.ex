@@ -13,13 +13,14 @@ defmodule Mix.Tasks.Anonimize.Users do
     users = Enum.shuffle(Repo.all(User))
     n = length(users)
 
-    for i <- 0..n-1 do
+    for i <- 0..(n - 1) do
       anonimze_user(Enum.at(users, i), i + 1)
     end
   end
 
   defp anonimze_user(%User{} = user, index) do
-    attendee = Attendee
+    attendee =
+      Attendee
       |> where([a], a.user_id == ^user.id)
       |> Repo.one()
 

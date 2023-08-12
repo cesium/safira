@@ -17,6 +17,8 @@ defmodule SafiraWeb do
   and import those modules here.
   """
 
+  def static_paths, do: ~w(assets fonts images favicon.ico robots.txt)
+
   def controller do
     quote do
       use Phoenix.Controller, namespace: SafiraWeb
@@ -24,6 +26,8 @@ defmodule SafiraWeb do
       import Plug.Conn
       import SafiraWeb.Gettext
       alias SafiraWeb.Router.Helpers, as: Routes
+
+      unquote(verified_routes())
     end
   end
 
@@ -42,6 +46,8 @@ defmodule SafiraWeb do
       import SafiraWeb.ErrorHelpers
       import SafiraWeb.Gettext
       alias SafiraWeb.Router.Helpers, as: Routes
+
+      unquote(verified_routes())
     end
   end
 
@@ -57,6 +63,15 @@ defmodule SafiraWeb do
     quote do
       use Phoenix.Channel
       import SafiraWeb.Gettext
+    end
+  end
+
+  def verified_routes do
+    quote do
+      use Phoenix.VerifiedRoutes,
+        endpoint: SafiraWeb.Endpoint,
+        router: SafiraWeb.Router,
+        statics: SafiraWeb.static_paths()
     end
   end
 
