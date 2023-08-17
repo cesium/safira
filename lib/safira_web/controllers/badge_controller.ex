@@ -1,5 +1,5 @@
 defmodule SafiraWeb.BadgeController do
-  use SafiraWeb, :controller
+  use SafiraWeb, controller: "1.6"
 
   alias Safira.Accounts
   alias Safira.Accounts.User

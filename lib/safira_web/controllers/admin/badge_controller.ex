@@ -1,5 +1,5 @@
 defmodule SafiraWeb.Admin.BadgeController do
-  use SafiraWeb, :controller
+  use SafiraWeb, controller: "1.6"
 
   alias Safira.Admin.Contest
   alias Safira.Contest.Badge
