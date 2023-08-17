@@ -1,6 +1,6 @@
-defmodule Mix.Tasks.Anonimize.Users do
+defmodule Mix.Tasks.Anonymize.Users do
   @moduledoc """
-  Task to anonimize users
+  Task to anonymize users
   """
   use Mix.Task
   import Ecto.Query, warn: false
@@ -11,14 +11,13 @@ defmodule Mix.Tasks.Anonimize.Users do
   def run(_args) do
     Mix.Task.run("app.start")
     users = Enum.shuffle(Repo.all(User))
-    n = length(users)
 
-    for i <- 0..(n - 1) do
-      anonimze_user(Enum.at(users, i), i + 1)
+    for {user, index} <- Enum.with_index(users) do
+      anonymize_user(user, index + 1)
     end
   end
 
-  defp anonimze_user(%User{} = user, index) do
+  defp anonymize_user(%User{} = user, index) do
     attendee =
       Attendee
       |> where([a], a.user_id == ^user.id)
