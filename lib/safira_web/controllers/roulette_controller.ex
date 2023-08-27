@@ -1,5 +1,5 @@
 defmodule SafiraWeb.RouletteController do
-  use SafiraWeb, :controller
+  use SafiraWeb, controller: "1.6"
 
   alias Safira.Accounts
   alias Safira.Roulette

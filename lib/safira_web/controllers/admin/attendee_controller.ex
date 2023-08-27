@@ -1,5 +1,5 @@
 defmodule SafiraWeb.Admin.AttendeeController do
-  use SafiraWeb, :controller
+  use SafiraWeb, controller: "1.6"
 
   alias Safira.Accounts.Attendee
   alias Safira.Admin.Accounts

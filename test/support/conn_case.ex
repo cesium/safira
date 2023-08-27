@@ -25,6 +25,7 @@ defmodule SafiraWeb.ConnCase do
       use Phoenix.ConnTest
       alias SafiraWeb.Router.Helpers, as: Routes
 
+      use SafiraWeb, :verified_routes
       import SafiraWeb.ConnCaseHelper
       import Safira.Factory
       import Bureaucrat.Helpers

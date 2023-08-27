@@ -12,7 +12,7 @@ defmodule SafiraWeb.AuthController do
            Auth.create_user_uuid(user_params),
          {:ok, token, _claims} <- Guardian.encode_and_sign(user) do
       conn
-      |> render("signup_response.json", %{jwt: token, discord_association_code: code})
+      |> render(:signup_response, %{jwt: token, discord_association_code: code})
     end
   end
 
@@ -38,7 +38,7 @@ defmodule SafiraWeb.AuthController do
           |> Map.put(:type, "manager")
       end
 
-    render(conn, "user.json", user: user)
+    render(conn, :data, user: user)
   end
 
   def attendee(conn, _params) do
@@ -50,7 +50,7 @@ defmodule SafiraWeb.AuthController do
         {:error, :unauthorized}
 
       false ->
-        render(conn, "attendee.json", user: user_preload)
+        render(conn, :attendee, user: user_preload)
     end
   end
 
@@ -63,7 +63,7 @@ defmodule SafiraWeb.AuthController do
         {:error, :unauthorized}
 
       false ->
-        render(conn, "company.json", user: user_preload)
+        render(conn, :company, user: user_preload)
     end
   end
 
@@ -75,14 +75,14 @@ defmodule SafiraWeb.AuthController do
         {:error, :not_found}
 
       false ->
-        render(conn, "is_registered.json", is_registered: not is_nil(attendee.user_id))
+        render(conn, :is_registered, is_registered: not is_nil(attendee.user_id))
     end
   end
 
   def sign_in(conn, %{"email" => email, "password" => password}) do
     case Auth.token_sign_in(email, password) do
       {:ok, token, _claims} ->
-        render(conn, "jwt.json", jwt: token)
+        render(conn, :jwt, jwt: token)
 
       _ ->
         {:error, :unauthorized}

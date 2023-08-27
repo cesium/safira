@@ -8,19 +8,19 @@ defmodule SafiraWeb.UserController do
 
   def index(conn, _params) do
     users = Accounts.list_users()
-    render(conn, "index.json", users: users)
+    render(conn, :index, users: users)
   end
 
   def show(conn, %{"id" => id}) do
     user = Accounts.get_user!(id)
-    render(conn, "show.json", user: user)
+    render(conn, :show, user: user)
   end
 
   def update(conn, %{"id" => id, "user" => user_params}) do
     user = Accounts.get_user!(id)
 
     with {:ok, %User{} = user} <- Accounts.update_user(user, user_params) do
-      render(conn, "show.json", user: user)
+      render(conn, :show, user: user)
     end
   end
 

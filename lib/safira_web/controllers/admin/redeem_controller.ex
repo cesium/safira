@@ -1,5 +1,5 @@
 defmodule SafiraWeb.Admin.RedeemController do
-  use SafiraWeb, :controller
+  use SafiraWeb, controller: "1.6"
 
   alias Safira.Admin.Contest
   alias Safira.Contest.Redeem
