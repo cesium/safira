@@ -124,7 +124,7 @@ defmodule SafiraWeb.CompanyControllerTest do
     end
 
     test "multiple attendees redeemed the company's badge", %{
-      conn: conn,
+      conn: _conn,
       user: user,
       company: company
     } do
