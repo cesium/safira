@@ -1,9 +1,8 @@
-defmodule SafiraWeb.BonusView do
-  use SafiraWeb, :view
+defmodule SafiraWeb.BonusJSON do
 
   @token_bonus Application.compile_env!(:safira, :token_bonus)
 
-  def render("bonus.json", changes) do
+  def bonus(changes) do
     attendee = Map.get(changes, :update_attendee)
     bonus = Map.get(changes, :upsert_bonus)
 
