@@ -29,7 +29,7 @@ defmodule Mix.Tasks.Export.Attendees.Entries do
         write_csv(List.first(args), :separate)
 
       true ->
-        Mix.shell().info("Second argument must be equal to \"Aggregate\" and \"Separate\"")
+        Mix.shell().info(~s(Second argument must be equal to "Aggregate" and "Separate"))
     end
   end
 

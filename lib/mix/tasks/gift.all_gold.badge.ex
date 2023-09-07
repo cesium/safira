@@ -6,11 +6,13 @@ defmodule Mix.Tasks.Gift.AllGold.Badge do
 
   import Ecto.Query, warn: false
 
-  alias Safira.Contest
-  alias Safira.Contest.Redeem
-  alias Safira.Accounts.Company
-  alias Safira.Contest.Badge
   alias Safira.Accounts.Attendee
+  alias Safira.Accounts.Company
+
+  alias Safira.Contest
+  alias Safira.Contest.Badge
+  alias Safira.Contest.Redeem
+
   alias Safira.Repo
 
   def run(args) when length(args) == 1 do
@@ -43,7 +45,6 @@ defmodule Mix.Tasks.Gift.AllGold.Badge do
       |> select([b, c, r, a], a.id)
       |> Repo.all()
 
-    # TODO: Multi transaction
     attendees
     |> Enum.each(fn id ->
       Contest.create_redeem(%{attendee_id: id, badge_id: badge_id, manager_id: 1}, :admin)

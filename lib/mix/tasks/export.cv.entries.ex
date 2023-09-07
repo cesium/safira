@@ -8,21 +8,18 @@ defmodule Mix.Tasks.Export.Cv.Entries do
   def run(args) do
     Mix.Task.run("app.start")
 
-    cond do
-      length(args) != 1 ->
-        Mix.shell().info("Must receive one argument: the path of the file to export the data to")
+    if length(args) == 1 do
+      file = List.first(args)
 
-      true ->
-        file = List.first(args)
-
-        data =
-          Accounts.list_active_attendees()
-          |> Enum.filter(fn at -> at.cv != nil end)
-          |> Enum.with_index()
-          |> Enum.map(&attendee_row/1)
-          |> then(fn list -> ["id,uuid,name,email" | list] end)
-          |> Enum.intersperse("\n")
-          |> then(fn data -> File.write!(file, data) end)
+      Accounts.list_active_attendees()
+      |> Enum.filter(fn at -> at.cv != nil end)
+      |> Enum.with_index()
+      |> Enum.map(&attendee_row/1)
+      |> then(fn list -> ["id,uuid,name,email" | list] end)
+      |> Enum.intersperse("\n")
+      |> then(fn data -> File.write!(file, data) end)
+    else
+      Mix.shell().info("Must receive one argument: the path of the file to export the data to")
     end
   end
 
