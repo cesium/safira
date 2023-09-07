@@ -28,3 +28,7 @@ jobs:
       - name: Check code formating
         run: mix format --check-formatted
         if: always()
+
+      - name: 🔍 Lint the code
+        run: mix credo --strict --all
+        if: always()
