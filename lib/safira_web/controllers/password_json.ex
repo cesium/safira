@@ -1,7 +1,7 @@
-defmodule SafiraWeb.PasswordView do
-  use SafiraWeb, :view
+defmodule SafiraWeb.PasswordJSON do
+  @moduledoc false
 
-  def render("show.json", %{}) do
+  def show(%{}) do
     %{
       data: %{
         attributes: %{
@@ -12,11 +12,11 @@ defmodule SafiraWeb.PasswordView do
     }
   end
 
-  def render("ok.json", %{}) do
+  def ok(%{}) do
     %{data: %{attributes: %{info: "User password successfully updated."}}}
   end
 
-  def render("error.json", %{error: error}) do
+  def error(%{error: error}) do
     %{errors: [%{detail: error}]}
   end
 end
