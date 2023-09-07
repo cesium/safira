@@ -1,7 +1,10 @@
-defmodule SafiraWeb.RouletteView do
-  use SafiraWeb, :view
+defmodule SafiraWeb.RouletteJSON do
+  @moduledoc false
 
-  def render("roulette.json", changes) do
+  alias SafiraWeb.BadgeJSON
+  alias SafiraWeb.PrizeJSON
+
+  def roulette(changes) do
     prize = Map.get(changes, :prize)
     attendee = Map.get(changes, :attendee)
     attendee_token_balance = Map.get(changes, :attendee_token_balance)
@@ -9,7 +12,7 @@ defmodule SafiraWeb.RouletteView do
     badge = Map.get(changes, :badge)
 
     resp = %{
-      prize: render_one(prize, SafiraWeb.PrizeView, "prize.json")
+      prize: PrizeJSON.prize(%{prize: prize})
     }
 
     resp =
@@ -21,7 +24,7 @@ defmodule SafiraWeb.RouletteView do
           Map.put(resp, :entries, 1)
 
         not is_nil(badge) ->
-          Map.put(resp, :badge, render_one(badge, SafiraWeb.BadgeView, "badge.json"))
+          Map.put(resp, :badge, BadgeJSON.badge(badge))
 
         true ->
           resp
@@ -30,18 +33,14 @@ defmodule SafiraWeb.RouletteView do
     resp
   end
 
-  def render("price.json", %{price: price}) do
-    %{price: price}
+  def latest_prizes(%{latest_prizes: latest_prizes}) do
+    %{data: for(p <- latest_prizes, do: latest_prize_show(%{roulette: p}))}
   end
 
-  def render("latest_prizes.json", %{latest_prizes: latest_prizes}) do
-    %{data: render_many(latest_prizes, SafiraWeb.RouletteView, "latest_prize_show.json")}
-  end
-
-  def render("latest_prize_show.json", %{roulette: latest_prize}) do
+  def latest_prize_show(%{roulette: latest_prize}) do
     %{
       attendee_name: elem(latest_prize, 0),
-      prize: render_one(elem(latest_prize, 1), SafiraWeb.PrizeView, "prize_show.json"),
+      prize: PrizeJSON.prize_show(%{prize: elem(latest_prize, 1)}),
       date: elem(latest_prize, 2)
     }
   end
