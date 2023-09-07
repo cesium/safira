@@ -1,5 +1,5 @@
 defmodule SafiraWeb.PrizeController do
-  use SafiraWeb, controller: "1.6"
+  use SafiraWeb, :controller
 
   alias Safira.Roulette
 

@@ -4,7 +4,7 @@ defmodule SafiraWeb.FallbackController do
 
   See `Phoenix.Controller.action_fallback/1` for more details.
   """
-  use SafiraWeb, controller: "1.6"
+  use SafiraWeb, :controller
 
   def call(conn, {:error, :register_error}) do
     conn
