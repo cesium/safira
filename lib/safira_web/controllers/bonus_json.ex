@@ -1,5 +1,4 @@
 defmodule SafiraWeb.BonusJSON do
-
   @token_bonus Application.compile_env!(:safira, :token_bonus)
 
   def bonus(changes) do

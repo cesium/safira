@@ -31,6 +31,7 @@ defmodule SafiraWeb.AttendeeJSON do
       nickname: at.nickname,
       name: at.name,
       avatar: Avatar.url({at.avatar, at}, :original),
+      course: at.course_id,
       cv: CV.url({at.cv, at}, :original),
       badges: for(b <- at.badges, do: BadgeJSON.badge(%{badge: b})),
       badge_count: at.badge_count,
@@ -47,6 +48,7 @@ defmodule SafiraWeb.AttendeeJSON do
       nickname: at.nickname,
       name: at.name,
       avatar: Avatar.url({at.avatar, at}, :original),
+      course: at.course_id,
       cv: CV.url({at.cv, at}, :original),
       badges: for(b <- at.badges, do: BadgeJSON.badge(%{badge: b})),
       badge_count: at.badge_count,
@@ -68,12 +70,13 @@ defmodule SafiraWeb.AttendeeJSON do
     }
   end
 
-  def attendee_simple( %{attendee: at}) do
+  def attendee_simple(%{attendee: at}) do
     %{
       id: at.id,
       nickname: at.nickname,
       name: at.name,
       avatar: Avatar.url({at.avatar, at}, :original),
+      course: at.course_id,
       cv: CV.url({at.cv, at}, :original),
       token_balance: at.token_balance,
       entries: at.entries
@@ -86,6 +89,7 @@ defmodule SafiraWeb.AttendeeJSON do
       nickname: at.nickname,
       name: at.name,
       avatar: Avatar.url({at.avatar, at}, :original),
+      course: at.course_id,
       cv: nil,
       token_balance: at.token_balance,
       entries: at.entries

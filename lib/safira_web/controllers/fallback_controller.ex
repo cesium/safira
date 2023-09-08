@@ -6,6 +6,8 @@ defmodule SafiraWeb.FallbackController do
   """
   use SafiraWeb, :controller
 
+  alias SafiraWeb.ErrorJSON
+
   def call(conn, {:error, :register_error}) do
     conn
     |> put_status(:bad_request)
@@ -32,14 +34,19 @@ defmodule SafiraWeb.FallbackController do
 
   def call(conn, {:error, %Ecto.Changeset{} = changeset}) do
     conn
+    |> put_view(json: ErrorJSON)
     |> put_status(:unprocessable_entity)
-    |> render(SafiraWeb.ChangesetView, "error.json", changeset: changeset)
+    |> render(:error, changeset: changeset)
   end
 
   def call(conn, {:error, :not_found}) do
+    require Logger
+    Logger.warn("BATATA")
+
     conn
     |> put_status(:not_found)
-    |> render(SafiraWeb.ErrorView, :"404")
+    |> put_view(json: ErrorJSON)
+    |> render(:not_found)
   end
 
   def call(conn, {:error, :no_permission}) do

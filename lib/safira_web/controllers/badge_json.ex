@@ -1,5 +1,4 @@
 defmodule SafiraWeb.BadgeJSON do
-
   alias SafiraWeb.AttendeeJSON
   alias Safira.Avatar
 

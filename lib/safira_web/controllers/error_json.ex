@@ -1,18 +1,5 @@
-defmodule SafiraWeb.ErrorHelpers do
-  @moduledoc """
-  Conveniences for translating and building error messages.
-  """
-
-  use Phoenix.HTML
-
-  @doc """
-  Generates tag for inlined form input errors.
-  """
-  def error_tag(form, field) do
-    Enum.map(Keyword.get_values(form.errors, field), fn error ->
-      content_tag(:span, translate_error(error), class: "help-block")
-    end)
-  end
+defmodule SafiraWeb.ErrorJSON do
+  @moduledoc false
 
   @doc """
   Translates an error message using gettext.
@@ -40,5 +27,29 @@ defmodule SafiraWeb.ErrorHelpers do
     else
       Gettext.dgettext(SafiraWeb.Gettext, "errors", msg, opts)
     end
+  end
+
+  @doc """
+  Traverses and translates changeset errors.
+
+  See `Ecto.Changeset.traverse_errors/2` and
+  `SafiraWeb.ErrorHelpers.translate_error/1` for more details.
+  """
+  def translate_errors(changeset) do
+    Ecto.Changeset.traverse_errors(changeset, &translate_error/1)
+  end
+
+  def error(%{changeset: changeset}) do
+    # When encoded, the changeset returns its errors
+    # as a JSON object. So we just pass it forward.
+    %{errors: translate_errors(changeset)}
+  end
+
+  def not_found(_) do
+    %{error: "Not found"}
+  end
+
+  def render(template, _assigns) do
+    %{errors: %{detail: Phoenix.Controller.status_message_from_template(template)}}
   end
 end

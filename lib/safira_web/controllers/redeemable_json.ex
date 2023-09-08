@@ -1,5 +1,4 @@
 defmodule SafiraWeb.RedeemableJSON do
-
   alias Safira.Avatar
 
   def index(%{redeemables: redeemables}) do
