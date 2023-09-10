@@ -1,6 +1,8 @@
 defmodule SafiraWeb.BadgeJSON do
-  alias SafiraWeb.AttendeeJSON
+  @moduledoc false
+
   alias Safira.Avatar
+  alias SafiraWeb.AttendeeJSON
 
   def index(%{badges: badges}) do
     %{data: for(b <- badges, do: badge(%{badge: b}))}

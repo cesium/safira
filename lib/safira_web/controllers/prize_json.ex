@@ -1,4 +1,6 @@
 defmodule SafiraWeb.PrizeJSON do
+  @moduledoc false
+
   alias Safira.Avatar
 
   def index(%{prizes: prizes}) do
