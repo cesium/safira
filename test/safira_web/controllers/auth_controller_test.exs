@@ -49,7 +49,7 @@ defmodule SafiraWeb.AuthControllerTest do
     end
 
     test "user", %{user: user} do
-      company = insert(:company, user: user)
+      insert(:company, user: user)
 
       %{conn: conn, user: _user} = api_authenticate(user)
 
@@ -139,7 +139,7 @@ defmodule SafiraWeb.AuthControllerTest do
     end
 
     test "is not registered", %{user: user} do
-      attendee = insert(:attendee, user: user)
+      insert(:attendee, user: user)
       unregistered_attendee = insert(:attendee, user: nil)
 
       %{conn: conn, user: _user} = api_authenticate(user)

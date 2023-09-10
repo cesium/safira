@@ -74,7 +74,7 @@ defmodule Safira.StoreTest do
         insert(:redeemable, is_redeemable: true, stock: 0)
         |> Map.put(:can_buy, 0)
 
-      r3 = insert(:redeemable, is_redeemable: false)
+      insert(:redeemable, is_redeemable: false)
 
       assert Store.list_store_redeemables(at) == [r1, r2]
     end
@@ -116,7 +116,7 @@ defmodule Safira.StoreTest do
     end
 
     test "Invalid data" do
-      {:error, changeset} = Store.create_redeemable(params_for(:redeemable, max_per_user: -1))
+      {:error, _changeset} = Store.create_redeemable(params_for(:redeemable, max_per_user: -1))
       assert Store.list_redeemables() == []
     end
   end
@@ -130,7 +130,10 @@ defmodule Safira.StoreTest do
 
     test "Invalid data" do
       r1 = insert(:redeemable)
-      {:error, changeset} = Store.update_redeemable(r1, params_for(:redeemable, max_per_user: -1))
+
+      {:error, _changeset} =
+        Store.update_redeemable(r1, params_for(:redeemable, max_per_user: -1))
+
       assert Store.list_redeemables() == [r1]
     end
   end

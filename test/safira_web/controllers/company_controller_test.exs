@@ -10,7 +10,7 @@ defmodule SafiraWeb.CompanyControllerTest do
   end
 
   describe "index" do
-    test "with valid token", %{conn: conn, user: user, company: company} do
+    test "with valid token", %{conn: _conn, user: user, company: company} do
       %{conn: conn, user: _user} = api_authenticate(user)
 
       conn =
@@ -50,7 +50,7 @@ defmodule SafiraWeb.CompanyControllerTest do
   end
 
   describe "show" do
-    test "with valid token", %{conn: conn, user: user, company: company} do
+    test "with valid token", %{conn: _conn, user: user, company: company} do
       %{conn: conn, user: _user} = api_authenticate(user)
 
       conn =
@@ -88,7 +88,7 @@ defmodule SafiraWeb.CompanyControllerTest do
   end
 
   describe "company_attendees" do
-    test "company has not given any badge", %{conn: conn, user: user, company: company} do
+    test "company has not given any badge", %{conn: _conn, user: user, company: company} do
       %{conn: conn, user: _user} = api_authenticate(user)
 
       conn =
@@ -98,7 +98,7 @@ defmodule SafiraWeb.CompanyControllerTest do
       assert json_response(conn, 200)["data"] == []
     end
 
-    test "attendee redeemed the company's badge", %{conn: conn, user: user, company: company} do
+    test "attendee redeemed the company's badge", %{conn: _conn, user: user, company: company} do
       %{conn: conn, user: _user} = api_authenticate(user)
 
       attendee = insert(:attendee)
@@ -124,7 +124,7 @@ defmodule SafiraWeb.CompanyControllerTest do
     end
 
     test "multiple attendees redeemed the company's badge", %{
-      conn: conn,
+      conn: _conn,
       user: user,
       company: company
     } do
@@ -162,7 +162,7 @@ defmodule SafiraWeb.CompanyControllerTest do
       assert json_response(conn, 200)["data"] == expected_response
     end
 
-    test "list attendees of other company", %{conn: conn, user: user, company: company} do
+    test "list attendees of other company", %{conn: _conn, user: user, company: company} do
       %{conn: conn, user: _user} = api_authenticate(user)
 
       attendee = insert(:attendee)
@@ -175,7 +175,7 @@ defmodule SafiraWeb.CompanyControllerTest do
       assert json_response(conn, 200)["data"] == []
     end
 
-    test "one attendee reedem and one not", %{conn: conn, user: user, company: company} do
+    test "one attendee reedem and one not", %{conn: _conn, user: user, company: company} do
       %{conn: conn, user: _user} = api_authenticate(user)
 
       attendee1 = insert(:attendee)

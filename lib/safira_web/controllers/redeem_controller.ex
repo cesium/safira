@@ -2,7 +2,6 @@ defmodule SafiraWeb.RedeemController do
   use SafiraWeb, controller: "1.6"
 
   alias Safira.Accounts
-  alias Safira.Accounts.User
 
   alias Safira.Contest
   alias Safira.Contest.Redeem

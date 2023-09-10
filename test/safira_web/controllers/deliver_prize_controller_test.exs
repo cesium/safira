@@ -127,8 +127,7 @@ defmodule SafiraWeb.DeliverPrizeControllerTest do
       _manager = insert(:manager, user: user)
       attendee = insert(:attendee)
 
-      attendee_prize =
-        insert(:attendee_prize, attendee: attendee, prize: prize, quantity: 1, redeemed: 1)
+      insert(:attendee_prize, attendee: attendee, prize: prize, quantity: 1, redeemed: 1)
 
       %{conn: conn, user: _} = api_authenticate(user)
 
@@ -269,7 +268,7 @@ defmodule SafiraWeb.DeliverPrizeControllerTest do
       badge = insert(:badge)
 
       attendee = insert(:attendee)
-      redeem = insert(:redeem, attendee: attendee, badge: badge)
+      insert(:redeem, attendee: attendee, badge: badge)
 
       %{conn: conn, user: _} = api_authenticate(user)
 

@@ -4,7 +4,7 @@ defmodule SafiraWeb.BuyControllerTest do
   setup %{conn: conn} do
     user = create_user_strategy(:user)
     redeemable = insert(:redeemable, stock: Enum.random(1..10))
-    attendee = insert(:attendee, token_balance: redeemable.price, user: user)
+    insert(:attendee, token_balance: redeemable.price, user: user)
 
     attrs = %{"redeemable" => %{"redeemable_id" => redeemable.id}}
 
@@ -16,7 +16,7 @@ defmodule SafiraWeb.BuyControllerTest do
   end
 
   describe "create" do
-    test "with valid token", %{conn: conn, user: user, attrs: attrs, redeemable: redeemable} do
+    test "with valid token", %{conn: _conn, user: user, attrs: attrs, redeemable: redeemable} do
       %{conn: conn, user: _user} = api_authenticate(user)
 
       conn =
@@ -46,10 +46,10 @@ defmodule SafiraWeb.BuyControllerTest do
       assert json_response(conn, 401)["error"] == "unauthenticated"
     end
 
-    test "when user is not an attendee", %{attrs: attrs, redeemable: redeemable} do
+    test "when user is not an attendee", %{attrs: attrs, redeemable: _redeemable} do
       user = create_user_strategy(:user)
       %{conn: conn, user: _user} = api_authenticate(user)
-      company = insert(:company, user: user)
+      insert(:company, user: user)
 
       conn =
         conn
@@ -62,7 +62,7 @@ defmodule SafiraWeb.BuyControllerTest do
     test "when user doesn't have enough balance", %{attrs: attrs, redeemable: redeemable} do
       user = create_user_strategy(:user)
       %{conn: conn, user: _user} = api_authenticate(user)
-      attendee = insert(:attendee, token_balance: redeemable.price - 1, user: user)
+      insert(:attendee, token_balance: redeemable.price - 1, user: user)
 
       conn =
         conn
@@ -74,7 +74,7 @@ defmodule SafiraWeb.BuyControllerTest do
              ]
     end
 
-    test "when redeemable is out of stock", %{conn: conn, user: user} do
+    test "when redeemable is out of stock", %{conn: _conn, user: user} do
       %{conn: conn, user: _user} = api_authenticate(user)
       redeemable = insert(:redeemable, stock: 0)
 
@@ -88,7 +88,7 @@ defmodule SafiraWeb.BuyControllerTest do
       assert json_response(conn, 422)["errors"]["stock"] == ["Item is sold out!"]
     end
 
-    test "with no redeemable_id param", %{conn: conn, user: user, redeemable: redeemable} do
+    test "with no redeemable_id param", %{conn: _conn, user: user, redeemable: redeemable} do
       %{conn: conn, user: _user} = api_authenticate(user)
 
       attrs = %{"redeemable" => %{"name" => redeemable.name}}

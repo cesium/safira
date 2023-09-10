@@ -84,9 +84,8 @@ defmodule SafiraWeb.RedeemControllerTest do
       }
 
       assert_error_sent 404, fn ->
-        conn =
-          conn
-          |> post(Routes.redeem_path(conn, :create), params)
+        conn
+        |> post(Routes.redeem_path(conn, :create), params)
       end
     end
 
@@ -136,7 +135,7 @@ defmodule SafiraWeb.RedeemControllerTest do
     test "when user is not an attendee" do
       user = create_user_strategy(:user)
       insert(:manager, user: user)
-      prize = create_prize_strategy(:prize, probability: 1.0)
+      create_prize_strategy(:prize, probability: 1.0)
       %{conn: conn, user: _user} = api_authenticate(user)
 
       conn =

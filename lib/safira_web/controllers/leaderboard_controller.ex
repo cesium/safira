@@ -1,5 +1,5 @@
 defmodule SafiraWeb.LeaderboardController do
-  use SafiraWeb, controller: "1.6"
+  use SafiraWeb, :controller
 
   alias Safira.Contest
 
@@ -18,7 +18,7 @@ defmodule SafiraWeb.LeaderboardController do
       end)
       |> Enum.map(fn a -> Map.put(a.attendee, :badge_count, a.badge_count) end)
 
-    render(conn, SafiraWeb.LeaderboardView, "index.json", attendees: attendees)
+    render(conn, :index, attendees: attendees)
   end
 
   def daily(conn, %{"date" => date_params}) do
@@ -36,7 +36,7 @@ defmodule SafiraWeb.LeaderboardController do
           end)
           |> Enum.map(fn a -> Map.put(a.attendee, :badge_count, a.badge_count) end)
 
-        render(conn, SafiraWeb.LeaderboardView, "index.json", attendees: attendees)
+        render(conn, :index, attendees: attendees)
 
       {:error, _error} ->
         conn
