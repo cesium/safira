@@ -40,9 +40,6 @@ defmodule SafiraWeb.FallbackController do
   end
 
   def call(conn, {:error, :not_found}) do
-    require Logger
-    Logger.warn("BATATA")
-
     conn
     |> put_status(:not_found)
     |> put_view(json: ErrorJSON)
