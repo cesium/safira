@@ -6,6 +6,8 @@ defmodule SafiraWeb.RouletteController do
 
   action_fallback SafiraWeb.FallbackController
 
+  @price Application.compile_env!(:safira, :roulette_cost)
+
   def spin(conn, _params) do
     attendee = Accounts.get_user(conn) |> Map.fetch!(:attendee)
 
@@ -32,7 +34,6 @@ defmodule SafiraWeb.RouletteController do
   end
 
   def price(conn, _params) do
-    price = Application.fetch_env!(:safira, :roulette_cost)
-    render(conn, "price.json", price: price)
+    render(conn, "price.json", price: @price)
   end
 end
