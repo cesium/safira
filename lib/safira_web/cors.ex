@@ -10,5 +10,5 @@ defmodule SafiraWeb.CORS do
     max_age: 600
 
   resource("/*")
-  resource("/api/v1/referrals/*", origins: "*")
+  resource("/api/referrals/*", origins: "*")
 end
