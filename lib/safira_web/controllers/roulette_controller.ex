@@ -30,4 +30,9 @@ defmodule SafiraWeb.RouletteController do
     latest_prizes = Roulette.latest_five_wins()
     render(conn, "latest_prizes.json", latest_prizes: latest_prizes)
   end
+
+  def price(conn, _params) do
+    price = Application.fetch_env!(:safira, :roulette_cost)
+    render(conn, "price.json", price: price)
+  end
 end
