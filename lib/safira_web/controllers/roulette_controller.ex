@@ -6,6 +6,8 @@ defmodule SafiraWeb.RouletteController do
 
   action_fallback SafiraWeb.FallbackController
 
+  @price Application.compile_env!(:safira, :roulette_cost)
+
   def spin(conn, _params) do
     attendee = Accounts.get_user(conn) |> Map.fetch!(:attendee)
 
@@ -29,5 +31,9 @@ defmodule SafiraWeb.RouletteController do
   def latest_wins(conn, _params) do
     latest_prizes = Roulette.latest_five_wins()
     render(conn, "latest_prizes.json", latest_prizes: latest_prizes)
+  end
+
+  def price(conn, _params) do
+    render(conn, "price.json", price: @price)
   end
 end

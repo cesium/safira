@@ -30,6 +30,10 @@ defmodule SafiraWeb.RouletteView do
     resp
   end
 
+  def render("price.json", %{price: price}) do
+    %{price: price}
+  end
+
   def render("latest_prizes.json", %{latest_prizes: latest_prizes}) do
     %{data: render_many(latest_prizes, SafiraWeb.RouletteView, "latest_prize_show.json")}
   end
