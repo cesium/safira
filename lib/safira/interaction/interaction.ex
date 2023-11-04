@@ -17,6 +17,8 @@ defmodule Safira.Interaction do
 
   alias Safira.Repo
 
+  @token_bonus Application.compile_env!(:safira, :token_bonus)
+
   @doc """
   Returns the list of bonuses.
 
@@ -134,7 +136,7 @@ defmodule Safira.Interaction do
     |> Multi.update(
       :update_attendee,
       Attendee.update_token_balance_changeset(attendee, %{
-        token_balance: attendee.token_balance + Application.fetch_env!(:safira, :token_bonus)
+        token_balance: attendee.token_balance + @token_bonus
       })
     )
     |> Multi.insert_or_update(:daily_token, fn %{update_attendee: attendee} ->

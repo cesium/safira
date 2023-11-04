@@ -18,6 +18,10 @@ defmodule Safira.Roulette do
   alias Safira.Roulette.Prize
   alias Safira.Store
 
+  @roulette_cost Application.compile_env!(:safira, :roulette_cost)
+  @roulette_tokens_min Application.compile_env!(:safira, :roulette_tokens_min)
+  @roulette_tokens_max Application.compile_env!(:safira, :roulette_tokens_max)
+
   @doc """
   Returns the list of prizes.
 
@@ -247,7 +251,7 @@ defmodule Safira.Roulette do
     |> Multi.update(
       :attendee,
       Attendee.update_token_balance_changeset(attendee, %{
-        token_balance: attendee.token_balance - Application.fetch_env!(:safira, :roulette_cost)
+        token_balance: attendee.token_balance - @roulette_cost
       })
     )
     # prize after spinning
@@ -330,8 +334,8 @@ defmodule Safira.Roulette do
   end
 
   defp calculate_tokens(attendee) do
-    min = Application.fetch_env!(:safira, :roulette_tokens_min)
-    max = Application.fetch_env!(:safira, :roulette_tokens_max)
+    min = @roulette_tokens_min
+    max = @roulette_tokens_max
     tokens = Enum.random(min..max)
 
     Multi.new()

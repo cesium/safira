@@ -16,7 +16,7 @@ defmodule Safira.CV do
 
   @versions [:original]
   @acl :public_read
-  @max_file_size String.to_integer(System.get_env("MAX_CV_FILE_SIZE") || "8000000")
+  @max_file_size Application.compile_env!(:safira, :max_cv_file_size)
 
   def validate({file, _}) do
     size = file_size(file)
