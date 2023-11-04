@@ -251,7 +251,7 @@ defmodule Safira.Roulette do
       })
     )
     # prize after spinning
-    |> Multi.run(:prize, fn _repo, _changes -> {:ok, spin_prize()} end)
+    |> Multi.run(:prize, fn _repo, _changes -> {:ok, find_valid_prize(attendee)} end)
     # Depending on the type of prize the behaviour is different
     |> Multi.merge(fn %{prize: prize, attendee: attendee} ->
       prize_type(prize, attendee)
@@ -285,6 +285,24 @@ defmodule Safira.Roulette do
       })
     end)
     |> Repo.transaction()
+  end
+
+  defp find_valid_prize(attendee) do
+    prize = spin_prize()
+    attendee_prize = get_keys_attendee_prize(attendee.id, prize.id)
+
+    # Check if the attendee has already received the maximum amount of this prize, and if so, spin again
+    case attendee_prize do
+      nil ->
+        prize
+
+      _ ->
+        if attendee_prize.quantity + 1 <= prize.max_amount_per_attendee do
+          prize
+        else
+          find_valid_prize(attendee)
+        end
+    end
   end
 
   defp spin_prize do
