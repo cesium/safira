@@ -43,41 +43,39 @@ defmodule SafiraWeb.Router do
       resources "/passwords", PasswordController, only: [:create, :update]
     end
 
-    scope "/v1" do
-      get "/is_registered/:id", AuthController, :is_registered
+    get "/is_registered/:id", AuthController, :is_registered
 
-      pipe_through :jwt_authenticated
+    pipe_through :jwt_authenticated
 
-      get "/user", AuthController, :user
-      get "/attendee", AuthController, :attendee
-      get "/company", AuthController, :company
-      get "/leaderboard", LeaderboardController, :index
-      get "/leaderboard/:date", LeaderboardController, :daily
-      get "/roulette/latestwins", RouletteController, :latest_wins
-      get "/store/redeem/:id", DeliverRedeemableController, :show
-      get "/roulette/redeem/:id", DeliverPrizeController, :show
+    get "/user", AuthController, :user
+    get "/attendee", AuthController, :attendee
+    get "/company", AuthController, :company
+    get "/leaderboard", LeaderboardController, :index
+    get "/leaderboard/:date", LeaderboardController, :daily
+    get "/roulette/latestwins", RouletteController, :latest_wins
+    get "/store/redeem/:id", DeliverRedeemableController, :show
+    get "/roulette/redeem/:id", DeliverPrizeController, :show
 
-      post "/roulette", RouletteController, :spin
-      post "/give_bonus/:id", BonusController, :give_bonus
-      post "/spotlight", SpotlightController, :create
-      post "/store/redeem", DeliverRedeemableController, :create
-      post "/roulette/redeem", DeliverPrizeController, :create
+    post "/roulette", RouletteController, :spin
+    post "/give_bonus/:id", BonusController, :give_bonus
+    post "/spotlight", SpotlightController, :create
+    post "/store/redeem", DeliverRedeemableController, :create
+    post "/roulette/redeem", DeliverPrizeController, :create
 
-      delete "/roulette/redeem/:badge_id/:user_id", DeliverPrizeController, :delete
+    delete "/roulette/redeem/:badge_id/:user_id", DeliverPrizeController, :delete
 
-      resources "/badges", BadgeController, only: [:index, :show]
-      resources "/attendees", AttendeeController, except: [:create]
-      resources "/referrals", ReferralController, only: [:create]
-      resources "/companies", CompanyController, only: [:index, :show]
-      resources "/redeems", RedeemController, only: [:create]
-      resources "/store", RedeemableController, only: [:index, :show]
-      resources "/association", DiscordAssociationController, only: [:show, :create]
-      resources "/store/buy", BuyController, only: [:create]
-      resources "/roulette/prizes", PrizeController, only: [:index, :show]
+    resources "/badges", BadgeController, only: [:index, :show]
+    resources "/attendees", AttendeeController, except: [:create]
+    resources "/referrals", ReferralController, only: [:create]
+    resources "/companies", CompanyController, only: [:index, :show]
+    resources "/redeems", RedeemController, only: [:create]
+    resources "/store", RedeemableController, only: [:index, :show]
+    resources "/association", DiscordAssociationController, only: [:show, :create]
+    resources "/store/buy", BuyController, only: [:create]
+    resources "/roulette/prizes", PrizeController, only: [:index, :show]
 
-      get "/company/attendees/:id", CompanyController, :company_attendees
-      get "/company/attendees/cvs/:id", CVController, :company_cvs
-    end
+    get "/company/attendees/:id", CompanyController, :company_attendees
+    get "/company/attendees/cvs/:id", CVController, :company_cvs
   end
 
   scope "/" do
