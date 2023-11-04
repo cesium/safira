@@ -4,11 +4,11 @@ defmodule Safira.Email do
   """
   # use Bamboo.Phoenix, view: Safira.FeedbackView
   import Bamboo.Email
-
+  @from_email Application.compile_env!(:safira, :from_email)
   def send_reset_email(to_email, token) do
     new_email()
     |> to(to_email)
-    |> from(System.get_env("FROM_EMAIL"))
+    |> from(@from_email)
     |> subject("[SEI '23] Reset password instructions")
     |> html_body(build_reset_password_email_text(token))
     |> Safira.Mailer.deliver_now()
