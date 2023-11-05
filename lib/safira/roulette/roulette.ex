@@ -295,7 +295,7 @@ defmodule Safira.Roulette do
     prize = spin_prize()
     attendee_prize = get_keys_attendee_prize(attendee.id, prize.id)
 
-    # Check if the attendee has already received the maximum amount of this prize, and if so, spin again
+    # Check if the attendee has already received the maximum amount of this prize, and if so, count it as a loss and give them no prize
     case attendee_prize do
       nil ->
         prize
@@ -304,7 +304,7 @@ defmodule Safira.Roulette do
         if attendee_prize.quantity + 1 <= prize.max_amount_per_attendee do
           prize
         else
-          find_valid_prize(attendee)
+          Repo.one(from p in Prize, where: p.name == "Nada")
         end
     end
   end
