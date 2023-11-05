@@ -295,7 +295,8 @@ defmodule Safira.Roulette do
     prize = spin_prize()
     attendee_prize = get_keys_attendee_prize(attendee.id, prize.id)
 
-    # Check if the attendee has already received the maximum amount of this prize, and if so, count it as a loss and give them no prize
+    # Check if the attendee has already received the maximum amount of this prize,
+    # and if so, count it as a loss and give them nothing
     case attendee_prize do
       nil ->
         prize
