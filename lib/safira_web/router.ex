@@ -95,7 +95,7 @@ defmodule SafiraWeb.Router do
 
     resources "/badges", BadgeController
     resources "/attendees", AttendeeController
-    resources "/managers", ManagerController
+    resources "/staffs", StaffController
     resources "/companies", CompanyController
     resources "/redeems", RedeemController
     resources "/referrals", ReferralController

@@ -135,7 +135,7 @@ defmodule Safira.Store do
     |> Repo.transaction()
   end
 
-  # redeems an item for an atendee, should only be used by managers
+  # redeems an item for an atendee, should only be used by staffs
   def redeem_redeemable(redeemable_id, attendee, quantity) do
     Multi.new()
     |> Multi.run(:buy, fn _repo, _changes ->

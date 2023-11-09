@@ -47,7 +47,7 @@ defmodule Mix.Tasks.Gift.AllGold.Badge do
 
     attendees
     |> Enum.each(fn id ->
-      Contest.create_redeem(%{attendee_id: id, badge_id: badge_id, manager_id: 1}, :admin)
+      Contest.create_redeem(%{attendee_id: id, badge_id: badge_id, staff_id: 1}, :admin)
     end)
   end
 end

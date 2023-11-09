@@ -22,13 +22,13 @@ defmodule SafiraWeb.DeliverPrizeController do
 
   "
   def create(conn, %{"redeem" => redeem_params}) do
-    # checks the user token to see if its a manager
-    if Accounts.is_manager(conn) do
+    # checks the user token to see if its a staff
+    if Accounts.is_staff(conn) do
       validate_redeem(conn, redeem_params)
     else
       conn
       |> put_status(:unauthorized)
-      |> json(%{error: "Only managers can give prizes"})
+      |> json(%{error: "Only staffs can give prizes"})
     end
   end
 

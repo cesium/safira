@@ -7,7 +7,7 @@ defmodule Safira.Accounts do
 
   alias Safira.Accounts.Attendee
   alias Safira.Accounts.Company
-  alias Safira.Accounts.Manager
+  alias Safira.Accounts.Staff
   alias Safira.Accounts.User
 
   alias Safira.Repo
@@ -22,7 +22,7 @@ defmodule Safira.Accounts do
     Repo.get!(User, id)
     |> Repo.preload(:attendee)
     |> Repo.preload(:company)
-    |> Repo.preload(:manager)
+    |> Repo.preload(:staff)
   end
 
   def get_user_email(email) do
@@ -33,14 +33,14 @@ defmodule Safira.Accounts do
     Repo.get_by!(User, email: email)
     |> Repo.preload(:attendee)
     |> Repo.preload(:company)
-    |> Repo.preload(:manager)
+    |> Repo.preload(:staff)
   end
 
   def get_user_preload_email(email) do
     Repo.get_by(User, email: email)
     |> Repo.preload(:attendee)
     |> Repo.preload(:company)
-    |> Repo.preload(:manager)
+    |> Repo.preload(:staff)
   end
 
   def get_user_token(token) do
@@ -151,39 +151,39 @@ defmodule Safira.Accounts do
     Attendee.changeset(attendee, %{})
   end
 
-  def list_managers do
-    Repo.all(Manager)
+  def list_staffs do
+    Repo.all(Staff)
   end
 
-  def get_manager!(id), do: Repo.get!(Manager, id)
+  def get_staff!(id), do: Repo.get!(Staff, id)
 
-  def get_manager_by_email(email) do
+  def get_staff_by_email(email) do
     Repo.all(
-      from m in Manager,
+      from m in Staff,
         join: u in assoc(m, :user),
         where: u.email == ^email,
         preload: [user: u]
     )
   end
 
-  def create_manager(attrs \\ %{}) do
-    %Manager{}
-    |> Manager.changeset(attrs)
+  def create_staff(attrs \\ %{}) do
+    %Staff{}
+    |> Staff.changeset(attrs)
     |> Repo.insert()
   end
 
-  def update_manager(%Manager{} = manager, attrs) do
-    manager
-    |> Manager.changeset(attrs)
+  def update_staff(%Staff{} = staff, attrs) do
+    staff
+    |> Staff.changeset(attrs)
     |> Repo.update()
   end
 
-  def delete_manager(%Manager{} = manager) do
-    Repo.delete(manager)
+  def delete_staff(%Staff{} = staff) do
+    Repo.delete(staff)
   end
 
-  def change_manager(%Manager{} = manager) do
-    Manager.changeset(manager, %{})
+  def change_staff(%Staff{} = staff) do
+    Staff.changeset(staff, %{})
   end
 
   def list_companies do
@@ -233,19 +233,19 @@ defmodule Safira.Accounts do
     |> Kernel.not()
   end
 
-  def is_manager(conn) do
+  def is_staff(conn) do
     get_user(conn)
-    |> Map.fetch!(:manager)
+    |> Map.fetch!(:staff)
     |> is_nil
     |> Kernel.not()
   end
 
   def is_admin(conn) do
-    manager =
+    staff =
       get_user(conn)
-      |> Map.fetch(:manager)
+      |> Map.fetch(:staff)
 
-    case manager do
+    case staff do
       {:error} ->
         false
 

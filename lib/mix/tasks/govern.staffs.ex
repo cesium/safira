@@ -1,6 +1,6 @@
-defmodule Mix.Tasks.Govern.Managers do
+defmodule Mix.Tasks.Govern.Staffs do
   @moduledoc """
-  Task to activate all manager accounts
+  Task to activate all staff accounts
   """
   use Mix.Task
 
@@ -20,8 +20,8 @@ defmodule Mix.Tasks.Govern.Managers do
   defp create(email, value) do
     Mix.Task.run("app.start")
 
-    Safira.Accounts.get_manager_by_email(email)
+    Safira.Accounts.get_staff_by_email(email)
     |> List.first()
-    |> Safira.Accounts.update_manager(%{active: value})
+    |> Safira.Accounts.update_staff(%{active: value})
   end
 end

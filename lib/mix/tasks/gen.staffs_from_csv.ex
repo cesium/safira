@@ -1,4 +1,4 @@
-defmodule Mix.Tasks.Gen.ManagersFromCsv do
+defmodule Mix.Tasks.Gen.StaffsFromCsv do
   @shortdoc "Generates the mangers from a CSV"
 
   @moduledoc """
@@ -7,8 +7,8 @@ defmodule Mix.Tasks.Gen.ManagersFromCsv do
   and a flag ("Local"/"Remote") indicating if the file is local or remote
 
   ## Examples
-        $ mix gen.managers_from_csv "assets/managers_sei_exemplo.csv" "Local"
-        $ mix gen.managers_from_csv "https://sample.url.managers_sei_exemplo.csv" "Remote"
+        $ mix gen.staffs_from_csv "assets/staffs_sei_exemplo.csv" "Local"
+        $ mix gen.staffs_from_csv "https://sample.url.staffs_sei_exemplo.csv" "Remote"
   """
 
   use Mix.Task
@@ -90,7 +90,7 @@ defmodule Mix.Tasks.Gen.ManagersFromCsv do
         "password_confirmation" => password
       }
 
-      Accounts.create_manager(%{"user" => user, "is_admin" => convert!(user_csv_entry.admin)})
+      Accounts.create_staff(%{"user" => user, "is_admin" => convert!(user_csv_entry.admin)})
 
       IO.puts("#{email}:#{password}")
     end)

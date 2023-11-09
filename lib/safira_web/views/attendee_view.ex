@@ -17,8 +17,8 @@ defmodule SafiraWeb.AttendeeView do
     %{data: render_one(attendee, AttendeeView, "attendee_simple.json")}
   end
 
-  def render("manager_show.json", %{attendee: attendee}) do
-    %{data: render_one(attendee, AttendeeView, "manager_attendee.json")}
+  def render("staff_show.json", %{attendee: attendee}) do
+    %{data: render_one(attendee, AttendeeView, "staff_attendee.json")}
   end
 
   def render("attendee.json", %{attendee: attendee}) do
@@ -54,7 +54,7 @@ defmodule SafiraWeb.AttendeeView do
     }
   end
 
-  def render("manager_attendee.json", %{attendee: attendee}) do
+  def render("staff_attendee.json", %{attendee: attendee}) do
     %{
       id: attendee.id,
       nickname: attendee.nickname,

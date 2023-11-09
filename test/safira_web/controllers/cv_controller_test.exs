@@ -88,7 +88,7 @@ defmodule SafiraWeb.CVControllerTest do
       attendee_with_badge: attendee
     } do
       user = create_user_strategy(:user)
-      insert(:manager, user: user, is_admin: true)
+      insert(:staff, user: user, is_admin: true)
 
       %{conn: conn, user: _user} = api_authenticate(user)
 

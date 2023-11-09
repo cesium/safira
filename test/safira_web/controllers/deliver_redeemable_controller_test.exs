@@ -6,9 +6,9 @@ defmodule SafiraWeb.DeliverRedeemableControllerTest do
   end
 
   describe "create" do
-    test "with valid token (manager)" do
+    test "with valid token (staff)" do
       user = create_user_strategy(:user)
-      insert(:manager, user: user)
+      insert(:staff, user: user)
       attendee = insert(:attendee)
       redeemable = insert(:redeemable)
       insert(:buy, attendee: attendee, redeemable: redeemable)
@@ -32,7 +32,7 @@ defmodule SafiraWeb.DeliverRedeemableControllerTest do
              }
     end
 
-    test "with valid token (not a manager)" do
+    test "with valid token (not a staff)" do
       user = create_user_strategy(:user)
       insert(:attendee, user: user)
       attendee = insert(:attendee)
@@ -53,12 +53,12 @@ defmodule SafiraWeb.DeliverRedeemableControllerTest do
         conn
         |> post(Routes.deliver_redeemable_path(conn, :create), params)
 
-      assert json_response(conn, 401) == %{"error" => "Only managers can deliver redeemables"}
+      assert json_response(conn, 401) == %{"error" => "Only staffs can deliver redeemables"}
     end
 
     test "attendee does not exist" do
       user = create_user_strategy(:user)
-      insert(:manager, user: user)
+      insert(:staff, user: user)
       redeemable = insert(:redeemable)
       insert(:buy, redeemable: redeemable)
 
@@ -81,7 +81,7 @@ defmodule SafiraWeb.DeliverRedeemableControllerTest do
 
     test "redeemable does not exist" do
       user = create_user_strategy(:user)
-      insert(:manager, user: user)
+      insert(:staff, user: user)
       attendee = insert(:attendee)
       insert(:buy, attendee: attendee)
 
@@ -104,7 +104,7 @@ defmodule SafiraWeb.DeliverRedeemableControllerTest do
 
     test "without quantity param" do
       user = create_user_strategy(:user)
-      insert(:manager, user: user)
+      insert(:staff, user: user)
       attendee = insert(:attendee)
       redeemable = insert(:redeemable)
       insert(:buy, attendee: attendee, redeemable: redeemable)
@@ -127,7 +127,7 @@ defmodule SafiraWeb.DeliverRedeemableControllerTest do
 
     test "with invalid token", %{conn: conn} do
       user = create_user_strategy(:user)
-      insert(:manager, user: user)
+      insert(:staff, user: user)
       attendee = insert(:attendee)
       redeemable = insert(:redeemable)
       insert(:buy, attendee: attendee, redeemable: redeemable)
@@ -150,7 +150,7 @@ defmodule SafiraWeb.DeliverRedeemableControllerTest do
 
     test "with no token", %{conn: conn} do
       user = create_user_strategy(:user)
-      insert(:manager, user: user)
+      insert(:staff, user: user)
       attendee = insert(:attendee)
       redeemable = insert(:redeemable)
       insert(:buy, attendee: attendee, redeemable: redeemable)
@@ -174,7 +174,7 @@ defmodule SafiraWeb.DeliverRedeemableControllerTest do
   describe "show" do
     test "with valid token" do
       user = create_user_strategy(:user)
-      insert(:manager, user: user)
+      insert(:staff, user: user)
       attendee = insert(:attendee)
       redeemable = insert(:redeemable)
       insert(:buy, attendee: attendee, redeemable: redeemable)
@@ -199,7 +199,7 @@ defmodule SafiraWeb.DeliverRedeemableControllerTest do
 
     test "show after redeem" do
       user = create_user_strategy(:user)
-      insert(:manager, user: user)
+      insert(:staff, user: user)
       attendee = insert(:attendee)
       redeemable = insert(:redeemable)
       insert(:buy, attendee: attendee, redeemable: redeemable)
@@ -224,7 +224,7 @@ defmodule SafiraWeb.DeliverRedeemableControllerTest do
 
     test "with invalid token", %{conn: conn} do
       user = create_user_strategy(:user)
-      insert(:manager, user: user)
+      insert(:staff, user: user)
       attendee = insert(:attendee)
 
       conn =
@@ -237,7 +237,7 @@ defmodule SafiraWeb.DeliverRedeemableControllerTest do
 
     test "with no token", %{conn: conn} do
       user = create_user_strategy(:user)
-      insert(:manager, user: user)
+      insert(:staff, user: user)
       attendee = insert(:attendee)
 
       conn =

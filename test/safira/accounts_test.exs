@@ -50,7 +50,7 @@ defmodule Safira.AccountsTest do
       user =
         user
         |> set_password_as_nil()
-        |> Repo.preload([:attendee, :company, :manager])
+        |> Repo.preload([:attendee, :company, :staff])
 
       assert Accounts.get_user_preload!(user.id) == user
     end
@@ -86,7 +86,7 @@ defmodule Safira.AccountsTest do
       user =
         user
         |> set_password_as_nil()
-        |> Repo.preload([:attendee, :company, :manager])
+        |> Repo.preload([:attendee, :company, :staff])
 
       assert Accounts.get_user_preload_email!(user.email) == user
     end
@@ -106,7 +106,7 @@ defmodule Safira.AccountsTest do
       user =
         user
         |> set_password_as_nil()
-        |> Repo.preload([:attendee, :company, :manager])
+        |> Repo.preload([:attendee, :company, :staff])
 
       assert Accounts.get_user_preload_email(user.email) == user
     end
@@ -322,93 +322,93 @@ defmodule Safira.AccountsTest do
     end
   end
 
-  describe "list_managers/0" do
-    test "no managers" do
-      assert Accounts.list_managers() == []
+  describe "list_staffs/0" do
+    test "no staffs" do
+      assert Accounts.list_staffs() == []
     end
 
-    test "multiple managers" do
-      [manager1, manager2] = insert_pair(:manager)
+    test "multiple staffs" do
+      [staff1, staff2] = insert_pair(:staff)
 
-      manager1 =
-        manager1
+      staff1 =
+        staff1
         |> forget(:user)
 
-      manager2 =
-        manager2
+      staff2 =
+        staff2
         |> forget(:user)
 
-      assert Accounts.list_managers() == [manager1, manager2]
+      assert Accounts.list_staffs() == [staff1, staff2]
     end
   end
 
-  describe "get_manager!/1" do
-    test "manager exists" do
-      manager = insert(:manager)
+  describe "get_staff!/1" do
+    test "staff exists" do
+      staff = insert(:staff)
 
-      manager =
-        manager
+      staff =
+        staff
         |> forget(:user)
 
-      assert Accounts.get_manager!(manager.id) == manager
+      assert Accounts.get_staff!(staff.id) == staff
     end
 
     test "user does not exist" do
-      manager = insert(:manager)
+      staff = insert(:staff)
 
-      manager =
-        manager
+      staff =
+        staff
         |> forget(:user)
 
-      assert_raise Ecto.NoResultsError, fn -> Accounts.get_manager!(manager.id + 1) end
+      assert_raise Ecto.NoResultsError, fn -> Accounts.get_staff!(staff.id + 1) end
     end
   end
 
-  describe "get_manager_by_email/1" do
+  describe "get_staff_by_email/1" do
     test "user with that email exists" do
-      manager = insert(:manager)
+      staff = insert(:staff)
 
-      assert Enum.at(Accounts.get_manager_by_email(manager.user.email), 0).id == manager.id
+      assert Enum.at(Accounts.get_staff_by_email(staff.user.email), 0).id == staff.id
     end
 
     test "user with that email does not exist" do
-      assert Accounts.get_manager_by_email("wrong_email@mail.com") == []
+      assert Accounts.get_staff_by_email("wrong_email@mail.com") == []
     end
   end
 
-  describe "create_manager/1" do
+  describe "create_staff/1" do
     test "with valid data" do
-      {:ok, manager} =
-        params_for(:manager)
-        |> Accounts.create_manager()
+      {:ok, staff} =
+        params_for(:staff)
+        |> Accounts.create_staff()
 
-      assert Accounts.list_managers() == [manager]
+      assert Accounts.list_staffs() == [staff]
     end
   end
 
-  describe "update_manager/1" do
+  describe "update_staff/1" do
     test "with valid data" do
-      manager1 = insert(:manager)
+      staff1 = insert(:staff)
 
-      {:ok, manager2} =
-        manager1
-        |> Accounts.update_manager(params_for(:manager))
+      {:ok, staff2} =
+        staff1
+        |> Accounts.update_staff(params_for(:staff))
 
-      manager2 =
-        manager2
+      staff2 =
+        staff2
         |> forget(:user)
 
-      assert Accounts.list_managers() == [manager2]
+      assert Accounts.list_staffs() == [staff2]
     end
   end
 
-  describe "delete_manager/1" do
+  describe "delete_staff/1" do
     test "user exists" do
-      manager = insert(:manager)
+      staff = insert(:staff)
 
-      {:ok, _manager} = Accounts.delete_manager(manager)
+      {:ok, _staff} = Accounts.delete_staff(staff)
 
-      assert Accounts.list_managers() == []
+      assert Accounts.list_staffs() == []
     end
   end
 

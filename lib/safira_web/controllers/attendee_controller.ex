@@ -26,8 +26,8 @@ defmodule SafiraWeb.AttendeeController do
       is_nil(attendee.user_id) ->
         {:error, :not_registered}
 
-      Accounts.is_manager(conn) ->
-        render(conn, "manager_show.json", attendee: attendee)
+      Accounts.is_staff(conn) ->
+        render(conn, "staff_show.json", attendee: attendee)
 
       true ->
         attendee =

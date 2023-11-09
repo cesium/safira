@@ -1,8 +1,8 @@
-defmodule Safira.Repo.Migrations.AddAdminToManager do
+defmodule Safira.Repo.Migrations.AddAdminToStaff do
   use Ecto.Migration
 
   def change do
-    alter table(:managers) do
+    alter table(:staffs) do
       add :is_admin, :boolean, default: false, null: false
     end
   end
