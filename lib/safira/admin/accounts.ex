@@ -175,7 +175,7 @@ defmodule Safira.Admin.Accounts do
 
   ## Examples
 
-      iex> list_staffs(%{})
+      iex> paginate_staffs(%{})
       %{staffs: [%Staff{}], ...}
   """
   @spec paginate_staffs(map) :: {:ok, map} | {:error, any}

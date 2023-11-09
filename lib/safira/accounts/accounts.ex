@@ -151,7 +151,7 @@ defmodule Safira.Accounts do
     Attendee.changeset(attendee, %{})
   end
 
-  def list_staff do
+  def list_staffs do
     Repo.all(Staff)
   end
 

@@ -41,7 +41,7 @@ defmodule Mix.Tasks.Gen.Staffs do
   end
 
   defp man_num do
-    Accounts.list_staff()
+    Accounts.list_staffs()
     |> List.last()
     |> give_num
   end
