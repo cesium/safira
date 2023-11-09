@@ -3,7 +3,7 @@ defmodule SafiraWeb.CORS do
   @domain System.get_env("CORS_DOMAIN")
 
   use Corsica.Router,
-    origins: ["http://localhost:3000"],
+    origins: ~r{^https?::#{@domain}},
     log: [rejected: :error, invalid: :warn, accepted: :debug],
     allow_headers: :all,
     allow_credentials: true,
