@@ -27,19 +27,19 @@
         <div class="torch-show-data"><%= @redeem.badge.name %></div>
       </li>
 
-      <%= if (@redeem.manager_id) != nil do %>
+      <%= if (@redeem.staff_id) != nil do %>
         <li>
-          <div class="torch-show-label">Manager Email:</div>
-          <div class="torch-show-data"><%= @redeem.manager.user.email %></div>
+          <div class="torch-show-label">Staff Email:</div>
+          <div class="torch-show-data"><%= @redeem.staff.user.email %></div>
         </li>
 
         <li>
-          <div class="torch-show-label">Manager Ban:</div>
-          <div class="torch-show-data"><%= @redeem.manager.user.ban %></div>
+          <div class="torch-show-label">Staff Ban:</div>
+          <div class="torch-show-data"><%= @redeem.staff.user.ban %></div>
         </li>
       <% else %>
-        <li><div class="torch-show-label">Manager Email:</div></li>
-        <li><div class="torch-show-label">Manager Ban:</div></li>
+        <li><div class="torch-show-label">Staff Email:</div></li>
+        <li><div class="torch-show-label">Staff Ban:</div></li>
       <% end %>
 
       <li>

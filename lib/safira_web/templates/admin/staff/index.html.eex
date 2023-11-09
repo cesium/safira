@@ -1,28 +1,28 @@
 <section id="torch-toolbar">
   <div class="torch-container">
-    <%= link "New Manager", to: Routes.admin_manager_path(@conn, :new) %>
+    <%= link "New Staff", to: Routes.admin_staff_path(@conn, :new) %>
   </div>
 </section>
 <section id="torch-index-content">
   <div class="torch-container">
     <section id="torch-filters">
-      <h3>Find Managers</h3>
+      <h3>Find Staffs</h3>
       <%= form_tag @conn.request_path, method: :get, id: "torch-filters-form" do %>
 
         <div class="field">
             <label>Active</label>
-            <%= filter_assoc_select(:manager, :active, [{"true", true}, {"false", false}], @conn.params) %>
+            <%= filter_assoc_select(:staff, :active, [{"true", true}, {"false", false}], @conn.params) %>
         </div>
 
         
         <button type="submit" class="torch-button">Search</button>
-        <%= link "Clear Filters", to: Routes.admin_manager_path(@conn, :index) %>
+        <%= link "Clear Filters", to: Routes.admin_staff_path(@conn, :index) %>
       <% end %>
 
     </section>
 
     <section id="torch-table">
-    <%= if length(@managers) > 0 do %>
+    <%= if length(@staffs) > 0 do %>
       <table>
         <thead>
           <tr>
@@ -35,17 +35,17 @@
           </tr>
         </thead>
         <tbody>
-          <%= for manager <- @managers do %>
+          <%= for staff <- @staffs do %>
             <tr>
 
-              <td><%= manager.user.email %></td>
+              <td><%= staf.user.email %></td>
 
-              <td><%= manager.active %></td>
+              <td><%= staff.active %></td>
               
               <td class="torch-actions">
-                <span><%= link "Show", to: Routes.admin_manager_path(@conn, :show, manager) %></span>
-                <span><%= link "Edit", to: Routes.admin_manager_path(@conn, :edit, manager) %></span>
-                <span><%= link "Delete", to: Routes.admin_manager_path(@conn, :delete, manager), method: :delete, data: [confirm: "Are you sure?"] %></span>
+                <span><%= link "Show", to: Routes.admin_staff_path(@conn, :show, staff) %></span>
+                <span><%= link "Edit", to: Routes.admin_staff_path(@conn, :edit, staff) %></span>
+                <span><%= link "Delete", to: Routes.admin_staff_path(@conn, :delete, staff), method: :delete, data: [confirm: "Are you sure?"] %></span>
               </td>
             </tr>
           <% end %>
@@ -53,7 +53,7 @@
       </table>
       <%= render Torch.PaginationView, "_pagination.html", assigns %>
     <% else %>
-      <p class="torch-no-data">No Managers match your search.</p>
+      <p class="torch-no-data">No Staffs match your search.</p>
     <% end %>
     </section>
   </div>

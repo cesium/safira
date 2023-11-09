@@ -25,7 +25,7 @@ defmodule Safira.ContestFactory do
         %Safira.Contest.Redeem{
           attendee: build(:attendee),
           badge: build(:badge),
-          manager: build(:manager)
+          staff: build(:staff)
         }
       end
 

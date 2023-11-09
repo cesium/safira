@@ -31,8 +31,8 @@ defmodule Safira.AccountsFactory do
         }
       end
 
-      def manager_factory do
-        %Safira.Accounts.Manager{
+      def staff_factory do
+        %Safira.Accounts.Staff{
           active: Enum.random([true, false]),
           is_admin: Enum.random([true, false]),
           user: build(:user)

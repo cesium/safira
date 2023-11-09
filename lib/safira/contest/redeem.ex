@@ -1,6 +1,6 @@
 defmodule Safira.Contest.Redeem do
   @moduledoc """
-  A redeem happens when a manager / company
+  A redeem happens when a staff / company
    gives a badge to an attendee
   """
   use Ecto.Schema
@@ -8,25 +8,25 @@ defmodule Safira.Contest.Redeem do
 
   alias Safira.Accounts
   alias Safira.Accounts.Attendee
-  alias Safira.Accounts.Manager
+  alias Safira.Accounts.Staff
 
   alias Safira.Contest
   alias Safira.Contest.Badge
 
   schema "redeems" do
     belongs_to(:attendee, Attendee, foreign_key: :attendee_id, type: :binary_id)
-    belongs_to(:manager, Manager)
+    belongs_to(:staff, Staff)
     belongs_to(:badge, Badge)
 
     timestamps()
   end
 
   @doc false
-  def changeset(redeem, attrs, user_type \\ :manager) do
+  def changeset(redeem, attrs, user_type \\ :staff) do
     redeem
-    |> cast(attrs, [:attendee_id, :manager_id, :badge_id])
+    |> cast(attrs, [:attendee_id, :staff_id, :badge_id])
     |> foreign_key_constraint(:attendee_id)
-    |> foreign_key_constraint(:manager_id)
+    |> foreign_key_constraint(:staff_id)
     |> validate_required([:attendee_id, :badge_id])
     |> unique_constraint(:unique_attendee_badge,
       name: :unique_attendee_badge,

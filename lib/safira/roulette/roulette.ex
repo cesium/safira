@@ -393,7 +393,7 @@ defmodule Safira.Roulette do
         %{
           attendee_id: attendee.id,
           badge_id: badge.id,
-          manager_id: 1
+          staff_id: 1
         },
         :admin
       )
@@ -545,7 +545,7 @@ defmodule Safira.Roulette do
     end
   end
 
-  # redeems an item for an atendee, should only be used by managers
+  # redeems an item for an atendee, should only be used by staffs
   def redeem_prize(prize_id, attendee, quantity) do
     Multi.new()
     |> Multi.run(:attendee_prize, fn _repo, _changes ->

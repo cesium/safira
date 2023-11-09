@@ -1,6 +1,6 @@
-defmodule Mix.Tasks.Gen.Managers do
+defmodule Mix.Tasks.Gen.Staffs do
   @moduledoc """
-  Task to generate managers
+  Task to generate staffs
   """
 
   use Mix.Task
@@ -25,7 +25,7 @@ defmodule Mix.Tasks.Gen.Managers do
     Mix.Task.run("app.start")
 
     Enum.each(1..n, fn _n ->
-      email = Enum.join(["manager#{man_num() + 1}", @domain], "@")
+      email = Enum.join(["staff#{man_num() + 1}", @domain], "@")
       password = random_string(8)
 
       user = %{
@@ -34,14 +34,14 @@ defmodule Mix.Tasks.Gen.Managers do
         "password_confirmation" => password
       }
 
-      Accounts.create_manager(%{"user" => user})
+      Accounts.create_staff(%{"user" => user})
 
       IO.puts("#{email}:#{password}")
     end)
   end
 
   defp man_num do
-    Accounts.list_managers()
+    Accounts.list_staff()
     |> List.last()
     |> give_num
   end

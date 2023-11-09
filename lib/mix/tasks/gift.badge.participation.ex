@@ -46,7 +46,7 @@ defmodule Mix.Tasks.Gift.Badge.Participation do
       Contest.create_redeem(
         %{
           attendee_id: attendee_id,
-          manager_id: 1,
+          staff_id: 1,
           badge_id: badge_id
         },
         :admin

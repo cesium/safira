@@ -6,7 +6,7 @@ defmodule Safira.Repo.Seeds.Accounts do
   alias Safira.Repo
 
   def run do
-    seed_managers()
+    seed_staffs()
     seed_companies()
     seed_attendees()
     reset_passwords()
@@ -16,8 +16,8 @@ defmodule Safira.Repo.Seeds.Accounts do
     Mix.Tasks.Gen.Companies.run(["data/sponsors.csv"])
   end
 
-  defp seed_managers do
-    Mix.Tasks.Gen.Managers.run(["10"])
+  defp seed_staffs do
+    Mix.Tasks.Gen.Staffs.run(["10"])
   end
 
   defp seed_attendees do

@@ -17,7 +17,7 @@ defmodule Mix.Tasks.Gift.All.Badges do
 
     Safira.Contest.list_badges()
     |> Enum.map(
-      &Safira.Contest.create_redeem(%{attendee_id: attendee_id, manager_id: 1, badge_id: &1.id})
+      &Safira.Contest.create_redeem(%{attendee_id: attendee_id, staff_id: 1, badge_id: &1.id})
     )
   end
 end

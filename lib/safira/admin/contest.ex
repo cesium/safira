@@ -195,7 +195,7 @@ defmodule Safira.Admin.Contest do
   defp do_paginate_redeems(filter, params) do
     Redeem
     |> Filtrex.query(filter)
-    |> preload([:badge, manager: :user, attendee: :user])
+    |> preload([:badge, staff: :user, attendee: :user])
     |> order_by(^sort(params))
     |> paginate(Repo, params, @pagination)
   end
@@ -229,7 +229,7 @@ defmodule Safira.Admin.Contest do
   """
   def get_redeem!(id) do
     Repo.get!(Redeem, id)
-    |> Repo.preload([:badge, manager: :user, attendee: :user])
+    |> Repo.preload([:badge, staff: :user, attendee: :user])
   end
 
   @doc """
@@ -453,7 +453,7 @@ defmodule Safira.Admin.Contest do
 
   defp filter_config(:redeems) do
     defconfig do
-      number(:manager_id)
+      number(:staff_id)
       number(:badge_id)
     end
   end

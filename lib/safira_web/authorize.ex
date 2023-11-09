@@ -7,7 +7,7 @@ defmodule Safira.Authorize do
 
   alias Safira.Repo
 
-  @user_types [:attendee, :company, :manager]
+  @user_types [:attendee, :company, :staff]
 
   def init(default) do
     default

@@ -7,7 +7,7 @@ defmodule Safira.Accounts.User do
 
   alias Safira.Accounts.Attendee
   alias Safira.Accounts.Company
-  alias Safira.Accounts.Manager
+  alias Safira.Accounts.Staff
 
   schema "users" do
     field :email, :string
@@ -15,7 +15,7 @@ defmodule Safira.Accounts.User do
     field :ban, :boolean, default: false
 
     has_one :attendee, Attendee, on_delete: :delete_all
-    has_one :manager, Manager, on_delete: :delete_all
+    has_one :staff, Staff, on_delete: :delete_all
     has_one :company, Company, on_delete: :delete_all
 
     field :reset_password_token, :string

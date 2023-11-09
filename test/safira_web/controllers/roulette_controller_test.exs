@@ -63,7 +63,7 @@ defmodule SafiraWeb.RouletteControllerTest do
 
     test "when user is not an attendee" do
       user = create_user_strategy(:user)
-      insert(:manager, user: user)
+      insert(:staff, user: user)
       create_prize_strategy(:prize, probability: 1.0)
       %{conn: conn, user: _user} = api_authenticate(user)
 

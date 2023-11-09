@@ -10,9 +10,9 @@
       <%= form_tag @conn.request_path, method: :get, id: "torch-filters-form" do %>
         
         <div class="field">
-          <label>Manager ID</label>
-          <%= number_filter_select(:redeem, :manager_id, @conn.params) %>
-          <%= filter_number_input(:redeem, :manager_id, @conn.params) %>
+          <label>Staff ID</label>
+          <%= number_filter_select(:redeem, :staff_id, @conn.params) %>
+          <%= filter_number_input(:redeem, :staff_id, @conn.params) %>
         </div>
 
         <div class="field">
@@ -36,13 +36,13 @@
 
             <th><span>Attendee Name</span></th>
 
-            <th><span>Manager Email</span></th>
+            <th><span>Staff Email</span></th>
 
-            <th><%= table_link(@conn, "Manager ID", :manager_id) %></th>
+            <th><%= table_link(@conn, "Staff ID", :staff_id) %></th>
 
             <th><span>Badge Name</span></th>
 
-            <th><%= table_link(@conn, "Badge ID", :manager_id) %></th>
+            <th><%= table_link(@conn, "Badge ID", :staff_id) %></th>
             
             <th><span>Actions</span></th>
           </tr>
@@ -55,12 +55,12 @@
                   <span><%= link redeem.attendee.name, to: Routes.admin_attendee_path(@conn, :show, redeem.attendee) %></span>
               </td>
 
-              <%= if (redeem.manager_id) != nil do %>
+              <%= if (redeem.staff_id) != nil do %>
                 <td>
-                  <span><%= link redeem.manager.user.email, to: Routes.admin_manager_path(@conn, :show, redeem.manager) %></span>
+                  <span><%= link redeem.staff.user.email, to: Routes.admin_staff_path(@conn, :show, redeem.staff) %></span>
                 </td>
 
-                <td><%= redeem.manager_id %></td>
+                <td><%= redeem.staff_id %></td>
               <% else %>
                 <td></td>
 
