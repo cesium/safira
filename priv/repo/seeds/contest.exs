@@ -1,6 +1,7 @@
 defmodule Safira.Repo.Seeds.Contest do
   @moduledoc false
 
+  alias Mix.Tasks.Gen.Badges
   alias Safira.Accounts.Attendee
   alias Safira.Contest
   alias Safira.Contest.Badge
@@ -14,7 +15,7 @@ defmodule Safira.Repo.Seeds.Contest do
   end
 
   defp seed_badges do
-    Mix.Tasks.Gen.Badges.run(["data/badges.csv"])
+    Badges.run(["data/badges.csv"])
   end
 
   defp seed_redeems do

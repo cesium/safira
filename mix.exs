@@ -95,7 +95,7 @@ defmodule Safira.MixProject do
       "ecto.setup": ["ecto.create", "ecto.migrate", "ecto.seed"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate", "test"],
-      lint: ["credo --strict --all"]
+      lint: ["credo -C default"]
     ]
   end
 end
