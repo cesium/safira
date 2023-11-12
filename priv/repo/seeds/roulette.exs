@@ -1,6 +1,7 @@
 defmodule Safira.Repo.Seeds.Roulette do
   @moduledoc false
 
+  alias Mix.Tasks.Gen.Prizes
   alias Safira.Accounts.Attendee
   alias Safira.Repo
   alias Safira.Roulette
@@ -13,7 +14,7 @@ defmodule Safira.Repo.Seeds.Roulette do
   end
 
   defp seed_prizes do
-    Mix.Tasks.Gen.Prizes.run(["data/wheel.csv"])
+    Prizes.run(["data/wheel.csv"])
   end
 
   defp seed_spins do
@@ -23,7 +24,8 @@ defmodule Safira.Repo.Seeds.Roulette do
 
       # Making sure attendee has enough tokens to spin the wheel
       at = at
-      |> Attendee.update_token_balance_changeset(%{token_balance: at.token_balance + Application.fetch_env!(:safira, :roulette_cost)})
+      |> Attendee.update_token_balance_changeset(
+        %{token_balance: at.token_balance + Application.fetch_env!(:safira, :roulette_cost)})
       |> Repo.update!()
 
       Roulette.spin_transaction(at)

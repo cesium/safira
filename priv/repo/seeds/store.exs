@@ -1,10 +1,11 @@
 defmodule Safira.Repo.Seeds.Store do
   @moduledoc false
 
+  alias Mix.Tasks.Gen.Redeemables
   alias Safira.Accounts.Attendee
+  alias Safira.Repo
   alias Safira.Store
   alias Safira.Store.Redeemable
-  alias Safira.Repo
 
   @buys_amount 30
 
@@ -14,7 +15,7 @@ defmodule Safira.Repo.Seeds.Store do
   end
 
   defp seed_redeemables do
-    Mix.Tasks.Gen.Redeemables.run(["data/redeemables.csv"])
+    Redeemables.run(["data/redeemables.csv"])
   end
 
   defp seed_buys do
