@@ -7,9 +7,9 @@ defmodule Safira.Jobs.AllGoldBadge do
   """
   import Ecto.Query, warn: false
 
-  alias Safira.Repo
   alias Safira.Accounts.Attendee
   alias Safira.Contest
+  alias Safira.Repo
 
   @spec run(integer()) :: :ok
   def run(badge_id) do

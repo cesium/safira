@@ -9,9 +9,9 @@ defmodule Safira.Jobs.DailyBadge do
 
   require Logger
 
-  alias Safira.Repo
   alias Safira.Accounts.Attendee
   alias Safira.Contest
+  alias Safira.Repo
 
   @spec run(integer(), String.t()) :: :ok
   def run(badge_id, date) do
