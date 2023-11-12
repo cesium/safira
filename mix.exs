@@ -77,7 +77,9 @@ defmodule Safira.MixProject do
       {:bureaucrat, "~> 0.2.9", only: :test},
       {:credo, "~> 1.6.7", only: [:dev, :test], runtime: false},
       {:http_stream, "~> 1.0.0", git: "https://github.com/coders51/http_stream"},
-      {:zstream, "~> 0.6"}
+      {:zstream, "~> 0.6"},
+      {:quantum, "~> 3.0"},
+      {:tzdata, "~> 1.1"}
     ]
   end
 
