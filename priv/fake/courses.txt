@@ -1,59 +1,138 @@
-Administração Pública
-Arqueologia
-Artes Visuais
-Biologia Aplicada
-Biologia e Geologia
-Bioquímica
-Ciência de Dados
-Ciências da Educação
-Ciência Política
-Ciências da Computação
-Ciências da Comunicação
-Ciências do Ambiente
-Contabilidade
-Criminologia e Justiça Criminal
-Design de Produto
-Design e Marketing de Moda
-Direito
-Economia
-Educação
-Educação Básica
-Enfermagem
-Engenharia Aeroespacial
-Engenharia Biomédica
-Engenharia Civil
-Engenharia de Materiais
-Engenharia de Polímeros
-Engenharia de Telecomunicações e Informática
-Engenharia e Gestão de Sistemas de Informação
-Engenharia e Gestão Industrial
-Engenharia Eletrónica Industrial e Computadores
-Engenharia Física
-Engenharia Informática
-Engenharia Mecânica
-Engenharia Química e Biológica
-Engenharia Têxtil
-Estatística Aplicada
-Estudos Culturais
-Estudos Orientais: Estudos Chineses e Japoneses
-Estudos Portugueses
-Filosofia
-Física
-Geografia e Planeamento
-Geologia
-Gestão
-História
-Línguas Aplicadas
-Línguas e Literaturas Europeias
-Medicina
-Marketing
-Matemática
-Música
-Negócios Internacionais
-Optometria e Ciências da Visão
-Proteção Civil e Gestão do Território
-Psicologia
-Química
-Relações Internacionais
-Sociologia
-Teatro
+Licenciatura em Administração Pública
+Licenciatura em Arqueologia
+Licenciatura em Artes Visuais
+Licenciatura em Biologia Aplicada
+Licenciatura em Biologia e Geologia
+Licenciatura em Bioquímica
+Licenciatura em Ciência de Dados
+Licenciatura em Ciência Política
+Licenciatura em Ciências da Computação
+Licenciatura em Ciências da Comunicação
+Licenciatura em Ciências do Ambiente
+Licenciatura em Contabilidade
+Licenciatura em Criminologia e Justiça Criminal
+Licenciatura em Design de Produto
+Licenciatura em Design e Marketing de Moda
+Licenciatura em Direito
+Licenciatura em Economia
+Licenciatura em Educação
+Licenciatura em Educação Básica
+Licenciatura em Enfermagem
+Licenciatura em Engenharia Aeroespacial
+Licenciatura em Engenharia Biomédica
+Licenciatura em Engenharia Civil
+Licenciatura em Engenharia de Materiais
+Licenciatura em Engenharia de Polímeros
+Licenciatura em Engenharia de Telecomunicações e Informática
+Licenciatura em Engenharia e Gestão de Sistemas de Informação
+Licenciatura em Engenharia e Gestão Industrial
+Licenciatura em Engenharia Eletrónica Industrial e Computadores
+Licenciatura em Engenharia Física
+Licenciatura em Engenharia Informática
+Licenciatura em Engenharia Mecânica
+Licenciatura em Engenharia Química e Biológica
+Licenciatura em Engenharia Têxtil
+Licenciatura em Estatística Aplicada
+Licenciatura em Estudos Culturais
+Licenciatura em Estudos Orientais: Estudos Chineses e Japoneses
+Licenciatura em Estudos Portugueses
+Licenciatura em Filosofia
+Licenciatura em Física
+Licenciatura em Geografia e Planeamento
+Licenciatura em Geologia
+Licenciatura em Gestão
+Licenciatura em História
+Licenciatura em Línguas Aplicadas
+Licenciatura em Línguas e Literaturas Europeias
+Licenciatura em Marketing
+Licenciatura em Matemática
+Licenciatura em Música
+Licenciatura em Negócios Internacionais
+Licenciatura em Optometria e Ciências da Visão
+Licenciatura em Proteção Civil e Gestão do Território
+Licenciatura em Psicologia
+Licenciatura em Química
+Licenciatura em Relações Internacionais
+Licenciatura em Sociologia
+Licenciatura em Teatro
+Mestrado Integrado em Arquitetura
+Mestrado em Administração Pública
+Mestrado em Análise Estrutural Avançada e Projeto com Materiais Compósitos
+Mestrado em Análise Estrutural de Monumentos e Construções Históricas
+Mestrado em Arqueologia
+Mestrado em Avaliação Aplicada à Formação nas Profissões da Saúde
+Mestrado em Biodiversidade, Ecologia e Alterações Globais
+Mestrado em Biofísica e Bionanossistemas
+Mestrado em Bioinformática
+Mestrado em Biologia Molecular, Biotecnologia e Bioempreendedorismo em Plantas
+Mestrado em Bioquímica Aplicada
+Mestrado em Biotecnologia
+Mestrado em Ciência Política
+Mestrado em Ciências Criminais
+Mestrado em Ciências da Comunicação
+Mestrado em Ciências da Educação
+Mestrado em Ciências da Saúde
+Mestrado em Ciências e Tecnologias do Ambiente
+Mestrado em Cognição Humana
+Mestrado em Comunicação de Ciência
+Mestrado em Comunicação, Arte e Cultura
+Mestrado em Construção e Reabilitação Sustentáveis
+Mestrado em Contabilidade
+Mestrado em Crime, Diferença e Desigualdade
+Mestrado em Desafios das Cidades
+Mestrado em Design de Produto e Serviços
+Mestrado em Design e Inovação de Produtos Têxteis e Acessórios
+Mestrado em Design para a Comunicação de Moda
+Mestrado em Direito Administrativo
+Mestrado em Direito da União Europeia
+Mestrado em Direito das Crianças, Família e Sucessões
+Mestrado em Direito dos Contratos e da Empresa
+Mestrado em Direito dos Negócios, Europeu e Transnacional
+Mestrado em Direito e Informática
+Mestrado em Direito Judiciário
+Mestrado em Direito Transnacional da Empresa e das Tecnologias Digitais
+Mestrado em Direito Tributário
+Mestrado em Direitos Humanos
+Mestrado em Economia
+Mestrado em Economia Industrial e da Empresa
+Mestrado em Economia Monetária, Bancária e Financeira
+Mestrado em Economia Social
+Mestrado em Educação
+Mestrado em Educação Pré-Escolar
+Mestrado em Educação Pré-Escolar e Ensino do 1º Ciclo do Ensino Básico
+Mestrado em Engenharia Aeroespacial
+Mestrado em Engenharia Biomédica
+Mestrado em Engenharia Civil
+Mestrado em Engenharia de Estruturas
+Mestrado em Engenharia de Materiais
+Mestrado em Engenharia de Polímeros
+Mestrado em Engenharia de Sistemas
+Mestrado em Engenharia de Telecomunicações e Informática
+Mestrado em Engenharia do Produto
+Mestrado em Engenharia e Gestão da Qualidade
+Mestrado em Engenharia e Gestão de Operações
+Mestrado em Engenharia e Gestão de Sistemas de Informação
+Mestrado em Engenharia e Gestão Industrial
+Mestrado em Engenharia Eletrónica Industrial e Computadores
+Mestrado em Engenharia Física
+Mestrado em Engenharia Humana
+Doutoramento em Biologia
+Doutoramento em Ciência e Engenharia de Polímeros e Compósitos
+Doutoramento em Ciências da Cultura
+Doutoramento em Ciências da Linguagem
+Doutoramento em Ciências da Literatura
+Doutoramento em Engenharia Biomédica
+Doutoramento em Engenharia Civil
+Doutoramento em Engenharia de Materiais
+Doutoramento em Engenharia de Tecidos, Medicina Regenerativa e Células Estaminais
+Doutoramento em Engenharia Eletrónica e de Computadores
+Doutoramento em Engenharia Mecânica
+Doutoramento em Engenharia Química e Biológica
+Doutoramento em Engenharia Têxtil
+Doutoramento em Filosofia
+Doutoramento em Geologia - Geoconservação, Geologia Ambiental e Recursos Geológicos
+Doutoramento em Gestão e Tratamento de Resíduos
+Doutoramento em Informática
+Doutoramento em Matemática
+Doutoramento em Química Aplicada
+Doutoramento em Sustentabilidade do Ambiente Construído
