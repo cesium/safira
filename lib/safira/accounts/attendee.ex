@@ -29,6 +29,7 @@ defmodule Safira.Accounts.Attendee do
     field :nickname, :string
     field :avatar, Safira.Avatar.Type
     field :name, :string
+    field :course, :string
     field :token_balance, :integer, default: 0
     field :entries, :integer, default: 0
     field :discord_association_code, Ecto.UUID, autogenerate: true
@@ -49,7 +50,7 @@ defmodule Safira.Accounts.Attendee do
 
   def changeset(attendee, attrs) do
     attendee
-    |> cast(attrs, [:name, :nickname, :user_id])
+    |> cast(attrs, [:name, :nickname, :user_id, :course])
     |> cast_attachments(attrs, [:avatar, :cv])
     |> cast_assoc(:user)
     |> validate_required([:name, :nickname])
@@ -59,7 +60,7 @@ defmodule Safira.Accounts.Attendee do
 
   def update_changeset_sign_up(attendee, attrs) do
     attendee
-    |> cast(attrs, [:name, :nickname, :user_id])
+    |> cast(attrs, [:name, :nickname, :user_id, :course])
     |> cast_attachments(attrs, [:avatar, :cv])
     |> cast_assoc(:user)
     |> validate_required([:name, :nickname])
@@ -69,7 +70,7 @@ defmodule Safira.Accounts.Attendee do
 
   def update_changeset(attendee, attrs) do
     attendee
-    |> cast(attrs, [:nickname])
+    |> cast(attrs, [:nickname, :course])
     |> cast_attachments(attrs, [:avatar, :cv])
     |> validate_required([:nickname])
     |> validate_format(:nickname, @nickname_regex)

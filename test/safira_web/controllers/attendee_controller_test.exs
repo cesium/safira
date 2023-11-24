@@ -95,6 +95,7 @@ defmodule SafiraWeb.AttendeeControllerTest do
           "id" => attendee.id,
           "name" => attendee.name,
           "nickname" => attendee.nickname,
+          "course" => attendee.course,
           "token_balance" => 0,
           "badges" => [],
           "badge_count" => 0
@@ -137,6 +138,7 @@ defmodule SafiraWeb.AttendeeControllerTest do
         "id" => attendee.id,
         "name" => attendee.name,
         "nickname" => attendee.nickname,
+        "course" => attendee.course,
         "token_balance" => 0,
         "badges" => [],
         "badge_count" => 0,
@@ -180,6 +182,7 @@ defmodule SafiraWeb.AttendeeControllerTest do
         "id" => attendee.id,
         "name" => attendee.name,
         "nickname" => "john_doe123",
+        "course" => attendee.course,
         "token_balance" => 0
       }
 
