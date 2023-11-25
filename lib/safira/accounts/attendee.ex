@@ -24,6 +24,8 @@ defmodule Safira.Accounts.Attendee do
   # Any sequence of 3-15 characters that are either letters, numbers, - or _
   @nickname_regex ~r/^[\w\d-_]{3,15}$/
 
+  @courses File.read!("data/courses.txt") |> String.split("\n")
+
   @derive {Phoenix.Param, key: :id}
   schema "attendees" do
     field :nickname, :string
@@ -53,6 +55,7 @@ defmodule Safira.Accounts.Attendee do
     |> cast(attrs, [:name, :nickname, :user_id, :course])
     |> cast_attachments(attrs, [:avatar, :cv])
     |> cast_assoc(:user)
+    |> validate_inclusion(:course, @courses)
     |> validate_required([:name, :nickname])
     |> validate_format(:nickname, @nickname_regex)
     |> unique_constraint(:nickname)
@@ -63,6 +66,7 @@ defmodule Safira.Accounts.Attendee do
     |> cast(attrs, [:name, :nickname, :user_id, :course])
     |> cast_attachments(attrs, [:avatar, :cv])
     |> cast_assoc(:user)
+    |> validate_inclusion(:course, @courses)
     |> validate_required([:name, :nickname])
     |> validate_format(:nickname, @nickname_regex)
     |> unique_constraint(:nickname)
@@ -72,6 +76,7 @@ defmodule Safira.Accounts.Attendee do
     attendee
     |> cast(attrs, [:nickname, :course])
     |> cast_attachments(attrs, [:avatar, :cv])
+    |> validate_inclusion(:course, @courses)
     |> validate_required([:nickname])
     |> validate_format(:nickname, @nickname_regex)
     |> unique_constraint(:nickname)

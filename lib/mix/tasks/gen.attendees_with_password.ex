@@ -7,7 +7,7 @@ defmodule Mix.Tasks.Gen.AttendeesWithPassword do
   alias Safira.Accounts
 
   @domain "seium.org"
-  @courses File.read!("priv/fake/courses.txt") |> String.split("\n")
+  @courses File.read!("data/courses.txt") |> String.split("\n")
 
   def run(args) do
     cond do
