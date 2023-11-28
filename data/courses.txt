@@ -1,3 +1,6 @@
+Licenciatura em Engenharia Informática
+Mestrado em Engenharia Informática
+Doutoramento em Informática
 Licenciatura em Administração Pública
 Licenciatura em Arqueologia
 Licenciatura em Artes Visuais
@@ -14,8 +17,10 @@ Licenciatura em Criminologia e Justiça Criminal
 Licenciatura em Design de Produto
 Licenciatura em Design e Marketing de Moda
 Licenciatura em Direito
+Licenciatura em Direito (Pós-Laboral)
 Licenciatura em Economia
 Licenciatura em Educação
+Licenciatura em Educação (Pós-Laboral)
 Licenciatura em Educação Básica
 Licenciatura em Enfermagem
 Licenciatura em Engenharia Aeroespacial
@@ -28,7 +33,6 @@ Licenciatura em Engenharia e Gestão de Sistemas de Informação
 Licenciatura em Engenharia e Gestão Industrial
 Licenciatura em Engenharia Eletrónica Industrial e Computadores
 Licenciatura em Engenharia Física
-Licenciatura em Engenharia Informática
 Licenciatura em Engenharia Mecânica
 Licenciatura em Engenharia Química e Biológica
 Licenciatura em Engenharia Têxtil
@@ -56,11 +60,27 @@ Licenciatura em Relações Internacionais
 Licenciatura em Sociologia
 Licenciatura em Teatro
 Mestrado Integrado em Arquitetura
+Mestrado Integrado em Engenharia Biológica 
+Mestrado Integrado em Engenharia Biomédica 
+Mestrado Integrado em Engenharia Civil 
+Mestrado Integrado em Engenharia de Materiais 
+Mestrado Integrado em Engenharia de Polímeros 
+Mestrado Integrado em Engenharia de Telecomunicações e Informática 
+Mestrado Integrado em Engenharia e Gestão de Sistemas de Informação 
+Mestrado Integrado em Engenharia e Gestão de Sistemas de Informação (Pós-Laboral) 
+Mestrado Integrado em Engenharia e Gestão Industrial 
+Mestrado Integrado em Engenharia Eletrónica Industrial e Computadores 
+Mestrado Integrado em Engenharia Física 
+Mestrado Integrado em Engenharia Informática 
+Mestrado Integrado em Engenharia Mecânica 
+Mestrado Integrado em Engenharia Têxtil 
+Mestrado Integrado em Medicina
+Mestrado Integrado em Psicologia 
 Mestrado em Administração Pública
-Mestrado em Análise Estrutural Avançada e Projeto com Materiais Compósitos
-Mestrado em Análise Estrutural de Monumentos e Construções Históricas
+Mestrado em Análise Estrutural Avançada e Projeto com Materiais Compósitos - FRP++
+Mestrado em Análise Estrutural de Monumentos e Construções Históricas (Mestrado Europeu)
 Mestrado em Arqueologia
-Mestrado em Avaliação Aplicada à Formação nas Profissões da Saúde
+Mestrado em Avaliação Aplicada à Formação nas Profissões da Saúde - [O 1º ano do Curso não Funciona em 2023/2024]
 Mestrado em Biodiversidade, Ecologia e Alterações Globais
 Mestrado em Biofísica e Bionanossistemas
 Mestrado em Bioinformática
@@ -89,7 +109,7 @@ Mestrado em Direito das Crianças, Família e Sucessões
 Mestrado em Direito dos Contratos e da Empresa
 Mestrado em Direito dos Negócios, Europeu e Transnacional
 Mestrado em Direito e Informática
-Mestrado em Direito Judiciário
+Mestrado em Direito Judiciário (Direitos Processuais e Organização Judiciária)
 Mestrado em Direito Transnacional da Empresa e das Tecnologias Digitais
 Mestrado em Direito Tributário
 Mestrado em Direitos Humanos
@@ -116,6 +136,67 @@ Mestrado em Engenharia e Gestão Industrial
 Mestrado em Engenharia Eletrónica Industrial e Computadores
 Mestrado em Engenharia Física
 Mestrado em Engenharia Humana
+Mestrado em Engenharia Mecânica
+Mestrado em Engenharia Mecatrónica
+Mestrado em Engenharia Química e Biológica
+Mestrado em Engenharia Têxtil
+Mestrado em Engenharia Urbana
+Mestrado em Ensino de Biologia e Geologia no 3º Ciclo no Ensino Básico e no Ensino Secundário
+Mestrado em Ensino de Física e de Química no 3º Ciclo do Ensino Básico e no Ensino Secundário
+Mestrado em Ensino de História no 3º Ciclo do Ensino Básico e no Ensino Secundário
+Mestrado em Ensino de Informática
+Mestrado em Ensino de Inglês no 1º Ciclo do Ensino Básico
+Mestrado em Ensino de Matemática no 3º Ciclo do Ensino Básico e no Secundário
+Mestrado em Ensino de Música
+Mestrado em Ensino de Português no 3º Ciclo do Ensino Básico e no Ensino Secundário
+Mestrado em Ensino do 1º Ciclo do Ensino Básico e de Matemática e Ciências Naturais no 2º Ciclo do Ensino Básico
+Mestrado em Ensino do 1º Ciclo do Ensino Básico e de Português e História e Geografia de Portugal no 2º Ciclo do Ensino Básico
+Mestrado em Espanhol Língua Segunda e Língua Estrangeira
+Mestrado em Estatística para Ciência de Dados
+Mestrado em Estudos da Criança
+Mestrado em Estudos Interculturais Português/Chinês
+Mestrado em Estudos Luso-Alemães
+Mestrado em Filosofia Política
+Mestrado em Finanças
+Mestrado em Física
+Mestrado em Genética Molecular
+Mestrado em Geociências
+Mestrado em Geografia
+Mestrado em Gestão
+Mestrado em Gestão de Projetos de Engenharia
+Mestrado em Gestão de Recursos Humanos
+Mestrado em Gestão de Unidades de Saúde
+Mestrado em Gestão e Negócios
+Mestrado em História
+Mestrado em Humanidades Digitais
+Mestrado em Lexicografia (Mestrado Europeu)
+Mestrado em Língua, Literatura e Cultura Inglesas
+Mestrado em Literaturas de Língua Portuguesa
+Mestrado em Marketing e Estratégia
+Mestrado em Matemática e Computação
+Mestrado em Media Arts
+Mestrado em Micro e Nano Tecnologias
+Mestrado em Modelação de Informação na Construção de Edifícios
+Mestrado em Negócios Internacionais
+Mestrado em Optometria Avançada
+Mestrado em Património Cultural
+Mestrado em Português Língua Não Materna
+Mestrado em Psicologia Clínica e Psicoterapia de Adultos
+Mestrado em Psicologia Clínica na Infância e Adolescência
+Mestrado em Psicologia da Educação
+Mestrado em Psicologia da Justiça
+Mestrado em Psicologia do Trabalho e das Organizações
+Mestrado em Química Medicinal
+Mestrado em Relações Internacionais
+Mestrado em Sistemas de Informação
+Mestrado em Sociologia
+Mestrado em Sociologia do Género e da Sexualidade
+Mestrado em Sustentabilidade do Ambiente Construído 
+Mestrado em Técnicas de Caracterização e Análise Química
+Mestrado em Tecnologia e Ciência Alimentar
+Mestrado em Tecnologias Interativas
+Mestrado em Temas de Psicologia da Educação
+Mestrado em Tradução e Comunicação Multilingue
 Doutoramento em Biologia
 Doutoramento em Ciência e Engenharia de Polímeros e Compósitos
 Doutoramento em Ciências da Cultura
@@ -132,7 +213,45 @@ Doutoramento em Engenharia Têxtil
 Doutoramento em Filosofia
 Doutoramento em Geologia - Geoconservação, Geologia Ambiental e Recursos Geológicos
 Doutoramento em Gestão e Tratamento de Resíduos
-Doutoramento em Informática
 Doutoramento em Matemática
 Doutoramento em Química Aplicada
 Doutoramento em Sustentabilidade do Ambiente Construído
+Programa Doutoral em Arqueologia
+Programa Doutoral em Arquitetura
+Programa Doutoral em Bioengenharia
+Programa Doutoral em Biologia Molecular e Ambiental
+Programa Doutoral em Biotecnologia Marinha e Aquacultura
+Programa Doutoral em Cadeias de Produção Agrícola - da mesa ao campo
+Programa Doutoral em Ciência e Tecnologia Alimentar e Nutrição
+Programa Doutoral em Ciência Política e Relações Internacionais
+Programa Doutoral em Ciência, Tecnologia e Gestão do Mar
+Programa Doutoral em Ciências da Administração
+Programa Doutoral em Ciências da Comunicação
+Programa Doutoral em Ciências da Educação
+Programa Doutoral em Ciências da Saúde
+Programa Doutoral em Ciências Jurídicas
+Programa Doutoral em Design de Moda
+Programa Doutoral em Economia
+Programa Doutoral em Educação a Distância e e-Learning
+Programa Doutoral em Engenharia Industrial e de Sistemas
+Programa Doutoral em Estudos Culturais
+Programa Doutoral em Estudos da Criança
+Programa Doutoral em Fabrico Digital Direto para as Indústrias dos Polímeros e Moldes
+Programa Doutoral em Física 
+Programa Doutoral em Geografia
+Programa Doutoral em Gestão
+Programa Doutoral em História
+Programa Doutoral em Informática
+Programa Doutoral em Marketing e Estratégia
+Programa Doutoral em Matemática Aplicada
+Programa Doutoral em Matemática e Aplicações
+Programa Doutoral em Materiais e Processamento Avançados
+Programa Doutoral em Medicina
+Programa Doutoral em Modernidades Comparadas: Literaturas, Artes e Culturas
+Programa Doutoral em Optometria e Ciências da Visão
+Programa Doutoral em Psicologia
+Programa Doutoral em Química
+Programa Doutoral em Sistemas Avançados de Engenharia para a Indústria
+Programa Doutoral em Sociologia
+Programa Doutoral em Tecnologia e Sistemas de Informação
+Programa Doutoral em Telecomunicações
