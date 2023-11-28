@@ -43,6 +43,8 @@ defmodule SafiraWeb.Router do
       resources "/passwords", PasswordController, only: [:create, :update]
     end
 
+    get "/attendee/courses", CourseController, :index
+
     get "/is_registered/:id", AuthController, :is_registered
 
     pipe_through :jwt_authenticated

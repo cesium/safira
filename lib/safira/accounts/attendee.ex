@@ -7,6 +7,7 @@ defmodule Safira.Accounts.Attendee do
   import Ecto.Changeset
 
   alias Safira.Accounts.User
+  alias Safira.Accounts.Course
 
   alias Safira.Contest.Badge
   alias Safira.Contest.DailyToken
@@ -24,14 +25,11 @@ defmodule Safira.Accounts.Attendee do
   # Any sequence of 3-15 characters that are either letters, numbers, - or _
   @nickname_regex ~r/^[\w\d-_]{3,15}$/
 
-  @courses File.read!("data/courses.txt") |> String.split("\n")
-
   @derive {Phoenix.Param, key: :id}
   schema "attendees" do
     field :nickname, :string
     field :avatar, Safira.Avatar.Type
     field :name, :string
-    field :course, :string
     field :token_balance, :integer, default: 0
     field :entries, :integer, default: 0
     field :discord_association_code, Ecto.UUID, autogenerate: true
@@ -39,6 +37,7 @@ defmodule Safira.Accounts.Attendee do
     field :cv, Safira.CV.Type
 
     belongs_to :user, User
+    belongs_to :course, Course
     many_to_many :badges, Badge, join_through: Redeem
     has_many :referrals, Referral
     has_many :daily_tokens, DailyToken
@@ -52,10 +51,9 @@ defmodule Safira.Accounts.Attendee do
 
   def changeset(attendee, attrs) do
     attendee
-    |> cast(attrs, [:name, :nickname, :user_id, :course])
+    |> cast(attrs, [:name, :nickname, :user_id, :course_id])
     |> cast_attachments(attrs, [:avatar, :cv])
     |> cast_assoc(:user)
-    |> validate_inclusion(:course, @courses)
     |> validate_required([:name, :nickname])
     |> validate_format(:nickname, @nickname_regex)
     |> unique_constraint(:nickname)
@@ -63,10 +61,9 @@ defmodule Safira.Accounts.Attendee do
 
   def update_changeset_sign_up(attendee, attrs) do
     attendee
-    |> cast(attrs, [:name, :nickname, :user_id, :course])
+    |> cast(attrs, [:name, :nickname, :user_id, :course_id])
     |> cast_attachments(attrs, [:avatar, :cv])
     |> cast_assoc(:user)
-    |> validate_inclusion(:course, @courses)
     |> validate_required([:name, :nickname])
     |> validate_format(:nickname, @nickname_regex)
     |> unique_constraint(:nickname)
@@ -74,9 +71,8 @@ defmodule Safira.Accounts.Attendee do
 
   def update_changeset(attendee, attrs) do
     attendee
-    |> cast(attrs, [:nickname, :course])
+    |> cast(attrs, [:nickname, :course_id])
     |> cast_attachments(attrs, [:avatar, :cv])
-    |> validate_inclusion(:course, @courses)
     |> validate_required([:nickname])
     |> validate_format(:nickname, @nickname_regex)
     |> unique_constraint(:nickname)

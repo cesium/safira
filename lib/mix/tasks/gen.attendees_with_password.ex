@@ -7,7 +7,6 @@ defmodule Mix.Tasks.Gen.AttendeesWithPassword do
   alias Safira.Accounts
 
   @domain "seium.org"
-  @courses File.read!("data/courses.txt") |> String.split("\n")
 
   def run(args) do
     cond do
@@ -25,11 +24,12 @@ defmodule Mix.Tasks.Gen.AttendeesWithPassword do
   defp create(number) do
     Mix.Task.run("app.start")
 
+    courses = Accounts.list_courses()
+
     Enum.each(1..number, fn n ->
       nickname = "attendee#{n}"
       email = Enum.join([nickname, @domain], "@")
       password = random_string(8)
-      course = Enum.random(@courses)
 
       user = %{
         "email" => email,
@@ -37,11 +37,13 @@ defmodule Mix.Tasks.Gen.AttendeesWithPassword do
         "password_confirmation" => password
       }
 
+      course = Enum.random(courses)
+
       account =
         Accounts.create_attendee(%{
           "name" => nickname,
           "nickname" => nickname,
-          "course" => course,
+          "course_id" => course.id,
           "user" => user
         })
         |> elem(1)

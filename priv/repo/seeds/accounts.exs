@@ -1,16 +1,21 @@
 defmodule Safira.Repo.Seeds.Accounts do
   @moduledoc false
 
-  alias Mix.Tasks.Gen.{AttendeesWithPassword, Companies, Staffs}
+  alias Mix.Tasks.Gen.{AttendeesWithPassword, Companies, Staffs, Courses}
   alias Safira.Accounts
   alias Safira.Accounts.User
   alias Safira.Repo
 
   def run do
+    seed_courses()
     seed_staffs()
     seed_companies()
     seed_attendees()
     reset_passwords()
+  end
+
+  defp seed_courses do
+    Courses.run(["data/courses.txt"])
   end
 
   defp seed_companies do

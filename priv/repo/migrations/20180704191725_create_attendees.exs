@@ -6,7 +6,6 @@ defmodule Safira.Repo.Migrations.CreateAttendees do
       add :uuid, :string
       add :nickname, :string
       add :user_id, references(:users, on_delete: :delete_all)
-      add :course, :string
 
       timestamps()
     end
