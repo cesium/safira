@@ -7,8 +7,8 @@ defmodule Safira.Accounts do
 
   alias Safira.Accounts.Attendee
   alias Safira.Accounts.Company
-  alias Safira.Accounts.Staff
   alias Safira.Accounts.Course
+  alias Safira.Accounts.Staff
   alias Safira.Accounts.User
 
   alias Safira.Repo
