@@ -6,8 +6,8 @@ defmodule Safira.Accounts.Attendee do
   use Arc.Ecto.Schema
   import Ecto.Changeset
 
-  alias Safira.Accounts.User
   alias Safira.Accounts.Course
+  alias Safira.Accounts.User
 
   alias Safira.Contest.Badge
   alias Safira.Contest.DailyToken

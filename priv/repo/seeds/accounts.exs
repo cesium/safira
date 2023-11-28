@@ -1,7 +1,7 @@
 defmodule Safira.Repo.Seeds.Accounts do
   @moduledoc false
 
-  alias Mix.Tasks.Gen.{AttendeesWithPassword, Companies, Staffs, Courses}
+  alias Mix.Tasks.Gen.{AttendeesWithPassword, Companies, Courses, Staffs}
   alias Safira.Accounts
   alias Safira.Accounts.User
   alias Safira.Repo
