@@ -6,6 +6,7 @@ defmodule Safira.Accounts.Attendee do
   use Arc.Ecto.Schema
   import Ecto.Changeset
 
+  alias Safira.Accounts.Course
   alias Safira.Accounts.User
 
   alias Safira.Contest.Badge
@@ -36,6 +37,7 @@ defmodule Safira.Accounts.Attendee do
     field :cv, Safira.CV.Type
 
     belongs_to :user, User
+    belongs_to :course, Course
     many_to_many :badges, Badge, join_through: Redeem
     has_many :referrals, Referral
     has_many :daily_tokens, DailyToken
@@ -49,7 +51,7 @@ defmodule Safira.Accounts.Attendee do
 
   def changeset(attendee, attrs) do
     attendee
-    |> cast(attrs, [:name, :nickname, :user_id])
+    |> cast(attrs, [:name, :nickname, :user_id, :course_id])
     |> cast_attachments(attrs, [:avatar, :cv])
     |> cast_assoc(:user)
     |> validate_required([:name, :nickname])
@@ -59,7 +61,7 @@ defmodule Safira.Accounts.Attendee do
 
   def update_changeset_sign_up(attendee, attrs) do
     attendee
-    |> cast(attrs, [:name, :nickname, :user_id])
+    |> cast(attrs, [:name, :nickname, :user_id, :course_id])
     |> cast_attachments(attrs, [:avatar, :cv])
     |> cast_assoc(:user)
     |> validate_required([:name, :nickname])
@@ -69,7 +71,7 @@ defmodule Safira.Accounts.Attendee do
 
   def update_changeset(attendee, attrs) do
     attendee
-    |> cast(attrs, [:nickname])
+    |> cast(attrs, [:nickname, :course_id])
     |> cast_attachments(attrs, [:avatar, :cv])
     |> validate_required([:nickname])
     |> validate_format(:nickname, @nickname_regex)

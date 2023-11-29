@@ -7,6 +7,7 @@ defmodule Safira.Accounts do
 
   alias Safira.Accounts.Attendee
   alias Safira.Accounts.Company
+  alias Safira.Accounts.Course
   alias Safira.Accounts.Staff
   alias Safira.Accounts.User
 
@@ -106,6 +107,7 @@ defmodule Safira.Accounts do
     |> Repo.preload(:badges)
     |> Repo.preload(:user)
     |> Repo.preload(:prizes)
+    |> Repo.preload(:course)
   end
 
   def get_attendee_by_discord_association_code(discord_association_code) do
@@ -263,5 +265,38 @@ defmodule Safira.Accounts do
       |> Map.fetch!(:id)
       |> get_user_preload!()
     end
+  end
+
+  @doc """
+  Creates a course.
+
+  ## Examples
+
+      iex> create_course(%{field: value})
+      {:ok, %Course{}}
+
+      iex> create_course(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_course(attrs) do
+    %Course{}
+    |> Course.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Returns the list of courses.
+
+  ## Examples
+
+      iex> list_courses()
+      [%Course{}, ...]
+
+  """
+  def list_courses do
+    Course
+    |> order_by(:id)
+    |> Repo.all()
   end
 end

@@ -95,6 +95,7 @@ defmodule SafiraWeb.AttendeeControllerTest do
           "id" => attendee.id,
           "name" => attendee.name,
           "nickname" => attendee.nickname,
+          "course" => attendee.course_id,
           "token_balance" => 0,
           "badges" => [],
           "badge_count" => 0
@@ -133,6 +134,7 @@ defmodule SafiraWeb.AttendeeControllerTest do
       expected_attendee = %{
         "avatar" => nil,
         "cv" => nil,
+        "course" => nil,
         "entries" => 0,
         "id" => attendee.id,
         "name" => attendee.name,
@@ -176,6 +178,7 @@ defmodule SafiraWeb.AttendeeControllerTest do
       expected_attendee = %{
         "avatar" => nil,
         "cv" => nil,
+        "course" => nil,
         "entries" => 0,
         "id" => attendee.id,
         "name" => attendee.name,
