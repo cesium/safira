@@ -38,7 +38,7 @@ defmodule SafiraWeb.AttendeeJSON do
       token_balance: at.token_balance,
       prizes: for(p <- at.prizes, do: PrizeJSON.prize_attendee(%{prize: p})),
       entries: at.entries,
-      redeemables: for(r <- at.redeemables, do: RedeemableJSON.my_readeemables(%{redeemable: r}))
+      redeemables: for(r <- at.redeemables, do: RedeemableJSON.my_redeemables(%{redeemable: r}))
     }
   end
 
