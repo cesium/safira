@@ -1,5 +1,5 @@
 defmodule SafiraWeb.CourseController do
-  use SafiraWeb, controller: "1.6"
+  use SafiraWeb, :controller
 
   alias Safira.Accounts
 
@@ -7,6 +7,6 @@ defmodule SafiraWeb.CourseController do
 
   def index(conn, _params) do
     courses = Accounts.list_courses()
-    render(conn, "index.json", courses: courses)
+    render(conn, :index, courses: courses)
   end
 end

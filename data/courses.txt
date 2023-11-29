@@ -17,10 +17,8 @@ Licenciatura em Criminologia e Justiça Criminal
 Licenciatura em Design de Produto
 Licenciatura em Design e Marketing de Moda
 Licenciatura em Direito
-Licenciatura em Direito (Pós-Laboral)
 Licenciatura em Economia
 Licenciatura em Educação
-Licenciatura em Educação (Pós-Laboral)
 Licenciatura em Educação Básica
 Licenciatura em Enfermagem
 Licenciatura em Engenharia Aeroespacial
@@ -67,7 +65,6 @@ Mestrado Integrado em Engenharia de Materiais
 Mestrado Integrado em Engenharia de Polímeros 
 Mestrado Integrado em Engenharia de Telecomunicações e Informática 
 Mestrado Integrado em Engenharia e Gestão de Sistemas de Informação 
-Mestrado Integrado em Engenharia e Gestão de Sistemas de Informação (Pós-Laboral) 
 Mestrado Integrado em Engenharia e Gestão Industrial 
 Mestrado Integrado em Engenharia Eletrónica Industrial e Computadores 
 Mestrado Integrado em Engenharia Física 
@@ -77,10 +74,10 @@ Mestrado Integrado em Engenharia Têxtil
 Mestrado Integrado em Medicina
 Mestrado Integrado em Psicologia 
 Mestrado em Administração Pública
-Mestrado em Análise Estrutural Avançada e Projeto com Materiais Compósitos - FRP++
-Mestrado em Análise Estrutural de Monumentos e Construções Históricas (Mestrado Europeu)
+Mestrado em Análise Estrutural Avançada e Projeto com Materiais Compósitos
+Mestrado em Análise Estrutural de Monumentos e Construções Históricas
 Mestrado em Arqueologia
-Mestrado em Avaliação Aplicada à Formação nas Profissões da Saúde - [O 1º ano do Curso não Funciona em 2023/2024]
+Mestrado em Avaliação Aplicada à Formação nas Profissões da Saúde
 Mestrado em Biodiversidade, Ecologia e Alterações Globais
 Mestrado em Biofísica e Bionanossistemas
 Mestrado em Bioinformática
@@ -169,7 +166,7 @@ Mestrado em Gestão de Unidades de Saúde
 Mestrado em Gestão e Negócios
 Mestrado em História
 Mestrado em Humanidades Digitais
-Mestrado em Lexicografia (Mestrado Europeu)
+Mestrado em Lexicografia
 Mestrado em Língua, Literatura e Cultura Inglesas
 Mestrado em Literaturas de Língua Portuguesa
 Mestrado em Marketing e Estratégia

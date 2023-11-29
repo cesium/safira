@@ -8,7 +8,7 @@ defmodule Mix.Tasks.Gen.Courses do
 
   def run(args) do
     if Enum.empty?(args) do
-      Mix.shell().info("Needs to receive atleast one file path.")
+      Mix.shell().info("Needs to receive at least one file path.")
     else
       args |> create
     end
