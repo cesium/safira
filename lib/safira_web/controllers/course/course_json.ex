@@ -1,4 +1,6 @@
 defmodule SafiraWeb.CourseJSON do
+  @moduledoc false
+
   def index(%{courses: courses}) do
     %{data: for(course <- courses, do: data(course))}
   end
