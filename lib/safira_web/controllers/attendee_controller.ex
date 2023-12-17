@@ -18,11 +18,11 @@ defmodule SafiraWeb.AttendeeController do
   end
 
   def show(conn, %{"id" => id}) do
-
     attendee =
       case String.match?(id, @uuid_regex) do
         true ->
           Accounts.get_attendee_with_badge_count_by_id!(id)
+
         _ ->
           Accounts.get_attendee_by_username!(id)
       end
