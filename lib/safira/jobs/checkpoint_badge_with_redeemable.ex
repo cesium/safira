@@ -27,7 +27,7 @@ defmodule Safira.Jobs.CheckpointBadgeWithRedeemable do
     Attendee
     |> join(:inner, [a], r in Redeem, on: a.id == r.attendee_id)
     |> join(:inner, [a, r], b in Badge, on: r.badge_id == b.id)
-    |> where([a, r, b], b.badge_type == ^badge_type)
+    |> where([a, r, b], b.type == ^badge_type)
     |> preload([a, r, b], badges: b)
     |> Repo.all()
     |> Enum.map(fn a -> Map.put(a, :badge_count, length(a.badges)) end)

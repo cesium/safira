@@ -16,18 +16,17 @@ defmodule Safira.Jobs.CheckpointBadge do
 
   @spec run(integer(), integer(), integer() | nil, integer()) :: :ok
   def run(badge_id, badge_count, badge_type \\ nil, entries) do
-    attendees = []
     badge = Repo.get(Badge, badge_id)
 
     case badge_type do
       nil ->
-        ^attendees = list_eligible_attendees(badge_count)
+        list_eligible_attendees(badge_count)
+        |> Enum.each(&create_redeem(&1, badge, entries))
 
       _ ->
-        ^attendees = list_eligible_attendees_with_badge_type(badge_count, badge_type)
+        list_eligible_attendees_with_badge_type(badge_count, badge_type)
+        |> Enum.each(&create_redeem(&1, badge, entries))
     end
-
-    Enum.each(attendees, &create_redeem(&1, badge, entries))
   end
 
   defp list_eligible_attendees(badge_count) do
@@ -44,7 +43,7 @@ defmodule Safira.Jobs.CheckpointBadge do
     Attendee
     |> join(:inner, [a], r in Redeem, on: a.id == r.attendee_id)
     |> join(:inner, [a, r], b in Badge, on: r.badge_id == b.id)
-    |> where([a, r, b], b.badge_type == ^badge_type)
+    |> where([a, r, b], b.type == ^badge_type)
     |> preload([a, r, b], badges: b)
     |> Repo.all()
     |> Enum.map(fn a -> Map.put(a, :badge_count, length(a.badges)) end)

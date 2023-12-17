@@ -7,20 +7,21 @@ defmodule Safira.Jobs.AllGoldBadge do
   """
   import Ecto.Query, warn: false
 
-  alias Safira.Accounts.Attendee
+  alias Safira.Accounts.{Attendee, Company}
   alias Safira.Contest
+  alias Safira.Contest.{Badge, Redeem}
   alias Safira.Repo
 
   @spec run(integer()) :: :ok
   def run(badge_id) do
-    attendees = list_eligible_attendees()
-    Enum.each(attendees, &create_redeem(&1.id, badge_id))
+    list_eligible_attendees()
+    |> Enum.each(&create_redeem(&1.id, badge_id))
   end
 
   defp list_eligible_attendees do
     companies_count =
       Badge
-      |> where([b], b.type == 4)
+      |> where([b], b.type == ^4)
       |> join(:inner, [b], c in Company, on: c.badge_id == b.id)
       |> where([b, c], c.sponsorship in ["Gold", "Exclusive"])
       |> Repo.aggregate(:count)

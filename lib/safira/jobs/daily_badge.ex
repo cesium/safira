@@ -11,14 +11,15 @@ defmodule Safira.Jobs.DailyBadge do
 
   alias Safira.Accounts.Attendee
   alias Safira.Contest
+  alias Safira.Contest.{Badge, Redeem}
   alias Safira.Repo
 
-  @spec run(integer(), String.t()) :: :ok
+  @spec run(integer(), String.t()) :: :ok | no_return()
   def run(badge_id, date) do
-    validate_date_format(date)
+    date = date |> Date.from_iso8601!()
 
-    attendees = list_eligible_attendees(date)
-    Enum.each(attendees, &create_redeem(&1.id, badge_id))
+    list_eligible_attendees(date)
+    |> Enum.each(&create_redeem(&1.id, badge_id))
   end
 
   defp list_eligible_attendees(date) do
@@ -41,15 +42,5 @@ defmodule Safira.Jobs.DailyBadge do
       },
       :admin
     )
-  end
-
-  defp validate_date_format(date) do
-    case Date.from_iso8601(date) do
-      {:ok, _} ->
-        :ok
-
-      {:error, _} ->
-        Logger.error("Invalid date format. Please provide a date in yyyy-mm-dd format.")
-    end
   end
 end

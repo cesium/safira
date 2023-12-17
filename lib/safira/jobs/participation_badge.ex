@@ -12,8 +12,6 @@ defmodule Safira.Jobs.ParticipationBadge do
 
   @spec run(integer(), integer()) :: :ok
   def run(badge_id, days) do
-    attendees = Accounts.list_active_attendees()
-
     list = [
       get_badge_by_name("Dia 1"),
       get_badge_by_name("Dia 2"),
@@ -21,7 +19,8 @@ defmodule Safira.Jobs.ParticipationBadge do
       get_badge_by_name("Dia 4")
     ]
 
-    Enum.each(attendees, &maybe_gift_badge(&1.id, badge_id, list, days))
+    Accounts.list_active_attendees()
+    |> Enum.each(&maybe_gift_badge(&1.id, badge_id, list, days))
   end
 
   defp maybe_gift_badge(attendee_id, badge_id, list, days) do
