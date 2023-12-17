@@ -104,6 +104,12 @@ defmodule Safira.Admin.Accounts do
     |> Repo.preload(:badges)
   end
 
+  def get_attendee_by_username!(username) do
+    Repo.get_by!(Attendee, nickname: username)
+    |> Repo.preload(:user)
+    |> Repo.preload(:badges)
+  end
+
   @doc """
   Creates a attendee.
 

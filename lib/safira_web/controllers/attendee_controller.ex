@@ -10,6 +10,7 @@ defmodule SafiraWeb.AttendeeController do
   alias Safira.Store
 
   action_fallback SafiraWeb.FallbackController
+  @uuid_regex ~r/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
   def index(conn, _params) do
     attendees = Accounts.list_active_attendees()
@@ -17,7 +18,14 @@ defmodule SafiraWeb.AttendeeController do
   end
 
   def show(conn, %{"id" => id}) do
-    attendee = Accounts.get_attendee_with_badge_count!(id)
+
+    attendee =
+      case String.match?(id, @uuid_regex) do
+        true ->
+          Accounts.get_attendee_with_badge_count_by_id!(id)
+        _ ->
+          Accounts.get_attendee_by_username!(id)
+      end
 
     cond do
       is_nil(attendee) ->
