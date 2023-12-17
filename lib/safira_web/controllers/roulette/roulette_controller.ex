@@ -34,6 +34,6 @@ defmodule SafiraWeb.RouletteController do
   end
 
   def price(conn, _params) do
-    render(conn, "price.json", price: @price)
+    render(conn, "price_show.json", price: @price)
   end
 end

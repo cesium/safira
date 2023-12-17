@@ -33,6 +33,10 @@ defmodule SafiraWeb.RouletteJSON do
     resp
   end
 
+  def price_show(%{price: price}) do
+    %{price: price}
+  end
+
   def latest_prizes(%{latest_prizes: latest_prizes}) do
     %{data: for(p <- latest_prizes, do: latest_prize_show(%{roulette: p}))}
   end
