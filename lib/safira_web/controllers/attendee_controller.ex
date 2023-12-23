@@ -10,22 +10,39 @@ defmodule SafiraWeb.AttendeeController do
   alias Safira.Store
 
   action_fallback SafiraWeb.FallbackController
-  @uuid_regex ~r/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
 
   def index(conn, _params) do
     attendees = Accounts.list_active_attendees()
     render(conn, "index.json", attendees: attendees)
   end
 
-  def show(conn, %{"id" => id}) do
-    attendee =
-      case String.match?(id, @uuid_regex) do
-        true ->
-          Accounts.get_attendee_with_badge_count_by_id!(id)
+  def show(conn, _) when is_map_key(conn.query_params, "id") do
+    id = conn.query_params["id"]
+    attendee = Accounts.get_attendee_with_badge_count_by_id!(id)
 
-        _ ->
-          Accounts.get_attendee_by_username!(id)
-      end
+    cond do
+      is_nil(attendee) ->
+        {:error, :not_found}
+
+      is_nil(attendee.user_id) ->
+        {:error, :not_registered}
+
+      Accounts.is_staff(conn) ->
+        render(conn, "staff_show.json", attendee: attendee)
+
+      true ->
+        attendee =
+          attendee
+          |> Map.put(:redeemables, Store.get_attendee_redeemables(attendee))
+          |> Map.put(:prizes, Roulette.get_attendee_prize(attendee))
+
+        render(conn, "show.json", attendee: attendee)
+    end
+  end
+
+  def show(conn, _) when is_map_key(conn.query_params, "username") do
+    username = conn.query_params["username"]
+    attendee = Accounts.get_attendee_with_badge_count_by_username!(username)
 
     cond do
       is_nil(attendee) ->

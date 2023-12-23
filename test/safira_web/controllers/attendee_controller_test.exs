@@ -129,7 +129,7 @@ defmodule SafiraWeb.AttendeeControllerTest do
 
       conn =
         conn
-        |> get(Routes.attendee_path(conn, :show, attendee.id))
+        |> get(Routes.attendee_path(conn, :show, attendee.id), %{"id" => attendee.id})
 
       expected_attendee = %{
         "avatar" => nil,

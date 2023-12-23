@@ -88,8 +88,16 @@ defmodule Safira.Accounts do
     |> Repo.preload(:prizes)
   end
 
+  def get_attendee(id) do
+    Repo.get(Attendee, id)
+    |> Repo.preload(:badges)
+    |> Repo.preload(:user)
+    |> Repo.preload(:prizes)
+    |> Repo.preload(:course)
+  end
+
   def get_attendee_with_badge_count_by_id!(id) do
-    case get_attendee!(id) do
+    case get_attendee(id) do
       nil ->
         nil
 
