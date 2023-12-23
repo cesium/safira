@@ -91,6 +91,7 @@ defmodule SafiraWeb.RouletteControllerTest do
       assert json_response(conn, 200)["data"] == [
                %{
                  "attendee_name" => attendee.name,
+                 "attendee_nickname" => attendee.nickname,
                  "date" =>
                    String.replace(NaiveDateTime.to_string(attendee_prize.updated_at), " ", "T"),
                  "prize" => %{
