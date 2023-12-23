@@ -45,29 +45,19 @@ defmodule Mix.Tasks.Gen.Prizes do
           is_redeemable: convert_bool!(is_redeemable)
         },
         %{
-          avatar: %Plug.Upload{
-            filename: check_image_filename(image_path),
-            path: check_image_path(image_path)
-          }
+          avatar: get_avatar(image_path)
         }
       }
     end)
   end
 
-  defp check_image_filename(image_path) do
-    if String.trim(image_path) == "" do
-      "prize-missing.svg"
-    else
-      String.split(image_path, "/") |> List.last()
-    end
-  end
+  defp get_avatar(nil), do: nil
 
-  defp check_image_path(image_path) do
-    if String.trim(image_path) == "" do
-      "#{File.cwd!()}/assets/static/images/prize-missing.svg"
-    else
-      image_path
-    end
+  defp get_avatar(image_path) do
+    %Plug.Upload{
+      filename: String.split(image_path, "/") |> List.last(),
+      path: image_path
+    }
   end
 
   defp validate_probabilities(list) do

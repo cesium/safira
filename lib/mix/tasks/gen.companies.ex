@@ -71,10 +71,7 @@ defmodule Mix.Tasks.Gen.Companies do
           tokens: String.to_integer(tokens)
         },
         %{
-          avatar: %Plug.Upload{
-            filename: check_image_filename(image_path),
-            path: check_image_path(image_path)
-          }
+          avatar: get_avatar(image_path)
         },
         %{
           name: name,
@@ -87,20 +84,13 @@ defmodule Mix.Tasks.Gen.Companies do
     end)
   end
 
-  defp check_image_filename(image_path) do
-    if is_nil(image_path) do
-      "missing-badge.svg"
-    else
-      String.split(image_path, "/") |> List.last()
-    end
-  end
+  defp get_avatar(nil), do: nil
 
-  defp check_image_path(image_path) do
-    if is_nil(image_path) do
-      "#{File.cwd!()}/assets/static/images/missing-badge.svg"
-    else
-      image_path
-    end
+  defp get_avatar(image_path) do
+    %Plug.Upload{
+      filename: String.split(image_path, "/") |> List.last(),
+      path: image_path
+    }
   end
 
   defp sequence(list) do
