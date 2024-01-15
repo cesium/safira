@@ -182,7 +182,7 @@ defmodule Safira.Accounts do
 
   def update_staff_cv(%Staff{} = staff, attrs) do
     staff
-    |> Staff.update_changeset_cv(attrs)
+    |> Staff.update_cv_changeset(attrs)
     |> Repo.update()
   end
 

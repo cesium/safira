@@ -30,7 +30,7 @@ defmodule Safira.Accounts.Staff do
     |> validate_required([:active, :is_admin])
   end
 
-  def update_changeset_cv(staff, attrs) do
+  def update_cv_changeset(staff, attrs) do
     staff
     |> cast_attachments(attrs, [:cv])
   end
