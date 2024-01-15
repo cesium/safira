@@ -1,5 +1,5 @@
 defmodule SafiraWeb.PageController do
-  use SafiraWeb, controller: "1.6"
+  use SafiraWeb, :controller
 
   def index(conn, _params) do
     conn

@@ -28,7 +28,7 @@ config :safira,
 config :safira, SafiraWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "3KpMz5Dsmzm2+40c8Urp8UC0N95fFWvsHudtIUHjTv2yGsikjN3wIHPNPi3e+4xi",
-  render_errors: [view: SafiraWeb.ErrorView, accepts: ~w(json)],
+  render_errors: [view: SafiraWeb.ErrorJSON, accepts: ~w(json)],
   pubsub_server: Safira.PubSub
 
 config :safira, SafiraWeb.CORS,
