@@ -180,6 +180,12 @@ defmodule Safira.Accounts do
     |> Repo.update()
   end
 
+  def update_staff_cv(%Staff{} = staff, attrs) do
+    staff
+    |> Staff.update_changeset_cv(attrs)
+    |> Repo.update()
+  end
+
   def delete_staff(%Staff{} = staff) do
     Repo.delete(staff)
   end

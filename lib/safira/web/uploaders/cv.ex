@@ -47,7 +47,7 @@ defmodule Safira.CV do
   end
 
   def storage_dir(_version, {_file, scope}) do
-    "uploads/attendee/cvs/" <> "#{scope.id}"
+    "uploads/user/cvs/" <> "#{scope.id}"
   end
 
   def s3_object_headers(version, {file, scope}) do

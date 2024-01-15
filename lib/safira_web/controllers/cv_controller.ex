@@ -2,10 +2,37 @@ defmodule SafiraWeb.CVController do
   use SafiraWeb, controller: "1.6"
 
   alias Safira.Accounts
+  alias Safira.Accounts.Staff
 
   alias Safira.CV
 
   action_fallback SafiraWeb.FallbackController
+
+  def staff_cv(conn, %{"id" => id}) do
+    curr_user = Accounts.get_user(conn)
+    user = Accounts.get_user!(id)
+
+    if Accounts.is_staff(conn) and curr_user.id == user.id do
+      render(conn, "staff_cv.json", staff: Accounts.get_staff!(curr_user.staff.id))
+    else
+      {:error, :unauthorized}
+    end
+  end
+
+  def staff_upload_cv(conn, %{"id" => id, "staff" => staff_params}) do
+    curr_user = Accounts.get_user(conn)
+    user = Accounts.get_user!(id)
+
+    if Accounts.is_staff(conn) and curr_user.id == user.id do
+      with {:ok, staff} <-
+             Accounts.get_staff!(curr_user.staff.id) |> Accounts.update_staff_cv(staff_params) do
+        conn
+        |> render("staff_cv.json", staff: staff)
+      end
+    else
+      {:error, :unauthorized}
+    end
+  end
 
   def company_cvs(conn, %{"id" => company_id}) do
     curr_user = Accounts.get_user(conn)
@@ -23,6 +50,7 @@ defmodule SafiraWeb.CVController do
     if Accounts.is_admin(conn) or (curr_company_id == company.id and company.has_cv_access) do
       zip =
         Accounts.list_company_attendees(company_id)
+        |> Enum.concat(Accounts.list_staffs())
         |> Enum.filter(fn x -> x.cv != nil end)
         |> Enum.map(fn x ->
           Zstream.entry(

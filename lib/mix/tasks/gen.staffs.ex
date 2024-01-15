@@ -34,7 +34,7 @@ defmodule Mix.Tasks.Gen.Staffs do
         "password_confirmation" => password
       }
 
-      Accounts.create_staff(%{"user" => user})
+      Accounts.create_staff(%{"user" => user, "nickname" => "staff#{man_num() + 1}"})
 
       IO.puts("#{email}:#{password}")
     end)
