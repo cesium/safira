@@ -42,7 +42,7 @@ defmodule SafiraWeb.AttendeeController do
 
   def show(conn, _) when is_map_key(conn.query_params, "username") do
     username = conn.query_params["username"]
-    attendee = Accounts.get_attendee_with_badge_count_by_username!(username)
+    attendee = Accounts.get_attendee_with_badge_count_by_username(username)
 
     cond do
       is_nil(attendee) ->

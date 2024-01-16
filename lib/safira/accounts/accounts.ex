@@ -110,7 +110,7 @@ defmodule Safira.Accounts do
     end
   end
 
-  def get_attendee_with_badge_count_by_username!(username) do
+  def get_attendee_with_badge_count_by_username(username) do
     case get_attendee_by_username!(username) do
       nil ->
         nil
