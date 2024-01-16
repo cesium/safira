@@ -112,15 +112,15 @@ defmodule Safira.Accounts do
 
   def get_attendee_with_badge_count_by_username(username) do
     case get_attendee_by_username!(username) do
-      nil ->
-        nil
-
       %Attendee{} = attendee ->
         badges =
           attendee.badges
           |> Enum.filter(&(&1.type != 0))
 
         Map.put(attendee, :badge_count, length(badges))
+
+      _ ->
+        nil
     end
   end
 
