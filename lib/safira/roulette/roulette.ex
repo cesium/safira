@@ -18,6 +18,10 @@ defmodule Safira.Roulette do
   alias Safira.Roulette.Prize
   alias Safira.Store
 
+  @roulette_cost Application.compile_env!(:safira, :roulette_cost)
+  @roulette_tokens_min Application.compile_env!(:safira, :roulette_tokens_min)
+  @roulette_tokens_max Application.compile_env!(:safira, :roulette_tokens_max)
+
   @doc """
   Returns the list of prizes.
 
@@ -247,11 +251,11 @@ defmodule Safira.Roulette do
     |> Multi.update(
       :attendee,
       Attendee.update_token_balance_changeset(attendee, %{
-        token_balance: attendee.token_balance - Application.fetch_env!(:safira, :roulette_cost)
+        token_balance: attendee.token_balance - @roulette_cost
       })
     )
     # prize after spinning
-    |> Multi.run(:prize, fn _repo, _changes -> {:ok, spin_prize()} end)
+    |> Multi.run(:prize, fn _repo, _changes -> {:ok, find_valid_prize(attendee)} end)
     # Depending on the type of prize the behaviour is different
     |> Multi.merge(fn %{prize: prize, attendee: attendee} ->
       prize_type(prize, attendee)
@@ -285,6 +289,25 @@ defmodule Safira.Roulette do
       })
     end)
     |> Repo.transaction()
+  end
+
+  defp find_valid_prize(attendee) do
+    prize = spin_prize()
+    attendee_prize = get_keys_attendee_prize(attendee.id, prize.id)
+
+    # Check if the attendee has already received the maximum amount of this prize,
+    # and if so, count it as a loss and give them nothing
+    case attendee_prize do
+      nil ->
+        prize
+
+      _ ->
+        if attendee_prize.quantity + 1 <= prize.max_amount_per_attendee do
+          prize
+        else
+          Repo.one(from p in Prize, where: p.name == "Nada")
+        end
+    end
   end
 
   defp spin_prize do
@@ -330,8 +353,8 @@ defmodule Safira.Roulette do
   end
 
   defp calculate_tokens(attendee) do
-    min = Application.fetch_env!(:safira, :roulette_tokens_min)
-    max = Application.fetch_env!(:safira, :roulette_tokens_max)
+    min = @roulette_tokens_min
+    max = @roulette_tokens_max
     tokens = Enum.random(min..max)
 
     Multi.new()
@@ -370,7 +393,7 @@ defmodule Safira.Roulette do
         %{
           attendee_id: attendee.id,
           badge_id: badge.id,
-          manager_id: 1
+          staff_id: 1
         },
         :admin
       )
@@ -478,7 +501,7 @@ defmodule Safira.Roulette do
         preload: [prize: p, attendee: a]
 
     Repo.all(query)
-    |> Enum.map(fn ap -> {ap.attendee.name, ap.prize, ap.updated_at} end)
+    |> Enum.map(fn ap -> {ap.attendee.name, ap.attendee.nickname, ap.prize, ap.updated_at} end)
   end
 
   def get_attendee_not_redeemed(attendee) do
@@ -522,7 +545,7 @@ defmodule Safira.Roulette do
     end
   end
 
-  # redeems an item for an atendee, should only be used by managers
+  # redeems an item for an atendee, should only be used by staffs
   def redeem_prize(prize_id, attendee, quantity) do
     Multi.new()
     |> Multi.run(:attendee_prize, fn _repo, _changes ->

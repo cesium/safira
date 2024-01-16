@@ -30,8 +30,8 @@ defmodule Safira.ContestTest do
       b1 = insert(:badge, type: 1)
       b2 = insert(:badge, type: 2)
       b3 = insert(:badge, type: 3)
-      b4 = insert(:badge, type: 4)
-      b5 = insert(:badge, type: 3, begin_badge: Faker.DateTime.forward(2))
+      insert(:badge, type: 4)
+      insert(:badge, type: 3, begin_badge: Faker.DateTime.forward(2))
       assert Contest.list_available_badges() == [b0, b1, b2, b3]
     end
   end
@@ -60,9 +60,9 @@ defmodule Safira.ContestTest do
       b2 = insert(:badge, type: 2)
       a1 = insert(:attendee)
       a2 = insert(:attendee)
-      r1 = insert(:redeem, badge: b1, attendee: a1)
-      r2 = insert(:redeem, badge: b1, attendee: a2)
-      r3 = insert(:redeem, badge: b2)
+      insert(:redeem, badge: b1, attendee: a1)
+      insert(:redeem, badge: b1, attendee: a2)
+      insert(:redeem, badge: b2)
 
       assert Contest.list_secret() == [b1]
     end
@@ -81,9 +81,9 @@ defmodule Safira.ContestTest do
       b5 = insert(:badge, type: 3, begin_badge: Faker.DateTime.forward(2))
       a1 = insert(:attendee)
       a2 = insert(:attendee)
-      r1 = insert(:redeem, badge: b1, attendee: a1)
-      r2 = insert(:redeem, badge: b1, attendee: a2)
-      r3 = insert(:redeem, badge: b2)
+      insert(:redeem, badge: b1, attendee: a1)
+      insert(:redeem, badge: b1, attendee: a2)
+      insert(:redeem, badge: b2)
 
       assert Contest.list_badges_conservative() == [b1, b2, b3, b4, b5]
     end
@@ -118,7 +118,7 @@ defmodule Safira.ContestTest do
     end
 
     test "Wrong name" do
-      badge = insert(:badge)
+      insert(:badge)
 
       assert_raise Ecto.NoResultsError, fn ->
         Contest.get_badge_name!("wrong name")
@@ -148,7 +148,7 @@ defmodule Safira.ContestTest do
 
     test "Exists" do
       a1 = insert(:attendee)
-      a2 = insert(:attendee)
+      insert(:attendee)
       a3 = insert(:attendee)
 
       badge = insert(:badge)
@@ -168,7 +168,7 @@ defmodule Safira.ContestTest do
     end
 
     test "Wrong id" do
-      badge = insert(:badge)
+      insert(:badge)
 
       assert_raise Ecto.NoResultsError, fn ->
         Contest.get_badge_description("No such badge")
@@ -310,7 +310,7 @@ defmodule Safira.ContestTest do
     end
 
     test "doesn't exist" do
-      r1 = insert(:referral)
+      insert(:referral)
 
       assert_raise Ecto.NoResultsError, fn -> Contest.get_referral!(Ecto.UUID.generate()) end
     end
@@ -323,7 +323,7 @@ defmodule Safira.ContestTest do
     end
 
     test "doesn't exist" do
-      r1 = insert(:referral)
+      insert(:referral)
 
       assert_raise Ecto.NoResultsError, fn ->
         Contest.get_referral_preload!(Ecto.UUID.generate())
@@ -339,7 +339,7 @@ defmodule Safira.ContestTest do
     end
 
     test "doesn't exist" do
-      r1 = insert(:referral)
+      insert(:referral)
 
       assert_raise Ecto.NoResultsError, fn ->
         Contest.get_referral_preload!(Ecto.UUID.generate())
@@ -573,7 +573,7 @@ defmodule Safira.ContestTest do
     test "multiple people" do
       at1 = insert(:attendee)
       at2 = insert(:attendee)
-      at3 = insert(:attendee)
+      insert(:attendee)
       b1 = insert(:badge, type: 7)
       b2 = insert(:badge, type: 7)
       insert(:daily_token, attendee: at1)
@@ -593,7 +593,7 @@ defmodule Safira.ContestTest do
     test "multiple people" do
       at1 = insert(:attendee)
       at2 = insert(:attendee)
-      at3 = insert(:attendee)
+      insert(:attendee)
 
       insert(:daily_token, attendee: at1)
       insert(:daily_token, attendee: at2)
@@ -614,15 +614,15 @@ defmodule Safira.ContestTest do
     test "multiple people" do
       at1 = insert(:attendee)
       at2 = insert(:attendee)
-      at3 = insert(:attendee)
+      insert(:attendee)
 
       insert(:daily_token, attendee: at1)
       insert(:daily_token, attendee: at2)
-      r1 = insert(:redeem, attendee: at1)
+      insert(:redeem, attendee: at1)
 
       for _n <- Enum.to_list(1..10) do
-        r2 = insert(:redeem, attendee: at1)
-        r3 = insert(:redeem, attendee: at2)
+        insert(:redeem, attendee: at1)
+        insert(:redeem, attendee: at2)
       end
 
       assert Contest.get_winner() |> length() == 21

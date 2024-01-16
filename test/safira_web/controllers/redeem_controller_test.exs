@@ -24,10 +24,10 @@ defmodule SafiraWeb.RedeemControllerTest do
                "Badge redeemed successfully. Tokens added to your balance"
     end
 
-    test "with valid token (manager)" do
+    test "with valid token (staff)" do
       user = create_user_strategy(:user)
       badge = insert(:badge)
-      insert(:manager, user: user)
+      insert(:staff, user: user)
       attendee = insert(:attendee)
 
       %{conn: conn, user: _user} = api_authenticate(user)
@@ -71,7 +71,7 @@ defmodule SafiraWeb.RedeemControllerTest do
 
     test "with valid token (badge does not exist)" do
       user = create_user_strategy(:user)
-      insert(:manager, user: user)
+      insert(:staff, user: user)
       attendee = insert(:attendee)
 
       %{conn: conn, user: _user} = api_authenticate(user)
@@ -84,16 +84,15 @@ defmodule SafiraWeb.RedeemControllerTest do
       }
 
       assert_error_sent 404, fn ->
-        conn =
-          conn
-          |> post(Routes.redeem_path(conn, :create), params)
+        conn
+        |> post(Routes.redeem_path(conn, :create), params)
       end
     end
 
     test "with invalid token" do
       user = create_user_strategy(:user)
       badge = insert(:badge)
-      insert(:manager, user: user)
+      insert(:staff, user: user)
       attendee = insert(:attendee)
 
       %{conn: conn, user: _user} = api_authenticate(user)
@@ -116,7 +115,7 @@ defmodule SafiraWeb.RedeemControllerTest do
     test "with no token", %{conn: conn} do
       user = create_user_strategy(:user)
       badge = insert(:badge)
-      insert(:manager, user: user)
+      insert(:staff, user: user)
       attendee = insert(:attendee)
 
       params = %{
@@ -135,8 +134,8 @@ defmodule SafiraWeb.RedeemControllerTest do
 
     test "when user is not an attendee" do
       user = create_user_strategy(:user)
-      insert(:manager, user: user)
-      prize = create_prize_strategy(:prize, probability: 1.0)
+      insert(:staff, user: user)
+      create_prize_strategy(:prize, probability: 1.0)
       %{conn: conn, user: _user} = api_authenticate(user)
 
       conn =

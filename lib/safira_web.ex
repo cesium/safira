@@ -17,14 +17,27 @@ defmodule SafiraWeb do
   and import those modules here.
   """
 
-  def controller do
-    quote do
-      use Phoenix.Controller, namespace: SafiraWeb
+  def static_paths, do: ~w(assets fonts images favicon.ico robots.txt)
 
-      import Plug.Conn
-      import SafiraWeb.Gettext
-      alias SafiraWeb.Router.Helpers, as: Routes
-    end
+  def controller(version \\ "1.7") do
+    result =
+      case version do
+        "1.7" ->
+          quote do
+            use Phoenix.Controller,
+              namespace: SafiraWeb,
+              formats: [:html, :json],
+              layouts: [html: SafiraWeb.Layouts]
+
+            unquote(verified_routes())
+          end
+
+        _ ->
+          quote do
+            use Phoenix.Controller, namespace: SafiraWeb
+            alias SafiraWeb.Router.Helpers, as: Routes
+          end
+      end
   end
 
   def view do
@@ -42,6 +55,8 @@ defmodule SafiraWeb do
       import SafiraWeb.ErrorHelpers
       import SafiraWeb.Gettext
       alias SafiraWeb.Router.Helpers, as: Routes
+
+      unquote(verified_routes())
     end
   end
 
@@ -60,9 +75,23 @@ defmodule SafiraWeb do
     end
   end
 
+  def verified_routes do
+    quote do
+      use Phoenix.VerifiedRoutes,
+        endpoint: SafiraWeb.Endpoint,
+        router: SafiraWeb.Router,
+        statics: SafiraWeb.static_paths()
+    end
+  end
+
   @doc """
   When used, dispatch to the appropriate controller/view/etc.
   """
+
+  defmacro __using__(controller: "1.6" = version) do
+    controller(version)
+  end
+
   defmacro __using__(which) when is_atom(which) do
     apply(__MODULE__, which, [])
   end

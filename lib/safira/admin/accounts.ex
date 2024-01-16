@@ -10,7 +10,7 @@ defmodule Safira.Admin.Accounts do
 
   alias Safira.Accounts.Attendee
   alias Safira.Accounts.Company
-  alias Safira.Accounts.Manager
+  alias Safira.Accounts.Staff
 
   alias Safira.Admin.Accounts.AdminUser
 
@@ -170,16 +170,16 @@ defmodule Safira.Admin.Accounts do
   end
 
   @doc """
-  Paginate the list of managers using filtrex
+  Paginate the list of staffs using filtrex
   filters.
 
   ## Examples
 
-      iex> list_managers(%{})
-      %{managers: [%Manager{}], ...}
+      iex> paginate_staffs(%{})
+      %{staffs: [%Staff{}], ...}
   """
-  @spec paginate_managers(map) :: {:ok, map} | {:error, any}
-  def paginate_managers(params \\ %{}) do
+  @spec paginate_staffs(map) :: {:ok, map} | {:error, any}
+  def paginate_staffs(params \\ %{}) do
     params =
       params
       |> Map.put_new("sort_direction", "desc")
@@ -189,11 +189,11 @@ defmodule Safira.Admin.Accounts do
     {:ok, sort_field} = Map.fetch(params, "sort_field")
 
     with {:ok, filter} <-
-           Filtrex.parse_params(filter_config(:managers), params["manager"] || %{}),
-         %Scrivener.Page{} = page <- do_paginate_managers(filter, params) do
+           Filtrex.parse_params(filter_config(:staffs), params["staff"] || %{}),
+         %Scrivener.Page{} = page <- do_paginate_staffs(filter, params) do
       {:ok,
        %{
-         managers: page.entries,
+         staffs: page.entries,
          page_number: page.page_number,
          page_size: page.page_size,
          total_pages: page.total_pages,
@@ -208,8 +208,8 @@ defmodule Safira.Admin.Accounts do
     end
   end
 
-  defp do_paginate_managers(filter, params) do
-    Manager
+  defp do_paginate_staffs(filter, params) do
+    Staff
     |> Filtrex.query(filter)
     |> where([m], not is_nil(m.user_id))
     |> preload(:user)
@@ -218,100 +218,100 @@ defmodule Safira.Admin.Accounts do
   end
 
   @doc """
-  Returns the list of managers.
+  Returns the list of staffs.
 
   ## Examples
 
-      iex> list_managers()
-      [%Manager{}, ...]
+      iex> list_staffs()
+      [%Staff{}, ...]
 
   """
-  def list_managers do
-    Repo.all(Manager)
+  def list_staffs do
+    Repo.all(Staff)
   end
 
   @doc """
-  Gets a single manager.
+  Gets a single staff.
 
-  Raises `Ecto.NoResultsError` if the Manager does not exist.
+  Raises `Ecto.NoResultsError` if the Staff does not exist.
 
   ## Examples
 
-      iex> get_manager!(123)
-      %Manager{}
+      iex> get_staff!(123)
+      %Staff{}
 
-      iex> get_manager!(456)
+      iex> get_staff!(456)
       ** (Ecto.NoResultsError)
 
   """
-  def get_manager!(id) do
-    Repo.get!(Manager, id)
+  def get_staff!(id) do
+    Repo.get!(Staff, id)
     |> Repo.preload(:user)
   end
 
   @doc """
-  Creates a manager.
+  Creates a staff.
 
   ## Examples
 
-      iex> create_manager(%{field: value})
-      {:ok, %Manager{}}
+      iex> create_staff(%{field: value})
+      {:ok, %Staff{}}
 
-      iex> create_manager(%{field: bad_value})
+      iex> create_staff(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_manager(attrs \\ %{}) do
-    %Manager{}
-    |> Manager.changeset(attrs)
+  def create_staff(attrs \\ %{}) do
+    %Staff{}
+    |> Staff.changeset(attrs)
     |> Repo.insert()
   end
 
   @doc """
-  Updates a manager.
+  Updates a staff.
 
   ## Examples
 
-      iex> update_manager(manager, %{field: new_value})
-      {:ok, %Manager{}}
+      iex> update_staff(staff, %{field: new_value})
+      {:ok, %Staff{}}
 
-      iex> update_manager(manager, %{field: bad_value})
+      iex> update_staff(staff, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_manager(%Manager{} = manager, attrs) do
-    manager
-    |> Manager.changeset(attrs)
+  def update_staff(%Staff{} = staff, attrs) do
+    staff
+    |> Staff.changeset(attrs)
     |> Repo.update()
   end
 
   @doc """
-  Deletes a Manager.
+  Deletes a Staff.
 
   ## Examples
 
-      iex> delete_manager(manager)
-      {:ok, %Manager{}}
+      iex> delete_staff(staff)
+      {:ok, %Staff{}}
 
-      iex> delete_manager(manager)
+      iex> delete_staff(staff)
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_manager(%Manager{} = manager) do
-    Repo.delete(manager)
+  def delete_staff(%Staff{} = staff) do
+    Repo.delete(staff)
   end
 
   @doc """
-  Returns an `%Ecto.Changeset{}` for tracking manager changes.
+  Returns an `%Ecto.Changeset{}` for tracking staff changes.
 
   ## Examples
 
-      iex> change_manager(manager)
-      %Ecto.Changeset{source: %Manager{}}
+      iex> change_staff(staff)
+      %Ecto.Changeset{source: %Staff{}}
 
   """
-  def change_manager(%Manager{} = manager) do
-    Manager.changeset(manager, %{})
+  def change_staff(%Staff{} = staff) do
+    Staff.changeset(staff, %{})
   end
 
   @doc """
@@ -465,7 +465,7 @@ defmodule Safira.Admin.Accounts do
     end
   end
 
-  defp filter_config(:managers) do
+  defp filter_config(:staffs) do
     defconfig do
       boolean(:active)
     end

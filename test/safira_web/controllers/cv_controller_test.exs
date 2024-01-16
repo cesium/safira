@@ -72,7 +72,7 @@ defmodule SafiraWeb.CVControllerTest do
     test "company does not have access to CV", %{
       user_company_no_access: user_company,
       company_no_access: company,
-      attendee_with_badge: attendee
+      attendee_with_badge: _attendee
     } do
       %{conn: conn, user: _user} = api_authenticate(user_company)
 
@@ -88,7 +88,7 @@ defmodule SafiraWeb.CVControllerTest do
       attendee_with_badge: attendee
     } do
       user = create_user_strategy(:user)
-      insert(:manager, user: user, is_admin: true)
+      insert(:staff, user: user, is_admin: true)
 
       %{conn: conn, user: _user} = api_authenticate(user)
 

@@ -30,6 +30,10 @@ defmodule SafiraWeb.RouletteView do
     resp
   end
 
+  def render("price.json", %{price: price}) do
+    %{price: price}
+  end
+
   def render("latest_prizes.json", %{latest_prizes: latest_prizes}) do
     %{data: render_many(latest_prizes, SafiraWeb.RouletteView, "latest_prize_show.json")}
   end
@@ -37,8 +41,9 @@ defmodule SafiraWeb.RouletteView do
   def render("latest_prize_show.json", %{roulette: latest_prize}) do
     %{
       attendee_name: elem(latest_prize, 0),
-      prize: render_one(elem(latest_prize, 1), SafiraWeb.PrizeView, "prize_show.json"),
-      date: elem(latest_prize, 2)
+      attendee_nickname: elem(latest_prize, 1),
+      prize: render_one(elem(latest_prize, 2), SafiraWeb.PrizeView, "prize_show.json"),
+      date: elem(latest_prize, 3)
     }
   end
 end

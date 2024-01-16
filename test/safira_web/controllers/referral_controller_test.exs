@@ -9,7 +9,7 @@ defmodule Safira.ReferralControllerTest do
     test "redeems a referral" do
       referral_user = insert(:referral)
       attendee_user = create_user_strategy(:user)
-      attendee = insert(:attendee, user: attendee_user)
+      insert(:attendee, user: attendee_user)
 
       %{conn: conn, user: _user} = api_authenticate(attendee_user)
 
@@ -23,7 +23,7 @@ defmodule Safira.ReferralControllerTest do
     test "returns error when referral is not available" do
       referral_user = insert(:referral, available: false)
       attendee_user = create_user_strategy(:user)
-      attendee = insert(:attendee, user: attendee_user)
+      insert(:attendee, user: attendee_user)
 
       %{conn: conn, user: _user} = api_authenticate(attendee_user)
 

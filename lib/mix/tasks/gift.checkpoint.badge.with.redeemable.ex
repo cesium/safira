@@ -94,7 +94,7 @@ defmodule Mix.Tasks.Gift.Company.Checkpoint.Badge.With.Redeemable do
       %{
         attendee_id: a.id,
         badge_id: Map.get(args, :badge_id),
-        manager_id: 1
+        staff_id: 1
       }
       |> create_redeem(args, a, Map.get(args, :badge))
     end)

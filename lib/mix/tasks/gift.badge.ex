@@ -141,7 +141,7 @@ defmodule Mix.Tasks.Gift.Badge do
 
   defp give(attendee_id, badge_id) do
     Contest.create_redeem(
-      %{attendee_id: attendee_id, manager_id: 1, badge_id: badge_id},
+      %{attendee_id: attendee_id, staff_id: 1, badge_id: badge_id},
       :admin
     )
   end

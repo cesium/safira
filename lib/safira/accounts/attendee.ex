@@ -6,6 +6,7 @@ defmodule Safira.Accounts.Attendee do
   use Arc.Ecto.Schema
   import Ecto.Changeset
 
+  alias Safira.Accounts.Course
   alias Safira.Accounts.User
 
   alias Safira.Contest.Badge
@@ -20,6 +21,10 @@ defmodule Safira.Accounts.Attendee do
   alias Safira.Roulette.Prize
 
   @primary_key {:id, :binary_id, autogenerate: true}
+
+  # Any sequence of 3-15 characters that are either letters, numbers, - or _
+  @nickname_regex ~r/^[\w\d-_]{3,15}$/
+
   @derive {Phoenix.Param, key: :id}
   schema "attendees" do
     field :nickname, :string
@@ -32,6 +37,7 @@ defmodule Safira.Accounts.Attendee do
     field :cv, Safira.CV.Type
 
     belongs_to :user, User
+    belongs_to :course, Course
     many_to_many :badges, Badge, join_through: Redeem
     has_many :referrals, Referral
     has_many :daily_tokens, DailyToken
@@ -45,33 +51,30 @@ defmodule Safira.Accounts.Attendee do
 
   def changeset(attendee, attrs) do
     attendee
-    |> cast(attrs, [:name, :nickname, :user_id])
+    |> cast(attrs, [:name, :nickname, :user_id, :course_id])
     |> cast_attachments(attrs, [:avatar, :cv])
     |> cast_assoc(:user)
     |> validate_required([:name, :nickname])
-    |> validate_length(:nickname, min: 2, max: 15)
-    |> validate_format(:nickname, ~r/^[a-zA-Z0-9]+([a-zA-Z0-9](_|-)[a-zA-Z0-9])*[a-zA-Z0-9]+$/)
+    |> validate_format(:nickname, @nickname_regex)
     |> unique_constraint(:nickname)
   end
 
   def update_changeset_sign_up(attendee, attrs) do
     attendee
-    |> cast(attrs, [:name, :nickname, :user_id])
+    |> cast(attrs, [:name, :nickname, :user_id, :course_id])
     |> cast_attachments(attrs, [:avatar, :cv])
     |> cast_assoc(:user)
     |> validate_required([:name, :nickname])
-    |> validate_length(:nickname, min: 2, max: 15)
-    |> validate_format(:nickname, ~r/^[a-zA-Z0-9]+([a-zA-Z0-9](_|-)[a-zA-Z0-9])*[a-zA-Z0-9]+$/)
+    |> validate_format(:nickname, @nickname_regex)
     |> unique_constraint(:nickname)
   end
 
   def update_changeset(attendee, attrs) do
     attendee
-    |> cast(attrs, [:nickname])
+    |> cast(attrs, [:nickname, :course_id])
     |> cast_attachments(attrs, [:avatar, :cv])
     |> validate_required([:nickname])
-    |> validate_length(:nickname, min: 2, max: 15)
-    |> validate_format(:nickname, ~r/^[a-zA-Z0-9]+([a-zA-Z0-9](_|-)[a-zA-Z0-9])*[a-zA-Z0-9]+$/)
+    |> validate_format(:nickname, @nickname_regex)
     |> unique_constraint(:nickname)
   end
 

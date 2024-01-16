@@ -95,6 +95,7 @@ defmodule SafiraWeb.AttendeeControllerTest do
           "id" => attendee.id,
           "name" => attendee.name,
           "nickname" => attendee.nickname,
+          "course" => attendee.course_id,
           "token_balance" => 0,
           "badges" => [],
           "badge_count" => 0
@@ -128,11 +129,12 @@ defmodule SafiraWeb.AttendeeControllerTest do
 
       conn =
         conn
-        |> get(Routes.attendee_path(conn, :show, attendee.id))
+        |> get(Routes.attendee_path(conn, :show, attendee.id), %{"id" => attendee.id})
 
       expected_attendee = %{
         "avatar" => nil,
         "cv" => nil,
+        "course" => nil,
         "entries" => 0,
         "id" => attendee.id,
         "name" => attendee.name,
@@ -176,6 +178,7 @@ defmodule SafiraWeb.AttendeeControllerTest do
       expected_attendee = %{
         "avatar" => nil,
         "cv" => nil,
+        "course" => nil,
         "entries" => 0,
         "id" => attendee.id,
         "name" => attendee.name,
@@ -231,9 +234,8 @@ defmodule SafiraWeb.AttendeeControllerTest do
 
       %{conn: conn, user: _user} = api_authenticate(user)
 
-      conn =
-        conn
-        |> put(Routes.attendee_path(conn, :update, attendee.id), attrs)
+      conn
+      |> put(Routes.attendee_path(conn, :update, attendee.id), attrs)
 
       updated_attendee = Accounts.get_attendee!(attendee.id)
 
@@ -252,9 +254,8 @@ defmodule SafiraWeb.AttendeeControllerTest do
 
       %{conn: conn, user: _user} = api_authenticate(user)
 
-      conn =
-        conn
-        |> put(Routes.attendee_path(conn, :update, attendee.id), attrs)
+      conn
+      |> put(Routes.attendee_path(conn, :update, attendee.id), attrs)
 
       updated_attendee = Accounts.get_attendee!(attendee.id)
 
@@ -273,9 +274,8 @@ defmodule SafiraWeb.AttendeeControllerTest do
 
       %{conn: conn, user: _user} = api_authenticate(user)
 
-      conn =
-        conn
-        |> put(Routes.attendee_path(conn, :update, attendee.id), attrs)
+      conn
+      |> put(Routes.attendee_path(conn, :update, attendee.id), attrs)
 
       updated_attendee = Accounts.get_attendee!(attendee.id)
 

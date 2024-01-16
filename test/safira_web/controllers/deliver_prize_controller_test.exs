@@ -6,10 +6,10 @@ defmodule SafiraWeb.DeliverPrizeControllerTest do
   end
 
   describe "create" do
-    test "with valid token (manager)" do
+    test "with valid token (staff)" do
       prize = insert(:prize, is_redeemable: true)
       user = create_user_strategy(:user)
-      _manager = insert(:manager, user: user)
+      _staff = insert(:staff, user: user)
       attendee = insert(:attendee)
       _attendee_prize = insert(:attendee_prize, attendee: attendee, prize: prize, redeemed: 0)
       %{conn: conn, user: _} = api_authenticate(user)
@@ -31,7 +31,7 @@ defmodule SafiraWeb.DeliverPrizeControllerTest do
              }
     end
 
-    test "with valid token (not a manager)" do
+    test "with valid token (not a staff)" do
       prize = insert(:prize, is_redeemable: true)
       user = create_user_strategy(:user)
       _attendee1 = insert(:attendee, user: user)
@@ -51,13 +51,13 @@ defmodule SafiraWeb.DeliverPrizeControllerTest do
         conn
         |> post(Routes.deliver_prize_path(conn, :create), params)
 
-      assert json_response(conn, 401) == %{"error" => "Only managers can give prizes"}
+      assert json_response(conn, 401) == %{"error" => "Only staffs can give prizes"}
     end
 
     test "with invalid token", %{conn: conn} do
       prize = insert(:prize, is_redeemable: true)
       user = create_user_strategy(:user)
-      _manager = insert(:manager, user: user)
+      _staff = insert(:staff, user: user)
       attendee = insert(:attendee)
       _attendee_prize = insert(:attendee_prize, attendee: attendee, prize: prize, redeemed: 0)
 
@@ -80,7 +80,7 @@ defmodule SafiraWeb.DeliverPrizeControllerTest do
     test "with no token", %{conn: conn} do
       prize = insert(:prize, is_redeemable: true)
       user = create_user_strategy(:user)
-      _manager = insert(:manager, user: user)
+      _staff = insert(:staff, user: user)
       attendee = insert(:attendee)
       _attendee_prize = insert(:attendee_prize, attendee: attendee, prize: prize, redeemed: 0)
 
@@ -102,7 +102,7 @@ defmodule SafiraWeb.DeliverPrizeControllerTest do
     test "did not win the prize" do
       prize = insert(:prize, is_redeemable: true)
       user = create_user_strategy(:user)
-      _manager = insert(:manager, user: user)
+      _staff = insert(:staff, user: user)
       attendee = insert(:attendee)
       %{conn: conn, user: _} = api_authenticate(user)
 
@@ -124,11 +124,10 @@ defmodule SafiraWeb.DeliverPrizeControllerTest do
     test "already redeemed the prize" do
       prize = insert(:prize, is_redeemable: true)
       user = create_user_strategy(:user)
-      _manager = insert(:manager, user: user)
+      _staff = insert(:staff, user: user)
       attendee = insert(:attendee)
 
-      attendee_prize =
-        insert(:attendee_prize, attendee: attendee, prize: prize, quantity: 1, redeemed: 1)
+      insert(:attendee_prize, attendee: attendee, prize: prize, quantity: 1, redeemed: 1)
 
       %{conn: conn, user: _} = api_authenticate(user)
 
@@ -149,7 +148,7 @@ defmodule SafiraWeb.DeliverPrizeControllerTest do
 
     test "prize does not exist" do
       user = create_user_strategy(:user)
-      _manager = insert(:manager, user: user)
+      _staff = insert(:staff, user: user)
       attendee = insert(:attendee)
       %{conn: conn, user: _} = api_authenticate(user)
 
@@ -171,7 +170,7 @@ defmodule SafiraWeb.DeliverPrizeControllerTest do
     test "attendee does not exist" do
       prize = insert(:prize, is_redeemable: true)
       user = create_user_strategy(:user)
-      _manager = insert(:manager, user: user)
+      _staff = insert(:staff, user: user)
       %{conn: conn, user: _} = api_authenticate(user)
 
       params = %{
@@ -194,7 +193,7 @@ defmodule SafiraWeb.DeliverPrizeControllerTest do
     test "with valid token" do
       prize = insert(:prize, is_redeemable: true)
       user = create_user_strategy(:user)
-      _manager = insert(:manager, user: user)
+      _staff = insert(:staff, user: user)
       attendee = insert(:attendee)
 
       _attendee_prize =
@@ -219,7 +218,7 @@ defmodule SafiraWeb.DeliverPrizeControllerTest do
     test "with invalid token", %{conn: conn} do
       prize = insert(:prize, is_redeemable: true)
       user = create_user_strategy(:user)
-      _manager = insert(:manager, user: user)
+      _staff = insert(:staff, user: user)
       attendee = insert(:attendee)
 
       _attendee_prize =
@@ -236,7 +235,7 @@ defmodule SafiraWeb.DeliverPrizeControllerTest do
     test "with no token", %{conn: conn} do
       prize = insert(:prize, is_redeemable: true)
       user = create_user_strategy(:user)
-      _manager = insert(:manager, user: user)
+      _staff = insert(:staff, user: user)
       attendee = insert(:attendee)
 
       _attendee_prize =
@@ -253,7 +252,7 @@ defmodule SafiraWeb.DeliverPrizeControllerTest do
   describe "delete" do
     test "not a admin" do
       user = create_user_strategy(:user)
-      _manager = insert(:manager, user: user, is_admin: false)
+      _staff = insert(:staff, user: user, is_admin: false)
       %{conn: conn, user: _} = api_authenticate(user)
 
       conn =
@@ -265,11 +264,11 @@ defmodule SafiraWeb.DeliverPrizeControllerTest do
 
     test "valid badge and attendee" do
       user = create_user_strategy(:user)
-      _manager = insert(:manager, user: user, is_admin: true)
+      _staff = insert(:staff, user: user, is_admin: true)
       badge = insert(:badge)
 
       attendee = insert(:attendee)
-      redeem = insert(:redeem, attendee: attendee, badge: badge)
+      insert(:redeem, attendee: attendee, badge: badge)
 
       %{conn: conn, user: _} = api_authenticate(user)
 

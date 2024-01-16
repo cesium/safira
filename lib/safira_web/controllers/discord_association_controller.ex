@@ -1,12 +1,12 @@
 defmodule SafiraWeb.DiscordAssociationController do
-  use SafiraWeb, :controller
+  use SafiraWeb, controller: "1.6"
 
   alias Safira.Accounts
 
   action_fallback SafiraWeb.FallbackController
 
   def show(conn, %{"id" => discord_id}) do
-    if Accounts.is_company(conn) || Accounts.is_manager(conn) do
+    if Accounts.is_company(conn) || Accounts.is_staff(conn) do
       show_aux(conn, discord_id)
     else
       conn
@@ -18,7 +18,7 @@ defmodule SafiraWeb.DiscordAssociationController do
 
   # association_params= %{"discord_association_code" => discord_association_code, "discord_id" => discord_id}
   def create(conn, association_params) do
-    if Accounts.is_manager(conn) do
+    if Accounts.is_staff(conn) do
       association_aux(conn, association_params)
     else
       conn

@@ -1,8 +1,7 @@
 defmodule SafiraWeb.RedeemController do
-  use SafiraWeb, :controller
+  use SafiraWeb, controller: "1.6"
 
   alias Safira.Accounts
-  alias Safira.Accounts.User
 
   alias Safira.Contest
   alias Safira.Contest.Redeem
@@ -17,10 +16,10 @@ defmodule SafiraWeb.RedeemController do
         company_aux(conn, redeem_params, user)
 
       Accounts.is_admin(conn) ->
-        manager_aux(conn, redeem_params, user, :admin)
+        staff_aux(conn, redeem_params, user, :admin)
 
-      Accounts.is_manager(conn) ->
-        manager_aux(conn, redeem_params, user, :manager)
+      Accounts.is_staff(conn) ->
+        staff_aux(conn, redeem_params, user, :staff)
 
       true ->
         conn
@@ -40,11 +39,11 @@ defmodule SafiraWeb.RedeemController do
     end
   end
 
-  defp manager_aux(conn, redeem_params, user, user_type) do
+  defp staff_aux(conn, redeem_params, user, user_type) do
     case Map.fetch(redeem_params, "badge_id") do
       {:ok, id} ->
         Contest.get_badge!(id)
-        redeem_params = Map.put(redeem_params, "manager_id", user.manager.id)
+        redeem_params = Map.put(redeem_params, "staff_id", user.staff.id)
 
         with {:ok, %Redeem{} = _redeem} <- Contest.create_redeem(redeem_params, user_type) do
           conn

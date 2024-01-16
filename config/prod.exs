@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 # For production, don't forget to configure the url host
 # to something meaningful, Phoenix uses this information
@@ -66,8 +66,9 @@ config :logger, level: :info
 
 config :safira, Safira.Mailer,
   adapter: Bamboo.MailgunAdapter,
-  api_key: {:system, "MAILGUN_API_KEY"},
-  domain: {:system, "MAILGUN_DOMAIN"},
+  api_key: System.get_env("MAILGUN_API_KEY"),
+  domain: System.get_env("MAILGUN_DOMAIN"),
+  base_uri: System.get_env("MAILGUN_BASE_URL"),
   hackney_opts: [
     recv_timeout: :timer.minutes(1)
   ]

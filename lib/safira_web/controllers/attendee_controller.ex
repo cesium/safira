@@ -1,5 +1,5 @@
 defmodule SafiraWeb.AttendeeController do
-  use SafiraWeb, :controller
+  use SafiraWeb, controller: "1.6"
 
   alias Safira.Accounts
   alias Safira.Accounts.Attendee
@@ -16,8 +16,9 @@ defmodule SafiraWeb.AttendeeController do
     render(conn, "index.json", attendees: attendees)
   end
 
-  def show(conn, %{"id" => id}) do
-    attendee = Accounts.get_attendee_with_badge_count!(id)
+  def show(conn, _) when is_map_key(conn.query_params, "id") do
+    id = conn.query_params["id"]
+    attendee = Accounts.get_attendee_with_badge_count_by_id!(id)
 
     cond do
       is_nil(attendee) ->
@@ -26,8 +27,32 @@ defmodule SafiraWeb.AttendeeController do
       is_nil(attendee.user_id) ->
         {:error, :not_registered}
 
-      Accounts.is_manager(conn) ->
-        render(conn, "manager_show.json", attendee: attendee)
+      Accounts.is_staff(conn) ->
+        render(conn, "staff_show.json", attendee: attendee)
+
+      true ->
+        attendee =
+          attendee
+          |> Map.put(:redeemables, Store.get_attendee_redeemables(attendee))
+          |> Map.put(:prizes, Roulette.get_attendee_prize(attendee))
+
+        render(conn, "show.json", attendee: attendee)
+    end
+  end
+
+  def show(conn, _) when is_map_key(conn.query_params, "username") do
+    username = conn.query_params["username"]
+    attendee = Accounts.get_attendee_with_badge_count_by_username(username)
+
+    cond do
+      is_nil(attendee) ->
+        {:error, :not_found}
+
+      is_nil(attendee.user_id) ->
+        {:error, :not_registered}
+
+      Accounts.is_staff(conn) ->
+        render(conn, "staff_show.json", attendee: attendee)
 
       true ->
         attendee =

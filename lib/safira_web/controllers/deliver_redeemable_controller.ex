@@ -1,11 +1,9 @@
 defmodule SafiraWeb.DeliverRedeemableController do
-  use SafiraWeb, :controller
+  use SafiraWeb, controller: "1.6"
 
   alias Safira.Accounts
 
   alias Safira.Store
-
-  alias Safira.Contest
 
   action_fallback SafiraWeb.FallbackController
 
@@ -22,13 +20,13 @@ defmodule SafiraWeb.DeliverRedeemableController do
 
   "
   def create(conn, %{"redeem" => redeem_params}) do
-    # checks the user token to see if its a manager
-    if Accounts.is_manager(conn) do
+    # checks the user token to see if its a staff
+    if Accounts.is_staff(conn) do
       validate_redeem(conn, redeem_params)
     else
       conn
       |> put_status(:unauthorized)
-      |> json(%{error: "Only managers can deliver redeemables"})
+      |> json(%{error: "Only staffs can deliver redeemables"})
     end
   end
 
@@ -40,7 +38,7 @@ defmodule SafiraWeb.DeliverRedeemableController do
       |> put_status(:bad_request)
       |> json(%{Error: "Wrong attendee"})
     else
-      if Accounts.is_manager(conn) do
+      if Accounts.is_staff(conn) do
         redeemables = Store.get_attendee_not_redemed(attendee)
         render(conn, "index.json", delivers: redeemables)
       else

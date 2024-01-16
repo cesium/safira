@@ -1,9 +1,7 @@
 defmodule SafiraWeb.BadgeController do
-  use SafiraWeb, :controller
+  use SafiraWeb, controller: "1.6"
 
   alias Safira.Accounts
-  alias Safira.Accounts.User
-
   alias Safira.Contest
 
   action_fallback SafiraWeb.FallbackController
@@ -14,7 +12,7 @@ defmodule SafiraWeb.BadgeController do
         badges = Contest.list_badges()
         render(conn, "index.json", badges: badges)
 
-      Accounts.is_manager(conn) ->
+      Accounts.is_staff(conn) ->
         badges = Contest.list_available_badges()
         render(conn, "index.json", badges: badges)
 

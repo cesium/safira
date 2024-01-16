@@ -11,7 +11,7 @@ defmodule Mix.Tasks.Gift.Badge.Full.Participation do
     if Enum.empty?(args) do
       Mix.shell().info("Needs badge_id.")
     else
-      create(args)
+      args |> List.first() |> String.to_integer() |> create()
     end
   end
 
@@ -43,7 +43,7 @@ defmodule Mix.Tasks.Gift.Badge.Full.Participation do
       Contest.create_redeem(
         %{
           attendee_id: attendee_id,
-          manager_id: 1,
+          staff_id: 1,
           badge_id: badge_id
         },
         :admin

@@ -5,7 +5,7 @@
 # is restricted to this project.
 
 # General application configuration
-use Mix.Config
+import Config
 
 config :safira,
   ecto_repos: [Safira.Repo],
@@ -14,14 +14,15 @@ config :safira,
   staff_code: System.get_env("DISCORD_STAFF_CODE"),
   from_email: System.get_env("FROM_EMAIL") || "test@seium.com",
   from_email_name: System.get_env("FROM_EMAIL_NAME") || "SEI",
-  roulette_cost: String.to_integer(System.get_env("ROULETTE_COST") || "10"),
+  roulette_cost: String.to_integer(System.get_env("ROULETTE_COST") || "20"),
   roulette_tokens_min: String.to_integer(System.get_env("ROULETTE_TOKENS_MIN") || "5"),
   roulette_tokens_max: String.to_integer(System.get_env("ROULETTE_TOKENS_MAX") || "20"),
   token_bonus: String.to_integer(System.get_env("TOKEN_BONUS") || "10"),
   spotlight_duration: String.to_integer(System.get_env("SPOTLIGHT_DURATION") || "30"),
   discord_bot_url: System.get_env("DISCORD_BOT_URL"),
   discord_bot_api_key: System.get_env("DISCORD_BOT_API_KEY"),
-  discord_invite_url: System.get_env("DISCORD_INVITE_URL")
+  discord_invite_url: System.get_env("DISCORD_INVITE_URL"),
+  max_cv_file_size: String.to_integer(System.get_env("MAX_CV_SIZE") || "8000000")
 
 # Configures the endpoint
 config :safira, SafiraWeb.Endpoint,
@@ -77,7 +78,7 @@ config :safira, Safira.Mailer,
   adapter: Bamboo.MailgunAdapter,
   api_key: {:system, "MAILGUN_API_KEY"},
   domain: {:system, "MAILGUN_DOMAIN"},
-  base_url: {:system, "MAILGUN_BASE_URL"},
+  base_uri: {:system, "MAILGUN_BASE_URL"},
   hackney_opts: [
     recv_timeout: :timer.minutes(1)
   ]

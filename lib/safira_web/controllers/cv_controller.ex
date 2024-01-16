@@ -1,5 +1,5 @@
 defmodule SafiraWeb.CVController do
-  use SafiraWeb, :controller
+  use SafiraWeb, controller: "1.6"
 
   alias Safira.Accounts
 
@@ -27,8 +27,7 @@ defmodule SafiraWeb.CVController do
         |> Enum.map(fn x ->
           Zstream.entry(
             x.nickname <> ".pdf",
-            CV.url({x.cv, x})
-            |> (fn url -> System.get_env("CV_URL", "") <> url end).()
+            "#{System.get_env("CV_URL", "")}#{CV.url({x.cv, x})}"
             |> HTTPStream.get()
           )
         end)

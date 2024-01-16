@@ -24,6 +24,8 @@ defmodule Mix.Tasks.Gen.AttendeesWithPassword do
   defp create(number) do
     Mix.Task.run("app.start")
 
+    courses = Accounts.list_courses()
+
     Enum.each(1..number, fn n ->
       nickname = "attendee#{n}"
       email = Enum.join([nickname, @domain], "@")
@@ -35,8 +37,15 @@ defmodule Mix.Tasks.Gen.AttendeesWithPassword do
         "password_confirmation" => password
       }
 
+      course = Enum.random(courses)
+
       account =
-        Accounts.create_attendee(%{"name" => nickname, "nickname" => nickname, "user" => user})
+        Accounts.create_attendee(%{
+          "name" => nickname,
+          "nickname" => nickname,
+          "course_id" => course.id,
+          "user" => user
+        })
         |> elem(1)
 
       IO.puts("#{email}:#{password}")

@@ -190,7 +190,7 @@ defmodule SafiraWeb.LeaderboardControllerTest do
 
     test "right format, but invalid date" do
       user = create_user_strategy(:user)
-      attendee = insert(:attendee, user: user)
+      insert(:attendee, user: user)
 
       %{conn: conn, user: _user} = api_authenticate(user)
 
@@ -206,7 +206,7 @@ defmodule SafiraWeb.LeaderboardControllerTest do
 
     test "wrong date format" do
       user = create_user_strategy(:user)
-      attendee = insert(:attendee, user: user)
+      insert(:attendee, user: user)
 
       %{conn: conn, user: _user} = api_authenticate(user)
 

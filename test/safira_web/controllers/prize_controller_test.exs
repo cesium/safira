@@ -4,13 +4,13 @@ defmodule SafiraWeb.PrizeControllerTest do
   setup %{conn: conn} do
     user = create_user_strategy(:user)
     prize = insert(:prize)
-    attendee = insert(:attendee, user: user)
+    insert(:attendee, user: user)
 
     {:ok, conn: put_req_header(conn, "accept", "application/json"), user: user, prize: prize}
   end
 
   describe "index" do
-    test "with valid token", %{conn: conn, user: user, prize: prize} do
+    test "with valid token", %{conn: _conn, user: user, prize: prize} do
       %{conn: conn, user: _user} = api_authenticate(user)
 
       conn =
@@ -49,7 +49,7 @@ defmodule SafiraWeb.PrizeControllerTest do
   end
 
   describe "show" do
-    test "with valid token", %{conn: conn, user: user, prize: prize} do
+    test "with valid token", %{conn: _conn, user: user, prize: prize} do
       %{conn: conn, user: _user} = api_authenticate(user)
 
       conn =

@@ -1,5 +1,10 @@
 defmodule SafiraWeb.CORS do
-  @moduledoc false
+  @moduledoc """
+  Module responsible for CORS configuration.
+  Expects CORS_DOMAIN to be set in the environment.
+  Examples: "localhost:3000", "seium.org"
+  """
+
   @domain System.get_env("CORS_DOMAIN")
 
   use Corsica.Router,
@@ -10,5 +15,5 @@ defmodule SafiraWeb.CORS do
     max_age: 600
 
   resource("/*")
-  resource("/api/v1/referrals/*", origins: "*")
+  resource("/api/referrals/*", origins: "*")
 end

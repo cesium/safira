@@ -1,8 +1,9 @@
-defmodule SafiraWeb.AuthView do
-  use SafiraWeb, :view
+defmodule SafiraWeb.AuthJSON do
+  @moduledoc false
+
   alias Safira.Avatar
 
-  def render("user.json", %{user: user}) do
+  def data(%{user: user}) do
     %{
       id: user.id,
       email: user.email,
@@ -10,11 +11,11 @@ defmodule SafiraWeb.AuthView do
     }
   end
 
-  def render("is_registered.json", %{is_registered: value}) do
+  def is_registered(%{is_registered: value}) do
     %{is_registered: value}
   end
 
-  def render("attendee.json", %{user: user}) do
+  def attendee(%{user: user}) do
     %{
       id: user.attendee.id,
       nickname: user.attendee.nickname,
@@ -24,7 +25,7 @@ defmodule SafiraWeb.AuthView do
     }
   end
 
-  def render("company.json", %{user: user}) do
+  def company(%{user: user}) do
     %{
       id: user.company.id,
       name: user.company.name,
@@ -34,11 +35,11 @@ defmodule SafiraWeb.AuthView do
     }
   end
 
-  def render("jwt.json", %{jwt: jwt}) do
+  def jwt(%{jwt: jwt}) do
     %{jwt: jwt}
   end
 
-  def render("signup_response.json", %{
+  def signup_response(%{
         jwt: jwt,
         discord_association_code: discord_association_code
       }) do

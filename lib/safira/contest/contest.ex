@@ -168,7 +168,7 @@ defmodule Safira.Contest do
     Repo.get_by(DailyToken, attendee_id: attendee_id, day: day)
   end
 
-  def create_redeem(attrs \\ %{}, user_type \\ :manager) do
+  def create_redeem(attrs \\ %{}, user_type \\ :staff) do
     Multi.new()
     |> Multi.insert(:redeem, Redeem.changeset(%Redeem{}, attrs, user_type))
     |> Multi.update(:attendee, fn %{redeem: redeem} ->

@@ -49,7 +49,7 @@ defmodule SafiraWeb.BonusControllerTest do
       assert json_response(conn, 401)["error"] == "unauthenticated"
     end
 
-    test "being an attendee user", %{conn: conn, attendee: attendee} do
+    test "being an attendee user", %{conn: _conn, attendee: attendee} do
       %{conn: conn, user: _user} = api_authenticate(attendee.user)
 
       conn =
