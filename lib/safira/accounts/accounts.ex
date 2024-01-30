@@ -84,16 +84,13 @@ defmodule Safira.Accounts do
   def get_attendee!(id) do
     Repo.get!(Attendee, id)
     |> Repo.preload(:badges)
-    |> Repo.preload(:redeemables)
     |> Repo.preload(:user)
     |> Repo.preload(:prizes)
-    |> Repo.preload(:course)
   end
 
   def get_attendee(id) do
     Repo.get(Attendee, id)
     |> Repo.preload(:badges)
-    |> Repo.preload(:redeemables)
     |> Repo.preload(:user)
     |> Repo.preload(:prizes)
     |> Repo.preload(:course)
