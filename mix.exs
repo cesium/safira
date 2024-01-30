@@ -56,7 +56,7 @@ defmodule Safira.MixProject do
       {:comeonin, "~> 5.3"},
       {:bcrypt_elixir, "~> 3.0"},
       {:qr_code_svg, git: "https://github.com/ondrej-tucek/qr-code-svg", tag: "v1.2.0"},
-      {:corsica, "~> 1.3"},
+      {:cors_plug, "~> 3.0"},
       {:arc, "~> 0.11.0"},
       # If using Amazon S3
       {:ex_aws, "~> 2.4"},

@@ -70,6 +70,16 @@ config :safira, Safira.Mailer,
     recv_timeout: :timer.minutes(1)
   ]
 
+# :cors_plug must be configured only in compilation time
+# See https://github.com/mschae/cors_plug/issues/49 for alternative solutions
+# with functions
+config :cors_plug,
+  origin: [
+    "https://seium.org",
+    "https://seium-stg.netlify.app",
+    "https://lazuli-stg.netlify.app",
+  ]
+
 # Finally import the config/prod.secret.exs
 # which should be versioned separately.
 # import_config "prod.secret.exs"
