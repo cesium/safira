@@ -88,7 +88,15 @@ defmodule Safira.Accounts do
     |> Repo.preload(:prizes)
   end
 
-  def get_attendee_with_badge_count!(id) do
+  def get_attendee(id) do
+    Repo.get(Attendee, id)
+    |> Repo.preload(:badges)
+    |> Repo.preload(:user)
+    |> Repo.preload(:prizes)
+    |> Repo.preload(:course)
+  end
+
+  def get_attendee_with_badge_count_by_id!(id) do
     case get_attendee(id) do
       nil ->
         nil
@@ -102,12 +110,25 @@ defmodule Safira.Accounts do
     end
   end
 
-  def get_attendee(id) do
-    Repo.get(Attendee, id)
+  def get_attendee_with_badge_count_by_username(username) do
+    case get_attendee_by_username!(username) do
+      %Attendee{} = attendee ->
+        badges =
+          attendee.badges
+          |> Enum.filter(&(&1.type != 0))
+
+        Map.put(attendee, :badge_count, length(badges))
+
+      _ ->
+        nil
+    end
+  end
+
+  def get_attendee_by_username!(username) do
+    Repo.get_by!(Attendee, nickname: username)
     |> Repo.preload(:badges)
     |> Repo.preload(:user)
     |> Repo.preload(:prizes)
-    |> Repo.preload(:course)
   end
 
   def get_attendee_by_discord_association_code(discord_association_code) do

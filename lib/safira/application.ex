@@ -13,7 +13,9 @@ defmodule Safira.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Safira.PubSub},
       # Start the endpoint when the application starts
-      SafiraWeb.Endpoint
+      SafiraWeb.Endpoint,
+      # Start the cron-like job scheduler system
+      Safira.JobScheduler
       # Starts a worker by calling: Safira.Worker.start_link(arg)
       # {Safira.Worker, arg},
     ]

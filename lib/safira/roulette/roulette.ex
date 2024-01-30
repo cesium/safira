@@ -501,7 +501,7 @@ defmodule Safira.Roulette do
         preload: [prize: p, attendee: a]
 
     Repo.all(query)
-    |> Enum.map(fn ap -> {ap.attendee.name, ap.prize, ap.updated_at} end)
+    |> Enum.map(fn ap -> {ap.attendee.name, ap.attendee.nickname, ap.prize, ap.updated_at} end)
   end
 
   def get_attendee_not_redeemed(attendee) do

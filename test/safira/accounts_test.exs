@@ -233,7 +233,7 @@ defmodule Safira.AccountsTest do
       badges = insert_list(3, :badge)
       attendee = insert(:attendee, badges: badges)
 
-      attendee_with_badge_count = Accounts.get_attendee_with_badge_count!(attendee.id)
+      attendee_with_badge_count = Accounts.get_attendee_with_badge_count_by_id!(attendee.id)
 
       assert attendee_with_badge_count.id == attendee.id
       assert attendee_with_badge_count.badge_count == 3
@@ -245,14 +245,14 @@ defmodule Safira.AccountsTest do
       badges = Enum.concat(badges, [badge])
       attendee = insert(:attendee, badges: badges)
 
-      attendee_with_badge_count = Accounts.get_attendee_with_badge_count!(attendee.id)
+      attendee_with_badge_count = Accounts.get_attendee_with_badge_count_by_id!(attendee.id)
 
       assert attendee_with_badge_count.id == attendee.id
       assert attendee_with_badge_count.badge_count == 2
     end
 
     test "attendee does not exist" do
-      assert Accounts.get_attendee_with_badge_count!(Ecto.UUID.generate()) |> is_nil()
+      assert Accounts.get_attendee_with_badge_count_by_id!(Ecto.UUID.generate()) |> is_nil()
     end
   end
 
