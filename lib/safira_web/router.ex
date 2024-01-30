@@ -50,8 +50,6 @@ defmodule SafiraWeb.Router do
     pipe_through :jwt_authenticated
 
     get "/user", AuthController, :user
-    get "/attendee", AuthController, :attendee
-    get "/company", AuthController, :company
     get "/leaderboard", LeaderboardController, :index
     get "/leaderboard/:date", LeaderboardController, :daily
     get "/roulette/latestwins", RouletteController, :latest_wins
