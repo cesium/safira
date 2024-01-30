@@ -8,48 +8,60 @@ defmodule SafiraWeb.AuthControllerTest do
   end
 
   describe "me" do
-    test "attendee", %{user: user} do
+    test "when user is an attendee", %{user: user} do
       attendee = insert(:attendee, user: user)
 
       %{conn: conn, user: _user} = api_authenticate(user)
 
       conn =
         conn
-        |> get(Routes.auth_path(conn, :attendee))
+        |> get(Routes.auth_path(conn, :user))
 
-      expected_attendee = %{
-        "avatar" => nil,
+      expected_user = %{
         "email" => user.email,
         "id" => attendee.id,
+        "type" => "attendee",
+        "avatar" => nil,
+        "badge_count" => 0,
+        "badges" => [],
+        "course" => nil,
+        "cv" => nil,
+        "entries" => 0,
         "name" => attendee.name,
-        "nickname" => attendee.nickname
+        "nickname" => attendee.nickname,
+        "prizes" => [],
+        "redeemables" => [],
+        "token_balance" => 0
       }
 
-      assert json_response(conn, 200) == expected_attendee
+      assert json_response(conn, 200) == expected_user
     end
 
-    test "company", %{user: user} do
+    test "when user is a company", %{user: user} do
       company = insert(:company, user: user)
 
       %{conn: conn, user: _user} = api_authenticate(user)
 
       conn =
         conn
-        |> get(Routes.auth_path(conn, :company))
+        |> get(Routes.auth_path(conn, :user))
 
-      expected_company = %{
-        "badge_id" => company.badge.id,
+      expected_user = %{
+        "badge_id" => company.badge_id,
+        "channel_id" => company.channel_id,
         "email" => user.email,
+        "has_cv_access" => company.has_cv_access,
         "id" => company.id,
         "name" => company.name,
-        "sponsorship" => company.sponsorship
+        "sponsorship" => company.sponsorship,
+        "type" => "company"
       }
 
-      assert json_response(conn, 200) == expected_company
+      assert json_response(conn, 200) == expected_user
     end
 
-    test "user", %{user: user} do
-      insert(:company, user: user)
+    test "when user is a staff", %{user: user} do
+      insert(:staff, user: user)
 
       %{conn: conn, user: _user} = api_authenticate(user)
 
@@ -60,7 +72,7 @@ defmodule SafiraWeb.AuthControllerTest do
       expected_user = %{
         "email" => user.email,
         "id" => user.id,
-        "type" => "company"
+        "type" => "staff"
       }
 
       assert json_response(conn, 200) == expected_user
