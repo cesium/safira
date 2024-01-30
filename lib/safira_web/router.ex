@@ -75,6 +75,9 @@ defmodule SafiraWeb.Router do
     resources "/store/buy", BuyController, only: [:create]
     resources "/roulette/prizes", PrizeController, only: [:index, :show]
 
+    get "/staff/cv/:id", CVController, :staff_cv
+    patch "/staff/cv/:id", CVController, :staff_upload_cv
+
     get "/company/attendees/:id", CompanyController, :company_attendees
     get "/company/attendees/cvs/:id", CVController, :company_cvs
   end
