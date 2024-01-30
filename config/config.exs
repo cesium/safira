@@ -31,10 +31,6 @@ config :safira, SafiraWeb.Endpoint,
   render_errors: [view: SafiraWeb.ErrorView, accepts: ~w(json)],
   pubsub_server: Safira.PubSub
 
-config :safira, SafiraWeb.CORS,
-  # Allowed domains (regex string without protocol)
-  domain: System.get_env("CORS_DOMAIN" || ".*")
-
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

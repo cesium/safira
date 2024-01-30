@@ -32,6 +32,11 @@ config :safira, SafiraWeb.Endpoint,
     ]
   ]
 
+config :cors_plug,
+  origin: [
+    "http://localhost:3000"
+  ]
+
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed
