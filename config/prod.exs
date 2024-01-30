@@ -77,7 +77,7 @@ config :cors_plug,
   origin: [
     "https://seium.org",
     "https://seium-stg.netlify.app",
-    "https://lazuli-stg.netlify.app",
+    "https://lazuli-stg.netlify.app"
   ]
 
 # Finally import the config/prod.secret.exs
