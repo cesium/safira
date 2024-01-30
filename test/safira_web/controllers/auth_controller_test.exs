@@ -31,7 +31,7 @@ defmodule SafiraWeb.AuthControllerTest do
         "nickname" => attendee.nickname,
         "prizes" => [],
         "redeemables" => [],
-        "token_balance" => 0,
+        "token_balance" => 0
       }
 
       assert json_response(conn, 200) == expected_user
@@ -54,7 +54,7 @@ defmodule SafiraWeb.AuthControllerTest do
         "id" => company.id,
         "name" => company.name,
         "sponsorship" => company.sponsorship,
-        "type" => "company",
+        "type" => "company"
       }
 
       assert json_response(conn, 200) == expected_user
@@ -72,7 +72,7 @@ defmodule SafiraWeb.AuthControllerTest do
       expected_user = %{
         "email" => user.email,
         "id" => user.id,
-        "type" => "staff",
+        "type" => "staff"
       }
 
       assert json_response(conn, 200) == expected_user
