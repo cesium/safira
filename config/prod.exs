@@ -23,9 +23,6 @@ config :safira, Safira.Repo,
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
   ssl: true
 
-# Do not print debug messages in production
-config :logger, level: :info
-
 # ## SSL Support
 #
 # To get SSL working, you will need to add the `https` key
@@ -71,6 +68,16 @@ config :safira, Safira.Mailer,
   base_uri: System.get_env("MAILGUN_BASE_URL"),
   hackney_opts: [
     recv_timeout: :timer.minutes(1)
+  ]
+
+# :cors_plug must be configured only in compilation time
+# See https://github.com/mschae/cors_plug/issues/49 for alternative solutions
+# with functions
+config :cors_plug,
+  origin: [
+    "https://seium.org",
+    "https://seium-stg.netlify.app",
+    "https://lazuli-stg.netlify.app"
   ]
 
 # Finally import the config/prod.secret.exs

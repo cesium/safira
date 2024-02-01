@@ -4,6 +4,8 @@ defmodule SafiraWeb.AuthController do
   alias Safira.Accounts
   alias Safira.Auth
   alias Safira.Guardian
+  alias Safira.Roulette
+  alias Safira.Store
 
   action_fallback SafiraWeb.FallbackController
 
@@ -20,51 +22,30 @@ defmodule SafiraWeb.AuthController do
     user = Guardian.Plug.current_resource(conn)
     user_preload = Accounts.get_user_preload!(user.id)
 
-    user =
+    user_preload =
       cond do
         not is_nil(user_preload.attendee) ->
-          user
-          |> Map.put(:id, user_preload.id)
+          attendee = Accounts.get_attendee_with_badge_count_by_id!(user_preload.attendee.id)
+
+          attendee =
+            attendee
+            |> Map.put(:redeemables, Store.get_attendee_redeemables(attendee))
+            |> Map.put(:prizes, Roulette.get_attendee_prize(attendee))
+
+          user_preload
+          |> Map.put(:attendee, attendee)
           |> Map.put(:type, "attendee")
 
         not is_nil(user_preload.company) ->
-          user
-          |> Map.put(:id, user_preload.id)
+          user_preload
           |> Map.put(:type, "company")
 
         not is_nil(user_preload.staff) ->
-          user
-          |> Map.put(:id, user_preload.id)
+          user_preload
           |> Map.put(:type, "staff")
       end
 
-    render(conn, :data, user: user)
-  end
-
-  def attendee(conn, _params) do
-    user = Guardian.Plug.current_resource(conn)
-    user_preload = Accounts.get_user_preload!(user.id)
-
-    case is_nil(user_preload.attendee) do
-      true ->
-        {:error, :unauthorized}
-
-      false ->
-        render(conn, :attendee, user: user_preload)
-    end
-  end
-
-  def company(conn, _params) do
-    user = Guardian.Plug.current_resource(conn)
-    user_preload = Accounts.get_user_preload!(user.id)
-
-    case is_nil(user_preload.company) do
-      true ->
-        {:error, :unauthorized}
-
-      false ->
-        render(conn, :company, user: user_preload)
-    end
+    render(conn, :data, user: user_preload)
   end
 
   def is_registered(conn, %{"id" => id}) do

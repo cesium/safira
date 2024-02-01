@@ -46,29 +46,19 @@ defmodule Mix.Tasks.Gen.Redeemables do
           is_redeemable: convert_bool!(is_redeemable)
         },
         %{
-          img: %Plug.Upload{
-            filename: check_image_filename(path_to_image),
-            path: check_image_path(path_to_image)
-          }
+          img: get_avatar(path_to_image)
         }
       }
     end)
   end
 
-  defp check_image_filename(image_path) do
-    if String.trim(image_path) == "" do
-      "redeemable-missing.svg"
-    else
-      String.split(image_path, "/") |> List.last()
-    end
-  end
+  defp get_avatar(nil), do: nil
 
-  defp check_image_path(image_path) do
-    if String.trim(image_path) == "" do
-      "#{File.cwd!()}/assets/static/images/redeemable-missing.svg"
-    else
-      image_path
-    end
+  defp get_avatar(image_path) do
+    %Plug.Upload{
+      filename: String.split(image_path, "/") |> List.last(),
+      path: image_path
+    }
   end
 
   defp sequence(list) do

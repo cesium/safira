@@ -31,10 +31,6 @@ config :safira, SafiraWeb.Endpoint,
   render_errors: [view: SafiraWeb.ErrorView, accepts: ~w(json)],
   pubsub_server: Safira.PubSub
 
-config :safira, SafiraWeb.CORS,
-  # Allowed domains (regex string without protocol)
-  domain: System.get_env("CORS_DOMAIN" || ".*")
-
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
@@ -82,6 +78,11 @@ config :safira, Safira.Mailer,
   hackney_opts: [
     recv_timeout: :timer.minutes(1)
   ]
+
+config :elixir, :time_zone_database, Tzdata.TimeZoneDatabase
+
+# Cron-like jobs
+config :quantum, Safira.JobScheduler, timezone: "Europe/Lisbon"
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

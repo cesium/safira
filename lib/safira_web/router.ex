@@ -50,8 +50,7 @@ defmodule SafiraWeb.Router do
     pipe_through :jwt_authenticated
 
     get "/user", AuthController, :user
-    get "/attendee", AuthController, :attendee
-    get "/company", AuthController, :company
+    get "/attendee", AttendeeController, :show
     get "/leaderboard", LeaderboardController, :index
     get "/leaderboard/:date", LeaderboardController, :daily
     get "/roulette/latestwins", RouletteController, :latest_wins
@@ -77,6 +76,9 @@ defmodule SafiraWeb.Router do
     resources "/association", DiscordAssociationController, only: [:show, :create]
     resources "/store/buy", BuyController, only: [:create]
     resources "/roulette/prizes", PrizeController, only: [:index, :show]
+
+    get "/staff/cv/:id", CVController, :staff_cv
+    patch "/staff/cv/:id", CVController, :staff_upload_cv
 
     get "/company/attendees/:id", CompanyController, :company_attendees
     get "/company/attendees/cvs/:id", CVController, :company_cvs

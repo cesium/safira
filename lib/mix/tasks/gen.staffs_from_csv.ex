@@ -90,7 +90,11 @@ defmodule Mix.Tasks.Gen.StaffsFromCsv do
         "password_confirmation" => password
       }
 
-      Accounts.create_staff(%{"user" => user, "is_admin" => convert!(user_csv_entry.admin)})
+      Accounts.create_staff(%{
+        "user" => user,
+        "is_admin" => convert!(user_csv_entry.admin),
+        "nickname" => user_csv_entry.username
+      })
 
       IO.puts("#{email}:#{password}")
     end)
