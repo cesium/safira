@@ -61,7 +61,7 @@ defmodule SafiraWeb.AuthControllerTest do
     end
 
     test "when user is a staff", %{user: user} do
-      insert(:staff, user: user)
+      insert(:staff, is_admin: false, user: user)
 
       %{conn: conn, user: _user} = api_authenticate(user)
 
@@ -72,7 +72,8 @@ defmodule SafiraWeb.AuthControllerTest do
       expected_user = %{
         "email" => user.email,
         "id" => user.id,
-        "type" => "staff"
+        "type" => "staff",
+        "is_admin" => false
       }
 
       assert json_response(conn, 200) == expected_user
