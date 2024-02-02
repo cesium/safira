@@ -21,8 +21,9 @@ defmodule SafiraWeb.AuthJSON do
     |> Map.merge(CompanyView.render("company.json", company: company))
   end
 
-  def data(%{user: %{type: "staff"}} = user) do
+  def data(%{user: %{type: "staff", staff: staff}} = user) do
     user_data(user)
+    |> Map.merge(%{is_admin: staff.is_admin})
   end
 
   defp user_data(%{user: user}) do
