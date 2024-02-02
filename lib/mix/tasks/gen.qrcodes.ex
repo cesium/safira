@@ -1,6 +1,9 @@
 defmodule Mix.Tasks.Gen.QrCodes do
   @moduledoc """
   Task to generate the QR codes for the attendees
+
+  Expects FRONTEND_URL variable to be set.
+  Example: https://seium.org
   """
   use Mix.Task
 
@@ -25,7 +28,7 @@ defmodule Mix.Tasks.Gen.QrCodes do
     if arg == "attendees" do
       Enum.each(Accounts.list_attendees(), fn attendee ->
         qr =
-          "#{url}attendees/#{attendee.id}"
+          "#{url}/attendees/#{attendee.id}"
           |> QRCodeEx.encode()
           |> QRCodeEx.png(width: 460)
 
