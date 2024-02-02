@@ -24,10 +24,12 @@ defmodule Mix.Tasks.Gen.QrCodes do
 
     if arg == "attendees" do
       Enum.each(Accounts.list_attendees(), fn attendee ->
-        QrCodeSvg.generate(
-          "#{url}attendees/#{attendee.id}",
-          "attendee_#{attendee.id}.svg"
-        )
+        qr =
+          "#{url}attendees/#{attendee.id}"
+          |> QRCodeEx.encode()
+          |> QRCodeEx.png(width: 460)
+
+        File.write("qrs/#{attendee.id}.png", qr, [:binary])
       end)
     else
       Enum.each(Contest.list_referrals(), fn referral ->
