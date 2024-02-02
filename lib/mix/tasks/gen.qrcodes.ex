@@ -36,10 +36,12 @@ defmodule Mix.Tasks.Gen.QrCodes do
       end)
     else
       Enum.each(Contest.list_referrals(), fn referral ->
-        QrCodeSvg.generate(
-          "#{url}referrals/#{referral.id}",
-          "referral_#{referral.id}.svg"
-        )
+        qr =
+          "#{url}/referrals/#{referral.id}",
+          |> QRCodeEx.encode()
+          |> QRCodeEx.png(width: 460)
+
+        File.write("referrals/#{referral.id}.png", qr, [:binary])
       end)
     end
   end
