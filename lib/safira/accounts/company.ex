@@ -3,10 +3,10 @@ defmodule Safira.Accounts.Company do
   A company participating in SEI
   """
   use Ecto.Schema
+
   import Ecto.Changeset
 
   alias Safira.Accounts.User
-
   alias Safira.Contest.Badge
 
   schema "companies" do
@@ -15,6 +15,7 @@ defmodule Safira.Accounts.Company do
     field :channel_id, :string
     field :remaining_spotlights, :integer
     field :has_cv_access, :boolean
+
     belongs_to :user, User
     belongs_to :badge, Badge
 

@@ -60,7 +60,7 @@ defmodule SafiraWeb.Router do
 
     post "/roulette", RouletteController, :spin
     post "/give_bonus/:id", BonusController, :give_bonus
-    post "/spotlight", SpotlightController, :create
+    post "/spotlight/:company_id", SpotlightController, :create
     post "/store/redeem", DeliverRedeemableController, :create
     post "/roulette/redeem", DeliverPrizeController, :create
 

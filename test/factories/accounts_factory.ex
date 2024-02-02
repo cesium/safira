@@ -23,8 +23,9 @@ defmodule Safira.AccountsFactory do
 
         %Safira.Accounts.Company{
           name: name,
-          sponsorship: Enum.random(["exclusive", "gold", "silver", "bronze"]),
+          sponsorship: Enum.random(["Exclusive", "Gold", "Silver", "Bronze"]),
           channel_id: String.downcase(name),
+          remaining_spotlights: Enum.random(1..3),
           user: build(:user),
           badge: build(:badge),
           has_cv_access: Enum.random([true, false])

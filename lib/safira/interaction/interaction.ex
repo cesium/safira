@@ -159,16 +159,18 @@ defmodule Safira.Interaction do
   end
 
   @doc """
-  Returns the only existing Spotlight
+  Returns the only existing spotlight
   """
   def get_spotlight do
     Repo.all(Spotlight) |> List.first()
   end
 
+  @spotlight_duration Application.compile_env!(:safira, :spotlight_duration)
+
   @doc """
   Starts the spotlight
   """
-  def start_spotlight(company) do
+  def start_spotlight(company, duration) do
     Multi.new()
     # get or build a spotlight
     |> Multi.run(:get_spotlight, fn _repo, _changes ->
@@ -178,7 +180,10 @@ defmodule Safira.Interaction do
     end)
     # update the spotlight
     |> Multi.insert_or_update(:upsert_spotlight, fn %{get_spotlight: spotlight} ->
-      Spotlight.changeset(spotlight, %{badge_id: company.badge_id, active: true})
+      Spotlight.changeset(spotlight, %{
+        badge_id: company.badge_id,
+        end: DateTime.utc_now() |> DateTime.add(duration || @spotlight_duration, :minute)
+      })
     end)
     # update company's remaining_spotlights
     |> Multi.update(
@@ -191,19 +196,11 @@ defmodule Safira.Interaction do
     |> apply_transaction()
   end
 
-  @doc """
-  Signals spotlight as inactive
-  """
-  def finish_spotlight do
-    get_spotlight()
-    |> Spotlight.finish_changeset(%{active: false})
-    |> Repo.update()
-  end
-
   def is_badge_spotlighted(badge_id) do
     spotlight = get_spotlight()
 
-    !is_nil(spotlight) and spotlight.active and spotlight.badge_id == badge_id
+    !is_nil(spotlight) and DateTime.compare(spotlight.end, DateTime.utc_now()) == :gt and
+      spotlight.badge_id == badge_id
   end
 
   defp apply_transaction(multi) do
