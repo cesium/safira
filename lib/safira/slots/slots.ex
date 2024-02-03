@@ -1,15 +1,19 @@
 defmodule Safira.Slots do
+  @moduledoc """
+  The Slots context.
+  """
+
   import Ecto.Query, warn: false
 
   alias Ecto.Multi
 
   alias Safira.Repo
 
+  alias Safira.Accounts.Attendee
   alias Safira.Contest
   alias Safira.Contest.DailyToken
-  alias Safira.Slots.Payout
-  alias Safira.Accounts.Attendee
   alias Safira.Slots.AttendeePayout
+  alias Safira.Slots.Payout
 
   @doc """
   Creates a payout.
@@ -32,7 +36,7 @@ defmodule Safira.Slots do
   def spin(attendee, bet) do
     spin_transaction(attendee, bet)
     |> case do
-      {:error, :attendee, changeset, data} ->
+      {:error, :attendee_state, changeset, data} ->
         if Map.get(get_errors(changeset), :token_balance) != nil do
           {:error, :not_enough_tokens}
         else

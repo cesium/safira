@@ -18,5 +18,7 @@ defmodule Safira.Slots.Payout do
     payout
     |> cast(attrs, [:probability, :multiplier])
     |> validate_required([:probability, :multiplier])
+    |> validate_number(:multiplier, greater_than: 0)
+    |> validate_number(:probability, greater_than: 0, less_than_or_equal_to: 1)
   end
 end
