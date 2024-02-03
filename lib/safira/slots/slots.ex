@@ -108,6 +108,7 @@ defmodule Safira.Slots do
 
     cumulative_prob =
       payouts
+      |> Enum.sort_by(& &1.probability)
       |> Enum.map_reduce(0, fn payout, acc ->
         {Float.round(acc + payout.probability, 12), acc + payout.probability}
       end)
@@ -131,6 +132,7 @@ defmodule Safira.Slots do
       |> Enum.at(0)
 
     real_payouts
+    |> Enum.sort_by(& &1.probability)
     |> Enum.at(
       cumulatives
       |> Enum.find_index(fn x -> x == prob end)
