@@ -170,7 +170,7 @@ defmodule Safira.Interaction do
   @doc """
   Starts the spotlight
   """
-  def start_spotlight(company, duration) do
+  def start_spotlight(company, duration \\ nil) do
     Multi.new()
     # get or build a spotlight
     |> Multi.run(:get_spotlight, fn _repo, _changes ->

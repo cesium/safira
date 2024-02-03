@@ -4,16 +4,273 @@ defmodule SafiraWeb.SpotlightControllerTest do
   """
   use SafiraWeb.ConnCase
 
-  alias Safira.Accounts.Attendee
+  alias Safira.Accounts.{Attendee, Company}
   alias Safira.Contest
+  alias Safira.Interaction
   alias Safira.Interaction.Spotlight
   alias Safira.Repo
 
   setup %{conn: conn} do
     user = create_user_strategy(:user)
-    company = insert(:company, user: user)
+    company = insert(:company)
 
     {:ok, conn: put_req_header(conn, "accept", "application/json"), user: user, company: company}
+  end
+
+  describe "index" do
+    test "when user is an admin", %{user: user, company: company} do
+      _staff = insert(:staff, user: user, is_admin: true)
+
+      %{conn: conn, user: _user} = api_authenticate(user)
+
+      conn =
+        conn
+        |> get(Routes.spotlight_path(conn, :index))
+
+      assert json_response(conn, 200) == %{
+               "data" => [
+                 %{
+                   "id" => company.id,
+                   "name" => company.name,
+                   "remaining" => company.remaining_spotlights
+                 }
+               ]
+             }
+    end
+
+    test "when a spotlight for the given company is currently running", %{
+      user: user,
+      company: company
+    } do
+      _staff = insert(:staff, user: user, is_admin: true)
+
+      %{conn: conn, user: _user} = api_authenticate(user)
+
+      # Start a spotlight for the company
+      Interaction.start_spotlight(company)
+      spotlight = Interaction.get_spotlight()
+      assert spotlight != nil
+
+      conn =
+        conn
+        |> get(Routes.spotlight_path(conn, :index))
+
+      # Get company again, since it was only in-memory
+      company = Repo.get_by!(Company, id: company.id)
+
+      assert json_response(conn, 200) == %{
+               "data" => [
+                 %{
+                   "id" => company.id,
+                   "name" => company.name,
+                   "remaining" => company.remaining_spotlights,
+                   "end" => DateTime.to_iso8601(spotlight.end)
+                 }
+               ]
+             }
+    end
+
+    test "when there are two companies, but only one has a spotlight", %{
+      user: user,
+      company: company1
+    } do
+      _staff = insert(:staff, user: user, is_admin: true)
+      company2 = insert(:company, remaining_spotlights: 1)
+
+      %{conn: conn, user: _user} = api_authenticate(user)
+
+      # Start a spotlight for the first company
+      Interaction.start_spotlight(company1)
+      spotlight = Interaction.get_spotlight()
+      assert spotlight != nil
+
+      conn =
+        conn
+        |> get(Routes.spotlight_path(conn, :index))
+
+      # Get company again, since it was only in-memory
+      company1 = Repo.get_by!(Company, id: company1.id)
+      company2 = Repo.get_by!(Company, id: company2.id)
+
+      assert json_response(conn, 200) == %{
+               "data" => [
+                 %{
+                   "id" => company2.id,
+                   "name" => company2.name,
+                   "remaining" => company2.remaining_spotlights
+                 },
+                 %{
+                   "id" => company1.id,
+                   "name" => company1.name,
+                   "remaining" => company1.remaining_spotlights,
+                   "end" => DateTime.to_iso8601(spotlight.end)
+                 }
+               ]
+             }
+    end
+
+    test "when there are two companies, but none of them have a spotlight", %{
+      user: user,
+      company: company1
+    } do
+      _staff = insert(:staff, user: user, is_admin: true)
+      company2 = insert(:company, remaining_spotlights: 1)
+
+      %{conn: conn, user: _user} = api_authenticate(user)
+
+      conn =
+        conn
+        |> get(Routes.spotlight_path(conn, :index))
+
+      # Get company again, since it was only in-memory
+      company1 = Repo.get_by!(Company, id: company1.id)
+      company2 = Repo.get_by!(Company, id: company2.id)
+
+      assert json_response(conn, 200) == %{
+               "data" => [
+                 %{
+                   "id" => company1.id,
+                   "name" => company1.name,
+                   "remaining" => company1.remaining_spotlights
+                 },
+                 %{
+                   "id" => company2.id,
+                   "name" => company2.name,
+                   "remaining" => company2.remaining_spotlights
+                 }
+               ]
+             }
+    end
+
+    test "when user is a staff", %{user: user} do
+      _staff = insert(:staff, user: user, is_admin: false)
+
+      %{conn: conn, user: _user} = api_authenticate(user)
+
+      conn =
+        conn
+        |> get(Routes.spotlight_path(conn, :index))
+
+      assert json_response(conn, 401) == %{"error" => "Cannot access resource"}
+    end
+
+    test "when user is an attendee", %{user: user} do
+      _attendee = insert(:attendee, user: user)
+
+      %{conn: conn, user: _user} = api_authenticate(user)
+
+      conn =
+        conn
+        |> get(Routes.spotlight_path(conn, :index))
+
+      assert json_response(conn, 401) == %{"error" => "Cannot access resource"}
+    end
+
+    test "when user is a company", %{user: user} do
+      _company = insert(:company, user: user)
+
+      %{conn: conn, user: _user} = api_authenticate(user)
+
+      conn =
+        conn
+        |> get(Routes.spotlight_path(conn, :index))
+
+      assert json_response(conn, 401) == %{"error" => "Cannot access resource"}
+    end
+  end
+
+  describe "current" do
+    test "when user is an admin", %{user: user, company: company} do
+      _staff = insert(:staff, user: user, is_admin: true)
+
+      %{conn: conn, user: _user} = api_authenticate(user)
+
+      # Start a spotlight for the company
+      Interaction.start_spotlight(company)
+      spotlight = Interaction.get_spotlight()
+      assert spotlight != nil
+
+      conn =
+        conn
+        |> get(Routes.spotlight_path(conn, :current))
+
+      # Get company again, since it was only in-memory
+      company = Repo.get_by!(Company, id: company.id)
+
+      assert json_response(conn, 200) == %{
+               "data" => %{
+                 "id" => company.id,
+                 "name" => company.name,
+                 "remaining" => company.remaining_spotlights,
+                 "end" => DateTime.to_iso8601(spotlight.end)
+               }
+             }
+    end
+
+    test "when there's no spotlight running", %{user: user} do
+      _staff = insert(:staff, user: user, is_admin: true)
+
+      %{conn: conn, user: _user} = api_authenticate(user)
+
+      conn =
+        conn
+        |> get(Routes.spotlight_path(conn, :current))
+
+      assert json_response(conn, 404) == %{"error" => "Spotlight not found"}
+    end
+
+    test "when a spotlight exists, but is not running", %{user: user, company: company} do
+      _staff = insert(:staff, user: user, is_admin: true)
+
+      %{conn: conn, user: _user} = api_authenticate(user)
+
+      # Start a spotlight for the company
+      Interaction.start_spotlight(company, -1)
+      spotlight = Interaction.get_spotlight()
+      assert spotlight != nil
+
+      conn =
+        conn
+        |> get(Routes.spotlight_path(conn, :current))
+
+      assert json_response(conn, 404) == %{"error" => "Spotlight not found"}
+    end
+
+    test "when user is a staff", %{user: user} do
+      _staff = insert(:staff, user: user, is_admin: false)
+
+      %{conn: conn, user: _user} = api_authenticate(user)
+
+      conn =
+        conn
+        |> get(Routes.spotlight_path(conn, :current))
+
+      assert json_response(conn, 404) == %{"error" => "Spotlight not found"}
+    end
+
+    test "when user is an attendee", %{user: user} do
+      _attendee = insert(:attendee, user: user)
+
+      %{conn: conn, user: _user} = api_authenticate(user)
+
+      conn =
+        conn
+        |> get(Routes.spotlight_path(conn, :current))
+
+      assert json_response(conn, 404) == %{"error" => "Spotlight not found"}
+    end
+
+    test "when user is a company", %{user: user} do
+      _company = insert(:company, user: user)
+
+      %{conn: conn, user: _user} = api_authenticate(user)
+
+      conn =
+        conn
+        |> get(Routes.spotlight_path(conn, :current))
+
+      assert json_response(conn, 401) == %{"error" => "Cannot access resource"}
+    end
   end
 
   describe "create" do
