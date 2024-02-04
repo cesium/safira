@@ -47,7 +47,8 @@ defmodule Safira.Contest.Badge do
       :begin_badge,
       :end_badge,
       :type,
-      :tokens
+      :tokens,
+      :counts_for_day
     ])
     |> cast_attachments(attrs, [:avatar])
     |> validate_required([
@@ -58,7 +59,8 @@ defmodule Safira.Contest.Badge do
       :begin_badge,
       :end_badge,
       :type,
-      :tokens
+      :tokens,
+      :counts_for_day
     ])
     |> validate_length(:name, min: 1, max: 255)
     |> validate_length(:description, min: 1, max: 1000)
@@ -76,7 +78,8 @@ defmodule Safira.Contest.Badge do
       :name,
       :description,
       :type,
-      :tokens
+      :tokens,
+      :counts_for_day
     ])
     |> cast_attachments(attrs, [:avatar])
     |> validate_required([
@@ -87,7 +90,8 @@ defmodule Safira.Contest.Badge do
       :name,
       :description,
       :type,
-      :tokens
+      :tokens,
+      :counts_for_day
     ])
     |> validate_length(:name, min: 1, max: 255)
     |> validate_length(:description, min: 1, max: 1000)
