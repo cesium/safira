@@ -238,21 +238,32 @@ defmodule Safira.Accounts do
   alias Safira.Contest.Redeem
 
   @doc """
-  Returns the list of attendees that have a badge from the given company
+  Returns the list of attendees for a company based on the company's sponsorship level.
   """
   def list_company_attendees(company_id) do
-    badge_id =
-      company_id
-      |> get_company!()
-      |> then(fn x -> x.badge_id end)
+    company = get_company!(company_id)
 
-    Repo.all(
-      from r in Redeem,
-        where: r.badge_id == ^badge_id,
-        join: a in assoc(r, :attendee),
-        preload: [attendee: a]
-    )
-    |> Enum.map(fn x -> x.attendee end)
+    if company.sponsorship in ["Bronze", "Silver"] do
+        badge_id =
+          company_id
+          |> get_company!()
+          |> then(fn x -> x.badge_id end)
+
+        Repo.all(
+          from r in Redeem,
+            where: r.badge_id == ^badge_id,
+            join: a in assoc(r, :attendee),
+            preload: [attendee: a]
+        )
+        |> Enum.map(fn x -> x.attendee end)
+    else
+        Repo.all(
+          from r in Redeem,
+            join: a in assoc(r, :attendee),
+            preload: [attendee: a]
+        )
+        |> Enum.map(fn x -> x.attendee end)
+    end
   end
 
   def is_company(conn) do

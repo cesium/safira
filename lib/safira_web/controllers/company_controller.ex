@@ -18,7 +18,6 @@ defmodule SafiraWeb.CompanyController do
   def company_attendees(conn, %{"id" => company_id}) do
     attendees = Accounts.list_company_attendees(company_id)
     current_user = Accounts.get_user(conn)
-
     if Accounts.is_company(conn) and current_user.company.id == String.to_integer(company_id) do
       render(conn, "index_attendees.json",
         attendees: attendees,
