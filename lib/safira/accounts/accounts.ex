@@ -257,12 +257,7 @@ defmodule Safira.Accounts do
       )
       |> Enum.map(fn x -> x.attendee end)
     else
-      Repo.all(
-        from r in Redeem,
-          join: a in assoc(r, :attendee),
-          preload: [attendee: a]
-      )
-      |> Enum.map(fn x -> x.attendee end)
+      Repo.all(Attendee)
     end
   end
 
