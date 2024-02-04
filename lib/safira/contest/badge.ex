@@ -28,6 +28,8 @@ defmodule Safira.Contest.Badge do
     field(:type, :integer)
     field(:tokens, :integer)
 
+    field(:counts_for_day, :boolean, default: true)
+
     has_many(:referrals, Referral)
     many_to_many(:attendees, Attendee, join_through: Redeem)
 

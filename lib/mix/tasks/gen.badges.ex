@@ -66,7 +66,8 @@ defmodule Mix.Tasks.Gen.Badges do
                      end_badge,
                      image_path,
                      type,
-                     tokens
+                     tokens,
+                     counts_for_day
                    ] ->
       {:ok, begin_datetime, _} = DateTime.from_iso8601(begin_time)
       {:ok, end_datetime, _} = DateTime.from_iso8601(end_time)
@@ -82,7 +83,8 @@ defmodule Mix.Tasks.Gen.Badges do
           begin_badge: begin_badge_datetime,
           end_badge: end_badge_datetime,
           type: String.to_integer(type),
-          tokens: String.to_integer(tokens)
+          tokens: String.to_integer(tokens),
+          counts_for_day: String.to_integer(counts_for_day) != 0
         },
         %{
           avatar: get_avatar(image_path)
