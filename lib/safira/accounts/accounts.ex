@@ -221,6 +221,8 @@ defmodule Safira.Accounts do
 
   def get_company!(id), do: Repo.get!(Company, id)
 
+  def get_company_by_badge!(badge_id), do: Repo.get_by(Company, badge_id: badge_id)
+
   def create_company(attrs \\ %{}) do
     %Company{}
     |> Company.changeset(attrs)

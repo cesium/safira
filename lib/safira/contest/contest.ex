@@ -8,13 +8,12 @@ defmodule Safira.Contest do
 
   alias Ecto.Multi
 
+  alias Safira.Accounts
   alias Safira.Accounts.Attendee
   alias Safira.Contest.Badge
   alias Safira.Contest.DailyToken
   alias Safira.Contest.Redeem
-
   alias Safira.Interaction
-
   alias Safira.Repo
 
   def list_badges do
@@ -278,9 +277,20 @@ defmodule Safira.Contest do
 
   defp calculate_badge_tokens(badge) do
     if Interaction.is_badge_spotlighted(badge.id) do
-      badge.tokens * 2
+      ceil(badge.tokens * get_multiplier(badge))
     else
       badge.tokens
+    end
+  end
+
+  defp get_multiplier(badge) do
+    company = Accounts.get_company_by_badge!(badge.id)
+
+    case company.sponsorship do
+      "Exclusive" -> 2
+      "Gold" -> 1.8
+      "Silver" -> 1.5
+      "Bronze" -> 1
     end
   end
 end
