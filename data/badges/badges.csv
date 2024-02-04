@@ -1,0 +1,103 @@
+name,description,begin_time,end_time,begin_badge,end_badge,image_path,type,tokens,counts_for_day
+Sessão de Abertura,Participa na Sessão de Abertura,2024-02-06T10:00:00Z,2024-02-06T11:00:00Z,2024-02-06T10:00:00Z,2024-02-06T12:00:00Z,data/badges/images/sessao_abertura.svg,3,20,1
+Dia 1,Participa no evento no dia 6 de fevereiro,2024-02-06T09:00:00Z,2024-02-06T18:00:00Z,2024-02-05T09:00:00Z,2024-02-05T09:01:00Z,data/badges/images/dia6.svg,3,20,1
+Dia 2,Participa no evento no dia 7 de fevereiro,2024-02-07T09:00:00Z,2024-02-07T18:00:00Z,2024-02-05T09:00:00Z,2024-02-05T09:01:00Z,data/badges/images/dia7.svg,3,20,1
+Dia 3,Participa no evento no dia 8 de fevereiro,2024-02-08T09:00:00Z,2024-02-08T18:00:00Z,2024-02-05T09:00:00Z,2024-02-05T09:01:00Z,data/badges/images/dia8.svg,3,20,1
+Dia 4,Participa no evento no dia 9 de fevereiro,2024-02-09T09:00:00Z,2024-02-09T17:00:00Z,2024-02-05T09:00:00Z,2024-02-05T09:01:00Z,data/badges/images/dia9.svg,3,20,1
+Determinado,"Participa em todos os dias do evento (6, 7, 8 e 9)",2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-05T09:00:00Z,2024-02-05T09:01:00Z,data/badges/images/determinado.svg,3,40,1
+Colecionador,Recebe 100 badges,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-05T09:00:00Z,2024-02-05T09:01:00Z,data/badges/images/colecionador.svg,3,100,1
+Talk Aficionado,Participa em todas as talks e tertúlias,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-05T09:00:00Z,2024-02-05T09:01:00Z,data/badges/images/talk_aficionado.svg,3,50,1
+Workshop Enthusiast,Participa em 3 workshops,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-05T09:00:00Z,2024-02-05T09:01:00Z,data/badges/images/workshop_enthusiast.svg,3,50,1
+Curious George,Participa em todos os pitches,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-05T09:00:00Z,2024-02-05T09:01:00Z,data/badges/images/curious_george.svg,3,50,1
+Acreditação,Faz o check-in no balcão do CP2,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,data/badges/images/acreditacao.svg,3,10,1
+SEI Lover,Dá like em todos os posts do Instagram da SEI,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,data/badges/images/sei_lover.svg,3,10,0
+Influencer,Partilha uma foto da SEI no Instagram (e dá tag à conta da SEI) ou no Twitter (e dá tag à conta do CeSIUM),2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,data/badges/images/influencer.svg,3,10,1
+Early Bird,Sê uma das primeiras 30 inscrições na SEI,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-05T09:00:00Z,2024-02-05T09:01:00Z,data/badges/images/early_bird.svg,3,10,1
+Let Me Take A Selfie,Tirar foto com a mascote,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,data/badges/images/let_me_take_a_selfie.svg,3,10,1
+Lucky Bastard,Joga na 'Spin the Wheel' para te habilitares a receber este badge,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,data/badges/images/lucky_bastard.svg,3,25,1
+"First Come, First Served",Sê um dos primeiros 50 a fazer o check-in,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-06T09:00:00Z,2024-02-06T14:00:00Z,data/badges/images/first_come_first_served.svg,3,20,1
+Attention span,Participa em 2 dias do evento,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-05T09:00:00Z,2024-02-05T09:01:00Z,data/badges/images/attention_span.svg,3,10,1
+Backdrop,Tira uma foto no backdrop da SEI,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,data/badges/images/backdrop.svg,3,25,1
+Gotta Catch Them All,Coleciona todos os badges,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-05T09:00:00Z,2024-02-05T09:01:00Z,data/badges/images/catch_them_all.svg,3,100,1
+SolidariUM,"Doa um bem alimentar, uma peça de vestuário ou um brinquedo no balcão do CP2",2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,data/badges/images/solidarium.svg,3,25,1
+Dripium,Traz uma peça de merch do CeSIUM vestida,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,data/badges/images/dripium.svg,3,10,1
+Bug Catcher,Encontra um bug no site da SEI,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,data/badges/images/bug_catcher.svg,3,10,1
+Rabbit Hole,Encontra a rota secreta no site da SEI,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,data/badges/images/rabbit_hole.svg,3,10,1
+Bear Grylls' Pupil,Vê o Survival Guide do evento,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,data/badges/images/survival_guide.svg,3,5,1
+It's time to BeReal,Tira um BeReal na SEI,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,data/badges/images/bereal.svg,3,10,0
+The REAL One,Tira um BeReal em todos os dias da SEI,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,data/badges/images/the_real_one.svg,3,40,0
+You Got a Friend in Me,Pede ao fotógrafo para tirar uma foto com um amigo,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,data/badges/images/you_got_a_friend_in_me.svg,3,10,1
+ESPETÁCULO!,Roda a roleta física,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,data/badges/images/espetaculo.svg,3,20,1
+Gambling Addiction,Joga na 'Spin the Wheel' e nos 'Slots',2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-05T09:00:00Z,2024-02-05T09:01:00Z,data/badges/images/gambling_addiction.svg,3,15,1
+5 empresas,Fala com 5 empresas,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-05T09:00:00Z,2024-02-05T09:01:00Z,data/badges/images/empresas5.svg,0,10,1
+10 empresas,Fala com 10 empresas,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-05T09:00:00Z,2024-02-05T09:01:00Z,data/badges/images/empresas10.svg,0,30,1
+15 empresas,Fala com 15 empresas,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-05T09:00:00Z,2024-02-05T09:01:00Z,data/badges/images/empresas15.svg,0,60,1
+20 empresas,Fala com 20 empresas,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-05T09:00:00Z,2024-02-05T09:01:00Z,data/badges/images/empresas20.svg,0,90,1
+25 empresas,Fala com 25 empresas,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-05T09:00:00Z,2024-02-05T09:01:00Z,data/badges/images/empresas25.svg,0,120,1
+29 empresas,Fala com 29 empresas,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-05T09:00:00Z,2024-02-05T09:01:00Z,data/badges/images/empresas29.svg,0,150,1
+Gold Mine,Coleciona os badges de todos os Gold sponsors,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-05T09:00:00Z,2024-02-05T09:01:00Z,data/badges/images/gold_mine.svg,3,20,1
+Spotlight,Participa num spotlight,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-05T09:00:00Z,2024-02-05T09:01:00Z,data/badges/images/spotlight.svg,3,15,1
+Talk Checkmarx,Participa na talk 'Application Security sem comprometer Developer Efficiency',2024-02-06T12:00:00Z,2024-02-06T13:00:00Z,2024-02-06T12:00:00Z,2024-02-06T13:00:00Z,data/badges/images/talk_checkmarx.svg,6,25,1
+Talk Accenture,Participa na talk 'READY! SET! CLOUD!',2024-02-06T14:00:00Z,2024-02-06T15:00:00Z,2024-02-06T14:00:00Z,2024-02-06T16:00:00Z,data/badges/images/talk_accenture.svg,6,25,1
+Tertúlia Motivation vs Consistency: Fueling Long-Term Success in Software Engineering,Participa na tertúlia 'Motivation vs Consistency: Fueling Long-Term Success in Software Engineering',2024-02-06T15:00:00Z,2024-02-06T16:00:00Z,2024-02-06T15:00:00Z,2024-02-06T17:00:00Z,data/badges/images/tertulia_motivation.svg,6,25,1
+Talk Retail Consult,Participa na talk 'Tech behind Trends: Da Ideia à Prateleira',2024-02-07T11:30:00Z,2024-02-07T12:30:00Z,2024-02-06T11:30:00Z,2024-02-06T13:30:00Z,data/badges/images/talk_retail.svg,6,25,1
+Talk Filipe Santiago,Participa na talk 'Como o software ajuda numa equipa de Fórmula 1?',2024-02-07T14:00:00Z,2024-02-07T15:00:00Z,2024-02-07T14:00:00Z,2024-02-07T16:00:00Z,data/badges/images/talk_formula1.svg,6,25,1
+Talk Ricardo Mota,Participa na talk 'Os videojogos como opção de carreira',2024-02-07T15:00:00Z,2024-02-07T16:00:00Z,2024-02-07T15:00:00Z,2024-02-07T17:00:00Z,data/badges/images/talk_videojogos.svg,6,25,1
+Tertúlia O Futuro Universitário com a Inteligência Artificial,Participa na tertúlia 'O Futuro Universitário com a Inteligência Artificial',2024-02-07T17:00:00Z,2024-02-07T18:00:00Z,2023-02-07T17:00:00Z,2024-02-07T19:00:00Z,data/badges/images/tertulia_ia.svg,6,25,1
+Talk Uphold,"Participa na talk 'Decoding the Future: Exploring Bitcoin, Blockchain, and DeFi Innovations'",2024-02-08T11:30:00Z,2024-02-08T12:30:00Z,2024-02-08T11:30:00Z,2024-02-08T13:30:00Z,data/badges/images/talk_uphold.svg,6,25,1
+Talk Adelino Correia,Participa na talk 'A Firewall morreu!',2024-02-08T14:00:00Z,2024-02-08T15:00:00Z,2024-02-08T14:00:00Z,2024-02-08T16:00:00Z,data/badges/images/talk_firewall.svg,6,25,1
+Talk Aleksey Kladov,Participa na talk 'Modern Systems Programming: Rust and Zig',2024-02-08T15:00:00Z,2024-02-08T16:00:00Z,2024-02-08T15:00:00Z,2024-02-08T17:00:00Z,data/badges/images/talk_rust_zig.svg,6,25,1
+Talk Critical TechWorks,Participa na talk 'Desenvolvimento de Software e Engenharia de Dados no grupo BMW - Integração e Criação de valor',2024-02-09T11:30:00Z,2024-02-09T12:30:00Z,2024-02-09T11:30:00Z,2024-02-09T13:30:00Z,data/badges/images/talk_critical.svg,6,25,1
+Talk AgentifAI,Participa na talk '',2024-02-09T14:00:00Z,2024-02-09T15:00:00Z,2024-02-09T14:00:00Z,2024-02-09T16:00:00Z,data/badges/images/talk_agentifai.svg,6,25,1
+Talk Vânia Gonçalves,Participa na talk 'Securing the Internet in the Quantum Age',2024-02-09T14:00:00Z,2024-02-09T15:00:00Z,2024-02-09T14:00:00Z,2024-02-09T16:00:00Z,data/badges/images/talk_quantum.svg,6,25,1
+Inquisitor 1,Faz uma pergunta numa talk ou num pitch,2024-02-06T12:00:00Z,2024-02-09T17:00:00Z,2024-02-06T12:00:00Z,2024-02-09T17:00:00Z,data/badges/images/inquisitor1.svg,2,10,1
+Inquisitor 2,Faz uma pergunta numa talk ou num pitch,2024-02-06T12:00:00Z,2024-02-09T17:00:00Z,2024-02-06T12:00:00Z,2024-02-09T17:00:00Z,data/badges/images/inquisitor2.svg,2,10,1
+Inquisitor 3,Faz uma pergunta numa talk ou num pitch,2024-02-06T12:00:00Z,2024-02-09T17:00:00Z,2024-02-06T12:00:00Z,2024-02-09T17:00:00Z,data/badges/images/inquisitor3.svg,2,10,1
+Inquisitor 4,Faz uma pergunta numa talk ou num pitch,2024-02-06T12:00:00Z,2024-02-09T17:00:00Z,2024-02-06T12:00:00Z,2024-02-09T17:00:00Z,data/badges/images/inquisitor4.svg,2,10,1
+Inquisitor 5,Faz uma pergunta numa talk ou num pitch,2024-02-06T12:00:00Z,2024-02-09T17:00:00Z,2024-02-06T12:00:00Z,2024-02-09T17:00:00Z,data/badges/images/inquisitor5.svg,2,10,1
+Speaker - Marcelo Pereira,Fala com o orador no final da talk,2024-02-06T12:30:00Z,2024-02-06T14:00:00Z,2024-02-06T12:30:00Z,2024-02-06T14:00:00Z,data/badges/images/speaker_marcelo_pereira.svg,5,5,1
+Speakers - João Travanca & Hurmat Zeeshan,Fala com os oradores no final da talk,2024-02-06T14:30:00Z,2024-02-06T16:00:00Z,2024-02-06T14:30:00Z,2024-02-06T16:00:00Z,data/badges/images/speaker_hurmat_joao.svg,5,5,1
+Speaker - Paulo Lopes,Fala com o orador no final da talk,2024-02-07T12:00:00Z,2024-02-07T13:30:00Z,2024-02-07T12:00:00Z,2024-02-07T13:30:00Z,data/badges/images/speaker_paulo_lopes.svg,5,5,1
+Speaker - Filipe Santiago,Fala com o orador no final da talk,2024-02-07T14:30:00Z,2024-02-07T16:00:00Z,2024-02-07T14:30:00Z,2024-02-07T16:00:00Z,data/badges/images/speaker_filipe_santiago.svg,5,5,1
+Speaker - Ricardo Mota,Fala com o orador no final da talk,2024-02-07T15:30:00Z,2024-02-07T17:00:00Z,2024-02-07T15:30:00Z,2024-02-07T17:00:00Z,data/badges/images/speaker_ricardo_mota.svg,5,5,1
+Speaker - João Folha,Fala com o orador no final da talk,2024-02-08T11:30:00Z,2024-02-08T13:00:00Z,2024-02-08T11:30:00Z,2024-02-08T13:00:00Z,data/badges/images/speaker_joao_folha.svg,5,5,1
+Speaker - Adelino Correia,Fala com o orador no final da talk,2024-02-08T14:30:00Z,2024-02-08T16:00:00Z,2024-02-08T14:30:00Z,2024-02-08T16:00:00Z,data/badges/images/speaker_adelino_correia.svg,5,5,1
+Speaker - Aleksey Kladov,Fala com o orador no final da talk,2024-02-08T15:30:00Z,2024-02-08T17:00:00Z,2024-02-08T15:30:00Z,2024-02-08T17:00:00Z,data/badges/images/speaker_aleksey_kladov.svg,5,5,1
+Speakers - Rita Faria & José Antunes,Fala com os oradores no final da talk,2024-02-09T12:00:00Z,2024-02-09T13:00:00Z,2024-02-09T12:00:00Z,2024-02-09T13:00:00Z,data/badges/images/speaker_rita_jose.svg,5,5,1
+Speaker - Bruno Carvalho,Fala com o orador no final da talk,2024-02-09T14:30:00Z,2024-02-09T16:00:00Z,2024-02-09T14:30:00Z,2024-02-09T16:00:00Z,data/badges/images/speaker_bruno_carvalho.svg,5,5,1
+Speaker - Vânia Gonçalves,Fala com o orador no final da talk,2024-02-09T15:30:00Z,2024-02-09T17:00:00Z,2024-02-09T15:30:00Z,2024-02-09T17:00:00Z,data/badges/images/speaker_vania_goncalves.svg,5,5,1
+Workshop 'Platform Engineering Roadmap & Security Analysis and Vulnerability Management' | MC Sonae,Participa no workshop 'Platform Engineering Roadmap & Security Analysis and Vulnerability Management' | MC Sonae,2024-02-07T09:00:00Z,2024-02-07T11:00:00Z,2024-02-07T09:00:00Z,2024-02-07T12:00:00Z,data/badges/images/workshop_mcsonae.svg,7,40,1
+Workshop 'How to protect your web applications. A practical guide from exploring to mitigating it' | CodSec,Participa no workshop 'How to protect your web applications. A practical guide from exploring to mitigating it' | CodSec,2024-02-07T09:00:00Z,2024-02-07T11:00:00Z,2024-02-07T09:00:00Z,2024-02-07T12:00:00Z,data/badges/images/workshop_codsec.svg,7,40,1
+Workshop 'Code Rumble: #Analytics #FinancialRisk #InterestRateRisk' | Deloitte,Participa no workshop 'Code Rumble: #Analytics #FinancialRisk #InterestRateRisk' | Deloitte,2024-02-07T09:00:00Z,2024-02-07T11:00:00Z,2024-02-07T09:00:00Z,2024-02-07T12:00:00Z,data/badges/images/workshop_deloitte.svg,7,40,1
+"Workshop 'Desenvolvimento de um Jogo REAL TIME - com Elixir, Phoenix Channels e Vue.js' | Yarilabs","Participa no workshop 'Desenvolvimento de um Jogo REAL TIME - com Elixir, Phoenix Channels e Vue.js' | Yarilabs",2024-02-08T09:00:00Z,2024-02-08T11:00:00Z,2024-02-08T09:00:00Z,2024-02-08T12:00:00Z,data/badges/images/workshop_yarilabs.svg,7,40,1
+Workshop 'How to make an awesome CV?' | Accenture,Participa no Workshop 'How to make an awesome CV?' | Accenture,2024-02-08T09:00:00Z,2024-02-08T11:00:00Z,2024-02-08T09:00:00Z,2024-02-08T12:00:00Z,data/badges/images/workshop_accenture.svg,7,40,1
+Workshop 'Software Supply Chain Security: An introduction' | Checkmarx,Participa no workshop 'Software Supply Chain Security: An introduction' | Checkmarx,2024-02-08T09:00:00Z,2024-02-08T11:00:00Z,2024-02-08T09:00:00Z,2024-02-08T12:00:00Z,data/badges/images/workshop_checkmarx.svg,7,40,1
+Workshop 'Cegid: AI for Business' | Cegid,Participa no workshop 'Cegid: AI for Business' | Cegid,2024-02-09T09:00:00Z,2024-02-09T11:00:00Z,2024-02-08T09:00:00Z,2024-02-09T12:00:00Z,data/badges/images/workshop_cegid.svg,7,40,1
+Workshop 'How to build a blockchain in Python' | Uphold,Participa no workshop 'How to build a blockchain in Python' | Uphold,2024-02-09T09:00:00Z,2024-02-09T11:00:00Z,2024-02-08T09:00:00Z,2024-02-09T12:00:00Z,data/badges/images/workshop_uphold.svg,7,40,1
+Pitch XpandIT,Participa no pitch,2024-02-06T16:30:00Z,2024-02-06T16:45:00Z,2024-02-06T16:30:00Z,2024-02-06T17:30:00Z,data/badges/images/pitch_xpandit.svg,9,20,1
+Pitch Retail Consult,Participa no pitch,2024-02-06T16:45:00Z,2024-02-06T17:00:00Z,2024-02-06T16:45:00Z,2024-02-06T17:45:00Z,data/badges/images/pitch_retail.svg,9,20,1
+Pitch IT Sector,Participa no pitch,2024-02-07T16:30:00Z,2024-02-07T17:00:00Z,2024-02-07T16:30:00Z,2024-02-07T17:30:00Z,data/badges/images/pitch_itsector.svg,9,20,1
+Pitch Critical Techworks,Participa no pitch,2024-02-08T16:30:00Z,2024-02-08T16:45:00Z,2024-02-08T16:30:00Z,2024-02-08T17:30:00Z,data/badges/images/pitch_critical.svg,9,20,1
+Pitch Continental,Participa no pitch,2024-02-08T16:45:00Z,2024-02-08T17:00:00Z,2024-02-08T16:45:00Z,2024-02-08T17:45:00Z,data/badges/images/pitch_continental.svg,9,20,1
+Pitch AgentifAI,Participa no pitch,2024-02-09T12:30:00Z,2024-02-09T12:45:00Z,2024-02-09T12:30:00Z,2024-02-09T13:30:00Z,data/badges/images/pitch_agentifai.svg,9,20,1
+Pitch Optare Solutions,Participa no pitch,2024-02-09T16:45:00Z,2024-02-09T17:00:00Z,2024-02-09T16:45:00Z,2024-02-09T17:45:00Z,data/badges/images/pitch_optare.svg,9,20,1
+Meme Maker,Publica (no Discord) um meme que receba mais de 20 reações (não valem repetidos!),2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,data/badges/images/meme_maker.svg,3,15,1
+Jantar Empresarial - participação,Sê convidado e vem ao Jantar Empresarial com a Accenture,2024-02-07T21:00:00Z,2024-02-07T23:00:00Z,2024-02-07T09:00:00Z,2024-02-07T23:59:00Z,data/badges/images/jantar_empresarial.svg,2,25,0
+CTF - Dia 1,Encontra a Flag do dia 1,2024-02-06T09:00:00Z,2024-02-06T18:00:00Z,2024-02-06T09:00:00Z,2024-02-06T18:00:00Z,data/badges/images/flag1.svg,2,20,1
+CTF - Dia 2,Encontra a Flag do dia 2,2024-02-07T09:00:00Z,2024-02-07T18:00:00Z,2024-02-07T09:00:00Z,2024-02-07T18:00:00Z,data/badges/images/flag2.svg,2,20,1
+CTF - Dia 3,Encontra a Flag do dia 3,2024-02-08T09:00:00Z,2024-02-08T18:00:00Z,2024-02-08T09:00:00Z,2024-02-08T18:00:00Z,data/badges/images/flag3.svg,2,20,1
+CTF - Dia 4,Encontra a Flag do dia 4,2024-02-09T09:00:00Z,2024-02-09T17:00:00Z,2024-02-09T09:00:00Z,2024-02-09T17:00:00Z,data/badges/images/flag4.svg,2,20,1
+Flag Master,Encontra todas as Flags,2024-02-09T09:00:00Z,2024-02-09T17:00:00Z,2024-02-05T09:00:00Z,2024-02-05T09:01:00Z,data/badges/images/flag_master.svg,2,100,1
+Curriculum Vitae,Dá upload do teu CV no site da SEI,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-05T09:00:00Z,2024-02-05T09:01:00Z,data/badges/images/cv.svg,2,200,1
+Easter Egg 1,Encontra um dos Easter Eggs escondidos,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,data/badges/images/easter_egg1.svg,1,10,1
+Easter Egg 2,Encontra um dos Easter Eggs escondidos,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2023-02-15T09:00:00Z,2024-02-09T17:00:00Z,data/badges/images/easter_egg2.svg,1,10,1
+Where's Wally?,Encontra o cubo do CeSIUM escondido no evento e apresenta um fotografia no balcão do CP2,2024-02-06T09:00:00Z,2024-02-09T17:00:00Z,2023-02-15T09:00:00Z,2024-02-09T17:00:00Z,data/badges/images/wally.svg,2,20,1
+SEI Ou Não SEI,Participa ou assiste ao gameshow da SEI,2024-02-06T17:00:00Z,2024-02-06T18:10:00Z,2024-02-06T17:00:00Z,2024-02-06T19:00:00Z,data/badges/images/sei_ou_nao_sei.svg,2,25,1
+Coffee Break 1,Participa no Coffee Break,2024-02-06T11:30:00Z,2024-02-06T12:00:00Z,2024-02-06T11:15:00Z,2024-02-06T12:30:00Z,data/badges/images/coffee.svg,0,5,0
+Coffee Break 2,Participa no Coffee Break,2024-02-06T16:00:00Z,2024-02-06T16:30:00Z,2024-02-06T15:45:00Z,2024-02-09T17:00:00Z,data/badges/images/coffee.svg,0,5,0
+Coffee Break 3,Participa no Coffee Break,2024-02-07T11:00:00Z,2024-02-07T11:30:00Z,2024-02-07T10:45:00Z,2024-02-07T12:00:00Z,data/badges/images/coffee.svg,0,5,0
+Coffee Break 4,Participa no Coffee Break,2024-02-07T16:00:00Z,2024-02-07T16:30:00Z,2024-02-07T15:45:00Z,2024-02-07T17:00:00Z,data/badges/images/coffee.svg,0,5,0
+Coffee Break 5,Participa no Coffee Break,2024-02-08T11:00:00Z,2024-02-08T11:30:00Z,2024-02-08T10:45:00Z,2024-02-08T12:00:00Z,data/badges/images/coffee.svg,0,5,0
+Coffee Break 6,Participa no Coffee Break,2024-02-08T16:00:00Z,2024-02-08T16:30:00Z,2024-02-08T15:45:00Z,2024-02-08T17:00:00Z,data/badges/images/coffee.svg,0,5,0
+Coffee Break 7,Participa no Coffee Break,2024-02-09T11:00:00Z,2024-02-09T11:30:00Z,2024-02-09T10:45:00Z,2024-02-09T12:00:00Z,data/badges/images/coffee.svg,0,5,0
+Coffee Break 8,Participa no Coffee Break,2024-02-09T16:00:00Z,2024-02-09T16:30:00Z,2024-02-09T15:45:00Z,2024-02-09T17:00:00Z,data/badges/images/coffee.svg,0,5,0

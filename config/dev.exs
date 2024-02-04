@@ -9,7 +9,8 @@ config :safira, Safira.Repo,
   port: System.get_env("DB_PORT", "5432"),
   hostname: System.get_env("DB_HOST", "localhost"),
   show_sensitive_data_on_connection_error: true,
-  pool_size: 10
+  ssl: true,
+  pool_size: 2
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
