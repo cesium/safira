@@ -241,7 +241,8 @@ defmodule Safira.Contest do
         join: t in DailyToken,
         on: a.id == t.attendee_id,
         where:
-          not is_nil(a.user_id) and fragment("?::date", r.inserted_at) == ^date and b.type != ^0 and
+          not is_nil(a.user_id) and fragment("?::date", r.inserted_at) == ^date and
+            b.counts_for_day and
             fragment("?::date", t.day) == ^date,
         select: %{attendee: a, token_count: t.quantity},
         preload: [badges: b, daily_tokens: t]
