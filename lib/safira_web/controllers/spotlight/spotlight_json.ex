@@ -8,8 +8,13 @@ defmodule SafiraWeb.SpotlightJSON do
   end
 
   def current(%{company: company, spotlight: spotlight}) do
+    data =
+      data(company, spotlight)
+      |> Map.drop([:remaining])
+      |> Map.put(:badge_id, company.badge_id)
+
     %{
-      data: data(company, spotlight)
+      data: data
     }
   end
 
