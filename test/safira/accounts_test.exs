@@ -516,8 +516,8 @@ defmodule Safira.AccountsTest do
       assert Accounts.list_company_attendees(company.id) == [attendee1, attendee2]
     end
 
-    test "attendee redeemed another company's badge" do
-      company = insert(:company)
+    test "attendee redeemed another Bronze company's badge" do
+      company = insert(:company, sponsorship: "Bronze")
       attendee = insert(:attendee)
 
       insert(:redeem, attendee: attendee)
@@ -526,7 +526,7 @@ defmodule Safira.AccountsTest do
     end
 
     test "one attendee redeemed and one not" do
-      company = insert(:company)
+      company = insert(:company, sponsorship: "Bronze")
       [attendee1, attendee2] = insert_pair(:attendee)
 
       insert(:redeem, attendee: attendee1, badge: company.badge)

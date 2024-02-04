@@ -4,7 +4,7 @@ defmodule SafiraWeb.CompanyControllerTest do
   setup %{conn: conn} do
     user = create_user_strategy(:user)
     badge = insert(:badge)
-    company = insert(:company, user: user, badge: badge)
+    company = insert(:company, user: user, badge: badge, sponsorship: "Bronze")
 
     {:ok, conn: put_req_header(conn, "accept", "application/json"), user: user, company: company}
   end

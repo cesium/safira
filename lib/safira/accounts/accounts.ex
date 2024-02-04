@@ -244,25 +244,25 @@ defmodule Safira.Accounts do
     company = get_company!(company_id)
 
     if company.sponsorship in ["Bronze", "Silver"] do
-        badge_id =
-          company_id
-          |> get_company!()
-          |> then(fn x -> x.badge_id end)
+      badge_id =
+        company_id
+        |> get_company!()
+        |> then(fn x -> x.badge_id end)
 
-        Repo.all(
-          from r in Redeem,
-            where: r.badge_id == ^badge_id,
-            join: a in assoc(r, :attendee),
-            preload: [attendee: a]
-        )
-        |> Enum.map(fn x -> x.attendee end)
+      Repo.all(
+        from r in Redeem,
+          where: r.badge_id == ^badge_id,
+          join: a in assoc(r, :attendee),
+          preload: [attendee: a]
+      )
+      |> Enum.map(fn x -> x.attendee end)
     else
-        Repo.all(
-          from r in Redeem,
-            join: a in assoc(r, :attendee),
-            preload: [attendee: a]
-        )
-        |> Enum.map(fn x -> x.attendee end)
+      Repo.all(
+        from r in Redeem,
+          join: a in assoc(r, :attendee),
+          preload: [attendee: a]
+      )
+      |> Enum.map(fn x -> x.attendee end)
     end
   end
 
