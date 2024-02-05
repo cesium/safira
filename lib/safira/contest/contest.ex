@@ -171,7 +171,7 @@ defmodule Safira.Contest do
     Multi.new()
     |> Multi.insert(:redeem, fn _ ->
       if Interaction.is_badge_spotlighted(attrs["badge_id"]) do
-        attrs = Map.put(attrs, :spotlighted, true)
+        attrs = Map.put(attrs, "spotlighted", true)
         Redeem.changeset(%Redeem{}, attrs, user_type)
       else
         Redeem.changeset(%Redeem{}, attrs, user_type)
