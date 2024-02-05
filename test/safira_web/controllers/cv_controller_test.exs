@@ -6,7 +6,15 @@ defmodule SafiraWeb.CVControllerTest do
 
     user_company = create_user_strategy(:user)
     user_company_no_access = create_user_strategy(:user)
-    company = insert(:company, user: user_company, badge: badge, has_cv_access: true)
+
+    company =
+      insert(:company,
+        user: user_company,
+        badge: badge,
+        has_cv_access: true,
+        sponsorship: "Bronze"
+      )
+
     company_no_access = insert(:company, user: user_company_no_access, has_cv_access: false)
 
     user_attendee_with_badge = create_user_strategy(:user)
