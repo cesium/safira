@@ -14,6 +14,8 @@ defmodule Safira.Contest.Redeem do
   alias Safira.Contest.Badge
 
   schema "redeems" do
+    field(:spotlighted, :boolean, default: false)
+
     belongs_to(:attendee, Attendee, foreign_key: :attendee_id, type: :binary_id)
     belongs_to(:staff, Staff)
     belongs_to(:badge, Badge)
@@ -24,7 +26,7 @@ defmodule Safira.Contest.Redeem do
   @doc false
   def changeset(redeem, attrs, user_type \\ :staff) do
     redeem
-    |> cast(attrs, [:attendee_id, :staff_id, :badge_id])
+    |> cast(attrs, [:spotlighted, :attendee_id, :staff_id, :badge_id])
     |> foreign_key_constraint(:attendee_id)
     |> foreign_key_constraint(:staff_id)
     |> validate_required([:attendee_id, :badge_id])
