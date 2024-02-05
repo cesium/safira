@@ -3,7 +3,7 @@ defmodule Safira.Repo.Migrations.CreateSpotlights do
 
   def change do
     create table(:spotlights) do
-      add :end, :utc_datetime
+      add :active, :boolean, default: false, null: false
       add :badge_id, references(:badges, on_delete: :nothing)
 
       add :lock_version, :integer, default: 1
