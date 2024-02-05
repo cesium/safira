@@ -19,7 +19,7 @@ defmodule Safira.Repo.Seeds.Accounts do
   end
 
   defp seed_companies do
-    Companies.run(["data/sponsors.csv"])
+    Companies.run(["data/sponsors/sponsors.csv"])
   end
 
   defp seed_staffs do

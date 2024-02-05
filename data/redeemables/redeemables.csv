@@ -1,0 +1,12 @@
+name,price,stock,max_per_user,description,is_redeemable,path_to_image
+Varsity Jacket,300,7,1,Varsity Jacket LEI. Limitado ao stock existente.,yes,data/redeemables/images/varsity.png
+Meias Brancas,75,5,1,Meias CeSIUM.,yes,data/redeemables/images/meias-brancas.png
+Meias Laranja,75,5,1,Meias CeSIUM.,yes,data/redeemables/images/meias-laranja.png
+T-shirt CeSIUM '23,200,30,1,T-shirt CeSIUM '23. Limitado ao stock existente.,yes,data/redeemables/images/tshirt-cesium-23.png
+Hoodie SEI '22,400,10,1,Limitado ao stock existente.,yes,data/redeemables/images/hoodie-sei-22.png
+Caneca SEI '23,300,20,1,,yes,data/redeemables/images/caneca-sei-23.png
+Caneca SEI '22,300,10,1,,yes,data/redeemables/images/caneca-sei-22.png
+Bloco SEI '23,125,100,1,,yes,data/redeemables/images/caneca-sei-23.png
+Bilhete da Roleta SEI RETRO,100,9999,9999,Bilhete pode ser utilizado para rodar a roleta SEI RETRO onde o participante se habilita a ganhar um prémio.,yes,data/redeemables/images/spin-ticket.png
+Pack de Stickers,50,300,1,(Imagem Exemplificativa),yes,data/redeemables/images/stickers-24.png
+T-shirt SEI '23,100,3,1,Limitado ao stock existente.,yes,data/redeemables/images/tshirt-sei-23.png
