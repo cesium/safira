@@ -15,7 +15,7 @@ defmodule Safira.Repo.Seeds.Store do
   end
 
   defp seed_redeemables do
-    Redeemables.run(["data/redeemables.csv"])
+    Redeemables.run(["data/redeemables/redeemables.csv"])
   end
 
   defp seed_buys do
