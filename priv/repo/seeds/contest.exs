@@ -15,7 +15,7 @@ defmodule Safira.Repo.Seeds.Contest do
   end
 
   defp seed_badges do
-    Badges.run(["data/badges.csv"])
+    Badges.run(["data/badges/badges.csv"])
   end
 
   defp seed_redeems do
