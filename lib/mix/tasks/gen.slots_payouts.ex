@@ -45,7 +45,7 @@ defmodule Mix.Tasks.Gen.Payouts do
         if x < 1 do
           list
         else
-          raise "The sum of all prizes probabilities is bigger 1."
+          raise "The sum of all payout probabilities is bigger 1."
         end
     end
   end
