@@ -7,9 +7,8 @@ defmodule Safira.Jobs.SpotlightBadge do
   """
   import Ecto.Query, warn: false
 
-  alias Safira.Accounts.Attendee
   alias Safira.Contest
-  alias Safira.Contest.Badge
+  alias Safira.Contest.{Badge, Redeem}
   alias Safira.Repo
 
   @spec run(integer()) :: :ok
@@ -21,16 +20,16 @@ defmodule Safira.Jobs.SpotlightBadge do
   end
 
   defp list_eligible_attendees(badge_id) do
-    Attendee
-    |> join(:inner, [a], r in assoc(a, :redeems))
-    |> where([a, r], r.spotlighted == true and r.badge_id != ^badge_id)
+    Redeem
+    |> where([r], r.spotlighted == true and r.badge_id != ^badge_id)
+    |> select([r], r.attendee_id)
     |> Repo.all()
   end
 
-  defp create_redeem(attendee, badge) do
+  defp create_redeem(attendee_id, badge) do
     Contest.create_redeem(
       %{
-        attendee_id: attendee.id,
+        attendee_id: attendee_id,
         staff_id: 1,
         badge_id: badge.id
       },
