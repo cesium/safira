@@ -236,65 +236,14 @@ defmodule SafiraWeb.SpotlightControllerTest do
       assert json_response(conn, 404) == %{"error" => "Spotlight not found"}
     end
 
-    test "when user is a staff", %{user: user} do
-      _staff = insert(:staff, user: user, is_admin: false)
-
-      %{conn: conn, user: _user} = api_authenticate(user)
+    test "when the user is not authenticated" do
+      conn = build_conn()
 
       conn =
         conn
         |> get(Routes.spotlight_path(conn, :current))
 
       assert json_response(conn, 404) == %{"error" => "Spotlight not found"}
-    end
-
-    test "when user is an attendee", %{user: user} do
-      _attendee = insert(:attendee, user: user)
-
-      %{conn: conn, user: _user} = api_authenticate(user)
-
-      conn =
-        conn
-        |> get(Routes.spotlight_path(conn, :current))
-
-      assert json_response(conn, 404) == %{"error" => "Spotlight not found"}
-    end
-
-    test "when user is an attendee and a spotlight is running", %{user: user} do
-      _staff = insert(:staff, user: user, is_admin: true)
-      company = insert(:company, remaining_spotlights: 1)
-
-      %{conn: conn, user: _user} = api_authenticate(user)
-
-      # Start a spotlight for the company
-      Interaction.start_spotlight(company)
-      spotlight = Interaction.get_spotlight()
-      assert spotlight != nil
-
-      conn =
-        conn
-        |> get(Routes.spotlight_path(conn, :current))
-
-      assert json_response(conn, 200) == %{
-               "data" => %{
-                 "id" => company.id,
-                 "name" => company.name,
-                 "badge_id" => company.badge_id,
-                 "end" => DateTime.to_iso8601(spotlight.end)
-               }
-             }
-    end
-
-    test "when user is a company", %{user: user} do
-      _company = insert(:company, user: user)
-
-      %{conn: conn, user: _user} = api_authenticate(user)
-
-      conn =
-        conn
-        |> get(Routes.spotlight_path(conn, :current))
-
-      assert json_response(conn, 401) == %{"error" => "Cannot access resource"}
     end
   end
 

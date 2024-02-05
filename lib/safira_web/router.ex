@@ -47,6 +47,8 @@ defmodule SafiraWeb.Router do
 
     get "/is_registered/:id", AuthController, :is_registered
 
+    get "/spotlight", SpotlightController, :current
+
     pipe_through :jwt_authenticated
 
     get "/user", AuthController, :user
@@ -62,7 +64,6 @@ defmodule SafiraWeb.Router do
     post "/give_bonus/:id", BonusController, :give_bonus
 
     get "/spotlights", SpotlightController, :index
-    get "/spotlight", SpotlightController, :current
     post "/spotlight/:company_id", SpotlightController, :create
 
     post "/store/redeem", DeliverRedeemableController, :create
