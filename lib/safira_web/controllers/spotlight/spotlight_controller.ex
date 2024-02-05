@@ -25,27 +25,19 @@ defmodule SafiraWeb.SpotlightController do
   end
 
   def current(conn, _params) do
-    is_company = Accounts.is_company(conn)
     spotlight = Interaction.get_spotlight()
 
-    if is_company do
+    if !spotlight || DateTime.compare(spotlight.end, DateTime.utc_now()) == :lt do
       conn
-      |> put_status(:unauthorized)
-      |> json(%{error: "Cannot access resource"})
+      |> put_status(:not_found)
+      |> json(%{error: "Spotlight not found"})
       |> halt()
     else
-      if !spotlight || DateTime.compare(spotlight.end, DateTime.utc_now()) == :lt do
-        conn
-        |> put_status(:not_found)
-        |> json(%{error: "Spotlight not found"})
-        |> halt()
-      else
-        company = Accounts.get_company_by_badge!(spotlight.badge_id)
+      company = Accounts.get_company_by_badge!(spotlight.badge_id)
 
-        conn
-        |> put_status(:ok)
-        |> render(:current, company: company, spotlight: spotlight)
-      end
+      conn
+      |> put_status(:ok)
+      |> render(:current, company: company, spotlight: spotlight)
     end
   end
 
