@@ -112,6 +112,7 @@ defmodule SafiraWeb.CompanyControllerTest do
         %{
           "id" => attendee.id,
           "nickname" => attendee.nickname,
+          "email" => attendee.user.email,
           "name" => attendee.name,
           "avatar" => nil,
           "cv" => nil,
@@ -143,6 +144,7 @@ defmodule SafiraWeb.CompanyControllerTest do
         %{
           "id" => attendee1.id,
           "nickname" => attendee1.nickname,
+          "email" => attendee1.user.email,
           "name" => attendee1.name,
           "course" => nil,
           "avatar" => nil,
@@ -153,6 +155,7 @@ defmodule SafiraWeb.CompanyControllerTest do
         %{
           "id" => attendee2.id,
           "nickname" => attendee2.nickname,
+          "email" => attendee2.user.email,
           "name" => attendee2.name,
           "course" => nil,
           "avatar" => nil,
@@ -194,6 +197,7 @@ defmodule SafiraWeb.CompanyControllerTest do
         %{
           "id" => attendee1.id,
           "nickname" => attendee1.nickname,
+          "email" => attendee1.user.email,
           "name" => attendee1.name,
           "course" => nil,
           "avatar" => nil,

@@ -257,9 +257,10 @@ defmodule Safira.Accounts do
           join: a in assoc(r, :attendee),
           preload: [attendee: a]
       )
-      |> Enum.map(fn x -> x.attendee end)
+      |> Enum.map(fn x -> x.attendee |> Repo.preload(:user) end)
     else
       Repo.all(Attendee)
+      |> Repo.preload(:user)
     end
   end
 
