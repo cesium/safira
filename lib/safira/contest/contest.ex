@@ -169,7 +169,13 @@ defmodule Safira.Contest do
 
   def create_redeem(attrs \\ %{}, user_type \\ :staff) do
     Multi.new()
-    |> Multi.insert(:redeem, Redeem.changeset(%Redeem{}, attrs, user_type))
+    |> Multi.insert(:redeem, fn _ ->
+      if Interaction.is_badge_spotlighted(attrs.badge_id) do
+        attrs = Map.put(attrs, :spotlighted, true)
+      end
+
+      Redeem.changeset(%Redeem{}, attrs, user_type)
+    end)
     |> Multi.update(:attendee, fn %{redeem: redeem} ->
       redeem = Repo.preload(redeem, [:badge, :attendee])
 
