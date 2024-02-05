@@ -14,7 +14,7 @@ defmodule Safira.Repo.Seeds.Roulette do
   end
 
   defp seed_prizes do
-    Prizes.run(["data/wheel.csv"])
+    Prizes.run(["data/prizes/prizes.csv"])
   end
 
   defp seed_spins do
