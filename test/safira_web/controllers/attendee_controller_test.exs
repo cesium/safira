@@ -183,7 +183,8 @@ defmodule SafiraWeb.AttendeeControllerTest do
         "id" => attendee.id,
         "name" => attendee.name,
         "nickname" => "john_doe123",
-        "token_balance" => 0
+        "token_balance" => 0,
+        "email" => attendee.user.email
       }
 
       assert json_response(conn, 200)["data"] == expected_attendee

@@ -73,6 +73,7 @@ defmodule SafiraWeb.AttendeeView do
     %{
       id: attendee.id,
       nickname: attendee.nickname,
+      email: attendee.user.email,
       name: attendee.name,
       course: attendee.course_id,
       avatar: Avatar.url({attendee.avatar, attendee}, :original),
@@ -86,6 +87,7 @@ defmodule SafiraWeb.AttendeeView do
     %{
       id: attendee.id,
       nickname: attendee.nickname,
+      email: attendee.user.email,
       name: attendee.name,
       course: attendee.course_id,
       avatar: Avatar.url({attendee.avatar, attendee}, :original),

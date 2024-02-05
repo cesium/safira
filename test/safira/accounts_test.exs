@@ -495,7 +495,7 @@ defmodule Safira.AccountsTest do
         attendee
         |> forget(:user)
 
-      assert Accounts.list_company_attendees(company.id) == [attendee]
+      assert Accounts.list_company_attendees(company.id) == [attendee |> Repo.preload(:user)]
     end
 
     test "multiple attendees" do
@@ -513,7 +513,10 @@ defmodule Safira.AccountsTest do
         attendee2
         |> forget(:user)
 
-      assert Accounts.list_company_attendees(company.id) == [attendee1, attendee2]
+      assert Accounts.list_company_attendees(company.id) == [
+               attendee1 |> Repo.preload(:user),
+               attendee2 |> Repo.preload(:user)
+             ]
     end
 
     test "attendee redeemed another Bronze company's badge" do
@@ -536,7 +539,7 @@ defmodule Safira.AccountsTest do
         attendee1
         |> forget(:user)
 
-      assert Accounts.list_company_attendees(company.id) == [attendee1]
+      assert Accounts.list_company_attendees(company.id) == [attendee1 |> Repo.preload(:user)]
     end
   end
 

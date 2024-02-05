@@ -56,7 +56,7 @@ defmodule Safira.Contest do
 
   def get_badge_preload!(id) do
     Repo.get!(Badge, id)
-    |> Repo.preload(:attendees)
+    |> Repo.preload(attendees: [:user])
   end
 
   def get_badge_description(description) do
