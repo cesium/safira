@@ -67,6 +67,7 @@ defmodule SafiraWeb.Router do
 
     post "/store/redeem", DeliverRedeemableController, :create
     post "/roulette/redeem", DeliverPrizeController, :create
+    post "/slots", SlotsController, :spin
 
     delete "/roulette/redeem/:badge_id/:user_id", DeliverPrizeController, :delete
 

@@ -241,9 +241,9 @@ defmodule Safira.Roulette do
   end
 
   @doc """
-  Transaction that take a number of tokens from an attendee,
-  apply a probability-based function for "spinning the wheel",
-  and give the price to the attendee.
+  Transaction that takes a number of tokens from an attendee,
+  and applies a probability-based function for "spinning the wheel",
+  and give the prize to the attendee.
   """
   def spin_transaction(attendee) do
     Multi.new()
