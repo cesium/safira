@@ -208,6 +208,15 @@ defmodule Safira.Interaction do
       Repo.transaction(multi)
       |> case do
         {:ok, result} ->
+          Phoenix.PubSub.broadcast(Safira.PubSub, "spotlight", %{
+            "spotlight" => %{
+              "id" => result.update_company.badge_id,
+              "name" => result.update_company.name,
+              "badge_id" => result.update_company.badge_id,
+              "end" => result.upsert_spotlight.end
+            }
+          })
+
           result
 
         {:error, _failed_operation, changeset, _changes_so_far} ->
