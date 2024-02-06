@@ -2,7 +2,7 @@ defmodule SafiraWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", SafiraWeb.RoomChannel
+  channel "spotlight", SafiraWeb.SpotlightChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
