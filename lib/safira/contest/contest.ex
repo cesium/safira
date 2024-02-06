@@ -57,6 +57,7 @@ defmodule Safira.Contest do
   def get_badge_preload!(id) do
     Repo.get!(Badge, id)
     |> Repo.preload(attendees: [:user])
+    |> Map.update!(:attendees, fn x -> Enum.filter(x, fn x -> not is_nil(x.user_id) end) end)
   end
 
   def get_badge_description(description) do
