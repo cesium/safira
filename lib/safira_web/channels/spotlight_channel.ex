@@ -1,4 +1,7 @@
 defmodule SafiraWeb.SpotlightChannel do
+  @moduledoc """
+  Phoenix Channel to handle spotlight creations
+  """
   use Phoenix.Channel
 
   alias Safira.Accounts
