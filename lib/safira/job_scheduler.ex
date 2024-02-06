@@ -10,46 +10,102 @@ defmodule Safira.JobScheduler do
     Keyword.put(opts, :jobs, load_jobs())
   end
 
-  # FIXME: These are only examples. Should be updated to the real jobs, with the correct parameters
-  # and should be set to active.
   defp load_jobs do
     [
       create_job(
-        :daily_badge,
+        :day1_badge,
         ~e[0 * * * *],
-        {Jobs.DailyBadge, :run, [123, "2023-12-01"]},
-        :inactive
+        {Jobs.DailyBadge, :run, [206, "2024-02-06"]}
       ),
-      create_job(:all_gold_badge, ~e[5 * * * *], {Jobs.AllGoldBadge, :run, [123]}, :inactive),
       create_job(
-        :full_participation_badge,
+        :day2_badge,
+        ~e[1 * * * *],
+        {Jobs.DailyBadge, :run, [207, "2024-02-07"]}
+      ),
+      create_job(
+        :day3_badge,
+        ~e[2 * * * *],
+        {Jobs.DailyBadge, :run, [208, "2024-02-08"]}
+      ),
+      create_job(
+        :day4_badge,
+        ~e[3 * * * *],
+        {Jobs.DailyBadge, :run, [209, "2024-02-09"]}
+      ),
+      create_job(
+        :all_days_badge,
+        ~e[4 * * * *],
+        {Jobs.FullParticipationBadge, :run, [210]}
+      ),
+      create_job(
+        :redeem_100_badges,
+        ~e[5 * * * *],
+        {Jobs.CheckpointBadge, :run, [211, 100, 0]}
+      ),
+      create_job(
+        :all_talks,
+        ~e[6 * * * *],
+        {Jobs.CheckpointBadge, :run, [212, 13, 6, 0]}
+      ),
+      create_job(
+        :three_workshops,
+        ~e[7 * * * *],
+        {Jobs.CheckpointBadge, :run, [213, 3, 7, 0]}
+      ),
+      create_job(
+        :all_pitches,
+        ~e[8 * * * *],
+        {Jobs.CheckpointBadge, :run, [214, 5, 9, 0]}
+      ),
+      create_job(
+        :two_days,
+        ~e[9 * * * *],
+        {Jobs.ParticipationBadge, :run, [222, 2]}
+      ),
+      create_job(
+        :all_badges,
         ~e[10 * * * *],
-        {Jobs.FullParticipationBadge, :run, [123]},
-        :inactive
+        {Jobs.CheckpointBadge, :run, [224, 126, 0]}
       ),
       create_job(
-        :participate_in_two_days,
-        ~e[15 * * * *],
-        {Jobs.ParticipationBadge, :run, [123, 2]},
-        :inactive
+        :gambling_addiction,
+        ~e[11 * * * *],
+        {Jobs.GamblingAddiction, :run, [234]}
       ),
       create_job(
-        :redeem_fifty_badges,
-        ~e[25 * * * *],
-        {Jobs.CheckpointBadge, :run, [123, 50, 0]},
-        :inactive
+        :all_gold,
+        ~e[12 * * * *],
+        {Jobs.AllGoldBadge, :run, [241]}
       ),
       create_job(
-        :attend_three_workshops,
-        ~e[30 * * * *],
-        {Jobs.CheckpointBadge, :run, [123, 3, 7]},
-        :inactive
+        :visit_five_booths,
+        ~e[20 * * * *],
+        {Jobs.CheckpointBadge, :run, [235, 5, 4, 10]}
+      ),
+      create_job(
+        :visit_ten_booths,
+        ~e[21 * * * *],
+        {Jobs.CheckpointBadge, :run, [236, 10, 4, 30]}
+      ),
+      create_job(
+        :visit_fifteen_booths,
+        ~e[22 * * * *],
+        {Jobs.CheckpointBadge, :run, [237, 15, 4, 60]}
       ),
       create_job(
         :visit_twenty_booths,
-        ~e[20 * * * *],
-        {Jobs.CheckpointBadgeWithRedeemable, :run, [123, 20, 4, 30, 456]},
-        :inactive
+        ~e[23 * * * *],
+        {Jobs.CheckpointBadge, :run, [238, 20, 4, 100]}
+      ),
+      create_job(
+        :visit_twenty_five_booths,
+        ~e[24 * * * *],
+        {Jobs.CheckpointBadge, :run, [239, 25, 4, 120]}
+      ),
+      create_job(
+        :visit_all_booths,
+        ~e[25 * * * *],
+        {Jobs.CheckpointBadge, :run, [240, 29, 4, 150]}
       )
     ]
   end
