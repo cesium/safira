@@ -259,7 +259,7 @@ defmodule Safira.Accounts do
       )
       |> Enum.map(fn x -> x.attendee |> Repo.preload(:user) end)
     else
-      Repo.all(Attendee)
+      Repo.all(from a in Attendee, where: not is_nil(a.user_id))
       |> Repo.preload(:user)
     end
   end
