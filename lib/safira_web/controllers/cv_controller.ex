@@ -47,7 +47,7 @@ defmodule SafiraWeb.CVController do
 
     company = Accounts.get_company!(company_id)
 
-    if Accounts.is_admin(conn) or (curr_company_id == company.id and company.has_cv_access) do
+    if Accounts.is_admin(conn) or curr_company_id == company.id do
       zip =
         Accounts.list_company_attendees(company_id)
         |> Enum.concat(Accounts.list_staffs())

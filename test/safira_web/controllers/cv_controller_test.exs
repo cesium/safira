@@ -77,20 +77,6 @@ defmodule SafiraWeb.CVControllerTest do
                (attendee.nickname <> ".pdf") |> String.to_charlist()
     end
 
-    test "company does not have access to CV", %{
-      user_company_no_access: user_company,
-      company_no_access: company,
-      attendee_with_badge: _attendee
-    } do
-      %{conn: conn, user: _user} = api_authenticate(user_company)
-
-      conn =
-        conn
-        |> get(Routes.cv_path(conn, :company_cvs, company.id))
-
-      assert response(conn, 403)
-    end
-
     test "admin downloads the CVs of a company's attendees", %{
       company: company,
       attendee_with_badge: attendee
