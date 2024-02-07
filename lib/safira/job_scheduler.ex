@@ -105,7 +105,7 @@ defmodule Safira.JobScheduler do
       create_job(
         :visit_all_booths,
         ~e[25 * * * *],
-        {Jobs.CheckpointBadge, :run, [240, 29, 4, 150]}
+        {Jobs.CheckpointBadge, :run, [240, 28, 4, 150]}
       ),
       create_job(
         :upload_cv,
