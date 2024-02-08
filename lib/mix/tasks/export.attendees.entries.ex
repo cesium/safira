@@ -48,16 +48,14 @@ defmodule Mix.Tasks.Export.Attendees.Entries do
   end
 
   defp csv_io(attendee, :separate) do
-    email = Accounts.get_user!(attendee.user_id).email
-
     Enum.to_list(1..attendee.entries)
-    |> Enum.map(fn _x -> "#{attendee.id},#{attendee.name},#{attendee.nickname},#{email}" end)
+    |> Enum.map(fn _x -> "#{attendee.name},#{attendee.nickname}" end)
   end
 
   defp csv_io(attendee, :aggregate) do
     if attendee.entries > 0 do
       [
-        "#{attendee.id},#{attendee.name},#{Accounts.get_user!(attendee.user_id).email},#{attendee.entries}"
+        "#{attendee.name},#{attendee.nickname},#{attendee.entries}"
       ]
     else
       []
@@ -65,10 +63,10 @@ defmodule Mix.Tasks.Export.Attendees.Entries do
   end
 
   defp add_header(list, :aggregate) do
-    ["id,uuid,name,nickname,email,entries" | list]
+    ["id,name,nickname,entries" | list]
   end
 
   defp add_header(list, :separate) do
-    ["id,uuid,name,nickname,email" | list]
+    ["id,name,nickname" | list]
   end
 end
