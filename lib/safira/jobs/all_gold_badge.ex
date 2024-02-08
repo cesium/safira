@@ -15,7 +15,7 @@ defmodule Safira.Jobs.AllGoldBadge do
   @spec run(integer()) :: :ok
   def run(badge_id) do
     list_eligible_attendees()
-    |> Enum.each(&create_redeem(&1.id, badge_id))
+    |> Enum.each(&create_redeem(&1, badge_id))
   end
 
   defp list_eligible_attendees do
