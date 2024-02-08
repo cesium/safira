@@ -69,5 +69,6 @@ defmodule Safira.Jobs.CheckpointBadge do
         }
       )
     )
+    |> Repo.transaction()
   end
 end

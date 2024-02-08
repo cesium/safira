@@ -79,42 +79,42 @@ defmodule Safira.JobScheduler do
       ),
       create_job(
         :visit_five_booths,
-        ~e[20 * * * *],
+        ~e[13 * * * *],
         {Jobs.CheckpointBadge, :run, [235, 5, 4, 10]}
       ),
       create_job(
         :visit_ten_booths,
-        ~e[21 * * * *],
+        ~e[14 * * * *],
         {Jobs.CheckpointBadge, :run, [236, 10, 4, 30]}
       ),
       create_job(
         :visit_fifteen_booths,
-        ~e[22 * * * *],
+        ~e[15 * * * *],
         {Jobs.CheckpointBadge, :run, [237, 15, 4, 60]}
       ),
       create_job(
         :visit_twenty_booths,
-        ~e[23 * * * *],
+        ~e[16 * * * *],
         {Jobs.CheckpointBadge, :run, [238, 20, 4, 100]}
       ),
       create_job(
         :visit_twenty_five_booths,
-        ~e[24 * * * *],
+        ~e[17 * * * *],
         {Jobs.CheckpointBadge, :run, [239, 25, 4, 120]}
       ),
       create_job(
         :visit_all_booths,
-        ~e[25 * * * *],
+        ~e[18 * * * *],
         {Jobs.CheckpointBadge, :run, [240, 28, 4, 150]}
       ),
       create_job(
         :upload_cv,
-        ~e[26 * * * *],
+        ~e[19 * * * *],
         {Jobs.CVBadge, :run, [294]}
       ),
       create_job(
         :spotlight,
-        ~e[27 * * * *],
+        ~e[20 * * * *],
         {Jobs.SpotlightBadge, :run, [242]}
       )
     ]
