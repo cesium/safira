@@ -55,7 +55,7 @@ defmodule Safira.JobScheduler do
       create_job(
         :all_pitches,
         ~e[8 * * * *],
-        {Jobs.CheckpointBadge, :run, [214, 5, 9, 0]}
+        {Jobs.CheckpointBadge, :run, [214, 8, 9, 0]}
       ),
       create_job(
         :two_days,
