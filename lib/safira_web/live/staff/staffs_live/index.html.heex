@@ -1,0 +1,12 @@
+<.header>
+  Staff Accounts
+</.header>
+
+<.table id="staffs" rows={@streams.users}>
+  <:col :let={{_id, user}} label="Name"><%= user.name %></:col>
+  <:action :let={{_id, user}}>
+    <.link patch={~p"/admin/redirects/#{redirect}/edit"}>
+      <.icon name="hero-pencil" class="w-5 h-5" />
+    </.link>
+  </:action>
+</.table>
