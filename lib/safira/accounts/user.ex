@@ -4,6 +4,11 @@ defmodule Safira.Accounts.User do
   @required_fields ~w(name email handle password type)a
   @optional_fields ~w(confirmed_at)a
 
+  @derive {
+    Flop.Schema,
+    filterable: [:name], sortable: [:name], default_limit: 8
+  }
+
   schema "users" do
     field :name, :string
     field :email, :string

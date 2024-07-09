@@ -70,7 +70,7 @@ defmodule SafiraWeb.Router do
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
 
       scope "/dashboard" do
-        live "/staffs", StaffsLive, :index
+        live "/staffs", StaffsLive.Index, :index
       end
     end
   end

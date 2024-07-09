@@ -1,0 +1,259 @@
+defmodule SafiraWeb.Components.Table do
+  use Phoenix.Component
+
+  alias Plug.Conn.Query
+  import SafiraWeb.Gettext
+
+  attr :id, :string, required: true
+  attr :items, :list, required: true
+  attr :meta, Flop.Meta, required: true
+  attr :row_id, :any, default: nil
+  attr :params, :map, required: true
+
+  slot :col do
+    attr :label, :string, required: false
+    attr :sortable, :boolean
+    attr :field, :atom
+  end
+
+  def table(assigns) do
+    assigns =
+      with %{items: %Phoenix.LiveView.LiveStream{}} <- assigns do
+        assign(assigns, row_id: assigns.row_id || fn {id, _item} -> id end)
+      end
+
+    ~H"""
+    <div class="relative overflow-x-auto">
+      <table id={@id} class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+            <.header_column
+              :for={col <- @col}
+              label={col[:label]}
+              sortable={col[:sortable]}
+              params={@params}
+              field={col[:field]}
+              meta={@meta}
+            />
+          </tr>
+        </thead>
+        <tbody
+          id={@id <> "-tbody"}
+          phx-update={match?(%Phoenix.LiveView.LiveStream{}, @items) && "stream"}
+        >
+          <tr
+            :for={item <- @items}
+            id={@row_id && @row_id.(item)}
+            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+          >
+            <td
+              :for={col <- @col}
+              scope="row"
+              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+            >
+              <%= render_slot(col, item) %>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <.pagination meta={@meta} params={@params} />
+    </div>
+    """
+  end
+
+  attr :label, :string, default: ""
+  attr :sortable, :boolean
+  attr :params, :map
+  attr :field, :atom
+  attr :meta, Flop.Meta, required: true
+
+  defp header_column(assigns) do
+    if !assigns.sortable do
+      ~H"""
+      <th scope="col" class="px-6 py-3">
+        <%= @label %>
+      </th>
+      """
+    else
+      assigns =
+        Map.put(assigns, :order_direction, order_direction(assigns.meta.flop, assigns.field))
+
+      ~H"""
+      <th scope="col" class="px-6 py-3">
+        <.link patch={next_order_query(@field, @meta.flop, @params)} class="flex items-center gap-x-4">
+          <%= @label %>
+          <.sort_arrow direction={@order_direction} />
+        </.link>
+      </th>
+      """
+    end
+  end
+
+  attr :direction, :atom, required: true
+
+  defp sort_arrow(assigns) do
+    ~H"""
+    <span>
+      <span
+        role="img"
+        aria-label="caret-up"
+        class={[@direction in [:asc, :asc_nulls_first, :asc_nulls_last] && "text-blue-600"]}
+      >
+        <svg
+          viewBox="0 0 1024 1024"
+          focusable="false"
+          data-icon="caret-up"
+          width="1em"
+          height="1em"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z">
+          </path>
+        </svg>
+      </span>
+      <span
+        role="img"
+        aria-label="caret-down"
+        class={[@direction in [:desc, :desc_nulls_first, :desc_nulls_last] && "text-blue-600"]}
+      >
+        <svg
+          viewBox="0 0 1024 1024"
+          focusable="false"
+          data-icon="caret-down"
+          width="1em"
+          height="1em"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z">
+          </path>
+        </svg>
+      </span>
+    </span>
+    """
+  end
+
+  attr :meta, Flop.Meta, required: true
+  attr :params, :map, required: true
+
+  defp pagination(assigns) do
+    ~H"""
+    <nav
+      class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4"
+      aria-label="Table navigation"
+    >
+      <span class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">
+        <%= gettext("Showing") %>
+        <span class="font-semibold text-gray-900 dark:text-white">
+          <%= @meta.current_offset + 1 %>-<%= @meta.next_offset || @meta.total_count %>
+        </span>
+        <%= gettext("of") %>
+        <span class="font-semibold text-gray-900 dark:text-white">
+          <%= @meta.total_count %>
+        </span>
+      </span>
+      <ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
+        <.pagination_button
+          text={gettext("Previous")}
+          left_corner={true}
+          disabled={!@meta.has_previous_page?}
+          page={@meta.previous_page}
+          params={@params}
+        />
+        <%= if max(1, @meta.current_page - 2) != 1 do %>
+          <.pagination_button page={1} params={@params} />
+        <% end %>
+        <%= for page <- max(1, @meta.current_page - 2)..max(min(@meta.total_pages, @meta.current_page + 2), 1) do %>
+          <.pagination_button page={page} params={@params} is_current={@meta.current_page == page} />
+        <% end %>
+        <%= if min(@meta.total_pages, @meta.current_page + 2) != @meta.total_pages do %>
+          <.pagination_button page={@meta.total_pages} params={@params} />
+        <% end %>
+        <.pagination_button
+          text={gettext("Next")}
+          right_corner={true}
+          disabled={!@meta.has_next_page?}
+          page={@meta.next_page}
+          params={@params}
+        />
+      </ul>
+    </nav>
+    """
+  end
+
+  attr :text, :string, default: ""
+  attr :disabled, :boolean, default: false
+  attr :left_corner, :boolean, default: false
+  attr :right_corner, :boolean, default: false
+  attr :is_current, :boolean, default: false
+  attr :page, :integer
+  attr :params, :map
+
+  defp pagination_button(assigns) do
+    if assigns.disabled do
+      ~H"""
+      <li>
+        <p class={[
+          "hover:cursor-default select-none flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 border border-gray-300 bg-gray-100 dark:border-gray-700 dark:text-gray-400 dark:bg-gray-700",
+          @right_corner && "rounded-e-lg",
+          @left_corner && "rounded-s-lg"
+        ]}>
+          <%= if @text == "", do: @page, else: @text %>
+        </p>
+      </li>
+      """
+    else
+      ~H"""
+      <li>
+        <.link
+          patch={build_query("page", @page, @params)}
+          class={[
+            "flex select-none items-center justify-center px-3 h-8 ms-0 leading-tight border border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white",
+            @right_corner && "rounded-e-lg",
+            @left_corner && "rounded-s-lg",
+            !@is_current && "text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700",
+            @is_current && "text-blue-600 bg-blue-50 hover:bg-blue-100 hover:text-blue-700"
+          ]}
+        >
+          <%= if @text == "", do: @page, else: @text %>
+        </.link>
+      </li>
+      """
+    end
+  end
+
+  defp build_query(key, value, params) do
+    query = Map.put(params, key, value)
+
+    "?#{Query.encode(query)}"
+  end
+
+  defp order_direction(%Flop{order_by: [field | _], order_directions: [direction | _]}, field) do
+    direction
+  end
+
+  defp order_direction(%Flop{}, _), do: nil
+
+  defp next_order_query(field, flop, params) do
+    updated_flop =
+      if order_direction(flop, field) == :desc do
+        index = Enum.find_index(flop.order_by, &(&1 == field))
+
+        %{
+          flop
+          | order_by: List.delete_at(flop.order_by, index),
+            order_directions: List.delete_at(flop.order_directions, index)
+        }
+      else
+        Flop.push_order(flop, field)
+      end
+
+    query =
+      params
+      |> Map.put("order_by", updated_flop.order_by)
+      |> Map.put("order_directions", updated_flop.order_directions)
+
+    "?#{Query.encode(query)}"
+  end
+end

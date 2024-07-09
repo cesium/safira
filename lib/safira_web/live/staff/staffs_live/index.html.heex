@@ -2,11 +2,18 @@
   Staff Accounts
 </.header>
 
-<.table id="staffs" rows={@streams.users}>
-  <:col :let={{_id, user}} label="Name"><%= user.name %></:col>
-  <:action :let={{_id, user}}>
-    <.link patch={~p"/admin/redirects/#{redirect}/edit"}>
-      <.icon name="hero-pencil" class="w-5 h-5" />
-    </.link>
-  </:action>
+<.table id="staffs-table" items={@streams.staffs} meta={@meta} params={@params}>
+  <:col :let={{_id, user}} sortable field={:name} label="Name">
+    <div class="flex gap-4 flex-center items-center">
+      <img
+        class="rounded-full h-10"
+        src={"https://github.com/identicons/#{user.handle |> String.slice(0..2)}.png"}
+      />
+      <div class="self-center">
+        <p class="text-base font-semibold"><%= user.name %></p>
+        <p class="font-normal text-gray-500">@<%= user.handle %></p>
+      </div>
+    </div>
+  </:col>
+  <:col :let={{_id, user}} label="Email"><%= user.email %></:col>
 </.table>

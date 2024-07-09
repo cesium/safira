@@ -11,6 +11,10 @@ config :safira,
   ecto_repos: [Safira.Repo],
   generators: [timestamp_type: :utc_datetime]
 
+# Flop configuration
+config :flop,
+  repo: Safira.Repo
+
 # Configures the endpoint
 config :safira, SafiraWeb.Endpoint,
   url: [host: "localhost"],

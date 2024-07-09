@@ -3,8 +3,7 @@ defmodule Safira.Accounts do
   The Accounts context.
   """
 
-  import Ecto.Query, warn: false
-  alias Safira.Repo
+  use Safira.Context
 
   alias Safira.Accounts.{User, UserToken, UserNotifier}
 
@@ -12,15 +11,27 @@ defmodule Safira.Accounts do
 
   @doc """
   Lists all staff users.
-
-  ## Examples
-
-      iex> list_staffs()
-      [%User{}, %User{}]
-
   """
-  def list_staffs do
-    Repo.all(User, type: :staff)
+  def list_staffs(params \\ %{})
+
+  def list_staffs(opts) when is_list(opts) do
+    User
+    |> apply_filters(opts)
+    |> where(type: :staff)
+    |> Repo.all()
+  end
+
+  def list_staffs(params) do
+    User
+    |> where(type: :staff)
+    |> Flop.validate_and_run(params, for: User)
+  end
+
+  def list_staffs(%{} = params, opts) when is_list(opts) do
+    User
+    |> apply_filters(opts)
+    |> where(type: :staff)
+    |> Flop.validate_and_run(params, for: User)
   end
 
   @doc """
