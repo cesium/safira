@@ -2,6 +2,9 @@
   Staff Accounts
 </.header>
 
+<div class="py-4 w-full flex justify-end">
+  <.table_search id="staffs-table-name-search" params={@params} field={:name} path={~p"/dashboard/staffs"} placeholder={gettext("Search for users")} />
+</div>
 <.table id="staffs-table" items={@streams.staffs} meta={@meta} params={@params}>
   <:col :let={{_id, user}} sortable field={:name} label="Name">
     <div class="flex gap-4 flex-center items-center">
@@ -16,4 +19,9 @@
     </div>
   </:col>
   <:col :let={{_id, user}} label="Email"><%= user.email %></:col>
+  <:action :let={{_id, user}}>
+    <.link patch={~p"/dashboard/users/#{user}/edit"}>
+      <.icon name="hero-pencil" class="w-5 h-5" />
+    </.link>
+  </:action>
 </.table>

@@ -16,6 +16,10 @@ defmodule SafiraWeb.Components.Table do
     attr :field, :atom
   end
 
+  slot :action do
+    attr :label, :string, required: false
+  end
+
   def table(assigns) do
     assigns =
       with %{items: %Phoenix.LiveView.LiveStream{}} <- assigns do
@@ -35,6 +39,10 @@ defmodule SafiraWeb.Components.Table do
               field={col[:field]}
               meta={@meta}
             />
+            <.header_column
+              :if={@action != []}
+              class="text-right"
+            />
           </tr>
         </thead>
         <tbody
@@ -53,6 +61,16 @@ defmodule SafiraWeb.Components.Table do
             >
               <%= render_slot(col, item) %>
             </td>
+            <td
+              scope="row"
+              class="px-6 py-4 relative w-14 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+            >
+              <div class="relative flex gap-4 text-right text-sm font-medium">
+                <span :for={action <- @action}>
+                  <%= render_slot(action, item) %>
+                </span>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -62,15 +80,16 @@ defmodule SafiraWeb.Components.Table do
   end
 
   attr :label, :string, default: ""
-  attr :sortable, :boolean
+  attr :sortable, :boolean, default: false
   attr :params, :map
   attr :field, :atom
-  attr :meta, Flop.Meta, required: true
+  attr :meta, Flop.Meta
+  attr :class, :string, default: ""
 
   defp header_column(assigns) do
     if !assigns.sortable do
       ~H"""
-      <th scope="col" class="px-6 py-3">
+      <th scope="col" class={"px-6 py-3 #{@class}"}>
         <%= @label %>
       </th>
       """

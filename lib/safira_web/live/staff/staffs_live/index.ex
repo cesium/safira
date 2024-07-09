@@ -3,6 +3,7 @@ defmodule SafiraWeb.StaffsLive.Index do
   use SafiraWeb, :live_view
 
   import SafiraWeb.Components.Table
+  import SafiraWeb.Components.TableSearch
 
   @impl true
   def mount(_params, _session, socket) do

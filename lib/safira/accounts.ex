@@ -12,7 +12,11 @@ defmodule Safira.Accounts do
   @doc """
   Lists all staff users.
   """
-  def list_staffs(params \\ %{})
+  def list_staffs() do
+    User
+    |> where(type: :staff)
+    |> Repo.all()
+  end
 
   def list_staffs(opts) when is_list(opts) do
     User
