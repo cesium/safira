@@ -3,6 +3,7 @@ defmodule SafiraWeb.Components.Table do
 
   alias Plug.Conn.Query
   import SafiraWeb.Gettext
+  import SafiraWeb.CoreComponents
 
   attr :id, :string, required: true
   attr :items, :list, required: true
@@ -28,52 +29,51 @@ defmodule SafiraWeb.Components.Table do
 
     ~H"""
     <div class="relative overflow-x-auto">
-      <table id={@id} class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-          <tr>
-            <.header_column
-              :for={col <- @col}
-              label={col[:label]}
-              sortable={col[:sortable]}
-              params={@params}
-              field={col[:field]}
-              meta={@meta}
-            />
-            <.header_column
-              :if={@action != []}
-              class="text-right"
-            />
-          </tr>
-        </thead>
-        <tbody
-          id={@id <> "-tbody"}
-          phx-update={match?(%Phoenix.LiveView.LiveStream{}, @items) && "stream"}
-        >
-          <tr
-            :for={item <- @items}
-            id={@row_id && @row_id.(item)}
-            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+      <div class="border rounded-lg bg-light border-lightShade dark:bg-dark dark:border-darkShade">
+        <table id={@id} class="w-full text-sm text-left text-dark dark:text-light">
+          <thead class="text-xs border-b border-lightShade dark:border-darkShade font-normal uppercase text-darkMuted dark:text-lightMuted">
+            <tr>
+              <.header_column
+                :for={col <- @col}
+                label={col[:label]}
+                sortable={col[:sortable]}
+                params={@params}
+                field={col[:field]}
+                meta={@meta}
+              />
+              <.header_column :if={@action != []} class="text-right" />
+            </tr>
+          </thead>
+          <tbody
+            id={@id <> "-tbody"}
+            phx-update={match?(%Phoenix.LiveView.LiveStream{}, @items) && "stream"}
           >
-            <td
-              :for={col <- @col}
-              scope="row"
-              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+            <tr
+              :for={item <- @items}
+              id={@row_id && @row_id.(item)}
+              class="border-b last:border-0 border-lightShade dark:border-darkShade"
             >
-              <%= render_slot(col, item) %>
-            </td>
-            <td
-              scope="row"
-              class="px-6 py-4 relative w-14 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-            >
-              <div class="relative flex gap-4 text-right text-sm font-medium">
-                <span :for={action <- @action}>
-                  <%= render_slot(action, item) %>
-                </span>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              <td
+                :for={col <- @col}
+                scope="row"
+                class="px-6 py-4 font-normal text-dark whitespace-nowrap dark:text-light"
+              >
+                <%= render_slot(col, item) %>
+              </td>
+              <td
+                scope="row"
+                class="px-6 py-4 relative w-14 font-norma text-dark whitespace-nowrap dark:text-light"
+              >
+                <div class="relative flex gap-4 text-right text-sm font-normal">
+                  <span :for={action <- @action}>
+                    <%= render_slot(action, item) %>
+                  </span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <.pagination meta={@meta} params={@params} />
     </div>
     """
@@ -112,42 +112,26 @@ defmodule SafiraWeb.Components.Table do
 
   defp sort_arrow(assigns) do
     ~H"""
-    <span>
+    <span class="transition-colors flex flex-col self-center h-full pb-1">
       <span
         role="img"
         aria-label="caret-up"
-        class={[@direction in [:asc, :asc_nulls_first, :asc_nulls_last] && "text-blue-600"]}
+        class={[
+          "h-[1em]",
+          @direction in [:asc, :asc_nulls_first, :asc_nulls_last] && "text-dark dark:text-light"
+        ]}
       >
-        <svg
-          viewBox="0 0 1024 1024"
-          focusable="false"
-          data-icon="caret-up"
-          width="1em"
-          height="1em"
-          fill="currentColor"
-          aria-hidden="true"
-        >
-          <path d="M858.9 689L530.5 308.2c-9.4-10.9-27.5-10.9-37 0L165.1 689c-12.2 14.2-1.2 35 18.5 35h656.8c19.7 0 30.7-20.8 18.5-35z">
-          </path>
-        </svg>
+        <.icon class="w-[1em] h-[1em]" name="hero-chevron-up" />
       </span>
       <span
         role="img"
         aria-label="caret-down"
-        class={[@direction in [:desc, :desc_nulls_first, :desc_nulls_last] && "text-blue-600"]}
+        class={[
+          "h-[1em]",
+          @direction in [:desc, :desc_nulls_first, :desc_nulls_last] && "text-dark dark:text-light"
+        ]}
       >
-        <svg
-          viewBox="0 0 1024 1024"
-          focusable="false"
-          data-icon="caret-down"
-          width="1em"
-          height="1em"
-          fill="currentColor"
-          aria-hidden="true"
-        >
-          <path d="M840.4 300H183.6c-19.7 0-30.7 20.8-18.5 35l328.4 380.8c9.4 10.9 27.5 10.9 37 0L858.9 335c12.2-14.2 1.2-35-18.5-35z">
-          </path>
-        </svg>
+        <.icon class="w-[1em] h-[1em]" name="hero-chevron-down" />
       </span>
     </span>
     """
@@ -159,16 +143,16 @@ defmodule SafiraWeb.Components.Table do
   defp pagination(assigns) do
     ~H"""
     <nav
-      class="flex items-center flex-column flex-wrap md:flex-row justify-between pt-4"
+      class="flex items-center flex-column flex-wrap md:flex-row justify-between py-4"
       aria-label="Table navigation"
     >
-      <span class="text-sm font-normal text-gray-500 dark:text-gray-400 mb-4 md:mb-0 block w-full md:inline md:w-auto">
+      <span class="text-sm font-normal text-darkMuted dark:text-lightMuted mb-4 md:mb-0 block w-full md:inline md:w-auto">
         <%= gettext("Showing") %>
-        <span class="font-semibold text-gray-900 dark:text-white">
+        <span class="font-semibold text-dark dark:text-light">
           <%= @meta.current_offset + 1 %>-<%= @meta.next_offset || @meta.total_count %>
         </span>
         <%= gettext("of") %>
-        <span class="font-semibold text-gray-900 dark:text-white">
+        <span class="font-semibold text-dark dark:text-light">
           <%= @meta.total_count %>
         </span>
       </span>
@@ -214,7 +198,7 @@ defmodule SafiraWeb.Components.Table do
       ~H"""
       <li>
         <p class={[
-          "hover:cursor-default select-none flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 border border-gray-300 bg-gray-100 dark:border-gray-700 dark:text-gray-400 dark:bg-gray-700",
+          "hover:cursor-default select-none flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 border border-gray-300 bg-gray-100 border-lightShade dark:border-darkShade dark:text-gray-400 dark:bg-dark",
           @right_corner && "rounded-e-lg",
           @left_corner && "rounded-s-lg"
         ]}>
@@ -228,11 +212,12 @@ defmodule SafiraWeb.Components.Table do
         <.link
           patch={build_query("page", @page, @params)}
           class={[
-            "flex select-none items-center justify-center px-3 h-8 ms-0 leading-tight border border-gray-300 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white",
+            "flex select-none items-center justify-center px-3 h-8 ms-0 leading-tight border border-lightShade dark:bg-dark dark:border-darkShade dark:hover:bg-darkShade dark:hover:text-light transition-colors",
             @right_corner && "rounded-e-lg",
             @left_corner && "rounded-s-lg",
-            !@is_current && "text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700",
-            @is_current && "text-blue-600 bg-blue-50 hover:bg-blue-100 hover:text-blue-700"
+            !@is_current &&
+              "text-gray-500 bg-white hover:bg-gray-100 hover:text-gray-700 dark:text-light",
+            @is_current && "text-dark bg-gray-100 dark:text-light dark:bg-darkShade/20"
           ]}
         >
           <%= if @text == "", do: @page, else: @text %>

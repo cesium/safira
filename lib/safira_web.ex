@@ -58,9 +58,26 @@ defmodule SafiraWeb do
     end
   end
 
+  def backoffice_view do
+    quote do
+      use Phoenix.LiveView,
+        layout: {SafiraWeb.Layouts, :backoffice}
+
+      unquote(html_helpers())
+    end
+  end
+
   def live_component do
     quote do
       use Phoenix.LiveComponent
+
+      unquote(html_helpers())
+    end
+  end
+
+  def component do
+    quote do
+      use Phoenix.Component
 
       unquote(html_helpers())
     end

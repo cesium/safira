@@ -1,6 +1,6 @@
 defmodule SafiraWeb.StaffsLive.Index do
   alias Safira.Accounts
-  use SafiraWeb, :live_view
+  use SafiraWeb, :backoffice_view
 
   import SafiraWeb.Components.Table
   import SafiraWeb.Components.TableSearch
@@ -18,6 +18,7 @@ defmodule SafiraWeb.StaffsLive.Index do
          socket
          |> assign(:meta, meta)
          |> assign(:params, params)
+         |> assign(:current_page, :staffs)
          |> stream(:staffs, staffs, reset: true)}
 
       {:error, _} ->

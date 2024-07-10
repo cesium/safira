@@ -10,5 +10,7 @@ defmodule SafiraWeb.Layouts do
   """
   use SafiraWeb, :html
 
+  import SafiraWeb.Components.Sidebar
+
   embed_templates "layouts/*"
 end

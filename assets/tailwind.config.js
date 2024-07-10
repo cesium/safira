@@ -1,12 +1,9 @@
-// See the Tailwind configuration guide for advanced usage
-// https://tailwindcss.com/docs/configuration
-
 const plugin = require("tailwindcss/plugin")
 const fs = require("fs")
 const path = require("path")
 
 module.exports = {
-  darkMode: "selector",
+  //darkMode: "selector",
   content: [
     "./js/**/*.js",
     "../lib/safira_web.ex",
@@ -15,7 +12,14 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        brand: "#FD4F00",
+        primary: "#ff800d",
+        light: "#ffffff",
+        lightMuted: "#a1a1aa",
+        lightShade: "#e5e7eb",
+        dark: "#09090b",
+        darkMuted: "#71717a",
+        darkShade: "#27272a",
+
       }
     },
   },
