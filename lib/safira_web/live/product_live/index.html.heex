@@ -1,0 +1,58 @@
+<.header>
+  Listing Products
+  <:actions>
+    <div class="flex flex-row gap-4 justify-center items-center">
+      <.table_search
+        id="products-table-name-search"
+        params={@params}
+        field={:name}
+        path={~p"/dashboard/store/products"}
+        placeholder={gettext("Search for products")}
+      />
+      <.link patch={~p"/dashboard/store/products/new"}>
+        <.button>New Product</.button>
+      </.link>
+    </div>
+  </:actions>
+</.header>
+
+<div class="py-4">
+  <.table id="products-table" items={@streams.products} meta={@meta} params={@params} row_click={&JS.navigate(~p"/dashboard/store/products/#{elem(&1, 1).id}")}>
+    <:col :let={{_id, product}} label="Name" sortable field={:name}><%= product.name %></:col>
+    <:col :let={{_id, product}} label="Price" sortable field={:price}><%= product.price %></:col>
+    <:col :let={{_id, product}} label="Stock" sortable field={:stock}><%= product.stock %></:col>
+    <:col :let={{_id, product}} label="Max per user"><%= product.max_per_user %></:col>
+    <:action :let={{_id, product}}>
+      <div class="sr-only">
+        <.link navigate={~p"/dashboard/store/products/#{product}"}>Show</.link>
+      </div>
+      <.link patch={~p"/dashboard/store/products/#{product}/edit"}>
+        <.icon name="hero-pencil" class="w-5 h-5" />
+      </.link>
+    </:action>
+    <:action :let={{id, product}}>
+      <.link
+        phx-click={JS.push("delete", value: %{id: product.id}) |> hide("##{id}")}
+        data-confirm="Are you sure?"
+      >
+        <.icon name="hero-trash" class="w-5 h-5" />
+      </.link>
+    </:action>
+  </.table>
+</div>
+
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="product-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/store/products")}
+>
+  <.live_component
+    module={SafiraWeb.ProductLive.FormComponent}
+    id={@product.id || :new}
+    title={@page_title}
+    action={@live_action}
+    product={@product}
+    patch={~p"/dashboard/store/products"}
+  />
+</.modal>

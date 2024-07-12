@@ -22,6 +22,8 @@ erl_crash.dump
 # Temporary files, for example, from tests.
 /tmp/
 
+priv/uploads/
+
 # Ignore package tarball (built via "mix hex.build").
 safira-*.tar
 

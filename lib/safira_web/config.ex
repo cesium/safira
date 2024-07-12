@@ -21,7 +21,7 @@ defmodule SafiraWeb.Config do
         key: :store,
         title: "Store",
         icon: "hero-shopping-cart",
-        url: "/dashboard/store"
+        url: "/dashboard/store/products"
       },
       %{
         key: :badges,
@@ -56,7 +56,7 @@ defmodule SafiraWeb.Config do
       %{
         key: :terminal,
         title: "Terminal",
-        icon: "hero-server-stack",
+        icon: "hero-command-line",
         url: "/dashboard/terminal"
       },
       %{

@@ -1,6 +1,7 @@
 const plugin = require("tailwindcss/plugin")
 const fs = require("fs")
 const path = require("path")
+const colors = require("tailwindcss/colors");
 
 module.exports = {
   //darkMode: "selector",
@@ -12,14 +13,19 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#ff800d",
+        primary: colors.blue,
         light: "#ffffff",
         lightMuted: "#a1a1aa",
         lightShade: "#e5e7eb",
         dark: "#09090b",
         darkMuted: "#71717a",
         darkShade: "#27272a",
-
+        secondary: colors.sky,
+        success: colors.green,
+        danger: colors.red,
+        warning: colors.yellow,
+        info: colors.blue,
+        gray: colors.gray
       }
     },
   },

@@ -10,6 +10,7 @@ defmodule SafiraWeb.Components.Table do
   attr :meta, Flop.Meta, required: true
   attr :row_id, :any, default: nil
   attr :params, :map, required: true
+  attr :row_click, JS, default: nil
 
   slot :col do
     attr :label, :string, required: false
@@ -51,7 +52,8 @@ defmodule SafiraWeb.Components.Table do
             <tr
               :for={item <- @items}
               id={@row_id && @row_id.(item)}
-              class="border-b last:border-0 border-lightShade dark:border-darkShade"
+              class={["border-b last:border-0 border-lightShade dark:border-darkShade", @row_click && "hover:cursor-pointer hover:bg-lightShade/20 dark:hover:bg-darkShade/20 transition-colors"]}
+              phx-click={@row_click && @row_click.(item)}
             >
               <td
                 :for={col <- @col}

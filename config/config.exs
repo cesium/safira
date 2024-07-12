@@ -15,6 +15,12 @@ config :safira,
 config :flop,
   repo: Safira.Repo
 
+# Waffle configuration
+config :waffle,
+  storage: Waffle.Storage.Local,
+  storage_dir_prefix: "priv",
+  asset_host: {:system, "ASSET_HOST"}
+
 # Configures the endpoint
 config :safira, SafiraWeb.Endpoint,
   url: [host: "localhost"],
@@ -47,7 +53,7 @@ config :esbuild,
 
 # Configure tailwind (the version is required)
 config :tailwind,
-  version: "3.4.0",
+  version: "3.4.1",
   safira: [
     args: ~w(
       --config=tailwind.config.js

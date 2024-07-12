@@ -109,6 +109,8 @@ defmodule SafiraWeb do
 
       # Routes generation with the ~p sigil
       unquote(verified_routes())
+
+      alias Safira.Uploaders
     end
   end
 

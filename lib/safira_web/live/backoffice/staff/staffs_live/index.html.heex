@@ -1,39 +1,41 @@
 <.header>
   List Staffs
+  <:actions>
+    <.table_search
+      id="staffs-table-name-search"
+      params={@params}
+      field={:name}
+      path={~p"/dashboard/staffs"}
+      placeholder={gettext("Search for users")}
+    />
+  </:actions>
 </.header>
 
-<div class="py-4 w-full flex justify-end">
-  <.table_search
-    id="staffs-table-name-search"
-    params={@params}
-    field={:name}
-    path={~p"/dashboard/staffs"}
-    placeholder={gettext("Search for users")}
-  />
-</div>
-<.table id="staffs-table" items={@streams.staffs} meta={@meta} params={@params}>
-  <:col :let={{_id, user}} sortable field={:name} label="Name">
-    <div class="flex gap-4 flex-center items-center">
-      <img
-        class="rounded-full h-10"
-        src={"https://github.com/identicons/#{user.handle |> String.slice(0..2)}.png"}
-      />
-      <div class="self-center">
-        <p class="text-base font-semibold"><%= user.name %></p>
-        <p class="font-normal text-dark dark:text-light">@<%= user.handle %></p>
+<div class="py-4">
+  <.table id="staffs-table" items={@streams.staffs} meta={@meta} params={@params}>
+    <:col :let={{_id, user}} sortable field={:name} label="Name">
+      <div class="flex gap-4 flex-center items-center">
+        <img
+          class="rounded-full h-10"
+          src={"https://github.com/identicons/#{user.handle |> String.slice(0..2)}.png"}
+        />
+        <div class="self-center">
+          <p class="text-base font-semibold"><%= user.name %></p>
+          <p class="font-normal text-dark dark:text-light">@<%= user.handle %></p>
+        </div>
       </div>
-    </div>
-  </:col>
-  <:col :let={{_id, user}} label="Email"><%= user.email %></:col>
-  <:col :let={{_id, _user}} label="Status">
-    <div class="flex items-center">
-      <div class="h-2.5 w-2.5 rounded-full animate-pulse bg-green-500 me-2"></div>
-      Online
-    </div>
-  </:col>
-  <:action :let={{_id, user}}>
-    <.link patch={~p"/dashboard/users/#{user}/edit"}>
-      <.icon name="hero-pencil" class="w-5 h-5" />
-    </.link>
-  </:action>
-</.table>
+    </:col>
+    <:col :let={{_id, user}} label="Email"><%= user.email %></:col>
+    <:col :let={{_id, _user}} label="Status">
+      <div class="flex items-center">
+        <div class="h-2.5 w-2.5 rounded-full animate-pulse bg-green-500 me-2"></div>
+        Online
+      </div>
+    </:col>
+    <:action :let={{_id, user}}>
+      <.link patch={~p"/dashboard/users/#{user}/edit"}>
+        <.icon name="hero-pencil" class="w-5 h-5" />
+      </.link>
+    </:action>
+  </.table>
+</div>

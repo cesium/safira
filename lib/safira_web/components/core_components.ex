@@ -50,7 +50,7 @@ defmodule SafiraWeb.CoreComponents do
       data-cancel={JS.exec(@on_cancel, "phx-remove")}
       class="relative z-50 hidden"
     >
-      <div id={"#{@id}-bg"} class="bg-zinc-50/90 fixed inset-0 transition-opacity" aria-hidden="true" />
+      <div id={"#{@id}-bg"} class="bg-dark/90 fixed inset-0 transition-opacity" aria-hidden="true" />
       <div
         class="fixed inset-0 overflow-y-auto"
         aria-labelledby={"#{@id}-title"}
@@ -60,19 +60,19 @@ defmodule SafiraWeb.CoreComponents do
         tabindex="0"
       >
         <div class="flex min-h-full items-center justify-center">
-          <div class="w-full max-w-3xl p-4 sm:p-6 lg:py-8">
+          <div class="w-full max-w-4xl p-4 sm:p-6 lg:py-8">
             <.focus_wrap
               id={"#{@id}-container"}
               phx-window-keydown={JS.exec("data-cancel", to: "##{@id}")}
               phx-key="escape"
               phx-click-away={JS.exec("data-cancel", to: "##{@id}")}
-              class="shadow-zinc-700/10 ring-zinc-700/10 relative hidden rounded-2xl bg-white p-14 shadow-lg ring-1 transition"
+              class="shadow-zinc-700/10 relative hidden border dark:border-darkShade rounded-2xl bg-light dark:bg-dark p-14 shadow-lg transition"
             >
               <div class="absolute top-6 right-5">
                 <button
                   phx-click={JS.exec("data-cancel", to: "##{@id}")}
                   type="button"
-                  class="-m-3 flex-none p-3 opacity-20 hover:opacity-40"
+                  class="-m-3 flex-none p-3 opacity-20 text-dark dark:text-light hover:opacity-40"
                   aria-label={gettext("close")}
                 >
                   <.icon name="hero-x-mark-solid" class="h-5 w-5" />
@@ -202,7 +202,7 @@ defmodule SafiraWeb.CoreComponents do
   def simple_form(assigns) do
     ~H"""
     <.form :let={f} for={@for} as={@as} {@rest}>
-      <div class="mt-10 space-y-8 bg-white">
+      <div class="mt-10 space-y-8 bg-light dark:bg-dark">
         <%= render_slot(@inner_block, f) %>
         <div :for={action <- @actions} class="mt-2 flex items-center justify-between gap-6">
           <%= render_slot(action, f) %>
@@ -231,8 +231,8 @@ defmodule SafiraWeb.CoreComponents do
     <button
       type={@type}
       class={[
-        "phx-submit-loading:opacity-75 rounded-lg bg-zinc-900 hover:bg-zinc-700 py-2 px-3",
-        "text-sm font-semibold leading-6 text-white active:text-white/80",
+        "phx-submit-loading:opacity-75 rounded-lg bg-dark text-light dark:bg-light dark:text-dark hover:bg-darkShade dark:hover:bg-lightShade/95 py-2 px-3",
+        "text-sm font-semibold leading-6 transition-colors",
         @class
       ]}
       {@rest}
@@ -565,7 +565,7 @@ defmodule SafiraWeb.CoreComponents do
         <button
           id={@id}
           type="button"
-          class="group w-full bg-light dark:bg-dark rounded-md border-lightShade dark:border-darkShade border px-3.5 py-4 text-sm text-left font-medium text-gray-700 dark:hover:bg-dark/20 focus:outline-0 focus:ring-2 focus:ring-offset-2"
+          class="group w-full bg-light dark:bg-dark rounded-md border-lightShade dark:border-darkShade border px-3.5 py-4 text-sm text-left font-medium text-gray-700 dark:hover:bg-dark/20 focus:outline-0 focus:ring-2 focus:ring-offset-2 focus:ring-dark"
           phx-click={show_dropdown("##{@id}-dropdown")}
           phx-hook="Menu"
           data-active-class="bg-gray-100"

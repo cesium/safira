@@ -71,6 +71,13 @@ defmodule SafiraWeb.Router do
 
       scope "/dashboard" do
         live "/staffs", StaffsLive.Index, :index
+
+        live "/store/products", ProductLive.Index, :index
+        live "/store/products/new", ProductLive.Index, :new
+        live "/store/products/:id/edit", ProductLive.Index, :edit
+
+        live "/store/products/:id", ProductLive.Show, :show
+        live "/store/products/:id/show/edit", ProductLive.Show, :edit
       end
     end
   end

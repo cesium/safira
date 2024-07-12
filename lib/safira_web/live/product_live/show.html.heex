@@ -1,0 +1,37 @@
+<.header>
+  <%= @product.name %>
+  <:actions>
+    <.link patch={~p"/dashboard/store/products/#{@product}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit product</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Name"><%= @product.name %></:item>
+  <:item title="Description"><%= @product.description %></:item>
+  <:item title="Price"><%= @product.price %></:item>
+  <:item title="Stock"><%= @product.stock %></:item>
+  <:item title="Max per user"><%= @product.max_per_user %></:item>
+</.list>
+<%= if @product.image do %>
+  <img class="w-32 h-32" src={Uploaders.Product.url({@product.image, @product}, :original)} />
+<% end %>
+
+<.back navigate={~p"/dashboard/store/products"}>Back to products</.back>
+
+<.modal
+  :if={@live_action == :edit}
+  id="product-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/store/products/#{@product}")}
+>
+  <.live_component
+    module={SafiraWeb.ProductLive.FormComponent}
+    id={@product.id}
+    title={@page_title}
+    action={@live_action}
+    product={@product}
+    patch={~p"/dashboard/store/products/#{@product}"}
+  />
+</.modal>
