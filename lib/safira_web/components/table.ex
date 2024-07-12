@@ -52,7 +52,11 @@ defmodule SafiraWeb.Components.Table do
             <tr
               :for={item <- @items}
               id={@row_id && @row_id.(item)}
-              class={["border-b last:border-0 border-lightShade dark:border-darkShade", @row_click && "hover:cursor-pointer hover:bg-lightShade/20 dark:hover:bg-darkShade/20 transition-colors"]}
+              class={[
+                "border-b last:border-0 border-lightShade dark:border-darkShade",
+                @row_click &&
+                  "hover:cursor-pointer hover:bg-lightShade/20 dark:hover:bg-darkShade/20 transition-colors"
+              ]}
               phx-click={@row_click && @row_click.(item)}
             >
               <td
@@ -67,7 +71,10 @@ defmodule SafiraWeb.Components.Table do
                 class="px-6 py-4 relative w-14 font-norma text-dark whitespace-nowrap dark:text-light"
               >
                 <div class="relative flex gap-4 text-right text-sm font-normal">
-                  <span :for={action <- @action}>
+                  <span
+                    :for={action <- @action}
+                    class="dark:hover:text-lightShade/80 hover:text-darkShade/80 transition-colors"
+                  >
                     <%= render_slot(action, item) %>
                   </span>
                 </div>

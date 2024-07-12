@@ -116,7 +116,16 @@ defmodule SafiraWeb.Components.Forms do
     <.field_wrapper errors={@errors} name={@name} class={@wrapper_class}>
       <label class={["safira-checkbox-label", @label_class]}>
         <input type="hidden" name={@name} value="false" />
-        <input type="checkbox" id={@id} name={@name} value="true" checked={@checked} required={@required} class={["safira-checkbox", @class]} {@rest} />
+        <input
+          type="checkbox"
+          id={@id}
+          name={@name}
+          value="true"
+          checked={@checked}
+          required={@required}
+          class={["safira-checkbox", @class]}
+          {@rest}
+        />
         <div class={[@required && "safira-label--required"]}>
           <%= @label %>
         </div>
@@ -135,7 +144,14 @@ defmodule SafiraWeb.Components.Forms do
         <%= @label %>
       </.field_label>
 
-      <select id={@id} name={@name} class={["safira-select", @class]} multiple={@multiple} required={@required} {@rest}>
+      <select
+        id={@id}
+        name={@name}
+        class={["safira-select", @class]}
+        multiple={@multiple}
+        required={@required}
+        {@rest}
+      >
         <option :if={@prompt} value=""><%= @prompt %></option>
         <%= HTML.Form.options_for_select(@options, @selected || @value) %>
       </select>
@@ -153,7 +169,14 @@ defmodule SafiraWeb.Components.Forms do
         <%= @label %>
       </.field_label>
 
-      <textarea id={@id} name={@name} class={["safira-text-input", @class]} rows={@rows} required={@required} {@rest}><%= Phoenix.HTML.Form.normalize_value("textarea", @value) %></textarea>
+      <textarea
+        id={@id}
+        name={@name}
+        class={["safira-text-input", @class]}
+        rows={@rows}
+        required={@required}
+        {@rest}
+      ><%= Phoenix.HTML.Form.normalize_value("textarea", @value) %></textarea>
 
       <.field_error :for={msg <- @errors}><%= msg %></.field_error>
       <.field_help_text help_text={@help_text} />
@@ -170,7 +193,16 @@ defmodule SafiraWeb.Components.Forms do
       <label class={["safira-switch-label", @label_class]}>
         <input type="hidden" name={@name} value="false" />
         <label class="safira-switch">
-          <input type="checkbox" id={@id} name={@name} value="true" checked={@checked} required={@required} class={["sr-only peer", @class]} {@rest} />
+          <input
+            type="checkbox"
+            id={@id}
+            name={@name}
+            value="true"
+            checked={@checked}
+            required={@required}
+            class={["sr-only peer", @class]}
+            {@rest}
+          />
 
           <span class="safira-switch__fake-input"></span>
           <span class="safira-switch__fake-input-bg"></span>
@@ -213,7 +245,18 @@ defmodule SafiraWeb.Components.Forms do
       ]}>
         <%= for {label, value} <- @options do %>
           <label class="safira-checkbox-label">
-            <input type="checkbox" name={@name <> "[]"} checked_value={value} unchecked_value="" value={value} checked={to_string(value) in @checked} hidden_input={false} class="safira-checkbox" disabled={value in @disabled_options} {@rest} />
+            <input
+              type="checkbox"
+              name={@name <> "[]"}
+              checked_value={value}
+              unchecked_value=""
+              value={value}
+              checked={to_string(value) in @checked}
+              hidden_input={false}
+              class="safira-checkbox"
+              disabled={value in @disabled_options}
+              {@rest}
+            />
             <div>
               <%= label %>
             </div>
@@ -251,7 +294,16 @@ defmodule SafiraWeb.Components.Forms do
         <input type="hidden" name={@name} value="" />
         <%= for {label, value} <- @options do %>
           <label class="safira-radio-label">
-            <input type="radio" name={@name} value={value} checked={to_string(value) == to_string(@value) || to_string(value) == to_string(@checked)} class="safira-radio" {@rest} />
+            <input
+              type="radio"
+              name={@name}
+              value={value}
+              checked={
+                to_string(value) == to_string(@value) || to_string(value) == to_string(@checked)
+              }
+              class="safira-radio"
+              {@rest}
+            />
             <div>
               <%= label %>
             </div>
@@ -273,7 +325,14 @@ defmodule SafiraWeb.Components.Forms do
 
   def field(%{type: "hidden"} = assigns) do
     ~H"""
-    <input type={@type} name={@name} id={@id} value={Phoenix.HTML.Form.normalize_value(@type, @value)} class={@class} {@rest} />
+    <input
+      type={@type}
+      name={@name}
+      id={@id}
+      value={Phoenix.HTML.Form.normalize_value(@type, @value)}
+      class={@class}
+      {@rest}
+    />
     """
   end
 
@@ -287,7 +346,15 @@ defmodule SafiraWeb.Components.Forms do
         <%= @label %>
       </.field_label>
 
-      <input type={@type} name={@name} id={@id} value={Phoenix.HTML.Form.normalize_value(@type, @value)} class={@class} required={@required} {@rest} />
+      <input
+        type={@type}
+        name={@name}
+        id={@id}
+        value={Phoenix.HTML.Form.normalize_value(@type, @value)}
+        class={@class}
+        required={@required}
+        {@rest}
+      />
 
       <.field_error :for={msg <- @errors}><%= msg %></.field_error>
       <.field_help_text help_text={@help_text} />
@@ -303,7 +370,15 @@ defmodule SafiraWeb.Components.Forms do
 
   defp field_wrapper(assigns) do
     ~H"""
-    <div phx-feedback-for={@name} {@rest} class={[@class, "safira-form-field-wrapper", @errors != [] && "safira-form-field-wrapper--error"]}>
+    <div
+      phx-feedback-for={@name}
+      {@rest}
+      class={[
+        @class,
+        "safira-form-field-wrapper",
+        @errors != [] && "safira-form-field-wrapper--error"
+      ]}
+    >
       <%= render_slot(@inner_block) %>
     </div>
     """
@@ -340,7 +415,11 @@ defmodule SafiraWeb.Components.Forms do
 
   def field_help_text(assigns) do
     ~H"""
-    <div :if={render_slot(@inner_block) || @help_text} class={["safira-form-help-text", @class]} {@rest}>
+    <div
+      :if={render_slot(@inner_block) || @help_text}
+      class={["safira-form-help-text", @class]}
+      {@rest}
+    >
       <%= render_slot(@inner_block) || @help_text %>
     </div>
     """

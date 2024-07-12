@@ -7,16 +7,21 @@
   </:actions>
 </.header>
 
-<.list>
-  <:item title="Name"><%= @product.name %></:item>
-  <:item title="Description"><%= @product.description %></:item>
-  <:item title="Price"><%= @product.price %></:item>
-  <:item title="Stock"><%= @product.stock %></:item>
-  <:item title="Max per user"><%= @product.max_per_user %></:item>
-</.list>
-<%= if @product.image do %>
-  <img class="w-32 h-32" src={Uploaders.Product.url({@product.image, @product}, :original)} />
-<% end %>
+<div class="flex flex-col md:flex-row w-full">
+  <div class="dark:text-light w-full">
+    <p><%= @product.description %></p>
+    <div class="pt-8">
+      <p><span class="font-semibold">Price: </span><%= @product.price %> 💰</p>
+      <p><span class="font-semibold">Stock: </span><%= @product.stock %></p>
+      <p><span class="font-semibold">Max per user: </span><%= @product.max_per_user %></p>
+    </div>
+  </div>
+  <div class="w-full">
+    <%= if @product.image do %>
+      <img class="w-full p-4" src={Uploaders.Product.url({@product.image, @product}, :original)} />
+    <% end %>
+  </div>
+</div>
 
 <.back navigate={~p"/dashboard/store/products"}>Back to products</.back>
 

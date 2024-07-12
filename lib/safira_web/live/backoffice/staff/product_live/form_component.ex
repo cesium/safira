@@ -12,7 +12,9 @@ defmodule SafiraWeb.ProductLive.FormComponent do
       <.header>
         <%= @title %>
         <:subtitle>
-          <%= gettext("Products can be purchased with tokens by attendees trough the event's digital store.") %>
+          <%= gettext(
+            "Products can be purchased with tokens by attendees trough the event's digital store."
+          ) %>
         </:subtitle>
       </.header>
 
@@ -23,17 +25,21 @@ defmodule SafiraWeb.ProductLive.FormComponent do
         phx-change="validate"
         phx-submit="save"
       >
-        <div class="flex flex-row w-full gap-4">
+        <div class="flex flex-col md:flex-row w-full gap-4">
           <div class="w-full space-y-2">
             <.field field={@form[:name]} type="text" label="Name" required />
-            <.field field={@form[:description]} type="textarea" label="Description" required/>
-            <.field field={@form[:price]} type="number" label="Price" required/>
-            <.field field={@form[:stock]} type="number" label="Stock" required/>
-            <.field field={@form[:max_per_user]} type="number" label="Max per user" required/>
+            <.field field={@form[:description]} type="textarea" label="Description" required />
+            <.field field={@form[:price]} type="number" label="Price" required />
+            <.field field={@form[:stock]} type="number" label="Stock" required />
+            <.field field={@form[:max_per_user]} type="number" label="Max per user" required />
           </div>
           <div class="w-full pb-6">
             <.field_label>Image</.field_label>
-            <.image_uploader class="w-full h-full" upload={@uploads.image} image={Uploaders.Product.url({@product.image, @product}, :original)} />
+            <.image_uploader
+              class="w-full h-full"
+              upload={@uploads.image}
+              image={Uploaders.Product.url({@product.image, @product}, :original)}
+            />
           </div>
         </div>
         <:actions>
@@ -46,7 +52,13 @@ defmodule SafiraWeb.ProductLive.FormComponent do
 
   @impl true
   def mount(socket) do
-  {:ok, socket |> assign(:uploaded_files, []) |> allow_upload(:image, accept: Safira.Uploaders.Product.extension_whitelist(), max_entries: 1)}
+    {:ok,
+     socket
+     |> assign(:uploaded_files, [])
+     |> allow_upload(:image,
+       accept: Safira.Uploaders.Product.extension_whitelist(),
+       max_entries: 1
+     )}
   end
 
   @impl true
@@ -77,12 +89,14 @@ defmodule SafiraWeb.ProductLive.FormComponent do
             notify_parent({:saved, product})
 
             {:noreply,
-            socket
-            |> put_flash(:info, "Product updated successfully")
-            |> push_patch(to: socket.assigns.patch)}
+             socket
+             |> put_flash(:info, "Product updated successfully")
+             |> push_patch(to: socket.assigns.patch)}
+
           {:error, _} ->
             {:noreply, socket}
         end
+
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, form: to_form(changeset))}
     end
@@ -96,12 +110,14 @@ defmodule SafiraWeb.ProductLive.FormComponent do
             notify_parent({:saved, product})
 
             {:noreply,
-            socket
-            |> put_flash(:info, "Product created successfully")
-            |> push_patch(to: socket.assigns.patch)}
+             socket
+             |> put_flash(:info, "Product created successfully")
+             |> push_patch(to: socket.assigns.patch)}
+
           {:error, _} ->
             {:noreply, socket}
         end
+
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, form: to_form(changeset))}
     end

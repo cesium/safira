@@ -6,9 +6,7 @@ defmodule Safira.Store.Product do
 
   @derive {
     Flop.Schema,
-    filterable: [:name],
-    sortable: [:name, :price, :stock],
-    default_limit: 11
+    filterable: [:name], sortable: [:name, :price, :stock], default_limit: 11
   }
 
   schema "products" do
