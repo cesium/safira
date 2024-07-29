@@ -23,8 +23,26 @@ defmodule Safira.Repo.Seeds.Accounts do
     end
   end
 
-  def seed_attendees(_names) do
-    #TODO: Seed attendees
+  def seed_attendees(names) do
+    for {name, i} <- Enum.with_index(names) do
+      email = "attendee#{i}@seium.org"
+      handle = name |> String.downcase() |> String.replace(~r/\s/, "_")
+
+      user = %{
+        name: name,
+        handle: handle,
+        email: email,
+        password: "password1234"
+      }
+
+      case Accounts.register_attendee_user(user) do
+        {:ok, changeset} ->
+          user = Repo.update!(Accounts.User.confirm_changeset(changeset))
+          Accounts.create_attendee(%{user_id: user.id, tokens: :rand.uniform(999), entries: :rand.uniform(200)})
+        {:error, changeset} ->
+          Mix.shell().error(Kernel.inspect(changeset.errors))
+      end
+    end
   end
 
   def seed_staffs(names) do

@@ -1,4 +1,4 @@
-defmodule SafiraWeb.StaffsLive.Index do
+defmodule SafiraWeb.AttendeeLive.Index do
   alias Safira.Accounts
   use SafiraWeb, :backoffice_view
 
@@ -12,14 +12,14 @@ defmodule SafiraWeb.StaffsLive.Index do
 
   @impl true
   def handle_params(params, _, socket) do
-    case Accounts.list_staffs(params) do
-      {:ok, {staffs, meta}} ->
+    case Accounts.list_attendees(params) do
+      {:ok, {attendees, meta}} ->
         {:noreply,
          socket
          |> assign(:meta, meta)
          |> assign(:params, params)
-         |> assign(:current_page, :staffs)
-         |> stream(:staffs, staffs, reset: true)}
+         |> assign(:current_page, :attendees)
+         |> stream(:attendees, attendees, reset: true)}
 
       {:error, _} ->
         {:noreply, socket}

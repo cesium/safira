@@ -41,7 +41,7 @@
 /* Select */
 
 .safira-select {
-  @apply block w-full py-2 pl-3 pr-10 text-base border-gray-300 rounded-md cursor-pointer focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:focus:border-primary-500 disabled:bg-gray-100 disabled:cursor-not-allowed focus:outline-none sm:text-sm dark:disabled:bg-gray-700 dark:text-gray-300;
+  @apply block w-full rounded-md text-dark border border-lightShade placeholder:text-darkMuted focus:outline-2 focus:border-lightShade ring-0 focus:outline-dark focus:outline-offset-2 dark:outline-darkShade dark:bg-dark dark:text-light dark:placeholder-lightMuted dark:focus:border-darkShade dark:border-darkShade focus:ring-0 dark:focus:outline-light;
 }
 
 /* Text input */
@@ -57,19 +57,19 @@
 }
 
 .safira-switch-label {
-  @apply inline-flex items-center gap-3 text-sm font-normal text-gray-900 cursor-pointer dark:text-gray-200;
+  @apply inline-flex items-center gap-3 text-sm font-medium text-dark cursor-pointer dark:text-light;
 }
 
 .safira-switch__input {
-  @apply absolute w-10 h-5 bg-white border-none rounded-full cursor-pointer peer-checked:border-0 checked:bg-transparent checked:focus:bg-transparent checked:hover:bg-transparent;
+  @apply absolute w-10 h-5 bg-light border-none rounded-full cursor-pointer peer-checked:border-0 checked:bg-transparent checked:focus:bg-transparent checked:hover:bg-transparent;
 }
 
 .safira-switch__fake-input {
-  @apply absolute h-6 mx-auto transition-colors duration-200 ease-in-out bg-gray-200 border rounded-full pointer-events-none w-11 dark:border-gray-600 peer-checked:bg-primary-500;
+  @apply absolute h-6 mx-auto transition-colors duration-200 ease-in-out bg-lightShade dark:bg-darkShade rounded-full pointer-events-none w-11 peer-checked:bg-dark dark:peer-checked:bg-light;
 }
 
 .safira-switch__fake-input-bg {
-  @apply absolute left-0 inline-block w-5 h-5 transition-transform duration-200 ease-in-out transform translate-x-0 bg-white rounded-full shadow pointer-events-none peer-checked:translate-x-5 ring-0;
+  @apply absolute left-0 inline-block w-5 h-5 transition-transform duration-200 ease-in-out transform translate-x-0 bg-light dark:bg-dark rounded-full shadow pointer-events-none peer-checked:translate-x-5 ring-0;
 }
 
 /* Radio */
@@ -129,7 +129,7 @@
 /* Text */
 
 .safira-text-input {
-  @apply block w-full rounded-md text-dark border border-lightShade placeholder:text-darkMuted focus:outline-2 focus:border-lightShade ring-0 focus:outline-dark focus:outline-offset-2 dark:outline-darkShade dark:bg-dark dark:text-light dark:placeholder-lightMuted dark:focus:border-darkShade dark:focus:border-darkShade dark:border-darkShade focus:ring-0 dark:focus:outline-light;
+  @apply block w-full rounded-md text-dark border border-lightShade placeholder:text-darkMuted focus:outline-2 focus:border-lightShade ring-0 focus:outline-dark focus:outline-offset-2 dark:outline-darkShade dark:bg-dark dark:text-light dark:placeholder-lightMuted dark:focus:border-darkShade dark:border-darkShade focus:ring-0 dark:focus:outline-light;
 }
 
 /* Form field wrapper */

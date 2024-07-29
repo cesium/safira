@@ -5,9 +5,44 @@ defmodule Safira.Accounts do
 
   use Safira.Context
 
-  alias Safira.Accounts.{User, UserToken, UserNotifier}
+  alias Safira.Accounts.{Attendee, User, UserToken, UserNotifier}
 
   ## Database getters
+
+  @doc """
+  Lists all attendees.
+  """
+  def list_attendees() do
+    User
+    |> where(type: :attendee)
+    |> preload(:attendee)
+    |> Repo.all()
+  end
+
+  def list_attendees(opts) when is_list(opts) do
+    User
+    |> apply_filters(opts)
+    |> where(type: :attendee)
+    |> preload(:attendee)
+    |> Repo.all()
+  end
+
+  def list_attendees(params) do
+    User
+    |> where(type: :attendee)
+    |> join(:left, [o], p in assoc(o, :attendee), as: :attendee)
+    |> preload(:attendee)
+    |> Flop.validate_and_run(params, for: User)
+  end
+
+  def list_attendees(%{} = params, opts) when is_list(opts) do
+    User
+    |> apply_filters(opts)
+    |> where(type: :attendee)
+    |> join(:left, [o], p in assoc(o, :attendee), as: :attendee)
+    |> preload(:attendee)
+    |> Flop.validate_and_run(params, for: User)
+  end
 
   @doc """
   Lists all staff users.
@@ -36,19 +71,6 @@ defmodule Safira.Accounts do
     |> apply_filters(opts)
     |> where(type: :staff)
     |> Flop.validate_and_run(params, for: User)
-  end
-
-  @doc """
-  Lists all attendees.
-
-  ## Examples
-
-      iex> list_attendees()
-      [%User{}, %User{}]
-
-  """
-  def list_attendees do
-    Repo.all(User, type: :attendee)
   end
 
   @doc """
@@ -136,6 +158,15 @@ defmodule Safira.Accounts do
   def register_staff_user(attrs) do
     %User{}
     |> User.registration_changeset(attrs |> Map.put(:type, :staff))
+    |> Repo.insert()
+  end
+
+  @doc """
+  Creates an attendee.
+  """
+  def create_attendee(attrs \\ %{}) do
+    %Attendee{}
+    |> Attendee.changeset(attrs)
     |> Repo.insert()
   end
 

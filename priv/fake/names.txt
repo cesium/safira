@@ -43,7 +43,6 @@ Peggy Olson
 Will Turner
 Tris Prior
 Marge Simpson
-Gimli son of Glóin
 Anakin Skywalker
 Lisa Simpson
 Tyrion Lannister
@@ -76,7 +75,6 @@ Michael Burnham
 Frodo Baggins
 Arthur Curry
 Samwise Gamgee
-James T. Kirk
 Peter Parker
 Bart Simpson
 Rick Grimes

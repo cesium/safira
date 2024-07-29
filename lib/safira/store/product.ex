@@ -1,7 +1,7 @@
 defmodule Safira.Store.Product do
   use Safira.Schema
 
-  @require_fields ~w(name description price stock max_per_user)a
+  @required_fields ~w(name description price stock max_per_user)a
   @optional_fields ~w(image)a
 
   @derive {
@@ -23,9 +23,9 @@ defmodule Safira.Store.Product do
   @doc false
   def changeset(product, attrs) do
     product
-    |> cast(attrs, @require_fields ++ @optional_fields)
+    |> cast(attrs, @required_fields ++ @optional_fields)
     |> cast_attachments(attrs, [:image])
-    |> validate_required(@require_fields)
+    |> validate_required(@required_fields)
   end
 
   def image_changeset(product, attrs) do

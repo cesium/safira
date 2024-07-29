@@ -70,14 +70,25 @@ defmodule SafiraWeb.Router do
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
 
       scope "/dashboard" do
-        live "/staffs", StaffsLive.Index, :index
+        live "/attendees", AttendeeLive.Index, :index
 
-        live "/store/products", ProductLive.Index, :index
-        live "/store/products/new", ProductLive.Index, :new
-        live "/store/products/:id/edit", ProductLive.Index, :edit
+        live "/staffs", StaffLive.Index, :index
 
-        live "/store/products/:id", ProductLive.Show, :show
-        live "/store/products/:id/show/edit", ProductLive.Show, :edit
+        scope "/store/products", ProductLive do
+          live "/", Index, :index
+          live "/new", Index, :new
+          live "/:id/edit", Index, :edit
+
+          live "/:id", Show, :show
+          live "/:id/show/edit", Show, :edit
+        end
+
+        scope "/badges", BadgeLive do
+          live "/", Index, :index
+          live "/categories", Index, :categories
+          live "/categories/new", Index, :categories_new
+          live "/categories/:id/edit", Index, :categories_edit
+        end
       end
     end
   end

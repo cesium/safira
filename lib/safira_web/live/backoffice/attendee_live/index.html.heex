@@ -1,0 +1,41 @@
+<.header>
+  List Attendees
+  <:actions>
+    <.table_search
+      id="attendees-table-name-search"
+      params={@params}
+      field={:name}
+      path={~p"/dashboard/attendees"}
+      placeholder={gettext("Search for attendees")}
+    />
+  </:actions>
+</.header>
+
+<div class="py-4">
+  <.table id="attendees-table" items={@streams.attendees} meta={@meta} params={@params}>
+    <:col :let={{_id, user}} sortable field={:name} label="Name">
+      <div class="flex gap-4 flex-center items-center">
+        <img
+          class="rounded-full h-10"
+          src={"https://github.com/identicons/#{user.handle |> String.slice(0..2)}.png"}
+        />
+        <div class="self-center">
+          <p class="text-base font-semibold"><%= user.name %></p>
+          <p class="font-normal text-dark dark:text-light">@<%= user.handle %></p>
+        </div>
+      </div>
+    </:col>
+    <:col :let={{_id, user}} label="Email"><%= user.email %></:col>
+    <:col :let={{_id, user}} sortable field={:tokens} label="Tokens">
+      <%= user.attendee.tokens %>
+    </:col>
+    <:col :let={{_id, user}} sortable field={:entries} label="Entries">
+      <%= user.attendee.entries %>
+    </:col>
+    <:action :let={{_id, user}}>
+      <.link patch={~p"/dashboard/users/#{user}/edit"}>
+        <.icon name="hero-pencil" class="w-5 h-5" />
+      </.link>
+    </:action>
+  </.table>
+</div>

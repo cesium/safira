@@ -1,12 +1,30 @@
 defmodule Safira.Accounts.User do
   use Safira.Schema
 
+  alias Safira.Accounts.Attendee
+
   @required_fields ~w(name email handle password type)a
   @optional_fields ~w(confirmed_at)a
 
   @derive {
     Flop.Schema,
-    filterable: [:name], sortable: [:name], default_limit: 8
+    filterable: [:name],
+    sortable: [:name, :tokens, :entries],
+    default_limit: 8,
+    join_fields: [
+      tokens: [
+        binding: :attendee,
+        field: :tokens,
+        path: [:attendee, :tokens],
+        ecto_type: :integer
+      ],
+      entries: [
+        binding: :attendee,
+        field: :entries,
+        path: [:attendee, :entries],
+        ecto_type: :integer
+      ]
+    ]
   }
 
   schema "users" do
@@ -18,6 +36,8 @@ defmodule Safira.Accounts.User do
     field :current_password, :string, virtual: true, redact: true
     field :confirmed_at, :utc_datetime
     field :type, Ecto.Enum, values: [:attendee, :staff], default: :attendee
+
+    has_one :attendee, Attendee, on_delete: :delete_all
 
     belongs_to :role, Safira.Accounts.Role
 
@@ -52,6 +72,7 @@ defmodule Safira.Accounts.User do
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
     |> validate_email(opts)
+    |> validate_handle()
     |> validate_password(opts)
   end
 
@@ -72,6 +93,15 @@ defmodule Safira.Accounts.User do
     # |> validate_format(:password, ~r/[A-Z]/, message: "at least one upper case character")
     # |> validate_format(:password, ~r/[!?@#$%^&*_0-9]/, message: "at least one digit or punctuation character")
     |> maybe_hash_password(opts)
+  end
+
+  defp validate_handle(changeset) do
+    changeset
+    |> validate_required([:handle])
+    |> validate_length(:handle, min: 3, max: 20)
+    |> validate_format(:handle, ~r/^[a-z0-9_]+$/,
+      message: "can only contain lowercase letters, numbers, and underscores"
+    )
   end
 
   defp maybe_hash_password(changeset, opts) do

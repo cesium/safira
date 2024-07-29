@@ -1,0 +1,43 @@
+<.header>
+  Listing Badges
+  <:actions>
+    <div class="flex flex-row gap-4 justify-center items-center">
+      <.link patch={~p"/dashboard/badges/categories"}>
+        <.button>
+          <.icon name="hero-tag" class="w-5 h-5" />
+        </.button>
+      </.link>
+    </div>
+  </:actions>
+</.header>
+
+<.modal
+  :if={@live_action in [:categories]}
+  id="categories-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/badges")}
+>
+  <.live_component
+    module={SafiraWeb.BadgeLive.CategoryLive.Index}
+    id="list-categories"
+    title={@page_title}
+    action={@live_action}
+    patch={~p"/dashboard/badges"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:categories_edit, :categories_new]}
+  id="categories-modal"
+  show
+  on_cancel={JS.navigate(~p"/dashboard/badges/categories")}
+>
+  <.live_component
+    module={SafiraWeb.BadgeLive.CategoryLive.FormComponent}
+    id={@category.id || :new}
+    title={@page_title}
+    action={@live_action}
+    category={@category}
+    patch={~p"/dashboard/badges/categories"}
+  />
+</.modal>
