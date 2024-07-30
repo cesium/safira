@@ -85,9 +85,14 @@ defmodule SafiraWeb.Router do
 
         scope "/badges", BadgeLive do
           live "/", Index, :index
-          live "/categories", Index, :categories
-          live "/categories/new", Index, :categories_new
-          live "/categories/:id/edit", Index, :categories_edit
+          live "/new", Index, :new
+          live "/:id/edit", Index, :edit
+
+          scope "/categories" do
+            live "/", Index, :categories
+            live "/new", Index, :categories_new
+            live "/:id/edit", Index, :categories_edit
+          end
         end
       end
     end

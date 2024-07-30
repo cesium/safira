@@ -1,18 +1,18 @@
-defmodule Safira.Uploaders.Product do
+defmodule Safira.Uploaders.Badge do
   use Safira.Uploader
 
-  alias Safira.Store.Product
+  alias Safira.Contest.Badge
 
   @versions [:original]
-  @extension_whitelist ~w(.jpg .jpeg .png .svg)
+  @extension_whitelist ~w(.svg .png)
 
   def validate({file, _}) do
     file_extension = file.file_name |> Path.extname() |> String.downcase()
     Enum.member?(extension_whitelist(), file_extension)
   end
 
-  def storage_dir(_, {_file, %Product{} = product}) do
-    "uploads/store/products/#{product.id}"
+  def storage_dir(_, {_file, %Badge{} = badge}) do
+    "uploads/contest/badges/#{badge.id}"
   end
 
   def filename(version, _) do

@@ -2,6 +2,9 @@
   Listing Badges
   <:actions>
     <div class="flex flex-row gap-4 justify-center items-center">
+      <.link patch={~p"/dashboard/badges/new"}>
+        <.button>New Badge</.button>
+      </.link>
       <.link patch={~p"/dashboard/badges/categories"}>
         <.button>
           <.icon name="hero-tag" class="w-5 h-5" />
@@ -10,6 +13,32 @@
     </div>
   </:actions>
 </.header>
+
+<div class="pt-8 grid grid-cols-5">
+  <%= for {_, badge} <- @streams.badges do %>
+    <div class="w-64 text-center">
+      <img class="w-full" src={Uploaders.Badge.url({badge.image, badge}, :original)} />
+      <p class="text-dark dark:text-light"><%= badge.name %></p>
+    </div>
+  <% end %>
+</div>
+
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="badge-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/badges")}
+>
+  <.live_component
+    module={SafiraWeb.BadgeLive.FormComponent}
+    id={@badge.id || :new}
+    title={@page_title}
+    action={@live_action}
+    badge={@badge}
+    categories={@categories}
+    patch={~p"/dashboard/badges"}
+  />
+</.modal>
 
 <.modal
   :if={@live_action in [:categories]}

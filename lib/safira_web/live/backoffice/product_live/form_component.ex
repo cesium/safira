@@ -92,9 +92,6 @@ defmodule SafiraWeb.ProductLive.FormComponent do
              socket
              |> put_flash(:info, "Product updated successfully")
              |> push_patch(to: socket.assigns.patch)}
-
-          {:error, _} ->
-            {:noreply, socket}
         end
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -113,9 +110,6 @@ defmodule SafiraWeb.ProductLive.FormComponent do
              socket
              |> put_flash(:info, "Product created successfully")
              |> push_patch(to: socket.assigns.patch)}
-
-          {:error, _} ->
-            {:noreply, socket}
         end
 
       {:error, %Ecto.Changeset{} = changeset} ->

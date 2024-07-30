@@ -60,7 +60,7 @@ defmodule SafiraWeb.CoreComponents do
         tabindex="0"
       >
         <div class="flex min-h-full items-center justify-center">
-          <div class="w-full max-w-4xl p-4 sm:p-6 lg:py-8">
+          <div class="w-full max-w-4xl">
             <.focus_wrap
               id={"#{@id}-container"}
               phx-window-keydown={JS.exec("data-cancel", to: "##{@id}")}

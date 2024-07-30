@@ -17,7 +17,7 @@ defmodule SafiraWeb.BadgeLive.CategoryLive.Index do
       </.header>
       <ul class="h-96 mt-8 pb-8 flex flex-col space-y-2 overflow-y-auto">
         <li
-          :for={category <- @categories}
+          :for={{_, category} <- @streams.categories}
           class="even:bg-lightShade/20 dark:even:bg-darkShade/20 py-4 px-4"
         >
           <p class="text-dark dark:text-light flex flex-row justify-between">
@@ -43,7 +43,7 @@ defmodule SafiraWeb.BadgeLive.CategoryLive.Index do
   def mount(socket) do
     {:ok,
      socket
-     |> assign(:categories, Contest.list_badge_categories())}
+     |> stream(:categories, Contest.list_badge_categories())}
   end
 
   def get_color_class(color) do
