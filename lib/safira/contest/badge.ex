@@ -4,6 +4,11 @@ defmodule Safira.Contest.Badge do
   @required_fields ~w(name description begin end tokens category_id)a
   @optional_fields ~w(image counts_for_day)a
 
+  @derive {
+    Flop.Schema,
+    filterable: [:name], sortable: [:name], default_limit: 30
+  }
+
   schema "badges" do
     field :name, :string
     field :description, :string

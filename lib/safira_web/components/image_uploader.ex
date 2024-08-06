@@ -4,6 +4,7 @@ defmodule SafiraWeb.Components.ImageUploader do
   attr :upload, :any, required: true
   attr :class, :string, default: ""
   attr :image, :string, default: nil
+  attr :icon, :string, default: "hero-photo"
 
   def image_uploader(assigns) do
     ~H"""
@@ -20,7 +21,7 @@ defmodule SafiraWeb.Components.ImageUploader do
               <img class="p-4" src={@image} />
             <% else %>
               <div class="select-none flex flex-col gap-2 items-center text-lightMuted dark:text-darkMuted">
-                <.icon name="hero-photo" class="w-12 h-12" />
+                <.icon name={@icon} class="w-12 h-12" />
                 <p><%= gettext("Upload a file or drag and drop") %></p>
               </div>
             <% end %>

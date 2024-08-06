@@ -44,7 +44,11 @@ defmodule SafiraWeb.BadgeLive.FormComponent do
               wrapper_class="pt-4"
               type="switch"
               label="Counts for day"
-              help_text={gettext("Controls whether attendees blah blah.")}
+              help_text={
+                gettext(
+                  "Controls whether tokens received by getting this badge count for the daily leaderboard."
+                )
+              }
             />
           </div>
           <div class="w-full pb-6">
@@ -53,6 +57,7 @@ defmodule SafiraWeb.BadgeLive.FormComponent do
               class="h-full"
               upload={@uploads.image}
               image={Uploaders.Badge.url({@badge.image, @badge}, :original)}
+              icon="hero-check-badge"
             />
           </div>
         </div>

@@ -34,6 +34,11 @@ defmodule SafiraWeb.BadgeLive.CategoryLive.Index do
             </.link>
           </p>
         </li>
+        <div class="only:flex hidden h-full items-center justify-center">
+          <p class="text-center text-lightMuted dark:text-darkMuted mt-8">
+            <%= gettext("No categories found") %>
+          </p>
+        </div>
       </ul>
     </div>
     """

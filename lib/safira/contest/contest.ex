@@ -37,6 +37,23 @@ defmodule Safira.Contest do
     |> Repo.all()
   end
 
+  def list_badges(opts) when is_list(opts) do
+    Badge
+    |> apply_filters(opts)
+    |> Repo.all()
+  end
+
+  def list_badges(params) do
+    Badge
+    |> Flop.validate_and_run(params, for: Badge)
+  end
+
+  def list_badges(%{} = params, opts) when is_list(opts) do
+    Badge
+    |> apply_filters(opts)
+    |> Flop.validate_and_run(params, for: Badge)
+  end
+
   @doc """
   Creates a badge.
 

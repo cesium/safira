@@ -2,6 +2,8 @@ defmodule SafiraWeb.BadgeLive.Index do
   alias Safira.Contest.Badge
   use SafiraWeb, :backoffice_view
 
+  import SafiraWeb.Components.TableSearch
+
   alias Safira.Contest
   alias Safira.Contest.BadgeCategory
 
@@ -12,10 +14,19 @@ defmodule SafiraWeb.BadgeLive.Index do
 
   @impl true
   def handle_params(params, _url, socket) do
-    {:noreply,
-     socket
-     |> assign(:current_page, :badges)
-     |> apply_action(socket.assigns.live_action, params)}
+    case Contest.list_badges(params) do
+      {:ok, {badges, meta}} ->
+        {:noreply,
+         socket
+         |> assign(:current_page, :badges)
+         |> assign(:meta, meta)
+         |> assign(:params, params)
+         |> stream(:badges, badges, reset: true)
+         |> apply_action(socket.assigns.live_action, params)}
+
+      {:error, _} ->
+        {:noreply, socket}
+    end
   end
 
   defp apply_action(socket, :edit, %{"id" => id}) do
@@ -35,7 +46,6 @@ defmodule SafiraWeb.BadgeLive.Index do
   defp apply_action(socket, :index, _params) do
     socket
     |> assign(:page_title, "Listing Badges")
-    |> stream(:badges, Contest.list_badges())
   end
 
   defp apply_action(socket, :categories_edit, %{"id" => id}) do
@@ -53,5 +63,18 @@ defmodule SafiraWeb.BadgeLive.Index do
   defp apply_action(socket, :categories, _params) do
     socket
     |> assign(:page_title, "Listing Categories")
+  end
+
+  @impl true
+  def handle_info({SafiraWeb.BadgeLive.FormComponent, {:saved, badge}}, socket) do
+    {:noreply, stream_insert(socket, :badges, badge)}
+  end
+
+  @impl true
+  def handle_event("delete", %{"id" => id}, socket) do
+    badge = Contest.get_badge!(id)
+    {:ok, _} = Contest.delete_badge(badge)
+
+    {:noreply, stream_delete(socket, :badges, badge)}
   end
 end

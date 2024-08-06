@@ -2,6 +2,13 @@
   Listing Badges
   <:actions>
     <div class="flex flex-row gap-4 justify-center items-center">
+      <.table_search
+        id="badge-table-name-search"
+        params={@params}
+        field={:name}
+        path={~p"/dashboard/badges"}
+        placeholder={gettext("Search for badges")}
+      />
       <.link patch={~p"/dashboard/badges/new"}>
         <.button>New Badge</.button>
       </.link>
@@ -14,12 +21,17 @@
   </:actions>
 </.header>
 
-<div class="pt-8 grid grid-cols-5">
-  <%= for {_, badge} <- @streams.badges do %>
-    <div class="w-64 text-center">
-      <img class="w-full" src={Uploaders.Badge.url({badge.image, badge}, :original)} />
-      <p class="text-dark dark:text-light"><%= badge.name %></p>
-    </div>
+<div id="badges-grid" class="pt-8 flex flex-wrap" phx-update="stream">
+  <%= for {id, badge} <- @streams.badges do %>
+    <.link id={id} class="w-64 text-center" patch={~p"/dashboard/badges/#{badge.id}/edit"}>
+      <img
+        :if={badge.image}
+        class="p-2 w-64 h-64"
+        src={Uploaders.Badge.url({badge.image, badge}, :original)}
+      />
+      <img :if={!badge.image} class="p-2 w-64 h-64" src="/images/badges/404-fallback.svg" />
+      <p class="text-dark dark:text-light pt-1"><%= badge.name %></p>
+    </.link>
   <% end %>
 </div>
 
