@@ -85,9 +85,7 @@ defmodule SafiraWeb.ProductLive.FormComponent do
     case Store.update_product(socket.assigns.product, product_params) do
       {:ok, product} ->
         case consume_image_data(product, socket) do
-          {:ok, product} ->
-            notify_parent({:saved, product})
-
+          {:ok, _product} ->
             {:noreply,
              socket
              |> put_flash(:info, "Product updated successfully")
@@ -103,9 +101,7 @@ defmodule SafiraWeb.ProductLive.FormComponent do
     case Store.create_product(product_params) do
       {:ok, product} ->
         case consume_image_data(product, socket) do
-          {:ok, product} ->
-            notify_parent({:saved, product})
-
+          {:ok, _product} ->
             {:noreply,
              socket
              |> put_flash(:info, "Product created successfully")
@@ -135,6 +131,4 @@ defmodule SafiraWeb.ProductLive.FormComponent do
         {:ok, product}
     end
   end
-
-  defp notify_parent(msg), do: send(self(), {__MODULE__, msg})
 end

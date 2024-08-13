@@ -104,9 +104,7 @@ defmodule SafiraWeb.BadgeLive.FormComponent do
     case Contest.update_badge(socket.assigns.badge, badge_params) do
       {:ok, badge} ->
         case consume_image_data(badge, socket) do
-          {:ok, badge} ->
-            notify_parent({:saved, badge})
-
+          {:ok, _badge} ->
             {:noreply,
              socket
              |> put_flash(:info, "Badge updated successfully")
@@ -122,9 +120,7 @@ defmodule SafiraWeb.BadgeLive.FormComponent do
     case Contest.create_badge(badge_params) do
       {:ok, badge} ->
         case consume_image_data(badge, socket) do
-          {:ok, badge} ->
-            notify_parent({:saved, badge})
-
+          {:ok, _badge} ->
             {:noreply,
              socket
              |> put_flash(:info, "Badge created successfully")
@@ -154,8 +150,6 @@ defmodule SafiraWeb.BadgeLive.FormComponent do
         {:ok, badge}
     end
   end
-
-  defp notify_parent(msg), do: send(self(), {__MODULE__, msg})
 
   defp categories_options(categories) do
     Enum.map(categories, &{&1.name, &1.id})

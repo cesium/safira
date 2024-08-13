@@ -47,11 +47,6 @@ defmodule SafiraWeb.ProductLive.Index do
   end
 
   @impl true
-  def handle_info({SafiraWeb.ProductLive.FormComponent, {:saved, product}}, socket) do
-    {:noreply, stream_insert(socket, :products, product)}
-  end
-
-  @impl true
   def handle_event("delete", %{"id" => id}, socket) do
     product = Store.get_product!(id)
     {:ok, _} = Store.delete_product(product)

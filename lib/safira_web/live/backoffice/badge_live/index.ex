@@ -66,11 +66,6 @@ defmodule SafiraWeb.BadgeLive.Index do
   end
 
   @impl true
-  def handle_info({SafiraWeb.BadgeLive.FormComponent, {:saved, badge}}, socket) do
-    {:noreply, stream_insert(socket, :badges, badge)}
-  end
-
-  @impl true
   def handle_event("delete", %{"id" => id}, socket) do
     badge = Contest.get_badge!(id)
     {:ok, _} = Contest.delete_badge(badge)

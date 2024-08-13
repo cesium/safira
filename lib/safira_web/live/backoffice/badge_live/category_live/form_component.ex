@@ -78,9 +78,7 @@ defmodule SafiraWeb.BadgeLive.CategoryLive.FormComponent do
 
   defp save_category(socket, :categories_edit, category_params) do
     case Contest.update_badge_category(socket.assigns.category, category_params) do
-      {:ok, category} ->
-        notify_parent({:saved, category})
-
+      {:ok, _category} ->
         {:noreply,
          socket
          |> put_flash(:info, "Badge category updated successfully")
@@ -93,9 +91,7 @@ defmodule SafiraWeb.BadgeLive.CategoryLive.FormComponent do
 
   defp save_category(socket, :categories_new, category_params) do
     case Contest.create_badge_category(category_params) do
-      {:ok, category} ->
-        notify_parent({:saved, category})
-
+      {:ok, _category} ->
         {:noreply,
          socket
          |> put_flash(:info, "Badge category created successfully")
@@ -105,8 +101,6 @@ defmodule SafiraWeb.BadgeLive.CategoryLive.FormComponent do
         {:noreply, assign(socket, form: to_form(changeset))}
     end
   end
-
-  defp notify_parent(msg), do: send(self(), {__MODULE__, msg})
 
   defp colors_for_select do
     Enum.map(Contest.BadgeCategory.colors(), fn color ->

@@ -20,21 +20,10 @@ defmodule SafiraWeb.Components.Sidebar do
         class="relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-light dark:bg-dark hidden min-h-screen h-full"
       >
         <div class="flex-1 flex flex-col py-4 overflow-y-auto scrollbar-hide">
-          <div class="flex-shrink-0 flex items-center pt-4">
-            <.link navigate={}>
-              <div class="flex items-center px-8">
-                <.link navigate={~p"/"}>
-                  <img
-                    class="w-full h-full hidden dark:block"
-                    src={~p"/images/safira-light.svg"}
-                    width="36"
-                    height="36"
-                  />
-                  <img class="w-full h-full dark:hidden" src={~p"/images/safira-dark.svg"} />
-                </.link>
-              </div>
-            </.link>
-          </div>
+          <.link navigate={~p"/"} class="flex items-center flex-shrink-0 px-8 pt-8 pb-4">
+            <img class="w-full h-full hidden dark:block" src={~p"/images/safira-light.svg"} />
+            <img class="w-full h-full dark:hidden" src={~p"/images/safira-dark.svg"} />
+          </.link>
           <div class="mt-8 flex flex-col justify-between h-full">
             <nav class="px-4">
               <%= if @current_user do %>
@@ -47,30 +36,14 @@ defmodule SafiraWeb.Components.Sidebar do
           </div>
         </div>
       </div>
-
-      <div class="flex-shrink-0 w-14" aria-hidden="true">
-        <!-- Dummy element to force sidebar to shrink to fit close icon -->
-      </div>
     </div>
     <!-- Static sidebar for desktop -->
     <div class="hidden lg:flex lg:flex-shrink-0">
       <div class="flex flex-col w-64 border-r border-r-lightShade dark:border-r-darkShade pt-5 bg-light dark:bg-dark">
-        <div class="flex items-center flex-shrink-0 px-8 pt-8 pb-4">
-          <.link navigate={~p"/"}>
-            <img
-              class="w-full h-full hidden dark:block"
-              src={~p"/images/safira-light.svg"}
-              width="36"
-              height="36"
-            />
-            <img
-              class="w-full h-full dark:hidden"
-              src={~p"/images/safira-dark.svg"}
-              width="36"
-              height="36"
-            />
-          </.link>
-        </div>
+        <.link navigate={~p"/"} class="flex items-center flex-shrink-0 px-8 pt-8 pb-4">
+          <img class="w-full h-full hidden dark:block" src={~p"/images/safira-light.svg"} />
+          <img class="w-full h-full dark:hidden" src={~p"/images/safira-dark.svg"} />
+        </.link>
         <!-- Sidebar component, swap this element with another sidebar if you like -->
         <div class="h-0 flex-1 flex flex-col justify-between pb-4 overflow-y-auto scrollbar-hide">
           <!-- Navigation -->
