@@ -3,9 +3,11 @@ defmodule Safira.Contest do
   The Contest context.
   """
 
+  alias Safira.Contest.BadgeCondition
   use Safira.Context
-  alias Safira.Contest.BadgeCategory
   alias Safira.Contest.Badge
+  alias Safira.Contest.BadgeCategory
+  alias Safira.Contest.BadgeCondition
 
   @doc """
   Gets a single badge.
@@ -198,5 +200,100 @@ defmodule Safira.Contest do
   """
   def change_badge_category(%BadgeCategory{} = category, attrs \\ %{}) do
     BadgeCategory.changeset(category, attrs)
+  end
+
+  @doc """
+  Gets a single badge condition.
+
+  Raises `Ecto.NoResultsError` if the badge condition does not exist.
+
+  ## Examples
+
+      iex> get_badge_condition!(123)
+      %BadgeCondition{}
+
+      iex> get_badge_condition!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_badge_condition!(id), do: Repo.get!(BadgeCondition, id)
+
+  @doc """
+  Lists all badge conditions.
+
+  ## Examples
+
+      iex> list_badge_conditions()
+      [%BadgeCondition{}, %BadgeCondition{}]
+
+  """
+  def list_badge_conditions do
+    BadgeCondition
+    |> Repo.all()
+  end
+
+  @doc """
+  Lists all conditions belonging to a badge.
+
+  ## Examples
+
+      iex> list_badge_conditions(123)
+      [%BadgeCondition{}, %BadgeCondition{}]
+
+  """
+  def list_badge_conditions(badge_id, opts \\ []) do
+    BadgeCondition
+    |> where([c], c.badge_id == ^badge_id)
+    |> apply_filters(opts)
+    |> Repo.all()
+  end
+
+  @doc """
+  Creates a badge condition.
+
+  ## Examples
+
+      iex> create_badge_condition(%{field: value})
+      {:ok, %BadgeCondition{}}
+
+      iex> create_badge_condition(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_badge_condition(attrs \\ %{}) do
+    %BadgeCondition{}
+    |> BadgeCondition.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a badge condition.
+
+  ## Examples
+
+      iex> update_badge_condition(condition, %{field: new_value})
+      {:ok, %BadgeCondition{}}
+
+      iex> update_badge_condition(condition, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_badge_condition(%BadgeCondition{} = condition, attrs) do
+    condition
+    |> BadgeCondition.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking badge condition changes.
+
+  ## Examples
+
+      iex> change_badge_condition(condition)
+      %Ecto.Changeset{data: %BadgeCondition{}}
+
+  """
+  def change_badge_condition(%BadgeCondition{} = condition, attrs \\ %{}) do
+    BadgeCondition.changeset(condition, attrs)
   end
 end

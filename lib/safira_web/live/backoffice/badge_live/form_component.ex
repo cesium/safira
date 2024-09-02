@@ -9,14 +9,21 @@ defmodule SafiraWeb.BadgeLive.FormComponent do
   def render(assigns) do
     ~H"""
     <div>
-      <.header>
-        <%= @title %>
-        <:subtitle>
-          <%= gettext(
-            "Attendees can earn badges by participating in activities and challenges during the event."
-          ) %>
-        </:subtitle>
-      </.header>
+      <div class="flex flex-row justify-between items-center">
+        <.header>
+          <%= @title %>
+          <:subtitle>
+            <%= gettext(
+              "Attendees can earn badges by participating in activities and challenges during the event."
+            ) %>
+          </:subtitle>
+        </.header>
+        <.link :if={@badge.id} patch={~p"/dashboard/badges/#{@badge.id}/conditions"}>
+          <.button>
+            <.icon name="hero-bolt" />
+          </.button>
+        </.link>
+      </div>
 
       <.simple_form
         for={@form}

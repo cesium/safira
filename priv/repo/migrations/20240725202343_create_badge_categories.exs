@@ -5,7 +5,7 @@ defmodule Safira.Repo.Migrations.CreateBadgeCategories do
     create table(:badge_categories, primary_key: false) do
       add :id, :binary_id, primary_key: true
       add :name, :string
-      add :color, :string
+      add :color, :string, null: false
       add :hidden, :boolean, default: false
 
       timestamps(type: :utc_datetime)

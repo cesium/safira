@@ -1,4 +1,5 @@
 defmodule SafiraWeb.BadgeLive.Index do
+  alias Safira.Contest.BadgeCondition
   alias Safira.Contest.Badge
   use SafiraWeb, :backoffice_view
 
@@ -63,6 +64,28 @@ defmodule SafiraWeb.BadgeLive.Index do
   defp apply_action(socket, :categories, _params) do
     socket
     |> assign(:page_title, "Listing Categories")
+  end
+
+  defp apply_action(socket, :conditions_edit, %{"id" => badge_id, "condition_id" => condition_id}) do
+    socket
+    |> assign(:page_title, "Edit Condition")
+    |> assign(:badge, Contest.get_badge!(badge_id))
+    |> assign(:badge_condition, Contest.get_badge_condition!(condition_id))
+  end
+
+  defp apply_action(socket, :conditions_new, %{"id" => id}) do
+    socket
+    |> assign(:page_title, "New Condition")
+    |> assign(:badge, Contest.get_badge!(id))
+    |> assign(:badge_condition, %BadgeCondition{})
+  end
+
+  defp apply_action(socket, :conditions, %{"id" => id}) do
+    badge = Contest.get_badge!(id)
+
+    socket
+    |> assign(:page_title, "Listing #{badge.name} Conditions")
+    |> assign(:badge, badge)
   end
 
   @impl true

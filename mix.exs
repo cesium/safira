@@ -74,6 +74,7 @@ defmodule Safira.MixProject do
       #  utilities
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
+      {:lua, "~> 0.0.14"},
 
       # server
       {:bandit, "~> 1.2"},

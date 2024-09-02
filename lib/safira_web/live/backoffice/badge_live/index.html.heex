@@ -82,3 +82,36 @@
     patch={~p"/dashboard/badges/categories"}
   />
 </.modal>
+
+<.modal
+  :if={@live_action in [:conditions]}
+  id="conditions-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/badges/#{@badge.id}/edit")}
+>
+  <.live_component
+    module={SafiraWeb.BadgeLive.ConditionLive.Index}
+    id="list-conditions"
+    title={@page_title}
+    action={@live_action}
+    patch={~p"/dashboard/badges/#{@badge.id}/edit"}
+    badge={@badge}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:conditions_edit, :conditions_new]}
+  id="conditions-modal"
+  show
+  on_cancel={JS.navigate(~p"/dashboard/badges/#{@badge.id}/conditions")}
+>
+  <.live_component
+    module={SafiraWeb.BadgeLive.ConditionLive.FormComponent}
+    id={@badge_condition.id || :new}
+    title={@page_title}
+    action={@live_action}
+    badge_condition={@badge_condition}
+    patch={~p"/dashboard/badges/#{@badge.id}/conditions"}
+    badge={@badge}
+  />
+</.modal>
