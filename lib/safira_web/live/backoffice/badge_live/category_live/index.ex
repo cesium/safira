@@ -1,4 +1,4 @@
-defmodule SafiraWeb.BadgeLive.CategoryLive.Index do
+defmodule SafiraWeb.Backoffice.BadgeLive.CategoryLive.Index do
   use SafiraWeb, :live_component
 
   alias Safira.Contest
@@ -7,39 +7,38 @@ defmodule SafiraWeb.BadgeLive.CategoryLive.Index do
   def render(assigns) do
     ~H"""
     <div>
-      <.header>
-        <%= @title %>
+      <.page title={@title}>
         <:actions>
           <.link navigate={~p"/dashboard/badges/categories/new"}>
             <.button>New Category</.button>
           </.link>
         </:actions>
-      </.header>
-      <ul class="h-96 mt-8 pb-8 flex flex-col space-y-2 overflow-y-auto">
-        <li
-          :for={{_, category} <- @streams.categories}
-          class="even:bg-lightShade/20 dark:even:bg-darkShade/20 py-4 px-4"
-        >
-          <p class="text-dark dark:text-light flex flex-row justify-between">
-            <span class="flex gap-2">
-              <span
-                aria-hidden="true"
-                class={"h-6 w-6 block #{get_color_class(category.color)} rounded-full"}
-              >
+        <ul class="h-96 mt-8 pb-8 flex flex-col space-y-2 overflow-y-auto">
+          <li
+            :for={{_, category} <- @streams.categories}
+            class="even:bg-lightShade/20 dark:even:bg-darkShade/20 py-4 px-4"
+          >
+            <p class="text-dark dark:text-light flex flex-row justify-between">
+              <span class="flex gap-2">
+                <span
+                  aria-hidden="true"
+                  class={"h-6 w-6 block #{get_color_class(category.color)} rounded-full"}
+                >
+                </span>
+                <%= category.name %>
               </span>
-              <%= category.name %>
-            </span>
-            <.link navigate={~p"/dashboard/badges/categories/#{category.id}/edit"}>
-              <.icon name="hero-pencil" class="w-5 h-5" />
-            </.link>
-          </p>
-        </li>
-        <div class="only:flex hidden h-full items-center justify-center">
-          <p class="text-center text-lightMuted dark:text-darkMuted mt-8">
-            <%= gettext("No categories found") %>
-          </p>
-        </div>
-      </ul>
+              <.link navigate={~p"/dashboard/badges/categories/#{category.id}/edit"}>
+                <.icon name="hero-pencil" class="w-5 h-5" />
+              </.link>
+            </p>
+          </li>
+          <div class="only:flex hidden h-full items-center justify-center">
+            <p class="text-center text-lightMuted dark:text-darkMuted mt-8">
+              <%= gettext("No categories found") %>
+            </p>
+          </div>
+        </ul>
+      </.page>
     </div>
     """
   end

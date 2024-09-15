@@ -44,6 +44,12 @@ defmodule Safira.Accounts do
     |> Flop.validate_and_run(params, for: User)
   end
 
+  def get_user_attendee(%User{} = user) do
+    Attendee
+    |> where(user_id: ^user.id)
+    |> Repo.one()
+  end
+
   @doc """
   Lists all staff users.
   """

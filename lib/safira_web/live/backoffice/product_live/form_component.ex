@@ -1,4 +1,4 @@
-defmodule SafiraWeb.ProductLive.FormComponent do
+defmodule SafiraWeb.Backoffice.ProductLive.FormComponent do
   use SafiraWeb, :live_component
 
   alias Safira.Store
@@ -9,43 +9,43 @@ defmodule SafiraWeb.ProductLive.FormComponent do
   def render(assigns) do
     ~H"""
     <div>
-      <.header>
-        <%= @title %>
-        <:subtitle>
-          <%= gettext(
+      <.page
+        title={@title}
+        subtitle={
+          gettext(
             "Products can be purchased with tokens by attendees trough the event's digital store."
-          ) %>
-        </:subtitle>
-      </.header>
-
-      <.simple_form
-        for={@form}
-        id="product-form"
-        phx-target={@myself}
-        phx-change="validate"
-        phx-submit="save"
+          )
+        }
       >
-        <div class="flex flex-col md:flex-row w-full gap-4">
-          <div class="w-full space-y-2">
-            <.field field={@form[:name]} type="text" label="Name" required />
-            <.field field={@form[:description]} type="textarea" label="Description" required />
-            <.field field={@form[:price]} type="number" label="Price" required />
-            <.field field={@form[:stock]} type="number" label="Stock" required />
-            <.field field={@form[:max_per_user]} type="number" label="Max per user" required />
+        <.simple_form
+          for={@form}
+          id="product-form"
+          phx-target={@myself}
+          phx-change="validate"
+          phx-submit="save"
+        >
+          <div class="flex flex-col md:flex-row w-full gap-4">
+            <div class="w-full space-y-2">
+              <.field field={@form[:name]} type="text" label="Name" required />
+              <.field field={@form[:description]} type="textarea" label="Description" required />
+              <.field field={@form[:price]} type="number" label="Price" required />
+              <.field field={@form[:stock]} type="number" label="Stock" required />
+              <.field field={@form[:max_per_user]} type="number" label="Max per user" required />
+            </div>
+            <div class="w-full pb-6">
+              <.field_label>Image</.field_label>
+              <.image_uploader
+                class="w-full h-full"
+                upload={@uploads.image}
+                image={Uploaders.Product.url({@product.image, @product}, :original)}
+              />
+            </div>
           </div>
-          <div class="w-full pb-6">
-            <.field_label>Image</.field_label>
-            <.image_uploader
-              class="w-full h-full"
-              upload={@uploads.image}
-              image={Uploaders.Product.url({@product.image, @product}, :original)}
-            />
-          </div>
-        </div>
-        <:actions>
-          <.button phx-disable-with="Saving...">Save Product</.button>
-        </:actions>
-      </.simple_form>
+          <:actions>
+            <.button phx-disable-with="Saving...">Save Product</.button>
+          </:actions>
+        </.simple_form>
+      </.page>
     </div>
     """
   end

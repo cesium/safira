@@ -1,4 +1,4 @@
-defmodule SafiraWeb.BadgeLive.CategoryLive.FormComponent do
+defmodule SafiraWeb.Backoffice.BadgeLive.CategoryLive.FormComponent do
   use SafiraWeb, :live_component
 
   alias Safira.Contest
@@ -8,45 +8,40 @@ defmodule SafiraWeb.BadgeLive.CategoryLive.FormComponent do
   def render(assigns) do
     ~H"""
     <div>
-      <.header>
-        <%= @title %>
-        <:subtitle>
-          <%= gettext("Every badge gets assigned a category.") %>
-        </:subtitle>
-      </.header>
-
-      <.simple_form
-        for={@form}
-        id="category-form"
-        phx-target={@myself}
-        phx-change="validate"
-        phx-submit="save"
-      >
-        <div class="w-full space-y-2">
-          <.field field={@form[:name]} type="text" label="Name" required />
-          <.field
-            field={@form[:color]}
-            type="select"
-            options={colors_for_select()}
-            label="Color"
-            required
-          />
-          <.field
-            field={@form[:hidden]}
-            wrapper_class="pt-4"
-            type="switch"
-            label="Hidden"
-            help_text={
-              gettext(
-                "Controls whether attendees can see badges with this category or if they are secret."
-              )
-            }
-          />
-        </div>
-        <:actions>
-          <.button phx-disable-with="Saving...">Save Category</.button>
-        </:actions>
-      </.simple_form>
+      <.page title={@title} subtitle={gettext("Every badge gets assigned a category.")}>
+        <.simple_form
+          for={@form}
+          id="category-form"
+          phx-target={@myself}
+          phx-change="validate"
+          phx-submit="save"
+        >
+          <div class="w-full space-y-2">
+            <.field field={@form[:name]} type="text" label="Name" required />
+            <.field
+              field={@form[:color]}
+              type="select"
+              options={colors_for_select()}
+              label="Color"
+              required
+            />
+            <.field
+              field={@form[:hidden]}
+              wrapper_class="pt-4"
+              type="switch"
+              label="Hidden"
+              help_text={
+                gettext(
+                  "Controls whether attendees can see badges with this category or if they are secret."
+                )
+              }
+            />
+          </div>
+          <:actions>
+            <.button phx-disable-with="Saving...">Save Category</.button>
+          </:actions>
+        </.simple_form>
+      </.page>
     </div>
     """
   end

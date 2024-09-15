@@ -1,4 +1,4 @@
-defmodule SafiraWeb.AttendeeLive.Index do
+defmodule SafiraWeb.Backoffice.AttendeeLive.Index do
   alias Safira.Accounts
   use SafiraWeb, :backoffice_view
 

@@ -202,7 +202,7 @@ defmodule SafiraWeb.CoreComponents do
   def simple_form(assigns) do
     ~H"""
     <.form :let={f} for={@for} as={@as} {@rest}>
-      <div class="mt-10 space-y-8 bg-light dark:bg-dark">
+      <div class="mt-10 space-y-8">
         <%= render_slot(@inner_block, f) %>
         <div :for={action <- @actions} class="mt-2 flex items-center justify-between gap-6">
           <%= render_slot(action, f) %>
@@ -398,7 +398,7 @@ defmodule SafiraWeb.CoreComponents do
 
   def label(assigns) do
     ~H"""
-    <label for={@for} class="block text-sm font-semibold leading-6 text-zinc-800">
+    <label for={@for} class="block text-sm font-semibold leading-6">
       <%= render_slot(@inner_block) %>
     </label>
     """
@@ -422,6 +422,7 @@ defmodule SafiraWeb.CoreComponents do
   Renders a header with title.
   """
   attr :class, :string, default: nil
+  attr :title_class, :string, default: ""
 
   slot :inner_block, required: true
   slot :subtitle
@@ -431,10 +432,10 @@ defmodule SafiraWeb.CoreComponents do
     ~H"""
     <header class={[@actions != [] && "flex items-center justify-between gap-6", @class]}>
       <div>
-        <h1 class="text-lg font-semibold leading-8 text-dark dark:text-light">
+        <h1 class={"text-lg font-semibold leading-8 #{@title_class}"}>
           <%= render_slot(@inner_block) %>
         </h1>
-        <p :if={@subtitle != []} class="mt-2 text-sm leading-6 text-dark dark:text-light">
+        <p :if={@subtitle != []} class="mt-2 text-sm leading-6">
           <%= render_slot(@subtitle) %>
         </p>
       </div>
@@ -521,98 +522,6 @@ defmodule SafiraWeb.CoreComponents do
     """
   end
 
-  @doc """
-  Returns a button triggered dropdown with aria keyboard and focus supporrt.
-
-  Accepts the follow slots:
-
-    * `:id` - The id to uniquely identify this dropdown
-    * `:img` - The optional img to show beside the button title
-    * `:title` - The button title
-    * `:subtitle` - The button subtitle
-
-  ## Examples
-
-      <.dropdown id={@id}>
-        <:img src={@current_user.avatar_url}/>
-        <:title><%= @current_user.name %></:title>
-        <:subtitle>@<%= @current_user.username %></:subtitle>
-
-        <:link navigate={profile_path(@current_user)}>View Profile</:link>
-        <:link navigate={~p"/profile/settings"}Settings</:link>
-      </.dropdown>
-  """
-  attr :id, :string, required: true
-
-  slot :img do
-    attr :src, :string
-  end
-
-  slot :title
-  slot :subtitle
-
-  slot :link do
-    attr :navigate, :string
-    attr :href, :string
-    attr :method, :any
-  end
-
-  def dropdown(assigns) do
-    ~H"""
-    <!-- User account dropdown -->
-    <div class="px-3 mt-6 relative inline-block text-left">
-      <div>
-        <button
-          id={@id}
-          type="button"
-          class="group w-full bg-light dark:bg-dark rounded-md border-lightShade dark:border-darkShade border px-3.5 py-4 text-sm text-left font-medium text-gray-700 dark:hover:bg-dark/20 focus:outline-0 focus:ring-2 focus:ring-offset-2 focus:ring-dark"
-          phx-click={show_dropdown("##{@id}-dropdown")}
-          phx-hook="Menu"
-          data-active-class="bg-gray-100"
-          aria-haspopup="true"
-        >
-          <span class="flex w-full justify-between items-center text-lightShade dark:text-darkShade">
-            <span class="flex min-w-0 items-center justify-between space-x-3">
-              <%= for img <- @img do %>
-                <img class="w-10 h-10 rounded-full flex-shrink-0" alt="" {assigns_to_attributes(img)} />
-              <% end %>
-              <span class="flex-1 flex flex-col min-w-0">
-                <span class="text-dark dark:text-light text-sm font-medium truncate">
-                  <%= render_slot(@title) %>
-                </span>
-                <span class="text-darkMuted dark:text-lightMuted text-sm truncate">
-                  <%= render_slot(@subtitle) %>
-                </span>
-              </span>
-            </span>
-            <.icon name="hero-chevron-up-down" />
-          </span>
-        </button>
-      </div>
-      <div
-        id={"#{@id}-dropdown"}
-        phx-click-away={hide_dropdown("##{@id}-dropdown")}
-        class="hidden z-10 mx-3 origin-bottom bottom-full absolute right-0 left-0 mt-1 rounded-md shadow-lg bg-light dark:bg-dark ring-1 ring-black ring-opacity-5 divide-y divide-lightShade dark:divide-darkShade border border-lightShade dark:border-darkShade"
-        role="menu"
-        aria-labelledby={@id}
-      >
-        <div class="py-1" role="none">
-          <%= for link <- @link do %>
-            <.link
-              tabindex="-1"
-              role="menuitem"
-              class="block px-4 py-2 text-sm bg-light dark:bg-dark text-dark dark:text-light hover:bg-lightShade/40 dark:hover:bg-darkShade"
-              {link}
-            >
-              <%= render_slot(link) %>
-            </.link>
-          <% end %>
-        </div>
-      </div>
-    </div>
-    """
-  end
-
   ## JS Commands
 
   def show(js \\ %JS{}, selector) do
@@ -658,26 +567,6 @@ defmodule SafiraWeb.CoreComponents do
     |> JS.hide(to: "##{id}", transition: {"block", "block", "hidden"})
     |> JS.remove_class("overflow-hidden", to: "body")
     |> JS.pop_focus()
-  end
-
-  def show_dropdown(to) do
-    JS.show(
-      to: to,
-      transition:
-        {"transition ease-out duration-120", "transform opacity-0 scale-95",
-         "transform opacity-100 scale-100"}
-    )
-    |> JS.set_attribute({"aria-expanded", "true"}, to: to)
-  end
-
-  def hide_dropdown(to) do
-    JS.hide(
-      to: to,
-      transition:
-        {"transition ease-in duration-120", "transform opacity-100 scale-100",
-         "transform opacity-0 scale-95"}
-    )
-    |> JS.remove_attribute("aria-expanded", to: to)
   end
 
   @doc """

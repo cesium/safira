@@ -2,6 +2,7 @@ defmodule SafiraWeb.Router do
   use SafiraWeb, :router
 
   import SafiraWeb.UserAuth
+  import SafiraWeb.UserRoles
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -69,7 +70,13 @@ defmodule SafiraWeb.Router do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
 
-      scope "/dashboard" do
+      scope "/app", App do
+        pipe_through :require_attendee_user
+        live "/", HomeLive.Index, :index
+      end
+
+      scope "/dashboard", Backoffice do
+        pipe_through :require_staff_user
         live "/attendees", AttendeeLive.Index, :index
 
         live "/staffs", StaffLive.Index, :index

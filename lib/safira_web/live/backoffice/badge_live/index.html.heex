@@ -1,5 +1,4 @@
-<.header>
-  Listing Badges
+<.page title="Badges">
   <:actions>
     <div class="flex flex-row gap-4 justify-center items-center">
       <.table_search
@@ -19,21 +18,21 @@
       </.link>
     </div>
   </:actions>
-</.header>
 
-<div id="badges-grid" class="pt-8 flex flex-wrap" phx-update="stream">
-  <%= for {id, badge} <- @streams.badges do %>
-    <.link id={id} class="w-64 text-center" patch={~p"/dashboard/badges/#{badge.id}/edit"}>
-      <img
-        :if={badge.image}
-        class="p-2 w-64 h-64"
-        src={Uploaders.Badge.url({badge.image, badge}, :original)}
-      />
-      <img :if={!badge.image} class="p-2 w-64 h-64" src="/images/badges/404-fallback.svg" />
-      <p class="text-dark dark:text-light pt-1"><%= badge.name %></p>
-    </.link>
-  <% end %>
-</div>
+  <div id="badges-grid" class="pt-8 flex flex-wrap" phx-update="stream">
+    <%= for {id, badge} <- @streams.badges do %>
+      <.link id={id} class="w-64 text-center" patch={~p"/dashboard/badges/#{badge.id}/edit"}>
+        <img
+          :if={badge.image}
+          class="p-2 w-64 h-64"
+          src={Uploaders.Badge.url({badge.image, badge}, :original)}
+        />
+        <img :if={!badge.image} class="p-2 w-64 h-64" src="/images/badges/404-fallback.svg" />
+        <p class="pt-1"><%= badge.name %></p>
+      </.link>
+    <% end %>
+  </div>
+</.page>
 
 <.modal
   :if={@live_action in [:new, :edit]}
@@ -42,7 +41,7 @@
   on_cancel={JS.patch(~p"/dashboard/badges")}
 >
   <.live_component
-    module={SafiraWeb.BadgeLive.FormComponent}
+    module={SafiraWeb.Backoffice.BadgeLive.FormComponent}
     id={@badge.id || :new}
     title={@page_title}
     action={@live_action}
@@ -59,7 +58,7 @@
   on_cancel={JS.patch(~p"/dashboard/badges")}
 >
   <.live_component
-    module={SafiraWeb.BadgeLive.CategoryLive.Index}
+    module={SafiraWeb.Backoffice.BadgeLive.CategoryLive.Index}
     id="list-categories"
     title={@page_title}
     action={@live_action}
@@ -74,7 +73,7 @@
   on_cancel={JS.navigate(~p"/dashboard/badges/categories")}
 >
   <.live_component
-    module={SafiraWeb.BadgeLive.CategoryLive.FormComponent}
+    module={SafiraWeb.Backoffice.BadgeLive.CategoryLive.FormComponent}
     id={@category.id || :new}
     title={@page_title}
     action={@live_action}
@@ -90,7 +89,7 @@
   on_cancel={JS.patch(~p"/dashboard/badges/#{@badge.id}/edit")}
 >
   <.live_component
-    module={SafiraWeb.BadgeLive.ConditionLive.Index}
+    module={SafiraWeb.Backoffice.BadgeLive.ConditionLive.Index}
     id="list-conditions"
     title={@page_title}
     action={@live_action}
@@ -106,7 +105,7 @@
   on_cancel={JS.navigate(~p"/dashboard/badges/#{@badge.id}/conditions")}
 >
   <.live_component
-    module={SafiraWeb.BadgeLive.ConditionLive.FormComponent}
+    module={SafiraWeb.Backoffice.BadgeLive.ConditionLive.FormComponent}
     id={@badge_condition.id || :new}
     title={@page_title}
     action={@live_action}

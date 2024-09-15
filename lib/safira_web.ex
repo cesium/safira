@@ -52,6 +52,15 @@ defmodule SafiraWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
+        layout: {SafiraWeb.Layouts, :default}
+
+      unquote(html_helpers())
+    end
+  end
+
+  def app_view do
+    quote do
+      use Phoenix.LiveView,
         layout: {SafiraWeb.Layouts, :app}
 
       unquote(html_helpers())
@@ -102,6 +111,7 @@ defmodule SafiraWeb do
       import Phoenix.HTML
       # Core UI components and translation
       import SafiraWeb.CoreComponents
+      import SafiraWeb.Components.Page
       import SafiraWeb.Gettext
 
       # Shortcut for generating JS commands

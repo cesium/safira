@@ -1,29 +1,31 @@
-<.header>
-  <%= @product.name %>
+<.page title={@product.name}>
   <:actions>
     <.link patch={~p"/dashboard/store/products/#{@product}/show/edit"} phx-click={JS.push_focus()}>
       <.button>Edit product</.button>
     </.link>
   </:actions>
-</.header>
 
-<div class="flex flex-col md:flex-row w-full">
-  <div class="dark:text-light w-full">
-    <p><%= @product.description %></p>
-    <div class="pt-8">
-      <p><span class="font-semibold">Price: </span><%= @product.price %> 💰</p>
-      <p><span class="font-semibold">Stock: </span><%= @product.stock %></p>
-      <p><span class="font-semibold">Max per user: </span><%= @product.max_per_user %></p>
+  <div class="flex flex-col md:flex-row w-full">
+    <div class="w-full">
+      <p><%= @product.description %></p>
+      <div class="pt-8">
+        <p><span class="font-semibold">Price: </span><%= @product.price %> 💰</p>
+        <p><span class="font-semibold">Stock: </span><%= @product.stock %></p>
+        <p><span class="font-semibold">Max per user: </span><%= @product.max_per_user %></p>
+      </div>
+    </div>
+    <div class="w-full">
+      <%= if @product.image do %>
+        <img
+          class="w-full p-4"
+          src={Uploaders.Product.url({@product.image, @product}, :original)}
+        />
+      <% end %>
     </div>
   </div>
-  <div class="w-full">
-    <%= if @product.image do %>
-      <img class="w-full p-4" src={Uploaders.Product.url({@product.image, @product}, :original)} />
-    <% end %>
-  </div>
-</div>
 
-<.back navigate={~p"/dashboard/store/products"}>Back to products</.back>
+  <.back navigate={~p"/dashboard/store/products"}>Back to products</.back>
+</.page>
 
 <.modal
   :if={@live_action == :edit}
@@ -32,7 +34,7 @@
   on_cancel={JS.patch(~p"/dashboard/store/products/#{@product}")}
 >
   <.live_component
-    module={SafiraWeb.ProductLive.FormComponent}
+    module={SafiraWeb.Backoffice.ProductLive.FormComponent}
     id={@product.id}
     title={@page_title}
     action={@live_action}

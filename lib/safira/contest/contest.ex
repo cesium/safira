@@ -124,6 +124,19 @@ defmodule Safira.Contest do
   end
 
   @doc """
+  Deletes a badge.
+
+  ## Examples
+
+      iex> delete_badge(badge)
+      {:ok, %Badge{}}
+
+  """
+  def delete_badge(%Badge{} = badge) do
+    Repo.delete(badge)
+  end
+
+  @doc """
   Gets a single badge category.
 
   Raises `Ecto.NoResultsError` if the badge category does not exist.

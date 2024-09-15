@@ -1,4 +1,4 @@
-defmodule SafiraWeb.BadgeLive.FormComponent do
+defmodule SafiraWeb.Backoffice.BadgeLive.FormComponent do
   use SafiraWeb, :live_component
 
   alias Safira.Contest
@@ -9,69 +9,69 @@ defmodule SafiraWeb.BadgeLive.FormComponent do
   def render(assigns) do
     ~H"""
     <div>
-      <div class="flex flex-row justify-between items-center">
-        <.header>
-          <%= @title %>
-          <:subtitle>
-            <%= gettext(
-              "Attendees can earn badges by participating in activities and challenges during the event."
-            ) %>
-          </:subtitle>
-        </.header>
-        <.link :if={@badge.id} patch={~p"/dashboard/badges/#{@badge.id}/conditions"}>
-          <.button>
-            <.icon name="hero-bolt" />
-          </.button>
-        </.link>
-      </div>
-
-      <.simple_form
-        for={@form}
-        id="badge-form"
-        phx-target={@myself}
-        phx-change="validate"
-        phx-submit="save"
+      <.page
+        title={@title}
+        subtitle={
+          gettext(
+            "Attendees can earn badges by participating in activities and challenges during the event."
+          )
+        }
       >
-        <div class="flex flex-col md:flex-row w-full gap-4">
-          <div class="w-full space-y-2">
-            <.field field={@form[:name]} type="text" label="Name" required />
-            <.field field={@form[:description]} type="textarea" label="Description" required />
-            <.field field={@form[:tokens]} type="number" label="Tokens" required />
-            <.field
-              field={@form[:category_id]}
-              options={categories_options(@categories)}
-              type="select"
-              label="Category"
-              required
-            />
-            <.field field={@form[:begin]} type="datetime-local" label="Begin" required />
-            <.field field={@form[:end]} type="datetime-local" label="End" required />
-            <.field
-              field={@form[:counts_for_day]}
-              wrapper_class="pt-4"
-              type="switch"
-              label="Counts for day"
-              help_text={
-                gettext(
-                  "Controls whether tokens received by getting this badge count for the daily leaderboard."
-                )
-              }
-            />
-          </div>
-          <div class="w-full pb-6">
-            <.field_label>Image</.field_label>
-            <.image_uploader
-              class="h-full"
-              upload={@uploads.image}
-              image={Uploaders.Badge.url({@badge.image, @badge}, :original)}
-              icon="hero-check-badge"
-            />
-          </div>
-        </div>
         <:actions>
-          <.button phx-disable-with="Saving...">Save Badge</.button>
+          <.link :if={@badge.id} patch={~p"/dashboard/badges/#{@badge.id}/conditions"}>
+            <.button>
+              <.icon name="hero-bolt" />
+            </.button>
+          </.link>
         </:actions>
-      </.simple_form>
+        <.simple_form
+          for={@form}
+          id="badge-form"
+          phx-target={@myself}
+          phx-change="validate"
+          phx-submit="save"
+        >
+          <div class="flex flex-col md:flex-row w-full gap-4">
+            <div class="w-full space-y-2">
+              <.field field={@form[:name]} type="text" label="Name" required />
+              <.field field={@form[:description]} type="textarea" label="Description" required />
+              <.field field={@form[:tokens]} type="number" label="Tokens" required />
+              <.field
+                field={@form[:category_id]}
+                options={categories_options(@categories)}
+                type="select"
+                label="Category"
+                required
+              />
+              <.field field={@form[:begin]} type="datetime-local" label="Begin" required />
+              <.field field={@form[:end]} type="datetime-local" label="End" required />
+              <.field
+                field={@form[:counts_for_day]}
+                wrapper_class="pt-4"
+                type="switch"
+                label="Counts for day"
+                help_text={
+                  gettext(
+                    "Controls whether tokens received by getting this badge count for the daily leaderboard."
+                  )
+                }
+              />
+            </div>
+            <div class="w-full pb-6">
+              <.field_label>Image</.field_label>
+              <.image_uploader
+                class="h-full"
+                upload={@uploads.image}
+                image={Uploaders.Badge.url({@badge.image, @badge}, :original)}
+                icon="hero-check-badge"
+              />
+            </div>
+          </div>
+          <:actions>
+            <.button phx-disable-with="Saving...">Save Badge</.button>
+          </:actions>
+        </.simple_form>
+      </.page>
     </div>
     """
   end

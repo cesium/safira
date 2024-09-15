@@ -1,4 +1,4 @@
-defmodule SafiraWeb.ProductLive.Index do
+defmodule SafiraWeb.Backoffice.ProductLive.Index do
   use SafiraWeb, :backoffice_view
 
   alias Safira.Store

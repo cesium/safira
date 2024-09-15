@@ -1,4 +1,4 @@
-defmodule SafiraWeb.BadgeLive.ConditionLive.FormComponent do
+defmodule SafiraWeb.Backoffice.BadgeLive.ConditionLive.FormComponent do
   alias Safira.Moon
   use SafiraWeb, :live_component
 
@@ -10,49 +10,47 @@ defmodule SafiraWeb.BadgeLive.ConditionLive.FormComponent do
     ~H"""
     <div>
       <.flash_group flash={@flash} />
-      <.header>
-        <%= @title %>
-        <:subtitle>
-          <%= gettext(
-            "When this logic gets executed as truthy, the badge is awarded to the attendee."
-          ) %>
-        </:subtitle>
-      </.header>
-
-      <.simple_form
-        for={@form}
-        id="condition-form"
-        phx-target={@myself}
-        phx-change="validate"
-        phx-submit="save"
+      <.page
+        title={@title}
+        subtitle={
+          gettext("When this logic gets executed as truthy, the badge is awarded to the attendee.")
+        }
       >
-        <div class="w-full space-y-2 text-dark dark:text-light">
-          <div class="flex flex-row gap-2 items-center">
+        <.simple_form
+          for={@form}
+          id="condition-form"
+          phx-target={@myself}
+          phx-change="validate"
+          phx-submit="save"
+        >
+          <div class="w-full space-y-2 text-dark dark:text-light">
+            <div class="flex flex-row gap-2 items-center">
+              <p>
+                <%= gettext("When an attendee receives a badge of type") %>
+              </p>
+              <.field
+                field={@form[:category_id]}
+                label_class="hidden"
+                wrapper_class="!mb-0 w-40"
+                type="select"
+                options={categories_options(@categories)}
+              />
+              <p>
+                <%= gettext("and:") %>
+              </p>
+            </div>
+            <div>
+              <.field field={@form[:logic]} label_class="hidden" wrapper_class="!mb-0" type="lua" />
+            </div>
             <p>
-              <%= gettext("When an attendee receives a badge of type") %>
-            </p>
-            <.field
-              field={@form[:category_id]}
-              label_class="hidden"
-              wrapper_class="!mb-0 w-40"
-              type="select"
-              options={categories_options(@categories)}
-            />
-            <p>
-              <%= gettext("and:") %>
+              <%= gettext("award them %{badge_name}.", badge_name: @badge.name) %>
             </p>
           </div>
-          <div>
-            <.field field={@form[:logic]} label_class="hidden" wrapper_class="!mb-0" type="lua" />
-          </div>
-          <p>
-            <%= gettext("award them %{badge_name}.", badge_name: @badge.name) %>
-          </p>
-        </div>
-        <:actions>
-          <.button phx-disable-with="Saving...">Save Condition</.button>
-        </:actions>
-      </.simple_form>
+          <:actions>
+            <.button phx-disable-with="Saving...">Save Condition</.button>
+          </:actions>
+        </.simple_form>
+      </.page>
     </div>
     """
   end
@@ -128,8 +126,6 @@ defmodule SafiraWeb.BadgeLive.ConditionLive.FormComponent do
   end
 
   defp save_condition(socket, :conditions_new, badge_condition_params) do
-    IO.inspect(badge_condition_params)
-
     case Contest.create_badge_condition(badge_condition_params) do
       {:ok, _condition} ->
         {:noreply,

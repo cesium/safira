@@ -1,4 +1,4 @@
-defmodule SafiraWeb.BadgeLive.Index do
+defmodule SafiraWeb.Backoffice.BadgeLive.Index do
   alias Safira.Contest.BadgeCondition
   alias Safira.Contest.Badge
   use SafiraWeb, :backoffice_view

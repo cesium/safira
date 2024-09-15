@@ -4,6 +4,10 @@ defmodule SafiraWeb.UserLoginLive do
   def render(assigns) do
     ~H"""
     <div class="mx-auto max-w-sm">
+      <div class="px-32 py-12">
+        <img class="w-full h-full block" src={~p"/images/sei.svg"} />
+      </div>
+
       <.header class="text-center">
         Log in to account
         <:subtitle>

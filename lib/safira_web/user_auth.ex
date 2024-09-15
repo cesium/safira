@@ -13,6 +13,9 @@ defmodule SafiraWeb.UserAuth do
   @remember_me_cookie "_safira_web_user_remember_me"
   @remember_me_options [sign: true, max_age: @max_age, same_site: "Lax"]
 
+  # Redirect paths after login based on user type.
+  @redirect_after_login_paths %{attendee: "/app/", staff: "/dashboard/attendees"}
+
   @doc """
   Logs the user in.
 
@@ -33,7 +36,7 @@ defmodule SafiraWeb.UserAuth do
     |> renew_session()
     |> put_token_in_session(token)
     |> maybe_write_remember_me_cookie(token, params)
-    |> redirect(to: user_return_to || signed_in_path(conn))
+    |> redirect(to: user_return_to || signed_in_path(conn, user.type))
   end
 
   defp maybe_write_remember_me_cookie(conn, token, %{"remember_me" => "true"}) do
@@ -93,7 +96,20 @@ defmodule SafiraWeb.UserAuth do
   def fetch_current_user(conn, _opts) do
     {user_token, conn} = ensure_user_token(conn)
     user = user_token && Accounts.get_user_by_session_token(user_token)
-    assign(conn, :current_user, user)
+
+    assign(
+      conn,
+      :current_user,
+      if user do
+        case user.type do
+          # If the user is an attendee, merge the attendee data into the user.
+          :attendee -> user |> Map.merge(Accounts.get_user_attendee(user))
+          _ -> user
+        end
+      else
+        user
+      end
+    )
   end
 
   defp ensure_user_token(conn) do
@@ -168,7 +184,10 @@ defmodule SafiraWeb.UserAuth do
     socket = mount_current_user(socket, session)
 
     if socket.assigns.current_user do
-      {:halt, Phoenix.LiveView.redirect(socket, to: signed_in_path(socket))}
+      {:halt,
+       Phoenix.LiveView.redirect(socket,
+         to: signed_in_path(socket, socket.assigns.current_user.type)
+       )}
     else
       {:cont, socket}
     end
@@ -188,7 +207,7 @@ defmodule SafiraWeb.UserAuth do
   def redirect_if_user_is_authenticated(conn, _opts) do
     if conn.assigns[:current_user] do
       conn
-      |> redirect(to: signed_in_path(conn))
+      |> redirect(to: signed_in_path(conn, conn.assigns[:current_user].type))
       |> halt()
     else
       conn
@@ -225,5 +244,5 @@ defmodule SafiraWeb.UserAuth do
 
   defp maybe_store_return_to(conn), do: conn
 
-  defp signed_in_path(_conn), do: ~p"/"
+  defp signed_in_path(_conn, user_type), do: @redirect_after_login_paths[user_type]
 end
