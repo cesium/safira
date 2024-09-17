@@ -5,12 +5,13 @@ defmodule SafiraWeb.Components.Sidebar do
   alias Phoenix.LiveView.JS
 
   attr :pages, :list, default: []
-  attr :images, :map, required: true
   attr :current_user, :map, required: false
   attr :current_page, :atom, default: nil
   attr :background, :string, default: ""
   attr :border, :string, default: ""
   attr :logo_padding, :string, default: ""
+  attr :logo_url, :string, default: "/"
+  attr :logo_images, :map, required: true
   attr :user_dropdown_name_color, :string, default: ""
   attr :user_dropdown_handle_color, :string, default: ""
   attr :user_dropdown_icon_color, :string, default: ""
@@ -33,9 +34,9 @@ defmodule SafiraWeb.Components.Sidebar do
         class={"relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 #{@background} hidden min-h-screen h-full"}
       >
         <div class="flex-1 flex flex-col py-4 overflow-y-auto scrollbar-hide">
-          <.link navigate={~p"/"} class={"flex items-center flex-shrink-0 #{@logo_padding}"}>
-            <img class="w-full h-full hidden dark:block" src={@images.light} />
-            <img class="w-full h-full dark:hidden" src={@images.dark} />
+          <.link navigate={@logo_url} class={"flex items-center flex-shrink-0 #{@logo_padding}"}>
+            <img class="w-full h-full hidden dark:block" src={@logo_images.light} />
+            <img class="w-full h-full dark:hidden" src={@logo_images.dark} />
           </.link>
           <div class="mt-8 flex flex-col justify-between h-full">
             <nav class="px-4">
@@ -67,9 +68,9 @@ defmodule SafiraWeb.Components.Sidebar do
     <!-- Static sidebar for desktop -->
     <div class="hidden lg:flex lg:flex-shrink-0">
       <div class={"flex flex-col w-64 border-r #{@border} #{@background} pt-5"}>
-        <.link navigate={~p"/"} class={"flex items-center flex-shrink-0 #{@logo_padding}"}>
-          <img class="w-full h-full hidden dark:block" src={@images.light} />
-          <img class="w-full h-full dark:hidden" src={@images.dark} />
+        <.link navigate={@logo_url} class={"flex items-center flex-shrink-0 #{@logo_padding}"}>
+          <img class="w-full h-full hidden dark:block" src={@logo_images.light} />
+          <img class="w-full h-full dark:hidden" src={@logo_images.dark} />
         </.link>
         <!-- Sidebar component, swap this element with another sidebar if you like -->
         <div class="h-0 flex-1 flex flex-col justify-between pb-4 overflow-y-auto scrollbar-hide">

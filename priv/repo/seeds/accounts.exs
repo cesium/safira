@@ -59,7 +59,8 @@ defmodule Safira.Repo.Seeds.Accounts do
 
       case Accounts.register_staff_user(user) do
         {:ok, changeset} ->
-          Repo.update!(Accounts.User.confirm_changeset(changeset))
+          user = Repo.update!(Accounts.User.confirm_changeset(changeset))
+          Accounts.create_staff(%{user_id: user.id})
           {:error, changeset} ->
             Mix.shell().error(Kernel.inspect(changeset.errors))
       end

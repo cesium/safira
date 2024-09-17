@@ -15,6 +15,7 @@ module.exports = {
       colors: {
         primary: colors.blue,
         primaryDark: "#04041C",
+        accent: "#ff800d",
         light: "#ffffff",
         lightMuted: "#a1a1aa",
         lightShade: "#e5e7eb",
@@ -27,6 +28,9 @@ module.exports = {
         warning: colors.yellow,
         info: colors.blue,
         gray: colors.gray
+      },
+      fontFamily: {
+        terminal: ["Terminal"]
       }
     },
   },

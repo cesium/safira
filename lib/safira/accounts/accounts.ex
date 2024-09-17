@@ -5,7 +5,7 @@ defmodule Safira.Accounts do
 
   use Safira.Context
 
-  alias Safira.Accounts.{Attendee, User, UserToken, UserNotifier}
+  alias Safira.Accounts.{Attendee, Staff, User, UserToken, UserNotifier}
 
   ## Database getters
 
@@ -44,10 +44,27 @@ defmodule Safira.Accounts do
     |> Flop.validate_and_run(params, for: User)
   end
 
-  def get_user_attendee(%User{} = user) do
+  def get_user_attendee(user_id) do
     Attendee
-    |> where(user_id: ^user.id)
+    |> where(user_id: ^user_id)
     |> Repo.one()
+  end
+
+  def get_user_staff(user_id) do
+    Staff
+    |> where(user_id: ^user_id)
+    |> Repo.one()
+  end
+
+  def load_user_associations(user) do
+    Map.put(
+      user,
+      user.type,
+      case user.type do
+        :attendee -> get_user_attendee(user.id)
+        :staff -> get_user_staff(user.id)
+      end
+    )
   end
 
   @doc """
@@ -173,6 +190,15 @@ defmodule Safira.Accounts do
   def create_attendee(attrs \\ %{}) do
     %Attendee{}
     |> Attendee.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Creates a staff.
+  """
+  def create_staff(attrs \\ %{}) do
+    %Staff{}
+    |> Staff.changeset(attrs)
     |> Repo.insert()
   end
 

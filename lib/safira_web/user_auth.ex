@@ -97,19 +97,7 @@ defmodule SafiraWeb.UserAuth do
     {user_token, conn} = ensure_user_token(conn)
     user = user_token && Accounts.get_user_by_session_token(user_token)
 
-    assign(
-      conn,
-      :current_user,
-      if user do
-        case user.type do
-          # If the user is an attendee, merge the attendee data into the user.
-          :attendee -> user |> Map.merge(Accounts.get_user_attendee(user))
-          _ -> user
-        end
-      else
-        user
-      end
-    )
+    assign(conn, :current_user, merge_attendee_data_if_applicable(user))
   end
 
   defp ensure_user_token(conn) do
@@ -197,6 +185,7 @@ defmodule SafiraWeb.UserAuth do
     Phoenix.Component.assign_new(socket, :current_user, fn ->
       if user_token = session["user_token"] do
         Accounts.get_user_by_session_token(user_token)
+        |> merge_attendee_data_if_applicable()
       end
     end)
   end
@@ -245,4 +234,12 @@ defmodule SafiraWeb.UserAuth do
   defp maybe_store_return_to(conn), do: conn
 
   defp signed_in_path(_conn, user_type), do: @redirect_after_login_paths[user_type]
+
+  defp merge_attendee_data_if_applicable(user) do
+    if user do
+      Accounts.load_user_associations(user)
+    else
+      user
+    end
+  end
 end

@@ -1,0 +1,18 @@
+<.page title="Store" size={:xl} title_class="font-terminal uppercase">
+  <:actions>
+    <span class="text-semibold text-xl border-2 px-4 py-2 rounded-full font-terminal">
+      💰 <%= @current_user.attendee.tokens %>
+    </span>
+  </:actions>
+  <div class="flex justify-center w-full">
+    <div
+      id="products-list"
+      phx-update="stream"
+      class="flex flex-wrap gap-6 w-full py-8 justify-between lg:justify-normal"
+    >
+      <%= for {id, product} <- @streams.products do %>
+        <.product_card id={id} data={product} />
+      <% end %>
+    </div>
+  </div>
+</.page>

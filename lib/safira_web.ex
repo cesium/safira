@@ -63,6 +63,8 @@ defmodule SafiraWeb do
       use Phoenix.LiveView,
         layout: {SafiraWeb.Layouts, :app}
 
+      import SafiraWeb.Components.Button
+
       unquote(html_helpers())
     end
   end
@@ -113,6 +115,8 @@ defmodule SafiraWeb do
       import SafiraWeb.CoreComponents
       import SafiraWeb.Components.Page
       import SafiraWeb.Gettext
+
+      import SafiraWeb.Helpers
 
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS

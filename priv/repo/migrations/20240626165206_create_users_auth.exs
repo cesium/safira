@@ -12,7 +12,6 @@ defmodule Safira.Repo.Migrations.CreateUsersAuth do
       add :type, :string, default: "attendee"
       add :hashed_password, :string, null: false
       add :confirmed_at, :utc_datetime
-      add :role_id, references(:roles, type: :binary_id, on_delete: :nilify_all)
 
       timestamps(type: :utc_datetime)
     end

@@ -73,6 +73,11 @@ defmodule SafiraWeb.Router do
       scope "/app", App do
         pipe_through :require_attendee_user
         live "/", HomeLive.Index, :index
+
+        scope "/store", StoreLive do
+          live "/", Index, :index
+          live "/product/:id", Show, :show
+        end
       end
 
       scope "/dashboard", Backoffice do

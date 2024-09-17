@@ -11,6 +11,7 @@ defmodule Safira.Application do
       SafiraWeb.Telemetry,
       Safira.Repo,
       {DNSCluster, query: Application.get_env(:safira, :dns_cluster_query) || :ignore},
+      # Start the PubSub system
       {Phoenix.PubSub, name: Safira.PubSub},
       # Start the Finch HTTP client for sending emails
       {Finch, name: Safira.Finch},

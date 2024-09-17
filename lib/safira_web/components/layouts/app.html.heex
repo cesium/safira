@@ -3,10 +3,11 @@
     current_user={@current_user}
     pages={SafiraWeb.Config.app_pages()}
     current_page={Map.get(assigns, :current_page, nil)}
-    images={%{light: "/images/sei.svg", dark: "/images/sei.svg"}}
     background="bg-primaryDark"
     border="border-darkShade"
     logo_padding="px-16 pt-8 pb-4"
+    logo_images={%{light: "/images/sei.svg", dark: "/images/sei.svg"}}
+    logo_url={~p"/app/"}
     user_dropdown_name_color="text-light"
     user_dropdown_handle_color="text-lightMuted"
     user_dropdown_icon_color="text-lightShade"

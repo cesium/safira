@@ -19,4 +19,11 @@ defmodule Safira.Accounts.Attendee do
     |> cast_assoc(:user)
     |> validate_required(@required_fields)
   end
+
+  def update_tokens_changeset(attendee, attrs) do
+    attendee
+    |> cast(attrs, ~w(tokens)a)
+    |> validate_required(~w(tokens)a)
+    |> validate_number(:tokens, greater_than_or_equal_to: 0)
+  end
 end

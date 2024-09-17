@@ -2,6 +2,7 @@ defmodule Safira.Accounts.User do
   use Safira.Schema
 
   alias Safira.Accounts.Attendee
+  alias Safira.Accounts.Staff
 
   @required_fields ~w(name email handle password type)a
   @optional_fields ~w(confirmed_at)a
@@ -38,8 +39,7 @@ defmodule Safira.Accounts.User do
     field :type, Ecto.Enum, values: [:attendee, :staff], default: :attendee
 
     has_one :attendee, Attendee, on_delete: :delete_all
-
-    belongs_to :role, Safira.Accounts.Role
+    has_one :staff, Staff, on_delete: :delete_all
 
     timestamps(type: :utc_datetime)
   end
