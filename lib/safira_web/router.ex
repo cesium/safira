@@ -78,6 +78,8 @@ defmodule SafiraWeb.Router do
           live "/", Index, :index
           live "/product/:id", Show, :show
         end
+
+        live "/vault", VaultLive.Index, :index
       end
 
       scope "/dashboard", Backoffice do

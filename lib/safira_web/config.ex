@@ -33,7 +33,7 @@ defmodule SafiraWeb.Config do
         key: :vault,
         title: "Vault",
         icon: "hero-archive-box",
-        url: "/app/inventory"
+        url: "/app/vault"
       },
       %{
         key: :credential,

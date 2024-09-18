@@ -101,4 +101,17 @@ defmodule Safira.Inventory do
   def change_item(%Item{} = item, attrs \\ %{}) do
     Item.changeset(item, attrs)
   end
+
+  @doc """
+  List all items for a given attendee.
+
+  ## Examples
+
+      iex> list_attendee_items(attendee_id)
+      [%Item{}, ...]
+
+  """
+  def list_attendee_items(attendee_id) do
+    Repo.all(from i in Item, where: i.attendee_id == ^attendee_id, preload: [:product])
+  end
 end
