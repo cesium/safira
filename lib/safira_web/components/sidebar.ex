@@ -182,7 +182,6 @@ defmodule SafiraWeb.Components.Sidebar do
           type="button"
           class={"group w-full rounded-md #{@border} border px-3.5 py-4 text-sm text-left font-medium text-gray-700 dark:hover:bg-dark/20 focus:outline-0 focus:ring-2 focus:ring-offset-2 focus:ring-dark"}
           phx-click={show_user_dropdown("##{@id}-dropdown")}
-          phx-hook="Menu"
           data-active-class=""
           aria-haspopup="true"
         >

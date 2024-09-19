@@ -44,16 +44,50 @@ defmodule Safira.Accounts do
     |> Flop.validate_and_run(params, for: User)
   end
 
+  @doc """
+  Gets a single attendee by user id.
+  """
   def get_user_attendee(user_id) do
     Attendee
     |> where(user_id: ^user_id)
     |> Repo.one()
   end
 
+  @doc """
+  Gets a single attendee.
+  """
+  def get_attendee!(id, opts \\ []) do
+    Attendee
+    |> where(id: ^id)
+    |> apply_filters(opts)
+    |> Repo.one!()
+  end
+
+  @doc """
+  Checks if an attendee with a given id exists.
+  """
+  def attendee_exists?(id) do
+    Attendee
+    |> where(id: ^id)
+    |> Repo.exists?()
+  end
+
+  @doc """
+  Gets a single staff by user id.
+  """
   def get_user_staff(user_id) do
     Staff
     |> where(user_id: ^user_id)
     |> Repo.one()
+  end
+
+  @doc """
+  Gets a single staff.
+  """
+  def get_staff!(id) do
+    Staff
+    |> where(id: ^id)
+    |> Repo.one!()
   end
 
   def load_user_associations(user) do

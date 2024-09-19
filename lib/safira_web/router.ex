@@ -84,7 +84,11 @@ defmodule SafiraWeb.Router do
 
       scope "/dashboard", Backoffice do
         pipe_through :require_staff_user
-        live "/attendees", AttendeeLive.Index, :index
+
+        scope "/attendees", AttendeeLive do
+          live "/", Index, :index
+          live "/:id", Show, :show
+        end
 
         live "/staffs", StaffLive.Index, :index
 
@@ -115,6 +119,8 @@ defmodule SafiraWeb.Router do
             live "/:id/edit", Index, :categories_edit
           end
         end
+
+        live "/scanner", ScannerLive.Index, :index
       end
     end
   end

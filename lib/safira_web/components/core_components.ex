@@ -38,6 +38,7 @@ defmodule SafiraWeb.CoreComponents do
   """
   attr :id, :string, required: true
   attr :show, :boolean, default: false
+  attr :wrapper_class, :string, default: ""
   attr :on_cancel, JS, default: %JS{}
   slot :inner_block, required: true
 
@@ -52,7 +53,7 @@ defmodule SafiraWeb.CoreComponents do
     >
       <div id={"#{@id}-bg"} class="bg-dark/90 fixed inset-0 transition-opacity" aria-hidden="true" />
       <div
-        class="fixed inset-0 overflow-y-auto"
+        class={"fixed inset-0 overflow-y-auto #{@wrapper_class}"}
         aria-labelledby={"#{@id}-title"}
         aria-describedby={"#{@id}-description"}
         role="dialog"
