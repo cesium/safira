@@ -28,4 +28,16 @@ defmodule Safira.AccountsFixtures do
     [_, token | _] = String.split(captured_email.text_body, "[TOKEN]")
     token
   end
+
+  @doc """
+  Generate a credential.
+  """
+  def credential_fixture(attrs \\ %{}) do
+    {:ok, credential} =
+      attrs
+      |> Enum.into(%{})
+      |> Safira.Accounts.create_credential()
+
+    credential
+  end
 end

@@ -142,4 +142,21 @@ defmodule SafiraWeb.Helpers do
       Timex.format!(date, "{WDshort}, {D} de {Mshort}")
     end
   end
+
+  defp build_url do
+    if Mix.env() == :dev do
+      "http://localhost:4000"
+    else
+      "https://#{Application.fetch_env!(:atomic, AtomicWeb.Endpoint)[:url][:host]}"
+    end
+  end
+
+  def draw_qr_code(qr_code) do
+    internal_route = "/qr_codes/#{qr_code.id}"
+    url = build_url() <> internal_route
+
+    url
+    |> QRCodeEx.encode()
+    |> QRCodeEx.svg(background_color: "#FFFFFF", color: "#04041C", width: 200)
+  end
 end

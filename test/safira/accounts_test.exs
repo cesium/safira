@@ -505,4 +505,57 @@ defmodule Safira.AccountsTest do
       refute inspect(%User{password: "123456"}) =~ "password: \"123456\""
     end
   end
+
+  describe "credentials" do
+    alias Safira.Accounts.Credential
+
+    import Safira.AccountsFixtures
+
+    @invalid_attrs %{}
+
+    test "list_credentials/0 returns all credentials" do
+      credential = credential_fixture()
+      assert Accounts.list_credentials() == [credential]
+    end
+
+    test "get_credential!/1 returns the credential with given id" do
+      credential = credential_fixture()
+      assert Accounts.get_credential!(credential.id) == credential
+    end
+
+    test "create_credential/1 with valid data creates a credential" do
+      valid_attrs = %{}
+
+      assert {:ok, %Credential{} = credential} = Accounts.create_credential(valid_attrs)
+    end
+
+    test "create_credential/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Accounts.create_credential(@invalid_attrs)
+    end
+
+    test "update_credential/2 with valid data updates the credential" do
+      credential = credential_fixture()
+      update_attrs = %{}
+
+      assert {:ok, %Credential{} = credential} =
+               Accounts.update_credential(credential, update_attrs)
+    end
+
+    test "update_credential/2 with invalid data returns error changeset" do
+      credential = credential_fixture()
+      assert {:error, %Ecto.Changeset{}} = Accounts.update_credential(credential, @invalid_attrs)
+      assert credential == Accounts.get_credential!(credential.id)
+    end
+
+    test "delete_credential/1 deletes the credential" do
+      credential = credential_fixture()
+      assert {:ok, %Credential{}} = Accounts.delete_credential(credential)
+      assert_raise Ecto.NoResultsError, fn -> Accounts.get_credential!(credential.id) end
+    end
+
+    test "change_credential/1 returns a credential changeset" do
+      credential = credential_fixture()
+      assert %Ecto.Changeset{} = Accounts.change_credential(credential)
+    end
+  end
 end

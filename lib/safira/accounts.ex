@@ -506,4 +506,120 @@ defmodule Safira.Accounts do
       {:error, :user, changeset, _} -> {:error, changeset}
     end
   end
+
+  alias Safira.Accounts.Credential
+
+  @doc """
+  Returns the list of credentials.
+
+  ## Examples
+
+      iex> list_credentials()
+      [%Credential{}, ...]
+
+  """
+  def list_credentials do
+    Repo.all(Credential)
+  end
+
+  @doc """
+  Gets a single credential.
+
+  Raises `Ecto.NoResultsError` if the Qr code does not exist.
+
+  ## Examples
+
+      iex> get_credential!(123)
+      %Credential{}
+
+      iex> get_credential!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_credential!(id, preloads \\ []), do: Repo.get!(Credential, id) |> Repo.preload(preloads)
+
+  @doc """
+  Creates a credential.
+
+  ## Examples
+
+      iex> create_credential(%{field: value})
+      {:ok, %Credential{}}
+
+      iex> create_credential(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_credential(attrs \\ %{}) do
+    %Credential{}
+    |> Credential.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a credential.
+
+  ## Examples
+
+      iex> update_credential(credential, %{field: new_value})
+      {:ok, %Credential{}}
+
+      iex> update_credential(credential, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_credential(%Credential{} = credential, attrs) do
+    credential
+    |> Credential.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a credential.
+
+  ## Examples
+
+      iex> delete_credential(credential)
+      {:ok, %Credential{}}
+
+      iex> delete_credential(credential)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_credential(%Credential{} = credential) do
+    Repo.delete(credential)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking credential changes.
+
+  ## Examples
+
+      iex> change_credential(credential)
+      %Ecto.Changeset{data: %Credential{}}
+
+  """
+  def change_credential(%Credential{} = credential, attrs \\ %{}) do
+    Credential.changeset(credential, attrs)
+  end
+
+  @doc """
+  Gets a single credential associated to the given attendee.
+
+  Raises `Ecto.NoResultsError` if the credential does not exist.
+
+  ## Examples
+
+      iex> get_credential_of_attendee!(%Attendee{})
+      %Credential{}
+
+      iex> get_credential_of_attendee!(%Attendee{})
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_credential_of_attendee!(%Attendee{} = attendee) do
+    Credential
+    |> where([c], c.attendee_id == ^attendee.id)
+    |> Repo.one!()
+  end
 end

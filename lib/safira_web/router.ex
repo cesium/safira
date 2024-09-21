@@ -79,6 +79,12 @@ defmodule SafiraWeb.Router do
           live "/product/:id", Show, :show
         end
 
+        scope "/credential", CredentialLive do
+          live "/", Index, :index
+          live "/:id", Show, :show
+          live "/:id/edit", Edit, :edit
+        end
+
         live "/vault", VaultLive.Index, :index
       end
 

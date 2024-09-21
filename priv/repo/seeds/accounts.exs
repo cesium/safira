@@ -7,6 +7,7 @@ defmodule Safira.Repo.Seeds.Accounts do
   def run do
     attendee_names = @names |> Enum.drop(div(length(@names), 2))
     staff_names = @names |> Enum.take(div(length(@names), 2))
+    credential_count = 100
 
     case Accounts.list_attendees() do
       [] ->
@@ -20,6 +21,13 @@ defmodule Safira.Repo.Seeds.Accounts do
         seed_staffs(staff_names)
       _  ->
         Mix.shell().error("Found staff accounts, aborting seeding staffs.")
+    end
+
+    case Accounts.list_credentials() do
+      [] ->
+        seed_credentials(credential_count)
+      _ ->
+        Mix.shell().erroring("Found credentials, aborting seeding credentials.")
     end
   end
 
@@ -64,6 +72,12 @@ defmodule Safira.Repo.Seeds.Accounts do
           {:error, changeset} ->
             Mix.shell().error(Kernel.inspect(changeset.errors))
       end
+    end
+  end
+
+  def seed_credentials(credential_count) do
+    for i <- 0..credential_count do
+      Accounts.create_credential(%{attendee_id: nil})
     end
   end
 end

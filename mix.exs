@@ -55,6 +55,9 @@ defmodule Safira.MixProject do
       {:phoenix_html, "~> 4.0"},
       {:finch, "~> 0.13"},
 
+      # tools
+      {:qrcode_ex, "~> 0.1.1"},
+
       # frontend
       {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
       {:heroicons,
