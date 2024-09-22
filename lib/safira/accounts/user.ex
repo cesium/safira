@@ -102,8 +102,8 @@ defmodule Safira.Accounts.User do
     changeset
     |> validate_required([:handle])
     |> validate_length(:handle, min: 3, max: 20)
-    |> validate_format(:handle, ~r/^[a-z0-9_]+$/,
-      message: "can only contain lowercase letters, numbers, and underscores"
+    |> validate_format(:handle, ~r/^[a-z0-9_\-]+$/,
+      message: "can only contain lowercase letters, numbers, dashes and underscores"
     )
   end
 

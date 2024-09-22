@@ -37,16 +37,20 @@ defmodule Safira.Repo.Seeds.Accounts do
       handle = name |> String.downcase() |> String.replace(~r/\s/, "_")
 
       user = %{
-        name: name,
-        handle: handle,
-        email: email,
-        password: "password1234"
+        "name" => name,
+        "handle" => handle,
+        "email" => email,
+        "password" => "password1234",
+        "attendee" => %{
+          "degree" => "hello",
+          "tokens" => :rand.uniform(999),
+          "entries" => :rand.uniform(200)
+        }
       }
 
       case Accounts.register_attendee_user(user) do
         {:ok, changeset} ->
           user = Repo.update!(Accounts.User.confirm_changeset(changeset))
-          Accounts.create_attendee(%{user_id: user.id, tokens: :rand.uniform(999), entries: :rand.uniform(200)})
         {:error, changeset} ->
           Mix.shell().error(Kernel.inspect(changeset.errors))
       end

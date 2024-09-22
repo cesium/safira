@@ -7,6 +7,8 @@ defmodule Safira.Accounts do
 
   alias Safira.Accounts.{Attendee, Course, Credential, Staff, User, UserNotifier, UserToken}
 
+  alias Ecto.Multi
+
   ## Database getters
 
   @doc """
@@ -195,9 +197,21 @@ defmodule Safira.Accounts do
 
   """
   def register_attendee_user(attrs) do
-    %User{}
-    |> User.registration_changeset(attrs |> Map.put(:type, :attendee))
-    |> Repo.insert()
+    Repo.transaction(fn ->
+      user_attrs = Map.delete(attrs, "attendee")
+      attendee_attrs = attrs["attendee"]
+
+      user =
+        %User{}
+        |> User.registration_changeset(user_attrs)
+        |> Repo.insert!()
+
+      %Attendee{}
+      |> Attendee.changeset(Map.put(attendee_attrs, "user_id", user.id))
+      |> Repo.insert!()
+
+      user
+    end)
   end
 
   @doc """
