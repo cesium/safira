@@ -4,6 +4,8 @@ defmodule SafiraWeb.UserRegistrationLive do
   alias Safira.Accounts
   alias Safira.Accounts.User
 
+  import SafiraWeb.Components.Button
+
   def mount(_params, _session, socket) do
     changeset = Accounts.change_user_registration(%User{})
 
@@ -17,9 +19,7 @@ defmodule SafiraWeb.UserRegistrationLive do
 
   def handle_event("save", %{"user" => user_params}, socket) do
     case Accounts.register_attendee_user(user_params) do
-      {:ok, user} ->
-        IO.inspect(user)
-
+      {:ok, %{user: user, attendee: _}} ->
         {:ok, _} =
           Accounts.deliver_user_confirmation_instructions(
             user,
@@ -31,11 +31,16 @@ defmodule SafiraWeb.UserRegistrationLive do
         {:noreply,
          socket
          |> assign(trigger_submit: true)
+         |> assign(check_errors: false)
          |> assign_form(changeset)
          |> push_navigate(to: ~p"/users/log_in")}
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, socket |> assign(check_errors: true) |> assign_form(changeset)}
+      {:error, _, %Ecto.Changeset{} = changeset, _} ->
+        {:noreply,
+         socket
+         |> assign(check_errors: true)
+         |> assign_form(changeset)
+         |> put_flash(:error, "Unable to register. Check the errors below")}
     end
   end
 

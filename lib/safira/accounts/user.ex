@@ -7,7 +7,7 @@ defmodule Safira.Accounts.User do
   alias Safira.Accounts.Attendee
   alias Safira.Accounts.Staff
 
-  @required_fields ~w(name email handle password type)a
+  @required_fields ~w(name email handle password password_confirmation type)a
   @optional_fields ~w(confirmed_at)a
 
   @derive {
@@ -36,6 +36,7 @@ defmodule Safira.Accounts.User do
     field :email, :string
     field :handle, :string
     field :password, :string, virtual: true, redact: true
+    field :password_confirmation, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :current_password, :string, virtual: true, redact: true
     field :confirmed_at, :utc_datetime
@@ -77,6 +78,7 @@ defmodule Safira.Accounts.User do
     |> validate_email(opts)
     |> validate_handle()
     |> validate_password(opts)
+    |> validate_confirmation(:password, message: "passwords do not match")
   end
 
   defp validate_email(changeset, opts) do
@@ -105,6 +107,7 @@ defmodule Safira.Accounts.User do
     |> validate_format(:handle, ~r/^[a-z0-9_\-]+$/,
       message: "can only contain lowercase letters, numbers, dashes and underscores"
     )
+    |> unique_constraint(:handle)
   end
 
   defp maybe_hash_password(changeset, opts) do

@@ -1,6 +1,6 @@
-<div class="mx-auto max-w-sm">
+<div class="mx-auto max-w-sm py-2">
   <.header class="text-center">
-    Register for an account
+    <h1 class="text-3xl text-center font-terminal uppercase">Register for an account</h1>
     <:subtitle>
       Already registered?
       <.link navigate={~p"/users/log_in"} class="font-semibold text-primary hover:underline">
@@ -18,13 +18,14 @@
     action={~p"/users/log_in?_action=registered"}
     method="post"
   >
-    <.error :if={@check_errors}>
-      Oops, something went wrong! Please check the errors below.
-    </.error>
-
     <.input field={@form[:email]} type="email" label="Email" required />
     <.input field={@form[:password]} type="password" label="Password" required />
-    <.input field={@form[:confirm_password]} type="password" label="Confirm Password" required />
+    <.input
+      field={@form[:password_confirmation]}
+      type="password"
+      label="Confirm Password"
+      required
+    />
     <.input field={@form[:name]} type="text" label="Name" required />
     <.input field={@form[:handle]} type="text" label="Nickname" required />
 
@@ -32,15 +33,22 @@
       <.input field={att[:degree]} type="text" label="Degree" required />
     </.inputs_for>
 
-    <.input
-      name="consent"
-      label="I have read and agree to the General Regulation and Privacy Policy"
-      type="checkbox"
-      required
-    />
+    <.label>
+      <div class="flex">
+        <div class="mr-1 mt-1">
+          <.input name="consent" label="" type="checkbox" class="w-fit" required />
+        </div>
 
+        <div class="flex">I have read and agree to the General Regulation and Privacy Policy</div>
+      </div>
+    </.label>
     <:actions>
-      <.button phx-disable-with="Creating account..." class="w-full">Create an account</.button>
+      <.action_button
+        title="Create an account"
+        phx-disable-with="Creating account..."
+        class="w-full"
+      >
+      </.action_button>
     </:actions>
   </.simple_form>
 </div>

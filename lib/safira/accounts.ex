@@ -197,21 +197,12 @@ defmodule Safira.Accounts do
 
   """
   def register_attendee_user(attrs) do
-    Repo.transaction(fn ->
-      user_attrs = Map.delete(attrs, "attendee")
-      attendee_attrs = attrs["attendee"]
-
-      user =
-        %User{}
-        |> User.registration_changeset(user_attrs)
-        |> Repo.insert!()
-
-      %Attendee{}
-      |> Attendee.changeset(Map.put(attendee_attrs, "user_id", user.id))
-      |> Repo.insert!()
-
-      user
+    Multi.new()
+    |> Multi.insert(:user, User.registration_changeset(%User{}, Map.delete(attrs, "attendee")))
+    |> Multi.insert(:attendee, fn %{user: user} ->
+      Attendee.changeset(%Attendee{}, Map.put(attrs["attendee"], "user_id", user.id))
     end)
+    |> Repo.transaction()
   end
 
   @doc """
