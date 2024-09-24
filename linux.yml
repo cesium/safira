@@ -1,0 +1,5 @@
+services:
+  db:
+    network_mode: "host"
+  web:
+    network_mode: "host"
