@@ -57,6 +57,7 @@ defmodule Safira.MixProject do
 
       # tools
       {:qrcode_ex, "~> 0.1.1"},
+      {:cachex, "~> 3.6"},
 
       # frontend
       {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},

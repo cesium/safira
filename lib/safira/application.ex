@@ -15,6 +15,8 @@ defmodule Safira.Application do
       {Phoenix.PubSub, name: Safira.PubSub},
       # Start the Finch HTTP client for sending emails
       {Finch, name: Safira.Finch},
+      # Start the Cachex cache
+      {Cachex, name: :safira_cache},
       # Start a worker by calling: Safira.Worker.start_link(arg)
       # {Safira.Worker, arg},
       # Start to serve requests, typically the last entry
