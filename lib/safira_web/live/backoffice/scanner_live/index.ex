@@ -1,4 +1,4 @@
-defmodule SafiraWeb.Backoffice.ScannerLive.Index do
+defmodule SafiraWeb.ScannerLive.Index do
   use SafiraWeb, :backoffice_view
 
   @impl true

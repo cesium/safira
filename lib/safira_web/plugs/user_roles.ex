@@ -4,6 +4,23 @@ defmodule SafiraWeb.UserRoles do
   import Plug.Conn
   import Phoenix.Controller
 
+  alias Safira.Accounts
+
+  def require_credential(conn, _opts) do
+    if is_nil(conn.assigns.current_user.attendee) or
+         not is_nil(Accounts.get_credential_of_attendee(conn.assigns.current_user.attendee)) do
+      conn
+    else
+      conn
+      |> put_flash(
+        :error,
+        "You haven't assigned a credential to your account. You need one to participate in SEI"
+      )
+      |> redirect(to: ~p"/scanner")
+      |> halt()
+    end
+  end
+
   @doc """
   Used for routes that require the user to be an attendee.
   """

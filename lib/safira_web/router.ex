@@ -70,8 +70,10 @@ defmodule SafiraWeb.Router do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
 
+      live "/scanner", ScannerLive.Index, :index
+
       scope "/app", App do
-        pipe_through :require_attendee_user
+        pipe_through [:require_attendee_user, :require_credential]
         live "/", HomeLive.Index, :index
 
         scope "/store", StoreLive do
@@ -125,8 +127,6 @@ defmodule SafiraWeb.Router do
             live "/:id/edit", Index, :categories_edit
           end
         end
-
-        live "/scanner", ScannerLive.Index, :index
       end
     end
   end

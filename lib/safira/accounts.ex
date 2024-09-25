@@ -622,4 +622,22 @@ defmodule Safira.Accounts do
     |> where([c], c.attendee_id == ^attendee.id)
     |> Repo.one!()
   end
+
+  @doc """
+  Gets a single credential associated to the given attendee.
+
+  ## Examples
+
+      iex> get_credential_of_attendee(%Attendee{})
+      %Credential{}
+
+      iex> get_credential_of_attendee!(%Attendee{})
+      nil
+
+  """
+  def get_credential_of_attendee(%Attendee{} = attendee) do
+    Credential
+    |> where([c], c.attendee_id == ^attendee.id)
+    |> Repo.one()
+  end
 end
