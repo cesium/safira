@@ -12,7 +12,7 @@ defmodule SafiraWeb.App.VaultLive.Components.Item do
     <li id={@id} class={"flex flex-row #{if @redeemed do "opacity-50" end}"}>
       <figure class="w-32 h-32 bg-light/5 rounded-xl">
         <%= if @image do %>
-          <img class="w-full p-4" src={Uploaders.Product.url({@image, @data}, :original)} />
+          <img class="w-full p-4" src={@image} />
         <% end %>
       </figure>
       <div class="py-4 px-4">

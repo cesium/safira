@@ -22,8 +22,15 @@ defmodule Safira.Accounts.Attendee do
 
   def update_tokens_changeset(attendee, attrs) do
     attendee
-    |> cast(attrs, ~w(tokens)a)
-    |> validate_required(~w(tokens)a)
+    |> cast(attrs, [:tokens])
+    |> validate_required([:tokens])
     |> validate_number(:tokens, greater_than_or_equal_to: 0)
+  end
+
+  def update_entries_changeset(attendee, attrs) do
+    attendee
+    |> cast(attrs, [:entries])
+    |> validate_required([:entries])
+    |> validate_number(:entries, greater_than_or_equal_to: 0)
   end
 end

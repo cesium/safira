@@ -76,6 +76,8 @@ defmodule SafiraWeb.Router do
         pipe_through [:require_attendee_user, :require_credential]
         live "/", HomeLive.Index, :index
 
+        live "/wheel", WheelLive.Index, :index
+
         scope "/store", StoreLive do
           live "/", Index, :index
           live "/product/:id", Show, :show
@@ -127,6 +129,24 @@ defmodule SafiraWeb.Router do
             live "/:id/edit", Index, :categories_edit
           end
         end
+
+        scope "/minigames" do
+          scope "/prizes", PrizeLive do
+            live "/", Index, :index
+            live "/new", Index, :new
+
+            scope "/:id" do
+              live "/edit", Index, :edit
+            end
+          end
+
+          live "/", MinigamesLive.Index, :index
+          live "/wheel/drops", MinigamesLive.Index, :edit_wheel_drops
+          live "/wheel/simulator", MinigamesLive.Index, :simulate_wheel
+          live "/wheel", MinigamesLive.Index, :edit_wheel
+        end
+
+        live "/scanner", ScannerLive.Index, :index
       end
     end
   end

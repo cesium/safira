@@ -71,6 +71,12 @@ defmodule SafiraWeb.Config do
         url: "/dashboard/badges"
       },
       %{
+        key: :prizes,
+        title: "Prizes",
+        icon: "hero-gift",
+        url: "/dashboard/minigames/prizes"
+      },
+      %{
         key: :minigames,
         title: "Minigames",
         icon: "hero-sparkles",
@@ -93,12 +99,6 @@ defmodule SafiraWeb.Config do
         title: "Mailer",
         icon: "hero-envelope",
         url: "/dashboard/mailer"
-      },
-      %{
-        key: :terminal,
-        title: "Terminal",
-        icon: "hero-command-line",
-        url: "/dashboard/terminal"
       },
       %{
         key: :scanner,

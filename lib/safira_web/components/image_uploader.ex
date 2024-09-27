@@ -3,6 +3,7 @@ defmodule SafiraWeb.Components.ImageUploader do
 
   attr :upload, :any, required: true
   attr :class, :string, default: ""
+  attr :image_class, :string, default: ""
   attr :image, :string, default: nil
   attr :icon, :string, default: "hero-photo"
 
@@ -18,7 +19,7 @@ defmodule SafiraWeb.Components.ImageUploader do
         <article class="h-full">
           <figure class="h-full flex items-center justify-center">
             <%= if @image do %>
-              <img class="p-4" src={@image} />
+              <img class={"p-4 #{@image_class}"} src={@image} />
             <% else %>
               <div class="select-none flex flex-col gap-2 items-center text-lightMuted dark:text-darkMuted">
                 <.icon name={@icon} class="w-12 h-12" />
@@ -31,7 +32,7 @@ defmodule SafiraWeb.Components.ImageUploader do
       <%= for entry <- @upload.entries do %>
         <article class="h-full">
           <figure class="h-full flex items-center justify-center">
-            <.live_img_preview class="p-4" entry={entry} />
+            <.live_img_preview class={"p-4 #{@image_class}"} entry={entry} />
           </figure>
           <%= for err <- upload_errors(@upload, entry) do %>
             <p class="alert alert-danger"><%= Phoenix.Naming.humanize(err) %></p>

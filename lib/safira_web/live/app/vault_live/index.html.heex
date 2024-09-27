@@ -6,7 +6,7 @@
       data={get_item_data(item)}
       redeemed={item.redeemed_at}
       name={get_item_data(item).name}
-      image={get_item_data(item).image}
+      image={get_item_image(item.type, get_item_data(item))}
     />
   </ul>
 </.page>

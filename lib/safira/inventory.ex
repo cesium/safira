@@ -112,6 +112,6 @@ defmodule Safira.Inventory do
 
   """
   def list_attendee_items(attendee_id) do
-    Repo.all(from i in Item, where: i.attendee_id == ^attendee_id, preload: [:product])
+    Repo.all(from i in Item, where: i.attendee_id == ^attendee_id, preload: [:product, :prize])
   end
 end

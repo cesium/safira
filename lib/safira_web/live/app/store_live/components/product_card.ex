@@ -11,7 +11,7 @@ defmodule SafiraWeb.App.StoreLive.Components.ProductCard do
       patch={~p"/app/store/product/#{@data.id}"}
       class={"w-full flex flex-col items-center sm:w-min group #{if @data.stock == 0 do "opacity-50" end}"}
     >
-      <figure class="bg-light/5 rounded-xl w-80 aspect-ratio: 1 / 1;">
+      <figure class="bg-light/5 rounded-xl w-80 h-80">
         <%= if @data.image do %>
           <img
             class={"w-full p-4 #{if @data.stock > 0 do "group-hover:scale-105" end} transition-transform duration-300"}

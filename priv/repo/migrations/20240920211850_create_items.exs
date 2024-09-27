@@ -11,6 +11,7 @@ defmodule Safira.Repo.Migrations.CreateItems do
         null: false
 
       add :product_id, references(:products, type: :binary_id, on_delete: :delete_all)
+      add :prize_id, references(:prizes, type: :binary_id, on_delete: :delete_all)
       add :staff_id, references(:staffs, type: :binary_id, on_delete: :delete_all)
 
       timestamps(type: :utc_datetime)
