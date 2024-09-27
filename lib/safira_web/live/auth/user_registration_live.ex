@@ -4,14 +4,19 @@ defmodule SafiraWeb.UserRegistrationLive do
   alias Safira.Accounts
   alias Safira.Accounts.User
 
-  import SafiraWeb.Components.Button
+  import SafiraWeb.Components.{Button, Forms}
 
   def mount(_params, _session, socket) do
     changeset = Accounts.change_user_registration(%User{})
 
+    courses =
+      Accounts.list_courses()
+      |> Enum.map(fn c -> {c.name, c.id} end)
+
     socket =
       socket
       |> assign(trigger_submit: false, check_errors: false)
+      |> assign(:courses, courses)
       |> assign_form(changeset)
 
     {:ok, socket, temporary_assigns: [form: nil]}
@@ -46,6 +51,7 @@ defmodule SafiraWeb.UserRegistrationLive do
 
   def handle_event("validate", %{"user" => user_params}, socket) do
     changeset = Accounts.change_user_registration(%User{}, user_params)
+    IO.inspect(changeset)
     {:noreply, assign_form(socket, Map.put(changeset, :action, :validate))}
   end
 

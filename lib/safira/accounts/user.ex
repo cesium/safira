@@ -75,6 +75,7 @@ defmodule Safira.Accounts.User do
     user
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields |> Enum.reject(&(&1 in [:email, :password, :handle])))
+    |> cast_assoc(:attendee)
     |> validate_email(opts)
     |> validate_handle()
     |> validate_password(opts)

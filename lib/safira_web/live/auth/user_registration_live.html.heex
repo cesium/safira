@@ -14,32 +14,40 @@
     for={@form}
     id="registration_form"
     phx-submit="save"
+    phx-change="validate"
     phx-trigger-action={@trigger_submit}
-    action={~p"/users/log_in?_action=registered"}
-    method="post"
   >
-    <.input field={@form[:email]} type="email" label="Email" required />
-    <.input field={@form[:password]} type="password" label="Password" required />
-    <.input
+    <.field field={@form[:email]} type="email" label="Email" required />
+    <.field field={@form[:password]} type="password" label="Password" required />
+    <.field
       field={@form[:password_confirmation]}
       type="password"
       label="Confirm Password"
       required
     />
-    <.input field={@form[:name]} type="text" label="Name" required />
-    <.input field={@form[:handle]} type="text" label="Nickname" required />
+    <.field field={@form[:name]} type="text" label="Name" required />
+    <.field field={@form[:handle]} type="text" label="Nickname" required />
 
     <.inputs_for :let={att} field={@form[:attendee]}>
-      <.input field={att[:degree]} type="text" label="Degree" required />
+      <.field
+        class="text-black"
+        field={att[:course_id]}
+        type="select"
+        label="Course"
+        options={@courses}
+        required
+      />
     </.inputs_for>
 
     <.label>
       <div class="flex">
         <div class="mr-1 mt-1">
-          <.input name="consent" label="" type="checkbox" class="w-fit" required />
+          <.field name="consent" label="" type="checkbox" value={false} class="w-fit" required />
         </div>
 
-        <div class="flex"><%= gettext("I have read and agree to the General Regulation and Privacy Policy") %></div>
+        <div class="flex">
+          <%= gettext("I have read and agree to the General Regulation and Privacy Policy") %>
+        </div>
       </div>
     </.label>
     <:actions>
