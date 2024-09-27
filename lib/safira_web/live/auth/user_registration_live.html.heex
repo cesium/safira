@@ -2,11 +2,11 @@
   <.header class="text-center">
     <h1 class="text-3xl text-center font-terminal uppercase">Register for an account</h1>
     <:subtitle>
-      Already registered?
+      <%= gettext("Already registered?") %>
       <.link navigate={~p"/users/log_in"} class="font-semibold text-primary hover:underline">
         Log in
       </.link>
-      to your account now.
+      <%= gettext("to your account now") %>
     </:subtitle>
   </.header>
 
@@ -39,7 +39,7 @@
           <.input name="consent" label="" type="checkbox" class="w-fit" required />
         </div>
 
-        <div class="flex">I have read and agree to the General Regulation and Privacy Policy</div>
+        <div class="flex"><%= gettext("I have read and agree to the General Regulation and Privacy Policy") %></div>
       </div>
     </.label>
     <:actions>
