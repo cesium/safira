@@ -3,6 +3,7 @@ defmodule SafiraWeb.Router do
 
   import SafiraWeb.UserAuth
   import SafiraWeb.UserRoles
+  import SafiraWeb.EventRoles
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -22,6 +23,7 @@ defmodule SafiraWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    get "/countdown", PageController, :countdown
   end
 
   # Other scopes may use custom stacks.
@@ -49,7 +51,7 @@ defmodule SafiraWeb.Router do
   ## Authentication routes
 
   scope "/", SafiraWeb do
-    pipe_through [:browser, :redirect_if_user_is_authenticated]
+    pipe_through [:browser, :redirect_if_user_is_authenticated, :registrations_open]
 
     live_session :redirect_if_user_is_authenticated,
       on_mount: [{SafiraWeb.UserAuth, :redirect_if_user_is_authenticated}] do
@@ -73,7 +75,7 @@ defmodule SafiraWeb.Router do
       live "/scanner", ScannerLive.Index, :index
 
       scope "/app", App do
-        pipe_through [:require_attendee_user]
+        pipe_through [:require_attendee_user, :backoffice_enabled]
 
         scope "/credential", CredentialLive do
           pipe_through [:require_no_credential]
@@ -96,7 +98,7 @@ defmodule SafiraWeb.Router do
       end
 
       scope "/dashboard", Backoffice do
-        pipe_through :require_staff_user
+        pipe_through [:require_staff_user, :backoffice_enabled]
 
         scope "/attendees", AttendeeLive do
           live "/", Index, :index

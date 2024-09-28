@@ -83,6 +83,7 @@ defmodule Safira.MixProject do
       {:jason, "~> 1.2"},
       {:lua, "~> 0.0.14"},
       {:timex, "~> 3.7.11"},
+      {:dotenvy, "~> 0.8.0"},
 
       # server
       {:bandit, "~> 1.2"},

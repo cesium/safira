@@ -1,0 +1,46 @@
+<div>
+  <h1>Countdown Timer</h1>
+  <div id="countdown"></div>
+
+  <script>
+    function format_distance(distance) {
+        let result = "";
+        let cur_distance = distance;
+
+        const days = Math.floor(cur_distance / (24 * 60 * 60));
+        if(days > 0)
+            result += days + " days, ";
+        cur_distance -= days * 24 * 60 * 60;
+
+        const hours = Math.floor(cur_distance / (60 * 60));
+        if(days > 0 || hours > 0)
+            result += hours < 10 ? "0" + hours + ": " : hours + ": ";
+        cur_distance -= hours * 60 * 60;
+
+        const minutes = Math.floor(cur_distance / 60);
+        if(days > 0 || hours > 0 || minutes > 0)
+            result += minutes < 10 ? "0" + minutes + ": " : minutes + ": ";
+        cur_distance -= minutes * 60;
+
+        result += cur_distance < 10 ? "0" + cur_distance : cur_distance;
+        return result;
+    }
+
+    const endTime = new Date("<%= @start_time %>").getTime();
+    const countdownElement = document.getElementById("countdown");
+
+    const countdownInterval = setInterval(function() {
+        const now = new Date().getTime();
+        let distance = Math.round((endTime - now) / 1000);
+
+        if (distance > 0) {
+            const distance_str = format_distance(distance)
+            countdownElement.innerHTML = "Time Remaining: " + distance_str;
+        } else {
+            countdownElement.innerHTML = "Time's up!";
+            clearInterval(countdownInterval);  
+            window.location.reload();
+        }
+    }, 1000);
+  </script>
+</div>
