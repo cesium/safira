@@ -1,4 +1,11 @@
-<div>
+defmodule SafiraWeb.Waiting.CountdownLive do
+  use SafiraWeb, :live_view
+
+  alias SafiraWeb.Helpers
+
+  def render(assigns) do
+    ~H"""
+    <div>
   <h1>Countdown Timer</h1>
   <div id="countdown"></div>
 
@@ -38,9 +45,24 @@
             countdownElement.innerHTML = "Time Remaining: " + distance_str;
         } else {
             countdownElement.innerHTML = "Time's up!";
-            clearInterval(countdownInterval);  
+            clearInterval(countdownInterval);
             window.location.reload();
         }
     }, 1000);
   </script>
 </div>
+
+    """
+  end
+
+  def mount(_params, _session, socket) do
+    start_time = Helpers.get_start_time!()
+
+    if DateTime.compare(start_time, DateTime.utc_now()) == :lt do
+      {:ok, socket
+      |> push_navigate(to: ~p"/app")}
+    else
+      {:ok, socket |> assign(:start_time, start_time)}
+    end
+  end
+end

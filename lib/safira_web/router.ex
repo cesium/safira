@@ -23,7 +23,6 @@ defmodule SafiraWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
-    get "/countdown", PageController, :countdown
   end
 
   # Other scopes may use custom stacks.
@@ -51,14 +50,17 @@ defmodule SafiraWeb.Router do
   ## Authentication routes
 
   scope "/", SafiraWeb do
-    pipe_through [:browser, :redirect_if_user_is_authenticated, :registrations_open]
+    pipe_through [:browser, :redirect_if_user_is_authenticated]
 
     live_session :redirect_if_user_is_authenticated,
       on_mount: [{SafiraWeb.UserAuth, :redirect_if_user_is_authenticated}] do
-      live "/users/register", UserRegistrationLive, :new
+
       live "/users/log_in", UserLoginLive, :new
       live "/users/reset_password", UserForgotPasswordLive, :new
       live "/users/reset_password/:token", UserResetPasswordLive, :edit
+
+      pipe_through :registrations_open
+        live "/users/register", UserRegistrationLive, :new
     end
 
     post "/users/log_in", UserSessionController, :create
@@ -73,6 +75,11 @@ defmodule SafiraWeb.Router do
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
 
       live "/scanner", ScannerLive.Index, :index
+
+      scope "/waiting", Waiting do
+        pipe_through [:require_attendee_user]
+        live "/countdown", CountdownLive, :countdown
+      end
 
       scope "/app", App do
         pipe_through [:require_attendee_user, :backoffice_enabled]

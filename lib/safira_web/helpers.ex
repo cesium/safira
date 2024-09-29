@@ -3,6 +3,7 @@ defmodule SafiraWeb.Helpers do
   Helper functions for web views.
   """
   alias Timex.Format.DateTime.Formatters.Relative
+  alias Safira.Constants
 
   require Timex.Translator
 
@@ -160,5 +161,23 @@ defmodule SafiraWeb.Helpers do
     url
     |> QRCodeEx.encode()
     |> QRCodeEx.svg(background_color: "#FFFFFF", color: "#04041C", width: 200)
+  end
+
+  def registrations_open? do
+    {:ok, registrations_open} =  Constants.get("REGISTRATIONS_OPEN")
+    string_to_bool(registrations_open)
+  end
+
+  def get_start_time! do
+    {:ok, start_str} = Constants.get("START_TIME")
+    {:ok, start_time, _} = DateTime.from_iso8601(start_str)
+    start_time
+  end
+
+  defp string_to_bool(str) do
+    case String.downcase(str) do
+      "true" -> true
+      _ -> false
+    end
   end
 end
