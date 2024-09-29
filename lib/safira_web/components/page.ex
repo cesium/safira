@@ -1,4 +1,7 @@
 defmodule SafiraWeb.Components.Page do
+  @moduledoc """
+  Page layout component.
+  """
   use Phoenix.Component
 
   import SafiraWeb.CoreComponents

@@ -6,6 +6,7 @@ defmodule Safira.Repo.Migrations.CreateAttendees do
       add :id, :binary_id, primary_key: true
       add :tokens, :integer, default: 0
       add :entries, :integer, default: 0
+      add :course_id, references(:courses, type: :binary_id, on_delete: :delete_all)
       add :user_id, references(:users, type: :binary_id, on_delete: :delete_all), null: false
 
       timestamps(type: :utc_datetime)

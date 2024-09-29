@@ -1,4 +1,7 @@
 defmodule SafiraWeb.Telemetry do
+  @moduledoc """
+  Telemetry events and metrics for the application.
+  """
   use Supervisor
   import Telemetry.Metrics
 

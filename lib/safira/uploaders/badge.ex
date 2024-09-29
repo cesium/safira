@@ -1,4 +1,7 @@
 defmodule Safira.Uploaders.Badge do
+  @moduledoc """
+  Badge image uploader.
+  """
   use Safira.Uploader
 
   alias Safira.Contest.Badge

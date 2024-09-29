@@ -1,4 +1,7 @@
 defmodule SafiraWeb.Components.ImageUploader do
+  @moduledoc """
+  Image uploader component.
+  """
   use SafiraWeb, :component
 
   attr :upload, :any, required: true

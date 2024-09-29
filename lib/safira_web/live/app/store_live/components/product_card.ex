@@ -1,4 +1,7 @@
 defmodule SafiraWeb.App.StoreLive.Components.ProductCard do
+  @moduledoc """
+  Product card component.
+  """
   use SafiraWeb, :component
 
   attr :id, :string, required: true

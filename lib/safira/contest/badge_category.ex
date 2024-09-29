@@ -1,4 +1,7 @@
 defmodule Safira.Contest.BadgeCategory do
+  @moduledoc """
+  Categorizes badges.
+  """
   use Safira.Schema
 
   @required_fields ~w(name color hidden)a
@@ -9,7 +12,7 @@ defmodule Safira.Contest.BadgeCategory do
     field :color, Ecto.Enum, values: @colors
     field :hidden, :boolean, default: false
 
-    has_many :badges, Safira.Contest.Badge
+    has_many :badges, Safira.Contest.Badge, foreign_key: :category_id
 
     timestamps(type: :utc_datetime)
   end

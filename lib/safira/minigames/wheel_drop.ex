@@ -1,4 +1,7 @@
 defmodule Safira.Minigames.WheelDrop do
+  @moduledoc """
+  Lucky wheel minigame drop.
+  """
   use Safira.Schema
 
   @required_fields ~w(probability max_per_attendee)a

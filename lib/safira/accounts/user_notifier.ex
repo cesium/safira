@@ -1,4 +1,7 @@
 defmodule Safira.Accounts.UserNotifier do
+  @moduledoc """
+  User email notifications.
+  """
   import Swoosh.Email
 
   alias Safira.Mailer

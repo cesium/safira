@@ -2,6 +2,8 @@ defmodule SafiraWeb.PrizeLive.FormComponent do
   use SafiraWeb, :live_component
 
   alias Safira.Minigames
+  alias Safira.Uploaders.Prize
+
   import SafiraWeb.Components.ImageUploader
   import SafiraWeb.Components.Forms
 
@@ -53,7 +55,7 @@ defmodule SafiraWeb.PrizeLive.FormComponent do
      socket
      |> assign(:uploaded_files, [])
      |> allow_upload(:image,
-       accept: Safira.Uploaders.Prize.extension_whitelist(),
+       accept: Prize.extension_whitelist(),
        max_entries: 1
      )}
   end

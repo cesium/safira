@@ -1,4 +1,7 @@
 defmodule Safira.Minigames.Prize do
+  @moduledoc """
+  Prize used in minigame drops.
+  """
   use Safira.Schema
 
   @required_fields ~w(name stock)a

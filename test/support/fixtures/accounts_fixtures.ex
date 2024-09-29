@@ -9,6 +9,8 @@ defmodule Safira.AccountsFixtures do
 
   def valid_user_attributes(attrs \\ %{}) do
     Enum.into(attrs, %{
+      name: "John Doe",
+      handle: "johndoe",
       email: unique_user_email(),
       password: valid_user_password()
     })
@@ -39,5 +41,17 @@ defmodule Safira.AccountsFixtures do
       |> Safira.Accounts.create_credential()
 
     credential
+  end
+
+  @doc """
+  Generate an attendee.
+  """
+  def attendee_fixture(attrs \\ %{}) do
+    {:ok, attendee} =
+      attrs
+      |> Enum.into(%{user_id: user_fixture().id})
+      |> Safira.Accounts.create_attendee()
+
+    attendee
   end
 end

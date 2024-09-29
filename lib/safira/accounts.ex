@@ -5,14 +5,14 @@ defmodule Safira.Accounts do
 
   use Safira.Context
 
-  alias Safira.Accounts.{Attendee, Course, Credential, Staff, User, UserToken, UserNotifier}
+  alias Safira.Accounts.{Attendee, Course, Credential, Staff, User, UserNotifier, UserToken}
 
   ## Database getters
 
   @doc """
   Lists all attendees.
   """
-  def list_attendees() do
+  def list_attendees do
     User
     |> where(type: :attendee)
     |> preload(:attendee)
@@ -104,7 +104,7 @@ defmodule Safira.Accounts do
   @doc """
   Lists all staff users.
   """
-  def list_staffs() do
+  def list_staffs do
     User
     |> where(type: :staff)
     |> Repo.all()

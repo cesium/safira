@@ -1,4 +1,7 @@
 defmodule SafiraWeb.Helpers do
+  @moduledoc """
+  Helper functions for web views.
+  """
   alias Timex.Format.DateTime.Formatters.Relative
 
   require Timex.Translator
@@ -6,8 +9,7 @@ defmodule SafiraWeb.Helpers do
   def text_to_html_paragraphs(text) do
     text
     |> String.split(~r/\n/)
-    |> Enum.map(&"<p>#{&1}</p>")
-    |> Enum.join()
+    |> Enum.map_join(&"<p>#{&1}</p>")
     |> Phoenix.HTML.raw()
   end
 
@@ -147,7 +149,7 @@ defmodule SafiraWeb.Helpers do
     if Mix.env() == :dev do
       "http://localhost:4000"
     else
-      "https://#{Application.fetch_env!(:atomic, AtomicWeb.Endpoint)[:url][:host]}"
+      "https://#{Application.fetch_env!(:safira, SafiraWeb.Endpoint)[:url][:host]}"
     end
   end
 

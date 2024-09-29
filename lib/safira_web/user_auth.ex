@@ -1,4 +1,7 @@
 defmodule SafiraWeb.UserAuth do
+  @moduledoc """
+  User authentication handling.
+  """
   use SafiraWeb, :verified_routes
 
   import Plug.Conn

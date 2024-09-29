@@ -1,8 +1,7 @@
 defmodule SafiraWeb.App.StoreLive.Show do
   use SafiraWeb, :app_view
 
-  alias Safira.Store
-  alias Safira.Accounts
+  alias Safira.{Accounts, Store}
 
   @impl true
   def mount(%{"id" => id}, _session, socket) do

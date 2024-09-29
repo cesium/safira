@@ -1,4 +1,7 @@
 defmodule SafiraWeb.Components.Table do
+  @moduledoc """
+  Table component for displaying data in a tabular format.
+  """
   use Phoenix.Component
 
   alias Plug.Conn.Query
@@ -96,13 +99,7 @@ defmodule SafiraWeb.Components.Table do
   attr :class, :string, default: ""
 
   defp header_column(assigns) do
-    if !assigns.sortable do
-      ~H"""
-      <th scope="col" class={"px-6 py-3 #{@class}"}>
-        <%= @label %>
-      </th>
-      """
-    else
+    if assigns.sortable do
       assigns =
         Map.put(assigns, :order_direction, order_direction(assigns.meta.flop, assigns.field))
 
@@ -112,6 +109,12 @@ defmodule SafiraWeb.Components.Table do
           <%= @label %>
           <.sort_arrow direction={@order_direction} />
         </.link>
+      </th>
+      """
+    else
+      ~H"""
+      <th scope="col" class={"px-6 py-3 #{@class}"}>
+        <%= @label %>
       </th>
       """
     end

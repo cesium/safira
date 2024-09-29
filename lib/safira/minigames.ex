@@ -8,12 +8,11 @@ defmodule Safira.Minigames do
   alias Ecto.Multi
 
   alias Safira.Accounts
-  alias Safira.Minigames.Prize
-  alias Safira.Minigames.WheelDrop
+  alias Safira.Accounts.Attendee
   alias Safira.Constants
   alias Safira.Contest
-  alias Safira.Accounts.Attendee
   alias Safira.Inventory.Item
+  alias Safira.Minigames.{Prize, WheelDrop}
 
   @pubsub Safira.PubSub
 
@@ -339,13 +338,13 @@ defmodule Safira.Minigames do
   @doc """
   Simulates a wheel spin.
   """
-  def simulate_wheel_spin() do
+  def simulate_wheel_spin do
     drop = generate_wheel_drop()
 
     {:ok, get_wheel_drop_type(drop), drop}
   end
 
-  defp generate_wheel_drop() do
+  defp generate_wheel_drop do
     random = strong_randomizer() |> Float.round(12)
 
     drops = list_available_wheel_drops()
@@ -428,7 +427,7 @@ defmodule Safira.Minigames do
     |> Repo.aggregate(:count)
   end
 
-  def list_available_wheel_drops() do
+  def list_available_wheel_drops do
     WheelDrop
     |> join(:left, [wd], p in Prize, on: wd.prize_id == p.id)
     |> where([wd, p], is_nil(wd.prize_id) or p.stock > 0)
@@ -444,7 +443,7 @@ defmodule Safira.Minigames do
       iex> get_wheel_price()
       20
   """
-  def get_wheel_price() do
+  def get_wheel_price do
     case Constants.get("wheel_spin_price") do
       {:ok, price} ->
         price
@@ -474,10 +473,10 @@ defmodule Safira.Minigames do
 
   ## Examples
 
-      iex> is_wheel_active?()
+      iex> wheel_active?()
       true
   """
-  def is_wheel_active?() do
+  def wheel_active? do
     case Constants.get("wheel_active_status") do
       {:ok, active} ->
         active

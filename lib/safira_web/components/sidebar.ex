@@ -1,4 +1,7 @@
 defmodule SafiraWeb.Components.Sidebar do
+  @moduledoc """
+  Sidebar component for the application layout.
+  """
   use SafiraWeb, :component
 
   import SafiraWeb.CoreComponents

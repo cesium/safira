@@ -1,4 +1,5 @@
 defmodule SafiraWeb.Backoffice.MinigamesLive.Simulator.Index do
+  @moduledoc false
   use SafiraWeb, :live_component
 
   import SafiraWeb.App.WheelLive.Components.Wheel

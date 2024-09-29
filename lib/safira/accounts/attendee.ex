@@ -1,13 +1,17 @@
 defmodule Safira.Accounts.Attendee do
+  @moduledoc """
+  An event attendee.
+  """
   use Safira.Schema
 
   @required_fields ~w(user_id)a
-  @optional_fields ~w(tokens entries)a
+  @optional_fields ~w(tokens entries course_id)a
 
   schema "attendees" do
     field :tokens, :integer, default: 0
     field :entries, :integer, default: 0
 
+    belongs_to :course, Safira.Accounts.Course
     belongs_to :user, Safira.Accounts.User
 
     timestamps(type: :utc_datetime)
@@ -17,6 +21,7 @@ defmodule Safira.Accounts.Attendee do
     attendee
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> cast_assoc(:user)
+    |> cast_assoc(:course)
     |> validate_required(@required_fields)
   end
 

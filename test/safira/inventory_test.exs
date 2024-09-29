@@ -1,6 +1,7 @@
 defmodule Safira.InventoryTest do
   use Safira.DataCase
 
+  alias Safira.AccountsFixtures
   alias Safira.Inventory
 
   describe "items" do
@@ -8,7 +9,7 @@ defmodule Safira.InventoryTest do
 
     import Safira.InventoryFixtures
 
-    @invalid_attrs %{redeemed: nil, redeemed_at: nil}
+    @invalid_attrs %{type: nil}
 
     test "list_items/0 returns all items" do
       item = item_fixture()
@@ -21,10 +22,17 @@ defmodule Safira.InventoryTest do
     end
 
     test "create_item/1 with valid data creates a item" do
-      valid_attrs = %{redeemed: true, redeemed_at: ~N[2024-09-15 21:18:00]}
+      attendee = AccountsFixtures.attendee_fixture()
+
+      valid_attrs = %{
+        type: :prize,
+        attendee_id: attendee.id,
+        redeemed_at: ~N[2024-09-15 21:18:00]
+      }
 
       assert {:ok, %Item{} = item} = Inventory.create_item(valid_attrs)
-      assert item.redeemed == true
+      assert item.type == :prize
+      assert item.attendee_id == attendee.id
       assert item.redeemed_at == ~N[2024-09-15 21:18:00]
     end
 
@@ -34,10 +42,9 @@ defmodule Safira.InventoryTest do
 
     test "update_item/2 with valid data updates the item" do
       item = item_fixture()
-      update_attrs = %{redeemed: false, redeemed_at: ~N[2024-09-16 21:18:00]}
+      update_attrs = %{redeemed_at: ~N[2024-09-16 21:18:00]}
 
       assert {:ok, %Item{} = item} = Inventory.update_item(item, update_attrs)
-      assert item.redeemed == false
       assert item.redeemed_at == ~N[2024-09-16 21:18:00]
     end
 

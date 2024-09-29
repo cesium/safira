@@ -1,14 +1,16 @@
 defmodule Safira.Accounts.Role do
+  @moduledoc """
+  Role for an event staff.
+  """
   use Safira.Schema
 
   alias Safira.Accounts.Roles.Permissions
 
   schema "roles" do
     field :name, :string
-    field :color, :string
     field :permissions, :map
 
-    has_many :users, Safira.Accounts.User
+    has_many :users, Safira.Accounts.Staff
 
     timestamps(type: :utc_datetime)
   end

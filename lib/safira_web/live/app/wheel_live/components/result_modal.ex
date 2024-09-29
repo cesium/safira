@@ -1,4 +1,7 @@
 defmodule SafiraWeb.App.WheelLive.Components.ResultModal do
+  @moduledoc """
+  Lucky wheel drop result modal component.
+  """
   use SafiraWeb, :component
 
   attr :id, :string, required: true

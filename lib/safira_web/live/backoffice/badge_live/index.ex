@@ -1,12 +1,10 @@
 defmodule SafiraWeb.Backoffice.BadgeLive.Index do
-  alias Safira.Contest.BadgeCondition
-  alias Safira.Contest.Badge
   use SafiraWeb, :backoffice_view
 
   import SafiraWeb.Components.TableSearch
 
   alias Safira.Contest
-  alias Safira.Contest.BadgeCategory
+  alias Safira.Contest.{Badge, BadgeCategory, BadgeCondition}
 
   @impl true
   def mount(_params, _session, socket) do

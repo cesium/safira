@@ -1,0 +1,37 @@
+name: Code Quality
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]
+    paths:
+    - '**/*.ex'
+    - '**/*.exs'
+    - '**/*.html.heex'
+
+jobs:
+  style:
+    runs-on: ubuntu-latest
+    name: Code Quality
+
+    strategy:
+      matrix:
+        otp: [27.x]
+        elixir: [1.17.x]
+
+    steps:
+      - name: ☁️ Checkout repository
+        uses: actions/checkout@v3
+
+      - name: 💧 Setup Elixir ${{ matrix.elixir }} (OTP ${{matrix.otp}})
+        uses: ./.github/actions
+        with:
+          otp-version: ${{ matrix.otp }}
+          elixir-version: ${{ matrix.elixir }}
+          build-flags: --all-warnings --warnings-as-errors
+
+      - name: 🎨 Check code formating
+        run: mix format --check-formatted
+
+      - name: 🔍 Lint the code
+        run: mix credo --all --strict

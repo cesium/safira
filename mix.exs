@@ -58,6 +58,7 @@ defmodule Safira.MixProject do
       # tools
       {:qrcode_ex, "~> 0.1.1"},
       {:cachex, "~> 3.6"},
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
 
       # frontend
       {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
@@ -109,7 +110,8 @@ defmodule Safira.MixProject do
         "tailwind safira --minify",
         "esbuild safira --minify",
         "phx.digest"
-      ]
+      ],
+      lint: ["credo -C default"]
     ]
   end
 end

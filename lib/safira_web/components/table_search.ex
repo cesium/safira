@@ -1,4 +1,7 @@
 defmodule SafiraWeb.Components.TableSearch do
+  @moduledoc """
+  Reusable table search component.
+  """
   use Phoenix.Component
   import SafiraWeb.Gettext
 
@@ -23,6 +26,9 @@ defmodule SafiraWeb.Components.TableSearch do
 end
 
 defmodule SafiraWeb.Components.TableSearchLiveComponent do
+  @moduledoc """
+  Live component for the TableSearch component.
+  """
   use Phoenix.LiveComponent
 
   alias Plug.Conn.Query

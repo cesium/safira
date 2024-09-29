@@ -1,6 +1,5 @@
 defmodule Safira.Repo.Seeds.Store do
-  alias Safira.Store
-  alias Safira.Repo
+  alias Safira.{Repo, Store}
 
   @products File.read!("priv/fake/products.txt") |> String.split("\n") |> Enum.map(&String.split(&1, ";"))
 

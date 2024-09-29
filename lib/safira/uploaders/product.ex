@@ -1,4 +1,7 @@
 defmodule Safira.Uploaders.Product do
+  @moduledoc """
+  Product image uploader.
+  """
   use Safira.Uploader
 
   alias Safira.Store.Product

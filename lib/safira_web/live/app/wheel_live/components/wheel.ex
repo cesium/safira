@@ -1,4 +1,7 @@
 defmodule SafiraWeb.App.WheelLive.Components.Wheel do
+  @moduledoc """
+  Lucky wheel component.
+  """
   use SafiraWeb, :component
 
   attr :slices, :integer, default: 10

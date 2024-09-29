@@ -1,4 +1,7 @@
 defmodule Safira.Accounts.Roles.Permissions do
+  @moduledoc """
+  Backoffice permissions.
+  """
   import Ecto.Changeset
 
   def all do

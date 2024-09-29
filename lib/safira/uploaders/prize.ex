@@ -1,4 +1,7 @@
 defmodule Safira.Uploaders.Prize do
+  @moduledoc """
+  Prize image uploader.
+  """
   use Safira.Uploader
 
   alias Safira.Minigames.Prize

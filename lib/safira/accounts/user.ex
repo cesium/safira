@@ -1,4 +1,7 @@
 defmodule Safira.Accounts.User do
+  @moduledoc """
+  Application user.
+  """
   use Safira.Schema
 
   alias Safira.Accounts.Attendee
@@ -70,7 +73,7 @@ defmodule Safira.Accounts.User do
   def registration_changeset(user, attrs, opts \\ []) do
     user
     |> cast(attrs, @required_fields ++ @optional_fields)
-    |> validate_required(@required_fields)
+    |> validate_required(@required_fields |> Enum.reject(&(&1 in [:email, :password, :handle])))
     |> validate_email(opts)
     |> validate_handle()
     |> validate_password(opts)

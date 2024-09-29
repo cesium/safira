@@ -1,4 +1,7 @@
 defmodule Safira.Store.Product do
+  @moduledoc """
+  Store product.
+  """
   use Safira.Schema
 
   @required_fields ~w(name description price stock max_per_user)a

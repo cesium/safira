@@ -2,6 +2,8 @@ defmodule SafiraWeb.Backoffice.ProductLive.FormComponent do
   use SafiraWeb, :live_component
 
   alias Safira.Store
+  alias Safira.Uploaders.Product
+
   import SafiraWeb.Components.ImageUploader
   import SafiraWeb.Components.Forms
 
@@ -56,7 +58,7 @@ defmodule SafiraWeb.Backoffice.ProductLive.FormComponent do
      socket
      |> assign(:uploaded_files, [])
      |> allow_upload(:image,
-       accept: Safira.Uploaders.Product.extension_whitelist(),
+       accept: Product.extension_whitelist(),
        max_entries: 1
      )}
   end

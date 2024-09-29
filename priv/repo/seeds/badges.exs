@@ -1,7 +1,6 @@
 defmodule Safira.Repo.Seeds.Badges do
-  alias Safira.Contest.Badge
   alias Safira.Contest
-  alias Safira.Contest.BadgeCategory
+  alias Safira.Contest.{Badge, BadgeCategory}
   alias Safira.Repo
 
   @badges File.read!("priv/fake/badges.txt") |> String.split("\n") |> Enum.map(&String.split(&1, ";"))
@@ -46,7 +45,7 @@ defmodule Safira.Repo.Seeds.Badges do
   def seed_badges do
     category = Repo.one(BadgeCategory, name: "General")
     {:ok, begin_time} = DateTime.from_unix(:erlang.system_time(:second))
-    {:ok, end_time} = DateTime.from_unix(:erlang.system_time(:second) + 400000)
+    {:ok, end_time} = DateTime.from_unix(:erlang.system_time(:second) + 400_000)
 
     for {badge, i} <- Enum.with_index(@badges) do
       {name, description} = {Enum.at(badge, 0), Enum.at(badge, 1)}

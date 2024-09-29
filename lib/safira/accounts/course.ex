@@ -7,7 +7,6 @@ defmodule Safira.Accounts.Course do
   alias Safira.Accounts.Attendee
 
   @required_fields ~w(name)a
-  @cycles ~w(Bachelors Masters PhD)a
 
   schema "courses" do
     field :name, :string

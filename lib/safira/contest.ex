@@ -2,11 +2,11 @@ defmodule Safira.Contest do
   @moduledoc """
   The Contest context.
   """
-
   use Safira.Context
 
-  alias Safira.Contest.{Attendee, Badge, BadgeCategory, BadgeCondition, DailyTokens}
   alias Ecto.Multi
+  alias Safira.Accounts.Attendee
+  alias Safira.Contest.{Badge, BadgeCategory, BadgeCondition, DailyTokens}
 
   @doc """
   Gets a single badge.

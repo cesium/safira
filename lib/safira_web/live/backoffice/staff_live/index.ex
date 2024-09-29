@@ -2,8 +2,7 @@ defmodule SafiraWeb.Backoffice.StaffLive.Index do
   alias Safira.Accounts
   use SafiraWeb, :backoffice_view
 
-  import SafiraWeb.Components.Table
-  import SafiraWeb.Components.TableSearch
+  import SafiraWeb.Components.{Table, TableSearch}
 
   @impl true
   def mount(_params, _session, socket) do

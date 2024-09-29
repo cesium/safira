@@ -48,9 +48,9 @@ defmodule Safira.AccountsTest do
     end
   end
 
-  describe "register_user/1" do
+  describe "register_attendee_user/1" do
     test "requires email and password to be set" do
-      {:error, changeset} = Accounts.register_user(%{})
+      {:error, changeset} = Accounts.register_attendee_user(%{})
 
       assert %{
                password: ["can't be blank"],
@@ -59,7 +59,8 @@ defmodule Safira.AccountsTest do
     end
 
     test "validates email and password when given" do
-      {:error, changeset} = Accounts.register_user(%{email: "not valid", password: "not valid"})
+      {:error, changeset} =
+        Accounts.register_attendee_user(%{email: "not valid", password: "not valid"})
 
       assert %{
                email: ["must have the @ sign and no spaces"],
@@ -69,24 +70,74 @@ defmodule Safira.AccountsTest do
 
     test "validates maximum values for email and password for security" do
       too_long = String.duplicate("db", 100)
-      {:error, changeset} = Accounts.register_user(%{email: too_long, password: too_long})
+
+      {:error, changeset} =
+        Accounts.register_attendee_user(%{email: too_long, password: too_long})
+
       assert "should be at most 160 character(s)" in errors_on(changeset).email
       assert "should be at most 72 character(s)" in errors_on(changeset).password
     end
 
     test "validates email uniqueness" do
       %{email: email} = user_fixture()
-      {:error, changeset} = Accounts.register_user(%{email: email})
+      {:error, changeset} = Accounts.register_attendee_user(%{email: email})
       assert "has already been taken" in errors_on(changeset).email
 
       # Now try with the upper cased email too, to check that email case is ignored.
-      {:error, changeset} = Accounts.register_user(%{email: String.upcase(email)})
+      {:error, changeset} = Accounts.register_attendee_user(%{email: String.upcase(email)})
       assert "has already been taken" in errors_on(changeset).email
     end
 
     test "registers users with a hashed password" do
       email = unique_user_email()
-      {:ok, user} = Accounts.register_user(valid_user_attributes(email: email))
+      {:ok, user} = Accounts.register_attendee_user(valid_user_attributes(email: email))
+      assert user.email == email
+      assert is_binary(user.hashed_password)
+      assert is_nil(user.confirmed_at)
+      assert is_nil(user.password)
+    end
+  end
+
+  describe "register_staff_user/1" do
+    test "requires email and password to be set" do
+      {:error, changeset} = Accounts.register_staff_user(%{})
+
+      assert %{
+               password: ["can't be blank"],
+               email: ["can't be blank"]
+             } = errors_on(changeset)
+    end
+
+    test "validates email and password when given" do
+      {:error, changeset} =
+        Accounts.register_staff_user(%{email: "not valid", password: "not valid"})
+
+      assert %{
+               email: ["must have the @ sign and no spaces"],
+               password: ["should be at least 12 character(s)"]
+             } = errors_on(changeset)
+    end
+
+    test "validates maximum values for email and password for security" do
+      too_long = String.duplicate("db", 100)
+      {:error, changeset} = Accounts.register_staff_user(%{email: too_long, password: too_long})
+      assert "should be at most 160 character(s)" in errors_on(changeset).email
+      assert "should be at most 72 character(s)" in errors_on(changeset).password
+    end
+
+    test "validates email uniqueness" do
+      %{email: email} = user_fixture()
+      {:error, changeset} = Accounts.register_staff_user(%{email: email})
+      assert "has already been taken" in errors_on(changeset).email
+
+      # Now try with the upper cased email too, to check that email case is ignored.
+      {:error, changeset} = Accounts.register_staff_user(%{email: String.upcase(email)})
+      assert "has already been taken" in errors_on(changeset).email
+    end
+
+    test "registers users with a hashed password" do
+      email = unique_user_email()
+      {:ok, user} = Accounts.register_staff_user(valid_user_attributes(email: email))
       assert user.email == email
       assert is_binary(user.hashed_password)
       assert is_nil(user.confirmed_at)
@@ -97,7 +148,7 @@ defmodule Safira.AccountsTest do
   describe "change_user_registration/2" do
     test "returns a changeset" do
       assert %Ecto.Changeset{} = changeset = Accounts.change_user_registration(%User{})
-      assert changeset.required == [:password, :email]
+      assert changeset.required == [:password, :handle, :email, :name, :type]
     end
 
     test "allows fields to be set" do
@@ -511,8 +562,6 @@ defmodule Safira.AccountsTest do
 
     import Safira.AccountsFixtures
 
-    @invalid_attrs %{}
-
     test "list_credentials/0 returns all credentials" do
       credential = credential_fixture()
       assert Accounts.list_credentials() == [credential]
@@ -526,25 +575,15 @@ defmodule Safira.AccountsTest do
     test "create_credential/1 with valid data creates a credential" do
       valid_attrs = %{}
 
-      assert {:ok, %Credential{} = credential} = Accounts.create_credential(valid_attrs)
-    end
-
-    test "create_credential/1 with invalid data returns error changeset" do
-      assert {:error, %Ecto.Changeset{}} = Accounts.create_credential(@invalid_attrs)
+      assert {:ok, %Credential{} = _credential} = Accounts.create_credential(valid_attrs)
     end
 
     test "update_credential/2 with valid data updates the credential" do
       credential = credential_fixture()
       update_attrs = %{}
 
-      assert {:ok, %Credential{} = credential} =
+      assert {:ok, %Credential{} = _credential} =
                Accounts.update_credential(credential, update_attrs)
-    end
-
-    test "update_credential/2 with invalid data returns error changeset" do
-      credential = credential_fixture()
-      assert {:error, %Ecto.Changeset{}} = Accounts.update_credential(credential, @invalid_attrs)
-      assert credential == Accounts.get_credential!(credential.id)
     end
 
     test "delete_credential/1 deletes the credential" do

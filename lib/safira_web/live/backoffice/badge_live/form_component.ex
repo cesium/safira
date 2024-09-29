@@ -2,6 +2,8 @@ defmodule SafiraWeb.Backoffice.BadgeLive.FormComponent do
   use SafiraWeb, :live_component
 
   alias Safira.Contest
+  alias Safira.Uploaders.Badge
+
   import SafiraWeb.Components.ImageUploader
   import SafiraWeb.Components.Forms
 
@@ -82,7 +84,7 @@ defmodule SafiraWeb.Backoffice.BadgeLive.FormComponent do
      socket
      |> assign(:uploaded_files, [])
      |> allow_upload(:image,
-       accept: Safira.Uploaders.Badge.extension_whitelist(),
+       accept: Badge.extension_whitelist(),
        max_entries: 1
      )}
   end

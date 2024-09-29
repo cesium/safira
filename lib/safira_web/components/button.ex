@@ -1,4 +1,7 @@
 defmodule SafiraWeb.Components.Button do
+  @moduledoc """
+  Button component.
+  """
   use SafiraWeb, :component
 
   attr :title, :string, default: ""

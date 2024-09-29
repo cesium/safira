@@ -1,4 +1,7 @@
 defmodule Safira.Contest.Badge do
+  @moduledoc """
+  Event badge.
+  """
   use Safira.Schema
 
   @required_fields ~w(name description begin end tokens category_id)a

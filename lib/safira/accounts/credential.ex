@@ -1,4 +1,7 @@
 defmodule Safira.Accounts.Credential do
+  @moduledoc """
+  Attendee's physical credentials.
+  """
   use Safira.Schema
 
   schema "credentials" do

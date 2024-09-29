@@ -1,4 +1,7 @@
 defmodule Safira.Constants.Pair do
+  @moduledoc """
+  Constants pair schema.
+  """
   use Ecto.Schema
 
   import Ecto.Changeset

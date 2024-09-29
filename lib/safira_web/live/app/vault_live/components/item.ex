@@ -1,4 +1,7 @@
 defmodule SafiraWeb.App.VaultLive.Components.Item do
+  @moduledoc """
+  Vault item component.
+  """
   use SafiraWeb, :component
 
   attr :id, :string, required: true

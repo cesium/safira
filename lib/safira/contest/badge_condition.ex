@@ -1,4 +1,7 @@
 defmodule Safira.Contest.BadgeCondition do
+  @moduledoc """
+  Condition for badge automatic redeem.
+  """
   use Safira.Schema
 
   @required_fields ~w(badge_id)a

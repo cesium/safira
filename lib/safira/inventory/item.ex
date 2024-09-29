@@ -1,4 +1,7 @@
 defmodule Safira.Inventory.Item do
+  @moduledoc """
+  Item present in an attendee's inventory.
+  """
   use Safira.Schema
 
   @required_fields ~w(type attendee_id)a

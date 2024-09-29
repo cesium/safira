@@ -1,4 +1,5 @@
 defmodule SafiraWeb.Backoffice.MinigamesLive.WheelDrops.FormComponent do
+  @moduledoc false
   alias Safira.Minigames.WheelDrop
   use SafiraWeb, :live_component
 

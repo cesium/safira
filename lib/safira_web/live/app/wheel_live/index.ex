@@ -20,7 +20,7 @@ defmodule SafiraWeb.App.WheelLive.Index do
      |> assign(:attendee_tokens, socket.assigns.current_user.attendee.tokens)
      |> assign(:wheel_price, Minigames.get_wheel_price())
      |> assign(:result, nil)
-     |> assign(:wheel_active?, Minigames.is_wheel_active?())}
+     |> assign(:wheel_active?, Minigames.wheel_active?())}
   end
 
   @impl true

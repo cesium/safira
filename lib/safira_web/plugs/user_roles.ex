@@ -1,4 +1,7 @@
 defmodule SafiraWeb.UserRoles do
+  @moduledoc """
+  Plugs for user type verification.
+  """
   use SafiraWeb, :verified_routes
 
   import Plug.Conn

@@ -30,8 +30,8 @@
           Online
         </div>
       </:col>
-      <:action :let={{_id, user}}>
-        <.link patch={~p"/dashboard/users/#{user}/edit"}>
+      <:action :let={{_id, _user}}>
+        <.link>
           <.icon name="hero-pencil" class="w-5 h-5" />
         </.link>
       </:action>

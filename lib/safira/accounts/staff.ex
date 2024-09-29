@@ -1,4 +1,7 @@
 defmodule Safira.Accounts.Staff do
+  @moduledoc """
+  An event staff.
+  """
   use Safira.Schema
 
   @required_fields ~w(user_id)a

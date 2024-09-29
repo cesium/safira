@@ -1,4 +1,7 @@
 defmodule Safira.Contest.DailyTokens do
+  @moduledoc """
+  Daily tokens schema.
+  """
   use Safira.Schema
 
   @required_fields ~w(date tokens attendee_id)a

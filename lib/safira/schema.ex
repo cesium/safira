@@ -1,4 +1,7 @@
 defmodule Safira.Schema do
+  @moduledoc """
+  Base schema module.
+  """
   defmacro __using__(_) do
     quote do
       use Ecto.Schema

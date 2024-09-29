@@ -1,7 +1,6 @@
 defmodule Safira.Repo.Seeds.Vault do
-  alias Safira.Inventory
-  alias Safira.Repo
   alias Safira.Accounts.Attendee
+  alias Safira.{Inventory, Repo}
   alias Safira.Store.Product
 
   def run do

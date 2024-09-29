@@ -1,10 +1,11 @@
 defmodule SafiraWeb.Backoffice.MinigamesLive.Wheel.FormComponent do
+  @moduledoc false
   use SafiraWeb, :live_component
 
   import SafiraWeb.Components.Forms
 
-  alias Safira.Minigames
   alias Ecto.Changeset
+  alias Safira.Minigames
 
   def render(assigns) do
     ~H"""
@@ -62,7 +63,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.Wheel.FormComponent do
      |> assign(
        form:
          to_form(
-           %{"price" => Minigames.get_wheel_price(), "is_active" => Minigames.is_wheel_active?()},
+           %{"price" => Minigames.get_wheel_price(), "is_active" => Minigames.wheel_active?()},
            as: :wheel_configuration
          )
      )}
@@ -76,7 +77,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.Wheel.FormComponent do
   end
 
   def handle_event("save", params, socket) do
-    if is_valid_config?(params) do
+    if valid_config?(params) do
       Minigames.change_wheel_price(params["price"] |> String.to_integer())
       Minigames.change_wheel_active("true" == params["is_active"])
       {:noreply, socket |> push_patch(to: ~p"/dashboard/minigames/")}
@@ -92,7 +93,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.Wheel.FormComponent do
     |> Changeset.validate_number(:price, greater_than_or_equal_to: 0)
   end
 
-  defp is_valid_config?(params) do
+  defp valid_config?(params) do
     validation = validate_configuration(params["price"], params["is_active"])
     validation.errors == []
   end

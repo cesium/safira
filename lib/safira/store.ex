@@ -7,10 +7,10 @@ defmodule Safira.Store do
 
   alias Ecto.Multi
 
-  alias Safira.Store.Product
-  alias Safira.Inventory.Item
   alias Safira.Accounts.Attendee
   alias Safira.Contest
+  alias Safira.Inventory.Item
+  alias Safira.Store.Product
 
   @pubsub Safira.PubSub
 
