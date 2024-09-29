@@ -1,5 +1,4 @@
 import Config
-import Dotenvy
 
 # config/runtime.exs is executed for all environments, including
 # during releases. It is executed after compilation and before the
@@ -20,13 +19,6 @@ import Dotenvy
 if System.get_env("PHX_SERVER") do
   config :safira, SafiraWeb.Endpoint, server: true
 end
-
-source([".env.dev", System.get_env()])
-
-config :safira, SafiraWeb.Endpoint,
-  registrations_open: env!("REGISTRATIONS_OPEN", :boolean, true),
-  backoffice_enabled_staff: env!("BACKOFFICE_ENABLED_STAFF", :boolean, true),
-  start_time: DateTime.from_iso8601(env!("START_TIME", :string!)) |> elem(1)
 
 if config_env() == :prod do
   database_url =
