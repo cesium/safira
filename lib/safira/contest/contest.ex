@@ -3,11 +3,10 @@ defmodule Safira.Contest do
   The Contest context.
   """
 
-  alias Safira.Contest.BadgeCondition
   use Safira.Context
-  alias Safira.Contest.Badge
-  alias Safira.Contest.BadgeCategory
-  alias Safira.Contest.BadgeCondition
+
+  alias Safira.Contest.{Attendee, Badge, BadgeCategory, BadgeCondition, DailyTokens}
+  alias Ecto.Multi
 
   @doc """
   Gets a single badge.
@@ -308,5 +307,41 @@ defmodule Safira.Contest do
   """
   def change_badge_condition(%BadgeCondition{} = condition, attrs \\ %{}) do
     BadgeCondition.changeset(condition, attrs)
+  end
+
+  @doc """
+  Changes the attendee token balance and updates the daily tokens.
+  """
+  def change_attendee_tokens(attendee, tokens) do
+    change_attendee_tokens_transaction(attendee, tokens)
+    |> Repo.transaction()
+  end
+
+  @doc """
+  Transaction for updating the attendee token balance and the daily tokens.
+  """
+  def change_attendee_tokens_transaction(
+        attendee,
+        tokens,
+        attendee_update_tokens_operation_name \\ :attendee_update_tokens,
+        daily_tokens_fetch_operation_name \\ :daily_tokens_fetch,
+        daily_tokens_update_operation_name \\ :daily_tokens_update
+      ) do
+    today = Date.utc_today()
+
+    Multi.new()
+    |> Multi.update(
+      attendee_update_tokens_operation_name,
+      Attendee.changeset(attendee, %{tokens: tokens})
+    )
+    |> Multi.run(daily_tokens_fetch_operation_name, fn repo, _changes ->
+      {:ok,
+       repo.one(
+         from dt in DailyTokens, where: dt.attendee_id == ^attendee.id and dt.date == ^today
+       ) || %DailyTokens{date: today, attendee_id: attendee.id}}
+    end)
+    |> Multi.insert_or_update(daily_tokens_update_operation_name, fn changes ->
+      DailyTokens.changeset(Map.get(changes, daily_tokens_fetch_operation_name), %{tokens: tokens})
+    end)
   end
 end

@@ -5,7 +5,7 @@ defmodule Safira.Accounts do
 
   use Safira.Context
 
-  alias Safira.Accounts.{Attendee, Course, Staff, User, UserToken, UserNotifier}
+  alias Safira.Accounts.{Attendee, Course, Credential, Staff, User, UserToken, UserNotifier}
 
   ## Database getters
 
@@ -506,8 +506,6 @@ defmodule Safira.Accounts do
       {:error, :user, changeset, _} -> {:error, changeset}
     end
   end
-
-  alias Safira.Accounts.Credential
 
   @doc """
   Returns the list of credentials.

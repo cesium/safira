@@ -11,6 +11,7 @@ defmodule Safira.Minigames do
   alias Safira.Minigames.Prize
   alias Safira.Minigames.WheelDrop
   alias Safira.Constants
+  alias Safira.Contest
   alias Safira.Accounts.Attendee
   alias Safira.Inventory.Item
 
@@ -302,15 +303,15 @@ defmodule Safira.Minigames do
     # Fetch the wheel spin price
     |> Multi.put(:wheel_price, get_wheel_price())
     # Remove the wheel spin price from the attendee's token balance
-    |> Multi.update(:attendee_state, fn %{wheel_price: price} ->
-      Attendee.update_tokens_changeset(attendee, %{tokens: attendee.tokens - price})
+    |> Multi.merge(fn %{wheel_price: price} ->
+      Contest.change_attendee_tokens_transaction(attendee, attendee.tokens - price, :attendee)
     end)
     # Fetch a random drop according to the probabilities and available stock of drops with prizes
-    |> Multi.run(:drop, fn _repo, %{attendee_state: attendee} ->
+    |> Multi.run(:drop, fn _repo, %{attendee: attendee} ->
       {:ok, generate_valid_wheel_drop(attendee)}
     end)
     # Apply the reward action for the drop
-    |> Multi.merge(fn %{drop: drop, attendee_state: attendee} ->
+    |> Multi.merge(fn %{drop: drop, attendee: attendee} ->
       drop_reward_action(drop, attendee)
     end)
     # Execute the transaction
@@ -401,10 +402,12 @@ defmodule Safira.Minigames do
         Multi.new()
 
       :tokens ->
-        Multi.new()
-        |> Multi.update(
+        Contest.change_attendee_tokens_transaction(
+          attendee,
+          attendee.tokens + drop.tokens,
           :attendee_state_tokens,
-          Attendee.update_tokens_changeset(attendee, %{tokens: attendee.tokens + drop.tokens})
+          :previous_daily_tokens,
+          :new_daily_tokens
         )
 
       :entries ->

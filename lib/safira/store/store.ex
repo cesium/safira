@@ -10,6 +10,7 @@ defmodule Safira.Store do
   alias Safira.Store.Product
   alias Safira.Inventory.Item
   alias Safira.Accounts.Attendee
+  alias Safira.Contest
 
   @pubsub Safira.PubSub
 
@@ -206,10 +207,9 @@ defmodule Safira.Store do
         })
       )
       |> Multi.update(:product, Product.changeset(product, %{stock: product.stock - 1}))
-      |> Multi.update(
-        :attendee_tokens,
-        Attendee.update_tokens_changeset(attendee, %{tokens: attendee.tokens - product.price})
-      )
+      |> Multi.merge(fn _ ->
+        Contest.change_attendee_tokens_transaction(attendee, attendee.tokens - product.price)
+      end)
       |> Repo.transaction()
 
     case result do
