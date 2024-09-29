@@ -131,6 +131,13 @@ defmodule SafiraWeb.Config do
         icon: "hero-qr-code",
         url: "/dashboard/scanner",
         scope: %{"scanner" => ["show"]}
+      },
+      %{
+        key: :event,
+        title: "Event",
+        icon: "hero-cog-8-tooth",
+        url: "/dashboard/event",
+        scope: %{"event" => ["edit"]}
       }
     ]
     |> Enum.filter(fn page -> has_permission?(permissions, page.scope) end)

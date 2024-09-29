@@ -14,12 +14,11 @@ defmodule SafiraWeb.UserLoginLive do
         Log in to account
         <:subtitle>
           <%= if @registrations_open do %>
-
-              Don't have an account?
-              <.link navigate={~p"/users/register"} class="font-semibold text-primary hover:underline">
-                Sign up
-              </.link>
-              for an account now.
+            Don't have an account?
+            <.link navigate={~p"/users/register"} class="font-semibold text-primary hover:underline">
+              Sign up
+            </.link>
+            for an account now.
           <% end %>
         </:subtitle>
       </.header>
@@ -48,6 +47,7 @@ defmodule SafiraWeb.UserLoginLive do
     email = Phoenix.Flash.get(socket.assigns.flash, :email)
     form = to_form(%{"email" => email}, as: "user")
 
-    {:ok, assign(socket, form: form) |> assign(registrations_open: registrations_open?()), temporary_assigns: [form: form]}
+    {:ok, assign(socket, form: form) |> assign(registrations_open: registrations_open?()),
+     temporary_assigns: [form: form]}
   end
 end

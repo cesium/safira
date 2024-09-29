@@ -13,6 +13,7 @@ defmodule SafiraWeb.EventRoles do
   """
   def registrations_open(conn, _opts) do
     {:ok, open} = Constants.get("REGISTRATIONS_OPEN")
+
     if open do
       conn
     else
@@ -27,12 +28,12 @@ defmodule SafiraWeb.EventRoles do
     attendees_allowed =
       is_not_in_future(Helpers.get_start_time!())
 
-    if (conn.assigns.current_user.type == :attendee and attendees_allowed) do
+    if conn.assigns.current_user.type == :attendee and not attendees_allowed do
       conn
+      |> redirect(to: ~p"/waiting/countdown")
+      |> halt()
     else
       conn
-      |> redirect(to: ~p"/countdown")
-      |> halt()
     end
   end
 

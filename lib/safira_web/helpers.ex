@@ -164,7 +164,7 @@ defmodule SafiraWeb.Helpers do
   end
 
   def registrations_open? do
-    {:ok, registrations_open} =  Constants.get("REGISTRATIONS_OPEN")
+    {:ok, registrations_open} = Constants.get("REGISTRATIONS_OPEN")
     string_to_bool(registrations_open)
   end
 
