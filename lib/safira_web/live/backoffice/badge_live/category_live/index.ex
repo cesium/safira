@@ -2,6 +2,7 @@ defmodule SafiraWeb.Backoffice.BadgeLive.CategoryLive.Index do
   use SafiraWeb, :live_component
 
   alias Safira.Contest
+  import SafiraWeb.Components.EnsurePermissions
 
   @impl true
   def render(assigns) do
@@ -9,9 +10,11 @@ defmodule SafiraWeb.Backoffice.BadgeLive.CategoryLive.Index do
     <div>
       <.page title={@title}>
         <:actions>
-          <.link navigate={~p"/dashboard/badges/categories/new"}>
-            <.button>New Category</.button>
-          </.link>
+          <.ensure_permissions user={@current_user} permissions={%{"badges" => ["edit"]}}>
+            <.link navigate={~p"/dashboard/badges/categories/new"}>
+              <.button>New Category</.button>
+            </.link>
+          </.ensure_permissions>
         </:actions>
         <ul class="h-96 mt-8 pb-8 flex flex-col space-y-2 overflow-y-auto">
           <li
@@ -27,9 +30,11 @@ defmodule SafiraWeb.Backoffice.BadgeLive.CategoryLive.Index do
                 </span>
                 <%= category.name %>
               </span>
-              <.link navigate={~p"/dashboard/badges/categories/#{category.id}/edit"}>
-                <.icon name="hero-pencil" class="w-5 h-5" />
-              </.link>
+              <.ensure_permissions user={@current_user} permissions={%{"badges" => ["edit"]}}>
+                <.link navigate={~p"/dashboard/badges/categories/#{category.id}/edit"}>
+                  <.icon name="hero-pencil" class="w-5 h-5" />
+                </.link>
+              </.ensure_permissions>
             </p>
           </li>
           <div class="only:flex hidden h-full items-center justify-center">

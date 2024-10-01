@@ -1,6 +1,7 @@
 defmodule Safira.Repo.Seeds.Accounts do
   alias Safira.Accounts
   alias Safira.Repo
+  alias Safira.Roles
 
   @names File.read!("priv/fake/names.txt") |> String.split("\n")
 
@@ -54,6 +55,8 @@ defmodule Safira.Repo.Seeds.Accounts do
   end
 
   def seed_staffs(names) do
+    roles = Roles.list_roles()
+
     for {name, i} <- Enum.with_index(names) do
       email = "staff#{i}@seium.org"
       handle = name |> String.downcase() |> String.replace(~r/\s/, "_")
@@ -68,7 +71,7 @@ defmodule Safira.Repo.Seeds.Accounts do
       case Accounts.register_staff_user(user) do
         {:ok, changeset} ->
           user = Repo.update!(Accounts.User.confirm_changeset(changeset))
-          Accounts.create_staff(%{user_id: user.id})
+          Accounts.create_staff(%{user_id: user.id, role_id: Enum.random(roles).id})
           {:error, changeset} ->
             Mix.shell().error(Kernel.inspect(changeset.errors))
       end

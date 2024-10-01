@@ -74,6 +74,9 @@ defmodule SafiraWeb do
       use Phoenix.LiveView,
         layout: {SafiraWeb.Layouts, :backoffice}
 
+      import SafiraWeb.Components.EnsurePermissions
+      import SafiraWeb.BackofficeHelpers
+
       unquote(html_helpers())
     end
   end

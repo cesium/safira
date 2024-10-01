@@ -8,9 +8,11 @@
         path={~p"/dashboard/store/products"}
         placeholder={gettext("Search for products")}
       />
-      <.link patch={~p"/dashboard/store/products/new"}>
-        <.button>New Product</.button>
-      </.link>
+      <.ensure_permissions user={@current_user} permissions={%{"products" => ["edit"]}}>
+        <.link patch={~p"/dashboard/store/products/new"}>
+          <.button>New Product</.button>
+        </.link>
+      </.ensure_permissions>
     </div>
   </:actions>
   <div class="py-4">
@@ -33,17 +35,21 @@
         <div class="sr-only">
           <.link navigate={~p"/dashboard/store/products/#{product}"}>Show</.link>
         </div>
-        <.link patch={~p"/dashboard/store/products/#{product}/edit"}>
-          <.icon name="hero-pencil" class="w-5 h-5" />
-        </.link>
+        <.ensure_permissions user={@current_user} permissions={%{"products" => ["edit"]}}>
+          <.link patch={~p"/dashboard/store/products/#{product}/edit"}>
+            <.icon name="hero-pencil" class="w-5 h-5" />
+          </.link>
+        </.ensure_permissions>
       </:action>
       <:action :let={{id, product}}>
-        <.link
-          phx-click={JS.push("delete", value: %{id: product.id}) |> hide("##{id}")}
-          data-confirm="Are you sure?"
-        >
-          <.icon name="hero-trash" class="w-5 h-5" />
-        </.link>
+        <.ensure_permissions user={@current_user} permissions={%{"products" => ["delete"]}}>
+          <.link
+            phx-click={JS.push("delete", value: %{id: product.id}) |> hide("##{id}")}
+            data-confirm="Are you sure?"
+          >
+            <.icon name="hero-trash" class="w-5 h-5" />
+          </.link>
+        </.ensure_permissions>
       </:action>
     </.table>
   </div>

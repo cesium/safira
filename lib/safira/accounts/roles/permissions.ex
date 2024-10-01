@@ -6,11 +6,15 @@ defmodule Safira.Accounts.Roles.Permissions do
 
   def all do
     %{
-      "badges" => ["edit", "give"],
-      "store" => ["edit_stock", "refund"],
-      "users" => ["view", "edit"],
-      "mailer" => ["edit_mailing_lists", "send"],
-      "admin" => ["view_event_stats", "view_app_stats", "access_console"]
+      "attendees" => ["show", "edit"],
+      "staffs" => ["show", "edit", "roles_edit"],
+      "products" => ["show", "edit", "delete"],
+      "purchases" => ["show", "redeem", "refund"],
+      "badges" => ["show", "edit", "delete", "give", "revoke", "give_without_restrictions"],
+      "minigames" => ["show", "edit", "simulate"],
+      "spotlights" => ["edit"],
+      "statistics" => ["show"],
+      "mailer" => ["send"]
     }
   end
 

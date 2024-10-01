@@ -8,14 +8,19 @@
         path={~p"/dashboard/badges"}
         placeholder={gettext("Search for badges")}
       />
-      <.link patch={~p"/dashboard/badges/new"}>
-        <.button>New Badge</.button>
-      </.link>
-      <.link patch={~p"/dashboard/badges/categories"}>
-        <.button>
-          <.icon name="hero-tag" class="w-5 h-5" />
-        </.button>
-      </.link>
+      <.ensure_permissions user={@current_user} permissions={%{"badges" => ["edit"]}}>
+        <.link patch={~p"/dashboard/badges/new"}>
+          <.button>New Badge</.button>
+        </.link>
+      </.ensure_permissions>
+
+      <.ensure_permissions user={@current_user} permissions={%{"badges" => ["show"]}}>
+        <.link patch={~p"/dashboard/badges/categories"}>
+          <.button>
+            <.icon name="hero-tag" class="w-5 h-5" />
+          </.button>
+        </.link>
+      </.ensure_permissions>
     </div>
   </:actions>
 
@@ -44,6 +49,7 @@
     module={SafiraWeb.Backoffice.BadgeLive.FormComponent}
     id={@badge.id || :new}
     title={@page_title}
+    current_user={@current_user}
     action={@live_action}
     badge={@badge}
     categories={@categories}
@@ -61,6 +67,7 @@
     module={SafiraWeb.Backoffice.BadgeLive.CategoryLive.Index}
     id="list-categories"
     title={@page_title}
+    current_user={@current_user}
     action={@live_action}
     patch={~p"/dashboard/badges"}
   />
@@ -76,6 +83,7 @@
     module={SafiraWeb.Backoffice.BadgeLive.CategoryLive.FormComponent}
     id={@category.id || :new}
     title={@page_title}
+    current_user={@current_user}
     action={@live_action}
     category={@category}
     patch={~p"/dashboard/badges/categories"}
@@ -92,6 +100,7 @@
     module={SafiraWeb.Backoffice.BadgeLive.ConditionLive.Index}
     id="list-conditions"
     title={@page_title}
+    current_user={@current_user}
     action={@live_action}
     patch={~p"/dashboard/badges/#{@badge.id}/edit"}
     badge={@badge}
@@ -108,6 +117,7 @@
     module={SafiraWeb.Backoffice.BadgeLive.ConditionLive.FormComponent}
     id={@badge_condition.id || :new}
     title={@page_title}
+    current_user={@current_user}
     action={@live_action}
     badge_condition={@badge_condition}
     patch={~p"/dashboard/badges/#{@badge.id}/conditions"}

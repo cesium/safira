@@ -149,8 +149,8 @@ defmodule SafiraWeb.Components.Forms do
         id={@id}
         name={@name}
         class={["safira-select", @class]}
-        multiple={@multiple}
         required={@required}
+        multiple={@multiple}
         {@rest}
       >
         <option :if={@prompt} value=""><%= @prompt %></option>
@@ -244,7 +244,7 @@ defmodule SafiraWeb.Components.Forms do
     """
   end
 
-  def field(%{type: "checkbox-group"} = assigns) do
+  def field(%{type: "checkbox-group", options: options} = assigns) do
     assigns =
       assigns
       |> assign_new(:checked, fn ->
@@ -257,6 +257,7 @@ defmodule SafiraWeb.Components.Forms do
 
         Enum.map(values, &to_string/1)
       end)
+      |> assign(:options, options)
 
     ~H"""
     <.field_wrapper errors={@errors} name={@name} class={@wrapper_class}>
@@ -271,24 +272,26 @@ defmodule SafiraWeb.Components.Forms do
         @group_layout == "col" && "safira-checkbox-group--col",
         @class
       ]}>
-        <%= for {label, value} <- @options do %>
-          <label class="safira-checkbox-label">
-            <input
-              type="checkbox"
-              name={@name <> "[]"}
-              checked_value={value}
-              unchecked_value=""
-              value={value}
-              checked={to_string(value) in @checked}
-              hidden_input={false}
-              class="safira-checkbox"
-              disabled={value in @disabled_options}
-              {@rest}
-            />
-            <div>
-              <%= label %>
-            </div>
-          </label>
+        <%= for {group_label, group_options} <- @options do %>
+          <fieldset>
+            <legend class="capitalize"><%= group_label %></legend>
+            <%= for option <- group_options do %>
+              <label class="safira-checkbox-label">
+                <input
+                  type="checkbox"
+                  name={@name <> "[]"}
+                  value={"#{option}"}
+                  checked={to_string(option) in @checked}
+                  class="safira-checkbox"
+                  disabled={option in @disabled_options}
+                  {@rest}
+                />
+                <div>
+                  <%= option |> Enum.at(0) |> String.split("-") |> Enum.at(1) %>
+                </div>
+              </label>
+            <% end %>
+          </fieldset>
         <% end %>
 
         <%= if @empty_message && Enum.empty?(@options) do %>

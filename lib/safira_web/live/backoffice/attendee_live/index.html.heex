@@ -31,9 +31,11 @@
         <%= user.attendee.entries %>
       </:col>
       <:action :let={{_id, user}}>
-        <.link patch={~p"/dashboard/attendees/#{user.attendee.id}"}>
-          <.icon name="hero-pencil" class="w-5 h-5" />
-        </.link>
+        <.ensure_permissions user={@current_user} permissions={%{"attendees" => ["edit"]}}>
+          <.link patch={~p"/dashboard/attendees/#{user.attendee.id}"}>
+            <.icon name="hero-pencil" class="w-5 h-5" />
+          </.link>
+        </.ensure_permissions>
       </:action>
     </.table>
   </div>

@@ -100,7 +100,16 @@ defmodule SafiraWeb.Router do
           live "/:id", Show, :show
         end
 
-        live "/staffs", StaffLive.Index, :index
+        scope "/staffs", StaffLive do
+          live "/", Index, :index
+          live "/:id/edit", Index, :edit
+
+          scope "/roles" do
+            live "/", Index, :roles
+            live "/new", Index, :roles_new
+            live "/:id/edit", Index, :roles_edit
+          end
+        end
 
         scope "/store/products", ProductLive do
           live "/", Index, :index

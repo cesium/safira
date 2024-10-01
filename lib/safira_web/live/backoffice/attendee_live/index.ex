@@ -5,6 +5,9 @@ defmodule SafiraWeb.Backoffice.AttendeeLive.Index do
   import SafiraWeb.Components.Table
   import SafiraWeb.Components.TableSearch
 
+  on_mount {SafiraWeb.StaffRoles,
+            index: %{"attendees" => ["show"]}, edit: %{"attendees" => ["edit"]}}
+
   @impl true
   def mount(_params, _session, socket) do
     {:ok, socket}

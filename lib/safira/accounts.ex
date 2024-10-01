@@ -75,9 +75,10 @@ defmodule Safira.Accounts do
   @doc """
   Gets a single staff by user id.
   """
-  def get_user_staff(user_id) do
+  def get_user_staff(user_id, opts \\ []) do
     Staff
     |> where(user_id: ^user_id)
+    |> apply_filters(opts)
     |> Repo.one()
   end
 
@@ -96,7 +97,7 @@ defmodule Safira.Accounts do
       user.type,
       case user.type do
         :attendee -> get_user_attendee(user.id)
-        :staff -> get_user_staff(user.id)
+        :staff -> get_user_staff(user.id, preloads: [:role])
       end
     )
   end
@@ -128,6 +129,18 @@ defmodule Safira.Accounts do
     |> apply_filters(opts)
     |> where(type: :staff)
     |> Flop.validate_and_run(params, for: User)
+  end
+
+  def update_staff(%Staff{} = staff, attrs) do
+    Staff.changeset(staff, attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Changes a staff
+  """
+  def change_staff(%Staff{} = staff, attrs) do
+    Staff.changeset(staff, attrs)
   end
 
   @doc """

@@ -7,6 +7,9 @@ defmodule SafiraWeb.Backoffice.PrizeLive.Index do
   import SafiraWeb.Components.Table
   import SafiraWeb.Components.TableSearch
 
+  on_mount {SafiraWeb.StaffRoles,
+            index: %{"minigames" => ["show"]}, new: %{"minigames" => ["edit"]}}
+
   @impl true
   def mount(_params, _session, socket) do
     {:ok, socket}

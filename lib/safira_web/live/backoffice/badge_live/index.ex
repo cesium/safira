@@ -6,6 +6,17 @@ defmodule SafiraWeb.Backoffice.BadgeLive.Index do
   alias Safira.Contest
   alias Safira.Contest.{Badge, BadgeCategory, BadgeCondition}
 
+  on_mount {SafiraWeb.StaffRoles,
+            index: %{"badges" => ["show"]},
+            categories: %{"badges" => ["show"]},
+            categories_new: %{"badges" => ["edit"]},
+            categories_edit: %{"badges" => ["edit"]},
+            conditions: %{"badges" => ["edit"]},
+            conditions_new: %{"badges" => ["edit"]},
+            conditions_edit: %{"badges" => ["edit"]},
+            new: %{"products" => ["edit"]},
+            edit: %{"products" => ["edit"]}}
+
   @impl true
   def mount(_params, _session, socket) do
     {:ok, socket}

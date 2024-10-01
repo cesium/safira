@@ -1,7 +1,7 @@
 <div class="relative h-screen flex overflow-hidden">
   <.sidebar
     current_user={@current_user}
-    pages={SafiraWeb.Config.backoffice_pages()}
+    pages={SafiraWeb.Config.backoffice_pages(@current_user)}
     current_page={Map.get(assigns, :current_page, nil)}
     logo_images={%{light: "/images/safira-light.svg", dark: "/images/safira-dark.svg"}}
     background="bg-light dark:bg-dark"

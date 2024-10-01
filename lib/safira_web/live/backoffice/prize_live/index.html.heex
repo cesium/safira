@@ -8,9 +8,11 @@
         path={~p"/dashboard/minigames/prizes"}
         placeholder={gettext("Search for prizes")}
       />
-      <.link patch={~p"/dashboard/minigames/prizes/new"}>
-        <.button>New Prize</.button>
-      </.link>
+      <.ensure_permissions user={@current_user} permissions={%{"minigames" => ["edit"]}}>
+        <.link patch={~p"/dashboard/minigames/prizes/new"}>
+          <.button>New Prize</.button>
+        </.link>
+      </.ensure_permissions>
     </div>
   </:actions>
   <div class="py-4">
@@ -26,17 +28,21 @@
         <%= prize.stock %>
       </:col>
       <:action :let={{_id, prize}}>
-        <.link patch={~p"/dashboard/minigames/prizes/#{prize}/edit"}>
-          <.icon name="hero-pencil" class="w-5 h-5" />
-        </.link>
+        <.ensure_permissions user={@current_user} permissions={%{"minigames" => ["edit"]}}>
+          <.link patch={~p"/dashboard/minigames/prizes/#{prize}/edit"}>
+            <.icon name="hero-pencil" class="w-5 h-5" />
+          </.link>
+        </.ensure_permissions>
       </:action>
       <:action :let={{id, prize}}>
-        <.link
-          phx-click={JS.push("delete", value: %{id: prize.id}) |> hide("##{id}")}
-          data-confirm="Are you sure?"
-        >
-          <.icon name="hero-trash" class="w-5 h-5" />
-        </.link>
+        <.ensure_permissions user={@current_user} permissions={%{"minigames" => ["delete"]}}>
+          <.link
+            phx-click={JS.push("delete", value: %{id: prize.id}) |> hide("##{id}")}
+            data-confirm="Are you sure?"
+          >
+            <.icon name="hero-trash" class="w-5 h-5" />
+          </.link>
+        </.ensure_permissions>
       </:action>
     </.table>
   </div>

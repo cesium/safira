@@ -5,7 +5,6 @@ defmodule Safira.Repo.Migrations.CreateRoles do
     create table(:roles, primary_key: false) do
       add :id, :binary_id, primary_key: true
       add :name, :string, null: false
-      add :color, :string, null: false
       add :permissions, :map, null: false
 
       timestamps(type: :utc_datetime)

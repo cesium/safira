@@ -4,7 +4,7 @@ defmodule Safira.Accounts.Staff do
   """
   use Safira.Schema
 
-  @required_fields ~w(user_id)a
+  @required_fields ~w(user_id role_id)a
   @optional_fields ~w()a
 
   schema "staffs" do

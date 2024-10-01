@@ -3,6 +3,9 @@ defmodule SafiraWeb.Backoffice.ProductLive.Show do
 
   alias Safira.Store
 
+  on_mount {SafiraWeb.StaffRoles,
+            show: %{"products" => ["show"]}, edit: %{"products" => ["edit"]}}
+
   @impl true
   def mount(_params, _session, socket) do
     {:ok, socket}
