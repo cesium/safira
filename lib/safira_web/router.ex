@@ -75,11 +75,6 @@ defmodule SafiraWeb.Router do
 
       live "/scanner", ScannerLive.Index, :index
 
-      scope "/waiting", Waiting do
-        pipe_through [:require_attendee_user]
-        live "/countdown", CountdownLive, :countdown
-      end
-
       scope "/app", App do
         pipe_through [:require_attendee_user, :backoffice_enabled]
 
@@ -89,6 +84,11 @@ defmodule SafiraWeb.Router do
         end
 
         pipe_through [:require_credential]
+
+        live "/waiting", WaitingLive.Index, :index
+
+        pipe_through [:require_credential]
+
         live "/", HomeLive.Index, :index
 
         live "/credential", CredentialLive.Index, :index

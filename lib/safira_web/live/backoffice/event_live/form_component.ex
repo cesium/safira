@@ -36,7 +36,7 @@ defmodule SafiraWeb.Backoffice.EventLive.FormComponent do
               data-confirm="Do you want to save these changes? It can break stuff if you are not careful"
               phx-disable-with="Saving..."
             >
-              Save Settings
+              <%= gettext("Save Settings") %>
             </.button>
           </:actions>
         </.simple_form>
@@ -61,8 +61,8 @@ defmodule SafiraWeb.Backoffice.EventLive.FormComponent do
   end
 
   def handle_event("save", params, socket) do
-    Constants.set("REGISTRATIONS_OPEN", params["registrations_open"])
-    Constants.set("START_TIME", DateTime.to_iso8601(parse_date(params["start_time"])))
+    Constants.set("registrations_open", params["registrations_open"])
+    Constants.set("start_time", DateTime.to_iso8601(parse_date(params["start_time"])))
 
     {:noreply,
      socket

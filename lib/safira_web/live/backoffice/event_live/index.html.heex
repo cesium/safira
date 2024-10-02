@@ -1,13 +1,13 @@
 <.page title="Event Settings">
   <:actions>
     <.link patch={~p"/dashboard/event/edit"}>
-      <.button>Edit Settings</.button>
+      <.button><%= gettext("Edit Settings") %></.button>
     </.link>
   </:actions>
 
   <div class="py-4">
-    <p><b>Registrations open:</b> <%= @form[:registrations_open].value %></p>
-    <p><b>Start Date/Time:</b> <%= @form[:start_time].value %></p>
+    <p><b><%= gettext("Registrations open:") %></b> <%= @form[:registrations_open].value %></p>
+    <p><b><%= gettext("Start Date/Time:") %></b> <%= @form[:start_time].value %></p>
   </div>
 </.page>
 <.modal

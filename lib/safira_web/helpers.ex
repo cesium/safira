@@ -164,12 +164,12 @@ defmodule SafiraWeb.Helpers do
   end
 
   def registrations_open? do
-    {:ok, registrations_open} = Constants.get("REGISTRATIONS_OPEN")
+    {:ok, registrations_open} = Constants.get("registrations_open")
     string_to_bool(registrations_open)
   end
 
   def get_start_time! do
-    {:ok, start_str} = Constants.get("START_TIME")
+    {:ok, start_str} = Constants.get("start_time")
     {:ok, start_time, _} = DateTime.from_iso8601(start_str)
     start_time
   end
