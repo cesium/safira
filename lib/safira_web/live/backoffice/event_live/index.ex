@@ -3,6 +3,7 @@ defmodule SafiraWeb.Backoffice.EventLive.Index do
 
   alias SafiraWeb.Helpers
 
+  @impl true
   def mount(_params, _session, socket) do
     registrations_open = Helpers.registrations_open?()
     start_time = Helpers.get_start_time!() |> parse_date()

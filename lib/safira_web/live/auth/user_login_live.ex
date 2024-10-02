@@ -1,8 +1,6 @@
 defmodule SafiraWeb.UserLoginLive do
   use SafiraWeb, :live_view
 
-  alias Safira.Constants
-
   def render(assigns) do
     ~H"""
     <div class="mx-auto max-w-sm">

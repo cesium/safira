@@ -1,12 +1,12 @@
 defmodule SafiraWeb.EventRoles do
   @moduledoc false
-  alias Phoenix.Router.NoRouteError
   use SafiraWeb, :verified_routes
 
   import Plug.Conn
   import Phoenix.Controller
 
   alias Safira.Constants
+
   alias SafiraWeb.Helpers
 
   @doc """

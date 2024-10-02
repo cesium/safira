@@ -3,6 +3,7 @@ defmodule SafiraWeb.App.WaitingLive.Index do
 
   alias SafiraWeb.Helpers
 
+  @impl true
   def render(assigns) do
     ~H"""
     <div>
@@ -12,6 +13,7 @@ defmodule SafiraWeb.App.WaitingLive.Index do
     """
   end
 
+  @impl true
   def mount(_params, _session, socket) do
     start_time = Helpers.get_start_time!()
 
