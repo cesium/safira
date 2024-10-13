@@ -1,0 +1,33 @@
+<.page title="Attendee">
+  <:actions>
+    <.button>
+      <.icon name="hero-flag" class="w-5 h-5" />
+    </.button>
+  </:actions>
+  <div class="flex flex-col items-center gap-4 w-full sm:w-fit py-8">
+    <img
+      class="rounded-full w-48 h-48"
+      src={"https://github.com/identicons/#{@attendee.user.handle |> String.slice(0..2)}.png"}
+    />
+    <div>
+      <h1 class="text-xl font-semibold"><%= @attendee.user.name %></h1>
+      <p class="text-sm">@<%= @attendee.user.handle %></p>
+      <div class="flex flex-row gap-2 py-1 text-sm items-center">
+        <.icon name="hero-envelope" class="w-5 h-5" />
+        <p><%= @attendee.user.email %></p>
+      </div>
+      <div class="flex flex-row gap-2 py-1 text-sm items-center">
+        <.icon name="hero-information-circle" class="w-5 h-5" />
+        <p><%= "Joined #{@attendee.inserted_at |> relative_datetime()}" %></p>
+      </div>
+      <div class="flex flex-row gap-2 py-1 text-sm items-center">
+        <.icon name="hero-circle-stack" class="w-5 h-5" />
+        <p><%= "#{@attendee.tokens} tokens" %></p>
+      </div>
+      <div class="flex flex-row gap-2 py-1 text-sm items-center">
+        <.icon name="hero-ticket" class="w-5 h-5" />
+        <p><%= "#{@attendee.entries} entries" %></p>
+      </div>
+    </div>
+  </div>
+</.page>

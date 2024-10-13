@@ -1,0 +1,49 @@
+<.page back_to_link={~p"/app/store"} back_to_link_text="Back to store">
+  <:actions>
+    <span class="text-semibold text-xl border-2 px-4 py-2 rounded-full font-terminal">
+      💰 <%= @current_user.attendee.tokens %>
+    </span>
+  </:actions>
+  <div class="w-full flex sm:flex-row flex-col sm:gap-16 gap-8 py-8 sm:py-0">
+    <div class="w-full sm:p-16">
+      <figure class="bg-light/5 rounded-xl w-full">
+        <%= if @product.image do %>
+          <img
+            class="w-full p-4 group-hover:scale-105 transition-transform duration-300"
+            src={Uploaders.Product.url({@product.image, @product}, :original)}
+          />
+        <% end %>
+      </figure>
+    </div>
+    <div class="w-full sm:p-16 flex flex-col gap-4 justify-between">
+      <div>
+        <h1 class="font-terminal uppercase text-4xl sm:text-6xl text-center sm:text-left">
+          <%= @product.name %>
+        </h1>
+        <div class="py-4">
+          <%= text_to_html_paragraphs(@product.description) %>
+        </div>
+      </div>
+      <div class="w-full uppercase text-center font-semibold flex flex-col gap-4">
+        <%= if @product.stock < 1000 do %>
+          <%= if @product.stock > 1 do %>
+            <%= gettext("%{quantity_left} items in stock", quantity_left: @product.stock) %>
+          <% else %>
+            <%= if @product.stock == 1 do %>
+              ⚠️<%= gettext("Only one remaining!") %>
+            <% else %>
+              ⚠️<%= gettext("Out of stock") %>
+            <% end %>
+          <% end %>
+        <% end %>
+        <.action_button
+          title={gettext("Purchase")}
+          subtitle={"💰 #{@product.price}"}
+          class="w-full"
+          disabled={!can_purchase?(@product, @current_user.attendee)}
+          phx-click="purchase"
+        />
+      </div>
+    </div>
+  </div>
+</.page>

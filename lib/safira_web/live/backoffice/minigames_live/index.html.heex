@@ -1,0 +1,55 @@
+<.page title="Minigames">
+  <div class="grid grid-cols-3 py-8">
+    <.ensure_permissions user={@current_user} permissions={%{"minigames" => ["edit"]}}>
+      <.link
+        patch={~p"/dashboard/minigames/wheel"}
+        class="flex flex-col items-center w-full text-2xl gap-4 font-semibold py-8 rounded-2xl dark:bg-darkShade/10 dark:hover:bg-darkShade/20 bg-lightShade/30 hover:bg-lightShade/40 transition-colors"
+      >
+        <%= gettext("Lucky Wheel") %>
+        <div class="w-16">
+          <img src={~p"/images/wheel.svg"} class="dark:invert" />
+        </div>
+      </.link>
+    </.ensure_permissions>
+  </div>
+</.page>
+
+<.modal
+  :if={@live_action in [:edit_wheel]}
+  id="wheel-config-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/minigames/")}
+>
+  <.live_component
+    id="wheel-configurator"
+    module={SafiraWeb.Backoffice.MinigamesLive.Wheel.FormComponent}
+    patch={~p"/dashboard/minigames/"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:edit_wheel_drops]}
+  id="wheel-drops-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/minigames/wheel/")}
+>
+  <.live_component
+    id="wheel-configurator"
+    module={SafiraWeb.Backoffice.MinigamesLive.WheelDrops.FormComponent}
+    patch={~p"/dashboard/minigames/wheel/"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:simulate_wheel]}
+  id="wheel-simulate-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/minigames/wheel/drops")}
+>
+  <.live_component
+    id="wheel-configurator"
+    module={SafiraWeb.Backoffice.MinigamesLive.Simulator.Index}
+    current_user={@current_user}
+    patch={~p"/dashboard/minigames/wheel/drops"}
+  />
+</.modal>

@@ -1,0 +1,12 @@
+<.page title="Vault" size={:xl} title_class="font-terminal uppercase">
+  <ul id="items-list" class="space-y-4 py-8" phx-update="stream">
+    <.item
+      :for={{id, item} <- @streams.items}
+      id={id}
+      data={get_item_data(item)}
+      redeemed={item.redeemed_at}
+      name={get_item_data(item).name}
+      image={get_item_image(item.type, get_item_data(item))}
+    />
+  </ul>
+</.page>

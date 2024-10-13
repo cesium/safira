@@ -1,0 +1,28 @@
+@import "tailwindcss/base";
+@import "./components.css";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+/* For Webkit-based browsers (Chrome, Safari and Opera) */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+/* For IE, Edge and Firefox */
+.scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+/* Disable autofill background on inputs */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
+@font-face {
+  font-family: "Terminal";
+  src: url("/fonts/TerminalGrotesque.ttf") format("truetype");
+}

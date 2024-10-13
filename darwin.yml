@@ -1,0 +1,7 @@
+services:
+  db:
+    ports:
+      - ${DB_PORT:-5555}:5432
+  web:
+    ports:
+      - ${PORT:-4000}:4000

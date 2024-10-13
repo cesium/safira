@@ -1,0 +1,26 @@
+services:
+  db:
+    image: postgres:14.1
+    container_name: safira_db
+    env_file: .env.dev
+    environment:
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_HOST: ${DB_HOST:-localhost}
+    volumes:
+      - /var/lib/postgresql/data
+  web:
+    container_name: safira_web
+    env_file: .env.dev
+    environment:
+      MIX_ENV: ${MIX_ENV:-dev}
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    depends_on:
+      - db
+    volumes:
+      - ./:/app
+      - /app/_build
+      - /app/deps
+      - /app/priv/uploads

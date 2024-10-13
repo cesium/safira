@@ -1,0 +1,65 @@
+<.page title="Minigame Prizes">
+  <:actions>
+    <div class="flex flex-row gap-4 justify-center items-center">
+      <.table_search
+        id="prizes-table-name-search"
+        params={@params}
+        field={:name}
+        path={~p"/dashboard/minigames/prizes"}
+        placeholder={gettext("Search for prizes")}
+      />
+      <.ensure_permissions user={@current_user} permissions={%{"minigames" => ["edit"]}}>
+        <.link patch={~p"/dashboard/minigames/prizes/new"}>
+          <.button>New Prize</.button>
+        </.link>
+      </.ensure_permissions>
+    </div>
+  </:actions>
+  <div class="py-4">
+    <.table
+      id="prizes-table"
+      items={@streams.prizes}
+      meta={@meta}
+      params={@params}
+      row_click={&JS.navigate(~p"/dashboard/minigames/prizes/#{elem(&1, 1).id}/edit")}
+    >
+      <:col :let={{_id, prize}} label="Name" sortable field={:name}><%= prize.name %></:col>
+      <:col :let={{_id, prize}} label="Stock" sortable field={:stock}>
+        <%= prize.stock %>
+      </:col>
+      <:action :let={{_id, prize}}>
+        <.ensure_permissions user={@current_user} permissions={%{"minigames" => ["edit"]}}>
+          <.link patch={~p"/dashboard/minigames/prizes/#{prize}/edit"}>
+            <.icon name="hero-pencil" class="w-5 h-5" />
+          </.link>
+        </.ensure_permissions>
+      </:action>
+      <:action :let={{id, prize}}>
+        <.ensure_permissions user={@current_user} permissions={%{"minigames" => ["delete"]}}>
+          <.link
+            phx-click={JS.push("delete", value: %{id: prize.id}) |> hide("##{id}")}
+            data-confirm="Are you sure?"
+          >
+            <.icon name="hero-trash" class="w-5 h-5" />
+          </.link>
+        </.ensure_permissions>
+      </:action>
+    </.table>
+  </div>
+</.page>
+
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="prize-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/minigames/prizes")}
+>
+  <.live_component
+    module={SafiraWeb.PrizeLive.FormComponent}
+    id={@prize.id || :new}
+    title={@page_title}
+    action={@live_action}
+    prize={@prize}
+    patch={~p"/dashboard/minigames/prizes"}
+  />
+</.modal>

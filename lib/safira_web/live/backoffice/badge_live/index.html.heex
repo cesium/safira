@@ -1,0 +1,126 @@
+<.page title="Badges">
+  <:actions>
+    <div class="flex flex-row gap-4 justify-center items-center">
+      <.table_search
+        id="badge-table-name-search"
+        params={@params}
+        field={:name}
+        path={~p"/dashboard/badges"}
+        placeholder={gettext("Search for badges")}
+      />
+      <.ensure_permissions user={@current_user} permissions={%{"badges" => ["edit"]}}>
+        <.link patch={~p"/dashboard/badges/new"}>
+          <.button>New Badge</.button>
+        </.link>
+      </.ensure_permissions>
+
+      <.ensure_permissions user={@current_user} permissions={%{"badges" => ["show"]}}>
+        <.link patch={~p"/dashboard/badges/categories"}>
+          <.button>
+            <.icon name="hero-tag" class="w-5 h-5" />
+          </.button>
+        </.link>
+      </.ensure_permissions>
+    </div>
+  </:actions>
+
+  <div id="badges-grid" class="pt-8 flex flex-wrap" phx-update="stream">
+    <%= for {id, badge} <- @streams.badges do %>
+      <.link id={id} class="w-64 text-center" patch={~p"/dashboard/badges/#{badge.id}/edit"}>
+        <img
+          :if={badge.image}
+          class="p-2 w-64 h-64"
+          src={Uploaders.Badge.url({badge.image, badge}, :original)}
+        />
+        <img :if={!badge.image} class="p-2 w-64 h-64" src="/images/badges/404-fallback.svg" />
+        <p class="pt-1"><%= badge.name %></p>
+      </.link>
+    <% end %>
+  </div>
+</.page>
+
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="badge-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/badges")}
+>
+  <.live_component
+    module={SafiraWeb.Backoffice.BadgeLive.FormComponent}
+    id={@badge.id || :new}
+    title={@page_title}
+    current_user={@current_user}
+    action={@live_action}
+    badge={@badge}
+    categories={@categories}
+    patch={~p"/dashboard/badges"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:categories]}
+  id="categories-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/badges")}
+>
+  <.live_component
+    module={SafiraWeb.Backoffice.BadgeLive.CategoryLive.Index}
+    id="list-categories"
+    title={@page_title}
+    current_user={@current_user}
+    action={@live_action}
+    patch={~p"/dashboard/badges"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:categories_edit, :categories_new]}
+  id="categories-modal"
+  show
+  on_cancel={JS.navigate(~p"/dashboard/badges/categories")}
+>
+  <.live_component
+    module={SafiraWeb.Backoffice.BadgeLive.CategoryLive.FormComponent}
+    id={@category.id || :new}
+    title={@page_title}
+    current_user={@current_user}
+    action={@live_action}
+    category={@category}
+    patch={~p"/dashboard/badges/categories"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:conditions]}
+  id="conditions-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/badges/#{@badge.id}/edit")}
+>
+  <.live_component
+    module={SafiraWeb.Backoffice.BadgeLive.ConditionLive.Index}
+    id="list-conditions"
+    title={@page_title}
+    current_user={@current_user}
+    action={@live_action}
+    patch={~p"/dashboard/badges/#{@badge.id}/edit"}
+    badge={@badge}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:conditions_edit, :conditions_new]}
+  id="conditions-modal"
+  show
+  on_cancel={JS.navigate(~p"/dashboard/badges/#{@badge.id}/conditions")}
+>
+  <.live_component
+    module={SafiraWeb.Backoffice.BadgeLive.ConditionLive.FormComponent}
+    id={@badge_condition.id || :new}
+    title={@page_title}
+    current_user={@current_user}
+    action={@live_action}
+    badge_condition={@badge_condition}
+    patch={~p"/dashboard/badges/#{@badge.id}/conditions"}
+    badge={@badge}
+  />
+</.modal>

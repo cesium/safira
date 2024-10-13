@@ -1,0 +1,198 @@
+/* Checkbox */
+
+:not(.phx-no-feedback).safira-form-field-wrapper--error .safira-checkbox-label {
+  @apply !text-danger-600 dark:!text-danger-200;
+}
+
+.safira-checkbox {
+  @apply w-5 h-5 transition-all duration-150 ease-linear border-gray-300 rounded cursor-pointer text-primary-500 dark:bg-gray-800 dark:border-gray-600 disabled:bg-gray-300 dark:disabled:bg-gray-600 disabled:cursor-not-allowed focus:ring-primary-500;
+}
+
+.safira-checkbox-label {
+  @apply inline-flex items-center gap-3 text-sm font-normal text-gray-900 cursor-pointer dark:text-gray-200;
+}
+
+/* Checkbox group */
+
+.safira-checkbox-group {
+  @apply pt-2;
+}
+
+.safira-checkbox-group--row {
+  @apply flex flex-row gap-4 mb-3;
+}
+
+.safira-checkbox-group--col {
+  @apply flex flex-col gap-4 mb-3;
+}
+
+.safira-checkbox-group__item--row {
+  @apply inline-flex items-center gap-2 cursor-pointer;
+}
+
+.safira-checkbox-group__item--col {
+  @apply inline-flex items-center gap-3 cursor-pointer;
+}
+
+.safira-checkbox-group--empty-message {
+  @apply text-sm;
+}
+
+/* Select */
+
+.safira-select {
+  @apply py-1.5 block w-full rounded-md text-dark border border-lightShade placeholder:text-darkMuted focus:outline-2 focus:border-lightShade ring-0 focus:outline-dark focus:outline-offset-2 dark:outline-darkShade dark:bg-dark dark:text-light dark:placeholder-lightMuted dark:focus:border-darkShade dark:border-darkShade focus:ring-0 dark:focus:outline-light;
+}
+
+/* Text input */
+
+.safira-text-input {
+  @apply block w-full border-gray-300 rounded-md shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:focus:border-primary-500 sm:text-sm disabled:cursor-not-allowed dark:text-gray-300 focus:outline-none;
+}
+
+/* Switch */
+
+.safira-switch {
+  @apply relative inline-flex items-center justify-center flex-shrink-0 w-10 h-5 cursor-pointer;
+}
+
+.safira-switch-label {
+  @apply inline-flex items-center gap-3 text-sm font-medium text-dark cursor-pointer dark:text-light;
+}
+
+.safira-switch__input {
+  @apply absolute w-10 h-5 bg-light border-none rounded-full cursor-pointer peer-checked:border-0 checked:bg-transparent checked:focus:bg-transparent checked:hover:bg-transparent;
+}
+
+.safira-switch__fake-input {
+  @apply absolute h-6 mx-auto transition-colors duration-200 ease-in-out bg-lightShade dark:bg-darkShade rounded-full pointer-events-none w-11 peer-checked:bg-dark dark:peer-checked:bg-light;
+}
+
+.safira-switch__fake-input-bg {
+  @apply absolute left-0 inline-block w-5 h-5 transition-transform duration-200 ease-in-out transform translate-x-0 bg-light dark:bg-dark rounded-full shadow pointer-events-none peer-checked:translate-x-5 ring-0;
+}
+
+/* Radio */
+
+.safira-radio {
+  @apply w-4 h-4 border-gray-300 cursor-pointer text-primary-600 focus:ring-primary-500 dark:border-gray-600;
+}
+
+.safira-radio-label {
+  @apply inline-flex items-center gap-3 text-sm font-normal text-gray-900 cursor-pointer dark:text-gray-200;
+}
+
+/* Radio group */
+
+.safira-radio-group {
+  @apply pt-2;
+}
+
+.safira-radio-group--row {
+  @apply flex flex-row gap-4 mb-3;
+}
+
+.safira-radio-group--col {
+  @apply flex flex-col gap-4 mb-3;
+}
+
+.safira-radio-group__item--row {
+  @apply inline-flex items-center gap-2 cursor-pointer;
+}
+
+.safira-radio-group__item--col {
+  @apply inline-flex items-center gap-3 cursor-pointer;
+}
+
+.safira-radio-group--empty-message {
+  @apply text-sm;
+}
+
+/* Color */
+
+.safira-color-input {
+  @apply border-gray-300 cursor-pointer focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:focus:border-primary-500;
+}
+
+/* File */
+
+.safira-file-input {
+  @apply text-sm rounded-md cursor-pointer focus:outline-none file:border-0 text-slate-500 file:text-primary-700 file:font-semibold file:px-4 file:py-2 file:mr-6 file:rounded-md hover:file:bg-primary-100 file:bg-primary-200 dark:file:bg-primary-300 hover:dark:file:bg-primary-200;
+}
+
+/* Range */
+
+.safira-range-input {
+  @apply w-full border-gray-300 cursor-pointer focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:focus:border-primary-500;
+}
+
+/* Text */
+
+.safira-text-input {
+  @apply block w-full rounded-md text-dark border border-lightShade placeholder:text-darkMuted focus:outline-2 focus:border-lightShade ring-0 focus:outline-dark focus:outline-offset-2 dark:outline-darkShade dark:bg-dark dark:text-light dark:placeholder-lightMuted dark:focus:border-darkShade dark:border-darkShade focus:ring-0 dark:focus:outline-light;
+}
+
+/* Code */
+
+.safira-text-code {
+  @apply font-mono;
+}
+
+/* Form field wrapper */
+
+.safira-form-field-wrapper {
+  @apply mb-6;
+}
+
+:not(.phx-no-feedback).safira-form-field-wrapper--error input,
+:not(.phx-no-feedback).safira-form-field-wrapper--error select,
+:not(.phx-no-feedback).safira-form-field-wrapper--error textarea {
+  @apply border-danger-500 focus:border-danger-500 text-danger-900 placeholder-danger-700 bg-danger-50 dark:text-danger-100 dark:placeholder-danger-300 dark:bg-danger-900 focus:ring-danger-500;
+}
+
+:not(.phx-no-feedback).safira-form-field-wrapper--error input[type="checkbox"] {
+  @apply bg-danger-700;
+}
+
+:not(.phx-no-feedback).safira-form-field-wrapper--error
+  .safira-switch
+  .safira-switch__fake-input {
+  @apply bg-danger-200 border-danger-500;
+}
+
+:not(.phx-no-feedback).safira-form-field-wrapper--error .safira-label,
+:not(.phx-no-feedback).safira-form-field-wrapper--error .safira-checkbox-label {
+  @apply !text-danger-600 dark:!text-danger-200;
+}
+
+/* Label */
+
+.safira-label {
+  @apply block mb-2 text-sm font-medium text-dark dark:text-light;
+}
+
+.safira-label--required:after {
+  color: #e32;
+  content: " *";
+  display: inline;
+}
+
+/* Errors */
+
+.safira-form-field-error {
+  @apply mt-1 text-xs italic text-danger-500;
+}
+
+.phx-no-feedback.safira-form-field-error {
+  @apply hidden;
+}
+
+.phx-no-feedback .safira-form-field-error {
+  @apply hidden;
+}
+
+/* Help text */
+
+.safira-form-help-text {
+  @apply mt-2 text-sm text-gray-500 dark:text-gray-400;
+}

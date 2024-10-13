@@ -1,0 +1,138 @@
+Retail Consult;Visita o stand da Retail Consult
+Accenture;Visita o stand da Accenture
+IT Sector;Visita o stand da IT Sector
+Continental;Visita o stand da Continental
+Checkmarx;Visita o stand da Checkmarx
+Eurotux;Visita o stand da Eurotux
+Glintt;Visita o stand da Glintt
+XpandIT;Visita o stand da XpandIT
+Deloitte;Visita o stand da Deloitte
+Fujitsu;Visita o stand da Fujitsu
+KPMG;Visita o stand da KPMG
+Bosch;Visita o stand da Bosch
+Farfetch;Visita o stand da Farfetch
+Seegno;Visita o stand da Seegno
+Yarilabs;Visita o stand da Yarilabs
+Axians;Visita o stand da Axians
+OpenVia;Visita o stand da OpenVia
+Celfocus;Visita o stand da Celfocus
+KonkConsulting;Visita o stand da KonkConsulting
+Issuu;Visita o stand da Issuu
+Cegid;Visita o stand da Cegid
+Ey;Visita o stand da Ey
+Saber;Visita o stand da Saber
+Talk IT Sector;Participa na talk 'Microsserviços e a Transformação Digital na área da banca'
+Inquisitor 4;Faz uma pergunta numa talk ou num pitch - Nível 4
+Speaker - Ricardo Rocha;Fala com o orador no final da talk
+Jantar Empresarial - participação;Sê convidado e vem ao Jantar Empresarial com a Subvisual
+Concurso de Fotografia - 1º lugar;Sê o vencedor do Concurso de Fotografia
+24 empresas;Fala com 24 empresas
+Talk Retail Consult;Participa na talk 'Multicloud: uma quebra de paradigma com desafios e oportunidades'
+Lovely;Tira uma foto romântica na SEI e reclama o badge na Acreditação
+First come, first served;Sê um dos 15 primeiros a fazer o check-in na Acreditação
+Coffee Break 1;Participa no Coffee Break
+Coffee Break 2;Participa no Coffee Break
+Coffee Break 3;Participa no Coffee Break
+Coffee Break 4;Participa no Coffee Break
+Coffee Break 5;Participa no Coffee Break
+Coffee Break 6;Participa no Coffee Break
+Coffee Break 7;Participa no Coffee Break
+Coffee Break 8;Participa no Coffee Break
+Survival Guided;Estás a ler o Survival Guide, levanta o teu badge na Acreditação
+5 empresas;Fala com 5 empresas
+10 empresas;Fala com 10 empresas
+15 empresas;Fala com 15 empresas
+20 empresas;Fala com 20 empresas
+Early Bird;Sê uma das primeiras 30 inscrições na SEI
+Sessão de Abertura;Participa na Sessão de Abertura
+Acreditação;Faz o check-in no balcão do CP2
+Dia 2;Participa no evento no dia 15 de fevereiro
+Dia 3;Participa no evento no dia 16 de fevereiro
+Dia 4;Participa no evento no dia 17 de fevereiro
+Dia 1;Participa no evento no dia 14 de fevereiro
+Determinado;Participa em todos os dias do evento (14, 15, 16, 17)
+wow.;Recebe 50 badges
+Gotta catch them all;Recebe 100 badges
+Talk Aficionado;Participa em todas as talks e tertúlias
+Workshop Enthusiast;Participa em 3 workshops
+SEI Lover;Dá like em todos os posts do Instagram e Facebook da SEI
+Influencer;Partilha uma foto da SEI no Instagram (identifica a conta da SEI) ou no twitter (identifica a conta do CeSIUM)
+Shopaholic;Compra um artigo de merch da loja do CeSIUM (store.cesium.di.uminho.pt)
+Let me Take a #Selfie;Tira uma foto com a mascote
+Parede;Tira uma foto na parede da SEI
+Solidarium;Doa um bem na Acreditação
+All the gold;Obtém todos os badges de empresas Gold + Exclusive
+Dripium;Apresenta-te na Acreditação a utilizar merch do CeSIUM
+Bug Catcher;Encontra um bug no site da SEI, reporta-o no formulário destinado para tal e apresenta-o na Acreditação.
+Tertúlia Women in Tech;Participa na tertúia Women in Tech
+Talk Periférico ao Vivo - Paulo Dimas;Participa no Periférico ao Vivo
+Tertúlia Arquivo Confidencial;Participa na tertúlia 'Arquivo Confidencial’'
+Pitch Bosch;Participa no pitch
+Pitch KPMG;Participa no pitch
+Pitch IT Sector;Participa no pitch
+Pitch Retail Consult;Participa no pitch
+Pitch Eurotux;Participa no pitch
+Pitch Subvisual;Participa no pitch
+Talk António Murta;Participa na talk 'Aplicações Clínicas de Machine Learning: Uma Introdução'
+Talk Checkmarx;Participa na talk 'The Role of an Application Security Architect’'
+Pitch Farfetch;Participa no pitch
+Talk Continental;Participa na talk ‘Automation on wheels - How software helps me monitoring my fleets'
+Talk Bárbara Vieira;Participa na talk 'Keep Calm, I'm a Security Engineer'
+Talk Marcelo Sousa;Participa na talk 'My quest to help software developers: from where you are to start-up founder’'
+Talk Filipe Borges;Participa na talk 'Not all those who wander are lost, a journey into the World of Esports’'
+Talk Sara Vieira;Participa na talk 'Rust for the rest of us'
+Talk Saber;Participa na talk 'Creating the biggest Open-World AAA video games in Portugal’
+Talk Accenture;Participa na talk 'DevOps Talks’'
+Talk Subvisual;Participa na talk 'Competitive Coding Strategies'
+Inquisitor 1;Faz uma pergunta numa talk ou num pitch - Nível 1
+Inquisitor 2;Faz uma pergunta numa talk ou num pitch - Nível 2
+Rabbit Hole;Encontra a route secreta do site da SEI e apresenta-a na Acreditação
+Inquisitor 5;Faz uma pergunta numa talk ou num pitch - Nível 5
+Speaker - António Murta;Fala com o orador no final da talk
+Speaker - Michael Matias;Fala com o orador no final da talk
+Speaker - Paulo Dimas;Fala com o orador no final da talk
+Speaker - Lars Frische;Fala com o orador no final da talk
+Speaker - Bárbara Vieira;Fala com o orador no final da talk
+Speaker - Marcelo Sousa;Fala com o orador no final da talk
+Speaker - Rui Oliveira;Fala com o orador no final da talk
+Speaker - Ricardo Dias;Fala com o orador no final da talk
+Speaker - José Resende;Fala com o orador no final da talk
+Speaker - Miguel Palhas;Fala com o orador no final da talk
+Subvisual Meetup - participação;Assiste às apresentações da Subvisual Meetup
+Concurso de Programação - Participação;Participa no Concurso de Programação
+Concurso de Programação - 1.º lugar;Sê o vencedor do Concurso de Programação
+Curriculum Vitae;Envia o teu CV na Web App da SEI e reclama o badge na Acreditação
+Concurso de Fotografia;Participa no desafio de fotografia no Instagram
+Lucky Bastard 1;Joga na 'Spin the Wheel' para te habilitares a receber este badge
+Lucky Bastard 2;Joga na 'Spin the Wheel' para te habilitares a receber este badge
+Lucky Bastard 3;Joga na 'Spin the Wheel' para te habilitares a receber este badge
+Lucky Bastard 4;Joga na 'Spin the Wheel' para te habilitares a receber este badge
+Lucky Bastard 6;Joga na 'Spin the Wheel' para te habilitares a receber este badge
+Lucky Bastard 7;Joga na 'Spin the Wheel' para te habilitares a receber este badge
+Lucky Bastard 8;Joga na 'Spin the Wheel' para te habilitares a receber este badge
+Lucky Bastard 9;Joga na 'Spin the Wheel' para te habilitares a receber este badge
+Lucky Bastard 10;Joga na 'Spin the Wheel' para te habilitares a receber este badge
+Workshop Deloitte;Participa no Workshop 'How to detect a data breach by an authorized user' | Deloitte
+Workshop XpandIT;Participa no Workshop 'Unleash Data Visualization with Tableau' | XpandIT
+Workshop Accenture;Participa no Workshop ‘Salesforce Tech Session' | Accenture
+Workshop Glintt;Participa no Workshop ‘From Zero to Hero : how to build a product from scratch' | Glintt
+Workshop Checkmarx;Participa no Workshop 'The role of AI in assisting Application Development and Security' | Checkmarx
+Workshop Fujitsu;Participa no Workshop ‘How to improve your CV, Application Development and Digital Transformation and Tech Quiz’ | Fujitsu
+Workshop Subvisual;Participa no ‘Introduction to Mobile Web3 development with React Native’ | Subvisual
+Easter Egg #1;Encontra um easter egg no site da SEI
+Easter Egg #2;Encontra um easter egg
+Attention Span;Participa em 2 dias do evento
+Curious George;Participa em todos os pitches
+Inquisitor 3;Faz uma pergunta numa talk ou num pitch - Nível 3
+Speaker - Inês Xavier;Fala com o orador no final da talk
+Speaker - Paulo Gomes;Fala com o orador no final da talk
+Lucky Bastard 5;Joga na 'Spin the Wheel' para te habilitares a receber este badge
+Workshop Yari Labs;Participa no Workshop 'Blockchain 101: Assets Digitais - Tokens, NFTs e Smart-Contracts' | Yari Labs
+CeSIUM na SEI;Visita o stand do CeSIUM
+CoderDojo na SEI;Visita o stand do CoderDojo
+Rick Rolled;Faz scan do QR code da credencial da Staff
+Where's Wally;Encontra o cubo do CeSIUM escondido, tira foto e mostra-a na Acreditação
+Speaker - Sara Vieira;Fala com o orador no final da talk
+Speaker - João Laranjeira;Fala com o orador no final da talk
+Speaker - Filipe Borges;Fala com o orador no final da talk
+Pitch Continental;Participa no pitch
