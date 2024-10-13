@@ -111,6 +111,19 @@ defmodule SafiraWeb.Router do
           end
         end
 
+        scope "/companies", CompanyLive do
+          live "/", Index, :index
+          live "/new", Index, :new
+
+          live "/:id/edit", :edit
+
+          scope "/tiers" do
+            live "/", Index, :tiers
+            live "/new", Index, :tiers_new
+            live "/:id/edit", Index, :tiers_edit
+          end
+        end
+
         scope "/store/products", ProductLive do
           live "/", Index, :index
           live "/new", Index, :new
