@@ -49,14 +49,14 @@ defmodule SafiraWeb.Backoffice.CompanyLive.Index do
 
   defp apply_action(socket, :tiers_edit, %{"id" => id}) do
     socket
-    |> assign(:page_title, "Edit Tier")
-    |> assign(:category, Companies.get_tier!(id))
+    |> assign(:page_title, "Edit Sponsor Tier")
+    |> assign(:tier, Companies.get_tier!(id))
   end
 
   defp apply_action(socket, :tiers_new, _params) do
     socket
-    |> assign(:page_title, "New Tier")
-    |> assign(:category, %Tier{})
+    |> assign(:page_title, "New Sponsor Tier")
+    |> assign(:tier, %Tier{})
   end
 
   defp apply_action(socket, :tiers, _params) do

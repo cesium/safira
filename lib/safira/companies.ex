@@ -153,7 +153,9 @@ defmodule Safira.Companies do
 
   """
   def list_tiers do
-    Repo.all(Tier)
+    Tier
+    |> order_by(:priority)
+    |> Repo.all()
   end
 
   @doc """
@@ -235,5 +237,17 @@ defmodule Safira.Companies do
   """
   def change_tier(%Tier{} = tier, attrs \\ %{}) do
     Tier.changeset(tier, attrs)
+  end
+
+  @doc """
+  Returns the next priority a tier should have.
+
+  ## Examples
+
+      iex> get_next_tier_priority()
+      5
+  """
+  def get_next_tier_priority do
+    (Repo.aggregate(from(t in Tier), :max, :priority) || -1) + 1
   end
 end

@@ -12,7 +12,7 @@ defmodule Safira.Companies.Tier do
     field :name, :string
     field :priority, :integer
 
-    has_many :companies, Safira.Companies.Company
+    has_many :companies, Safira.Companies.Company, foreign_key: :tier_id
 
     timestamps(type: :utc_datetime)
   end

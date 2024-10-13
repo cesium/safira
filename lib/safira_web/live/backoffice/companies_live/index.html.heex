@@ -56,3 +56,20 @@
     patch={~p"/dashboard/companies"}
   />
 </.modal>
+
+<.modal
+  :if={@live_action in [:tiers_edit, :tiers_new]}
+  id="tiers-modal"
+  show
+  on_cancel={JS.navigate(~p"/dashboard/companies/tiers")}
+>
+  <.live_component
+    module={SafiraWeb.Backoffice.CompanyLive.TierLive.FormComponent}
+    id={@tier.id || :new}
+    title={@page_title}
+    current_user={@current_user}
+    action={@live_action}
+    tier={@tier}
+    patch={~p"/dashboard/companies/tiers"}
+  />
+</.modal>
