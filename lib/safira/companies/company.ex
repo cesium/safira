@@ -37,6 +37,7 @@ defmodule Safira.Companies.Company do
   def changeset(company, attrs) do
     company
     |> cast(attrs, @required_fields ++ @optional_fields)
+    |> unique_constraint(:badge_id)
     |> cast_assoc(:badge)
     |> cast_assoc(:tier)
     |> validate_required(@required_fields)
