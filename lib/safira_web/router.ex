@@ -115,7 +115,7 @@ defmodule SafiraWeb.Router do
           live "/", Index, :index
           live "/new", Index, :new
 
-          live "/:id/edit", :edit
+          live "/:id/edit", Index, :edit
 
           scope "/tiers" do
             live "/", Index, :tiers

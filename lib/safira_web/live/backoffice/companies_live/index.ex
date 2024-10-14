@@ -3,7 +3,7 @@ defmodule SafiraWeb.Backoffice.CompanyLive.Index do
 
   import SafiraWeb.Components.{Table, TableSearch}
 
-  alias Safira.Companies
+  alias Safira.{Companies, Contest}
   alias Safira.Companies.{Company, Tier}
 
   on_mount {SafiraWeb.StaffRoles, index: %{"companies" => ["edit"]}}
@@ -33,13 +33,17 @@ defmodule SafiraWeb.Backoffice.CompanyLive.Index do
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
     |> assign(:page_title, "Edit Company")
-    |> assign(:badge, Companies.get_company!(id))
+    |> assign(:company, Companies.get_company!(id))
+    |> assign(:tiers, Companies.list_tiers())
+    |> assign(:badges, Contest.list_badges())
   end
 
   defp apply_action(socket, :new, _params) do
     socket
     |> assign(:page_title, "New Company")
-    |> assign(:badge, %Company{})
+    |> assign(:company, %Company{})
+    |> assign(:tiers, Companies.list_tiers())
+    |> assign(:badges, Contest.list_badges())
   end
 
   defp apply_action(socket, :index, _params) do
@@ -62,5 +66,14 @@ defmodule SafiraWeb.Backoffice.CompanyLive.Index do
   defp apply_action(socket, :tiers, _params) do
     socket
     |> assign(:page_title, "Listing Sponsor Tiers")
+  end
+
+  @impl true
+  def handle_event("delete", %{"id" => id}, socket) do
+    company = Companies.get_company!(id)
+
+    {:ok, _} = Companies.delete_company(company)
+
+    {:noreply, stream_delete(socket, :companies, company)}
   end
 end

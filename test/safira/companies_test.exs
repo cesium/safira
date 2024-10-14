@@ -21,7 +21,7 @@ defmodule Safira.CompaniesTest do
     end
 
     test "create_company/1 with valid data creates a company" do
-      valid_attrs = %{name: "some name"}
+      valid_attrs = %{name: "some name", tier_id: tier_fixture().id}
 
       assert {:ok, %Company{} = company} = Companies.create_company(valid_attrs)
       assert company.name == "some name"

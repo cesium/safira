@@ -11,7 +11,8 @@ defmodule Safira.CompaniesFixtures do
     {:ok, company} =
       attrs
       |> Enum.into(%{
-        name: "some name"
+        name: "some name",
+        tier_id: tier_fixture().id
       })
       |> Safira.Companies.create_company()
 
