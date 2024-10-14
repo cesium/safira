@@ -69,6 +69,13 @@ defmodule Safira.MixProject do
        app: false,
        compile: false,
        depth: 1},
+      {:fontawesome,
+       github: "FortAwesome/Font-Awesome",
+       tag: "6.6.0",
+       sparse: "svgs",
+       app: false,
+       compile: false,
+       depth: 1},
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
 
       # monitoring

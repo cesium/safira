@@ -5,7 +5,7 @@ defmodule SafiraWeb.UserLoginLive do
     ~H"""
     <div class="mx-auto max-w-sm">
       <div class="px-32 py-12">
-        <img class="w-full h-full block" src={~p"/images/sei.svg"} />
+        <img class="w-full h-full block" src={~p"/images/sei-logo.svg"} />
       </div>
 
       <.header class="text-center">
