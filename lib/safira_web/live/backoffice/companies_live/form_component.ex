@@ -26,14 +26,15 @@ defmodule SafiraWeb.Backoffice.CompanyLive.FormComponent do
         phx-submit="save"
       >
         <div>
-          <div class="grid grid-cols-6 space-x-4">
-            <.field field={@form[:name]} type="text" label="Name" wrapper_class="col-span-2" required />
+          <div class="grid grid-cols-2">
+            <.field field={@form[:name]} type="text" label="Name" wrapper_class="pr-2" required />
+            <.field field={@form[:url]} type="text" label="URL" wrapper_class="" />
             <.field
               field={@form[:tier_id]}
               type="select"
               options={options(@tiers)}
               label="Tier"
-              wrapper_class="col-span-2"
+              wrapper_class="pr-2"
               required
             />
             <.field
@@ -41,7 +42,7 @@ defmodule SafiraWeb.Backoffice.CompanyLive.FormComponent do
               type="select"
               options={options(@badges)}
               label="Badge"
-              wrapper_class="col-span-2"
+              wrapper_class=""
               required
             />
           </div>
