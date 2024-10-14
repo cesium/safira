@@ -63,6 +63,13 @@ defmodule SafiraWeb.Config do
         scope: %{"staffs" => ["show"]}
       },
       %{
+        key: :companies,
+        title: "Companies",
+        icon: "hero-building-office",
+        url: "/dashboard/companies",
+        scope: %{"companies" => ["edit"]}
+      },
+      %{
         key: :store,
         title: "Store",
         icon: "hero-shopping-cart",

@@ -21,12 +21,13 @@ import "phoenix_html"
 import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
-import { QrScanner, Wheel, Confetti } from "./hooks";
+import { QrScanner, Wheel, Confetti, Sorting } from "./hooks";
 
 let Hooks = {
   QrScanner: QrScanner,
   Wheel: Wheel,
-  Confetti: Confetti
+  Confetti: Confetti,
+  Sorting: Sorting
 };
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")

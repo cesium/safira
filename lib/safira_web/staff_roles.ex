@@ -7,20 +7,27 @@ defmodule SafiraWeb.StaffRoles do
 
     permissions = user.staff.role.permissions |> Enum.into(%{})
 
-    scopes = Keyword.get(scope, live_action)
-    scope_key = Map.keys(scopes) |> List.first()
-    scope_value = Map.get(scopes, scope_key)
-    values = Map.get(permissions, scope_key, [])
+    case Keyword.get(scope, live_action) do
+      nil ->
+        # No permissions required
+        {:cont, socket}
 
-    match = Enum.all?(scope_value, fn x -> Enum.member?(values, x) end)
+      scopes ->
+        # Verify permissions
+        scope_key = Map.keys(scopes) |> List.first()
+        scope_value = Map.get(scopes, scope_key)
+        values = Map.get(permissions, scope_key, [])
 
-    if match do
-      {:cont, socket}
-    else
-      {:halt,
-       socket
-       |> Phoenix.LiveView.put_flash(:error, "You are not authorized to access this page.")
-       |> Phoenix.LiveView.redirect(to: "/dashboard")}
+        match = Enum.all?(scope_value, fn x -> Enum.member?(values, x) end)
+
+        if match do
+          {:cont, socket}
+        else
+          {:halt,
+           socket
+           |> Phoenix.LiveView.put_flash(:error, "You are not authorized to access this page.")
+           |> Phoenix.LiveView.redirect(to: "/dashboard")}
+        end
     end
   end
 end

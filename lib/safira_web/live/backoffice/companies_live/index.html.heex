@@ -1,0 +1,102 @@
+<.page title="Companies">
+  <:actions>
+    <div class="flex flex-row gap-4 justify-center items-center">
+      <.table_search
+        id="company-table-name-search"
+        params={@params}
+        field={:name}
+        path={~p"/dashboard/companies"}
+        placeholder={gettext("Search for companies")}
+      />
+      <.ensure_permissions user={@current_user} permissions={%{"companies" => ["edit"]}}>
+        <.link patch={~p"/dashboard/companies/new"}>
+          <.button>New Company</.button>
+        </.link>
+      </.ensure_permissions>
+
+      <.ensure_permissions user={@current_user} permissions={%{"companies" => ["edit"]}}>
+        <.link patch={~p"/dashboard/companies/tiers"}>
+          <.button>
+            <.icon name="hero-rectangle-stack" class="w-5 h-5" />
+          </.button>
+        </.link>
+      </.ensure_permissions>
+    </div>
+  </:actions>
+
+  <div class="py-4">
+    <.table id="companies-table" items={@streams.companies} meta={@meta} params={@params}>
+      <:col :let={{_id, company}} sortable field={:name} label="Name"><%= company.name %></:col>
+      <:col :let={{_id, company}} sortable field={:tier} label="Tier">
+        <%= company.tier.name %>
+      </:col>
+      <:action :let={{id, company}}>
+        <.ensure_permissions user={@current_user} permissions={%{"companies" => ["edit"]}}>
+          <div class="flex flex-row gap-2">
+            <.link patch={~p"/dashboard/companies/#{company.id}/edit"}>
+              <.icon name="hero-pencil" class="w-5 h-5" />
+            </.link>
+            <.link
+              phx-click={JS.push("delete", value: %{id: company.id}) |> hide("##{id}")}
+              data-confirm="Are you sure?"
+            >
+              <.icon name="hero-trash" class="w-5 h-5" />
+            </.link>
+          </div>
+        </.ensure_permissions>
+      </:action>
+    </.table>
+  </div>
+</.page>
+
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="company-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/companies")}
+>
+  <.live_component
+    module={SafiraWeb.Backoffice.CompanyLive.FormComponent}
+    id={@company.id || :new}
+    title={@page_title}
+    current_user={@current_user}
+    action={@live_action}
+    company={@company}
+    tiers={@tiers}
+    badges={@badges}
+    patch={~p"/dashboard/companies"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:tiers]}
+  id="tiers-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/companies")}
+>
+  <.live_component
+    module={SafiraWeb.Backoffice.CompanyLive.TierLive.Index}
+    id="list-tiers"
+    title={@page_title}
+    current_user={@current_user}
+    action={@live_action}
+    patch={~p"/dashboard/companies"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:tiers_edit, :tiers_new]}
+  id="tiers-modal"
+  show
+  on_cancel={JS.navigate(~p"/dashboard/companies/tiers")}
+>
+  <.live_component
+    module={SafiraWeb.Backoffice.CompanyLive.TierLive.FormComponent}
+    id={@tier.id || :new}
+    title={@page_title}
+    current_user={@current_user}
+    action={@live_action}
+    tier={@tier}
+    patch={~p"/dashboard/companies/tiers"}
+  />
+</.modal>
