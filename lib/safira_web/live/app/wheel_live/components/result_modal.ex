@@ -11,7 +11,7 @@ defmodule SafiraWeb.App.WheelLive.Components.ResultModal do
   attr :text, :string, default: ""
   attr :wrapper_class, :string, default: ""
   attr :on_cancel, JS, default: %JS{}
-  attr :content_class, :string, default: "bg-primaryDark"
+  attr :content_class, :string, default: "bg-primary"
   attr :show_vault_link, :boolean, default: true
 
   def result_modal(assigns) do

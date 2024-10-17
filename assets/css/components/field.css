@@ -5,7 +5,7 @@
 }
 
 .safira-checkbox {
-  @apply w-5 h-5 transition-all duration-150 ease-linear border-gray-300 rounded cursor-pointer text-primary-500 dark:bg-gray-800 dark:border-gray-600 disabled:bg-gray-300 dark:disabled:bg-gray-600 disabled:cursor-not-allowed focus:ring-primary-500;
+  @apply w-5 h-5 transition-all duration-150 ease-linear border-gray-300 rounded cursor-pointer text-secondary-500 dark:bg-gray-800 dark:border-gray-600 disabled:bg-gray-300 dark:disabled:bg-gray-600 disabled:cursor-not-allowed focus:ring-secondary-500;
 }
 
 .safira-checkbox-label {
@@ -47,7 +47,7 @@
 /* Text input */
 
 .safira-text-input {
-  @apply block w-full border-gray-300 rounded-md shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:focus:border-primary-500 sm:text-sm disabled:cursor-not-allowed dark:text-gray-300 focus:outline-none;
+  @apply block w-full border-gray-300 rounded-md shadow-sm focus:border-secondary-500 focus:ring-secondary-500 dark:border-gray-600 dark:focus:border-secondary-500 sm:text-sm disabled:cursor-not-allowed dark:text-gray-300 focus:outline-none;
 }
 
 /* Switch */
@@ -75,7 +75,7 @@
 /* Radio */
 
 .safira-radio {
-  @apply w-4 h-4 border-gray-300 cursor-pointer text-primary-600 focus:ring-primary-500 dark:border-gray-600;
+  @apply w-4 h-4 border-gray-300 cursor-pointer text-secondary-600 focus:ring-secondary-500 dark:border-gray-600;
 }
 
 .safira-radio-label {
@@ -111,19 +111,19 @@
 /* Color */
 
 .safira-color-input {
-  @apply border-gray-300 cursor-pointer focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:focus:border-primary-500;
+  @apply border-gray-300 cursor-pointer focus:border-secondary-500 focus:ring-secondary-500 dark:border-gray-600 dark:focus:border-secondary-500;
 }
 
 /* File */
 
 .safira-file-input {
-  @apply text-sm rounded-md cursor-pointer focus:outline-none file:border-0 text-slate-500 file:text-primary-700 file:font-semibold file:px-4 file:py-2 file:mr-6 file:rounded-md hover:file:bg-primary-100 file:bg-primary-200 dark:file:bg-primary-300 hover:dark:file:bg-primary-200;
+  @apply text-sm rounded-md cursor-pointer focus:outline-none file:border-0 text-slate-500 file:text-secondary-700 file:font-semibold file:px-4 file:py-2 file:mr-6 file:rounded-md hover:file:bg-secondary-100 file:bg-secondary-200 dark:file:bg-secondary-300 hover:dark:file:bg-secondary-200;
 }
 
 /* Range */
 
 .safira-range-input {
-  @apply w-full border-gray-300 cursor-pointer focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:focus:border-primary-500;
+  @apply w-full border-gray-300 cursor-pointer focus:border-secondary-500 focus:ring-secondary-500 dark:border-gray-600 dark:focus:border-secondary-500;
 }
 
 /* Text */

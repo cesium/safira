@@ -3,6 +3,31 @@ defmodule SafiraWeb.Config do
   Web configuration for the app.
   """
 
+  def landing_pages do
+    [
+      %{
+        title: "Schedule",
+        url: "/schedule"
+      },
+      %{
+        title: "Team",
+        url: "/team"
+      },
+      %{
+        title: "Challenges",
+        url: "/challenges"
+      },
+      %{
+        title: "Speakers",
+        url: "/speakers"
+      },
+      %{
+        title: "FAQs",
+        url: "/faqs"
+      }
+    ]
+  end
+
   def app_pages do
     [
       %{

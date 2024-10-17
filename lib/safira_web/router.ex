@@ -18,10 +18,13 @@ defmodule SafiraWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", SafiraWeb do
+  # Landing
+  scope "/", SafiraWeb.Landing do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live_session :default, root_layout: {SafiraWeb.Layouts, :landing} do
+      live "/", HomeLive.Index, :index
+    end
   end
 
   # Other scopes may use custom stacks.

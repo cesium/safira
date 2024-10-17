@@ -24,5 +24,9 @@ input:-webkit-autofill:active {
 
 @font-face {
   font-family: "Terminal";
-  src: url("/fonts/TerminalGrotesque.ttf") format("truetype");
+  src: url("/fonts/Terminal/TerminalGrotesque.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Inter-Regular";
+  src: url("/fonts/Inter/Inter-Regular.ttf") format("truetype");
 }
