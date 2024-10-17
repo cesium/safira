@@ -33,7 +33,7 @@ defmodule SafiraWeb.Landing.HomeLive.Components.Sponsors do
                   src={Uploaders.Company.url({sponsor.logo, sponsor}, :original)}
                 />
               <% else %>
-                <p class="text-2xl">
+                <p class="text-2xl text-center p-2">
                   <%= sponsor.name %>
                 </p>
               <% end %>
