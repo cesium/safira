@@ -1,4 +1,7 @@
 defmodule SafiraWeb.Landing.Components.Footer do
+  @moduledoc """
+  Footer component.
+  """
   use SafiraWeb, :component
   import SafiraWeb.Landing.Components.Socials
 

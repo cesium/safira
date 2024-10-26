@@ -14,7 +14,7 @@ defmodule SafiraWeb.Landing.HomeLive.Components.Hero do
         <div class="relative mt-24 text-white">
           <div class="flex items-center justify-between pb-4">
             <div class="flex flex-col gap-4">
-              <h5 class="font-imedium"><%= gettext("Follow us on") %></h5>
+              <h5><%= gettext("Follow us on") %></h5>
               <.socials />
               <div class="lg:hidden">
                 <.join_us />
