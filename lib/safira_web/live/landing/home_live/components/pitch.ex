@@ -29,7 +29,6 @@ defmodule SafiraWeb.Landing.HomeLive.Components.Pitch do
             <.action_button
               title="MEET THE TEAM"
               title_class="!text-lg !font-iregular font-bold"
-              bold={true}
             />
           </.link>
         </div>
