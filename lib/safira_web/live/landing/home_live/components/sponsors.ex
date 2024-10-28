@@ -25,7 +25,7 @@ defmodule SafiraWeb.Landing.HomeLive.Components.Sponsors do
           <%= @tier %>
         </p>
         <div class="grid grid-cols-2 place-items-center gap-4 p-6 lg:gap-10">
-          <%= for sponsor <- @sponsors do %>
+          <%= for sponsor <- @sponsors |> Enum.shuffle() do %>
             <.link href={sponsor.url} target="_blank">
               <%= if sponsor.logo do %>
                 <img

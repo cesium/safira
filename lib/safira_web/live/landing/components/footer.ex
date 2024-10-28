@@ -35,7 +35,7 @@ defmodule SafiraWeb.Landing.Components.Footer do
     """
   end
 
-  def footer_links do
+  defp footer_links do
     [
       %{
         title: "Previous Edition",
