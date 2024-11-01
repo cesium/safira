@@ -14,6 +14,7 @@ defmodule Safira.Accounts.Roles.Permissions do
       "badges" => ["show", "edit", "delete", "give", "revoke", "give_without_restrictions"],
       "minigames" => ["show", "edit", "simulate"],
       "spotlights" => ["edit"],
+      "schedule" => ["edit"],
       "statistics" => ["show"],
       "mailer" => ["send"]
     }
