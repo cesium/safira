@@ -45,20 +45,39 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.FormComponent do
                 wrapper_class="col-span-1"
               />
             </div>
+            <.field
+              field={@form[:category_id]}
+              type="select"
+              label="Category"
+              options={categories_options(@categories)}
+              wrapper_class="w-full"
+            />
             <div class="w-full flex gap-2">
-              <.field
-                field={@form[:category_id]}
-                type="select"
-                label="Category"
-                options={categories_options(@categories)}
-                wrapper_class="w-full"
-              />
-              <.field
-                field={@form[:has_enrolments]}
-                type="checkbox"
-                label="Requires enrolment"
-                wrapper_class="w-full"
-              />
+              <div class="w-full grid grid-cols-2">
+                <div class="w-full flex flex-col">
+                  <.label>
+                    <%= gettext("Enrolments") %>
+                  </.label>
+                  <p class="safira-form-help-text">
+                    <%= gettext(
+                      "Enable enrolments to allow participants to sign up for this activity."
+                    ) %>
+                  </p>
+                  <.field
+                    field={@form[:has_enrolments]}
+                    type="switch"
+                    label=""
+                    wrapper_class="w-full pt-3"
+                  />
+                </div>
+                <.field
+                  :if={@enrolments_active}
+                  field={@form[:max_enrolments]}
+                  type="number"
+                  label="Max enrolments"
+                  wrapper_class="w-full"
+                />
+              </div>
             </div>
           </div>
           <:actions>
@@ -80,6 +99,7 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.FormComponent do
     {:ok,
      socket
      |> assign(assigns)
+     |> assign(:enrolments_active, activity.has_enrolments)
      |> assign_new(:form, fn ->
        to_form(Activities.change_activity(activity))
      end)}
@@ -88,7 +108,12 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.FormComponent do
   @impl true
   def handle_event("validate", %{"activity" => activity_params}, socket) do
     changeset = Activities.change_activity(socket.assigns.activity, activity_params)
-    {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
+
+    {:noreply,
+     assign(socket,
+       form: to_form(changeset, action: :validate),
+       enrolments_active: activity_params["has_enrolments"] != "false"
+     )}
   end
 
   def handle_event("save", %{"activity" => activity_params}, socket) do

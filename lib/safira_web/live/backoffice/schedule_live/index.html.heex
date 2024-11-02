@@ -29,10 +29,10 @@
       <:col :let={{_id, activity}} sortable field={:title} label="Title">
         <%= activity.title %>
       </:col>
-      <:col :let={{_id, activity}} sortable field={:date} label="Date">
+      <:col :let={{_id, activity}} sortable field={:timestamp} label="Date">
         <%= Timex.format!(activity.date, "{D}/{M}/{YYYY}") %>
       </:col>
-      <:col :let={{_id, activity}} sortable field={:time} label="Time">
+      <:col :let={{_id, activity}} field={:time} label="Time">
         <%= formatted_activity_times(activity) %>
       </:col>
       <:col :let={{_id, activity}} field={:category} label="Category">

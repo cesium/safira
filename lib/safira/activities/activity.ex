@@ -5,11 +5,22 @@ defmodule Safira.Activities.Activity do
   use Safira.Schema
 
   @required_fields ~w(title date time_start time_end)a
-  @optional_fields ~w(description category_id location has_enrolments)a
+  @optional_fields ~w(description category_id location has_enrolments max_enrolments)a
 
   @derive {
     Flop.Schema,
-    filterable: [:title], sortable: [:title, :date], default_limit: 11
+    filterable: [:title],
+    sortable: [:timestamp],
+    default_limit: 11,
+    adapter_opts: [
+      compound_fields: [
+        timestamp: [:date, :time_start]
+      ]
+    ],
+    default_order: %{
+      order_by: [:timestamp],
+      order_directions: [:asc]
+    }
   }
 
   schema "activities" do
@@ -20,6 +31,7 @@ defmodule Safira.Activities.Activity do
     field :time_start, :time
     field :time_end, :time
     field :has_enrolments, :boolean, default: false
+    field :max_enrolments, :integer, default: 0
 
     belongs_to :category, Safira.Activities.ActivityCategory
 
