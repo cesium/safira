@@ -157,4 +157,79 @@ defmodule Safira.ActivitiesTest do
       assert %Ecto.Changeset{} = Activities.change_activity_category(activity_category)
     end
   end
+
+  describe "speakers" do
+    alias Safira.Activities.Speaker
+
+    import Safira.ActivitiesFixtures
+
+    @invalid_attrs %{name: nil, title: nil, company: nil, biography: nil, highlighted: nil}
+
+    test "list_speakers/0 returns all speakers" do
+      speaker = speaker_fixture()
+      assert Activities.list_speakers() == [speaker]
+    end
+
+    test "get_speaker!/1 returns the speaker with given id" do
+      speaker = speaker_fixture()
+      assert Activities.get_speaker!(speaker.id) == speaker
+    end
+
+    test "create_speaker/1 with valid data creates a speaker" do
+      valid_attrs = %{
+        name: "some name",
+        title: "some title",
+        company: "some company",
+        biography: "some biography",
+        highlighted: true
+      }
+
+      assert {:ok, %Speaker{} = speaker} = Activities.create_speaker(valid_attrs)
+      assert speaker.name == "some name"
+      assert speaker.title == "some title"
+      assert speaker.company == "some company"
+      assert speaker.biography == "some biography"
+      assert speaker.highlighted == true
+    end
+
+    test "create_speaker/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Activities.create_speaker(@invalid_attrs)
+    end
+
+    test "update_speaker/2 with valid data updates the speaker" do
+      speaker = speaker_fixture()
+
+      update_attrs = %{
+        name: "some updated name",
+        title: "some updated title",
+        company: "some updated company",
+        biography: "some updated biography",
+        highlighted: false
+      }
+
+      assert {:ok, %Speaker{} = speaker} = Activities.update_speaker(speaker, update_attrs)
+      assert speaker.name == "some updated name"
+      assert speaker.title == "some updated title"
+      assert speaker.company == "some updated company"
+      assert speaker.biography == "some updated biography"
+      assert speaker.highlighted == false
+    end
+
+    test "update_speaker/2 with invalid data returns error changeset" do
+      speaker = speaker_fixture()
+      assert {:error, %Ecto.Changeset{}} = Activities.update_speaker(speaker, @invalid_attrs)
+      assert speaker == Activities.get_speaker!(speaker.id)
+    end
+
+    test "delete_speaker/1 deletes the speaker" do
+      speaker = speaker_fixture()
+      assert {:ok, %Speaker{}} = Activities.delete_speaker(speaker)
+      assert_raise Ecto.NoResultsError, fn -> Activities.get_speaker!(speaker.id) end
+    end
+
+    test "change_speaker/1 returns a speaker changeset" do
+      speaker = speaker_fixture()
+      assert %Ecto.Changeset{} = Activities.change_speaker(speaker)
+    end
+  end
 end

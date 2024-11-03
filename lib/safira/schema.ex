@@ -17,7 +17,7 @@ defmodule Safira.Schema do
       def validate_url(changeset, field) do
         changeset
         |> validate_format(
-          :url,
+          field,
           ~r/^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/,
           message: "must start with http:// or https:// and have a valid domain"
         )

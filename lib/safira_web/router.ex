@@ -130,13 +130,16 @@ defmodule SafiraWeb.Router do
             live "/new", Index, :new
             live "/:id/edit", Index, :edit
 
+            scope "/speakers" do
+              live "/", Index, :speakers
+              live "/new", Index, :speakers_new
+              live "/:id/edit", Index, :speakers_edit
+            end
+
             scope "/categories" do
               live "/", Index, :categories
               live "/new", Index, :categories_new
-
-              scope "/:id" do
-                live "/edit", Index, :categories_edit
-              end
+              live "/:id/edit", Index, :categories_edit
             end
           end
         end

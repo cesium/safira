@@ -15,6 +15,14 @@
       </.ensure_permissions>
 
       <.ensure_permissions user={@current_user} permissions={%{"schedule" => ["edit"]}}>
+        <.link patch={~p"/dashboard/schedule/activities/speakers"}>
+          <.button>
+            <.icon name="hero-user" class="w-5 h-5" />
+          </.button>
+        </.link>
+      </.ensure_permissions>
+
+      <.ensure_permissions user={@current_user} permissions={%{"schedule" => ["edit"]}}>
         <.link patch={~p"/dashboard/schedule/activities/categories"}>
           <.button>
             <.icon name="hero-tag" class="w-5 h-5" />
@@ -80,6 +88,42 @@
 </.modal>
 
 <.modal
+  :if={@live_action in [:speakers]}
+  id="speakers-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/schedule/activities")}
+>
+  <.live_component
+    module={SafiraWeb.Backoffice.ScheduleLive.SpeakerLive.Index}
+    id="speakers"
+    title={@page_title}
+    current_user={@current_user}
+    action={@live_action}
+    params={@params}
+    streams={@streams}
+    meta={@speakers_meta}
+    patch={~p"/dashboard/schedule/activities"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:speakers_edit, :speakers_new]}
+  id="speakers-modal"
+  show
+  on_cancel={JS.navigate(~p"/dashboard/schedule/activities/speakers")}
+>
+  <.live_component
+    module={SafiraWeb.Backoffice.ScheduleLive.SpeakerLive.FormComponent}
+    id={@speaker.id || :new}
+    title={@page_title}
+    current_user={@current_user}
+    action={@live_action}
+    speaker={@speaker}
+    patch={~p"/dashboard/schedule/activities/speakers"}
+  />
+</.modal>
+
+<.modal
   :if={@live_action in [:categories]}
   id="categories-modal"
   show
@@ -87,7 +131,7 @@
 >
   <.live_component
     module={SafiraWeb.Backoffice.ScheduleLive.CategoryLive.Index}
-    id="categories-tiers"
+    id="categories"
     title={@page_title}
     current_user={@current_user}
     action={@live_action}

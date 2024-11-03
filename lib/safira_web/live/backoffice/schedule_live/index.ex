@@ -1,10 +1,11 @@
 defmodule SafiraWeb.Backoffice.ScheduleLive.Index do
+  alias Safira.Activities.Speaker
   use SafiraWeb, :backoffice_view
 
   import SafiraWeb.Components.{Table, TableSearch}
 
   alias Safira.Activities
-  alias Safira.Activities.{Activity, ActivityCategory}
+  alias Safira.Activities.{Activity, ActivityCategory, Speaker}
 
   on_mount {SafiraWeb.StaffRoles, index: %{"schedule" => ["edit"]}}
 
@@ -15,7 +16,14 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.Index do
 
   @impl true
   def handle_params(params, _url, socket) do
-    case Activities.list_activities(params, preloads: [:category]) do
+    case Activities.list_activities(
+           if socket.assigns.live_action != :speakers do
+             params
+           else
+             %{}
+           end,
+           preloads: [:category]
+         ) do
       {:ok, {activities, meta}} ->
         {:noreply,
          socket
@@ -64,6 +72,32 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.Index do
   defp apply_action(socket, :categories, _params) do
     socket
     |> assign(:page_title, "Listing Categories")
+  end
+
+  defp apply_action(socket, :speakers_edit, %{"id" => id}) do
+    socket
+    |> assign(:page_title, "Edit Speaker")
+    |> assign(:speaker, Activities.get_speaker!(id))
+  end
+
+  defp apply_action(socket, :speakers_new, _params) do
+    socket
+    |> assign(:page_title, "New Speaker")
+    |> assign(:speaker, %Speaker{})
+  end
+
+  defp apply_action(socket, :speakers, params) do
+    case Activities.list_speakers(params) do
+      {:ok, {speakers, meta}} ->
+        socket
+        |> assign(:page_title, "Listing Speakers")
+        |> assign(:speakers_meta, meta)
+        |> assign(:params, params)
+        |> stream(:speakers, speakers, reset: true)
+
+      {:error, _} ->
+        {:ok, socket}
+    end
   end
 
   @impl true

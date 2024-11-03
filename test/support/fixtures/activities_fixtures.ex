@@ -37,4 +37,22 @@ defmodule Safira.ActivitiesFixtures do
 
     activity_category
   end
+
+  @doc """
+  Generate a speaker.
+  """
+  def speaker_fixture(attrs \\ %{}) do
+    {:ok, speaker} =
+      attrs
+      |> Enum.into(%{
+        biography: "some biography",
+        company: "some company",
+        highlighted: true,
+        name: "some name",
+        title: "some title"
+      })
+      |> Safira.Activities.create_speaker()
+
+    speaker
+  end
 end
