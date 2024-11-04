@@ -35,6 +35,10 @@ defmodule Safira.Activities.Activity do
 
     belongs_to :category, Safira.Activities.ActivityCategory
 
+    many_to_many :speakers, Safira.Activities.Speaker,
+      join_through: "activities_speakers",
+      on_replace: :delete
+
     timestamps(type: :utc_datetime)
   end
 
@@ -43,5 +47,12 @@ defmodule Safira.Activities.Activity do
     activity
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
+  end
+
+  @doc false
+  def changeset_update_speakers(activity, speakers) do
+    activity
+    |> cast(%{}, @required_fields ++ @optional_fields)
+    |> put_assoc(:speakers, speakers)
   end
 end

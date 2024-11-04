@@ -196,3 +196,29 @@
 .safira-form-help-text {
   @apply mt-2 text-sm text-gray-500 dark:text-gray-400;
 }
+
+/* Multiselect */
+
+.safira-multiselect-dropdown {
+  @apply absolute z-50 border border-t-0 border-lightShade dark:border-darkShade mt-1 rounded-b-md pb-1 bg-light dark:bg-dark;
+}
+
+.safira-multiselect-dropdown-option {
+  @apply mx-1 my-1 px-3 py-1 hover:bg-lightShade/40 dark:hover:bg-darkShade cursor-pointer rounded-md text-sm;
+}
+
+.safira-multiselect-dropdown-option-selected {
+  @apply opacity-60;
+}
+
+.safira-multiselect-dropdown-tags-container {
+  @apply absolute flex mt-12 gap-1 flex-wrap;
+}
+
+.safira-multiselect-dropdown-tag {
+  @apply text-xs flex items-center border border-lightShade dark:border-darkShade pl-2 rounded-md z-30;
+}
+
+.safira-multiselect-dropdown-tag-remove {
+  @apply cursor-pointer dark:opacity-80 scale-75;
+}

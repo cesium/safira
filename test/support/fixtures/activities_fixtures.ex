@@ -21,7 +21,7 @@ defmodule Safira.ActivitiesFixtures do
       })
       |> Safira.Activities.create_activity()
 
-    activity
+    Map.put(activity, :speakers, [])
   end
 
   @doc """

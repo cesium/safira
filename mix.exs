@@ -70,6 +70,7 @@ defmodule Safira.MixProject do
        compile: false,
        depth: 1},
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
+      {:live_select, "~> 1.4"},
 
       # monitoring
       {:telemetry_metrics, "~> 1.0"},

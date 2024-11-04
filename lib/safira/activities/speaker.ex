@@ -24,6 +24,10 @@ defmodule Safira.Activities.Speaker do
 
     embeds_one :socials, Activities.Speaker.Socials
 
+    many_to_many :activities, Activities.Activity,
+      join_through: "activities_speakers",
+      on_replace: :delete
+
     timestamps(type: :utc_datetime)
   end
 

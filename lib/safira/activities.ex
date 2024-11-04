@@ -5,7 +5,7 @@ defmodule Safira.Activities do
 
   use Safira.Context
 
-  alias Safira.Activities.{Activity, Speaker}
+  alias Safira.Activities.{Activity, ActivityCategory, Speaker}
 
   @doc """
   Returns the list of activities.
@@ -17,22 +17,27 @@ defmodule Safira.Activities do
 
   """
   def list_activities do
-    Repo.all(Activity)
+    Activity
+    |> preload(:speakers)
+    |> Repo.all()
   end
 
   def list_activities(opts) when is_list(opts) do
     Activity
     |> apply_filters(opts)
+    |> preload(:speakers)
     |> Repo.all()
   end
 
   def list_activities(params) do
     Activity
+    |> preload(:speakers)
     |> Flop.validate_and_run(params, for: Activity)
   end
 
   def list_activities(%{} = params, opts) when is_list(opts) do
     Activity
+    |> preload(:speakers)
     |> apply_filters(opts)
     |> Flop.validate_and_run(params, for: Activity)
   end
@@ -51,7 +56,11 @@ defmodule Safira.Activities do
       ** (Ecto.NoResultsError)
 
   """
-  def get_activity!(id), do: Repo.get!(Activity, id)
+  def get_activity!(id) do
+    Activity
+    |> preload(:speakers)
+    |> Repo.get!(id)
+  end
 
   @doc """
   Creates a activity.
@@ -90,6 +99,29 @@ defmodule Safira.Activities do
   end
 
   @doc """
+  Updates an activity's speakers.
+
+  ## Examples
+
+      iex> upsert_activity_speakers(activity, [1, 2, 3])
+      {:ok, %Activity{}}
+
+      iex> upsert_activity_speakers(activity, [1, 2, 3])
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def upsert_activity_speakers(%Activity{} = activity, speaker_ids) do
+    speakers =
+      Speaker
+      |> where([s], s.id in ^speaker_ids)
+      |> Repo.all()
+
+    activity
+    |> Activity.changeset_update_speakers(speakers)
+    |> Repo.update()
+  end
+
+  @doc """
   Deletes a activity.
 
   ## Examples
@@ -117,8 +149,6 @@ defmodule Safira.Activities do
   def change_activity(%Activity{} = activity, attrs \\ %{}) do
     Activity.changeset(activity, attrs)
   end
-
-  alias Safira.Activities.ActivityCategory
 
   @doc """
   Returns the list of activity_categories.
