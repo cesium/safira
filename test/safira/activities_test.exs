@@ -30,6 +30,9 @@ defmodule Safira.ActivitiesTest do
     end
 
     test "create_activity/1 with valid data creates a activity" do
+      Event.change_event_start_date(~D[2024-10-27])
+      Event.change_event_end_date(~D[2024-10-27])
+
       valid_attrs = %{
         date: ~D[2024-10-27],
         description: "some description",
