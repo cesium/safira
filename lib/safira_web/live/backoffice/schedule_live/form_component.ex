@@ -1,203 +1,104 @@
 defmodule SafiraWeb.Backoffice.ScheduleLive.FormComponent do
+  @moduledoc false
   use SafiraWeb, :live_component
 
-  alias Safira.Activities
-  alias Safira.Activities.Speaker
   import SafiraWeb.Components.Forms
 
-  @impl true
+  alias Ecto.Changeset
+  alias Safira.Event
+
   def render(assigns) do
     ~H"""
     <div>
-      <.page title={@title} subtitle={gettext("Activities that happen troughout the event.")}>
-        <.simple_form
-          for={@form}
-          id="activity-form"
-          phx-target={@myself}
-          phx-change="validate"
-          phx-submit="save"
-        >
-          <div class="w-full">
-            <div class="w-full flex gap-2">
-              <.field field={@form[:title]} type="text" label="Title" required wrapper_class="w-full" />
-              <.field field={@form[:location]} type="text" label="Location" wrapper_class="w-full" />
-            </div>
-            <.field field={@form[:description]} type="textarea" label="Description" />
-            <div class="w-full grid grid-cols-4 gap-2">
+      <.page title={@title} subtitle={gettext("Configures the event's dates.")}>
+        <div class="my-8">
+          <.form
+            id="event-config-form"
+            for={@form}
+            phx-submit="save"
+            phx-change="validate"
+            phx-target={@myself}
+          >
+            <div class="grid grid-cols-2 gap-2">
               <.field
-                field={@form[:date]}
+                field={@form[:event_start_date]}
+                name="event_start_date"
+                label="Start date"
                 type="date"
-                label="Date"
-                required
-                wrapper_class="col-span-2"
               />
               <.field
-                field={@form[:time_start]}
-                type="time"
-                label="Start"
-                required
-                wrapper_class="col-span-1"
-              />
-              <.field
-                field={@form[:time_end]}
-                type="time"
-                label="End"
-                required
-                wrapper_class="col-span-1"
+                field={@form[:event_end_date]}
+                name="event_end_date"
+                label="End date"
+                type="date"
               />
             </div>
-            <div class="flex gap-2">
-              <.field
-                field={@form[:category_id]}
-                type="select"
-                label="Category"
-                options={categories_options(@categories)}
-                wrapper_class="w-full"
-              />
-              <.field_multiselect
-                field={@form[:speakers]}
-                target={@myself}
-                value_mapper={&value_mapper/1}
-                wrapper_class="w-full"
-                placeholder={gettext("Search for speakers")}
-              />
+            <div class="flex flex-row-reverse">
+              <.button phx-disable-with="Saving...">Save Configuration</.button>
             </div>
-            <div class="w-full flex gap-2">
-              <div class="w-full grid grid-cols-2">
-                <div class="w-full flex flex-col">
-                  <.label>
-                    <%= gettext("Enrolments") %>
-                  </.label>
-                  <p class="safira-form-help-text">
-                    <%= gettext(
-                      "Enable enrolments to allow participants to sign up for this activity."
-                    ) %>
-                  </p>
-                  <.field
-                    field={@form[:has_enrolments]}
-                    type="switch"
-                    label=""
-                    wrapper_class="w-full pt-3"
-                  />
-                </div>
-                <.field
-                  :if={@enrolments_active}
-                  field={@form[:max_enrolments]}
-                  type="number"
-                  label="Max enrolments"
-                  wrapper_class="w-full"
-                />
-              </div>
-            </div>
-          </div>
-          <:actions>
-            <.button phx-disable-with="Saving...">Save Activity</.button>
-          </:actions>
-        </.simple_form>
+          </.form>
+        </div>
       </.page>
     </div>
     """
   end
 
-  @impl true
   def mount(socket) do
-    {:ok, socket}
-  end
-
-  @impl true
-  def update(%{activity: activity} = assigns, socket) do
     {:ok,
      socket
-     |> assign(assigns)
-     |> assign(:enrolments_active, activity.has_enrolments)
-     |> assign_new(:form, fn ->
-       to_form(Activities.change_activity(activity))
-     end)}
-  end
-
-  @impl true
-  def handle_event("validate", %{"activity" => activity_params}, socket) do
-    changeset = Activities.change_activity(socket.assigns.activity, activity_params)
-
-    {:noreply,
-     assign(socket,
-       form: to_form(changeset, action: :validate),
-       enrolments_active: activity_params["has_enrolments"] != "false"
+     |> assign(
+       form:
+         to_form(
+           %{
+             "event_start_date" => Event.get_event_start_date(),
+             "event_end_date" => Event.get_event_end_date()
+           },
+           as: :wheel_configuration
+         )
      )}
   end
 
-  def handle_event("save", %{"activity" => activity_params}, socket) do
-    save_activity(socket, socket.assigns.action, activity_params)
+  def handle_event("validate", params, socket) do
+    changeset = validate_configuration(params["event_start_date"], params["event_end_date"])
+
+    {:noreply,
+     assign(socket, form: to_form(changeset, action: :validate, as: :event_configuration))}
   end
 
-  @impl true
-  def handle_event("live_select_change", %{"text" => text, "id" => live_select_id}, socket) do
-    case Activities.list_speakers(%{
-           "filters" => %{"1" => %{"field" => "name", "op" => "ilike_or", "value" => text}}
-         }) do
-      {:ok, {speakers, _meta}} ->
-        send_update(LiveSelect.Component,
-          id: live_select_id,
-          options: speakers |> Enum.map(&{&1.name, &1.id})
-        )
-
-        {:noreply, socket}
-
-      {:error, _} ->
-        {:noreply, socket}
+  def handle_event("save", params, socket) do
+    if valid_config?(params) do
+      Event.change_event_start_date(params["event_start_date"] |> Date.from_iso8601!())
+      Event.change_event_end_date(params["event_end_date"] |> Date.from_iso8601!())
+      {:noreply, socket |> push_patch(to: ~p"/dashboard/schedule/activities/")}
+    else
+      {:noreply, socket}
     end
   end
 
-  defp save_activity(socket, :edit, activity_params) do
-    case Activities.update_activity(socket.assigns.activity, activity_params) do
-      {:ok, _activity} ->
-        case Activities.upsert_activity_speakers(
-               socket.assigns.activity,
-               activity_params["speakers"]
-             ) do
-          {:ok, _activity} ->
-            {:noreply,
-             socket
-             |> put_flash(:info, "Activity updated successfully")
-             |> push_patch(to: socket.assigns.patch)}
+  defp validate_configuration(event_start_date, event_end_date) do
+    {%{}, %{event_start_date: :date, event_end_date: :date}}
+    |> Changeset.cast(%{event_start_date: event_start_date, event_end_date: event_end_date}, [
+      :event_start_date,
+      :event_end_date
+    ])
+    |> Changeset.validate_required([:event_start_date])
+    |> Changeset.validate_required([:event_end_date])
+    |> validate_date_is_after()
+  end
 
-          {:error, %Ecto.Changeset{} = changeset} ->
-            {:noreply, assign(socket, form: to_form(changeset))}
-        end
+  defp valid_config?(params) do
+    validation = validate_configuration(params["event_start_date"], params["event_end_date"])
+    validation.errors == []
+  end
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, form: to_form(changeset))}
+  defp validate_date_is_after(changeset) do
+    start_date = Changeset.get_field(changeset, :event_start_date)
+    end_date = Changeset.get_field(changeset, :event_end_date)
+
+    if Date.compare(start_date, end_date) == :gt do
+      Changeset.add_error(changeset, :event_start_date, "cannot be later than the end date")
+    else
+      changeset
     end
   end
-
-  defp save_activity(socket, :new, activity_params) do
-    case Activities.create_activity(activity_params) do
-      {:ok, activity} ->
-        case Activities.upsert_activity_speakers(
-               Map.put(activity, :speakers, []),
-               activity_params["speakers"]
-             ) do
-          {:ok, _activity} ->
-            {:noreply,
-             socket
-             |> put_flash(:info, "Activity created successfully")
-             |> push_patch(to: socket.assigns.patch)}
-
-          {:error, %Ecto.Changeset{} = changeset} ->
-            {:noreply, assign(socket, form: to_form(changeset))}
-        end
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, form: to_form(changeset))}
-    end
-  end
-
-  defp categories_options(categories) do
-    [{"None", nil}] ++
-      Enum.map(categories, &{&1.name, &1.id})
-  end
-
-  defp value_mapper(%Speaker{} = speaker), do: {speaker.name, speaker.id}
-
-  defp value_mapper(id), do: id
 end

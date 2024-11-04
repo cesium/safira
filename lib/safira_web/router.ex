@@ -125,6 +125,8 @@ defmodule SafiraWeb.Router do
         end
 
         scope "/schedule", ScheduleLive do
+          live "/edit", Index, :edit_schedule
+
           scope "/activities" do
             live "/", Index, :index
             live "/new", Index, :new

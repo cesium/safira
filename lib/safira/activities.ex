@@ -111,9 +111,11 @@ defmodule Safira.Activities do
 
   """
   def upsert_activity_speakers(%Activity{} = activity, speaker_ids) do
+    ids = speaker_ids || []
+
     speakers =
       Speaker
-      |> where([s], s.id in ^speaker_ids)
+      |> where([s], s.id in ^ids)
       |> Repo.all()
 
     activity

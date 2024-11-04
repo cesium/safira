@@ -15,6 +15,14 @@
       </.ensure_permissions>
 
       <.ensure_permissions user={@current_user} permissions={%{"schedule" => ["edit"]}}>
+        <.link patch={~p"/dashboard/schedule/edit"}>
+          <.button>
+            <.icon name="hero-calendar-days" class="w-5 h-5" />
+          </.button>
+        </.link>
+      </.ensure_permissions>
+
+      <.ensure_permissions user={@current_user} permissions={%{"schedule" => ["edit"]}}>
         <.link patch={~p"/dashboard/schedule/activities/speakers"}>
           <.button>
             <.icon name="hero-user" class="w-5 h-5" />
@@ -71,12 +79,12 @@
 
 <.modal
   :if={@live_action in [:edit, :new]}
-  id="categories-modal"
+  id="activites-modal"
   show
   on_cancel={JS.navigate(~p"/dashboard/schedule/activities")}
 >
   <.live_component
-    module={SafiraWeb.Backoffice.ScheduleLive.FormComponent}
+    module={SafiraWeb.Backoffice.ScheduleLive.ActivityLive.FormComponent}
     id={@activity.id || :new}
     title={@page_title}
     current_user={@current_user}
@@ -153,5 +161,21 @@
     action={@live_action}
     category={@category}
     patch={~p"/dashboard/schedule/activities/categories"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:edit_schedule]}
+  id="schedule-config-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/schedule/activities")}
+>
+  <.live_component
+    module={SafiraWeb.Backoffice.ScheduleLive.FormComponent}
+    id="schedule-config"
+    title={@page_title}
+    current_user={@current_user}
+    action={@live_action}
+    patch={~p"/dashboard/schedule/activities"}
   />
 </.modal>

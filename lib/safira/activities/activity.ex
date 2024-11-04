@@ -4,6 +4,8 @@ defmodule Safira.Activities.Activity do
   """
   use Safira.Schema
 
+  alias Safira.Event
+
   @required_fields ~w(title date time_start time_end)a
   @optional_fields ~w(description category_id location has_enrolments max_enrolments)a
 
@@ -47,6 +49,7 @@ defmodule Safira.Activities.Activity do
     activity
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
+    |> validate_activity_date()
   end
 
   @doc false
@@ -54,5 +57,33 @@ defmodule Safira.Activities.Activity do
     activity
     |> cast(%{}, @required_fields ++ @optional_fields)
     |> put_assoc(:speakers, speakers)
+  end
+
+  def validate_activity_date(activity) do
+    event_start = Event.get_event_start_date()
+    event_end = Event.get_event_end_date()
+    date = get_field(activity, :date)
+
+    if date != nil do
+      if Date.compare(date, event_start) in [:lt] do
+        activity
+        |> Ecto.Changeset.add_error(
+          :date,
+          "must be after or in the event's start date (#{Date.to_string(event_start)})"
+        )
+      else
+        if Date.compare(date, event_end) in [:gt] do
+          activity
+          |> Ecto.Changeset.add_error(
+            :date,
+            "must be before or in the event's end date (#{Date.to_string(event_end)})"
+          )
+        else
+          activity
+        end
+      end
+    else
+      activity
+    end
   end
 end

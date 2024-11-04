@@ -3,8 +3,11 @@ defmodule Safira.Repo.Seeds.Activities do
 
   alias Safira.Activities
   alias Safira.Activities.{Activity, ActivityCategory, Speaker}
+  alias Safira.Event
 
   def run do
+    seed_event_schedule_config()
+
     case Activities.list_activity_categories() do
       [] ->
         seed_categories()
@@ -25,6 +28,12 @@ defmodule Safira.Repo.Seeds.Activities do
       _  ->
         Mix.shell().error("Found activities, aborting seeding activities.")
     end
+  end
+
+  def seed_event_schedule_config do
+    event_start_date = next_first_tuesday_of_february()
+    Event.change_event_start_date(event_start_date)
+    Event.change_event_end_date(Date.add(event_start_date, 3))
   end
 
   def seed_categories do
