@@ -251,6 +251,12 @@ defmodule Safira.Accounts do
     |> Repo.insert()
   end
 
+  # TODO: Docs
+  def register_company_user(multi, attrs) do
+    multi
+    |> Multi.insert(:user, User.registration_changeset(%User{}, Map.put(attrs, :type, :company)))
+  end
+
   @doc """
   Creates an attendee.
   """

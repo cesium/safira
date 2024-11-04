@@ -39,11 +39,12 @@ defmodule Safira.Accounts.User do
     field :hashed_password, :string, redact: true
     field :current_password, :string, virtual: true, redact: true
     field :confirmed_at, :utc_datetime
-    field :type, Ecto.Enum, values: [:attendee, :staff], default: :attendee
+    field :type, Ecto.Enum, values: [:attendee, :staff, :company], default: :attendee
     field :allows_marketing, :boolean, default: false
 
     has_one :attendee, Attendee, on_delete: :delete_all
     has_one :staff, Staff, on_delete: :delete_all
+    has_one :company, Company, on_delete: :delete_all
 
     timestamps(type: :utc_datetime)
   end
