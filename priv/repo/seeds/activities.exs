@@ -2,7 +2,7 @@ defmodule Safira.Repo.Seeds.Activities do
   alias Safira.Repo
 
   alias Safira.Activities
-  alias Safira.Activities.{ActivityCategory, Speaker}
+  alias Safira.Activities.{Activity, ActivityCategory, Speaker}
 
   def run do
     case Activities.list_activity_categories() do
@@ -87,7 +87,58 @@ defmodule Safira.Repo.Seeds.Activities do
   end
 
   def seed_activities do
-    # TODO: Add activity seeds
+    categories = (Activities.list_activity_categories() |> Enum.map(&(&1.id))) ++ [nil]
+    speakers = Activities.list_speakers() |> Enum.map(&(&1.id))
+
+    for day <- 0..3 do
+      for i <- 0..5 do
+        time_start = ~T[09:00:00] |> Time.add(i * 2, :hour)
+        time_end = time_start |> Time.add(1, :hour)
+
+        activity = %{
+          title: Faker.Company.bs() |> String.capitalize(),
+          location: "CP#{:rand.uniform(4)} - #{Enum.random(["A", "B"])}#{:rand.uniform(2)}",
+          date: next_first_tuesday_of_february() |> Date.shift(day: day),
+          time_start: time_start,
+          time_end: time_end,
+          description: Faker.Lorem.paragraph(3),
+          category_id: Enum.random(categories),
+        }
+
+        changeset = Activities.change_activity(%Activity{}, activity)
+
+        case Repo.insert(changeset) do
+          {:ok, activity} ->
+            speaker_ids = Enum.take_random(speakers, :rand.uniform(3))
+            Activities.upsert_activity_speakers(Map.put(activity, :speakers, []), speaker_ids)
+          {:error, changeset} ->
+            Mix.shell().error("Failed to insert activity: #{activity.title}")
+            Mix.shell().error(Kernel.inspect(changeset.errors))
+        end
+      end
+    end
+  end
+
+  def next_first_tuesday_of_february do
+    today = Date.utc_today()
+    {year, _, _} = Date.to_erl(today)
+
+    # Determine if we need to check this year or next year
+    target_year =
+      if today > Date.from_iso8601!("#{year}-02-01") do
+        year + 1
+      else
+        year
+      end
+
+    # Find the first day of February for the target year
+    february_first = Date.from_iso8601!("#{target_year}-02-01")
+
+    # Calculate how many days to add to reach the first Tuesday
+    days_to_add = rem(9 - Date.day_of_week(february_first), 7)
+
+    # Add the days to February 1st to get the first Tuesday
+    Date.add(february_first, days_to_add)
   end
 end
 
