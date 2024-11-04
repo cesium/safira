@@ -105,6 +105,13 @@ defmodule SafiraWeb.Config do
         scope: %{"spotlights" => ["edit"]}
       },
       %{
+        key: :schedule,
+        title: "Schedule",
+        icon: "hero-calendar-days",
+        url: "/dashboard/schedule/activities",
+        scope: %{"schedule" => ["edit"]}
+      },
+      %{
         key: :statistics,
         title: "Statistics",
         icon: "hero-chart-bar",

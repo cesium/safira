@@ -59,6 +59,7 @@ defmodule Safira.MixProject do
       {:qrcode_ex, "~> 0.1.1"},
       {:cachex, "~> 3.6"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
+      {:faker, "~> 0.18.0"},
 
       # frontend
       {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
@@ -70,6 +71,7 @@ defmodule Safira.MixProject do
        compile: false,
        depth: 1},
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
+      {:live_select, "~> 1.4"},
 
       # monitoring
       {:telemetry_metrics, "~> 1.0"},

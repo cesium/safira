@@ -45,8 +45,8 @@ defmodule Safira.Companies.Company do
   end
 
   @doc false
-  def image_changeset(badge, attrs) do
-    badge
+  def image_changeset(company, attrs) do
+    company
     |> cast_attachments(attrs, [:logo])
   end
 end

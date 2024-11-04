@@ -5,7 +5,7 @@ defmodule Safira.Companies do
 
   use Safira.Context
 
-  alias Safira.Companies.Company
+  alias Safira.Companies.{Company, Tier}
 
   @doc """
   Returns the list of companies.
@@ -140,8 +140,6 @@ defmodule Safira.Companies do
   def change_company(%Company{} = company, attrs \\ %{}) do
     Company.changeset(company, attrs)
   end
-
-  alias Safira.Companies.Tier
 
   @doc """
   Returns the list of tiers.
