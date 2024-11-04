@@ -26,27 +26,28 @@ export const Countdown = {
 }
 
 function formatTimeRemaining(seconds) {
-    // Calculate days, hours, minutes, and seconds
-    const days = Math.floor(seconds / (24 * 60 * 60)); // Calculate total days
-    seconds %= 24 * 60 * 60; // Get remaining seconds after extracting days
-    const hours = Math.floor(seconds / 3600); // Calculate hours
-    seconds %= 3600; // Get remaining seconds after extracting hours
-    const minutes = Math.floor(seconds / 60); // Calculate minutes
-    const remainingSeconds = seconds % 60; // Remaining seconds
+    const timeUnits = {
+        days: Math.floor(seconds / (24 * 60 * 60)),
+        hours: Math.floor((seconds % (24 * 60 * 60)) / 3600),
+        minutes: Math.floor((seconds % 3600) / 60),
+        seconds: seconds % 60
+    };
 
-    // Format hours, minutes, and seconds to always be two digits
-    const formattedHours = String(hours).padStart(2, '0');
-    const formattedMinutes = String(minutes).padStart(2, '0');
-    const formattedSeconds = String(remainingSeconds).padStart(2, '0');
+    // Format units to two digits except for days
+    const formattedTime = {
+        hours: String(timeUnits.hours).padStart(2, '0'),
+        minutes: String(timeUnits.minutes).padStart(2, '0'),
+        seconds: String(timeUnits.seconds).padStart(2, '0')
+    };
 
-    if(days > 0)
-        return `${days} days, ${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
-
-    if(hours > 0)
-        return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;  
-    
-    if(minutes > 0)
-        return `${formattedMinutes}:${formattedSeconds}`;
-
-    return `${seconds}`;
+    if (timeUnits.days > 0) {
+        return `${timeUnits.days} days, ${formattedTime.hours}:${formattedTime.minutes}:${formattedTime.seconds}`;
+    }
+    if (timeUnits.hours > 0) {
+        return `${formattedTime.hours}:${formattedTime.minutes}:${formattedTime.seconds}`;
+    }
+    if (timeUnits.minutes > 0) {
+        return `${formattedTime.minutes}:${formattedTime.seconds}`;
+    }
+    return `${timeUnits.seconds}`;
 }

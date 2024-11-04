@@ -2,8 +2,8 @@ defmodule SafiraWeb.Helpers do
   @moduledoc """
   Helper functions for web views.
   """
-  alias Timex.Format.DateTime.Formatters.Relative
   alias Safira.Constants
+  alias Timex.Format.DateTime.Formatters.Relative
 
   require Timex.Translator
 

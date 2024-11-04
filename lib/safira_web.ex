@@ -43,7 +43,7 @@ defmodule SafiraWeb do
         layouts: [html: SafiraWeb.Layouts]
 
       import Plug.Conn
-      import SafiraWeb.Gettext
+      use Gettext, backend: SafiraWeb.Gettext
 
       unquote(verified_routes())
     end
@@ -117,7 +117,7 @@ defmodule SafiraWeb do
       # Core UI components and translation
       import SafiraWeb.CoreComponents
       import SafiraWeb.Components.Page
-      import SafiraWeb.Gettext
+      use Gettext, backend: SafiraWeb.Gettext
 
       import SafiraWeb.Helpers
 
