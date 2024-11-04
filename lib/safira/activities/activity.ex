@@ -50,6 +50,7 @@ defmodule Safira.Activities.Activity do
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
     |> validate_activity_date()
+    |> validate_activity_times()
   end
 
   @doc false
@@ -64,6 +65,7 @@ defmodule Safira.Activities.Activity do
     event_end = Event.get_event_end_date()
     date = get_field(activity, :date)
 
+    # Validate if the activity's date is within the event's start and end date
     if date != nil do
       if Date.compare(date, event_start) in [:lt] do
         activity
@@ -81,6 +83,26 @@ defmodule Safira.Activities.Activity do
         else
           activity
         end
+      end
+    else
+      activity
+    end
+  end
+
+  def validate_activity_times(activity) do
+    time_start = get_field(activity, :time_start)
+    time_end = get_field(activity, :time_end)
+
+    # Validate if the activity's time_end is after time_start
+    if time_start != nil and time_end != nil do
+      if Time.compare(time_end, time_start) in [:lt] do
+        activity
+        |> Ecto.Changeset.add_error(
+          :time_end,
+          "must be after the activity's start time (#{Time.to_string(time_start)})"
+        )
+      else
+        activity
       end
     else
       activity
