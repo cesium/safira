@@ -48,7 +48,7 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.Index do
   defp apply_action(socket, :new, _params) do
     socket
     |> assign(:page_title, "New Activity")
-    |> assign(:activity, %Activity{})
+    |> assign(:activity, %Activity{speakers: []})
     |> assign(:categories, Activities.list_activity_categories())
   end
 
@@ -77,12 +77,7 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.Index do
   defp apply_action(socket, :speakers_edit, %{"id" => id}) do
     socket
     |> assign(:page_title, "Edit Speaker")
-    |> assign(
-      :speaker,
-      Map.update!(Activities.get_speaker!(id), :speakers, fn speakers ->
-        speakers |> Enum.map(&{&1.name, &1.id})
-      end)
-    )
+    |> assign(:speaker, Activities.get_speaker!(id))
   end
 
   defp apply_action(socket, :speakers_new, _params) do

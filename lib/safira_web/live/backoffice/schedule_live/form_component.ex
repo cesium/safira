@@ -173,7 +173,10 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.FormComponent do
   defp save_activity(socket, :new, activity_params) do
     case Activities.create_activity(activity_params) do
       {:ok, activity} ->
-        case Activities.upsert_activity_speakers(activity, activity_params["speakers"]) do
+        case Activities.upsert_activity_speakers(
+               Map.put(activity, :speakers, []),
+               activity_params["speakers"]
+             ) do
           {:ok, _activity} ->
             {:noreply,
              socket
