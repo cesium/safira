@@ -2,6 +2,7 @@ defmodule Safira.ActivitiesTest do
   use Safira.DataCase
 
   alias Safira.Activities
+  alias Safira.Event
 
   describe "activities" do
     alias Safira.Activities.Activity
@@ -55,6 +56,9 @@ defmodule Safira.ActivitiesTest do
 
     test "update_activity/2 with valid data updates the activity" do
       activity = activity_fixture()
+
+      Event.change_event_start_date(~D[2024-10-28])
+      Event.change_event_end_date(~D[2024-10-28])
 
       update_attrs = %{
         date: ~D[2024-10-28],

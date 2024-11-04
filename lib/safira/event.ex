@@ -16,7 +16,7 @@ defmodule Safira.Event do
   def get_event_start_date do
     case Constants.get("event_start_date") do
       {:ok, date} ->
-        date |> Date.from_iso8601!()
+        ensure_date(date)
 
       {:error, _} ->
         # If the date is not set, set it to today's date by default
@@ -38,7 +38,7 @@ defmodule Safira.Event do
   def get_event_end_date do
     case Constants.get("event_end_date") do
       {:ok, date} ->
-        date |> Date.from_iso8601!()
+        ensure_date(date)
 
       {:error, _} ->
         # If the date is not set, set it to today's date by default
@@ -71,4 +71,8 @@ defmodule Safira.Event do
   def change_event_end_date(date) do
     Constants.set("event_end_date", date)
   end
+
+  defp ensure_date(string) when is_binary(string), do: Date.from_iso8601(string)
+
+  defp ensure_date(date), do: date
 end

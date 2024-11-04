@@ -3,11 +3,15 @@ defmodule Safira.ActivitiesFixtures do
   This module defines test helpers for creating
   entities via the `Safira.Activities` context.
   """
+  alias Safira.Event
 
   @doc """
   Generate a activity.
   """
   def activity_fixture(attrs \\ %{}) do
+    Event.change_event_start_date(~D[2024-10-27])
+    Event.change_event_end_date(~D[2024-10-27])
+
     {:ok, activity} =
       attrs
       |> Enum.into(%{
