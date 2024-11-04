@@ -72,7 +72,7 @@ defmodule Safira.Event do
     Constants.set("event_end_date", date)
   end
 
-  defp ensure_date(string) when is_binary(string), do: Date.from_iso8601(string)
+  defp ensure_date(string) when is_binary(string), do: Date.from_iso8601!(string)
 
   defp ensure_date(date), do: date
 end
