@@ -5,6 +5,12 @@ defmodule Safira.Repo.Seeds.Companies do
   @companies File.read!("priv/fake/companies.txt") |> String.split("\n") |> Enum.map(&String.split(&1, ";"))
 
   def run do
+    case Companies.list_tiers() do
+      [] ->
+        seed_tiers()
+      _ ->
+        Mix.shell().error("Found tiers, aborting seeding tiers.")
+    end
     case Companies.list_companies() do
       [] ->
         seed_companies()
@@ -13,23 +19,7 @@ defmodule Safira.Repo.Seeds.Companies do
     end
   end
 
-  def seed_companies do
-    tiers =
-      [
-        %Tier{
-          name: "Gold",
-          priority: 0
-        },
-        %Tier{
-          name: "Silver",
-          priority: 1
-        },
-        %Tier{
-          name: "Bronze",
-          priority: 2
-        }
-      ] |> Enum.map(&Repo.insert(&1))
-
+  defp seed_companies do
     for company <- @companies do
       {name, url, tier} = {Enum.at(company, 0), Enum.at(company, 1), Enum.random(tiers) |> elem(1)}
 
@@ -48,6 +38,24 @@ defmodule Safira.Repo.Seeds.Companies do
           Mix.shell().error(Kernel.inspect(changeset.errors))
       end
     end
+  end
+
+  defp seed_tiers do
+    tiers =
+      [
+        %Tier{
+          name: "Gold",
+          priority: 0
+        },
+        %Tier{
+          name: "Silver",
+          priority: 1
+        },
+        %Tier{
+          name: "Bronze",
+          priority: 2
+        }
+      ] |> Enum.map(&Repo.insert(&1))
   end
 end
 
