@@ -28,9 +28,7 @@ defmodule SafiraWeb.UserRoles do
   end
 
   def require_no_credential(conn, _opts) do
-    if not has_credential?(conn) do
-      conn
-    else
+    if has_credential?(conn) do
       conn
       |> put_flash(
         :error,
@@ -38,6 +36,8 @@ defmodule SafiraWeb.UserRoles do
       )
       |> redirect(to: ~p"/app")
       |> halt()
+    else
+      conn
     end
   end
 
