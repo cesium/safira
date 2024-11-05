@@ -83,17 +83,13 @@ defmodule SafiraWeb.Router do
         pipe_through [:require_credential]
         live "/", HomeLive.Index, :index
 
+        live "/credential", CredentialLive.Index, :index
+
         live "/wheel", WheelLive.Index, :index
 
         scope "/store", StoreLive do
           live "/", Index, :index
           live "/product/:id", Show, :show
-        end
-
-        scope "/credential", CredentialLive do
-          live "/", Index, :index
-          live "/:id", Show, :show
-          live "/:id/edit", Edit, :edit
         end
 
         live "/vault", VaultLive.Index, :index
