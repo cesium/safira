@@ -254,7 +254,10 @@ defmodule Safira.Accounts do
   # TODO: Docs
   def register_company_user(multi, attrs) do
     multi
-    |> Multi.insert(:user, User.registration_changeset(%User{}, Map.put(attrs, :type, :company)))
+    |> Ecto.Multi.insert(
+      :user,
+      User.registration_changeset(%User{}, Map.put(attrs, :type, :company))
+    )
   end
 
   @doc """
@@ -489,6 +492,16 @@ defmodule Safira.Accounts do
     Ecto.Multi.new()
     |> Ecto.Multi.update(:user, User.confirm_changeset(user))
     |> Ecto.Multi.delete_all(:tokens, UserToken.by_user_and_contexts_query(user, ["confirm"]))
+  end
+
+  # TODO: Docs
+  def generate_random_password(length \\ 12) do
+    alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+
+    1..length
+
+    :crypto.strong_rand_bytes(length)
+    |> Enum.map_join(fn b -> b |> :binary.decode_unsigned() |> rem(length(alphabet)) end)
   end
 
   ## Reset password

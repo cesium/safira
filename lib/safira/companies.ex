@@ -5,6 +5,8 @@ defmodule Safira.Companies do
 
   use Safira.Context
 
+
+  alias Safira.Accounts
   alias Safira.Companies.{Company, Tier}
   alias Safira.Spotlights.Spotlight
 
@@ -91,22 +93,26 @@ defmodule Safira.Companies do
     |> Repo.insert()
   end
 
+  # TODO: Docs
   def create_company_and_user(attrs \\ %{}) do
-    password = "password1234" # TODO: Security
     user_attrs = %{
-      email: "#{String.replace(attrs.name, " ", "_")}@seium.org",
-      password: password,
-      name: attrs.name,
-      handle: attrs.name
+      email: attrs.email,
+      handle: attrs.handle,
+      password: attrs.password,
+      name: attrs.name
     }
-    case Multi.new()
-    |> Accounts.register_company_user(user_attrs)
-    |> Multi.insert(:company, fn %{user: user} -> Company.changeset(%Company{}, Map.put(attrs, :user_id, user.id)) end)
-    |> Repo.transaction() do
-      {:ok, %{user: user, company: company}}
-        -> {:ok, %{user: Map.put(user, :password, password), company: company}}
-      {:error, failed_operation, failed_value, changes_so_far}
-        -> {:error, failed_operation, failed_value, changes_so_far}
+
+    case Ecto.Multi.new()
+         |> Accounts.register_company_user(user_attrs)
+         |> Ecto.Multi.insert(:company, fn %{user: user} ->
+           Company.changeset(%Company{}, Map.put(attrs, :user_id, user.id))
+         end)
+         |> Repo.transaction() do
+      {:ok, %{user: user, company: company}} ->
+        {:ok, %{user: Map.put(user, :password, attrs.password), company: company}}
+
+      {:error, failed_operation, failed_value, changes_so_far} ->
+        {:error, failed_operation, failed_value, changes_so_far}
     end
   end
 

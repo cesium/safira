@@ -96,7 +96,7 @@ defmodule Safira.MixProject do
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
       {:timex, "~> 3.7.11"},
-      {:nimble_csv, "~>1.1"},
+      {:nimble_csv, "~>1.1.0"},
 
       # server
       {:bandit, "~> 1.2"},
