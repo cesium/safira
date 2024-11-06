@@ -86,7 +86,7 @@ defmodule SafiraWeb.Components.Table do
           </tbody>
         </table>
       </div>
-      <.pagination meta={@meta} params={@params} />
+      <.pagination :if={@meta.total_pages > 1} meta={@meta} params={@params} />
     </div>
     """
   end

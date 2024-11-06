@@ -26,7 +26,7 @@ defmodule SafiraWeb.Components.ImageUploader do
             <% else %>
               <div class="select-none flex flex-col gap-2 items-center text-lightMuted dark:text-darkMuted">
                 <.icon name={@icon} class="w-12 h-12" />
-                <p><%= gettext("Upload a file or drag and drop") %></p>
+                <p class="px-4 text-center"><%= gettext("Upload a file or drag and drop.") %></p>
               </div>
             <% end %>
           </figure>

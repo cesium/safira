@@ -4,8 +4,7 @@ defmodule SafiraWeb.Backoffice.ProductLive.FormComponent do
   alias Safira.Store
   alias Safira.Uploaders.Product
 
-  import SafiraWeb.Components.ImageUploader
-  import SafiraWeb.Components.Forms
+  import SafiraWeb.Components.{Forms, ImageUploader}
 
   @impl true
   def render(assigns) do

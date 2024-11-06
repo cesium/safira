@@ -4,6 +4,8 @@ defmodule SafiraWeb.Components.Forms do
   """
   use Phoenix.Component
 
+  import LiveSelect
+
   alias Phoenix.HTML
 
   @input_types ~w(
@@ -482,5 +484,64 @@ defmodule SafiraWeb.Components.Forms do
       end
 
     bin |> String.replace("_", " ") |> :string.titlecase()
+  end
+
+  attr :id, :any, default: nil, doc: "The id of the input. If not provided, it will be generated."
+  attr :name, :any, doc: "The name of the input. If not provided, it will be generated."
+  attr :class, :string, default: nil, doc: "The class to be added to the input."
+
+  attr :errors, :list,
+    default: [],
+    doc: "A list of erros to be displayed. If not provided, it will be generated."
+
+  attr :wrapper_class, :string, default: nil, doc: "The wrapper div class."
+  attr :label_class, :string, default: nil, doc: "Extra class for the label."
+  attr :help_text, :string, default: nil, doc: "Context/help for the input."
+
+  attr :required, :boolean,
+    default: false,
+    doc:
+      "If the input is required. In positive cases, it will add the `required` attribute to the input and a `*` to the label."
+
+  attr :target, :any, default: nil, doc: "The target for the live select component."
+
+  attr :field, HTML.FormField,
+    doc: "A form field struct retrieved from the form, for example: `@form[:email]`."
+
+  attr :rest, :global,
+    include: ~w(value_mapper placeholder),
+    doc: "Any other attribute to be added to the input."
+
+  def field_multiselect(assigns) do
+    ~H"""
+    <.field_wrapper
+      errors={@errors}
+      name={Map.get(assigns, :name, @field.name)}
+      class={@wrapper_class}
+    >
+      <.field_label required={@required} for={@id} class={@label_class}>
+        <%= humanize(@field.field) %>
+      </.field_label>
+
+      <.live_select
+        id={assigns.id || @field.id}
+        mode={:tags}
+        field={@field}
+        phx-target={@target}
+        container_class={"#{@wrapper_class}"}
+        text_input_class="safira-text-input"
+        dropdown_class="safira-multiselect-dropdown"
+        option_class="safira-multiselect-dropdown-option"
+        selected_option_class="safira-multiselect-dropdown-option-selected"
+        tags_container_class="safira-multiselect-dropdown-tags-container"
+        tag_class="safira-multiselect-dropdown-tag"
+        clear_tag_button_class="safira-multiselect-dropdown-tag-remove"
+        {@rest}
+      />
+
+      <.field_error :for={msg <- @errors}><%= msg %></.field_error>
+      <.field_help_text help_text={@help_text} />
+    </.field_wrapper>
+    """
   end
 end
