@@ -4,12 +4,15 @@ defmodule SafiraWeb.Landing.HomeLive.Components.Hero do
 
   import SafiraWeb.Landing.Components.{JoinUs, Socials}
 
+  attr :event_start_date, Date, required: true
+  attr :event_end_date, Date, required: true
+
   def hero(assigns) do
     ~H"""
     <div class="mt-2">
       <div class="select-none">
         <div class="py-14 sm:py-28">
-          <.title />
+          <.title event_start_date={@event_start_date} event_end_date={@event_end_date} />
         </div>
         <div class="relative mt-24 text-white">
           <div class="flex items-center justify-between pb-4">
@@ -33,11 +36,11 @@ defmodule SafiraWeb.Landing.HomeLive.Components.Hero do
     """
   end
 
-  def title(assigns) do
+  defp title(assigns) do
     ~H"""
     <div class="relative z-20 font-bold">
       <h5 class="font-terminal uppercase m-1 text-2xl text-accent">
-        11-14 February 2025
+        <%= display_event_dates(@event_start_date, @event_end_date) %>
       </h5>
       <h1 class="font-terminal uppercase relative z-20 w-11/12 text-white text-5xl xs:text-5xl sm:text-6xl md:w-full md:text-7xl lg:text-8xl 2xl:w-5/6 2xl:text-8xl 2xl:leading-[5rem]">
         <span class="relative z-20">
@@ -50,7 +53,7 @@ defmodule SafiraWeb.Landing.HomeLive.Components.Hero do
     """
   end
 
-  def organization(assigns) do
+  defp organization(assigns) do
     ~H"""
     <div class="flex flex-col gap-3">
       <h5 class="font-imedium text-white"><%= gettext("Organization") %></h5>
@@ -59,5 +62,9 @@ defmodule SafiraWeb.Landing.HomeLive.Components.Hero do
       </a>
     </div>
     """
+  end
+
+  defp display_event_dates(event_start_date, event_end_date) do
+    "#{Timex.format!(event_start_date, "{D}")}-#{Timex.format!(event_end_date, "{D} {Mfull} {YYYY}")}"
   end
 end

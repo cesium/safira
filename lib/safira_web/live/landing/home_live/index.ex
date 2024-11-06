@@ -4,8 +4,14 @@ defmodule SafiraWeb.Landing.HomeLive.Index do
 
   import SafiraWeb.Landing.HomeLive.Components.{Hero, Partners, Pitch, Sponsors}
 
+  alias Safira.Event
+
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, socket |> assign(:tiers, Companies.list_tiers_with_companies())}
+    {:ok,
+     socket
+     |> assign(:tiers, Companies.list_tiers_with_companies())
+     |> assign(:event_start_date, Event.get_event_start_date())
+     |> assign(:event_end_date, Event.get_event_end_date())}
   end
 end
