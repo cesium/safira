@@ -248,4 +248,14 @@ defmodule Safira.Companies do
   def get_next_tier_priority do
     (Repo.aggregate(from(t in Tier), :max, :priority) || -1) + 1
   end
+
+  @doc """
+  Returns the list of tiers with companies.
+  """
+  def list_tiers_with_companies do
+    Tier
+    |> order_by(:priority)
+    |> preload(:companies)
+    |> Repo.all()
+  end
 end
