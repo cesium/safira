@@ -586,6 +586,27 @@ defmodule Safira.Accounts do
   end
 
   @doc """
+  Links a credential to an attendee.
+
+  ## Examples
+
+      iex> link_credential(credential_id, attendee_id)
+      {:ok, %Credential{}}
+
+      iex> link_credential(credential_id, attendee_id)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def link_credential(credential_id, attendee_id) do
+    credential = get_credential!(credential_id)
+    attendee = get_attendee!(attendee_id)
+
+    credential
+    |> Credential.changeset(%{attendee_id: attendee.id})
+    |> Repo.update()
+  end
+
+  @doc """
   Deletes a credential.
 
   ## Examples
@@ -612,6 +633,42 @@ defmodule Safira.Accounts do
   """
   def change_credential(%Credential{} = credential, attrs \\ %{}) do
     Credential.changeset(credential, attrs)
+  end
+
+  @doc """
+  Checks if a credential exists.
+
+  ## Examples
+
+      iex> credential_exists?(123)
+      true
+
+      iex> credential_exists?(456)
+      false
+
+  """
+  def credential_exists?(id) do
+    Credential
+    |> where([c], c.id == ^id)
+    |> Repo.exists?()
+  end
+
+  @doc """
+  Checks if a credential is linked to an attendee.
+
+  ## Examples
+
+      iex> credential_linked?(credential_id)
+      true
+
+      iex> credential_linked?(credential_id)
+      false
+
+  """
+  def credential_linked?(credential_id) do
+    credential = get_credential!(credential_id)
+
+    credential.attendee_id != nil
   end
 
   @doc """

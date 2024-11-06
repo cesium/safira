@@ -4,24 +4,46 @@ defmodule SafiraWeb.UserRoles do
   """
   use SafiraWeb, :verified_routes
 
+  import SafiraWeb.Gettext
+
   import Plug.Conn
   import Phoenix.Controller
 
   alias Safira.Accounts
 
   def require_credential(conn, _opts) do
-    if is_nil(conn.assigns.current_user.attendee) or
-         not is_nil(Accounts.get_credential_of_attendee(conn.assigns.current_user.attendee)) do
+    if has_credential?(conn) do
       conn
     else
       conn
       |> put_flash(
         :error,
-        "You haven't assigned a credential to your account. You need one to participate in SEI"
+        gettext(
+          "You haven't assigned a credential to your account. You need one to participate in the event."
+        )
       )
-      |> redirect(to: ~p"/scanner")
+      |> redirect(to: ~p"/app/credential/link")
       |> halt()
     end
+  end
+
+  def require_no_credential(conn, _opts) do
+    if has_credential?(conn) do
+      conn
+      |> put_flash(
+        :error,
+        gettext("You already have a credential assigned to your account.")
+      )
+      |> redirect(to: ~p"/app")
+      |> halt()
+    else
+      conn
+    end
+  end
+
+  defp has_credential?(conn) do
+    is_nil(conn.assigns.current_user.attendee) or
+      not is_nil(Accounts.get_credential_of_attendee(conn.assigns.current_user.attendee))
   end
 
   @doc """
