@@ -12,7 +12,7 @@ defmodule Safira.Minigames do
   alias Safira.Constants
   alias Safira.Contest
   alias Safira.Inventory.Item
-  alias Safira.Minigames.{Prize, WheelDrop}
+  alias Safira.Minigames.{Prize, WheelDrop, CoinFlipRoom}
 
   @pubsub Safira.PubSub
 
@@ -513,5 +513,178 @@ defmodule Safira.Minigames do
 
     :rand.seed(:exsplus, {i1, i2, i3})
     :rand.uniform()
+  end
+
+  @doc """
+  Returns the list of coin_flip_rooms.
+
+  ## Examples
+
+      iex> list_coin_flip_rooms()
+      [%CoinFlipRoom{}, ...]
+
+  """
+  def list_coin_flip_rooms do
+    CoinFlipRoom
+    |> preload([:player1, :player2])
+    |> Repo.all()
+  end
+
+  @doc """
+  Gets a single coin_flip_room.
+
+  Raises `Ecto.NoResultsError` if the Coin flip room does not exist.
+
+  ## Examples
+
+      iex> get_coin_flip_room!(123)
+      %CoinFlipRoom{}
+
+      iex> get_coin_flip_room!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_coin_flip_room!(id), do: Repo.get!(CoinFlipRoom, id)
+
+  @doc """
+  Creates a coin_flip_room.
+
+  ## Examples
+
+      iex> create_coin_flip_room(%{field: value})
+      {:ok, %CoinFlipRoom{}}
+
+      iex> create_coin_flip_room(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_coin_flip_room(attrs \\ %{}) do
+    %CoinFlipRoom{}
+    |> CoinFlipRoom.changeset(attrs)
+    |> Repo.insert()
+    |> case do
+      {:ok, coin_flip_room} ->
+        broadcast_coin_flip_rooms_update("create", coin_flip_room)
+        {:ok, coin_flip_room}
+
+      {:error, changeset} ->
+        {:error, changeset}
+    end
+  end
+
+  @doc """
+  Updates a coin_flip_room.
+
+  ## Examples
+
+      iex> update_coin_flip_room(coin_flip_room, %{field: new_value})
+      {:ok, %CoinFlipRoom{}}
+
+      iex> update_coin_flip_room(coin_flip_room, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_coin_flip_room(%CoinFlipRoom{} = coin_flip_room, attrs) do
+    coin_flip_room
+    |> CoinFlipRoom.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a coin_flip_room.
+
+  ## Examples
+
+      iex> delete_coin_flip_room(coin_flip_room)
+      {:ok, %CoinFlipRoom{}}
+
+      iex> delete_coin_flip_room(coin_flip_room)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_coin_flip_room(%CoinFlipRoom{} = coin_flip_room) do
+    Repo.delete(coin_flip_room)
+    |> case do
+      {:ok, _} ->
+        broadcast_coin_flip_rooms_update("delete", coin_flip_room)
+        {:ok, coin_flip_room}
+
+      {:error, changeset} ->
+        {:error, changeset}
+    end
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking coin_flip_room changes.
+
+  ## Examples
+
+      iex> change_coin_flip_room(coin_flip_room)
+      %Ecto.Changeset{data: %CoinFlipRoom{}}
+
+  """
+  def change_coin_flip_room(%CoinFlipRoom{} = coin_flip_room, attrs \\ %{}) do
+    CoinFlipRoom.changeset(coin_flip_room, attrs)
+  end
+
+  @doc """
+  Changes the coin flip fee.
+
+  ## Examples
+
+      iex> set_coin_flip_fee(20)
+      :ok
+  """
+  def change_coin_flip_fee(fee) do
+    Constants.set("coin_flip_fee", fee)
+    broadcast_coin_flip_config_update("fee", fee)
+  end
+
+  @doc """
+  Gets the coin flip fee.
+
+  ## Examples
+
+      iex> get_coin_flip_fee()
+      20
+  """
+  def get_coin_flip_fee do
+    case Constants.get("coin_flip_fee") do
+      {:ok, fee} ->
+        fee
+
+      {:error, _} ->
+        # If the fee is not set, set it to 0 by default
+        change_coin_flip_fee(0)
+        0
+    end
+  end
+
+  @doc """
+  Subscribes the caller to the coin flip's configuration updates.
+
+  ## Examples
+
+      iex> subscribe_to_coin_flip_config_update()
+      :ok
+  """
+  def subscribe_to_coin_flip_config_update(config) do
+    Phoenix.PubSub.subscribe(@pubsub, coin_flip_config_topic(config))
+  end
+
+  defp coin_flip_config_topic(config), do: "coin_flip_config:#{config}"
+
+  defp broadcast_coin_flip_config_update(config, value) do
+    Phoenix.PubSub.broadcast(@pubsub, coin_flip_config_topic(config), {config, value})
+  end
+
+  def subscribe_to_coin_flip_rooms_update() do
+    Phoenix.PubSub.subscribe(@pubsub, coin_flip_rooms_topic())
+  end
+
+  defp coin_flip_rooms_topic(), do: "coin_flip_rooms"
+
+  defp broadcast_coin_flip_rooms_update(action, value) do
+    Phoenix.PubSub.broadcast(@pubsub, coin_flip_rooms_topic(), {action, value})
   end
 end

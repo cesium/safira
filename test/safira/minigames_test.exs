@@ -116,4 +116,65 @@ defmodule Safira.MinigamesTest do
       assert %Ecto.Changeset{} = Minigames.change_wheel_drop(wheel_drop)
     end
   end
+
+  describe "coin_flip_rooms" do
+    alias Safira.Minigames.CoinFlipRoom
+
+    import Safira.MinigamesFixtures
+
+    @invalid_attrs %{bet: nil}
+
+    test "list_coin_flip_rooms/0 returns all coin_flip_rooms" do
+      coin_flip_room = coin_flip_room_fixture()
+      assert Minigames.list_coin_flip_rooms() == [coin_flip_room]
+    end
+
+    test "get_coin_flip_room!/1 returns the coin_flip_room with given id" do
+      coin_flip_room = coin_flip_room_fixture()
+      assert Minigames.get_coin_flip_room!(coin_flip_room.id) == coin_flip_room
+    end
+
+    test "create_coin_flip_room/1 with valid data creates a coin_flip_room" do
+      valid_attrs = %{bet: 42}
+
+      assert {:ok, %CoinFlipRoom{} = coin_flip_room} =
+               Minigames.create_coin_flip_room(valid_attrs)
+
+      assert coin_flip_room.bet == 42
+    end
+
+    test "create_coin_flip_room/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Minigames.create_coin_flip_room(@invalid_attrs)
+    end
+
+    test "update_coin_flip_room/2 with valid data updates the coin_flip_room" do
+      coin_flip_room = coin_flip_room_fixture()
+      update_attrs = %{bet: 43}
+
+      assert {:ok, %CoinFlipRoom{} = coin_flip_room} =
+               Minigames.update_coin_flip_room(coin_flip_room, update_attrs)
+
+      assert coin_flip_room.bet == 43
+    end
+
+    test "update_coin_flip_room/2 with invalid data returns error changeset" do
+      coin_flip_room = coin_flip_room_fixture()
+
+      assert {:error, %Ecto.Changeset{}} =
+               Minigames.update_coin_flip_room(coin_flip_room, @invalid_attrs)
+
+      assert coin_flip_room == Minigames.get_coin_flip_room!(coin_flip_room.id)
+    end
+
+    test "delete_coin_flip_room/1 deletes the coin_flip_room" do
+      coin_flip_room = coin_flip_room_fixture()
+      assert {:ok, %CoinFlipRoom{}} = Minigames.delete_coin_flip_room(coin_flip_room)
+      assert_raise Ecto.NoResultsError, fn -> Minigames.get_coin_flip_room!(coin_flip_room.id) end
+    end
+
+    test "change_coin_flip_room/1 returns a coin_flip_room changeset" do
+      coin_flip_room = coin_flip_room_fixture()
+      assert %Ecto.Changeset{} = Minigames.change_coin_flip_room(coin_flip_room)
+    end
+  end
 end

@@ -33,4 +33,18 @@ defmodule Safira.MinigamesFixtures do
 
     wheel_drop
   end
+
+  @doc """
+  Generate a coin_flip_room.
+  """
+  def coin_flip_room_fixture(attrs \\ %{}) do
+    {:ok, coin_flip_room} =
+      attrs
+      |> Enum.into(%{
+        bet: 42
+      })
+      |> Safira.Minigames.create_coin_flip_room()
+
+    coin_flip_room
+  end
 end

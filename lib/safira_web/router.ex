@@ -78,6 +78,8 @@ defmodule SafiraWeb.Router do
 
         live "/wheel", WheelLive.Index, :index
 
+        live "/coin_flip", CoinFlipLive.Index, :index
+
         scope "/store", StoreLive do
           live "/", Index, :index
           live "/product/:id", Show, :show
@@ -188,6 +190,8 @@ defmodule SafiraWeb.Router do
           live "/wheel/drops", MinigamesLive.Index, :edit_wheel_drops
           live "/wheel/simulator", MinigamesLive.Index, :simulate_wheel
           live "/wheel", MinigamesLive.Index, :edit_wheel
+
+          live "/coin_flip", MinigamesLive.Index, :edit_coin_flip
         end
 
         live "/scanner", ScannerLive.Index, :index
