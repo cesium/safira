@@ -374,4 +374,20 @@ defmodule Safira.Activities do
   def change_speaker(%Speaker{} = speaker, attrs \\ %{}) do
     Speaker.changeset(speaker, attrs)
   end
+
+  @doc """
+  Returns the list of highlighted speakers.
+
+  ## Examples
+
+      iex> list_highlighted_speakers()
+      [%Speaker{}, ...]
+
+  """
+  def list_highlighted_speakers(opts \\ []) do
+    Speaker
+    |> apply_filters(opts)
+    |> where([s], s.highlighted)
+    |> Repo.all()
+  end
 end

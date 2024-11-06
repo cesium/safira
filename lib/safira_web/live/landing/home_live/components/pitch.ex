@@ -2,7 +2,7 @@ defmodule SafiraWeb.Landing.HomeLive.Components.Pitch do
   @moduledoc false
   use SafiraWeb, :component
 
-  import SafiraWeb.Components.{Button}
+  import SafiraWeb.Components.Button
 
   def pitch(assigns) do
     ~H"""
@@ -19,13 +19,13 @@ defmodule SafiraWeb.Landing.HomeLive.Components.Pitch do
         </ul>
       </div>
       <div class="xl:9/12 font-terminal uppercase w-full select-none tracking-wide text-white md:pt-0 pt-16">
-        <h2 class="text-4xl font-bold">
+        <h2 class="text-4xl">
           <%= gettext(
             "We gather speakers, attract partners and give our imagination wings, all for this to be your favorite week."
           ) %>
         </h2>
-        <div class="mt-8 flex w-56">
-          <.link patch="/team">
+        <div class="mt-8 flex">
+          <.link patch="/team" class="w-56">
             <.action_button
               title={gettext("Meet the team")}
               title_class="!text-lg !font-iregular font-bold"
