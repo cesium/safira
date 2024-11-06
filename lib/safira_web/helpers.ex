@@ -154,7 +154,7 @@ defmodule SafiraWeb.Helpers do
   end
 
   def draw_qr_code(qr_code) do
-    internal_route = "/qr_codes/#{qr_code.id}"
+    internal_route = "/app/attendees/#{qr_code.id}"
     url = build_url() <> internal_route
 
     url
