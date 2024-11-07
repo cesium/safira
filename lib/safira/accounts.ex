@@ -6,6 +6,7 @@ defmodule Safira.Accounts do
   use Safira.Context
 
   alias Safira.Accounts.{Attendee, Course, Credential, Staff, User, UserNotifier, UserToken}
+  alias Safira.Companies.Company
   alias Safira.Contest
 
   ## Database getters
@@ -84,6 +85,16 @@ defmodule Safira.Accounts do
   end
 
   @doc """
+  Gets a single company by user id.
+  """
+  def get_user_company(user_id, opts \\ []) do
+    Company
+    |> where(user_id: ^user_id)
+    |> apply_filters(opts)
+    |> Repo.one()
+  end
+
+  @doc """
   Gets a single staff.
   """
   def get_staff!(id) do
@@ -98,6 +109,7 @@ defmodule Safira.Accounts do
       user.type,
       case user.type do
         :attendee -> get_user_attendee(user.id)
+        :company -> get_user_company(user.id)
         :staff -> get_user_staff(user.id, preloads: [:role])
       end
     )
@@ -501,7 +513,7 @@ defmodule Safira.Accounts do
     1..length
 
     :crypto.strong_rand_bytes(length)
-    |> Enum.map_join(fn b -> b |> :binary.decode_unsigned() |> rem(length(alphabet)) end)
+    |> Enum.map_join(fn b -> b |> :binary.decode_unsigned() |> rem(String.length(alphabet)) end)
   end
 
   ## Reset password

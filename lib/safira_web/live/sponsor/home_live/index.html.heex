@@ -1,0 +1,11 @@
+<.page
+  title={gettext("Hello, %{company_name} 👋", company_name: @current_user.name)}
+  title_class="font-terminal uppercase"
+  size={:xl}
+>
+  <h2>Visitors</h2>
+
+  <ul id="visitors-list" class="space-y-4 py-8" phx-update="stream">
+    <.attendee :for={{id, attendee} <- @streams.visitors} id={id} name={attendee.name} />
+  </ul>
+</.page>

@@ -85,6 +85,17 @@ defmodule SafiraWeb do
     end
   end
 
+  def sponsor_view do
+    quote do
+      use Phoenix.LiveView,
+        layout: {SafiraWeb.Layouts, :sponsor}
+
+      import SafiraWeb.Components.Button
+
+      unquote(html_helpers())
+    end
+  end
+
   def backoffice_view do
     quote do
       use Phoenix.LiveView,

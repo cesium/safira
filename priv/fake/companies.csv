@@ -1,30 +1,30 @@
-name;email;handle;url;tier
-Accenture;accenture@seium.org;accenture;https://accenture.com/;bronze
-AgentifAI;https://agentifai.com/
-Checkmarx;https://checkmarx.com/
-Critical Techworks;https://www.criticaltechworks.com/
-Retail Consult;https://www.retail-consult.com/
-Uphold;https://uphold.com/
-Cegid;https://www.cegid.com/
-Codsec;https://www.codsec.io/
-Continental;https://www.continental.com
-Deloitte;https://www2.deloitte.com/
-ITSector;https://www.itsector.pt/
-MCSonae;https://mc.sonae.pt/
-Optare Solutions;https://optaresolutions.com/
-XpandIT;https://www.xpand-it.com/
-Yari Labs;https://www.yarilabs.com/
-Aptiv;https://www.aptiv.com/
-Bosch;https://www.bosch.pt/
-Celfocus;https://www.celfocus.com/
-Dtxcolab;https://www.dtx-colab.pt/
-Eurotux;https://eurotux.com
-EY;https://www.ey.com/
-Glintt;https://www.glintt.com
-Inovaria;https://www.inova-ria.pt/
-KPMG;https://kpmg.com
-Issuu;https://issuu.com/
-NTT Data;https://www.nttdata.com/
-Openvia;https://www.openvia.io/
-Pixelmatters;https://www.pixelmatters.com/
-Seegno;https://seegno.com/
+name,email,handle,url,tier
+Accenture,accenture@seium.org,accenture,https://accenture.com/,gold
+AgentifAI,agentifai@seium.org,agentifai,https://agentifai.com/,gold
+Checkmarx,checkmarx@seium.org,checkmarx,https://checkmarx.com/,gold
+Critical Techworks,criticaltechworks@seium.org,criticaltechworks,https://www.criticaltechworks.com/,gold
+Retail Consult,retailconsult@seium.org,retailconsult,https://www.retail-consult.com/,gold
+Uphold,uphold@seium.org,uphold,https://uphold.com/,gold
+Cegid,cegid@seium.org,cegid,https://www.cegid.com/,silver
+Codsec,codsec@seium.org,codsec,https://www.codsec.io/,silver
+Continental,continental@seium.org,continental,https://www.continental.com,silver
+Deloitte,deloitte@seium.org,deloitte,https://www2.deloitte.com/,silver
+ITSector,itsector@seium.org,itsector,https://www.itsector.pt/,silver
+MCSonae,mcsonae@seium.org,mcsonae,https://mc.sonae.pt/,silver
+Optare Solutions,optaresolutions@seium.org,optaresolutions,https://optaresolutions.com/,silver
+XpandIT,xpandit@seium.org,xpandit,https://www.xpand-it.com/,silver
+Yari Labs,yarilabs@seium.org,yarilabs,https://www.yarilabs.com/,silver
+Aptiv,aptiv@seium.org,aptiv,https://www.aptiv.com/,bronze
+Bosch,bosch@seium.org,bosch,https://www.bosch.pt/,bronze
+Celfocus,celfocus@seium.org,celfocus,https://www.celfocus.com/,bronze
+Dtxcolab,dtxcolab@seium.org,dtxcolab,https://www.dtx-colab.pt/,bronze
+Eurotux,eurotux@seium.org,eurotux,https://eurotux.com,bronze
+EY,ey@seium.org,ey_,https://www.ey.com/,bronze
+Glintt,glintt@seium.org,glintt,https://www.glintt.com,bronze
+Inovaria,inovaria@seium.org,inovaria,https://www.inova-ria.pt/,bronze
+KPMG,kpmg@seium.org,kpmg,https://kpmg.com,bronze
+Issuu,issuu@seium.org,issuu,https://issuu.com/,bronze
+NTT Data,nttdata@seium.org,nttdata,https://www.nttdata.com/,bronze
+Openvia,openvia@seium.org,openvia,https://www.openvia.io/,bronze
+Pixelmatters,pixelmatters@seium.org,pixelmatters,https://www.pixelmatters.com/,bronze
+Seegno,seegno@seium.org,seegno,https://seegno.com/,bronze

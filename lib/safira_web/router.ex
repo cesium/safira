@@ -134,6 +134,12 @@ defmodule SafiraWeb.Router do
         post "/qr_codes", CSVController, :generate_credentials
       end
 
+      scope "/sponsor", Sponsor do
+        pipe_through :require_company_user
+
+        live "/", HomeLive.Index, :index
+      end
+
       scope "/dashboard", Backoffice do
         pipe_through [:require_staff_user]
 

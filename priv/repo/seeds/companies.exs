@@ -38,7 +38,7 @@ defmodule Safira.Repo.Seeds.Companies do
         password: "password1234",
         name: name,
         url: url,
-        tier: actual_tier.id
+        tier_id: actual_tier.id
       }
 
       case Companies.create_company_and_user(company_seed) do
@@ -48,6 +48,7 @@ defmodule Safira.Repo.Seeds.Companies do
           Mix.shell().error(Kernel.inspect(changeset.errors))
       end
     end)
+    |> Stream.run()
   end
 
   defp seed_tiers do
