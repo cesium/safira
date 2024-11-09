@@ -5,8 +5,17 @@
 >
   <h2>Visitors</h2>
 
-  <ul id="visitors-list" class="space-y-4 py-8" phx-update="stream">
-    <.attendee :for={{id, attendee} <- @streams.visitors} id={id} name={attendee.name} />
+  <ul
+    id="visitors-list"
+    class="grid grid-cols-2 md:grid-cols-4 space-y-4 py-8"
+    phx-update="stream"
+  >
+    <.attendee
+      :for={{id, attendee} <- @streams.visitors}
+      id={attendee.id}
+      name={attendee.name}
+      image={get_attendee_image(attendee)}
+    />
   </ul>
 
   <.pagination id="visitors-pagination" meta={@meta} params={@params}></.pagination>

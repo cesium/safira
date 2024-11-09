@@ -26,4 +26,8 @@ defmodule SafiraWeb.Sponsor.HomeLive.Index do
         {:error, socket}
     end
   end
+
+  defp get_attendee_image(attendee) do
+    "/images/attendee.svg"
+  end
 end
