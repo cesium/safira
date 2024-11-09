@@ -8,4 +8,6 @@
   <ul id="visitors-list" class="space-y-4 py-8" phx-update="stream">
     <.attendee :for={{id, attendee} <- @streams.visitors} id={id} name={attendee.name} />
   </ul>
+
+  <.pagination id="visitors-pagination" meta={@meta} params={@params}></.pagination>
 </.page>

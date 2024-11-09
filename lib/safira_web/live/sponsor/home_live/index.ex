@@ -4,6 +4,7 @@ defmodule SafiraWeb.Sponsor.HomeLive.Index do
   alias Safira.Accounts
 
   import SafiraWeb.Sponsor.HomeLive.Components.Attendee
+  import SafiraWeb.Components.Table
 
   @impl true
   def mount(_params, _session, socket) do
@@ -11,10 +12,18 @@ defmodule SafiraWeb.Sponsor.HomeLive.Index do
   end
 
   @impl true
-  def handle_params(_params, _url, socket) do
-    {:noreply,
-     socket
-     |> assign(:current_page, :visitors)
-     |> stream(:visitors, Accounts.list_attendees())}
+  def handle_params(params, _url, socket) do
+    case Accounts.list_attendees(params) do
+      {:ok, {attendees, meta}} ->
+        {:noreply,
+         socket
+         |> assign(:current_page, :visitors)
+         |> assign(:meta, meta)
+         |> assign(:params, params)
+         |> stream(:visitors, attendees, reset: true)}
+
+      {:error, _} ->
+        {:error, socket}
+    end
   end
 end
