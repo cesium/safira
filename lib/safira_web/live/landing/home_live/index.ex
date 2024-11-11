@@ -3,6 +3,7 @@ defmodule SafiraWeb.Landing.HomeLive.Index do
   use SafiraWeb, :landing_view
 
   import SafiraWeb.Landing.HomeLive.Components.{Hero, Partners, Pitch, Sponsors, Speakers}
+  import SafiraWeb.Landing.Components.Schedule
 
   alias Safira.{Activities, Event}
 
@@ -13,6 +14,11 @@ defmodule SafiraWeb.Landing.HomeLive.Index do
      |> assign(:tiers, Companies.list_tiers_with_companies())
      |> assign(:event_start_date, Event.get_event_start_date())
      |> assign(:event_end_date, Event.get_event_end_date())
-     |> stream(:speakers, Activities.list_highlighted_speakers())}
+     |> stream(:speakers, Activities.list_highlighted_speakers() |> Enum.shuffle())}
+  end
+
+  @impl true
+  def handle_params(params, _url, socket) do
+    {:noreply, socket |> assign(:params, params)}
   end
 end

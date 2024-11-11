@@ -10,7 +10,7 @@ defmodule SafiraWeb.Landing.Components.Speaker do
 
   def speaker(assigns) do
     ~H"""
-    <div class="z-30 text-white grayscale filter transition-all hover:text-accent hover:filter-none">
+    <div class="text-white grayscale filter transition-all hover:text-accent hover:filter-none">
       <img
         src={
           if @speaker.picture do

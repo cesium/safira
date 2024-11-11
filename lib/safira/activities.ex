@@ -43,6 +43,22 @@ defmodule Safira.Activities do
   end
 
   @doc """
+  Returns the list of daily activities.
+
+  ## Examples
+
+      iex> list_daily_activities(~D[2022-01-01])
+      [%Activity{}, ...]
+
+  """
+  def list_daily_activities(day) do
+    Activity
+    |> where([a], a.date == ^day)
+    |> preload([:speakers, :category])
+    |> Repo.all()
+  end
+
+  @doc """
   Gets a single activity.
 
   Raises `Ecto.NoResultsError` if the Activity does not exist.
