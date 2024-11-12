@@ -11,14 +11,14 @@ defmodule SafiraWeb.Sponsor.HomeLive.Components.Attendee do
   def attendee(assigns) do
     ~H"""
     <li id={@id} class="flex flex-row">
-      <a href={"/attendees/#{@id}"}>
+      <.link href={"/attendees/#{@id}"}>
         <div class="py-4 px-4">
           <img class="w-16 h-16 m-auto" src={@image} />
           <h1 class="font-terminal uppercase text-xl">
             <%= @name %>
           </h1>
         </div>
-      </a>
+      </.link>
     </li>
     """
   end

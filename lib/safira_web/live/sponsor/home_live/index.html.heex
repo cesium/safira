@@ -3,7 +3,7 @@
   title_class="font-terminal uppercase"
   size={:xl}
 >
-  <h2>Visitors</h2>
+  <h2><%= gettext("Visitors") %></h2>
 
   <ul
     id="visitors-list"
@@ -12,7 +12,7 @@
   >
     <.attendee
       :for={{id, attendee} <- @streams.visitors}
-      id={attendee.id}
+      id={id}
       name={attendee.name}
       image={get_attendee_image(attendee)}
     />
