@@ -1,13 +1,13 @@
 <.page title="Spotlights">
-<:actions>
+  <:actions>
     <div>
-        <.link patch={~p"/dashboard/spotlights/config"}>
-          <.button>
-            <.icon name="hero-cog-6-tooth" class="w-5 h-5" />
-          </.button>
-        </.link>
+      <.link patch={~p"/dashboard/spotlights/config"}>
+        <.button>
+          <.icon name="hero-cog-6-tooth" class="w-5 h-5" />
+        </.button>
+      </.link>
     </div>
-</:actions>
+  </:actions>
 </.page>
 
 <.modal
@@ -22,6 +22,5 @@
     module={SafiraWeb.Backoffice.SpotlightLive.FormComponent}
     title={@page_title}
     patch={~p"/dashboard/spotlights"}
-
   />
 </.modal>

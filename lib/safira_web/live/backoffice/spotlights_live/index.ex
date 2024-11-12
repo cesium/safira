@@ -22,5 +22,4 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Index do
     socket
     |> assign(:page_title, "Spotlights")
   end
-
 end
