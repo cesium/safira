@@ -27,7 +27,7 @@ defmodule SafiraWeb.Sponsor.HomeLive.Index do
     end
   end
 
-  defp get_attendee_image(attendee) do
+  defp get_attendee_image(_attendee) do
     "/images/attendee.svg"
   end
 end
