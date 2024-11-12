@@ -95,6 +95,11 @@ defmodule SafiraWeb.Router do
       scope "/dashboard", Backoffice do
         pipe_through :require_staff_user
 
+        scope "/spotlights", SpotlightLive do
+          live "/", Index, :index
+          live "/config", Index, :config
+        end
+
         scope "/attendees", AttendeeLive do
           live "/", Index, :index
           live "/:id", Show, :show
