@@ -4,8 +4,6 @@ defmodule Safira.Repo.Seeds.Companies do
   alias Safira.{Companies, Repo}
   alias Safira.Companies.Tier
 
-
-
   def run do
     case Companies.list_tiers() do
       [] ->
