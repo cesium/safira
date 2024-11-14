@@ -4,6 +4,74 @@ defmodule Safira.Event do
   """
   alias Safira.Constants
 
+  @pubsub Safira.PubSub
+
+  @doc """
+  Returns whether the registrations for the event are open
+
+  ## Examples
+
+      iex> registrations_open?()
+      false
+  """
+  def registrations_open? do
+    case Constants.get("registrations_open") do
+      {:ok, registrations_open} ->
+        case String.downcase(registrations_open) do
+          "true" -> true
+          _ -> false
+        end
+
+      _ ->
+        false
+    end
+  end
+
+  def change_registrations_open(registrations_open) do
+    Constants.set(
+      "registrations_open",
+      if registrations_open do
+        "true"
+      else
+        "false"
+      end
+    )
+  end
+
+  def get_event_start_time! do
+    with {:ok, start_time_str} <- Constants.get("start_time") do
+      with {:ok, start_time, _} <- DateTime.from_iso8601(start_time_str) do
+        start_time
+      end
+    end
+  end
+
+  def change_event_start_time(start_time) do
+    Constants.set("start_time", DateTime.to_iso8601(start_time))
+    broadcast_start_time_update("start_time", start_time)
+  end
+
+  @doc """
+  Subscribes the caller to the start time's updates.
+
+  ## Examples
+
+      iex> subscribe_to_start_time_update("start_time")
+      :ok
+  """
+  def subscribe_to_start_time_update(config) do
+    Phoenix.PubSub.subscribe(@pubsub, config)
+  end
+
+  defp broadcast_start_time_update(config, value) do
+    Phoenix.PubSub.broadcast(@pubsub, "start_time", {config, value})
+  end
+
+  def event_started? do
+    start_time = get_event_start_time!()
+    DateTime.compare(start_time, DateTime.utc_now()) == :lt
+  end
+
   @doc """
   Returns the event's start date.
   If the date is not set, it will be set to today's date by default.

@@ -3,7 +3,7 @@ defmodule Safira.Repo.Seeds.Constants do
 
   def run do
     Constants.set("registrations_open", "true")
-    Constants.set("start_time", "2024-09-29T17:57:00Z")
+    Constants.set("start_time", "2025-09-29T17:57:00Z")
   end
 end
 

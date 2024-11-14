@@ -1,6 +1,8 @@
 defmodule SafiraWeb.UserLoginLive do
   use SafiraWeb, :live_view
 
+  alias Safira.Event
+
   def render(assigns) do
     ~H"""
     <div class="mx-auto max-w-sm">
@@ -45,7 +47,7 @@ defmodule SafiraWeb.UserLoginLive do
     email = Phoenix.Flash.get(socket.assigns.flash, :email)
     form = to_form(%{"email" => email}, as: "user")
 
-    {:ok, assign(socket, form: form) |> assign(registrations_open: registrations_open?()),
+    {:ok, assign(socket, form: form) |> assign(registrations_open: Event.registrations_open?()),
      temporary_assigns: [form: form]}
   end
 end

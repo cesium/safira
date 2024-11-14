@@ -3,7 +3,7 @@ defmodule SafiraWeb.Backoffice.EventLive.FormComponent do
 
   import SafiraWeb.Components.Forms
 
-  alias Safira.Constants
+  alias Safira.Event
 
   @impl true
   def render(assigns) do
@@ -61,8 +61,8 @@ defmodule SafiraWeb.Backoffice.EventLive.FormComponent do
   end
 
   def handle_event("save", params, socket) do
-    Constants.set("registrations_open", params["registrations_open"])
-    Constants.set("start_time", DateTime.to_iso8601(parse_date(params["start_time"])))
+    Event.change_registrations_open(string_to_bool(params["registrations_open"]))
+    Event.change_event_start_time(parse_date(params["start_time"]))
 
     {:noreply,
      socket
@@ -73,5 +73,12 @@ defmodule SafiraWeb.Backoffice.EventLive.FormComponent do
   defp parse_date(date_str) do
     {:ok, date, _} = DateTime.from_iso8601("#{date_str}:00Z")
     date
+  end
+
+  defp string_to_bool(str) do
+    case String.downcase(str) do
+      "true" -> true
+      _ -> false
+    end
   end
 end

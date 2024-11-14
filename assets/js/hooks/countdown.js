@@ -1,6 +1,7 @@
 export const Countdown = {
     mounted() {
         const timeReceived = (start_time) => {
+            console.log(start_time);
             if(this.clock !== undefined) {
                 clearInterval(this.clock);
             }
@@ -17,11 +18,13 @@ export const Countdown = {
                     clearInterval(this.clock);
                     window.location.reload();
                 }
-            }, 1000);
+            }, 100);
         };
 
-        window.addEventListener("phx:highlight", (e) => 
-            timeReceived(new Date(e.detail.start_time).getTime()));
+        window.addEventListener("phx:highlight", (e) => {
+            console.log("Highlight");
+            timeReceived(new Date(e.detail.start_time).getTime())
+        });
     }
 }
 
