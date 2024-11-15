@@ -32,7 +32,7 @@ defmodule SafiraWeb.Landing.Components.Socials do
       },
       %{
         icon: "fa-brand-github",
-        url: "https://github.com/cesium"
+        url: "https://github.com/cesium/safira"
       },
       %{
         icon: "fa-brand-x-twitter",

@@ -47,16 +47,65 @@ defmodule SafiraWeb.Landing.Components.Schedule do
 
   defp schedule_activity(assigns) do
     ~H"""
-    <div id={@activity.id} class="mx-2 h-full border-t border-white p-[10px] ml-[10px] relative">
-      <p class="text-lg font-iregular font-bold text-white xs:text-xl">
-        <%= "#{@activity.time_start |> Timex.format!("{h24}:{m}")} - #{@activity.time_end |> Timex.format!("{h24}:{m}")}" %>
-      </p>
-      <p class="font-iregular text-xl text-white">
-        <span :if={@activity.category} class="font-iregular font-bold">
-          <%= @activity.category.name %>
-        </span>
-        <%= @activity.title %>
-      </p>
+    <div
+      id={@activity.id}
+      class="mx-2 h-full border-t border-white p-[10px] ml-[10px] relative hover:bg-white/10 transition-colors"
+    >
+      <div class="relative">
+        <!-- Times -->
+        <p class="text-lg font-iregular font-bold text-white xs:text-xl">
+          <%= "#{@activity.time_start |> Timex.format!("{h24}:{m}")} - #{@activity.time_end |> Timex.format!("{h24}:{m}")}" %>
+        </p>
+        <!-- Title -->
+        <p class="font-iregular text-xl text-white">
+          <span :if={@activity.category} class="font-iregular font-bold">
+            <%= @activity.category.name %>
+          </span>
+          <span class={!@activity.category && "font-bold"}>
+            <%= @activity.title %>
+          </span>
+        </p>
+        <!-- Speakers -->
+        <ul class="my-[0.4em] flex font-iregular text-sm text-gray-400 z-10">
+          <li
+            :for={{speaker, index} <- Enum.with_index(@activity.speakers, fn el, i -> {el, i} end)}
+            class="list-none	float-left"
+          >
+            <%= if index == length(@activity.speakers) - 1 and length(@activity.speakers) != 1 do %>
+              <bdi class="ml-[5px]">
+                <%= gettext("and") %>
+              </bdi>
+            <% else %>
+              <%= if index != 0, do: "," %>
+            <% end %>
+            <.link navigate={~p"/speakers/#{speaker.id}"} class="my-[0.4em] hover:underline">
+              <%= speaker.name %>
+            </.link>
+          </li>
+        </ul>
+        <!-- Spacing -->
+        <div class="h-20 w-2"></div>
+
+        <div class="absolute bottom-0 mt-auto w-full py-3">
+          <div class="flex flex-wrap justify-center">
+            <!-- Location -->
+            <div class="flex w-auto items-center">
+              <p class="float-right font-iregular text-sm text-gray-400">
+                <%= @activity.location %>
+              </p>
+            </div>
+            <!-- Enroll -->
+            <div class="float-right mr-5 flex flex-1 items-center justify-end">
+              <p
+                :if={@activity.has_enrolments}
+                class="relative hover:underline cursor-pointer -mr-3 font-iregular text-lg text-accent sm:mr-1"
+              >
+                <%= gettext("Enroll") %>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     """
   end

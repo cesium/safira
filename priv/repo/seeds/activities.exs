@@ -45,6 +45,9 @@ defmodule Safira.Repo.Seeds.Activities do
         name: "Pitch"
       },
       %{
+        name: "Gameshow"
+      },
+      %{
         name: "Workshop"
       },
       %{
@@ -96,25 +99,44 @@ defmodule Safira.Repo.Seeds.Activities do
   end
 
   def seed_activities do
-    categories = (Activities.list_activity_categories() |> Enum.map(&(&1.id))) ++ [nil]
+    category_list = Activities.list_activity_categories()
     speakers = Activities.list_speakers() |> Enum.map(&(&1.id))
 
-    for day <- 0..3 do
-      for i <- 0..5 do
-        time_start = ~T[09:00:00] |> Time.add(i * 2, :hour)
-        time_end = time_start |> Time.add(1, :hour)
+    categories = %{
+      none: %{id: nil},
+      talk: Enum.find(category_list, fn category -> category.name == "Talk" end),
+      pitch: Enum.find(category_list, fn category -> category.name == "Pitch" end),
+      gameshow: Enum.find(category_list, fn category -> category.name == "Gameshow" end),
+      workshop: Enum.find(category_list, fn category -> category.name == "Workshop" end),
+      break: Enum.find(category_list, fn category -> category.name == "Break" end)
+    }
 
-        activity = %{
-          title: Faker.Company.bs() |> String.capitalize(),
-          location: "CP#{:rand.uniform(4)} - #{Enum.random(["A", "B"])}#{:rand.uniform(2)}",
-          date: next_first_tuesday_of_february() |> Date.shift(day: day),
-          time_start: time_start,
-          time_end: time_end,
-          description: Faker.Lorem.paragraph(3),
-          category_id: Enum.random(categories),
-        }
+    for activity <- first_day_seed_data() do
+      changeset = Activities.change_activity(%Activity{},
+        activity
+        |> Map.put(:date, next_first_tuesday_of_february())
+        |> Map.put(:category_id, Map.get(categories, activity.type).id)
+        |> Map.put(:title, Map.get(activity, :title) || Faker.Company.bs() |> String.capitalize())
+        |> Map.put(:location, Map.get(activity, :location) || "CP2 - B1"))
 
-        changeset = Activities.change_activity(%Activity{}, activity)
+      case Repo.insert(changeset) do
+        {:ok, activity} ->
+          speaker_ids = Enum.take_random(speakers, :rand.uniform(3))
+          Activities.upsert_activity_speakers(Map.put(activity, :speakers, []), speaker_ids)
+        {:error, changeset} ->
+          Mix.shell().error("Failed to insert activity: #{activity.title}")
+          Mix.shell().error(Kernel.inspect(changeset.errors))
+      end
+    end
+
+    for i <- 1..3 do
+      for activity <- last_days_seed_data() do
+        changeset = Activities.change_activity(%Activity{},
+          activity
+          |> Map.put(:date, Date.shift(next_first_tuesday_of_february(), day: i))
+          |> Map.put(:category_id, Map.get(categories, activity.type).id)
+          |> Map.put(:title, Map.get(activity, :title) || Faker.Company.bs() |> String.capitalize())
+          |> Map.put(:location, Map.get(activity, :location) || "CP2 - B1"))
 
         case Repo.insert(changeset) do
           {:ok, activity} ->
@@ -128,7 +150,7 @@ defmodule Safira.Repo.Seeds.Activities do
     end
   end
 
-  def next_first_tuesday_of_february do
+  defp next_first_tuesday_of_february do
     today = Date.utc_today()
     {year, _, _} = Date.to_erl(today)
 
@@ -148,6 +170,145 @@ defmodule Safira.Repo.Seeds.Activities do
 
     # Add the days to February 1st to get the first Tuesday
     Date.add(february_first, days_to_add)
+  end
+
+  defp first_day_seed_data do
+    [
+      %{
+        title: "Opening Ceremony",
+        time_start: ~T[10:00:00],
+        time_end: ~T[11:00:00],
+        location: "CP2 - B1",
+        type: :none
+      },
+      %{
+        title: "Prizes and Contests",
+        time_start: ~T[11:00:00],
+        time_end: ~T[11:30:00],
+        location: "CP2 - B1",
+        type: :none
+      },
+      %{
+        title: "Coffee Break",
+        time_start: ~T[11:30:00],
+        time_end: ~T[12:00:00],
+        type: :break,
+      },
+      %{
+        time_start: ~T[12:00:00],
+        time_end: ~T[13:00:00],
+        type: :talk,
+      },
+      %{
+        title: "Lunch Break",
+        time_start: ~T[13:00:00],
+        time_end: ~T[14:00:00],
+        type: :break,
+      },
+      %{
+        time_start: ~T[14:00:00],
+        time_end: ~T[15:00:00],
+        type: :talk
+      },
+      %{
+        time_start: ~T[15:00:00],
+        time_end: ~T[16:00:00],
+        type: :talk
+      },
+      %{
+        title: "Coffee Break",
+        time_start: ~T[16:00:00],
+        time_end: ~T[16:30:00],
+        type: :break,
+      },
+      %{
+        time_start: ~T[16:30:00],
+        time_end: ~T[16:45:00],
+        type: :pitch,
+      },
+      %{
+        time_start: ~T[16:45:00],
+        time_end: ~T[17:00:00],
+        type: :pitch,
+      },
+      %{
+        time_start: ~T[17:00:00],
+        time_end: ~T[18:00:00],
+        type: :gameshow
+      }
+    ]
+  end
+
+  defp last_days_seed_data do
+    [
+      %{
+        time_start: ~T[09:00:00],
+        time_end: ~T[11:00:00],
+        location: "CP2 - 0.14",
+        type: :workshop
+      },
+      %{
+        time_start: ~T[09:00:00],
+        time_end: ~T[11:00:00],
+        location: "CP2 - 0.15",
+        type: :workshop
+      },
+      %{
+        time_start: ~T[09:00:00],
+        time_end: ~T[11:00:00],
+        location: "CP2 - 0.17",
+        type: :workshop
+      },
+      %{
+        title: "Coffee Break",
+        time_start: ~T[11:00:00],
+        time_end: ~T[11:30:00],
+        type: :break,
+      },
+      %{
+        time_start: ~T[11:30:00],
+        time_end: ~T[12:30:00],
+        location: "CP2 - B1",
+        type: :talk
+      },
+      %{
+        title: "Lunch Break",
+        time_start: ~T[12:30:00],
+        time_end: ~T[14:00:00],
+        type: :break,
+      },
+      %{
+        time_start: ~T[14:00:00],
+        time_end: ~T[15:00:00],
+        type: :talk
+      },
+      %{
+        time_start: ~T[15:00:00],
+        time_end: ~T[16:00:00],
+        type: :talk
+      },
+      %{
+        title: "Coffee Break",
+        time_start: ~T[16:00:00],
+        time_end: ~T[16:30:00],
+        type: :break,
+      },
+      %{
+        time_start: ~T[16:30:00],
+        time_end: ~T[16:45:00],
+        type: :pitch
+      },
+      %{
+        time_start: ~T[16:45:00],
+        time_end: ~T[17:00:00],
+        type: :pitch
+      },
+      %{
+        time_start: ~T[17:00:00],
+        time_end: ~T[18:00:00],
+        type: :talk
+      }
+    ]
   end
 end
 

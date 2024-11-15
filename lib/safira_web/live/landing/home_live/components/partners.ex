@@ -33,11 +33,6 @@ defmodule SafiraWeb.Landing.HomeLive.Components.Partners do
         name: "IPDJ",
         url: "https://ipdj.gov.pt",
         logo: "ipdj.svg"
-      },
-      %{
-        name: "Lighthouse Studios",
-        url: "https://lighthousestudios.pt",
-        logo: "lighthouse.svg"
       }
     ]
   end

@@ -8,9 +8,9 @@ defmodule SafiraWeb.Landing.Components.Navbar do
 
   def navbar(assigns) do
     ~H"""
-    <nav class="pt-8 pb-4">
+    <nav class="pt-8 pb-4 xl:px-[15rem] md:px-[8rem] px-[2.5rem]">
       <div class="flex h-16 items-center justify-between">
-        <div class="relative z-50 flex flex-auto">
+        <div class="relative flex flex-auto">
           <div class="grid w-full grid-cols-4">
             <.link href="/">
               <div class="block select-none h-full">

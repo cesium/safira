@@ -7,7 +7,7 @@ defmodule SafiraWeb.Landing.Components.Footer do
 
   def footer(assigns) do
     ~H"""
-    <footer>
+    <footer class="xl:px-[15rem] md:px-[8rem] px-[2.5rem]">
       <div class="flex flex-col justify-between gap-16 py-10 lg:flex-row">
         <div class="flex select-none items-start justify-center lg:justify-start">
           <img src="/images/sei-logo.svg" width={100} height={100} alt="SEI Logo" />
