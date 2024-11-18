@@ -1,20 +1,22 @@
 <div class="relative h-screen flex overflow-hidden">
-  <.sidebar
-    current_user={@current_user}
-    pages={SafiraWeb.Config.app_pages()}
-    current_page={Map.get(assigns, :current_page, nil)}
-    background="bg-primaryDark"
-    border="border-darkShade"
-    logo_padding="px-16 pt-8 pb-4"
-    logo_images={%{light: "/images/sei.svg", dark: "/images/sei.svg"}}
-    logo_url={~p"/app/"}
-    user_dropdown_name_color="text-light"
-    user_dropdown_handle_color="text-lightMuted"
-    user_dropdown_icon_color="text-lightShade"
-    link_class="px-3 group flex items-center py-2 text-sm font-medium rounded-md transition-colors"
-    link_active_class="bg-light text-primaryDark"
-    link_inactive_class="hover:bg-primary-500/10 text-light"
-  />
+  <%= if Map.get(assigns, :event_started, true) do %>
+    <.sidebar
+      current_user={@current_user}
+      pages={SafiraWeb.Config.app_pages()}
+      current_page={Map.get(assigns, :current_page, nil)}
+      background="bg-primaryDark"
+      border="border-darkShade"
+      logo_padding="px-16 pt-8 pb-4"
+      logo_images={%{light: "/images/sei.svg", dark: "/images/sei.svg"}}
+      logo_url={~p"/app/"}
+      user_dropdown_name_color="text-light"
+      user_dropdown_handle_color="text-lightMuted"
+      user_dropdown_icon_color="text-lightShade"
+      link_class="px-3 group flex items-center py-2 text-sm font-medium rounded-md transition-colors"
+      link_active_class="bg-light text-primaryDark"
+      link_inactive_class="hover:bg-primary-500/10 text-light"
+    />
+  <% end %>
   <div class="flex flex-col flex-1 overflow-hidden">
     <div class="bg-primaryDark flex justify-end lg:hidden px-4 sm:px-6 py-2">
       <button

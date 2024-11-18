@@ -22,7 +22,6 @@ export const Countdown = {
         };
 
         window.addEventListener("phx:highlight", (e) => {
-            console.log("Highlight");
             timeReceived(new Date(e.detail.start_time).getTime())
         });
     }

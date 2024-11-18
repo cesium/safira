@@ -18,6 +18,9 @@ defmodule SafiraWeb.App.WaitingLive.Index do
         phx-hook="Countdown"
       >
       </div>
+      <.link class="text-center block mt-8 underline" href="/users/log_out" method="delete">
+        Sign out
+      </.link>
     </div>
     """
   end
@@ -35,6 +38,7 @@ defmodule SafiraWeb.App.WaitingLive.Index do
 
       {:ok,
        socket
+       |> assign(:event_started, false)
        |> push_event("highlight", %{start_time: Event.get_event_start_time!()})}
     end
   end
