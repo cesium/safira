@@ -3,7 +3,7 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, show_form: false, title: "Spotlights")}
+    {:ok, socket}
   end
 
   @impl true
@@ -13,9 +13,16 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Index do
      |> apply_action(socket.assigns.live_action, params)}
   end
 
+  defp apply_action(socket, :config, %{"id" => id}) do
+    socket
+    |> assign(:page_title, "Spotlights Config")
+    |> assign(:spotlight_id, id)
+  end
+
   defp apply_action(socket, :config, _params) do
     socket
-    |> assign(:page_title, "Config")
+    |> assign(:page_title, "Spotlights Config")
+    |> assign(:spotlight_id, nil)
   end
 
   defp apply_action(socket, :index, _params) do
