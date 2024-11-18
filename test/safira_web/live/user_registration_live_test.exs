@@ -8,7 +8,6 @@ defmodule SafiraWeb.UserRegistrationLiveTest do
 
   setup do
     Constants.set("start_time", "2024-09-29T15:00:00Z")
-    Constants.set("registrations_open", "true")
     :ok
   end
 
