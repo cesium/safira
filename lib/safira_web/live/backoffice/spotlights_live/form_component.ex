@@ -1,6 +1,8 @@
 defmodule SafiraWeb.Backoffice.SpotlightLive.FormComponent do
   use SafiraWeb, :live_component
 
+  alias Safira.Spotlights
+
   import SafiraWeb.Components.Forms
 
   @impl true
@@ -9,7 +11,11 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.FormComponent do
     <div>
       <.page title={@title}>
         <div class="w-full space-y-2">
-          <.field field={@form[:duration]} type="text" label="Duration" required />
+          <.simple_form for={@form} id="spotlight-form">
+            <div>
+              <.field field={@form[:duration]} type="text" label="Duration" required />
+            </div>
+          </.simple_form>
         </div>
       </.page>
     </div>
