@@ -5,6 +5,8 @@ defmodule SafiraWeb.Backoffice.EventLive.FormComponent do
 
   alias Safira.Event
 
+  alias SafiraWeb.Helpers
+
   @impl true
   def render(assigns) do
     ~H"""
@@ -61,24 +63,19 @@ defmodule SafiraWeb.Backoffice.EventLive.FormComponent do
   end
 
   def handle_event("save", params, socket) do
-    Event.change_registrations_open(string_to_bool(params["registrations_open"]))
-    Event.change_event_start_time(parse_date(params["start_time"]))
-
-    {:noreply,
-     socket
-     |> put_flash(:info, "Event settings updated successfully")
-     |> push_patch(to: socket.assigns.patch)}
-  end
-
-  defp parse_date(date_str) do
-    {:ok, date, _} = DateTime.from_iso8601("#{date_str}:00Z")
-    date
-  end
-
-  defp string_to_bool(str) do
-    case String.downcase(str) do
-      "true" -> true
-      _ -> false
+    with {:ok, _registrations_open} <-
+           Event.change_registrations_open(Helpers.string_to_bool(params["registrations_open"])),
+         {:ok, _start_time} <-
+           Event.change_event_start_time(Helpers.parse_date(params["start_time"])) do
+      {:noreply,
+       socket
+       |> put_flash(:info, "Event settings updated successfully")
+       |> push_patch(to: socket.assigns.patch)}
+    else
+      {:error, _reason} ->
+        {:noreply,
+         socket
+         |> put_flash(:error, "Failed to save event settings")}
     end
   end
 end
