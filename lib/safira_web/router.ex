@@ -101,9 +101,9 @@ defmodule SafiraWeb.Router do
 
           scope "/config" do
             live "/tiers", Index, :tiers
-            live "/tiers/:id/edit", Index , :tiers_edit
+            live "/tiers/:id/edit", Index, :tiers_edit
           end
-      end
+        end
 
         scope "/attendees", AttendeeLive do
           live "/", Index, :index

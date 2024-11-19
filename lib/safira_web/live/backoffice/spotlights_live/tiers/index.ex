@@ -3,12 +3,11 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Tiers.Index do
 
   alias Safira.Companies
 
-
   @impl true
   def render(assigns) do
     ~H"""
-      <div>
-        <.page title={@title}>
+    <div>
+      <.page title={@title}>
         <ul
           id="tiers"
           class="h-96 mt-8 pb-8 flex flex-col space-y-2 overflow-y-auto"
@@ -25,14 +24,14 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Tiers.Index do
               <%= tier.name %>
             </div>
             <p class="text-dark dark:text-light flex flex-row justify-between gap-2">
-                <.link navigate={~p"/dashboard/spotlights/config/tiers/#{tier.id}/edit"}>
-                  <.icon name="hero-pencil" class="w-5 h-4" />
-                </.link>
+              <.link navigate={~p"/dashboard/spotlights/config/tiers/#{tier.id}/edit"}>
+                <.icon name="hero-pencil" class="w-5 h-4" />
+              </.link>
             </p>
           </li>
         </ul>
-        </.page>
-      </div>
+      </.page>
+    </div>
     """
   end
 
@@ -55,5 +54,4 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Tiers.Index do
 
     {:noreply, socket}
   end
-
 end

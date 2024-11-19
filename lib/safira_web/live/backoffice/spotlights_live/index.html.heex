@@ -8,6 +8,12 @@
       </.link>
     </div>
   </:actions>
+  <div class="flex flex-col items-center mt-8">
+    <img src={~p"/images/spotlight.svg"} alt="Spotlight" class="w-64 h-64 mb-4" />
+    <.button class="mt-4" phx-click="create_spotlight">
+      Create Spotlight
+    </.button>
+  </div>
 </.page>
 
 <.modal
@@ -51,7 +57,7 @@
     show
     module={SafiraWeb.Backoffice.SpotlightLive.Tiers.FormComponent}
     title={@page_title}
-    tier={@tier} 
+    tier={@tier}
     patch={~p"/dashboard/spotlights/config/tiers"}
   />
 </.modal>

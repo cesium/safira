@@ -250,4 +250,14 @@ defmodule Safira.Companies do
   def get_next_tier_priority do
     (Repo.aggregate(from(t in Tier), :max, :priority) || -1) + 1
   end
+
+  def update_tier_multiplier(%Tier{} = tier, multiplier) do
+    tier
+    |> Tier.changeset_multiplier(%{multiplier: multiplier})
+    |> Repo.update()
+  end
+
+  def change_tier_multiplier(%Tier{} = tier, attrs \\ %{}) do
+    Tier.changeset_multiplier(tier, attrs)
+  end
 end
