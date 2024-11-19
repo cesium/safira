@@ -26,7 +26,7 @@
 </.modal>
 
 <.modal
-  :if={@live_action in [:show]}
+  :if={@live_action in [:tiers]}
   id="tiers-config"
   show
   on_cancel={JS.patch(~p"/dashboard/spotlights/config")}
@@ -34,8 +34,24 @@
   <.live_component
     id="tiers-config"
     show
-    module={SafiraWeb.Backoffice.SpotlightLive.Tiers.Show}
+    module={SafiraWeb.Backoffice.SpotlightLive.Tiers.Index}
     title={@page_title}
     patch={~p"/dashboard/spotlights/config"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:tiers_edit]}
+  id="tiers-edit"
+  show
+  on_cancel={JS.patch(~p"/dashboard/spotlights/config/tiers")}
+>
+  <.live_component
+    id={@tier.id}
+    show
+    module={SafiraWeb.Backoffice.SpotlightLive.Tiers.FormComponent}
+    title={@page_title}
+    tier={@tier} 
+    patch={~p"/dashboard/spotlights/config/tiers"}
   />
 </.modal>

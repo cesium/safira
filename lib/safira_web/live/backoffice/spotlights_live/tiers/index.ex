@@ -1,5 +1,8 @@
-defmodule SafiraWeb.Backoffice.SpotlightLive.Tiers.Show do
-  use SafiraWeb, :live_view
+defmodule SafiraWeb.Backoffice.SpotlightLive.Tiers.Index do
+  use SafiraWeb, :live_component
+
+  alias Safira.Companies
+
 
   @impl true
   def render(assigns) do
@@ -22,7 +25,7 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Tiers.Show do
               <%= tier.name %>
             </div>
             <p class="text-dark dark:text-light flex flex-row justify-between gap-2">
-                <.link navigate={~p"/dashboard/spotlights/tiers/#{tier.id}/edit"}>
+                <.link navigate={~p"/dashboard/spotlights/config/tiers/#{tier.id}/edit"}>
                   <.icon name="hero-pencil" class="w-5 h-4" />
                 </.link>
             </p>
@@ -34,8 +37,23 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Tiers.Show do
   end
 
   @impl true
-  def mount(_params, _session, socket) do
-    {:ok, socket}
+  def mount(socket) do
+    {:ok,
+     socket
+     |> stream(:tiers, Companies.list_tiers())}
+  end
+
+  @impl true
+  def handle_event("update-sorting", %{"ids" => ids}, socket) do
+    ids
+    |> Enum.with_index(0)
+    |> Enum.each(fn {"tier-" <> id, index} ->
+      id
+      |> Companies.get_tier!()
+      |> Companies.update_tier(%{priority: index})
+    end)
+
+    {:noreply, socket}
   end
 
 end

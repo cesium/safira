@@ -15,7 +15,7 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.FormComponent do
             <.button>
               <.icon name="hero-rectangle-stack" class="w-5" />
             </.button>
-          </.link>
+          </.link>  
         </:actions>
         <div class="w-full space-y-2">
           <.simple_form for={@form} id="spotlight-form">

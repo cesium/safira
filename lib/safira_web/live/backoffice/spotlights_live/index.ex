@@ -2,6 +2,8 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Index do
   use Phoenix.LiveView
   use SafiraWeb, :backoffice_view
 
+  alias Safira.Companies
+
   @impl true
   def mount(_params, _session, socket) do
     {:ok, socket}
@@ -9,6 +11,7 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Index do
 
   @impl true
   def handle_params(params, _url, socket) do
+    IO.inspect(socket.assigns.live_action)
     {:noreply,
      socket
      |> apply_action(socket.assigns.live_action, params)}
@@ -31,8 +34,16 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Index do
     |> assign(:page_title, "Spotlights")
   end
 
-  defp apply_action(socket, :show, _params) do
+  defp apply_action(socket, :tiers, _params) do
     socket
-    |> assign(:page_title, "Edit Spotlights bonus multiplior")
+    |> assign(:page_title, "Edit Spotlights bonus multiplier")
+  end
+
+  defp apply_action(socket, :tiers_edit, %{"id" => id}) do
+    tier = Companies.get_tier!(id)
+
+    socket
+    |> assign(:page_title, "Edit Spotlights bonus multiplier for #{tier.name}")
+    |> assign(:tier, tier)
   end
 end
