@@ -24,3 +24,18 @@
     patch={~p"/dashboard/spotlights"}
   />
 </.modal>
+
+<.modal
+  :if={@live_action in [:show]}
+  id="tiers-config"
+  show
+  on_cancel={JS.patch(~p"/dashboard/spotlights/config")}
+>
+  <.live_component
+    id="tiers-config"
+    show
+    module={SafiraWeb.Backoffice.SpotlightLive.Tiers.Show}
+    title={@page_title}
+    patch={~p"/dashboard/spotlights/config"}
+  />
+</.modal>

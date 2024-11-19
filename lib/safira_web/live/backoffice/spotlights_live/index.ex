@@ -1,4 +1,5 @@
 defmodule SafiraWeb.Backoffice.SpotlightLive.Index do
+  use Phoenix.LiveView
   use SafiraWeb, :backoffice_view
 
   @impl true
@@ -28,5 +29,10 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Index do
   defp apply_action(socket, :index, _params) do
     socket
     |> assign(:page_title, "Spotlights")
+  end
+
+  defp apply_action(socket, :show, _params) do
+    socket
+    |> assign(:page_title, "Edit Spotlights bonus multiplior")
   end
 end

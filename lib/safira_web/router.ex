@@ -98,7 +98,11 @@ defmodule SafiraWeb.Router do
         scope "/spotlights", SpotlightLive do
           live "/", Index, :index
           live "/config", Index, :config
-        end
+
+          scope "/config", Tiers do
+            live "/tiers", Show, :show
+          end
+      end
 
         scope "/attendees", AttendeeLive do
           live "/", Index, :index
