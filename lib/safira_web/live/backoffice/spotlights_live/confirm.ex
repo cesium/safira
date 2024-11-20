@@ -23,6 +23,7 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Confirm do
 
   @impl true
   def handle_event("confirm_no", _params, socket) do
+    {:noreply, socket |> push_patch(to: ~p"/dashboard/spotlights/new")}
     {:noreply, socket}
   end
 end

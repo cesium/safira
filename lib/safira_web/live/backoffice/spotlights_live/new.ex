@@ -43,7 +43,7 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.New do
      |> assign(
        form:
          to_form(
-           %{"duration" => Spotlights.get_spotlights_duration()},
+           %{"company" => Spotlights.get_spotlights_duration()},
            as: :spotlight_config
          )
      )}
