@@ -29,6 +29,19 @@ defmodule SafiraWeb.Backoffice.CompanyLive.FormComponent do
           <div class="grid grid-cols-2">
             <.field field={@form[:name]} type="text" label="Name" wrapper_class="pr-2" required />
             <.field field={@form[:url]} type="text" label="URL" wrapper_class="" />
+            <.inputs_for :let={user} field={@form[:user]}>
+              <.field field={user[:email]} type="email" label="Email" wrapper_class="pr-2" required />
+              <.field
+                field={user[:password]}
+                type="password"
+                label="Password"
+                wrapper_class=""
+                required={@action == :new}
+              />
+              <.field field={user[:handle]} type="text" label="Handle" wrapper_class="pr-2" required />
+              <.field field={user[:name]} type="text" label="User name" wrapper_class="" required />
+            </.inputs_for>
+
             <.field
               field={@form[:tier_id]}
               type="select"
@@ -115,7 +128,7 @@ defmodule SafiraWeb.Backoffice.CompanyLive.FormComponent do
   end
 
   defp save_company(socket, :new, company_params) do
-    case Companies.create_company(company_params) do
+    case Companies.create_company_and_user(company_params) do
       {:ok, company} ->
         case consume_image_data(company, socket) do
           {:ok, _company} ->
@@ -125,7 +138,7 @@ defmodule SafiraWeb.Backoffice.CompanyLive.FormComponent do
              |> push_patch(to: socket.assigns.patch)}
         end
 
-      {:error, %Ecto.Changeset{} = changeset} ->
+      {:error, _, %Ecto.Changeset{} = changeset, _} ->
         {:noreply, assign(socket, form: to_form(changeset))}
     end
   end

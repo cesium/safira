@@ -72,7 +72,11 @@ defmodule Safira.Companies do
       ** (Ecto.NoResultsError)
 
   """
-  def get_company!(id), do: Repo.get!(Company, id)
+  def get_company!(id) do
+    Company
+    |> Repo.get_by!(id: id)
+    |> Repo.preload([:user])
+  end
 
   @doc """
   Creates a company.
@@ -94,21 +98,14 @@ defmodule Safira.Companies do
 
   # TODO: Docs
   def create_company_and_user(attrs \\ %{}) do
-    user_attrs = %{
-      email: attrs.email,
-      handle: attrs.handle,
-      password: attrs.password,
-      name: attrs.name
-    }
-
     case Ecto.Multi.new()
-         |> Accounts.register_company_user(user_attrs)
+         |> Accounts.register_company_user(attrs["user"])
          |> Ecto.Multi.insert(:company, fn %{user: user} ->
-           Company.changeset(%Company{}, Map.put(attrs, :user_id, user.id))
+           Company.changeset(%Company{}, Map.put(Map.delete(attrs, "user"), "user_id", user.id))
          end)
          |> Repo.transaction() do
       {:ok, %{user: user, company: company}} ->
-        {:ok, %{user: Map.put(user, :password, attrs.password), company: company}}
+        {:ok, %{user: Map.put(user, "password", attrs["user"]["password"]), company: company}}
 
       {:error, failed_operation, failed_value, changes_so_far} ->
         {:error, failed_operation, failed_value, changes_so_far}

@@ -82,6 +82,13 @@ defmodule Safira.Accounts.User do
     |> cast_assoc(:attendee, with: &Attendee.changeset/2)
   end
 
+  def changeset(user, attrs, opts \\ []) do
+    user
+    |> cast(attrs, @required_fields ++ @optional_fields)
+    |> validate_email(opts)
+    |> validate_handle()
+  end
+
   defp validate_email(changeset, opts) do
     changeset
     |> validate_required([:email])

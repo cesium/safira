@@ -11,11 +11,14 @@ defmodule Safira.CompaniesFixtures do
     {:ok, %{user: _, company: company}} =
       attrs
       |> Enum.into(%{
-        name: "some name",
-        handle: "handle",
-        email: "handle@seium.org",
-        password: "password1234",
-        tier_id: tier_fixture().id
+        "user" => %{
+          "name" => "some name",
+          "handle" => "handle",
+          "email" => "handle@seium.org",
+          "password" => "password1234"
+        },
+        "name" => "some name",
+        "tier_id" => tier_fixture().id
       })
       |> Safira.Companies.create_company_and_user()
 

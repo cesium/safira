@@ -268,7 +268,7 @@ defmodule Safira.Accounts do
     multi
     |> Ecto.Multi.insert(
       :user,
-      User.registration_changeset(%User{}, Map.put(attrs, :type, :company))
+      User.registration_changeset(%User{}, Map.put(attrs, "type", "company"))
     )
   end
 
