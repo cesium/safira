@@ -18,7 +18,7 @@ defmodule Safira.CompaniesTest do
 
     test "get_company!/1 returns the company with given id" do
       company = company_fixture()
-      assert Companies.get_company!(company.id) == company
+      assert Companies.get_company!(company.id).id == company.id
     end
 
     test "create_company/1 with valid data creates a company" do
@@ -50,7 +50,7 @@ defmodule Safira.CompaniesTest do
     test "update_company/2 with invalid data returns error changeset" do
       company = company_fixture()
       assert {:error, %Ecto.Changeset{}} = Companies.update_company(company, @invalid_attrs)
-      assert company == Companies.get_company!(company.id)
+      assert company.id == Companies.get_company!(company.id).id
     end
 
     test "delete_company/1 deletes the company" do

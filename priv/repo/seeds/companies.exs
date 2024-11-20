@@ -31,12 +31,15 @@ defmodule Safira.Repo.Seeds.Companies do
       end
 
       company_seed = %{
-        email: email,
-        handle: handle,
-        password: "password1234",
-        name: name,
-        url: url,
-        tier_id: actual_tier.id
+        "user" => %{
+          "email" => email,
+          "handle" => handle,
+          "password" => "password1234",
+          "name" => name
+        },
+        "name" => name,
+        "url" => url,
+        "tier_id" => actual_tier.id
       }
 
       case Companies.create_company_and_user(company_seed) do

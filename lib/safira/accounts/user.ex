@@ -80,6 +80,13 @@ defmodule Safira.Accounts.User do
     |> validate_password(opts)
   end
 
+  def changeset(user, attrs, opts \\ []) do
+    user
+    |> cast(attrs, @required_fields ++ @optional_fields)
+    |> validate_email(opts)
+    |> validate_handle()
+  end
+
   defp validate_email(changeset, opts) do
     changeset
     |> validate_required([:email])

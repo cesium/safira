@@ -3,6 +3,8 @@ defmodule SafiraWeb.Backoffice.CompanyLive.Index do
 
   import SafiraWeb.Components.{Table, TableSearch}
 
+  alias Safira.Accounts.User
+
   alias Safira.{Companies, Contest}
   alias Safira.Companies.{Company, Tier}
 
@@ -41,7 +43,7 @@ defmodule SafiraWeb.Backoffice.CompanyLive.Index do
   defp apply_action(socket, :new, _params) do
     socket
     |> assign(:page_title, "New Company")
-    |> assign(:company, %Company{})
+    |> assign(:company, %Company{user: %User{}})
     |> assign(:tiers, Companies.list_tiers())
     |> assign(:badges, Contest.list_badges())
   end
