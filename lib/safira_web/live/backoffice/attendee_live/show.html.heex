@@ -5,10 +5,7 @@
     </.button>
   </:actions>
   <div class="flex flex-col items-center gap-4 w-full sm:w-fit py-8">
-    <img
-      class="rounded-full w-48 h-48"
-      src={"https://github.com/identicons/#{@attendee.user.handle |> String.slice(0..2)}.png"}
-    />
+    <.avatar size={:xl} />
     <div>
       <h1 class="text-xl font-semibold"><%= @attendee.user.name %></h1>
       <p class="text-sm">@<%= @attendee.user.handle %></p>

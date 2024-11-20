@@ -23,10 +23,7 @@
     <.table id="staffs-table" items={@streams.staffs} meta={@meta} params={@params}>
       <:col :let={{_id, user}} sortable field={:name} label="Name">
         <div class="flex gap-4 flex-center items-center">
-          <img
-            class="rounded-full h-10"
-            src={"https://github.com/identicons/#{user.handle |> String.slice(0..2)}.png"}
-          />
+          <.avatar />
           <div class="self-center">
             <p class="text-base font-semibold"><%= user.name %></p>
             <p class="font-normal">@<%= user.handle %></p>

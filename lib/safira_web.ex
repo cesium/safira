@@ -115,6 +115,7 @@ defmodule SafiraWeb do
       # HTML escaping functionality
       import Phoenix.HTML
       # Core UI components and translation
+      import SafiraWeb.Components.Avatar
       import SafiraWeb.CoreComponents
       import SafiraWeb.Components.Page
       import SafiraWeb.Gettext

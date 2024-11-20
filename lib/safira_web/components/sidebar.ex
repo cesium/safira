@@ -5,6 +5,7 @@ defmodule SafiraWeb.Components.Sidebar do
   use SafiraWeb, :component
 
   import SafiraWeb.CoreComponents
+  import SafiraWeb.Components.Avatar
   alias Phoenix.LiveView.JS
 
   attr :pages, :list, default: []
@@ -190,8 +191,8 @@ defmodule SafiraWeb.Components.Sidebar do
         >
           <span class={"flex w-full justify-between items-center #{@icon_color}"}>
             <span class="flex min-w-0 items-center justify-between space-x-3">
-              <%= for img <- @img do %>
-                <img class="w-10 h-10 rounded-full flex-shrink-0" alt="" {assigns_to_attributes(img)} />
+              <%= for _img <- @img do %>
+                <.avatar size={:sm} />
               <% end %>
               <span class="flex-1 flex flex-col min-w-0">
                 <span class={"#{@title |> Enum.at(0) |> Map.get(:color)}  text-sm font-medium truncate"}>
