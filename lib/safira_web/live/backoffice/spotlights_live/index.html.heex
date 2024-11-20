@@ -80,3 +80,17 @@
     patch={~p"/dashboard/spotlights"}
   />
 </.modal>
+
+<.modal
+  :if={@live_action in [:confirm]}
+  id="spotlight-confirm"
+  show
+  on_cancel={JS.patch(~p"/dashboard/spotlights")}
+>
+  <.live_component
+    id="spotlight-confirm"
+    show
+    module={SafiraWeb.Backoffice.SpotlightLive.Confirm}
+    patch={~p"/dashboard/spotlights"}
+  />
+</.modal>

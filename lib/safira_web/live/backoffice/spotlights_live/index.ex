@@ -50,7 +50,12 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Index do
 
   defp apply_action(socket, :new, _params) do
     socket
-    |> assign(:page_title, "Create Spotligth")
+    |> assign(:page_title, "Create Spotlight")
     |> assign(:badges, Contest.list_badges())
+  end
+
+  defp apply_action(socket, :confirm, _params) do
+    socket
+    |> assign(:page_title, "Confirm Spotlight")
   end
 end

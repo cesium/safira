@@ -28,7 +28,9 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.New do
             />
           </.simple_form>
         </div>
-        <.button phx-disable-with="Saving...">Save</.button>
+        <.link patch={~p"/dashboard/spotlights/new/confirm"}>
+          <.button phx-disable-with="Saving...">Save</.button>
+        </.link>
       </.page>
     </div>
     """
@@ -49,5 +51,12 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.New do
 
   defp options(tiers) do
     Enum.map(tiers, &{&1.name, &1.id})
+  end
+
+  @impl true
+  def handle_event("save", params, socket) do
+    Spotlights.change_duration_spotlight(params["duration"] |> String.to_integer())
+    {:noreply, socket |> push_patch(to: ~p"/dashboard/spotlights/new/confirm")}
+    {:noreply, socket}
   end
 end
