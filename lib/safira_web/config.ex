@@ -44,6 +44,17 @@ defmodule SafiraWeb.Config do
     ]
   end
 
+  def sponsor_pages do
+    [
+      %{
+        key: :visitors,
+        title: "Visitors",
+        icon: "hero-user",
+        url: "/sponsor"
+      }
+    ]
+  end
+
   def backoffice_pages(user) do
     permissions = user.staff.role.permissions
 

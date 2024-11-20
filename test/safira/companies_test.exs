@@ -6,6 +6,7 @@ defmodule Safira.CompaniesTest do
   describe "companies" do
     alias Safira.Companies.Company
 
+    import Safira.AccountsFixtures
     import Safira.CompaniesFixtures
 
     @invalid_attrs %{name: nil}
@@ -17,11 +18,18 @@ defmodule Safira.CompaniesTest do
 
     test "get_company!/1 returns the company with given id" do
       company = company_fixture()
-      assert Companies.get_company!(company.id) == company
+      assert Companies.get_company!(company.id).id == company.id
     end
 
     test "create_company/1 with valid data creates a company" do
-      valid_attrs = %{name: "some name", tier_id: tier_fixture().id}
+      valid_attrs = %{
+        name: "some name",
+        handle: "handle",
+        email: "email@seium.org",
+        password: "password1234",
+        user_id: user_fixture().id,
+        tier_id: tier_fixture().id
+      }
 
       assert {:ok, %Company{} = company} = Companies.create_company(valid_attrs)
       assert company.name == "some name"
@@ -42,7 +50,7 @@ defmodule Safira.CompaniesTest do
     test "update_company/2 with invalid data returns error changeset" do
       company = company_fixture()
       assert {:error, %Ecto.Changeset{}} = Companies.update_company(company, @invalid_attrs)
-      assert company == Companies.get_company!(company.id)
+      assert company.id == Companies.get_company!(company.id).id
     end
 
     test "delete_company/1 deletes the company" do

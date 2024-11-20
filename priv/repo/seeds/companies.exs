@@ -1,10 +1,16 @@
 defmodule Safira.Repo.Seeds.Companies do
-  alias Safira.{Companies, Repo}
-  alias Safira.Companies.{Company, Tier}
+  alias NimbleCSV.RFC4180, as: CSV
 
-  @companies File.read!("priv/fake/companies.txt") |> String.split("\n") |> Enum.map(&String.split(&1, ";"))
+  alias Safira.{Companies, Repo}
+  alias Safira.Companies.Tier
 
   def run do
+    case Companies.list_tiers() do
+      [] ->
+        seed_tiers()
+      _ ->
+        Mix.shell().error("Found tiers, aborting seeding tiers.")
+    end
     case Companies.list_companies() do
       [] ->
         seed_companies()
@@ -13,7 +19,40 @@ defmodule Safira.Repo.Seeds.Companies do
     end
   end
 
-  def seed_companies do
+  defp seed_companies do
+    tiers = Companies.list_tiers()
+    File.stream!("priv/fake/companies.csv")
+    |> CSV.parse_stream()
+    |> Stream.map(fn [name, email, handle, url, tier] ->
+      actual_tier = case tier do
+        "gold" -> Enum.at(tiers, 0)
+        "silver" -> Enum.at(tiers, 1)
+        "bronze" -> Enum.at(tiers, 2)
+      end
+
+      company_seed = %{
+        "user" => %{
+          "email" => email,
+          "handle" => handle,
+          "password" => "password1234",
+          "name" => name
+        },
+        "name" => name,
+        "url" => url,
+        "tier_id" => actual_tier.id
+      }
+
+      case Companies.create_company_and_user(company_seed) do
+        {:ok, _} -> :ok
+        {:error, changeset} ->
+          Mix.shell().error("Failed to insert company: #{company_seed.name}")
+          Mix.shell().error(Kernel.inspect(changeset.errors))
+      end
+    end)
+    |> Stream.run()
+  end
+
+  defp seed_tiers do
     tiers =
       [
         %Tier{
@@ -29,25 +68,6 @@ defmodule Safira.Repo.Seeds.Companies do
           priority: 2
         }
       ] |> Enum.map(&Repo.insert(&1))
-
-    for company <- @companies do
-      {name, url, tier} = {Enum.at(company, 0), Enum.at(company, 1), Enum.random(tiers) |> elem(1)}
-
-      company_seed = %{
-        name: name,
-        url: url,
-        tier_id: tier.id
-      }
-
-      changeset = Companies.change_company(%Company{}, company_seed)
-
-      case Repo.insert(changeset) do
-        {:ok, _} -> :ok
-        {:error, changeset} ->
-          Mix.shell().error("Failed to insert company: #{company_seed.name}")
-          Mix.shell().error(Kernel.inspect(changeset.errors))
-      end
-    end
   end
 end
 

@@ -4,6 +4,8 @@ defmodule Safira.Companies.Company do
   """
   use Safira.Schema
 
+  alias Safira.Accounts.User
+
   @derive {
     Flop.Schema,
     filterable: [:name],
@@ -19,7 +21,7 @@ defmodule Safira.Companies.Company do
     ]
   }
 
-  @required_fields ~w(name tier_id)a
+  @required_fields ~w(name tier_id user_id)a
   @optional_fields ~w(badge_id url)a
 
   schema "companies" do
@@ -27,6 +29,7 @@ defmodule Safira.Companies.Company do
     field :url, :string
     field :logo, Uploaders.Company.Type
 
+    belongs_to :user, User
     belongs_to :badge, Safira.Contest.Badge
     belongs_to :tier, Safira.Companies.Tier
 
@@ -38,10 +41,13 @@ defmodule Safira.Companies.Company do
     company
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> unique_constraint(:badge_id)
+    |> unique_constraint(:user_id)
+    |> cast_assoc(:user, with: &User.changeset/2)
     |> cast_assoc(:badge)
     |> cast_assoc(:tier)
     |> validate_required(@required_fields)
     |> validate_url(:url)
+    |> unsafe_validate_unique(:badge_id, Safira.Repo)
   end
 
   @doc false

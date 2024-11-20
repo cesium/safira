@@ -39,10 +39,11 @@ defmodule Safira.Accounts.User do
     field :hashed_password, :string, redact: true
     field :current_password, :string, virtual: true, redact: true
     field :confirmed_at, :utc_datetime
-    field :type, Ecto.Enum, values: [:attendee, :staff], default: :attendee
+    field :type, Ecto.Enum, values: [:attendee, :staff, :company], default: :attendee
 
     has_one :attendee, Attendee, on_delete: :delete_all
     has_one :staff, Staff, on_delete: :delete_all
+    has_one :company, Company, on_delete: :delete_all
 
     timestamps(type: :utc_datetime)
   end
@@ -77,6 +78,13 @@ defmodule Safira.Accounts.User do
     |> validate_email(opts)
     |> validate_handle()
     |> validate_password(opts)
+  end
+
+  def changeset(user, attrs, opts \\ []) do
+    user
+    |> cast(attrs, @required_fields ++ @optional_fields)
+    |> validate_email(opts)
+    |> validate_handle()
   end
 
   defp validate_email(changeset, opts) do
