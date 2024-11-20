@@ -1,6 +1,6 @@
 defmodule SafiraWeb.Components.Avatar do
   @moduledoc false
-  use Phoenix.Component
+  use SafiraWeb, :component
 
   attr :src, :string, default: nil, doc: "The URL of the image to display."
 
@@ -34,13 +34,15 @@ defmodule SafiraWeb.Components.Avatar do
 
   attr :class, :string, default: nil, doc: "Additional classes to be added to the avatar."
 
+  attr :handle, :string, default: nil, doc: "The handle of the user."
+
   def avatar(assigns) do
     ~H"""
     <span class={generate_avatar_classes(assigns)}>
       <%= if @src do %>
-        <img src={@src} class={"safira-avatar--#{assigns.type} h-full w-full"} />
+        <img src={@src} class={"safira-avatar--#{@type} h-full w-full"} />
       <% else %>
-        <.void_avatar color={random_color()} />
+        <.void_avatar color={generate_avatar_color(@handle)} />
       <% end %>
     </span>
     """
@@ -54,8 +56,17 @@ defmodule SafiraWeb.Components.Avatar do
     ]
   end
 
-  defp random_color do
-    Enum.random(["gray", "red", "yellow", "green", "blue", "indigo", "purple", "pink"])
+  defp generate_avatar_color(handle) do
+    pos =
+      handle
+      |> String.downcase()
+      |> String.to_charlist()
+      |> Enum.reduce(0, fn char, acc ->
+        acc + char
+      end)
+      |> rem(8)
+
+    Enum.at(["blue", "green", "red", "yellow", "purple", "pink", "orange", "teal"], pos)
   end
 
   defp void_avatar(assigns) do
@@ -77,8 +88,6 @@ defmodule SafiraWeb.Components.Avatar do
         .st2{fill:#E2E2E2;}
         .st3{fill:#BDCADE;}
         .st4{fill:#0C0C60;}
-        .st5{fill: <%= @color %>;}
-        .st6{fill: <%= @color %>;}
         .st7{fill:#F9F9F9;}
         .st8{fill:#ECECEC;}
         .st9{fill:#F4F4F4;}
@@ -240,12 +249,12 @@ defmodule SafiraWeb.Components.Avatar do
           c-3.2-3.3-6.4-6.8-9.6-10.5C990,1481.6,984.8,1474.6,980.4,1468.1z"
         />
         <path
-          class="st5"
+          fill={@color}
           d="M753.4,1309.9c-21.9,25-43.9,49.9-65.8,74.9c7.8,7.3,15.5,14.6,23.3,21.8c-2.3,30.9-4.6,61.8-6.9,92.6h50.1
           C753.9,1436.2,753.6,1373,753.4,1309.9z"
         />
         <path
-          class="st6"
+          fill={@color}
           d="M797.7,1413.5c9-10.8,17.9-21.6,26.9-32.4c-23.7-23.7-47.5-47.4-71.2-71.2l0,0c0,0,0,0,0,0c0,0,0,0,0,0
           c0,0,0,0,0,0c0,0,0,0,0,0c0.2,63.1,0.5,126.2,0.7,189.4h51.8c-0.1-0.8-0.1-1.5-0.2-2.3C803,1469.2,800.4,1441.3,797.7,1413.5z"
         />
