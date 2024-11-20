@@ -10,9 +10,12 @@
   </:actions>
   <div class="flex flex-col items-center mt-8">
     <img src={~p"/images/spotlight.svg"} alt="Spotlight" class="w-64 h-64 mb-4" />
-    <.button class="mt-4" phx-click="create_spotlight">
-      Create Spotlight
-    </.button>
+    <p>There are no companies on spotlight!</p>
+    <.link patch={~p"/dashboard/spotlights/new"}>
+      <.button class="mt-4">
+        Create Spotlight
+      </.button>
+    </.link>
   </div>
 </.page>
 
@@ -59,5 +62,21 @@
     title={@page_title}
     tier={@tier}
     patch={~p"/dashboard/spotlights/config/tiers"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:new]}
+  id="spotlight-new"
+  show
+  on_cancel={JS.patch(~p"/dashboard/spotlights")}
+>
+  <.live_component
+    id="spotlight-new"
+    show
+    module={SafiraWeb.Backoffice.SpotlightLive.New}
+    title={@page_title}
+    badges={@badges}
+    patch={~p"/dashboard/spotlights"}
   />
 </.modal>

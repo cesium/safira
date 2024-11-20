@@ -2,7 +2,7 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Index do
   use Phoenix.LiveView
   use SafiraWeb, :backoffice_view
 
-  alias Safira.Companies
+  alias Safira.{Companies, Contest}
 
   @impl true
   def mount(_params, _session, socket) do
@@ -46,5 +46,11 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Index do
     socket
     |> assign(:page_title, "Edit Spotlights bonus multiplier for #{tier.name}")
     |> assign(:tier, tier)
+  end
+
+  defp apply_action(socket, :new, _params) do
+    socket
+    |> assign(:page_title, "Create Spotligth")
+    |> assign(:badges, Contest.list_badges())
   end
 end
