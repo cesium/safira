@@ -81,6 +81,7 @@ defmodule SafiraWeb.Components.Avatar do
       viewBox="0 0 1499.3 1499.3"
       style="enable-background:new 0 0 1499.3 1499.3;"
       xml:space="preserve"
+      class="rounded-full"
     >
       <style type="text/css">
         .st0{fill:#0D0463;}
