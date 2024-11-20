@@ -1,55 +1,50 @@
 export const Countdown = {
     mounted() {
-        const timeReceived = (start_time) => {
-            console.log(start_time);
-            if(this.clock !== undefined) {
-                clearInterval(this.clock);
+        let countdownInterval = null;
+
+        const startCountdown = (startTime) => {
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
             }
 
-            this.clock = setInterval(() => {
-                const now = new Date().getTime();
-                const seconds_left = Math.round((start_time - now) / 1000);
-                const text_element = document.getElementById("seconds-remaining");
+            const textElement = document.getElementById("seconds-remaining");
+            if (!textElement) {
+                console.warn("Countdown element not found!");
+                return;
+            }
 
-                if(seconds_left >= 0) {
-                    text_element.innerHTML = formatTimeRemaining(seconds_left);
+            countdownInterval = setInterval(() => {
+                const now = Date.now();
+                const secondsLeft = Math.round((startTime - now) / 1000);
+
+                if (secondsLeft >= 0) {
+                    textElement.textContent = formatTime(secondsLeft);
                 } else {
-                    text_element.innerText = "00";
-                    clearInterval(this.clock);
+                    clearInterval(countdownInterval);
+                    textElement.textContent = "00";
                     window.location.reload();
                 }
             }, 100);
         };
 
         window.addEventListener("phx:highlight", (e) => {
-            timeReceived(new Date(e.detail.start_time).getTime())
+            const startTime = new Date(e.detail.start_time).getTime();
+            startCountdown(startTime);
         });
     }
-}
+};
 
-function formatTimeRemaining(seconds) {
-    const timeUnits = {
-        days: Math.floor(seconds / (24 * 60 * 60)),
-        hours: Math.floor((seconds % (24 * 60 * 60)) / 3600),
-        minutes: Math.floor((seconds % 3600) / 60),
-        seconds: seconds % 60
-    };
+function formatTime(totalSeconds) {
+    const dayToSeconds = 86400;
+    const days = Math.floor(totalSeconds / dayToSeconds);
+    const hours = Math.floor((totalSeconds % dayToSeconds) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
 
-    // Format units to two digits except for days
-    const formattedTime = {
-        hours: String(timeUnits.hours).padStart(2, '0'),
-        minutes: String(timeUnits.minutes).padStart(2, '0'),
-        seconds: String(timeUnits.seconds).padStart(2, '0')
-    };
+    const formattedTime = [
+        days > 0 ? `${days} days` : null,
+        `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
+    ].filter(Boolean).join(", ");
 
-    if (timeUnits.days > 0) {
-        return `${timeUnits.days} days, ${formattedTime.hours}:${formattedTime.minutes}:${formattedTime.seconds}`;
-    }
-    if (timeUnits.hours > 0) {
-        return `${formattedTime.hours}:${formattedTime.minutes}:${formattedTime.seconds}`;
-    }
-    if (timeUnits.minutes > 0) {
-        return `${formattedTime.minutes}:${formattedTime.seconds}`;
-    }
-    return `${timeUnits.seconds}`;
+    return formattedTime;
 }
