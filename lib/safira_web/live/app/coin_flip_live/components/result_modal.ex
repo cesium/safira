@@ -5,8 +5,6 @@ defmodule SafiraWeb.App.CoinFlipLive.Components.ResultModal do
   use SafiraWeb, :component
 
   attr :id, :string, required: true
-  attr :drop_type, :atom, required: true
-  attr :drop, :map, required: true
   attr :show, :boolean, default: false
   attr :text, :string, default: ""
   attr :wrapper_class, :string, default: ""
@@ -14,7 +12,7 @@ defmodule SafiraWeb.App.CoinFlipLive.Components.ResultModal do
   attr :content_class, :string, default: "bg-primaryDark"
   attr :show_vault_link, :boolean, default: true
 
-  def result_modal(assigns) do
+  def play_modal(assigns) do
     ~H"""
     <div
       id={@id}
@@ -22,7 +20,6 @@ defmodule SafiraWeb.App.CoinFlipLive.Components.ResultModal do
       phx-mounted={@show && show_modal(@id)}
       phx-remove={hide_modal(@id)}
       data-cancel={JS.exec(@on_cancel, "phx-remove")}
-      data-is_win={@drop_type != nil}
       class="relative z-50 hidden"
     >
       <div id={"#{@id}-bg"} class="bg-dark/90 fixed inset-0 transition-opacity" aria-hidden="true" />
@@ -44,9 +41,9 @@ defmodule SafiraWeb.App.CoinFlipLive.Components.ResultModal do
               class={"#{@content_class} shadow-zinc-700/10 relative hidden ring-4 ring-white rounded-2xl p-14 shadow-lg transition"}
             >
               <div id={"#{@id}-content"} class="font-terminal uppercase text-3xl md:text-4xl">
-                <p><%= get_drop_result_text(@drop_type, @drop) %></p>
+                <%!-- <p><%= get_drop_result_text(@drop_type, @drop) %></p> --%>
               </div>
-              <div
+              <%!-- <div
                 :if={@drop_type in [:prize, :badge]}
                 class="w-full py-4 px-8 sm:px-32 flex flex-row items-center justify-center"
               >
@@ -72,7 +69,7 @@ defmodule SafiraWeb.App.CoinFlipLive.Components.ResultModal do
                     </.link>
                   </span>
                 </p>
-              <% end %>
+              <% end %> --%>
             </.focus_wrap>
           </div>
         </div>
@@ -81,34 +78,34 @@ defmodule SafiraWeb.App.CoinFlipLive.Components.ResultModal do
     """
   end
 
-  defp get_drop_result_text(drop_type, drop) do
-    case drop_type do
-      :prize ->
-        gettext("Congratulations! You won %{prize_name} ✨", prize_name: drop.prize.name)
+  # defp get_drop_result_text(drop_type, drop) do
+  #   case drop_type do
+  #     :prize ->
+  #       gettext("Congratulations! You won %{prize_name} ✨", prize_name: drop.prize.name)
 
-      :badge ->
-        gettext("Congratulations! You won the %{badge_name} badge!", badge_name: drop.badge.name)
+  #     :badge ->
+  #       gettext("Congratulations! You won the %{badge_name} badge!", badge_name: drop.badge.name)
 
-      :tokens ->
-        if drop.tokens == 1 do
-          gettext("Congratulations! You won %{tokens} token 💰!", tokens: drop.tokens)
-        else
-          gettext("Congratulations! You won %{tokens} tokens 💰!", tokens: drop.tokens)
-        end
+  #     :tokens ->
+  #       if drop.tokens == 1 do
+  #         gettext("Congratulations! You won %{tokens} token 💰!", tokens: drop.tokens)
+  #       else
+  #         gettext("Congratulations! You won %{tokens} tokens 💰!", tokens: drop.tokens)
+  #       end
 
-      :entries ->
-        if drop.entries == 1 do
-          gettext("Congratulations! You won 🎫 %{entries} entry to the final draw!",
-            entries: drop.entries
-          )
-        else
-          gettext("Congratulations! You won 🎫 %{entries} entries to the final draw!",
-            entries: drop.entries
-          )
-        end
+  #     :entries ->
+  #       if drop.entries == 1 do
+  #         gettext("Congratulations! You won 🎫 %{entries} entry to the final draw!",
+  #           entries: drop.entries
+  #         )
+  #       else
+  #         gettext("Congratulations! You won 🎫 %{entries} entries to the final draw!",
+  #           entries: drop.entries
+  #         )
+  #       end
 
-      _ ->
-        gettext("Oops.. You didn't win anything.. Maybe spin again? 👀")
-    end
-  end
+  #     _ ->
+  #       gettext("Oops.. You didn't win anything.. Maybe spin again? 👀")
+  #   end
+  # end
 end

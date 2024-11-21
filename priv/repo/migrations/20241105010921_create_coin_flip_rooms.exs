@@ -8,6 +8,7 @@ defmodule Safira.Repo.Migrations.CreateCoinFlipRooms do
       add :player2_id, references(:attendees, type: :binary_id, on_delete: :delete_all)
       add :bet, :integer
       add :finished, :boolean, default: false
+      add :result, :string
 
       timestamps(type: :utc_datetime)
     end

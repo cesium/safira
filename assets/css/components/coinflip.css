@@ -1,0 +1,81 @@
+.coin {
+  position: relative;
+  margin: 0 auto;
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+  perspective: 1000px; /* Add perspective to the parent element */
+}
+
+.coin div {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  box-shadow: inset 0 0 45px rgba(255, 255, 255, 0.3), 0 12px 20px -10px rgba(0, 0, 0, 0.4);
+  position: absolute;
+  backface-visibility: hidden; /* Ensure backface is hidden */
+}
+
+.side-a {
+  background-color: #bb0000;
+  z-index: 100;
+}
+
+.side-b {
+  background-color: #3e3e3e;
+  transform: rotateY(180deg); /* Rotate the back side */
+}
+
+.side-b-not-rotated {
+  background-color: #3e3e3e;
+}
+
+.coin {
+  transform-style: preserve-3d; /* Ensure 3D transformation */
+  transition: transform 1s ease-in;
+}
+
+.coin.heads {
+  animation: flipHeads 3s ease-out forwards;
+}
+
+.coin.tails {
+  animation: flipTails 3s ease-out forwards;
+}
+
+@keyframes flipHeads {
+  from {
+    transform: rotateY(0);
+  }
+  to {
+    transform: rotateY(1800deg); /* 5 full rotations */
+  }
+}
+
+@keyframes flipTails {
+  from {
+    transform: rotateY(0);
+  }
+  to {
+    transform: rotateY(1980deg); /* 5.5 full rotations */
+  }
+}
+
+@keyframes countdownAnimation {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  90% {
+    transform: scale(1.125);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.countdown-animation {
+  animation: countdownAnimation infinite 1s ease-in-out;
+}

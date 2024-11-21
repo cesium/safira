@@ -1,7 +1,8 @@
 defmodule SafiraWeb.App.CoinFlipLive.Index do
   use SafiraWeb, :app_view
 
-  import SafiraWeb.App.WheelLive.Components.ResultModal
+  import SafiraWeb.App.CoinFlipLive.Components.ResultModal
+  import SafiraWeb.App.CoinFlipLive.Components.Room
 
   alias Safira.Minigames
 
@@ -20,7 +21,8 @@ defmodule SafiraWeb.App.CoinFlipLive.Index do
      |> assign(:wheel_price, Minigames.get_coin_flip_fee())
      |> assign(:result, nil)
      |> assign(:wheel_active?, Minigames.wheel_active?())
-     |> assign(:room_list, Minigames.list_coin_flip_rooms())}
+     |> assign(:playing, false)
+     |> stream(:room_list, Minigames.list_coin_flip_rooms())}
   end
 
   @impl true
@@ -35,14 +37,13 @@ defmodule SafiraWeb.App.CoinFlipLive.Index do
   end
 
   def handle_event("create-room", params, socket) do
-    IO.inspect(params)
     params = Map.put(params, "player1_id", socket.assigns.current_user.attendee.id)
 
     case Minigames.create_coin_flip_room(params) do
-      {:ok, _room} ->
+      {:ok, room} ->
         {:noreply,
          socket
-         |> assign(:room_list, Minigames.list_coin_flip_rooms())}
+         |> stream_insert(:room_list, room)}
 
       {:error, _} ->
         {:noreply, socket}
@@ -50,7 +51,6 @@ defmodule SafiraWeb.App.CoinFlipLive.Index do
   end
 
   def handle_event("delete-room", params, socket) do
-    IO.inspect(params)
     params = Map.put(params, "player1_id", socket.assigns.current_user.attendee.id)
 
     case Minigames.delete_coin_flip_room(Minigames.get_coin_flip_room!(params["room_id"])) do
@@ -62,10 +62,35 @@ defmodule SafiraWeb.App.CoinFlipLive.Index do
     end
   end
 
+  def handle_event("join-room", params, socket) do
+    case Minigames.join_coin_flip_room(params["room_id"], socket.assigns.current_user.attendee) do
+      {:ok, _room} ->
+        {:noreply,
+         socket
+         |> assign(:playing, true)}
+
+      {:error, msg} ->
+        {:noreply,
+         socket
+         |> put_flash(:error, msg)}
+    end
+  end
+
   def handle_event("close-modal", _params, socket) do
     {:noreply,
      socket
-     |> assign(:result, nil)}
+     |> assign(:playing, nil)}
+  end
+
+  @impl true
+  def handle_event("animation-done", %{"room_id" => room_id}, socket) do
+    room = Minigames.get_coin_flip_room!(room_id) |> Map.put(:finished, true)
+
+    {:noreply,
+     socket
+     # Set the wheel to not in spin mode
+     |> stream_delete(:room_list, room)
+     |> stream_insert(:room_list, room)}
   end
 
   @impl true
@@ -80,25 +105,26 @@ defmodule SafiraWeb.App.CoinFlipLive.Index do
 
   @impl true
   def handle_info({"create", room}, socket) do
-    if Enum.any?(socket.assigns.room_list, fn r -> r.id == room.id end) do
-      {:noreply, socket}
-    else
-      {:noreply,
-       socket
-       |> assign(:room_list, [room | socket.assigns.room_list])}
-    end
+    {:noreply,
+     socket
+     |> stream_insert(:room_list, room)}
   end
 
   @impl true
   def handle_info({"delete", deleted_room}, socket) do
-    IO.inspect(deleted_room)
-
     {:noreply,
      socket
-     |> assign(
+     |> stream_delete(
        :room_list,
-       socket.assigns.room_list |> Enum.reject(fn room -> room.id == deleted_room.id end)
+       deleted_room
      )}
+  end
+
+  @impl true
+  def handle_info({"update", room}, socket) do
+    {:noreply,
+     socket
+     |> stream_insert(:room_list, room)}
   end
 
   @impl true
