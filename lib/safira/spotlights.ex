@@ -4,15 +4,40 @@ defmodule Safira.Spotlights do
   alias Safira.Spotlights.Spotlight
   alias Safira.Constants
 
+  def create_spotlight(attrs) do
+    now = DateTime.utc_now()
+    duration = attrs.duration
+
+    if duration > 0 do
+      end_time = DateTime.add(now, duration, :minute)
+
+      spotlight_attrs = Map.put(attrs, :end, end_time)
+
+      IO.inspect(spotlight_attrs, label: "Spotlight attrs")
+
+      %Spotlight{}
+      |> Spotlight.changeset(spotlight_attrs)
+      |> Repo.insert()
+      |> dbg()
+    else
+      IO.puts("Invalid duration provided.")
+      {:error, "Invalid duration"}
+    end
+  end
+
   def get_current_spotlight do
     now = DateTime.utc_now()
 
     Spotlight
     |> where([s], s.end > ^now)
-    |> order_by(asc: :end)
+    |> order_by([s], asc: s.end)
     |> limit(1)
     |> preload(:company)
     |> Repo.one()
+  end
+
+  def get_duration do
+    Constants.get("duration_spotlights")
   end
 
   def change_duration_spotlight(time) do
@@ -58,24 +83,6 @@ defmodule Safira.Spotlights do
 
   """
   def get_spotlight!(id), do: Repo.get!(Spotlight, id)
-
-  @doc """
-  Creates a spotlight.
-
-  ## Examples
-
-      iex> create_spotlight(%{field: value})
-      {:ok, %Spotlight{}}
-
-      iex> create_spotlight(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def create_spotlight(attrs \\ %{}) do
-    %Spotlight{}
-    |> Spotlight.changeset(attrs)
-    |> Repo.insert()
-  end
 
   @doc """
   Updates a spotlight.

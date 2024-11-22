@@ -12,8 +12,9 @@ defmodule Safira.Spotlights.Spotlight do
 
   @doc false
   def changeset(spotlight, attrs) do
-    spotlight
-    |> cast(attrs, [:end])
-    |> validate_required([:end])
-  end
+  spotlight
+  |> cast(attrs, [:end, :company_id])
+  |> validate_required([:end, :company_id])
+  |> foreign_key_constraint(:company_id)
+end
 end

@@ -10,10 +10,8 @@
   </:actions>
   <div class="flex flex-col items-center mt-8">
     <img src={~p"/images/spotlight.svg"} alt="Spotlight" class="w-64 h-64 mb-4" />
-    <p>Spotlight debug:</p>
-      <%= IO.inspect(@spotlight) %> <%# não está a funcionar  %>
-  
-    <%= if @spotlight && Map.has_key?(@spotlight, :end) && DateTime.compare(@spotlight.end, DateTime.utc_now()) == :gt do %>
+      <%= IO.inspect(@spotlight) %>
+    <%= if @has_spotlight do %>
     <p><%= @spotlight.company.name %> is on spotlight!</p>
     <p>
     Time remaining:
@@ -54,7 +52,6 @@
 >
   <.live_component
     id="tiers-config"
-    show
     module={SafiraWeb.Backoffice.SpotlightLive.Tiers.Index}
     title={@page_title}
     patch={~p"/dashboard/spotlights/config"}
@@ -69,7 +66,6 @@
 >
   <.live_component
     id={@tier.id}
-    show
     module={SafiraWeb.Backoffice.SpotlightLive.Tiers.FormComponent}
     title={@page_title}
     tier={@tier}
@@ -85,7 +81,6 @@
 >
   <.live_component
     id="spotlight-new"
-    show
     module={SafiraWeb.Backoffice.SpotlightLive.New}
     title={@page_title}
     companies={@companies}
@@ -101,7 +96,7 @@
 >
   <.live_component
     id="spotlight-confirm"
-    show
+    duration = {@duration}
     company = {@company}
     module={SafiraWeb.Backoffice.SpotlightLive.Confirm}
     patch={~p"/dashboard/spotlights"}
