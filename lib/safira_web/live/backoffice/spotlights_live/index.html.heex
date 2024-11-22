@@ -10,7 +10,19 @@
   </:actions>
   <div class="flex flex-col items-center mt-8">
     <img src={~p"/images/spotlight.svg"} alt="Spotlight" class="w-64 h-64 mb-4" />
+    <p>Spotlight debug:</p>
+      <%= IO.inspect(@spotlight) %> <%# não está a funcionar  %>
+  
+    <%= if @spotlight && Map.has_key?(@spotlight, :end) && DateTime.compare(@spotlight.end, DateTime.utc_now()) == :gt do %>
+    <p><%= @spotlight.company.name %> is on spotlight!</p>
+    <p>
+    Time remaining:
+    <%= Timex.diff(@spotlight.end, DateTime.utc_now(), :minutes) %> minutes
+    </p>
+    <% else %>
     <p>There are no companies on spotlight!</p>
+    <% end %>
+
     <.link patch={~p"/dashboard/spotlights/new"}>
       <.button class="mt-4">
         Create Spotlight
@@ -76,7 +88,7 @@
     show
     module={SafiraWeb.Backoffice.SpotlightLive.New}
     title={@page_title}
-    badges={@badges}
+    companies={@companies}
     patch={~p"/dashboard/spotlights"}
   />
 </.modal>
@@ -90,6 +102,7 @@
   <.live_component
     id="spotlight-confirm"
     show
+    company = {@company}
     module={SafiraWeb.Backoffice.SpotlightLive.Confirm}
     patch={~p"/dashboard/spotlights"}
   />

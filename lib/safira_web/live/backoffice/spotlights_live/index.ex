@@ -2,17 +2,17 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Index do
   use Phoenix.LiveView
   use SafiraWeb, :backoffice_view
 
-  alias Safira.{Companies, Contest}
+
+  alias Safira.{Companies, Contest, Spotlights}
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, socket}
+    spotlight = Safira.Spotlights.get_current_spotlight()
+    {:ok, assign(socket, spotlight: spotlight)}
   end
 
   @impl true
   def handle_params(params, _url, socket) do
-    IO.inspect(socket.assigns.live_action)
-
     {:noreply,
      socket
      |> apply_action(socket.assigns.live_action, params)}
@@ -51,11 +51,13 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Index do
   defp apply_action(socket, :new, _params) do
     socket
     |> assign(:page_title, "Create Spotlight")
-    |> assign(:badges, Contest.list_badges())
+    |> assign(:companies, Companies.list_companies())
   end
 
-  defp apply_action(socket, :confirm, _params) do
+  defp apply_action(socket, :confirm, %{"id" => company_id}) do
     socket
     |> assign(:page_title, "Confirm Spotlight")
+    |> assign(:company, Companies.get_company!(company_id))
   end
+
 end

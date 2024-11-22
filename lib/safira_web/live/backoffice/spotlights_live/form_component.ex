@@ -18,7 +18,7 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.FormComponent do
           </.link>
         </:actions>
         <div class="w-full space-y-2">
-          <.simple_form for={@form} id="spotlight-form">
+          <.simple_form for={@form} id="spotlight-form" phx-submit="save" phx-target={@myself}>
             <div>
               <.field field={@form[:duration]} type="number" label="Duration" required />
             </div>
@@ -32,21 +32,15 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.FormComponent do
 
   @impl true
   def mount(socket) do
-    {:ok,
-     socket
-     |> assign(
-       form:
-         to_form(
-           %{"duration" => Spotlights.get_spotlights_duration()},
-           as: :spotlight_config
-         )
-     )}
+    duration = Spotlights.get_spotlights_duration() || 0
+    form = to_form(%{"duration" => duration}, as: :spotlight_config)
+
+    {:ok, socket |> assign(form: form)}
   end
 
   @impl true
-  def handle_event("save", params, socket) do
-    Spotlights.change_duration_spotlight(params["duration"] |> String.to_integer())
+  def handle_event("save", %{"spotlight_config" => %{"duration" => duration}}, socket) do
+    Spotlights.change_duration_spotlight(String.to_integer(duration))
     {:noreply, socket |> push_patch(to: ~p"/dashboard/spotlights/")}
-    {:noreply, socket}
   end
 end

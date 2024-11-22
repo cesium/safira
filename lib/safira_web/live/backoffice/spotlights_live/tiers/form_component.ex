@@ -29,11 +29,10 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Tiers.FormComponent do
 
   @impl true
   def update(%{tier: tier} = assigns, socket) do
-    IO.inspect(tier)
-
     {:ok,
      socket
      |> assign(assigns)
+     |> assign_new(:action, fn -> :tiers_edit end)
      |> assign_new(:form, fn ->
        to_form(Companies.change_tier_multiplier(tier))
      end)}
@@ -46,7 +45,8 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Tiers.FormComponent do
   end
 
   def handle_event("save", %{"tier" => tier_params}, socket) do
-    save_tier(socket, socket.assigns.action, tier_params.multiplier)
+    action = socket.assigns[:action] || :tiers_edit
+    save_tier(socket, action, tier_params["multiplier"])
   end
 
   defp save_tier(socket, :tiers_edit, multiplier) do

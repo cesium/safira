@@ -11,8 +11,6 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Tiers.Index do
         <ul
           id="tiers"
           class="h-96 mt-8 pb-8 flex flex-col space-y-2 overflow-y-auto"
-          phx-hook="Sorting"
-          phx-update="stream"
         >
           <li
             :for={{_, tier} <- @streams.tiers}
@@ -20,7 +18,6 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Tiers.Index do
             class="even:bg-lightShade/20 dark:even:bg-darkShade/20 py-4 px-4 flex flex-row justify-between"
           >
             <div class="flex flex-row gap-2 items-center">
-              <.icon name="hero-bars-3" class="w-5 h-5 handle cursor-pointer ml-4" />
               <%= tier.name %>
             </div>
             <p class="text-dark dark:text-light flex flex-row justify-between gap-2">
