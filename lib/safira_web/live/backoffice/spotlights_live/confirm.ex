@@ -13,7 +13,9 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Confirm do
           </p>
           <div class="flex justify-center space-x-8">
             <.button phx-click="cancel" class="w-full">Cancel</.button>
-            <.button phx-click="confirm-spotlight" class="w-full" phx-target={@myself} type="button">Start Spotlight</.button>
+            <.button phx-click="confirm-spotlight" class="w-full" phx-target={@myself} type="button">
+              Start Spotlight
+            </.button>
           </div>
         </div>
       </.page>
@@ -29,9 +31,11 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Confirm do
         company_name: socket.assigns.company.name,
         duration: socket.assigns.duration
       }
+
       case create_spotlight(attrs) do
         {:ok, spotlight} ->
           IO.inspect(spotlight, label: "New Spotlight")
+
           {:noreply,
            socket
            |> put_flash(:info, "Spotlight started successfully.")

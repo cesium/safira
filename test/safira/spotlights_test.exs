@@ -35,7 +35,9 @@ defmodule Safira.SpotlightsTest do
       spotlight = spotlight_fixture()
       update_attrs = %{end: ~U[2024-11-21 22:32:00Z]}
 
-      assert {:ok, %Spotlight{} = spotlight} = Spotlights.update_spotlight(spotlight, update_attrs)
+      assert {:ok, %Spotlight{} = spotlight} =
+               Spotlights.update_spotlight(spotlight, update_attrs)
+
       assert spotlight.end == ~U[2024-11-21 22:32:00Z]
     end
 

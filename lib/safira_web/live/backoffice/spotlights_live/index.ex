@@ -6,10 +6,12 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Index do
   @impl true
   def mount(_params, _session, socket) do
     spotlight = Safira.Spotlights.get_current_spotlight()
-    socket = assign(socket,
-      spotlight: spotlight,
-      has_spotlight: !is_nil(spotlight)
-    )
+
+    socket =
+      assign(socket,
+        spotlight: spotlight,
+        has_spotlight: !is_nil(spotlight)
+      )
 
     {:ok, socket}
   end
@@ -18,8 +20,7 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Index do
   def handle_params(params, _url, socket) do
     {:noreply,
      socket
-     |> apply_action(socket.assigns.live_action, params)
-    }
+     |> apply_action(socket.assigns.live_action, params)}
   end
 
   defp apply_action(socket, :config, %{"id" => id}) do
@@ -65,7 +66,5 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Index do
     |> assign(:page_title, "Confirm Spotlight")
     |> assign(:company, Companies.get_company!(company_id))
     |> assign(:duration, duration)
-
   end
-
 end

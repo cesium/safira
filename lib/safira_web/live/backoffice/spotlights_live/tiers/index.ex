@@ -8,10 +8,7 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Tiers.Index do
     ~H"""
     <div>
       <.page title={@title}>
-        <ul
-          id="tiers"
-          class="h-96 mt-8 pb-8 flex flex-col space-y-2 overflow-y-auto"
-        >
+        <ul id="tiers" class="h-96 mt-8 pb-8 flex flex-col space-y-2 overflow-y-auto">
           <li
             :for={{_, tier} <- @streams.tiers}
             id={"tier-" <> tier.id}
