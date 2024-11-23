@@ -10,12 +10,8 @@
   </:actions>
   <div class="flex flex-col items-center mt-8">
     <img src={~p"/images/spotlight.svg"} alt="Spotlight" class="w-64 h-64 mb-4" />
-    <%= IO.inspect(@spotlight) %>
-    <%= if @has_spotlight do %>
+    <%= if @spotlight do %>
       <p><%= @spotlight.company.name %> is on spotlight!</p>
-      <p>
-        Time remaining: <%= Timex.diff(@spotlight.end, DateTime.utc_now(), :minutes) %> minutes
-      </p>
     <% else %>
       <p>There are no companies on spotlight!</p>
     <% end %>

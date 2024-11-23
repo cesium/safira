@@ -1,6 +1,5 @@
 defmodule Safira.Spotlights.Spotlight do
-  use Ecto.Schema
-  import Ecto.Changeset
+  use Safira.Schema
 
   schema "spotlights" do
     field :end, :utc_datetime

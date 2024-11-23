@@ -2,7 +2,8 @@ defmodule Safira.Repo.Migrations.CreateSpotlights do
   use Ecto.Migration
 
   def change do
-    create table(:spotlights) do
+    create table(:spotlights, primary_key: false) do
+      add :id, :binary_id, primary_key: true
       add :company_id, references(:companies, type: :binary_id, on_delete: :delete_all),
         null: false
 
