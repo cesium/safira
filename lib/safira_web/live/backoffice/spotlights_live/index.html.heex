@@ -1,0 +1,99 @@
+<.page title="Spotlights">
+  <:actions>
+    <div>
+      <.link patch={~p"/dashboard/spotlights/config"}>
+        <.button>
+          <.icon name="hero-cog-6-tooth" class="w-5 h-5" />
+        </.button>
+      </.link>
+    </div>
+  </:actions>
+  <div class="flex flex-col items-center mt-8">
+    <img src={~p"/images/spotlight.svg"} alt="Spotlight" class="w-64 h-64 mb-4" />
+    <%= if @spotlight do %>
+      <p><%= @spotlight.company.name %> is on spotlight!</p>
+    <% else %>
+      <p>There are no companies on spotlight!</p>
+    <% end %>
+
+    <.link patch={~p"/dashboard/spotlights/new"}>
+      <.button class="mt-4">
+        Create Spotlight
+      </.button>
+    </.link>
+  </div>
+</.page>
+
+<.modal
+  :if={@live_action in [:config]}
+  id="spotlight-config"
+  show
+  on_cancel={JS.patch(~p"/dashboard/spotlights")}
+>
+  <.live_component
+    id="spotlight-config"
+    show
+    module={SafiraWeb.Backoffice.SpotlightLive.FormComponent}
+    title={@page_title}
+    patch={~p"/dashboard/spotlights"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:tiers]}
+  id="tiers-config"
+  show
+  on_cancel={JS.patch(~p"/dashboard/spotlights/config")}
+>
+  <.live_component
+    id="tiers-config"
+    module={SafiraWeb.Backoffice.SpotlightLive.Tiers.Index}
+    title={@page_title}
+    patch={~p"/dashboard/spotlights/config"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:tiers_edit]}
+  id="tiers-edit"
+  show
+  on_cancel={JS.patch(~p"/dashboard/spotlights/config/tiers")}
+>
+  <.live_component
+    id={@tier.id}
+    module={SafiraWeb.Backoffice.SpotlightLive.Tiers.FormComponent}
+    title={@page_title}
+    tier={@tier}
+    patch={~p"/dashboard/spotlights/config/tiers"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:new]}
+  id="spotlight-new"
+  show
+  on_cancel={JS.patch(~p"/dashboard/spotlights")}
+>
+  <.live_component
+    id="spotlight-new"
+    module={SafiraWeb.Backoffice.SpotlightLive.New}
+    title={@page_title}
+    companies={@companies}
+    patch={~p"/dashboard/spotlights"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:confirm]}
+  id="spotlight-confirm"
+  show
+  on_cancel={JS.patch(~p"/dashboard/spotlights")}
+>
+  <.live_component
+    id="spotlight-confirm"
+    duration={@duration}
+    company={@company}
+    module={SafiraWeb.Backoffice.SpotlightLive.Confirm}
+    patch={~p"/dashboard/spotlights"}
+  />
+</.modal>
