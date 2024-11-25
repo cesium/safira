@@ -12,15 +12,20 @@
     <img src={~p"/images/spotlight.svg"} alt="Spotlight" class="w-64 h-64 mb-4" />
     <%= if @spotlight do %>
       <p><%= @spotlight.company.name %> is on spotlight!</p>
+      <div 
+        id="timer-countdown"
+        phx-hook="Timer"
+        data-finish-time={DateTime.to_unix(@spotlight.end)}>
+        00:00:00
+      </div>
     <% else %>
       <p>There are no companies on spotlight!</p>
+      <.link patch={~p"/dashboard/spotlights/new"}>
+        <.button class="mt-4">
+          Create Spotlight
+        </.button>
+      </.link>
     <% end %>
-
-    <.link patch={~p"/dashboard/spotlights/new"}>
-      <.button class="mt-4">
-        Create Spotlight
-      </.button>
-    </.link>
   </div>
 </.page>
 
