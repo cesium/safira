@@ -14,7 +14,7 @@ defmodule Safira.Repo.Seeds.Accounts do
       [] ->
         seed_attendees(attendee_names)
       _  ->
-        Mix.shell().error("Found staff accounts, aborting seeding staffs.")
+        Mix.shell().error("Found attendee accounts, aborting seeding attendees.")
     end
 
     case Accounts.list_staffs() do
@@ -28,7 +28,7 @@ defmodule Safira.Repo.Seeds.Accounts do
       [] ->
         seed_credentials(credential_count, div(attendee_names |> length(), 2))
       _ ->
-        Mix.shell().erroring("Found credentials, aborting seeding credentials.")
+        Mix.shell().error("Found credentials, aborting seeding credentials.")
     end
   end
 

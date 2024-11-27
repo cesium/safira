@@ -19,7 +19,7 @@ defmodule SafiraWeb.CoreComponents do
   alias Phoenix.HTML.Form
   alias Phoenix.LiveView.JS
 
-  import SafiraWeb.Gettext
+  use Gettext, backend: SafiraWeb.Gettext
 
   @doc """
   Renders a modal.
