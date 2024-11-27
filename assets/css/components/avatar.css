@@ -1,0 +1,27 @@
+/* Avatar */
+
+.safira-avatar {
+  @apply font-medium leading-none flex shrink-0 items-center justify-center select-none;
+}
+
+/* Avatar - sizes */
+
+.safira-avatar--xs {
+  @apply h-8 w-8 text-xs;
+}
+
+.safira-avatar--sm {
+  @apply h-12 w-12 text-lg;
+}
+
+.safira-avatar--md {
+  @apply h-16 w-16 text-lg;
+}
+
+.safira-avatar--lg {
+  @apply h-20 w-20 text-4xl;
+}
+
+.safira-avatar--xl {
+  @apply h-24 w-24 text-4xl;
+}
