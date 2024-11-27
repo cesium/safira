@@ -24,7 +24,7 @@ defmodule SafiraWeb.Backoffice.EventLive.FormComponent do
         >
           <div class="flex flex-col md:flex-row w-full gap-4">
             <div class="w-full space-y-2">
-              <.field field={@form[:registrations_open]} type="checkbox" label="Registrations Open" />
+              <.field field={@form[:registrations_open]} type="switch" label="Registrations Open" />
               <.field
                 field={@form[:start_time]}
                 type="datetime-local"
@@ -70,7 +70,7 @@ defmodule SafiraWeb.Backoffice.EventLive.FormComponent do
       {:noreply,
        socket
        |> put_flash(:info, "Event settings updated successfully")
-       |> push_patch(to: socket.assigns.patch)}
+       |> push_navigate(to: socket.assigns.navigate)}
     else
       {:error, _reason} ->
         {:noreply,

@@ -6,8 +6,10 @@
   </:actions>
 
   <div class="py-4">
-    <p><b><%= gettext("Registrations open:") %></b> <%= @form[:registrations_open].value %></p>
-    <p><b><%= gettext("Start Date/Time:") %></b> <%= @form[:start_time].value %></p>
+    <p class="my-1">
+      <b><%= gettext("Registrations Open:") %></b> <%= @form[:registrations_open].value %>
+    </p>
+    <p class="my-1"><b><%= gettext("Start Date/Time:") %></b> <%= @form[:start_time].value %></p>
   </div>
 </.page>
 <.modal
@@ -22,6 +24,6 @@
     title="Event Settings"
     action={@live_action}
     form={@form}
-    patch={~p"/dashboard/event"}
+    navigate={~p"/dashboard/event"}
   />
 </.modal>

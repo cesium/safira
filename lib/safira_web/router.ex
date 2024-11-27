@@ -52,6 +52,8 @@ defmodule SafiraWeb.Router do
   scope "/", SafiraWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 
+    post "/users/log_in", UserSessionController, :create
+
     live_session :redirect_if_user_is_authenticated,
       on_mount: [{SafiraWeb.UserAuth, :redirect_if_user_is_authenticated}] do
       live "/users/log_in", UserLoginLive, :new
@@ -61,8 +63,6 @@ defmodule SafiraWeb.Router do
       pipe_through :registrations_open
       live "/users/register", UserRegistrationLive, :new
     end
-
-    post "/users/log_in", UserSessionController, :create
   end
 
   scope "/", SafiraWeb do
