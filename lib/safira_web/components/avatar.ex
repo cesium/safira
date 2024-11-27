@@ -2,6 +2,8 @@ defmodule SafiraWeb.Components.Avatar do
   @moduledoc false
   use SafiraWeb, :component
 
+  @colors ~w(blue green red yellow purple pink orange teal)a
+
   attr :src, :string, default: nil, doc: "The URL of the image to display."
 
   attr :size, :atom,
@@ -64,9 +66,9 @@ defmodule SafiraWeb.Components.Avatar do
       |> Enum.reduce(0, fn char, acc ->
         acc + char
       end)
-      |> rem(8)
+      |> rem(length(@colors))
 
-    Enum.at(["blue", "green", "red", "yellow", "purple", "pink", "orange", "teal"], pos)
+    Enum.at(@colors, pos)
   end
 
   defp void_avatar(assigns) do
