@@ -47,8 +47,9 @@ defmodule Safira.Event do
   end
 
   def change_event_start_time(start_time) do
-    Constants.set("start_time", DateTime.to_iso8601(start_time))
+    result = Constants.set("start_time", DateTime.to_iso8601(start_time))
     broadcast_start_time_update("start_time", start_time)
+    result
   end
 
   @doc """
