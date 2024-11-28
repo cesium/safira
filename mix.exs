@@ -48,7 +48,11 @@ defmodule Safira.MixProject do
 
       # uploads
       {:waffle_ecto, "~> 0.0"},
-      {:waffle, "~> 1.1"},
+      {:waffle, "~> 1.1.9"},
+      {:ex_aws, "~> 2.1.2"},
+      {:ex_aws_s3, "~> 2.0"},
+      {:hackney, "~> 1.9"},
+      {:sweet_xml, "~> 0.6"},
 
       # mailer
       {:swoosh, "~> 1.5"},
