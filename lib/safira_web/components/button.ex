@@ -4,9 +4,12 @@ defmodule SafiraWeb.Components.Button do
   """
   use SafiraWeb, :component
 
+  import SafiraWeb.CoreComponents
+
   attr :title, :string, default: ""
   attr :subtitle, :string, default: ""
   attr :disabled, :boolean, default: false
+  attr :icon, :string, default: ""
   attr :class, :string, default: ""
 
   attr :rest, :global,
@@ -21,6 +24,9 @@ defmodule SafiraWeb.Components.Button do
       disabled={@disabled}
       {@rest}
     >
+      <%= if @icon != "" do %>
+        <.icon name={@icon} />
+      <% end %>
       <p class="uppercase font-terminal text-2xl"><%= @title %></p>
       <p class="font-terminal"><%= @subtitle %></p>
     </button>

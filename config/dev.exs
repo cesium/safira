@@ -58,7 +58,8 @@ config :safira, SafiraWeb.Endpoint,
     patterns: [
       ~r"priv/static/(?!uploads/).*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/safira_web/(controllers|live|components)/.*(ex|heex)$"
+      ~r"lib/safira_web/(controllers|live|components)/.*(ex|heex)$",
+      ~r"lib/safira_web/.*(ex|heex)$"
     ]
   ]
 
