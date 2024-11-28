@@ -1,19 +1,31 @@
 <.page title={gettext("Coin Flip")} size={:xl} title_class="font-terminal uppercase">
   <:actions>
-    <.button phx-click="create-room" phx-value-bet={10}>+</.button>
     <span class="text-semibold text-xl border-2 px-4 py-2 rounded-full font-terminal">
       💰 <%= @attendee_tokens %>
     </span>
   </:actions>
-  <div class="flex flex-row justify-center w-full pt-16">
-    <%!-- <.action_button
-      title={gettext("Spin")}
-      subtitle={"💰 #{@wheel_price}"}
-      class="w-64"
+  <div class="flex justify-center w-full">
+    <.action_button
+      icon="hero-minus"
+      class="rounded-r-lg pl-6 pr-5"
+      disabled={false}
+      phx-click="decrease-bet"
+    />
+    <.action_button
+      title={gettext("Play")}
+      subtitle={"💰 #{@bet}"}
+      class="rounded-none px-10"
       disabled={false}
       phx-click="create-room"
-      phx-value-bet={10}
-    /> --%>
+    />
+    <.action_button
+      icon="hero-plus"
+      class="rounded-l-lg pr-6 pl-5"
+      disabled={false}
+      phx-click="increase-bet"
+    />
+  </div>
+  <div class="flex flex-row justify-center w-full pt-16">
   </div>
   <h2 class="text-3xl font-semibold font-terminal">Current games:</h2>
   <div

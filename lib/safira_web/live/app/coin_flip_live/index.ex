@@ -22,6 +22,7 @@ defmodule SafiraWeb.App.CoinFlipLive.Index do
      |> assign(:result, nil)
      |> assign(:wheel_active?, Minigames.wheel_active?())
      |> assign(:playing, false)
+     |> assign(:bet, 10)
      |> stream(:room_list, Minigames.list_coin_flip_rooms())}
   end
 
@@ -36,8 +37,11 @@ defmodule SafiraWeb.App.CoinFlipLive.Index do
      |> push_event("spin-wheel", %{})}
   end
 
-  def handle_event("create-room", params, socket) do
-    params = Map.put(params, "player1_id", socket.assigns.current_user.attendee.id)
+  def handle_event("create-room", _params, socket) do
+    params = %{
+      "player1_id" => socket.assigns.current_user.attendee.id,
+      "bet" => socket.assigns.bet
+    }
 
     case Minigames.create_coin_flip_room(params) do
       {:ok, room} ->
@@ -91,6 +95,20 @@ defmodule SafiraWeb.App.CoinFlipLive.Index do
      # Set the wheel to not in spin mode
      |> stream_delete(:room_list, room)
      |> stream_insert(:room_list, room)}
+  end
+
+  @impl true
+  def handle_event("decrease-bet", _params, socket) do
+    {:noreply,
+     socket
+     |> assign(:bet, socket.assigns.bet - 10)}
+  end
+
+  @impl true
+  def handle_event("increase-bet", _params, socket) do
+    {:noreply,
+     socket
+     |> assign(:bet, socket.assigns.bet + 10)}
   end
 
   @impl true
