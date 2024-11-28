@@ -9,7 +9,7 @@
     </div>
   </:actions>
   <div class="flex flex-col items-center mt-8">
-    <img src={~p"/images/spotlight.svg"} alt="Spotlight" class="w-64 h-64 mb-4" />
+    <img src={~p"/images/spotlight.svg"} alt="Spotlight" class="w-64 h-64 mb-4 invert dark:filter-none" />
     <%= if @spotlight do %>
       <p><%= @spotlight.company.name %> is on spotlight!</p>
       <div 

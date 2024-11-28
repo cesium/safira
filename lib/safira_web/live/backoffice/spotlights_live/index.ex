@@ -69,16 +69,12 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Index do
   end
 
   @impl true
-def handle_event("on_spotlight_end", params, socket) do
-  {:noreply, apply_action(socket, :on_spotlight_end, params)}
-end
-
+  def handle_event("on_spotlight_end", params, socket) do
+    {:noreply, apply_action(socket, :on_spotlight_end, params)}
+  end
 
   defp apply_action(socket, :on_spotlight_end, _params) do
     socket
     |> push_redirect(to: "/dashboard/spotlights")
   end
-
-
-
 end

@@ -13,6 +13,9 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Tiers.FormComponent do
           <div class="w-full space-y-2">
             <.field field={@form[:multiplier]} type="number" label="Multiplier" required />
           </div>
+          <div>
+            <.field field={@form[:max_spotlights]} type="number" label="Max Spotlights" required />
+          </div>
           <:actions>
             <.button phx-disable-with="Saving...">Save</.button>
           </:actions>
@@ -46,11 +49,11 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Tiers.FormComponent do
 
   def handle_event("save", %{"tier" => tier_params}, socket) do
     action = socket.assigns[:action] || :tiers_edit
-    save_tier(socket, action, tier_params["multiplier"])
+    save_tier(socket, action, tier_params["multiplier"], tier_params["max_spotlights"])
   end
 
-  defp save_tier(socket, :tiers_edit, multiplier) do
-    case Companies.update_tier_multiplier(socket.assigns.tier, multiplier) do
+  defp save_tier(socket, :tiers_edit, multiplier,max_spotlights) do
+    case Companies.update_tier_multiplier(socket.assigns.tier, multiplier, max_spotlights) do
       {:ok, _tier} ->
         {:noreply,
          socket

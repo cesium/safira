@@ -5,7 +5,8 @@ defmodule Safira.Companies do
 
   use Safira.Context
 
-  alias Safira.Companies.Company
+  alias Safira.Companies.{Company,Tier}
+  alias Safira.Spotlights.Spotlight
 
   @doc """
   Returns the list of companies.
@@ -141,8 +142,6 @@ defmodule Safira.Companies do
     Company.changeset(company, attrs)
   end
 
-  alias Safira.Companies.Tier
-
   @doc """
   Returns the list of tiers.
 
@@ -251,13 +250,29 @@ defmodule Safira.Companies do
     (Repo.aggregate(from(t in Tier), :max, :priority) || -1) + 1
   end
 
-  def update_tier_multiplier(%Tier{} = tier, multiplier) do
+  def update_tier_multiplier(%Tier{} = tier, multiplier , max_spotlights) do
     tier
-    |> Tier.changeset_multiplier(%{multiplier: multiplier})
+    |> Tier.changeset_multiplier(%{multiplier: multiplier, max_spotlights: max_spotlights})
     |> Repo.update()
   end
 
   def change_tier_multiplier(%Tier{} = tier, attrs \\ %{}) do
     Tier.changeset_multiplier(tier, attrs)
   end
+
+  def get_company_spotlights_count(company_id) do
+    Spotlight
+    |> where([s], s.company_id == ^company_id)
+    |> Repo.aggregate(:count, :id)
+  end
+
+  def can_create_spotlight?(company_id) do
+    company = get_company!(company_id)
+    tier = Repo.preload(company, :tier).tier
+
+    current_spotlights_count = get_company_spotlights_count(company_id)
+
+    current_spotlights_count <= tier.max_spotlights
+  end
+
 end

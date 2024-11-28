@@ -12,6 +12,6 @@ defmodule Safira.Repo.Migrations.CreateSpotlights do
       timestamps(type: :utc_datetime)
     end
 
-    create unique_index(:spotlights, [:company_id])
+    create unique_index(:spotlights, [:company_id,:end])
   end
 end

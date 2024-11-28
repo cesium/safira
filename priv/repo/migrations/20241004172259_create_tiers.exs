@@ -7,6 +7,7 @@ defmodule Safira.Repo.Migrations.CreateTiers do
       add :name, :string, null: false
       add :priority, :integer, null: false
       add :multiplier, :float, null: false
+      add :max_spotlights, :integer, null: false
 
       timestamps(type: :utc_datetime)
     end

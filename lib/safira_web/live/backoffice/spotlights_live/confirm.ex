@@ -1,6 +1,8 @@
 defmodule SafiraWeb.Backoffice.SpotlightLive.Confirm do
   use SafiraWeb, :live_component
 
+  import Safira.Companies
+
   @impl true
   def render(assigns) do
     ~H"""
@@ -9,7 +11,7 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Confirm do
         <div class="flex flex-col">
           <p class="text-center text-2xl mb-4">Are you sure?</p>
           <p class="text-center pb-6">
-            Are you sure you want to start a spotlight for <%= @company.name %> with a duration of <%= @duration %>, id :<%= @company.id %> .
+            Are you sure you want to start a spotlight for <%= @company.name %> with a duration of <%= @duration %> <%= if @duration == 1, do: "minute", else: "minutes" %>.
           </p>
           <div class="flex justify-center space-x-8">
             <.button phx-click="cancel" class="w-full">Cancel</.button>
@@ -25,7 +27,7 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Confirm do
 
   @impl true
   def handle_event("confirm-spotlight", _params, socket) do
-    if socket.assigns.company && socket.assigns.duration do
+    if socket.assigns.company && socket.assigns.duration && can_create_spotlight?(socket.assigns.company.id) do
       attrs = %{
         company_id: socket.assigns.company.id,
         company_name: socket.assigns.company.name,
@@ -39,7 +41,7 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Confirm do
           {:noreply,
            socket
            |> put_flash(:info, "Spotlight started successfully.")
-           |> push_patch(to: ~p"/dashboard/spotlights")}
+           |> push_navigate(to: ~p"/dashboard/spotlights")}
 
         {:error, changeset} ->
           IO.inspect(changeset, label: "Failed to create Spotlight")
