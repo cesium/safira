@@ -73,8 +73,17 @@ defmodule SafiraWeb.Router do
       live "/scanner", ScannerLive.Index, :index
 
       scope "/app", App do
-        pipe_through [:require_attendee_user, :require_credential]
+        pipe_through [:require_attendee_user]
+
+        scope "/credential", CredentialLive do
+          pipe_through [:require_no_credential]
+          live "/link", Edit, :edit
+        end
+
+        pipe_through [:require_credential]
         live "/", HomeLive.Index, :index
+
+        live "/credential", CredentialLive.Index, :index
 
         live "/wheel", WheelLive.Index, :index
 
@@ -83,12 +92,6 @@ defmodule SafiraWeb.Router do
         scope "/store", StoreLive do
           live "/", Index, :index
           live "/product/:id", Show, :show
-        end
-
-        scope "/credential", CredentialLive do
-          live "/", Index, :index
-          live "/:id", Show, :show
-          live "/:id/edit", Edit, :edit
         end
 
         live "/vault", VaultLive.Index, :index
