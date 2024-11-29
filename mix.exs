@@ -56,6 +56,7 @@ defmodule Safira.MixProject do
 
       # mailer
       {:swoosh, "~> 1.5"},
+      {:gen_smtp, "~>1.2.0"},
       {:phoenix_html, "~> 4.0"},
       {:finch, "~> 0.13"},
 

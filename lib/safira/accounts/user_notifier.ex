@@ -11,7 +11,7 @@ defmodule Safira.Accounts.UserNotifier do
     email =
       new()
       |> to(recipient)
-      |> from({"Safira", "contact@example.com"})
+      |> from({"Semana da Engenharia Informática", "noreply@seium.org"})
       |> subject(subject)
       |> text_body(body)
 
