@@ -4,6 +4,9 @@ defmodule Safira.Spotlights do
   alias Safira.Spotlights.Spotlight
   alias Safira.Constants
 
+  @pubsub Safira.PubSub
+
+
   def create_spotlight(attrs) do
     now = DateTime.utc_now()
     duration = attrs.duration
@@ -42,6 +45,7 @@ defmodule Safira.Spotlights do
 
   def change_duration_spotlight(time) do
     Constants.set("duration_spotlights", time)
+    Phoenix.PubSub.broadcast(@pubsub, "spotlight:duration", time)
   end
 
   def get_spotlights_duration do
@@ -129,5 +133,6 @@ defmodule Safira.Spotlights do
   """
   def change_spotlight(%Spotlight{} = spotlight, attrs \\ %{}) do
     Spotlight.changeset(spotlight, attrs)
+    Phoenix.PubSub.broadcast(@pubsub, "spotlight:change", spotlight)
   end
 end
