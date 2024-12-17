@@ -12,7 +12,7 @@ defmodule Safira.Minigames do
   alias Safira.Constants
   alias Safira.Contest
   alias Safira.Inventory.Item
-  alias Safira.Minigames.{Prize, WheelDrop}
+  alias Safira.Minigames.{Prize, WheelDrop, WheelSpin}
 
   @pubsub Safira.PubSub
 
@@ -312,6 +312,10 @@ defmodule Safira.Minigames do
     # Apply the reward action for the drop
     |> Multi.merge(fn %{drop: drop, attendee: attendee} ->
       drop_reward_action(drop, attendee)
+    end)
+    # Add record of the spin transaction to the database
+    |> Multi.insert(:spin, fn %{drop: drop, attendee: attendee} ->
+      WheelSpin.changeset(%WheelSpin{}, %{drop_id: drop.id, attendee_id: attendee.id})
     end)
     # Execute the transaction
     |> Repo.transaction()
