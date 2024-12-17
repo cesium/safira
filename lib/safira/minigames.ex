@@ -310,6 +310,14 @@ defmodule Safira.Minigames do
     end
   end
 
+  def wheel_latest_wins(count) do
+    WheelSpin
+    |> order_by([ws], desc: ws.inserted_at)
+    |> limit(^count)
+    |> Repo.all()
+    |> Repo.preload(attendee: [:user], drop: [:prize, :badge])
+  end
+
   defp spin_wheel_transaction(attendee) do
     Multi.new()
     # Fetch the wheel spin price

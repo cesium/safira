@@ -4,15 +4,24 @@
       💰 <%= @attendee_tokens %>
     </span>
   </:actions>
-  <.wheel />
-  <div class="flex flex-row justify-center w-full pt-16">
-    <.action_button
-      title={gettext("Spin")}
-      subtitle={"💰 #{@wheel_price}"}
-      class="!w-96"
-      disabled={!can_spin?(@wheel_active?, @attendee_tokens, @wheel_price, @in_spin?)}
-      phx-click="spin-wheel"
-    />
+
+  <div class="grid grid-cols-1 xl:grid-cols-2">
+    <div>
+      <.wheel />
+      <div class="flex flex-row justify-center w-full pt-16">
+        <.action_button
+          title={gettext("Spin")}
+          subtitle={"💰 #{@wheel_price}"}
+          class="w-64"
+          disabled={!can_spin?(@wheel_active?, @attendee_tokens, @wheel_price, @in_spin?)}
+          phx-click="spin-wheel"
+        />
+      </div>
+    </div>
+    <div class="mt-12">
+    <h2 class="text-xl font-semibold mb-8"><%= gettext("Latest Wins") %></h2>
+      <.latest_wins entries={@latest_wins} />
+    </div>
   </div>
 </.page>
 
