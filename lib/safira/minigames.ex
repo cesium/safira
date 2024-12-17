@@ -335,11 +335,23 @@ defmodule Safira.Minigames do
       drop_reward_action(drop, attendee)
     end)
     # Add record of the spin transaction to the database
-    |> Multi.insert(:spin, fn %{drop: drop, attendee: attendee} ->
-      WheelSpin.changeset(%WheelSpin{}, %{drop_id: drop.id, attendee_id: attendee.id})
+    |> Multi.merge(fn %{drop: drop, attendee: attendee} ->
+      add_spin_action(drop, attendee)
     end)
     # Execute the transaction
     |> Repo.transaction()
+  end
+
+  defp add_spin_action(drop, attendee) do
+    if is_nil(drop) or (is_nil(drop.badge_id) and is_nil(drop.prize_id)) do
+      # If there was no prize, or the prize was just tokens, don't insert it
+      Multi.new()
+    else
+      Multi.new()
+      |> Multi.insert(:spin, fn _ ->
+        WheelSpin.changeset(%WheelSpin{}, %{drop_id: drop.id, attendee_id: attendee.id})
+      end)
+    end
   end
 
   defp generate_valid_wheel_drop(attendee) do

@@ -26,15 +26,10 @@ defmodule SafiraWeb.App.WheelLive.Components.LatestWins do
   end
 
   defp entry_name(entry) do
-    if is_nil(entry.drop) do
-      # TODO: Remove
-      "Nothing"
+    if is_nil(entry.drop.badge) do
+      entry.drop.prize.name
     else
-      if is_nil(entry.drop.badge) do
-        entry.drop.prize.name
-      else
-        entry.drop.badge.name
-      end
+      entry.drop.badge.name
     end
   end
 end
