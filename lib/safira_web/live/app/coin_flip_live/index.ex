@@ -1,7 +1,6 @@
 defmodule SafiraWeb.App.CoinFlipLive.Index do
   use SafiraWeb, :app_view
 
-  import SafiraWeb.App.CoinFlipLive.Components.ResultModal
   import SafiraWeb.App.CoinFlipLive.Components.Room
 
   alias Safira.Minigames

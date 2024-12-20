@@ -32,6 +32,9 @@ defmodule SafiraWeb.App.CoinFlipLive.Components.Room do
           </.button>
           <%= @room.player1.user.handle %>
         </span>
+        <div class="absolute coin size-12 top-1 left-2">
+          <div class="side-a"></div>
+        </div>
       </div>
       <div class="relative flex flex-col items-center justify-center h-full z-20">
         <div
@@ -67,6 +70,9 @@ defmodule SafiraWeb.App.CoinFlipLive.Components.Room do
           <span class="absolute bottom-0 bg-gradient-to-t from-primaryDark to-transparent size-full text-center flex flex-col justify-end pb-2">
             <%= @room.player2.user.handle %>
           </span>
+          <div class="absolute coin size-12 top-1 right-2">
+            <div class="side-b-not-rotated"></div>
+          </div>
         <% else %>
           <.button
             :if={@room.player1.user.id != @current_user.id}
