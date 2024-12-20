@@ -5,6 +5,7 @@ defmodule SafiraWeb.Components.Sidebar do
   use SafiraWeb, :component
 
   import SafiraWeb.CoreComponents
+  import SafiraWeb.Components.Avatar
   alias Phoenix.LiveView.JS
 
   attr :pages, :list, default: []
@@ -143,7 +144,7 @@ defmodule SafiraWeb.Components.Sidebar do
 
   def sidebar_account_dropdown(assigns) do
     ~H"""
-    <.user_dropdown id={@id} border={@border} icon_color={@icon_color}>
+    <.user_dropdown id={@id} border={@border} icon_color={@icon_color} user={@user}>
       <:img src={"https://github.com/identicons/#{@user.handle |> String.slice(0..2)}.png"} />
       <:title color={@title_color}><%= @user.name %></:title>
       <:subtitle color={@subtitle_color}>@<%= @user.handle %></:subtitle>
@@ -175,6 +176,8 @@ defmodule SafiraWeb.Components.Sidebar do
     attr :method, :any
   end
 
+  attr :user, :map, required: true
+
   defp user_dropdown(assigns) do
     ~H"""
     <!-- User account dropdown -->
@@ -190,8 +193,8 @@ defmodule SafiraWeb.Components.Sidebar do
         >
           <span class={"flex w-full justify-between items-center #{@icon_color}"}>
             <span class="flex min-w-0 items-center justify-between space-x-3">
-              <%= for img <- @img do %>
-                <img class="w-10 h-10 rounded-full flex-shrink-0" alt="" {assigns_to_attributes(img)} />
+              <%= for _img <- @img do %>
+                <.avatar size={:sm} handle={@user.handle} />
               <% end %>
               <span class="flex-1 flex flex-col min-w-0">
                 <span class={"#{@title |> Enum.at(0) |> Map.get(:color)}  text-sm font-medium truncate"}>
