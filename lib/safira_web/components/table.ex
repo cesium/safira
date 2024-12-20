@@ -5,7 +5,7 @@ defmodule SafiraWeb.Components.Table do
   use Phoenix.Component
 
   alias Plug.Conn.Query
-  import SafiraWeb.Gettext
+  use Gettext, backend: SafiraWeb.Gettext
   import SafiraWeb.CoreComponents
 
   attr :id, :string, required: true
