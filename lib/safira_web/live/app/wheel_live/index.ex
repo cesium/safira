@@ -1,6 +1,7 @@
 defmodule SafiraWeb.App.WheelLive.Index do
   use SafiraWeb, :app_view
 
+  import SafiraWeb.App.WheelLive.Components.LatestWins
   import SafiraWeb.App.WheelLive.Components.ResultModal
   import SafiraWeb.App.WheelLive.Components.Wheel
 
@@ -20,7 +21,8 @@ defmodule SafiraWeb.App.WheelLive.Index do
      |> assign(:attendee_tokens, socket.assigns.current_user.attendee.tokens)
      |> assign(:wheel_price, Minigames.get_wheel_price())
      |> assign(:result, nil)
-     |> assign(:wheel_active?, Minigames.wheel_active?())}
+     |> assign(:wheel_active?, Minigames.wheel_active?())
+     |> assign(:latest_wins, Minigames.wheel_latest_wins(5))}
   end
 
   @impl true

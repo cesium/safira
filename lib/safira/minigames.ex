@@ -12,7 +12,7 @@ defmodule Safira.Minigames do
   alias Safira.Constants
   alias Safira.Contest
   alias Safira.Inventory.Item
-  alias Safira.Minigames.{Prize, WheelDrop}
+  alias Safira.Minigames.{Prize, WheelDrop, WheelSpin}
 
   @pubsub Safira.PubSub
 
@@ -297,6 +297,14 @@ defmodule Safira.Minigames do
     end
   end
 
+  def wheel_latest_wins(count) do
+    WheelSpin
+    |> order_by([ws], desc: ws.inserted_at)
+    |> limit(^count)
+    |> Repo.all()
+    |> Repo.preload(attendee: [:user], drop: [:prize, :badge])
+  end
+
   defp spin_wheel_transaction(attendee) do
     Multi.new()
     # Fetch the wheel spin price
@@ -313,8 +321,24 @@ defmodule Safira.Minigames do
     |> Multi.merge(fn %{drop: drop, attendee: attendee} ->
       drop_reward_action(drop, attendee)
     end)
+    # Add record of the spin transaction to the database
+    |> Multi.merge(fn %{drop: drop, attendee: attendee} ->
+      add_spin_action(drop, attendee)
+    end)
     # Execute the transaction
     |> Repo.transaction()
+  end
+
+  defp add_spin_action(drop, attendee) do
+    if is_nil(drop) or (is_nil(drop.badge_id) and is_nil(drop.prize_id)) do
+      # If there was no prize, or the prize was just tokens, don't insert it
+      Multi.new()
+    else
+      Multi.new()
+      |> Multi.insert(:spin, fn _ ->
+        WheelSpin.changeset(%WheelSpin{}, %{drop_id: drop.id, attendee_id: attendee.id})
+      end)
+    end
   end
 
   defp generate_valid_wheel_drop(attendee) do
