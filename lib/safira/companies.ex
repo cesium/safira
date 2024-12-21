@@ -5,6 +5,7 @@ defmodule Safira.Companies do
 
   use Safira.Context
 
+  alias Safira.Accounts
   alias Safira.Companies.{Company, Tier}
 
   @doc """
@@ -56,7 +57,11 @@ defmodule Safira.Companies do
       ** (Ecto.NoResultsError)
 
   """
-  def get_company!(id), do: Repo.get!(Company, id)
+  def get_company!(id) do
+    Company
+    |> Repo.get_by!(id: id)
+    |> Repo.preload([:user])
+  end
 
   @doc """
   Creates a company.
@@ -74,6 +79,22 @@ defmodule Safira.Companies do
     %Company{}
     |> Company.changeset(attrs)
     |> Repo.insert()
+  end
+
+  # TODO: Docs
+  def create_company_and_user(attrs \\ %{}) do
+    case Ecto.Multi.new()
+         |> Accounts.register_company_user(attrs["user"])
+         |> Ecto.Multi.insert(:company, fn %{user: user} ->
+           Company.changeset(%Company{}, Map.put(Map.delete(attrs, "user"), "user_id", user.id))
+         end)
+         |> Repo.transaction() do
+      {:ok, %{user: user, company: company}} ->
+        {:ok, %{user: Map.put(user, "password", attrs["user"]["password"]), company: company}}
+
+      {:error, failed_operation, failed_value, changes_so_far} ->
+        {:error, failed_operation, failed_value, changes_so_far}
+    end
   end
 
   @doc """

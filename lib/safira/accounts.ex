@@ -6,7 +6,7 @@ defmodule Safira.Accounts do
   use Safira.Context
 
   alias Safira.Accounts.{Attendee, Course, Credential, Staff, User, UserNotifier, UserToken}
-
+  alias Safira.Companies.Company
   ## Database getters
 
   @doc """
@@ -83,6 +83,16 @@ defmodule Safira.Accounts do
   end
 
   @doc """
+  Gets a single company by user id.
+  """
+  def get_user_company(user_id, opts \\ []) do
+    Company
+    |> where(user_id: ^user_id)
+    |> apply_filters(opts)
+    |> Repo.one()
+  end
+
+  @doc """
   Gets a single staff.
   """
   def get_staff!(id) do
@@ -97,6 +107,7 @@ defmodule Safira.Accounts do
       user.type,
       case user.type do
         :attendee -> get_user_attendee(user.id)
+        :company -> get_user_company(user.id)
         :staff -> get_user_staff(user.id, preloads: [:role])
       end
     )
@@ -229,6 +240,15 @@ defmodule Safira.Accounts do
     %User{}
     |> User.registration_changeset(attrs |> Map.put(:type, :staff))
     |> Repo.insert()
+  end
+
+  # TODO: Docs
+  def register_company_user(multi, attrs) do
+    multi
+    |> Ecto.Multi.insert(
+      :user,
+      User.registration_changeset(%User{}, Map.put(attrs, "type", "company"))
+    )
   end
 
   @doc """
@@ -456,6 +476,16 @@ defmodule Safira.Accounts do
     Ecto.Multi.new()
     |> Ecto.Multi.update(:user, User.confirm_changeset(user))
     |> Ecto.Multi.delete_all(:tokens, UserToken.by_user_and_contexts_query(user, ["confirm"]))
+  end
+
+  # TODO: Docs
+  def generate_random_password(length \\ 12) do
+    alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+
+    1..length
+
+    :crypto.strong_rand_bytes(length)
+    |> Enum.map_join(fn b -> b |> :binary.decode_unsigned() |> rem(String.length(alphabet)) end)
   end
 
   ## Reset password
