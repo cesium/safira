@@ -585,7 +585,7 @@ defmodule Safira.Minigames do
       iex> subscribe_to_wheel_wins()
       :ok
   """
-  def subscribe_to_wheel_wins() do
+  def subscribe_to_wheel_wins do
     Phoenix.PubSub.subscribe(@pubsub, "wheel_win")
   end
 
