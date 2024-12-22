@@ -6,7 +6,12 @@
   </:actions>
 
   <div class="grid grid-cols-1 xl:grid-cols-2">
-    <div>
+    <div class="mt-12">
+      <div>
+        <h2 class="text-2xl font-terminal uppercase font-bold mb-8">
+          <%= gettext("Spin To Win!") %>
+        </h2>
+      </div>
       <.wheel />
       <div class="flex flex-row justify-center w-full pt-16">
         <.action_button
@@ -19,8 +24,14 @@
       </div>
     </div>
     <div class="mt-12">
-    <h2 class="text-xl font-semibold mb-8"><%= gettext("Latest Wins") %></h2>
+      <h2 class="text-2xl font-terminal uppercase font-bold mb-8">
+        <%= gettext("Latest Wins") %>
+      </h2>
       <.latest_wins entries={@latest_wins} />
+      <h2 class="text-2xl font-terminal uppercase font-bold mt-24 mb-8">
+        <%= gettext("Awards") %>
+      </h2>
+      <.awards entries={@drops} />
     </div>
   </div>
 </.page>

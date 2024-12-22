@@ -162,7 +162,10 @@ defmodule Safira.Minigames do
 
   """
   def list_wheel_drops do
-    Repo.all(WheelDrop)
+    WheelDrop
+    |> order_by([wd], asc: wd.probability)
+    |> Repo.all()
+    |> Repo.preload([:badge, :prize])
   end
 
   @doc """
@@ -194,9 +197,13 @@ defmodule Safira.Minigames do
 
   """
   def create_wheel_drop(attrs \\ %{}) do
-    %WheelDrop{}
-    |> WheelDrop.changeset(attrs)
-    |> Repo.insert()
+    result =
+      %WheelDrop{}
+      |> WheelDrop.changeset(attrs)
+      |> Repo.insert()
+
+    broadcast_wheel_config_update("drops", list_wheel_drops())
+    result
   end
 
   @doc """
@@ -212,9 +219,13 @@ defmodule Safira.Minigames do
 
   """
   def update_wheel_drop(%WheelDrop{} = wheel_drop, attrs) do
-    wheel_drop
-    |> WheelDrop.changeset(attrs)
-    |> Repo.update()
+    result =
+      wheel_drop
+      |> WheelDrop.changeset(attrs)
+      |> Repo.update()
+
+    broadcast_wheel_config_update("drops", list_wheel_drops())
+    result
   end
 
   @doc """
@@ -230,7 +241,9 @@ defmodule Safira.Minigames do
 
   """
   def delete_wheel_drop(%WheelDrop{} = wheel_drop) do
-    Repo.delete(wheel_drop)
+    result = Repo.delete(wheel_drop)
+    broadcast_wheel_config_update("drops", list_wheel_drops())
+    result
   end
 
   @doc """
@@ -338,8 +351,22 @@ defmodule Safira.Minigames do
     |> Multi.merge(fn %{drop: drop, attendee: attendee} ->
       add_spin_action(drop, attendee)
     end)
+    |> Multi.run(:notify, fn _repo, params -> broadcast_spin_changes(params) end)
     # Execute the transaction
     |> Repo.transaction()
+  end
+
+  defp broadcast_spin_changes(params) do
+    case broadcast_wheel_win(Map.get(params, :spin)) do
+      :ok ->
+        case broadcast_wheel_config_update("drops", list_wheel_drops()) do
+          :ok -> {:ok, :ok}
+          e -> e
+        end
+
+      e ->
+        e
+    end
   end
 
   defp add_spin_action(drop, attendee) do
@@ -548,6 +575,29 @@ defmodule Safira.Minigames do
 
   defp broadcast_wheel_config_update(config, value) do
     Phoenix.PubSub.broadcast(@pubsub, wheel_config_topic(config), {config, value})
+  end
+
+  @doc """
+  Subscribes the caller to the wheel's wins.
+
+  ## Examples
+
+      iex> subscribe_to_wheel_wins()
+      :ok
+  """
+  def subscribe_to_wheel_wins() do
+    Phoenix.PubSub.subscribe(@pubsub, "wheel_win")
+  end
+
+  defp broadcast_wheel_win(value) do
+    value = value |> Repo.preload(attendee: [:user], drop: [:prize, :badge])
+
+    if not is_nil(value) and not is_nil(value.drop) and
+         (not is_nil(value.drop.badge) or not is_nil(value.drop.prize)) do
+      Phoenix.PubSub.broadcast(@pubsub, "wheel_win", {"win", value})
+    else
+      :ok
+    end
   end
 
   # Generates a random number using the Erlang crypto module
