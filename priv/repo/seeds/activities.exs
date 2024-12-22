@@ -112,17 +112,20 @@ defmodule Safira.Repo.Seeds.Activities do
     }
 
     for activity <- first_day_seed_data() do
+      type = activity.type
       changeset = Activities.change_activity(%Activity{},
         activity
         |> Map.put(:date, next_first_tuesday_of_february())
-        |> Map.put(:category_id, Map.get(categories, activity.type).id)
+        |> Map.put(:category_id, Map.get(categories, type).id)
         |> Map.put(:title, Map.get(activity, :title) || Faker.Company.bs() |> String.capitalize())
         |> Map.put(:location, Map.get(activity, :location) || "CP2 - B1"))
 
       case Repo.insert(changeset) do
         {:ok, activity} ->
           speaker_ids = Enum.take_random(speakers, :rand.uniform(3))
-          Activities.upsert_activity_speakers(Map.put(activity, :speakers, []), speaker_ids)
+          if type in [:talk, :pitch, :wokshop] do
+            Activities.upsert_activity_speakers(Map.put(activity, :speakers, []), speaker_ids)
+          end
         {:error, changeset} ->
           Mix.shell().error("Failed to insert activity: #{activity.title}")
           Mix.shell().error(Kernel.inspect(changeset.errors))
@@ -131,17 +134,20 @@ defmodule Safira.Repo.Seeds.Activities do
 
     for i <- 1..3 do
       for activity <- last_days_seed_data() do
+        type = activity.type
         changeset = Activities.change_activity(%Activity{},
           activity
           |> Map.put(:date, Date.shift(next_first_tuesday_of_february(), day: i))
-          |> Map.put(:category_id, Map.get(categories, activity.type).id)
+          |> Map.put(:category_id, Map.get(categories, type).id)
           |> Map.put(:title, Map.get(activity, :title) || Faker.Company.bs() |> String.capitalize())
           |> Map.put(:location, Map.get(activity, :location) || "CP2 - B1"))
 
         case Repo.insert(changeset) do
           {:ok, activity} ->
             speaker_ids = Enum.take_random(speakers, :rand.uniform(3))
-            Activities.upsert_activity_speakers(Map.put(activity, :speakers, []), speaker_ids)
+            if type in [:talk, :pitch, :workshop] do
+              Activities.upsert_activity_speakers(Map.put(activity, :speakers, []), speaker_ids)
+            end
           {:error, changeset} ->
             Mix.shell().error("Failed to insert activity: #{activity.title}")
             Mix.shell().error(Kernel.inspect(changeset.errors))

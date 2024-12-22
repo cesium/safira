@@ -9,7 +9,7 @@
   params={@params}
 />
 <div class="xl:px-[15rem] md:px-[8rem] px-[2.5rem]">
-  <.speakers speakers={@streams.speakers} />
+  <.speakers :if={@has_highlighted_speakers?} speakers={@streams.speakers} />
   <.sponsors tiers={@tiers} />
   <.partners />
 </div>

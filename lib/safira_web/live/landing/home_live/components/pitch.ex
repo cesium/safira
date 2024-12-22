@@ -14,7 +14,7 @@ defmodule SafiraWeb.Landing.HomeLive.Components.Pitch do
         <ul class="mt-8 list-disc pl-4 font-iregular">
           <li>Talks</li>
           <li>Workshops</li>
-          <li>Challenges 🕹️</li>
+          <li>Challenges</li>
           <li>Contests</li>
         </ul>
       </div>

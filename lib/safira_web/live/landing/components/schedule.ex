@@ -38,8 +38,16 @@ defmodule SafiraWeb.Landing.Components.Schedule do
   defp schedule_table(assigns) do
     ~H"""
     <div>
-      <%= for activity <- fetch_daily_activities(@date) do %>
-        <.schedule_activity activity={activity} />
+      <%= for activity_section <- fetch_daily_activities(@date) do %>
+        <div class="flex lg:flex-row flex-col w-full">
+          <%= for activity <- activity_section do %>
+            <%= if activity.category && activity.category.name == "Break" do %>
+              <.schedule_break activity={activity} />
+            <% else %>
+              <.schedule_activity activity={activity} />
+            <% end %>
+          <% end %>
+        </div>
       <% end %>
     </div>
     """
@@ -49,9 +57,9 @@ defmodule SafiraWeb.Landing.Components.Schedule do
     ~H"""
     <div
       id={@activity.id}
-      class="mx-2 h-full border-t border-white p-[10px] ml-[10px] relative hover:bg-white/10 transition-colors"
+      class="mx-2 w-full border-t border-white p-[10px] ml-[10px] relative hover:bg-white/10 transition-colors"
     >
-      <div class="relative">
+      <div class="relative h-full">
         <!-- Times -->
         <p class="text-lg font-iregular font-bold text-white xs:text-xl">
           <%= "#{@activity.time_start |> Timex.format!("{h24}:{m}")} - #{@activity.time_end |> Timex.format!("{h24}:{m}")}" %>
@@ -104,6 +112,28 @@ defmodule SafiraWeb.Landing.Components.Schedule do
               </p>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
+  defp schedule_break(assigns) do
+    ~H"""
+    <div
+      id={@activity.id}
+      class="mx-2 w-full border-t border-white p-[10px] ml-[10px] relative hover:bg-white/10 transition-colors"
+    >
+      <div class="relative h-full flex flex-row justify-between items-center">
+        <p class="font-iregular text-xl text-white font-bold">
+          <%= @activity.title %>
+        </p>
+        <div>
+          <%= if (@activity.title |> String.downcase() |> String.contains?("lunch")) do %>
+            <img src={~p"/images/breaks/lunch.svg"} class="w-8 h-8" />
+          <% else %>
+            <img src={~p"/images/breaks/coffee.svg"} class="w-8 h-8" />
+          <% end %>
         </div>
       </div>
     </div>
@@ -252,5 +282,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
 
   defp fetch_daily_activities(day) do
     Activities.list_daily_activities(day)
+    |> Enum.group_by(& &1.time_start)
+    |> Enum.map(&elem(&1, 1))
   end
 end

@@ -19,7 +19,7 @@ defmodule SafiraWeb.Landing.Components.Footer do
         <div class="flex-2">
           <div class="grid select-none grid-rows-2 justify-items-center gap-8 whitespace-nowrap font-iregular text-sm text-white lg:grid-cols-2 lg:justify-items-start">
             <%= for link <- footer_links() do %>
-              <.link href={link.url} class="hover:underline">
+              <.link href={link.url} class="hover:underline text-center lg:text-right w-full">
                 <%= link.title %>
               </.link>
             <% end %>

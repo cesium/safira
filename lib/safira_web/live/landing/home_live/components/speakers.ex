@@ -9,7 +9,7 @@ defmodule SafiraWeb.Landing.HomeLive.Components.Speakers do
 
   def speakers(assigns) do
     ~H"""
-    <div class="spacing flex flex-col justify-between gap-64 pt-20 lg:flex-row">
+    <div class="spacing flex flex-col justify-normal lg:justify-between gap-8 lg:gap-64 pt-20 lg:flex-row">
       <div class="mb-10 lg:w-1/2">
         <h2 class="font-terminal uppercase mb-8 select-none text-4xl text-white xs:text-5xl lg:text-6xl">
           Here's a selection of this year's speakers

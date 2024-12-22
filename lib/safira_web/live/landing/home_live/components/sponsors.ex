@@ -24,14 +24,20 @@ defmodule SafiraWeb.Landing.HomeLive.Components.Sponsors do
         <p class="font-terminal uppercase pb-10 text-2xl text-accent lg:text-3xl">
           <%= @tier %>
         </p>
-        <div class="grid grid-cols-2 place-items-center gap-4 p-6 lg:gap-10">
+        <div class="flex justify-center items-center flex-wrap gap-4 sm:p-6 lg:gap-10">
           <%= for sponsor <- @sponsors |> Enum.shuffle() do %>
-            <.link href={sponsor.url} target="_blank">
+            <.link
+              href={sponsor.url}
+              target="_blank"
+              class="opacity-80 hover:opacity-100 hover:scale-105 duration-500 transition-all"
+            >
               <%= if sponsor.logo do %>
-                <img
-                  class="w-full p-4"
-                  src={Uploaders.Company.url({sponsor.logo, sponsor}, :original)}
-                />
+                <div class="w-32 sm:w-64 py-4">
+                  <img
+                    class="w-full max-h-32 px-1 sm:px-4"
+                    src={Uploaders.Company.url({sponsor.logo, sponsor}, :original)}
+                  />
+                </div>
               <% else %>
                 <p class="text-2xl text-center p-2">
                   <%= sponsor.name %>
