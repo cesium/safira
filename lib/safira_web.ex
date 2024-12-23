@@ -63,6 +63,7 @@ defmodule SafiraWeb do
       use Phoenix.LiveView,
         layout: {SafiraWeb.Layouts, :app}
 
+      import SafiraWeb.Components.Avatar
       import SafiraWeb.Components.Button
 
       unquote(html_helpers())
@@ -74,6 +75,7 @@ defmodule SafiraWeb do
       use Phoenix.LiveView,
         layout: {SafiraWeb.Layouts, :backoffice}
 
+      import SafiraWeb.Components.Avatar
       import SafiraWeb.Components.EnsurePermissions
       import SafiraWeb.BackofficeHelpers
 
@@ -91,7 +93,7 @@ defmodule SafiraWeb do
   def live_component do
     quote do
       use Phoenix.LiveComponent
-
+      import SafiraWeb.Components.Avatar
       unquote(html_helpers())
     end
   end

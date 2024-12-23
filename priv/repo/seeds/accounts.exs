@@ -26,7 +26,7 @@ defmodule Safira.Repo.Seeds.Accounts do
 
     case Accounts.list_credentials() do
       [] ->
-        seed_credentials(credential_count)
+        seed_credentials(credential_count, div(attendee_names |> length(), 2))
       _ ->
         Mix.shell().erroring("Found credentials, aborting seeding credentials.")
     end
@@ -78,9 +78,12 @@ defmodule Safira.Repo.Seeds.Accounts do
     end
   end
 
-  def seed_credentials(credential_count) do
+  def seed_credentials(credential_count, attendee_to_link_count) do
+    attendees = Accounts.list_attendees()
+
     for i <- 0..credential_count do
-      Accounts.create_credential(%{attendee_id: nil})
+      id = if i < attendee_to_link_count do Enum.at(attendees, i).attendee.id else nil end
+      Accounts.create_credential(%{attendee_id: id})
     end
   end
 end
