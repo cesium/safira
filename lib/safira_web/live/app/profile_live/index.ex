@@ -24,4 +24,12 @@ defmodule SafiraWeb.App.ProfileLive.Index do
     socket
     |> assign(:page_title, "Edit Profile")
   end
+
+  defp return_path(user) do
+    case user.type do
+      :attendee -> "app"
+      :staff -> "dashboard"
+      _ -> "app"
+    end
+  end
 end

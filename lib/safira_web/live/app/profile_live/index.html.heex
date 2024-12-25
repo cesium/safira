@@ -6,13 +6,18 @@
   </:actions>
 </.page>
 
-<.modal :if={@live_action in [:edit]} id="profile-modal" show on_cancel={JS.patch(~p"/")}>
+<.modal
+  :if={@live_action in [:edit]}
+  id="profile_settings-modal"
+  show
+  on_cancel={JS.patch(~p"/#{return_path(@current_user)}")}
+>
   <.live_component
     module={SafiraWeb.App.ProfileLive.FormComponent}
     id="profile"
     current_user={@current_user}
     action={@live_action}
-    patch={~p"/"}
+    patch={~p"/#{return_path(@current_user)}"}
     page_title={@page_title}
   />
 </.modal>
