@@ -4,7 +4,7 @@ const path = require("path")
 const colors = require("tailwindcss/colors");
 
 module.exports = {
-  //darkMode: "selector",
+  darkMode: 'class',
   content: [
     "./js/**/*.js",
     "../lib/safira_web.ex",
