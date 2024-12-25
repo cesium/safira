@@ -12,15 +12,15 @@ defmodule SafiraWeb.App.ProfileLive.Index do
      socket
      |> assign(:user, socket.assigns.current_user)
      |> assign(:current_page, :profile)
-     |> apply_action(socket.assigns.live_action, _params)}
+     |> apply_action(socket.assigns.live_action)}
   end
 
-  defp apply_action(socket, :index, _params) do
+  defp apply_action(socket, :index) do
     socket
     |> assign(:page_title, "Profile")
   end
 
-  defp apply_action(socket, :edit, _params) do
+  defp apply_action(socket, :edit) do
     socket
     |> assign(:page_title, "Edit Profile")
   end

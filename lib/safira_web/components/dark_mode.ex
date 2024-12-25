@@ -1,4 +1,5 @@
 defmodule DarkMode do
+  @moduledoc false
   use Phoenix.Component
 
   def button(assigns) do
