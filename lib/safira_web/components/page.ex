@@ -23,7 +23,7 @@ defmodule SafiraWeb.Components.Page do
       <.header title_class={"#{size_class(@size)} #{@title_class}"}>
         <%= @title %>
         <:subtitle>
-          <%= @subtitle %>
+          <span class="text-black dark:text-white"><%= @subtitle %></span>
         </:subtitle>
         <%= if @back_to_link do %>
           <.link patch={@back_to_link}>

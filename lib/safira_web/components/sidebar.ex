@@ -147,7 +147,7 @@ defmodule SafiraWeb.Components.Sidebar do
       <:img src={"https://github.com/identicons/#{@user.handle |> String.slice(0..2)}.png"} />
       <:title color={@title_color}><%= @user.name %></:title>
       <:subtitle color={@subtitle_color}>@<%= @user.handle %></:subtitle>
-      <:link navigate="/profile/settings">Settings</:link>
+      <:link navigate="/app/profile/settings">Settings</:link>
       <:link href="/users/log_out" method={:delete}>Sign out</:link>
     </.user_dropdown>
     """
