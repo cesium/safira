@@ -83,6 +83,8 @@ defmodule SafiraWeb.Router do
         pipe_through [:require_credential]
         live "/", HomeLive.Index, :index
 
+        live "/leaderboard", LeaderboardLive.Index, :index
+
         live "/credential", CredentialLive.Index, :index
 
         live "/wheel", WheelLive.Index, :index
