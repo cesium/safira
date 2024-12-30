@@ -1,4 +1,7 @@
-<.page title={gettext("Hello, %{current_user_name} 👋", current_user_name: @current_user.name)} size={:xl}>
+<.page
+  title={gettext("Hello, %{current_user_name} 👋", current_user_name: @current_user.name)}
+  size={:xl}
+>
   <div class="flex flex-col md:flex-row md:gap-x-8">
     <div class="flex flex-col gap-y-8">
       <div class="flex flex-row justify-between items-center mt-10 pb-2 h-12 border-b-[1px] border-lightMuted">
@@ -22,7 +25,6 @@
     </div>
 
     <div class="flex flex-col gap-y-8">
-
       <div class="flex flex-row justify-between items-center mt-10 pb-2 h-12 border-b-[1px] border-lightMuted">
         <h1 class="font-extrabold">Checkpoint</h1>
       </div>
@@ -52,7 +54,8 @@
           <% end %>
 
           <%= if i == @user_level do %>
-            <div class="h-1/2 aspect-square rounded-full bg-lightMuted outline outline-8 outline-primary-500"></div>
+            <div class="h-1/2 aspect-square rounded-full bg-lightMuted outline outline-8 outline-primary-500">
+            </div>
             <%= if i != @max_level - 1 do %>
               <div class="w-full h-2 bg-lightMuted -mx-0.5 -z-10"></div>
             <% end %>
@@ -71,9 +74,13 @@
         <%= if @user_level == @max_level do %>
           You have reached the maximum level! 🎉
         <% else %>
-          You just need <%= @companies_to_next_level %> more <%= if @companies_to_next_level != 1 do "badges" else "badge" end %> to go to Level <%= @user_level + 1 %> (and win <%= @next_prize %>+ entries to the final draw). Hurry!
+          You just need <%= @companies_to_next_level %> more <%= if @companies_to_next_level != 1 do
+            "badges"
+          else
+            "badge"
+          end %> to go to Level <%= @user_level + 1 %> (and win <%= @next_prize %>+ entries to the final draw). Hurry!
         <% end %>
-        <br><br>(⚠️⚠️⚠️⚠️⚠️ everything with this emoji is hardcoded, because badgedex isn't ready. Also the checkpoint level is calculated with hard coded values - see comment at index.ex)
+        <br /><br />(⚠️⚠️⚠️⚠️⚠️ everything with this emoji is hardcoded, because badgedex isn't ready. Also the checkpoint level is calculated with hard coded values - see comment at index.ex)
       </p>
     </div>
   </div>
