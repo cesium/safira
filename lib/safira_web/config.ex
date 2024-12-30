@@ -6,6 +6,12 @@ defmodule SafiraWeb.Config do
   def app_pages do
     [
       %{
+        key: :profile,
+        title: "Profile",
+        icon: "hero-user",
+        url: "/app/"
+      },
+      %{
         key: :badgedex,
         title: "Badgedex",
         icon: "hero-check-badge",
