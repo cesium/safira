@@ -501,6 +501,52 @@ defmodule Safira.Contest do
     |> Repo.transaction()
   end
 
+  def daily_leaderboard(day, limit \\ 3) do
+    daily_leaderboard_tokens_query(day)
+    |> join(:inner, [dt], rd in subquery(daily_leaderboard_redeem_query(day)),
+      on: dt.attendee_id == rd.attendee_id
+    )
+    |> sort_query(limit)
+    |> presentation_query()
+    |> Repo.all()
+  end
+
+  defp daily_leaderboard_redeem_query(day) do
+    start_time = Timex.beginning_of_day(day)
+    end_time = Timex.end_of_day(day)
+
+    # TODO: Replace with actual redeems model
+    Safira.Inventory.Item
+    |> where([rd], rd.inserted_at >= ^start_time and rd.inserted_at <= ^end_time)
+    |> group_by([rd], rd.attendee_id)
+    |> select([rd], %{redeem_count: count(rd.id), attendee_id: rd.attendee_id})
+  end
+
+  defp daily_leaderboard_tokens_query(day) do
+    start_time = Timex.beginning_of_day(day)
+    end_time = Timex.end_of_day(day)
+
+    DailyTokens
+    |> where([dt], dt.date >= ^start_time and dt.date <= ^end_time)
+  end
+
+  defp sort_query(query, limit) do
+    query
+    |> order_by([dt, rd], desc: rd.redeem_count, desc: dt.tokens)
+    |> limit(^limit)
+  end
+
+  defp presentation_query(query) do
+    query
+    |> join(:inner, [dt, rd], at in Safira.Accounts.Attendee, on: at.id == rd.attendee_id)
+    |> join(:inner, [dt, rd, at], u in Safira.Accounts.User, on: u.id == at.user_id)
+    |> select([dt, rd, at, u], %{
+      name: u.name,
+      badges: rd.redeem_count,
+      tokens: dt.tokens
+    })
+  end
+
   @doc """
   Gets the attendee token balance.
 

@@ -104,6 +104,8 @@ defmodule SafiraWeb.Router do
 
         live "/", HomeLive.Index, :index
 
+        live "/leaderboard", LeaderboardLive.Index, :index
+
         live "/credential", CredentialLive.Index, :index
 
         live "/wheel", WheelLive.Index, :index
