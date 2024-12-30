@@ -65,6 +65,34 @@ defmodule Safira.Accounts do
     |> Repo.one!()
   end
 
+  def update_attendee(%Attendee{} = attendee, attrs) do
+    attendee
+    |> Attendee.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Updates an attendee's CV.
+
+  ## Examples
+
+      iex> update_atttendee_cv(badge, %{cv: cv})
+      {:ok, %Badge{}}
+
+      iex> update_attendee_cv(badge, %{cv: bad_cv})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_attendee_cv(%Attendee{} = attendee, attrs) do
+    attendee
+    |> Attendee.cv_changeset(attrs)
+    |> Repo.update()
+  end
+
+  def change_attendee(%Attendee{} = attendee, attrs \\ %{}) do
+    Attendee.changeset(attendee, attrs)
+  end
+
   @doc """
   Checks if an attendee with a given id exists.
   """
