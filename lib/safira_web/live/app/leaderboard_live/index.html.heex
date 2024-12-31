@@ -1,3 +1,16 @@
 <.page title={gettext("Leaderboard")} size={:xl}>
-  <.leaderboard entries={@leaderboard} user_position={@user_position} />
+  <div class="grid md:grid-cols-2 mt-12">
+    <div>
+      <.day_selector
+        day={@current_day_str}
+        on_left="on_left"
+        on_right="on_right"
+        left_enabled={@left_enabled}
+        right_enabled={@right_enabled}
+      />
+    </div>
+    <div class="md:mt-0 mt-8">
+      <.leaderboard entries={@leaderboard} user_position={@user_position} />
+    </div>
+  </div>
 </.page>
