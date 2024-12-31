@@ -12,10 +12,10 @@ defmodule SafiraWeb.App.LeaderboardLive.Components.Leaderboard do
     ~H"""
     <table class="w-full">
       <tr>
-        <th class="font-bold text-lg text-left pb-2">Position</th>
-        <th class="font-bold text-lg text-center pb-2">Attendee</th>
-        <th class="font-bold text-lg text-center pb-2">Badge Count</th>
-        <th class="font-bold text-lg text-right pb-2">Token Count</th>
+        <th class="font-bold text-lg text-left pb-2"><%= gettext("Position") %></th>
+        <th class="font-bold text-lg text-center pb-2"><%= gettext("Attendee") %></th>
+        <th class="font-bold text-lg text-center pb-2"><%= gettext("Badge Count") %></th>
+        <th class="font-bold text-lg text-right pb-2"><%= gettext("Token Count") %></th>
       </tr>
       <%= for entry <- @entries do %>
         <tr>
@@ -58,7 +58,7 @@ defmodule SafiraWeb.App.LeaderboardLive.Components.Leaderboard do
 
       _ ->
         if pos == user_pos do
-          "text-accent font-bold"
+          "font-bold"
         else
           ""
         end
