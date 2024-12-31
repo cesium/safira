@@ -8,20 +8,20 @@
     <.action_button
       icon="hero-minus"
       class="rounded-r-lg pl-6 pr-5"
-      disabled={false}
+      disabled={@bet <= 10 || not @coin_flip_active?}
       phx-click="decrease-bet"
     />
     <.action_button
       title={gettext("Play")}
       subtitle={"💰 #{@bet}"}
       class="rounded-none px-10"
-      disabled={false}
+      disabled={not @coin_flip_active?}
       phx-click="create-room"
     />
     <.action_button
       icon="hero-plus"
       class="rounded-l-lg pr-6 pl-5"
-      disabled={false}
+      disabled={@bet >= @attendee_tokens - 10 || not @coin_flip_active?}
       phx-click="increase-bet"
     />
   </div>
@@ -34,7 +34,6 @@
   >
     <.room
       :for={{id, room} <- @streams.room_list}
-      :if={not room.finished}
       id={id}
       room={room}
       current_user={@current_user}
@@ -48,8 +47,7 @@
     phx-update="stream"
   >
     <.room
-      :for={{id, room} <- @streams.room_list}
-      :if={room.finished}
+      :for={{id, room} <- @streams.previous_room_list}
       id={id}
       room={room}
       current_user={@current_user}

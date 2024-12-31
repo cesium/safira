@@ -25,5 +25,6 @@ defmodule Safira.Minigames.CoinFlipRoom do
     |> foreign_key_constraint(:player2_id)
     |> validate_required(@required_fields)
     |> validate_inclusion(:result, ["heads", "tails"])
+    |> validate_number(:bet, greater_than: 0)
   end
 end

@@ -56,7 +56,10 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.CoinFlip.FormComponent do
      |> assign(
        form:
          to_form(
-           %{"price" => Minigames.get_coin_flip_fee(), "is_active" => Minigames.wheel_active?()},
+           %{
+             "price" => Minigames.get_coin_flip_fee(),
+             "is_active" => Minigames.coin_flip_active?()
+           },
            as: :coin_flip_configuration
          )
      )}
@@ -72,7 +75,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.CoinFlip.FormComponent do
   def handle_event("save", params, socket) do
     if valid_config?(params) do
       Minigames.change_coin_flip_fee(params["price"] |> String.to_integer())
-      Minigames.change_wheel_active("true" == params["is_active"])
+      Minigames.change_coin_flip_active("true" == params["is_active"])
       {:noreply, socket |> push_patch(to: ~p"/dashboard/minigames/")}
     else
       {:noreply, socket}

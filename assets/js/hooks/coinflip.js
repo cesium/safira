@@ -12,8 +12,6 @@ export const CoinFlip = {
     const streamId = this.el.dataset.streamId;
     const result = this.el.dataset.result;
     const finished = this.el.dataset.finished;
-    console.log('CoinFlip mounted', finished);
-    console.log('coinflip datatset', this.el.dataset);
     
     this.initializeGame(roomId, streamId, result, finished);
   },
@@ -30,8 +28,6 @@ export const CoinFlip = {
       for (let i = 3; i > 0; i--) {
         counter.textContent = i.toString();
         counter.classList.add('countdown-animation');
-        // await delay(900);
-        // await delay(100);
         await delay(1000);
         counter.classList.remove('countdown-animation');
       };
@@ -54,7 +50,6 @@ export const CoinFlip = {
         coin.children[1].hidden = true;
       } else {
         coin.children[0].hidden = true;
-        console.log(coin.children[1]);
         coin.children[1].style.transform = 'rotateY(0deg)';
       }
       return;

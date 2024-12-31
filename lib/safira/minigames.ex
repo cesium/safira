@@ -550,6 +550,29 @@ defmodule Safira.Minigames do
     |> Repo.preload(player1: :user, player2: :user)
   end
 
+  defp create_coin_flip_room_transaction(attendee, bet) do
+    Multi.new()
+    # Fetch the room play cost
+    |> Multi.put(:bet, bet)
+    # Remove the room play cost from the attendee's token balance
+    |> Multi.merge(fn %{bet: bet} ->
+      Contest.change_attendee_tokens_transaction(attendee, attendee.tokens - bet, :attendee)
+    end)
+    # Create the coin flip room
+    |> Multi.run(:coin_flip_room, fn _repo, %{attendee: attendee} ->
+      attrs = %{
+        player1_id: attendee.id,
+        bet: bet
+      }
+
+      %CoinFlipRoom{}
+      |> CoinFlipRoom.changeset(attrs)
+      |> Repo.insert()
+    end)
+    # Execute the transaction
+    |> Repo.transaction()
+  end
+
   @doc """
   Creates a coin_flip_room.
 
@@ -563,12 +586,11 @@ defmodule Safira.Minigames do
 
   """
   def create_coin_flip_room(attrs \\ %{}) do
-    %CoinFlipRoom{}
-    |> CoinFlipRoom.changeset(attrs)
-    |> Repo.insert()
-    |> case do
-      {:ok, coin_flip_room} ->
-        coin_flip_room = Repo.preload(coin_flip_room, player1: :user)
+    attendee = Accounts.get_attendee!(attrs["attendee_id"])
+
+    case create_coin_flip_room_transaction(attendee, attrs["bet"]) do
+      {:ok, result} ->
+        coin_flip_room = Repo.preload(result.coin_flip_room, player1: :user)
         broadcast_coin_flip_rooms_update("create", coin_flip_room)
         {:ok, coin_flip_room}
 
@@ -586,33 +608,29 @@ defmodule Safira.Minigames do
       %CoinFlipRoom{}
 
   """
-  def update_coin_flip_room(%CoinFlipRoom{} = coin_flip_room, attrs, opts \\ []) do
+  def update_coin_flip_room(%CoinFlipRoom{} = coin_flip_room, attrs) do
     changeset = CoinFlipRoom.changeset(coin_flip_room, attrs)
 
     case Repo.update(changeset) do
-      {:ok, updated_coin_flip_room} ->
-        updated_coin_flip_room =
-          updated_coin_flip_room
-          |> Repo.preload(player1: :user, player2: :user)
-
-        updated_coin_flip_room =
-          if Map.get(attrs, :player2) do
-            updated_coin_flip_room
-            |> Map.put(:player2, attrs.player2)
-            |> Repo.preload(player2: :user)
-          else
-            updated_coin_flip_room
-          end
-
-        if opts[:broadcast] do
-          broadcast_coin_flip_rooms_update("update", updated_coin_flip_room)
-        end
-
-        {:ok, updated_coin_flip_room}
+      {:ok, coin_flip_room} ->
+        {:ok, coin_flip_room}
 
       {:error, changeset} ->
         {:error, changeset}
     end
+  end
+
+  defp delete_coin_flip_room_transaction(room) do
+    Multi.new()
+    |> Multi.merge(fn _changes ->
+      Contest.change_attendee_tokens_transaction(
+        room.player1,
+        room.player1.tokens + room.bet,
+        :player1
+      )
+    end)
+    |> Multi.delete(:coin_flip_room, room)
+    |> Repo.transaction()
   end
 
   @doc """
@@ -628,14 +646,17 @@ defmodule Safira.Minigames do
 
   """
   def delete_coin_flip_room(%CoinFlipRoom{} = coin_flip_room) do
-    Repo.delete(coin_flip_room)
-    |> case do
-      {:ok, _} ->
-        broadcast_coin_flip_rooms_update("delete", coin_flip_room)
-        {:ok, coin_flip_room}
+    if coin_flip_room.finished do
+      {:error, "The room is already finished."}
+    else
+      case delete_coin_flip_room_transaction(coin_flip_room) do
+        {:ok, _} ->
+          broadcast_coin_flip_rooms_update("delete", coin_flip_room)
+          {:ok, coin_flip_room}
 
-      {:error, changeset} ->
-        {:error, changeset}
+        {:error, changeset} ->
+          {:error, changeset}
+      end
     end
   end
 
@@ -686,6 +707,77 @@ defmodule Safira.Minigames do
   end
 
   @doc """
+  Changes the coin flip active status.
+
+  ## Examples
+
+      iex> change_coin_flip_active(true)
+      :ok
+  """
+  def change_coin_flip_active(active) do
+    Constants.set("coin_flip_active_status", active)
+    broadcast_coin_flip_config_update("is_active", active)
+  end
+
+  @doc """
+  Gets the coin flip active status.
+
+  ## Examples
+
+      iex> coin_flip_active?()
+      true
+  """
+  def coin_flip_active? do
+    case Constants.get("coin_flip_active_status") do
+      {:ok, active} ->
+        active
+
+      {:error, _} ->
+        # If the active status is not set, set it to false by default
+        change_coin_flip_active(true)
+        true
+    end
+  end
+
+  defp join_coin_flip_room_transaction(room, attendee) do
+    Multi.new()
+    # Remove the room play cost from player2's balance
+    |> Multi.merge(fn _changes ->
+      Contest.change_attendee_tokens_transaction(attendee, attendee.tokens - room.bet, :player2)
+    end)
+    # Flip the coin and update the room
+    |> Multi.run(:coin_flip_room, fn repo, _changes ->
+      result = flip_coin()
+
+      room
+      |> CoinFlipRoom.changeset(%{
+        player2_id: attendee.id,
+        result: result,
+        finished: true
+      })
+      |> repo.update()
+    end)
+    # Award tokens to winner
+    |> Multi.merge(fn %{coin_flip_room: updated_room} ->
+      updated_room = Repo.preload(updated_room, [:player1, :player2])
+      winner = if updated_room.result == "tails", do: attendee, else: updated_room.player1
+      winnings = room.bet * 2
+
+      Contest.change_attendee_tokens_transaction(
+        winner,
+        if(updated_room.result == "tails",
+          do: winner.tokens + winnings - room.bet,
+          else: winner.tokens + winnings
+        ),
+        :winner_update_tokens,
+        :previous_daily_tokens,
+        :new_daily_tokens
+      )
+    end)
+    |> Repo.transaction()
+  end
+
+  @doc """
   Joins an attendee to a coin flip room.
 
   ## Parameters
@@ -716,14 +808,16 @@ defmodule Safira.Minigames do
         {:error, "You cannot join your own room."}
 
       %CoinFlipRoom{player2_id: nil} = room ->
-        IO.puts("att:")
+        case join_coin_flip_room_transaction(room, attendee) do
+          {:ok, result} ->
+            coin_flip_room =
+              result.coin_flip_room
+              |> Map.put(:finished, false)
+              |> Map.put(:player2, attendee)
+              |> Repo.preload(player2: :user)
 
-        case update_coin_flip_room(room, %{player2_id: attendee.id, player2: attendee},
-               broadcast: true
-             ) do
-          {:ok, updated_room} ->
-            flip_coin(updated_room)
-            {:ok, "You have joined the room."}
+            broadcast_coin_flip_rooms_update("update", coin_flip_room)
+            {:ok, coin_flip_room}
 
           {:error, _changeset} ->
             {:error, "Failed to join the room."}
@@ -734,23 +828,11 @@ defmodule Safira.Minigames do
     end
   end
 
-  defp flip_coin(coin_flip_room) do
-    result =
-      if strong_randomizer() > 0.5 do
-        "heads"
-      else
-        "tails"
-      end
-
-    case update_coin_flip_room(coin_flip_room, %{result: result, finished: true}) do
-      {:ok, updated_room} ->
-        updated_room = Map.put(updated_room, :finished, false)
-        broadcast_coin_flip_rooms_update("update", updated_room)
-        broadcast_coin_flip_room_update(coin_flip_room.id, "flip", updated_room)
-        {:ok, updated_room}
-
-      {:error, _changeset} ->
-        {:error, "Failed to flip the coin."}
+  defp flip_coin() do
+    if strong_randomizer() > 0.5 do
+      "heads"
+    else
+      "tails"
     end
   end
 
@@ -788,23 +870,5 @@ defmodule Safira.Minigames do
 
   defp broadcast_coin_flip_rooms_update(action, value) do
     Phoenix.PubSub.broadcast(@pubsub, coin_flip_rooms_topic(), {action, value})
-  end
-
-  @doc """
-  Subscribes the caller to the coin flip room updates.
-
-  ## Examples
-
-      iex> subscribe_to_coin_flip_room_update(123)
-      :ok
-  """
-  def subscribe_to_coin_flip_room_update(id) do
-    Phoenix.PubSub.subscribe(@pubsub, coin_flip_room_topic(id))
-  end
-
-  defp coin_flip_room_topic(id), do: "coin_flip_room:#{id}"
-
-  defp broadcast_coin_flip_room_update(id, action, value) do
-    Phoenix.PubSub.broadcast(@pubsub, coin_flip_room_topic(id), {action, value})
   end
 end
