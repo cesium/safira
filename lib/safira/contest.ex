@@ -501,14 +501,27 @@ defmodule Safira.Contest do
     |> Repo.transaction()
   end
 
-  def daily_leaderboard(day, limit \\ 3) do
+  def daily_leaderboard(day, limit \\ 10) do
+    daily_leaderboard_query(day)
+    |> limit(^limit)
+    |> presentation_query()
+    |> Repo.all()
+  end
+
+  def daily_leaderboard_position(day, attendee_id) do
+    daily_leaderboard_query(day)
+    |> presentation_query()
+    |> subquery()
+    |> where([u], u.attendee_id == ^attendee_id)
+    |> Repo.one()
+  end
+
+  defp daily_leaderboard_query(day) do
     daily_leaderboard_tokens_query(day)
     |> join(:inner, [dt], rd in subquery(daily_leaderboard_redeem_query(day)),
       on: dt.attendee_id == rd.attendee_id
     )
-    |> sort_query(limit)
-    |> presentation_query()
-    |> Repo.all()
+    |> sort_query()
   end
 
   defp daily_leaderboard_redeem_query(day) do
@@ -530,10 +543,9 @@ defmodule Safira.Contest do
     |> where([dt], dt.date >= ^start_time and dt.date <= ^end_time)
   end
 
-  defp sort_query(query, limit) do
+  defp sort_query(query) do
     query
     |> order_by([dt, rd], desc: rd.redeem_count, desc: dt.tokens)
-    |> limit(^limit)
   end
 
   defp presentation_query(query) do
@@ -541,6 +553,9 @@ defmodule Safira.Contest do
     |> join(:inner, [dt, rd], at in Safira.Accounts.Attendee, on: at.id == rd.attendee_id)
     |> join(:inner, [dt, rd, at], u in Safira.Accounts.User, on: u.id == at.user_id)
     |> select([dt, rd, at, u], %{
+      attendee_id: at.id,
+      position:
+        fragment("row_number() OVER (ORDER BY ? DESC, ? DESC)", rd.redeem_count, dt.tokens),
       name: u.name,
       badges: rd.redeem_count,
       tokens: dt.tokens
