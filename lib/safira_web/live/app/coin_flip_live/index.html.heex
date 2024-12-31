@@ -1,0 +1,73 @@
+<.page title={gettext("Coin Flip")} size={:xl} title_class="font-terminal uppercase">
+  <:actions>
+    <span class="text-semibold text-xl border-2 px-4 py-2 rounded-full font-terminal">
+      💰 <%= @attendee_tokens %>
+    </span>
+  </:actions>
+  <div class="flex justify-center w-full">
+    <.action_button
+      icon="hero-minus"
+      class="rounded-r-lg pl-6 pr-5"
+      disabled={@bet <= 10 || not @coin_flip_active?}
+      phx-click="decrease-bet"
+    />
+    <.action_button
+      title={gettext("Play")}
+      subtitle={"💰 #{@bet}"}
+      class="rounded-none px-10"
+      disabled={not @coin_flip_active?}
+      phx-click="create-room"
+    />
+    <.action_button
+      icon="hero-plus"
+      class="rounded-l-lg pr-6 pl-5"
+      disabled={@bet >= @attendee_tokens - 10 || not @coin_flip_active?}
+      phx-click="increase-bet"
+    />
+  </div>
+  <div class="flex flex-row justify-center w-full pt-16"></div>
+  <h2 class="text-3xl font-semibold font-terminal">Current games:</h2>
+  <div
+    id="room-list-current"
+    class="flex flex-col w-full md:flex-row flex-wrap items-center h-auto gap-4 my-5"
+    phx-update="stream"
+  >
+    <.room
+      :for={{id, room} <- @streams.room_list}
+      id={id}
+      room={room}
+      current_user={@current_user}
+    />
+  </div>
+
+  <h2 class="text-3xl font-semibold font-terminal">Previous games:</h2>
+  <div
+    id="room-list-previous"
+    class="flex flex-col w-full md:flex-row flex-wrap items-center h-auto gap-4 my-5"
+    phx-update="stream"
+  >
+    <.room
+      :for={{id, room} <- @streams.previous_room_list}
+      id={id}
+      room={room}
+      current_user={@current_user}
+    />
+    <%!-- <div
+      :for={{room, index} <- Enum.with_index(@room_list) |> Enum.filter(fn {room, _} -> room.player2_id != nil end)}
+      class="flex flex-col gap-3 items-center"
+    >
+      <span class="size-8 rounded-full bg-white text-black flex items-center justify-center font-extrabold">
+        ?
+      </span>
+      <span class="size-8 rounded-full bg-white"></span>
+    </div> --%>
+  </div>
+</.page>
+
+<%!-- <.play_modal
+  :if={@playing}
+  wrapper_class="px-6"
+  show
+  id="confirm"
+  on_cancel={JS.push("close-modal")}
+/> --%>

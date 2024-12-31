@@ -12,7 +12,7 @@ defmodule Safira.Minigames do
   alias Safira.Constants
   alias Safira.Contest
   alias Safira.Inventory.Item
-  alias Safira.Minigames.{Prize, WheelDrop}
+  alias Safira.Minigames.{Prize, WheelDrop, CoinFlipRoom}
 
   @pubsub Safira.PubSub
 
@@ -513,5 +513,362 @@ defmodule Safira.Minigames do
 
     :rand.seed(:exsplus, {i1, i2, i3})
     :rand.uniform()
+  end
+
+  @doc """
+  Returns the list of coin_flip_rooms.
+
+  ## Examples
+
+      iex> list_coin_flip_rooms()
+      [%CoinFlipRoom{}, ...]
+
+  """
+  def list_coin_flip_rooms do
+    CoinFlipRoom
+    |> Repo.all()
+    |> Repo.preload(player1: :user, player2: :user)
+  end
+
+  @doc """
+  Gets a single coin_flip_room.
+
+  Raises `Ecto.NoResultsError` if the Coin flip room does not exist.
+
+  ## Examples
+
+      iex> get_coin_flip_room!(123)
+      %CoinFlipRoom{}
+
+      iex> get_coin_flip_room!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_coin_flip_room!(id) do
+    CoinFlipRoom
+    |> Repo.get!(id)
+    |> Repo.preload(player1: :user, player2: :user)
+  end
+
+  defp create_coin_flip_room_transaction(attendee, bet) do
+    Multi.new()
+    # Fetch the room play cost
+    |> Multi.put(:bet, bet)
+    # Remove the room play cost from the attendee's token balance
+    |> Multi.merge(fn %{bet: bet} ->
+      Contest.change_attendee_tokens_transaction(attendee, attendee.tokens - bet, :attendee)
+    end)
+    # Create the coin flip room
+    |> Multi.run(:coin_flip_room, fn _repo, %{attendee: attendee} ->
+      attrs = %{
+        player1_id: attendee.id,
+        bet: bet
+      }
+
+      %CoinFlipRoom{}
+      |> CoinFlipRoom.changeset(attrs)
+      |> Repo.insert()
+    end)
+    # Execute the transaction
+    |> Repo.transaction()
+  end
+
+  @doc """
+  Creates a coin_flip_room.
+
+  ## Examples
+
+      iex> create_coin_flip_room(%{field: value})
+      {:ok, %CoinFlipRoom{}}
+
+      iex> create_coin_flip_room(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_coin_flip_room(attrs \\ %{}) do
+    attendee = Accounts.get_attendee!(attrs["attendee_id"])
+
+    case create_coin_flip_room_transaction(attendee, attrs["bet"]) do
+      {:ok, result} ->
+        coin_flip_room = Repo.preload(result.coin_flip_room, player1: :user)
+        broadcast_coin_flip_rooms_update("create", coin_flip_room)
+        {:ok, coin_flip_room}
+
+      {:error, changeset} ->
+        {:error, changeset}
+    end
+  end
+
+  @doc """
+  Updates a coin_flip_room.
+
+  ## Examples
+
+      iex> update_coin_flip_room(coin_flip_room, %{field: new_value})
+      %CoinFlipRoom{}
+
+  """
+  def update_coin_flip_room(%CoinFlipRoom{} = coin_flip_room, attrs) do
+    changeset = CoinFlipRoom.changeset(coin_flip_room, attrs)
+
+    case Repo.update(changeset) do
+      {:ok, coin_flip_room} ->
+        {:ok, coin_flip_room}
+
+      {:error, changeset} ->
+        {:error, changeset}
+    end
+  end
+
+  defp delete_coin_flip_room_transaction(room) do
+    Multi.new()
+    |> Multi.merge(fn _changes ->
+      Contest.change_attendee_tokens_transaction(
+        room.player1,
+        room.player1.tokens + room.bet,
+        :player1
+      )
+    end)
+    |> Multi.delete(:coin_flip_room, room)
+    |> Repo.transaction()
+  end
+
+  @doc """
+  Deletes a coin_flip_room.
+
+  ## Examples
+
+      iex> delete_coin_flip_room(coin_flip_room)
+      {:ok, %CoinFlipRoom{}}
+
+      iex> delete_coin_flip_room(coin_flip_room)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_coin_flip_room(%CoinFlipRoom{} = coin_flip_room) do
+    if coin_flip_room.finished do
+      {:error, "The room is already finished."}
+    else
+      case delete_coin_flip_room_transaction(coin_flip_room) do
+        {:ok, _} ->
+          broadcast_coin_flip_rooms_update("delete", coin_flip_room)
+          {:ok, coin_flip_room}
+
+        {:error, changeset} ->
+          {:error, changeset}
+      end
+    end
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking coin_flip_room changes.
+
+  ## Examples
+
+      iex> change_coin_flip_room(coin_flip_room)
+      %Ecto.Changeset{data: %CoinFlipRoom{}}
+
+  """
+  def change_coin_flip_room(%CoinFlipRoom{} = coin_flip_room, attrs \\ %{}) do
+    CoinFlipRoom.changeset(coin_flip_room, attrs)
+  end
+
+  @doc """
+  Changes the coin flip fee.
+
+  ## Examples
+
+      iex> set_coin_flip_fee(20)
+      :ok
+  """
+  def change_coin_flip_fee(fee) do
+    Constants.set("coin_flip_fee", fee)
+    broadcast_coin_flip_config_update("fee", fee)
+  end
+
+  @doc """
+  Gets the coin flip fee.
+
+  ## Examples
+
+      iex> get_coin_flip_fee()
+      20
+  """
+  def get_coin_flip_fee do
+    case Constants.get("coin_flip_fee") do
+      {:ok, fee} ->
+        fee
+
+      {:error, _} ->
+        # If the fee is not set, set it to 0 by default
+        change_coin_flip_fee(0)
+        0
+    end
+  end
+
+  @doc """
+  Changes the coin flip active status.
+
+  ## Examples
+
+      iex> change_coin_flip_active(true)
+      :ok
+  """
+  def change_coin_flip_active(active) do
+    Constants.set("coin_flip_active_status", active)
+    broadcast_coin_flip_config_update("is_active", active)
+  end
+
+  @doc """
+  Gets the coin flip active status.
+
+  ## Examples
+
+      iex> coin_flip_active?()
+      true
+  """
+  def coin_flip_active? do
+    case Constants.get("coin_flip_active_status") do
+      {:ok, active} ->
+        active
+
+      {:error, _} ->
+        # If the active status is not set, set it to false by default
+        change_coin_flip_active(true)
+        true
+    end
+  end
+
+  defp join_coin_flip_room_transaction(room, attendee) do
+    Multi.new()
+    # Remove the room play cost from player2's balance
+    |> Multi.merge(fn _changes ->
+      Contest.change_attendee_tokens_transaction(attendee, attendee.tokens - room.bet, :player2)
+    end)
+    # Flip the coin and update the room
+    |> Multi.run(:coin_flip_room, fn repo, _changes ->
+      result = flip_coin()
+
+      room
+      |> CoinFlipRoom.changeset(%{
+        player2_id: attendee.id,
+        result: result,
+        finished: true
+      })
+      |> repo.update()
+    end)
+    # Award tokens to winner
+    |> Multi.merge(fn %{coin_flip_room: updated_room} ->
+      updated_room = Repo.preload(updated_room, [:player1, :player2])
+      winner = if updated_room.result == "tails", do: attendee, else: updated_room.player1
+      winnings = room.bet * 2
+
+      Contest.change_attendee_tokens_transaction(
+        winner,
+        if(updated_room.result == "tails",
+          do: winner.tokens + winnings - room.bet,
+          else: winner.tokens + winnings
+        ),
+        :winner_update_tokens,
+        :previous_daily_tokens,
+        :new_daily_tokens
+      )
+    end)
+    |> Repo.transaction()
+  end
+
+  @doc """
+  Joins an attendee to a coin flip room.
+
+  ## Parameters
+
+    - room_id: The ID of the coin flip room to join.
+    - attendee: The attendee attempting to join the room.
+
+  ## Returns
+
+    - `{:ok, "You have joined the room."}` if the attendee successfully joins the room.
+    - `{:error, "You cannot join your own room."}` if the attendee is trying to join their own room.
+    - `{:error, "The room is already full."}` if the room already has two players.
+
+  ## Examples
+
+      iex> join_coin_flip_room("room_id", %Attendee{id: "attendee_id"})
+      {:ok, "You have joined the room."}
+
+      iex> join_coin_flip_room("room_id", %Attendee{id: "player1_id"})
+      {:error, "You cannot join your own room."}
+
+      iex> join_coin_flip_room("room_id", %Attendee{id: "other_attendee_id"})
+      {:error, "The room is already full."}
+  """
+  def join_coin_flip_room(room_id, attendee) do
+    case get_coin_flip_room!(room_id) do
+      %CoinFlipRoom{player1_id: player1_id} when player1_id == attendee.id ->
+        {:error, "You cannot join your own room."}
+
+      %CoinFlipRoom{player2_id: nil} = room ->
+        case join_coin_flip_room_transaction(room, attendee) do
+          {:ok, result} ->
+            coin_flip_room =
+              result.coin_flip_room
+              |> Map.put(:finished, false)
+              |> Map.put(:player2, attendee)
+              |> Repo.preload(player2: :user)
+
+            broadcast_coin_flip_rooms_update("update", coin_flip_room)
+            {:ok, coin_flip_room}
+
+          {:error, _changeset} ->
+            {:error, "Failed to join the room."}
+        end
+
+      _ ->
+        {:error, "The room is already full."}
+    end
+  end
+
+  defp flip_coin() do
+    if strong_randomizer() > 0.5 do
+      "heads"
+    else
+      "tails"
+    end
+  end
+
+  @doc """
+  Subscribes the caller to the coin flip's configuration updates.
+
+  ## Examples
+
+      iex> subscribe_to_coin_flip_config_update()
+      :ok
+  """
+  def subscribe_to_coin_flip_config_update(config) do
+    Phoenix.PubSub.subscribe(@pubsub, coin_flip_config_topic(config))
+  end
+
+  defp coin_flip_config_topic(config), do: "coin_flip_config:#{config}"
+
+  defp broadcast_coin_flip_config_update(config, value) do
+    Phoenix.PubSub.broadcast(@pubsub, coin_flip_config_topic(config), {config, value})
+  end
+
+  @doc """
+  Subscribes the caller to the coin flip rooms updates.
+
+  ## Examples
+
+      iex> subscribe_to_coin_flip_rooms_update()
+      :ok
+  """
+  def subscribe_to_coin_flip_rooms_update() do
+    Phoenix.PubSub.subscribe(@pubsub, coin_flip_rooms_topic())
+  end
+
+  defp coin_flip_rooms_topic(), do: "coin_flip_rooms"
+
+  defp broadcast_coin_flip_rooms_update(action, value) do
+    Phoenix.PubSub.broadcast(@pubsub, coin_flip_rooms_topic(), {action, value})
   end
 end
