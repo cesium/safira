@@ -547,7 +547,7 @@ defmodule Safira.Contest do
     |> Repo.all()
   end
 
-  defp global_leaderboard_query() do
+  defp global_leaderboard_query do
     Attendee
     |> join(:inner, [dt], rd in subquery(global_leaderboard_redeems_query()),
       on: rd.attendee_id == dt.id
@@ -555,7 +555,7 @@ defmodule Safira.Contest do
     |> sort_query()
   end
 
-  defp global_leaderboard_redeems_query() do
+  defp global_leaderboard_redeems_query do
     # TODO: Replace with actual redeems model
     Safira.Inventory.Item
     |> group_by([rd], rd.attendee_id)
