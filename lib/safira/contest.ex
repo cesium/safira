@@ -290,6 +290,14 @@ defmodule Safira.Contest do
     Repo.delete(badge)
   end
 
+  @doc """
+  Lists all daily prizes
+
+  ## Examples
+
+    iex> list_prizes()
+      [%DailyPrize{}, %DailyPrize{}]
+  """
   def list_daily_prizes do
     DailyPrize
     |> order_by([dp], asc: fragment("? NULLS FIRST", dp.date), asc: dp.place)
@@ -297,26 +305,81 @@ defmodule Safira.Contest do
     |> Repo.preload([:prize])
   end
 
+  @doc """
+  Gets a single daily prize.
+
+  Raises `Ecto.NoResultsError` if the daily prize does not exist.
+
+  ## Examples
+
+      iex> get_daily_prize!(123)
+      %Badge{}
+
+      iex> get_daily_prize!(456)
+      ** (Ecto.NoResultsError)
+
+  """
   def get_daily_prize!(id) do
     Repo.get!(DailyPrize, id)
   end
 
+  @doc """
+  Creates a daily prize.
+
+  ## Examples
+
+      iex> create_daily_prize(%{field: value})
+      {:ok, %DailyPrize{}}
+
+      iex> create_daily_prize(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
   def create_daily_prize(attrs \\ %{}) do
     %DailyPrize{}
     |> DailyPrize.changeset(attrs)
     |> Repo.insert()
   end
 
+  @doc """
+  Updates a daily_prize.
+
+  ## Examples
+
+      iex> update_daily_prize(daily_prize, %{field: new_value})
+      {:ok, %DailyPrize{}}
+
+      iex> update_daily_prize(daily_prize, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
   def update_daily_prize(%DailyPrize{} = daily_prize, attrs \\ %{}) do
     daily_prize
     |> DailyPrize.changeset(attrs)
     |> Repo.update()
   end
 
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking daily prize changes.
+
+  ## Examples
+
+      iex> change_daily_prize()
+      %Ecto.Changeset{data: %Badge{}}
+
+  """
   def change_daily_prize(%DailyPrize{} = daily_prize, attrs \\ %{}) do
     DailyPrize.changeset(daily_prize, attrs)
   end
 
+  @doc """
+  Deletes a daily prize.
+
+  ## Examples
+
+      iex> delete_daily_prize(daily_prize)
+      {:ok, %DailyPrize{}}
+  """
   def delete_daily_prize(%DailyPrize{} = daily_prize) do
     Repo.delete(daily_prize)
   end
@@ -540,7 +603,7 @@ defmodule Safira.Contest do
     end
   end
 
-  defp global_leaderboard(limit \\ 10) do
+  defp global_leaderboard(limit) do
     global_leaderboard_query()
     |> limit(^limit)
     |> presentation_query()
@@ -562,7 +625,7 @@ defmodule Safira.Contest do
     |> select([rd], %{redeem_count: count(rd.id), attendee_id: rd.attendee_id})
   end
 
-  defp daily_leaderboard(day, limit \\ 10) do
+  defp daily_leaderboard(day, limit) do
     daily_leaderboard_query(day)
     |> limit(^limit)
     |> presentation_query()
