@@ -290,6 +290,37 @@ defmodule Safira.Contest do
     Repo.delete(badge)
   end
 
+  def list_daily_prizes do
+    DailyPrize
+    |> order_by([dp], asc: fragment("? NULLS FIRST", dp.date), asc: dp.place)
+    |> Repo.all()
+    |> Repo.preload([:prize])
+  end
+
+  def get_daily_prize!(id) do
+    Repo.get!(DailyPrize, id)
+  end
+
+  def create_daily_prize(attrs \\ %{}) do
+    %DailyPrize{}
+    |> DailyPrize.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_daily_prize(%DailyPrize{} = daily_prize, attrs \\ %{}) do
+    daily_prize
+    |> DailyPrize.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def change_daily_prize(%DailyPrize{} = daily_prize, attrs \\ %{}) do
+    DailyPrize.changeset(daily_prize, attrs)
+  end
+
+  def delete_daily_prize(%DailyPrize{} = daily_prize) do
+    Repo.delete(daily_prize)
+  end
+
   @doc """
   Gets the company associated with a badge.
 
@@ -501,14 +532,60 @@ defmodule Safira.Contest do
     |> Repo.transaction()
   end
 
-  def daily_leaderboard(day, limit \\ 10) do
+  def leaderboard(day, limit \\ 10) do
+    if is_nil(day) do
+      global_leaderboard(limit)
+    else
+      daily_leaderboard(day, limit)
+    end
+  end
+
+  defp global_leaderboard(limit \\ 10) do
+    global_leaderboard_query()
+    |> limit(^limit)
+    |> presentation_query()
+    |> Repo.all()
+  end
+
+  defp global_leaderboard_query() do
+    Attendee
+    |> join(:inner, [dt], rd in subquery(global_leaderboard_redeems_query()),
+      on: rd.attendee_id == dt.id
+    )
+    |> sort_query()
+  end
+
+  defp global_leaderboard_redeems_query() do
+    # TODO: Replace with actual redeems model
+    Safira.Inventory.Item
+    |> group_by([rd], rd.attendee_id)
+    |> select([rd], %{redeem_count: count(rd.id), attendee_id: rd.attendee_id})
+  end
+
+  defp daily_leaderboard(day, limit \\ 10) do
     daily_leaderboard_query(day)
     |> limit(^limit)
     |> presentation_query()
     |> Repo.all()
   end
 
-  def daily_leaderboard_position(day, attendee_id) do
+  def leaderboard_position(day, attendee_id) do
+    if is_nil(day) do
+      global_leaderboard_position(attendee_id)
+    else
+      daily_leaderboard_position(day, attendee_id)
+    end
+  end
+
+  defp global_leaderboard_position(attendee_id) do
+    global_leaderboard_query()
+    |> presentation_query()
+    |> subquery()
+    |> where([u], u.attendee_id == ^attendee_id)
+    |> Repo.one()
+  end
+
+  defp daily_leaderboard_position(day, attendee_id) do
     daily_leaderboard_query(day)
     |> presentation_query()
     |> subquery()
@@ -525,8 +602,9 @@ defmodule Safira.Contest do
   end
 
   defp daily_leaderboard_redeem_query(day) do
-    start_time = Timex.beginning_of_day(day)
-    end_time = Timex.end_of_day(day)
+    day_time = DateTime.new!(day, ~T[00:00:00], "Etc/UTC")
+    start_time = Timex.beginning_of_day(day_time)
+    end_time = Timex.end_of_day(day_time)
 
     # TODO: Replace with actual redeems model
     Safira.Inventory.Item

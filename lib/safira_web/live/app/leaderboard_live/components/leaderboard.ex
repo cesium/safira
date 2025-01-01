@@ -33,7 +33,7 @@ defmodule SafiraWeb.App.LeaderboardLive.Components.Leaderboard do
           </td>
         </tr>
       <% end %>
-      <%= if not Enum.member?(Enum.map(@entries, fn e -> e.position end), @user_position.position) do %>
+      <%= if not is_nil(@user_position) and not Enum.member?(Enum.map(@entries, fn e -> e.position end), @user_position.position) do %>
         <tr>
           <td class="text-accent font-bold text-left pt-4 pb-1"><%= @user_position.position %></td>
           <td class="text-accent font-bold text-center pt-4 pb-1"><%= @user_position.name %></td>
