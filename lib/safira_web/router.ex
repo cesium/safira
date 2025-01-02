@@ -135,6 +135,7 @@ defmodule SafiraWeb.Router do
           get "/attendees", DownloadController, :attendees_data
           post "/qr_codes", DownloadController, :generate_credentials
           get "/cv_challenge", DownloadController, :cv_challenge
+          get "/final_draw", DownloadController, :final_draw
         end
 
         scope "/" do
