@@ -6,8 +6,7 @@ defmodule Safira.Contest.DailyPrize do
 
   use Safira.Schema
 
-  @required_fields ~w(prize_id place)a
-  @optional_fields ~w(date)a
+  @required_fields ~w(prize_id date place)a
 
   schema "daily_prizes" do
     belongs_to :prize, Safira.Minigames.Prize
@@ -20,7 +19,7 @@ defmodule Safira.Contest.DailyPrize do
   @doc false
   def changeset(daily_prize, attrs) do
     daily_prize
-    |> cast(attrs, @required_fields ++ @optional_fields)
+    |> cast(attrs, @required_fields)
     |> validate_required(@required_fields)
     |> unique_constraint([:date, :place])
   end

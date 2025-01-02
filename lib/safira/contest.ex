@@ -595,60 +595,32 @@ defmodule Safira.Contest do
     |> Repo.transaction()
   end
 
+  @doc """
+  Gets the top ranking attendees in a given day
+
+  ## Examples
+
+  iex> leaderboard(~D[2025-02-10], 10)
+  [%{attendee_id: id, position: 1, name: John Doe, tokens: 10, badges: 20}, ...]
+
+  """
   def leaderboard(day, limit \\ 10) do
-    if is_nil(day) do
-      global_leaderboard(limit)
-    else
-      daily_leaderboard(day, limit)
-    end
-  end
-
-  defp global_leaderboard(limit) do
-    global_leaderboard_query()
-    |> limit(^limit)
-    |> presentation_query()
-    |> Repo.all()
-  end
-
-  defp global_leaderboard_query do
-    Attendee
-    |> join(:inner, [dt], rd in subquery(global_leaderboard_redeems_query()),
-      on: rd.attendee_id == dt.id
-    )
-    |> sort_query()
-  end
-
-  defp global_leaderboard_redeems_query do
-    # TODO: Replace with actual redeems model
-    Safira.Inventory.Item
-    |> group_by([rd], rd.attendee_id)
-    |> select([rd], %{redeem_count: count(rd.id), attendee_id: rd.attendee_id})
-  end
-
-  defp daily_leaderboard(day, limit) do
     daily_leaderboard_query(day)
     |> limit(^limit)
     |> presentation_query()
     |> Repo.all()
   end
 
+  @doc """
+  Gets the position of the given attendee on the daily leaderboard
+
+  ## Examples
+
+  iex> leaderboard_position(~D[2025-02-10], id)
+  %{attendee_id: id, position: 1, name: John Doe, tokens: 10, badges: 20}
+
+  """
   def leaderboard_position(day, attendee_id) do
-    if is_nil(day) do
-      global_leaderboard_position(attendee_id)
-    else
-      daily_leaderboard_position(day, attendee_id)
-    end
-  end
-
-  defp global_leaderboard_position(attendee_id) do
-    global_leaderboard_query()
-    |> presentation_query()
-    |> subquery()
-    |> where([u], u.attendee_id == ^attendee_id)
-    |> Repo.one()
-  end
-
-  defp daily_leaderboard_position(day, attendee_id) do
     daily_leaderboard_query(day)
     |> presentation_query()
     |> subquery()
