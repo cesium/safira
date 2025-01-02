@@ -91,6 +91,8 @@ defmodule SafiraWeb.Router do
 
         live "/", HomeLive.Index, :index
 
+        live "/leaderboard", LeaderboardLive.Index, :index
+
         live "/credential", CredentialLive.Index, :index
 
         live "/wheel", WheelLive.Index, :index
@@ -194,6 +196,7 @@ defmodule SafiraWeb.Router do
           scope "/prizes", PrizeLive do
             live "/", Index, :index
             live "/new", Index, :new
+            live "/daily", Index, :daily
 
             scope "/:id" do
               live "/edit", Index, :edit

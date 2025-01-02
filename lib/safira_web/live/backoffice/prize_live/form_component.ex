@@ -16,6 +16,13 @@ defmodule SafiraWeb.PrizeLive.FormComponent do
         <:subtitle>
           Prizes can be awarded to attendees via the app's various minigames.
         </:subtitle>
+        <:actions>
+          <.link navigate={~p"/dashboard/minigames/prizes/daily"}>
+            <.button>
+              <.icon name="hero-calendar-days" class="w-5" />
+            </.button>
+          </.link>
+        </:actions>
       </.header>
 
       <.simple_form
