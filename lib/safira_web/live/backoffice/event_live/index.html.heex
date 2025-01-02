@@ -1,0 +1,29 @@
+<.page title="Event Settings">
+  <:actions>
+    <.link patch={~p"/dashboard/event/edit"}>
+      <.button><%= gettext("Edit Settings") %></.button>
+    </.link>
+  </:actions>
+
+  <div class="py-4">
+    <p class="my-1">
+      <b><%= gettext("Registrations Open:") %></b> <%= @form[:registrations_open].value %>
+    </p>
+    <p class="my-1"><b><%= gettext("Start Date/Time:") %></b> <%= @form[:start_time].value %></p>
+  </div>
+</.page>
+<.modal
+  :if={@live_action in [:edit]}
+  id="event-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/event")}
+>
+  <.live_component
+    module={SafiraWeb.Backoffice.EventLive.FormComponent}
+    id={:constants}
+    title="Event Settings"
+    action={@live_action}
+    form={@form}
+    navigate={~p"/dashboard/event"}
+  />
+</.modal>

@@ -161,4 +161,16 @@ defmodule SafiraWeb.Helpers do
     |> QRCodeEx.encode()
     |> QRCodeEx.svg(background_color: "#FFFFFF", color: "#04041C", width: 200)
   end
+
+  def parse_date(date_str) do
+    {:ok, date, _} = DateTime.from_iso8601("#{date_str}:00Z")
+    date
+  end
+
+  def string_to_bool(str) do
+    case String.downcase(str) do
+      "true" -> true
+      _ -> false
+    end
+  end
 end
