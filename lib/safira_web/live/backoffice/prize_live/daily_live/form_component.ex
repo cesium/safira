@@ -1,6 +1,5 @@
 defmodule SafiraWeb.PrizeLive.Daily.FormComponent do
   @moduledoc false
-  alias Safira.Minigames.WheelDrop
   use SafiraWeb, :live_component
 
   alias Safira.Contest
@@ -175,13 +174,6 @@ defmodule SafiraWeb.PrizeLive.Daily.FormComponent do
 
   defp generate_options(values) do
     Enum.map(values, &{&1.name, &1.id})
-  end
-
-  defp try_parse_float(value) do
-    case Float.parse(value) do
-      {float, _} -> float
-      _ -> 0.0
-    end
   end
 
   defp forms_valid?(forms) do

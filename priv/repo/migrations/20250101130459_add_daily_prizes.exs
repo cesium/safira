@@ -5,7 +5,7 @@ defmodule Safira.Repo.Migrations.AddDailyPrizes do
     create table(:daily_prizes, primary_key: false) do
       add :id, :binary_id, primary_key: true
       add :prize_id, references(:prizes, type: :binary_id, on_delete: :delete_all), null: false
-      add :date, :date, null: true
+      add :date, :date, null: false
       add :place, :integer, null: false
 
       timestamps(type: :utc_datetime)
