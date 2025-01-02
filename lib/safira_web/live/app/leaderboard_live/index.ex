@@ -131,7 +131,6 @@ defmodule SafiraWeb.App.LeaderboardLive.Index do
   defp format_date(date) do
     today = Timex.today()
     yesterday = Timex.shift(today, days: -1)
-    tomorrow = Timex.shift(today, days: 1)
 
     cond do
       Timex.equal?(date, today) ->
