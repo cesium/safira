@@ -50,6 +50,12 @@ defmodule SafiraWeb.Backoffice.PrizeLive.Index do
     |> assign(:prize, nil)
   end
 
+  defp apply_action(socket, :daily, _params) do
+    socket
+    |> assign(:page_title, "Daily Prizes")
+    |> assign(:prize, nil)
+  end
+
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
     prize = Minigames.get_prize!(id)
