@@ -74,17 +74,19 @@ defmodule SafiraWeb.Landing.Components.Schedule do
           </span>
         </p>
         <!-- Speakers -->
-        <ul class="my-[0.4em] flex font-iregular text-sm text-gray-400 z-10">
+        <ul class="my-[0.4em] flex font-iregular text-sm text-gray-400 z-10 gap-2 sm:gap-0">
           <li
             :for={{speaker, index} <- Enum.with_index(@activity.speakers, fn el, i -> {el, i} end)}
-            class="list-none	float-left"
+            class="list-none sm:float-left"
           >
             <%= if index == length(@activity.speakers) - 1 and length(@activity.speakers) != 1 do %>
-              <bdi class="ml-[5px]">
+              <bdi class="ml-[5px] hidden sm:inline">
                 <%= gettext("and") %>
               </bdi>
             <% else %>
-              <%= if index != 0, do: "," %>
+              <span class="hidden sm:inline">
+                <%= if index != 0, do: "," %>
+              </span>
             <% end %>
             <.link navigate={~p"/speakers/#{speaker.id}"} class="my-[0.4em] hover:underline">
               <%= speaker.name %>
