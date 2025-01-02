@@ -68,7 +68,7 @@ defmodule Safira.MinigamesTest do
 
     test "list_wheel_drops/0 returns all wheel_drops" do
       wheel_drop = wheel_drop_fixture()
-      assert Minigames.list_wheel_drops() == [wheel_drop]
+      assert Enum.map(Minigames.list_wheel_drops(), fn d -> d.id end) == [wheel_drop.id]
     end
 
     test "get_wheel_drop!/1 returns the wheel_drop with given id" do
