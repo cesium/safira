@@ -257,6 +257,7 @@ defmodule SafiraWeb.Router do
           scope "/prizes", PrizeLive do
             live "/", Index, :index
             live "/new", Index, :new
+            live "/daily", Index, :daily
 
             scope "/:id" do
               live "/edit", Index, :edit

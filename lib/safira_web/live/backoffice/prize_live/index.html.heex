@@ -63,3 +63,19 @@
     patch={~p"/dashboard/minigames/prizes"}
   />
 </.modal>
+
+<.modal
+  :if={@live_action == :daily}
+  id="prize-daily-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/minigames/prizes")}
+>
+  <.live_component
+    module={SafiraWeb.PrizeLive.Daily.FormComponent}
+    id={:daily_new}
+    title={@page_title}
+    action={@live_action}
+    prize={@prize}
+    patch={~p"/dashboard/minigames/prizes"}
+  />
+</.modal>
