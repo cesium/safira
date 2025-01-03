@@ -14,7 +14,7 @@ defmodule SafiraWeb.UserConfirmationLiveTest do
   describe "Confirm user" do
     test "renders confirmation page", %{conn: conn} do
       {:ok, _lv, html} = live(conn, ~p"/users/confirm/some-token")
-      assert html =~ "Confirm Account"
+      assert html =~ "Verify your Account"
     end
 
     test "confirms the given token once", %{conn: conn, user: user} do
@@ -29,7 +29,7 @@ defmodule SafiraWeb.UserConfirmationLiveTest do
         lv
         |> form("#confirmation_form")
         |> render_submit()
-        |> follow_redirect(conn, "/")
+        |> follow_redirect(conn, "/app")
 
       assert {:ok, conn} = result
 

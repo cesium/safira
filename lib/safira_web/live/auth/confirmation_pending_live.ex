@@ -13,7 +13,7 @@ defmodule SafiraWeb.ConfirmationPendingLive do
     <div>
       <img class="w-52 h-52 m-auto block" src={~p"/images/sei.svg"} />
       <h1 class="font-terminal uppercase text-4xl sm:text-6xl text-center mt-24">
-        Just one more step remaining!
+        <%= gettext("Just one more step remaining!") %>
       </h1>
       <p class="font-terminal text-xl sm:text-2xl text-center mt-4">
         <%= gettext(
@@ -41,7 +41,11 @@ defmodule SafiraWeb.ConfirmationPendingLive do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, socket |> assign(:last_sent, nil)}
+    if is_nil(socket.assigns.current_user.confirmed_at) do
+      {:ok, socket |> assign(:last_sent, nil)}
+    else
+      {:ok, socket |> push_navigate(to: ~p"/app")}
+    end
   end
 
   @impl true

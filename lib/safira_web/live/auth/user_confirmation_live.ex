@@ -1,24 +1,31 @@
 defmodule SafiraWeb.UserConfirmationLive do
   use SafiraWeb, :live_view
 
+  import SafiraWeb.Components.Button
+
   alias Safira.Accounts
 
   def render(%{live_action: :edit} = assigns) do
     ~H"""
     <div class="mx-auto max-w-sm">
-      <.header class="text-center">Confirm Account</.header>
+      <img class="w-52 h-52 m-auto block" src={~p"/images/sei.svg"} />
+      <.header class="text-center">
+        <%= gettext("Verify your Account") %>
+        <:subtitle>
+          <%= "Click the button below to verify your account and complete registration for SEI'25" %>
+        </:subtitle>
+      </.header>
 
       <.simple_form for={@form} id="confirmation_form" phx-submit="confirm_account">
         <input type="hidden" name={@form[:token].name} value={@form[:token].value} />
         <:actions>
-          <.button phx-disable-with="Confirming..." class="w-full">Confirm my account</.button>
+          <.action_button
+            title={gettext("Verify my Account")}
+            phx-disable-with="Confirming..."
+            class="w-full"
+          />
         </:actions>
       </.simple_form>
-
-      <p class="text-center mt-4">
-        <.link href={~p"/users/register"}>Register</.link>
-        | <.link href={~p"/users/log_in"}>Log in</.link>
-      </p>
     </div>
     """
   end
@@ -36,7 +43,7 @@ defmodule SafiraWeb.UserConfirmationLive do
         {:noreply,
          socket
          |> put_flash(:info, "User confirmed successfully.")
-         |> redirect(to: ~p"/")}
+         |> redirect(to: ~p"/app")}
 
       :error ->
         # If there is a current user and the account was already confirmed,
