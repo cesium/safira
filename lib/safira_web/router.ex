@@ -62,6 +62,7 @@ defmodule SafiraWeb.Router do
 
       pipe_through :registrations_open
       live "/users/register", UserRegistrationLive, :new
+      post "/users/register", UserSessionController, :new
     end
   end
 
@@ -70,9 +71,12 @@ defmodule SafiraWeb.Router do
 
     live_session :require_authenticated_user,
       on_mount: [{SafiraWeb.UserAuth, :ensure_authenticated}] do
+      live "/confirmation_pending", ConfirmationPendingLive, :index
+
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
 
+      pipe_through [:require_confirmed_user]
       live "/scanner", ScannerLive.Index, :index
 
       scope "/app", App do
