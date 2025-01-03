@@ -6,6 +6,7 @@ defmodule SafiraWeb.Landing.HomeLive.Components.Hero do
 
   attr :event_start_date, Date, required: true
   attr :event_end_date, Date, required: true
+  attr :registrations_open?, :boolean, default: false
 
   def hero(assigns) do
     ~H"""
@@ -21,7 +22,7 @@ defmodule SafiraWeb.Landing.HomeLive.Components.Hero do
                 <h5><%= gettext("Follow us on") %></h5>
                 <.socials />
               </div>
-              <div class="lg:hidden">
+              <div :if={@registrations_open?} class="lg:hidden">
                 <.join_us />
               </div>
             </div>

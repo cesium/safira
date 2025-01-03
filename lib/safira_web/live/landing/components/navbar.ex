@@ -5,6 +5,7 @@ defmodule SafiraWeb.Landing.Components.Navbar do
   import SafiraWeb.Landing.Components.JoinUs
 
   attr :pages, :list, default: []
+  attr :registrations_open?, :boolean, default: false
 
   def navbar(assigns) do
     ~H"""
@@ -35,7 +36,7 @@ defmodule SafiraWeb.Landing.Components.Navbar do
                       </.link>
                     <% end %>
                   </div>
-                  <div class="flex pl-20">
+                  <div :if={@registrations_open?} class="flex pl-20">
                     <.join_us />
                   </div>
                 </div>

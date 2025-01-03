@@ -47,7 +47,7 @@ defmodule SafiraWeb.Landing.Components.Footer do
       },
       %{
         title: "Survival Guide",
-        url: "/docs/survival.pdf"
+        url: "/docs/survival-guide.pdf"
       },
       %{
         title: "General Regulation",

@@ -43,6 +43,20 @@ defmodule Safira.Activities do
   end
 
   @doc """
+  Returns the count of activities.
+
+  ## Examples
+
+      iex> get_activities_count()
+      42
+
+  """
+  def get_activities_count() do
+    Activity
+    |> Repo.aggregate(:count, :id)
+  end
+
+  @doc """
   Returns the list of daily activities.
 
   ## Examples

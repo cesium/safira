@@ -15,7 +15,7 @@
   </head>
   <body class="bg-primary text-light font-iregular">
     <.sparkles/>
-    <.navbar pages={SafiraWeb.Config.landing_pages()} />
+    <.navbar pages={SafiraWeb.Config.landing_pages()} registrations_open?={Safira.Event.registrations_open?()}/>
     <main>
       <%= @inner_content %>
     </main>

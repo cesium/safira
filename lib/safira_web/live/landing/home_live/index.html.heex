@@ -1,8 +1,9 @@
 <div class="xl:px-[15rem] md:px-[8rem] px-[2.5rem]">
-  <.hero event_start_date={@event_start_date} event_end_date={@event_end_date} />
+  <.hero event_start_date={@event_start_date} event_end_date={@event_end_date} registrations_open?={@registrations_open?} />
   <.pitch />
 </div>
 <.schedule
+  :if={@has_schedule?}
   event_start_date={@event_start_date}
   event_end_date={@event_end_date}
   url={~p"/"}
@@ -10,6 +11,6 @@
 />
 <div class="xl:px-[15rem] md:px-[8rem] px-[2.5rem]">
   <.speakers :if={@has_highlighted_speakers?} speakers={@streams.speakers} />
-  <.sponsors tiers={@tiers} />
+  <.sponsors :if={@has_sponsors?} tiers={@tiers} />
   <.partners />
 </div>

@@ -11,7 +11,7 @@ defmodule SafiraWeb.Landing.HomeLive.Components.Partners do
       <div class="my-10 flex flex-wrap items-center justify-center gap-10">
         <div
           :for={partner <- event_partners()}
-          class="m-auto w-40 select-none grayscale filter transition-all hover:filter-none"
+          class="m-auto w-40 select-none opacity-80 hover:opacity-100 hover:scale-105 duration-500 transition-all"
         >
           <.link href={partner.url} target="_blank" rel="noreferrer">
             <img src={"/images/partners/#{partner.logo}"} class="w-full h-40" alt={partner.name} />

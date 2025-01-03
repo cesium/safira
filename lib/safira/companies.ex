@@ -43,6 +43,20 @@ defmodule Safira.Companies do
   end
 
   @doc """
+  Returns the count of companies.
+
+  ## Examples
+
+      iex> get_companies_count()
+      42
+
+  """
+  def get_companies_count() do
+    Company
+    |> Repo.aggregate(:count, :id)
+  end
+
+  @doc """
   Gets a single company.
 
   Raises `Ecto.NoResultsError` if the Company does not exist.
