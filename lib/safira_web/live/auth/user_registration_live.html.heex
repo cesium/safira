@@ -48,8 +48,15 @@
           <.input name="consent" label="" type="checkbox" value={false} class="w-fit" required />
         </div>
 
-        <div class="flex">
-          <%= gettext("I have read and agree to the General Regulation and Privacy Policy") %>
+        <div class="inline">
+          <%= gettext("I have read and agree to the ") %>
+          <.link href={~p"/docs/general_regulation.pdf"} target="_blank">
+            <%= gettext("General Regulation") %>
+          </.link>
+          <%= gettext(" and ") %>
+          <.link href={~p"/docs/privacy_policy.pdf"} target="_blank">
+            <%= gettext("Privacy Policy") %>
+          </.link>
         </div>
       </div>
     </.label>
