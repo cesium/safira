@@ -3,6 +3,7 @@ defmodule SafiraWeb.UserRegistrationLive do
 
   alias Safira.Accounts
   alias Safira.Accounts.User
+  alias SafiraWeb.UserAuth
 
   import SafiraWeb.Components.Button
 
@@ -35,10 +36,11 @@ defmodule SafiraWeb.UserRegistrationLive do
 
         {:noreply,
          socket
+         |> UserAuth.log_in_user(user, user_params)
          |> assign(trigger_submit: true)
          |> assign(check_errors: false)
          |> assign_form(changeset)
-         |> push_navigate(to: ~p"/users/log_in")}
+         |> push_navigate(to: ~p"/app")}
 
       {:error, _, %Ecto.Changeset{} = changeset, _} ->
         {:noreply,

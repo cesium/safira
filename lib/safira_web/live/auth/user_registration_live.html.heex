@@ -16,9 +16,9 @@
   <.simple_form
     for={@form}
     id="registration_form"
-    phx-submit="save"
     phx-change="validate"
     phx-trigger-action={@trigger_submit}
+    action={~p"/users/register"}
   >
     <.input field={@form[:email]} type="email" label="Email" required />
     <.input field={@form[:password]} type="password" label="Password" required />

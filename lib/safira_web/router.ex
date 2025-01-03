@@ -66,6 +66,7 @@ defmodule SafiraWeb.Router do
 
       pipe_through :registrations_open
       live "/users/register", UserRegistrationLive, :new
+      post "/users/register", UserSessionController, :new
     end
   end
 

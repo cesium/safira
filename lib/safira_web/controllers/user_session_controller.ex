@@ -4,8 +4,26 @@ defmodule SafiraWeb.UserSessionController do
   alias Safira.Accounts
   alias SafiraWeb.UserAuth
 
-  def create(conn, %{"_action" => "registered"} = params) do
-    create(conn, params, "Account created successfully!")
+  def new(conn, %{"user" => user_params}) do
+    case Accounts.register_attendee_user(user_params) do
+      {:ok, %{user: user, attendee: _}} ->
+        {:ok, _} =
+          Accounts.deliver_user_confirmation_instructions(
+            user,
+            &url(~p"/users/confirm/#{&1}")
+          )
+
+        changeset = Accounts.change_user_registration(user)
+
+        conn
+        |> UserAuth.log_in_user(user, user_params)
+        |> put_flash(:success, "Account created successfully")
+        |> redirect(to: ~p"/app")
+
+      {:error, _, %Ecto.Changeset{} = changeset, _} ->
+        conn
+        |> put_flash(:error, "Unable to register. Check the errors below")
+    end
   end
 
   def create(conn, %{"_action" => "password_updated"} = params) do
