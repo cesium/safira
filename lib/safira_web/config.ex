@@ -2,7 +2,7 @@ defmodule SafiraWeb.Config do
   @moduledoc """
   Web configuration for the app.
   """
-  
+
   alias Safira.Event
 
   def landing_pages do

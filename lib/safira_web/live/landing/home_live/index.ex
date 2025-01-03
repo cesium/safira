@@ -19,7 +19,7 @@ defmodule SafiraWeb.Landing.HomeLive.Index do
      |> assign(:has_highlighted_speakers?, speakers != [])
      |> assign(:registrations_open?, Event.registrations_open?())
      |> assign(:has_sponsors?, Companies.get_companies_count() > 0)
-      |> assign(:has_schedule?, Activities.get_activities_count() > 0)
+     |> assign(:has_schedule?, Activities.get_activities_count() > 0)
      |> stream(:speakers, speakers |> Enum.shuffle())}
   end
 
