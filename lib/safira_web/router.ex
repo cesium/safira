@@ -103,9 +103,12 @@ defmodule SafiraWeb.Router do
         live "/vault", VaultLive.Index, :index
       end
 
-      scope "/dashboard", Backoffice do
+      scope "/downloads" do
         pipe_through [:require_staff_user]
+        get "/final_draw", CSVController, :final_draw
+      end
 
+      scope "/dashboard", Backoffice do
         scope "/attendees", AttendeeLive do
           live "/", Index, :index
           live "/:id", Show, :show
