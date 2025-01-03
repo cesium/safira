@@ -18,7 +18,7 @@ defmodule SafiraWeb.UserSessionController do
         |> put_flash(:success, "Account created successfully")
         |> redirect(to: ~p"/app")
 
-      {:error, _, %Ecto.Changeset{} = changeset, _} ->
+      {:error, _, %Ecto.Changeset{} = _changeset, _} ->
         conn
         |> put_flash(:error, "Unable to register. Check the errors below")
     end

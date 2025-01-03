@@ -7,9 +7,18 @@ defmodule SafiraWeb.UserSettingsLiveTest do
 
   describe "Settings page" do
     test "renders settings page", %{conn: conn} do
+      user = user_fixture()
+
+      token =
+        extract_user_token(fn url ->
+          Safira.Accounts.deliver_user_confirmation_instructions(user, url)
+        end)
+
+      Safira.Accounts.confirm_user(token)
+
       {:ok, _lv, html} =
         conn
-        |> log_in_user(user_fixture())
+        |> log_in_user(user)
         |> live(~p"/users/settings")
 
       assert html =~ "Change Email"
@@ -28,7 +37,15 @@ defmodule SafiraWeb.UserSettingsLiveTest do
   describe "update email form" do
     setup %{conn: conn} do
       password = valid_user_password()
-      user = user_fixture(%{password: password})
+      user = user_fixture(%{"password" => password})
+
+      token =
+        extract_user_token(fn url ->
+          Safira.Accounts.deliver_user_confirmation_instructions(user, url)
+        end)
+
+      Safira.Accounts.confirm_user(token)
+
       %{conn: log_in_user(conn, user), user: user, password: password}
     end
 
@@ -85,7 +102,15 @@ defmodule SafiraWeb.UserSettingsLiveTest do
   describe "update password form" do
     setup %{conn: conn} do
       password = valid_user_password()
-      user = user_fixture(%{password: password})
+      user = user_fixture(%{"password" => password})
+
+      token =
+        extract_user_token(fn url ->
+          Safira.Accounts.deliver_user_confirmation_instructions(user, url)
+        end)
+
+      Safira.Accounts.confirm_user(token)
+
       %{conn: log_in_user(conn, user), user: user, password: password}
     end
 

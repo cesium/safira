@@ -77,10 +77,10 @@ defmodule SafiraWeb.Router do
       on_mount: [{SafiraWeb.UserAuth, :ensure_authenticated}] do
       live "/confirmation_pending", ConfirmationPendingLive, :index
 
-      pipe_through [:require_confirmed_user]
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
 
+      pipe_through [:require_confirmed_user]
       live "/scanner", ScannerLive.Index, :index
 
       scope "/app", App do

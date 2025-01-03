@@ -39,10 +39,12 @@ defmodule SafiraWeb.ConfirmationPendingLive do
     """
   end
 
+  @impl true
   def mount(_params, _session, socket) do
     {:ok, socket |> assign(:last_sent, nil)}
   end
 
+  @impl true
   def handle_event("resend", _params, socket) do
     # To avoid sending many emails if a user decides to smash the resend button,
     # we only allow emails to be sent once every 30 seconds
