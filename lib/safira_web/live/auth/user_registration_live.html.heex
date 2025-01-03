@@ -1,4 +1,7 @@
 <div class="mx-auto max-w-sm py-2">
+  <div class="px-32 py-12">
+    <img class="w-full h-full block" src={~p"/images/sei.svg"} />
+  </div>
   <.header class="text-center">
     <h1 class="text-3xl text-center font-terminal uppercase">Register for an account</h1>
     <:subtitle>
@@ -17,19 +20,19 @@
     phx-change="validate"
     phx-trigger-action={@trigger_submit}
   >
-    <.field field={@form[:email]} type="email" label="Email" required />
-    <.field field={@form[:password]} type="password" label="Password" required />
-    <.field
+    <.input field={@form[:email]} type="email" label="Email" required />
+    <.input field={@form[:password]} type="password" label="Password" required />
+    <.input
       field={@form[:password_confirmation]}
       type="password"
       label="Confirm Password"
       required
     />
-    <.field field={@form[:name]} type="text" label="Name" required />
-    <.field field={@form[:handle]} type="text" label="Nickname" required />
+    <.input field={@form[:name]} type="text" label="Name" required />
+    <.input field={@form[:handle]} type="text" label="Nickname" required />
 
     <.inputs_for :let={att} field={@form[:attendee]}>
-      <.field
+      <.input
         class="text-black"
         field={att[:course_id]}
         type="select"
@@ -42,7 +45,7 @@
     <.label>
       <div class="flex">
         <div class="mr-1 mt-1">
-          <.field name="consent" label="" type="checkbox" value={false} class="w-fit" required />
+          <.input name="consent" label="" type="checkbox" value={false} class="w-fit" required />
         </div>
 
         <div class="flex">
