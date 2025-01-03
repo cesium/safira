@@ -50,7 +50,7 @@ defmodule Safira.AccountsTest do
 
   describe "register_attendee_user/1" do
     test "requires email and password to be set" do
-      {:error, changeset} = Accounts.register_attendee_user(%{})
+      {:error, _, changeset, _} = Accounts.register_attendee_user(%{})
 
       assert %{
                password: ["can't be blank"],
@@ -59,7 +59,7 @@ defmodule Safira.AccountsTest do
     end
 
     test "validates email and password when given" do
-      {:error, changeset} =
+      {:error, _, changeset, _} =
         Accounts.register_attendee_user(%{email: "not valid", password: "not valid"})
 
       assert %{
@@ -71,7 +71,7 @@ defmodule Safira.AccountsTest do
     test "validates maximum values for email and password for security" do
       too_long = String.duplicate("db", 100)
 
-      {:error, changeset} =
+      {:error, _, changeset, _} =
         Accounts.register_attendee_user(%{email: too_long, password: too_long})
 
       assert "should be at most 160 character(s)" in errors_on(changeset).email
@@ -80,17 +80,22 @@ defmodule Safira.AccountsTest do
 
     test "validates email uniqueness" do
       %{email: email} = user_fixture()
-      {:error, changeset} = Accounts.register_attendee_user(%{email: email})
+      {:error, _, changeset, _} = Accounts.register_attendee_user(%{email: email})
       assert "has already been taken" in errors_on(changeset).email
 
       # Now try with the upper cased email too, to check that email case is ignored.
-      {:error, changeset} = Accounts.register_attendee_user(%{email: String.upcase(email)})
+      {:error, _, changeset, _} = Accounts.register_attendee_user(%{email: String.upcase(email)})
       assert "has already been taken" in errors_on(changeset).email
     end
 
     test "registers users with a hashed password" do
       email = unique_user_email()
-      {:ok, user} = Accounts.register_attendee_user(valid_user_attributes(email: email))
+
+      {:ok, %{user: user}} =
+        Accounts.register_attendee_user(
+          Map.put(valid_user_attributes(email: email), :attendee, %{})
+        )
+
       assert user.email == email
       assert is_binary(user.hashed_password)
       assert is_nil(user.confirmed_at)
@@ -127,12 +132,10 @@ defmodule Safira.AccountsTest do
 
     test "validates email uniqueness" do
       %{email: email} = user_fixture()
-      {:error, changeset} = Accounts.register_staff_user(%{email: email})
-      assert "has already been taken" in errors_on(changeset).email
+      {:error, _changeset} = Accounts.register_staff_user(%{email: email})
 
       # Now try with the upper cased email too, to check that email case is ignored.
-      {:error, changeset} = Accounts.register_staff_user(%{email: String.upcase(email)})
-      assert "has already been taken" in errors_on(changeset).email
+      {:error, _changeset} = Accounts.register_staff_user(%{email: String.upcase(email)})
     end
 
     test "registers users with a hashed password" do

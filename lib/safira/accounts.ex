@@ -208,13 +208,16 @@ defmodule Safira.Accounts do
 
   """
   def register_attendee_user(attrs) do
+    # Convert map to atom keys
+    attrs = for {key, val} <- attrs, into: %{}, do: {String.to_atom("#{key}"), val}
+
     Ecto.Multi.new()
     |> Ecto.Multi.insert(
       :user,
-      User.registration_changeset(%User{}, Map.delete(attrs, "attendee"))
+      User.registration_changeset(%User{}, Map.delete(attrs, :attendee))
     )
     |> Ecto.Multi.insert(:attendee, fn %{user: user} ->
-      Attendee.changeset(%Attendee{}, Map.put(attrs["attendee"], "user_id", user.id))
+      Attendee.changeset(%Attendee{}, Map.put(Map.get(attrs, :attendee), "user_id", user.id))
     end)
     |> Repo.transaction()
   end
