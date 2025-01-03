@@ -11,6 +11,16 @@ defmodule SafiraWeb.UserRoles do
 
   alias Safira.Accounts
 
+  def require_confirmed_user(conn, _opts) do
+    if is_nil(conn.assigns.current_user.confirmed_at) do
+      conn
+      |> redirect(to: ~p"/confirmation_pending")
+      |> halt()
+    else
+      conn
+    end
+  end
+
   def require_credential(conn, _opts) do
     if has_credential?(conn) do
       conn

@@ -13,8 +13,6 @@ defmodule SafiraWeb.UserSessionController do
             &url(~p"/users/confirm/#{&1}")
           )
 
-        changeset = Accounts.change_user_registration(user)
-
         conn
         |> UserAuth.log_in_user(user, user_params)
         |> put_flash(:success, "Account created successfully")
