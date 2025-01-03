@@ -120,7 +120,7 @@ defmodule Safira.MixProject do
         "esbuild safira --minify",
         "phx.digest"
       ],
-      lint: ["credo -C default"]
+      lint: ["credo --all --strict"]
     ]
   end
 end

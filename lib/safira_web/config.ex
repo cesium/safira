@@ -2,6 +2,8 @@ defmodule SafiraWeb.Config do
   @moduledoc """
   Web configuration for the app.
   """
+  
+  alias Safira.Event
 
   def landing_pages do
     [
@@ -29,44 +31,48 @@ defmodule SafiraWeb.Config do
   end
 
   def app_pages do
-    [
-      %{
-        key: :badgedex,
-        title: "Badgedex",
-        icon: "hero-check-badge",
-        url: "/app/badgedex"
-      },
-      %{
-        key: :wheel,
-        title: "Wheel",
-        icon: "hero-circle-stack",
-        url: "/app/wheel"
-      },
-      %{
-        key: :leaderboard,
-        title: "Leaderboard",
-        icon: "hero-trophy",
-        url: "/app/leaderboard"
-      },
-      %{
-        key: :store,
-        title: "Store",
-        icon: "hero-shopping-bag",
-        url: "/app/store"
-      },
-      %{
-        key: :vault,
-        title: "Vault",
-        icon: "hero-archive-box",
-        url: "/app/vault"
-      },
-      %{
-        key: :credential,
-        title: "Credential",
-        icon: "hero-ticket",
-        url: "/app/credential"
-      }
-    ]
+    if Event.event_started?() do
+      [
+        %{
+          key: :badgedex,
+          title: "Badgedex",
+          icon: "hero-check-badge",
+          url: "/app/badgedex"
+        },
+        %{
+          key: :wheel,
+          title: "Wheel",
+          icon: "hero-circle-stack",
+          url: "/app/wheel"
+        },
+        %{
+          key: :leaderboard,
+          title: "Leaderboard",
+          icon: "hero-trophy",
+          url: "/app/leaderboard"
+        },
+        %{
+          key: :store,
+          title: "Store",
+          icon: "hero-shopping-bag",
+          url: "/app/store"
+        },
+        %{
+          key: :vault,
+          title: "Vault",
+          icon: "hero-archive-box",
+          url: "/app/vault"
+        },
+        %{
+          key: :credential,
+          title: "Credential",
+          icon: "hero-ticket",
+          url: "/app/credential"
+        }
+      ]
+    else
+      []
+    end
   end
 
   def backoffice_pages(user) do
@@ -156,6 +162,13 @@ defmodule SafiraWeb.Config do
         icon: "hero-qr-code",
         url: "/dashboard/scanner",
         scope: %{"scanner" => ["show"]}
+      },
+      %{
+        key: :event,
+        title: "Event",
+        icon: "hero-cog-8-tooth",
+        url: "/dashboard/event",
+        scope: %{"event" => ["edit"]}
       }
     ]
     |> Enum.filter(fn page -> has_permission?(permissions, page.scope) end)
