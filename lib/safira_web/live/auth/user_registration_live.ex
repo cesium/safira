@@ -4,7 +4,7 @@ defmodule SafiraWeb.UserRegistrationLive do
   alias Safira.Accounts
   alias Safira.Accounts.User
 
-  import SafiraWeb.Components.{Button, Forms}
+  import SafiraWeb.Components.Button
 
   def mount(_params, _session, socket) do
     changeset = Accounts.change_user_registration(%User{})
