@@ -1,0 +1,57 @@
+<div class="mx-auto max-w-sm py-2">
+  <.header class="text-center">
+    <h1 class="text-3xl text-center font-terminal uppercase">Register for an account</h1>
+    <:subtitle>
+      <%= gettext("Already registered?") %>
+      <.link navigate={~p"/users/log_in"} class="font-semibold text-primary hover:underline">
+        Log in
+      </.link>
+      <%= gettext("to your account now") %>
+    </:subtitle>
+  </.header>
+
+  <.simple_form
+    for={@form}
+    id="registration_form"
+    phx-submit="save"
+    phx-change="validate"
+    phx-trigger-action={@trigger_submit}
+  >
+    <.field field={@form[:email]} type="email" label="Email" required />
+    <.field field={@form[:password]} type="password" label="Password" required />
+    <.field
+      field={@form[:password_confirmation]}
+      type="password"
+      label="Confirm Password"
+      required
+    />
+    <.field field={@form[:name]} type="text" label="Name" required />
+    <.field field={@form[:handle]} type="text" label="Nickname" required />
+
+    <.inputs_for :let={att} field={@form[:attendee]}>
+      <.field
+        class="text-black"
+        field={att[:course_id]}
+        type="select"
+        label="Course"
+        prompt="Choose a course"
+        options={@courses}
+      />
+    </.inputs_for>
+
+    <.label>
+      <div class="flex">
+        <div class="mr-1 mt-1">
+          <.field name="consent" label="" type="checkbox" value={false} class="w-fit" required />
+        </div>
+
+        <div class="flex">
+          <%= gettext("I have read and agree to the General Regulation and Privacy Policy") %>
+        </div>
+      </div>
+    </.label>
+    <:actions>
+      <.action_button title="Create an account" subtitle="" class="w-full" disabled={false} />
+    </:actions>
+  </.simple_form>
+</div>

@@ -77,6 +77,7 @@ defmodule Safira.Accounts.User do
     |> validate_email(opts)
     |> validate_handle()
     |> validate_password(opts)
+    |> cast_assoc(:attendee, with: &Attendee.changeset/2)
   end
 
   defp validate_email(changeset, opts) do
