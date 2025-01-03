@@ -26,7 +26,7 @@ defmodule SafiraWeb.CSVController do
       conn
       |> put_flash(:error, "You do not have permission to view this resource")
       |> put_status(403)
-      |> redirect(to: ~p"/dashboard")
+      |> redirect(to: ~p"/")
       |> halt()
     end
   end

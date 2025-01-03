@@ -2,7 +2,6 @@ defmodule Safira.Event do
   @moduledoc """
   The event context.
   """
-  alias Safira.Accounts
   alias Safira.Constants
 
   @pubsub Safira.PubSub
