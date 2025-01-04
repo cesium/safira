@@ -1,0 +1,35 @@
+/* Dropdown */
+
+.safira-dropdown {
+  @apply relative inline-block text-left;
+}
+.safira-dropdown__chevron {
+  @apply w-5 h-5 ml-2 -mr-1 dark:text-gray-100;
+}
+.safira-dropdown__menu-items-wrapper {
+  @apply absolute z-30 w-56 mt-2 bg-white rounded-md shadow-lg dark:bg-gray-800 ring-1 ring-black ring-opacity-5 focus:outline-none;
+}
+.safira-dropdown__menu-items-wrapper-placement--left {
+  @apply right-0 origin-top-right;
+}
+.safira-dropdown__menu-items-wrapper-placement--right {
+  @apply left-0 origin-top-left;
+}
+.safira-dropdown__menu-item {
+  @apply flex items-center self-start justify-start w-full gap-2 px-4 py-2 text-sm text-left text-gray-700 transition duration-150 ease-in-out dark:hover:bg-gray-700 dark:text-gray-300 dark:bg-gray-800 hover:bg-gray-100;
+}
+.safira-dropdown__trigger-button--no-label {
+  @apply flex items-center text-gray-400 rounded-full hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-blue-500;
+}
+.safira-dropdown__trigger-button--with-label {
+  @apply inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm dark:text-gray-300 dark:bg-gray-800 hover:dark:bg-gray-700 dark:border-gray-700 dark:focus:bg-gray-800 hover:bg-gray-50 focus:outline-none;
+}
+.safira-dropdown__trigger-button--with-label-and-trigger-element {
+  @apply align-middle;
+}
+.safira-dropdown__menu-item--disabled {
+  @apply text-gray-500 hover:bg-transparent;
+}
+.safira-dropdown__ellipsis {
+  @apply w-5 h-5;
+}
