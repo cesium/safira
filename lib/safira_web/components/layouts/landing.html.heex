@@ -19,6 +19,7 @@
     <.navbar
       pages={SafiraWeb.Config.landing_pages()}
       registrations_open?={Safira.Event.registrations_open?()}
+      current_user={@current_user}
     />
     <main>
       <%= @inner_content %>

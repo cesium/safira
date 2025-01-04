@@ -16,27 +16,9 @@ defmodule SafiraWeb.Components.Avatar do
     default: :user,
     doc: "The type of entity associated with the avatar."
 
-  attr :color, :atom,
-    default: :light_gray,
-    values: [
-      :primary,
-      :secondary,
-      :info,
-      :success,
-      :warning,
-      :danger,
-      :gray,
-      :light_gray,
-      :pure_white,
-      :white,
-      :light,
-      :dark
-    ],
-    doc: "Avatar color."
-
   attr :class, :string, default: nil, doc: "Additional classes to be added to the avatar."
 
-  attr :handle, :string, default: nil, doc: "The handle of the user."
+  attr :handle, :string, doc: "The handle of the user."
 
   def avatar(assigns) do
     ~H"""

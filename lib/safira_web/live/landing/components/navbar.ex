@@ -2,10 +2,12 @@ defmodule SafiraWeb.Landing.Components.Navbar do
   @moduledoc false
   use SafiraWeb, :component
 
+  import SafiraWeb.Components.{Avatar, Dropdown}
   import SafiraWeb.Landing.Components.JoinUs
 
   attr :pages, :list, default: []
   attr :registrations_open?, :boolean, default: false
+  attr :current_user, :map, default: nil
 
   def navbar(assigns) do
     ~H"""
@@ -36,8 +38,37 @@ defmodule SafiraWeb.Landing.Components.Navbar do
                       </.link>
                     <% end %>
                   </div>
-                  <div :if={@registrations_open?} class="flex pl-20">
+                  <div :if={@registrations_open? && !@current_user} class="flex pl-20">
                     <.join_us />
+                  </div>
+                  <div :if={@current_user} class="flex pl-16">
+                    <.dropdown>
+                      <:trigger_element>
+                        <.avatar
+                          handle={@current_user.handle}
+                          size={:sm}
+                          class="ring-2 rounded-full ring-white"
+                        />
+                      </:trigger_element>
+                      <.dropdown_menu_item
+                        :if={is_user_type?(@current_user, :staff)}
+                        link_type="live_patch"
+                        to="/dashboard/attendees"
+                        label="Dashboard"
+                      />
+                      <.dropdown_menu_item
+                        :if={is_user_type?(@current_user, :attendee)}
+                        link_type="live_patch"
+                        to="/app"
+                        label="App"
+                      />
+                      <.dropdown_menu_item
+                        link_type="a"
+                        method="delete"
+                        to="/users/log_out"
+                        label="Sign Out"
+                      />
+                    </.dropdown>
                   </div>
                 </div>
               </div>
@@ -69,6 +100,30 @@ defmodule SafiraWeb.Landing.Components.Navbar do
               <%= page.title %>
             </.link>
           <% end %>
+          <div :if={@registrations_open? && !@current_user} class="flex">
+            <.join_us />
+          </div>
+          <.link
+            :if={is_user_type?(@current_user, :staff)}
+            patch={~p"/dashboard/attendees"}
+            class="font-terminal uppercase text-3xl text-white transition-colors duration-75 ease-in hover:text-accent"
+          >
+            Dashboard
+          </.link>
+          <.link
+            :if={is_user_type?(@current_user, :attendee)}
+            patch={~p"/app"}
+            class="font-terminal uppercase text-3xl text-white transition-colors duration-75 ease-in hover:text-accent"
+          >
+            App
+          </.link>
+          <.link
+            :if={@current_user}
+            method="delete"
+            href={~p"/users/log_out"}
+            class="font-terminal uppercase text-3xl text-white transition-colors duration-75 ease-in hover:text-accent">
+            Sign Out
+          </.link>
         </div>
       </div>
     </div>
@@ -102,5 +157,9 @@ defmodule SafiraWeb.Landing.Components.Navbar do
     |> JS.remove_class("overflow-hidden", to: "body")
     |> JS.show(to: "#show-mobile-navbar", transition: "fade-in")
     |> JS.dispatch("js:call", to: "#show-mobile-navbar", detail: %{call: "focus", args: []})
+  end
+
+  defp is_user_type?(user, type) do
+    user && user.type == type
   end
 end
