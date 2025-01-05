@@ -39,7 +39,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
     ~H"""
     <div>
       <%= for activity_section <- fetch_daily_activities(@date) do %>
-        <div class="flex lg:flex-row flex-col w-full">
+        <div class="flex lg:flex-row flex-col sm:w-full">
           <%= for activity <- activity_section do %>
             <%= if activity.category && activity.category.name == "Break" do %>
               <.schedule_break activity={activity} />
@@ -57,7 +57,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
     ~H"""
     <div
       id={@activity.id}
-      class="mx-2 w-full border-t border-white p-[10px] ml-[10px] relative hover:bg-white/10 transition-colors"
+      class="mx-2 sm:w-full border-t border-white p-[10px] ml-[10px] relative hover:bg-white/10 transition-colors"
     >
       <div class="relative h-full">
         <!-- Times -->
@@ -96,7 +96,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
         <!-- Spacing -->
         <div class="h-20 w-2"></div>
 
-        <div class="absolute bottom-0 mt-auto w-full py-3">
+        <div class="absolute bottom-0 mt-auto sm:w-full py-3">
           <div class="flex flex-wrap justify-center">
             <!-- Location -->
             <div class="flex w-auto items-center">
@@ -124,7 +124,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
     ~H"""
     <div
       id={@activity.id}
-      class="mx-2 w-full border-t border-white p-[10px] ml-[10px] relative hover:bg-white/10 transition-colors"
+      class="mx-2 sm:w-full border-t border-white p-[10px] ml-[10px] relative hover:bg-white/10 transition-colors"
     >
       <div class="relative h-full flex flex-row justify-between items-center">
         <p class="font-iregular text-xl text-white font-bold">
@@ -144,8 +144,8 @@ defmodule SafiraWeb.Landing.Components.Schedule do
 
   defp schedule_day(assigns) do
     ~H"""
-    <div class="flex w-full select-none justify-center">
-      <div class="flex w-full justify-between text-4xl xs:text-5xl sm:text-7xl lg:text-8xl xl:mx-20 xl:text-7xl">
+    <div class="flex sm:w-full select-none justify-center">
+      <div class="flex sm:w-full justify-between text-4xl xs:text-5xl sm:text-7xl lg:text-8xl xl:mx-20 xl:text-7xl">
         <div class="right relative flex items-center justify-center mt-[0.15em]">
           <.link
             :if={Date.compare(@date, @event_start_date) in [:gt]}
