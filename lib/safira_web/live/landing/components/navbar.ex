@@ -121,7 +121,8 @@ defmodule SafiraWeb.Landing.Components.Navbar do
             :if={@current_user}
             method="delete"
             href={~p"/users/log_out"}
-            class="font-terminal uppercase text-3xl text-white transition-colors duration-75 ease-in hover:text-accent">
+            class="font-terminal uppercase text-3xl text-white transition-colors duration-75 ease-in hover:text-accent"
+          >
             Sign Out
           </.link>
         </div>

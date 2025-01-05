@@ -25,6 +25,7 @@ defmodule SafiraWeb.Router do
 
     live_session :default, root_layout: {SafiraWeb.Layouts, :landing} do
       live "/", HomeLive.Index, :index
+      live "/faqs", FAQLive.Index, :index
     end
   end
 
@@ -117,6 +118,12 @@ defmodule SafiraWeb.Router do
         scope "/event", EventLive do
           live "/", Index, :index
           live "/edit", Index, :edit
+
+          scope "/faqs" do
+            live "/", Index, :faqs
+            live "/new", Index, :faqs_new
+            live "/:id/edit", Index, :faqs_edit
+          end
         end
 
         scope "/staffs", StaffLive do

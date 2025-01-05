@@ -2,8 +2,13 @@ defmodule SafiraWeb.Backoffice.EventLive.Index do
   use SafiraWeb, :backoffice_view
 
   alias Safira.Event
+  alias Safira.Event.Faq
 
-  on_mount {SafiraWeb.StaffRoles, show: %{"event" => ["show"]}, edit: %{"event" => ["edit"]}}
+  on_mount {SafiraWeb.StaffRoles,
+            show: %{"event" => ["show"]},
+            edit: %{"event" => ["edit"]},
+            faqs_edit: %{"event" => ["edit_faqs"]},
+            faqs_new: %{"event" => ["edit_faqs"]}}
 
   @impl true
   def mount(_params, _session, socket) do
@@ -18,7 +23,34 @@ defmodule SafiraWeb.Backoffice.EventLive.Index do
   end
 
   @impl true
-  def handle_params(_params, _url, socket) do
-    {:noreply, socket}
+  def handle_params(params, _url, socket) do
+    {:noreply, socket |> apply_action(socket.assigns.live_action, params)}
+  end
+
+  defp apply_action(socket, :index, _params) do
+    socket
+    |> assign(:page_title, "Event Settings")
+  end
+
+  defp apply_action(socket, :edit, _params) do
+    socket
+    |> assign(:page_title, "Event Settings")
+  end
+
+  defp apply_action(socket, :faqs, _params) do
+    socket
+    |> assign(:page_title, "List FAQs")
+  end
+
+  defp apply_action(socket, :faqs_edit, %{"id" => faq_id}) do
+    socket
+    |> assign(:page_title, "Edit FAQ")
+    |> assign(:faq, Event.get_faq!(faq_id))
+  end
+
+  defp apply_action(socket, :faqs_new, _params) do
+    socket
+    |> assign(:page_title, "New FAQ")
+    |> assign(:faq, %Faq{})
   end
 end
