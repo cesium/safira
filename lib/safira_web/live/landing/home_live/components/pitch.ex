@@ -25,12 +25,14 @@ defmodule SafiraWeb.Landing.HomeLive.Components.Pitch do
           ) %>
         </h2>
         <div class="mt-8 flex">
+          <!--
           <.link patch="/team" class="w-56">
             <.action_button
               title={gettext("Meet the team")}
               title_class="!text-lg !font-iregular font-bold"
             />
           </.link>
+        -->
         </div>
       </div>
     </div>
