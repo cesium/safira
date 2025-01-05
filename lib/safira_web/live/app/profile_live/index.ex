@@ -15,12 +15,14 @@ defmodule SafiraWeb.App.ProfileLive.Index do
 
     socket =
       socket
-      |> assign(:email_form_current_password, nil)
-      |> assign(:password_form_current_password, nil)
-      |> assign(:current_email, user.email)
       |> assign(:profile_form, to_form(profile_changeset))
       |> assign(:email_form, to_form(email_changeset))
+      |> assign(:modal_mail_visible, false)
+      |> assign(:email_form_current_password, nil)
       |> assign(:password_form, to_form(password_changeset))
+      |> assign(:modal_password_visible, false)
+      |> assign(:password_form_current_password, nil)
+      |> assign(:current_email, user.email)
       |> assign(:trigger_submit, false)
 
     {:ok, socket}
@@ -47,6 +49,11 @@ defmodule SafiraWeb.App.ProfileLive.Index do
          socket
          |> put_flash(:error, "Failed to update profile.")}
     end
+  end
+
+  def handle_event("toggle_email_modal", _, socket) do
+    socket = socket |> assign(modal_mail_visible: !socket.assigns.modal_mail_visible)
+    {:noreply, socket}
   end
 
   def handle_event("validate_email", params, socket) do
@@ -94,6 +101,11 @@ defmodule SafiraWeb.App.ProfileLive.Index do
          |> assign(email_form: email_form)
          |> put_flash(:error, "Failed to update email.")}
     end
+  end
+
+  def handle_event("toggle_password_modal", _, socket) do
+    socket = socket |> assign(modal_password_visible: !socket.assigns.modal_password_visible)
+    {:noreply, socket}
   end
 
   def handle_event("validate_password", params, socket) do
