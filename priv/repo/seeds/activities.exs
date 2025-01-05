@@ -164,7 +164,7 @@ defmodule Safira.Repo.Seeds.Activities do
 
     # Determine if we need to check this year or next year
     target_year =
-      if today > Date.from_iso8601!("#{year}-02-01") do
+      if Date.compare(today, Date.from_iso8601!("#{year}-02-01")) == :gt do
         year + 1
       else
         year
