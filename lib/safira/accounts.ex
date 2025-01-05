@@ -3,6 +3,7 @@ defmodule Safira.Accounts do
   The Accounts context.
   """
 
+  alias Safira.Accounts
   use Safira.Context
 
   alias Safira.Accounts.{Attendee, Course, Credential, Staff, User, UserNotifier, UserToken}
@@ -382,6 +383,28 @@ defmodule Safira.Accounts do
       {:ok, %{user: user}} -> {:ok, user}
       {:error, :user, changeset, _} -> {:error, changeset}
     end
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for changing the user profile (name & handle).
+
+  ## Examples
+
+      iex> change_user_profile(user)
+      %Ecto.Changeset{data: %User{}}
+
+  """
+  def change_user_profile(user, attrs \\ %{}) do
+    User.profile_changeset(user, attrs)
+  end
+
+  @doc """
+  Updates the user profile (name & handle).
+  """
+  def update_user_profile(%User{} = user, attrs) do
+    user
+    |> Accounts.change_user_profile(attrs)
+    |> Repo.update()
   end
 
   ## Session

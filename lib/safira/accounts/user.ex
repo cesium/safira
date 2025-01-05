@@ -201,7 +201,16 @@ defmodule Safira.Accounts.User do
     if valid_password?(changeset.data, password) do
       changeset
     else
-      add_error(changeset, :current_password, "is not valid")
+      add_error(changeset, :current_password, "password not correct")
     end
+  end
+
+  @doc """
+  A user changeset for changing the profile (name & handle).
+  """
+  def profile_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:name, :handle])
+    |> validate_handle()
   end
 end
