@@ -41,7 +41,7 @@ defmodule SafiraWeb.Landing.HomeLive.Components.Hero do
 
   defp title(assigns) do
     ~H"""
-    <div class="relative z-20 font-bold">
+    <div class="relative z-20 font-bold animate-slide-in">
       <h5 class="font-terminal uppercase m-1 text-2xl text-accent">
         <%= display_event_dates(@event_start_date, @event_end_date) %>
       </h5>
