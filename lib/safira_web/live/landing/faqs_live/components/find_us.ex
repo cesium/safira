@@ -18,9 +18,9 @@ defmodule SafiraWeb.Landing.FAQLive.Components.FindUs do
             "SEI is free for participants and is organized by volunteers from CeSIUM and from the university community."
           ) %>
         </p>
-        <p class="mb-8 font-iregular">
+        <.link href="https://whereis.uminho.pt/CG-02.html" target="_blank" class="mb-8 font-iregular">
           <%= gettext("This years event will take place at Pedagogic Complex 2, Gualtar Campus.") %>
-        </p>
+        </.link>
         <p class="mb-2 font-ibold">
           Centro de Estudantes de Engenharia Informática
         </p>

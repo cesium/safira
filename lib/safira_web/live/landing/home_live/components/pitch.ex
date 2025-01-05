@@ -2,7 +2,7 @@ defmodule SafiraWeb.Landing.HomeLive.Components.Pitch do
   @moduledoc false
   use SafiraWeb, :component
 
-  import SafiraWeb.Components.Button
+  #import SafiraWeb.Components.Button
 
   def pitch(assigns) do
     ~H"""
