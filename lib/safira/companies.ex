@@ -51,7 +51,7 @@ defmodule Safira.Companies do
       42
 
   """
-  def get_companies_count() do
+  def get_companies_count do
     Company
     |> Repo.aggregate(:count, :id)
   end

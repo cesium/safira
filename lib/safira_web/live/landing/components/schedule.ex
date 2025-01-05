@@ -88,7 +88,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
                 <%= if index != 0, do: "," %>
               </span>
             <% end %>
-            <.link navigate={~p"/speakers/#{speaker.id}"} class="my-[0.4em] hover:underline">
+            <.link navigate={~p"/"} class="my-[0.4em] hover:underline">
               <%= speaker.name %>
             </.link>
           </li>

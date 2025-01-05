@@ -1,7 +1,7 @@
 defmodule SafiraWeb.Landing.FAQLive.Index do
   use SafiraWeb, :landing_view
 
-  alias Safira.{Companies, Event}
+  alias Safira.Event
   import SafiraWeb.Landing.FAQLive.Components.{Faq, FindUs}
 
   @impl true

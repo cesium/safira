@@ -1,4 +1,7 @@
 defmodule SafiraWeb.Components.Dropdown do
+  @moduledoc """
+  A dropdown component.
+  """
   use Phoenix.Component
 
   alias Phoenix.LiveView.JS

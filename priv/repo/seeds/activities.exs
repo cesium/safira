@@ -111,6 +111,11 @@ defmodule Safira.Repo.Seeds.Activities do
       break: Enum.find(category_list, fn category -> category.name == "Break" end)
     }
 
+    seed_first_day_activities(categories, speakers)
+    seed_last_days_activities(categories, speakers)
+  end
+
+  defp seed_first_day_activities(categories, speakers) do
     for activity <- first_day_seed_data() do
       type = activity.type
       changeset = Activities.change_activity(%Activity{},
@@ -120,18 +125,11 @@ defmodule Safira.Repo.Seeds.Activities do
         |> Map.put(:title, Map.get(activity, :title) || Faker.Company.bs() |> String.capitalize())
         |> Map.put(:location, Map.get(activity, :location) || "CP2 - B1"))
 
-      case Repo.insert(changeset) do
-        {:ok, activity} ->
-          speaker_ids = Enum.take_random(speakers, :rand.uniform(3))
-          if type in [:talk, :pitch, :wokshop] do
-            Activities.upsert_activity_speakers(Map.put(activity, :speakers, []), speaker_ids)
-          end
-        {:error, changeset} ->
-          Mix.shell().error("Failed to insert activity: #{activity.title}")
-          Mix.shell().error(Kernel.inspect(changeset.errors))
-      end
+      insert_activity(changeset, type, speakers)
     end
+  end
 
+  defp seed_last_days_activities(categories, speakers) do
     for i <- 1..3 do
       for activity <- last_days_seed_data() do
         type = activity.type
@@ -142,17 +140,21 @@ defmodule Safira.Repo.Seeds.Activities do
           |> Map.put(:title, Map.get(activity, :title) || Faker.Company.bs() |> String.capitalize())
           |> Map.put(:location, Map.get(activity, :location) || "CP2 - B1"))
 
-        case Repo.insert(changeset) do
-          {:ok, activity} ->
-            speaker_ids = Enum.take_random(speakers, :rand.uniform(3))
-            if type in [:talk, :pitch, :workshop] do
-              Activities.upsert_activity_speakers(Map.put(activity, :speakers, []), speaker_ids)
-            end
-          {:error, changeset} ->
-            Mix.shell().error("Failed to insert activity: #{activity.title}")
-            Mix.shell().error(Kernel.inspect(changeset.errors))
-        end
+        insert_activity(changeset, type, speakers)
       end
+    end
+  end
+
+  defp insert_activity(changeset, type, speakers) do
+    case Repo.insert(changeset) do
+      {:ok, activity} ->
+        speaker_ids = Enum.take_random(speakers, :rand.uniform(3))
+        if type in [:talk, :pitch, :workshop] do
+          Activities.upsert_activity_speakers(Map.put(activity, :speakers, []), speaker_ids)
+        end
+      {:error, changeset} ->
+        Mix.shell().error("Failed to insert activity: #{changeset.title}")
+        Mix.shell().error(Kernel.inspect(changeset.errors))
     end
   end
 

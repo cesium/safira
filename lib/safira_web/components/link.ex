@@ -1,4 +1,7 @@
 defmodule SafiraWeb.Components.Link do
+  @moduledoc """
+  A component for rendering links.
+  """
   use Phoenix.Component
 
   attr :class, :any, default: nil, doc: "CSS class for link (either a string or list)"
@@ -24,7 +27,8 @@ defmodule SafiraWeb.Components.Link do
     """
   end
 
-  # Since the <a> tag can't be disabled, we turn it into a disabled button (looks exactly the same and does nothing when clicked)
+  # Since the <a> tag can't be disabled, we turn it into a disabled button.
+  # (looks exactly the same and does nothing when clicked)
   def a(%{disabled: true, link_type: type} = assigns) when type != "button" do
     a(Map.put(assigns, :link_type, "button"))
   end

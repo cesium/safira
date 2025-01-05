@@ -13,7 +13,7 @@ defmodule Safira.Repo.Seeds.Event do
     end
   end
 
-  defp seed_faqs() do
+  defp seed_faqs do
     @faqs
     |> Enum.each(fn faq ->
       %{

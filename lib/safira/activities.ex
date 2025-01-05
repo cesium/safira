@@ -51,7 +51,7 @@ defmodule Safira.Activities do
       42
 
   """
-  def get_activities_count() do
+  def get_activities_count do
     Activity
     |> Repo.aggregate(:count, :id)
   end

@@ -15,7 +15,7 @@ defmodule SafiraWeb.Landing.HomeLive.Components.Speakers do
           Here's a selection of this year's speakers
         </h2>
         <div class="xs:w-70 w-60 sm:w-80">
-          <.link navigate={~p"/speakers"}>
+          <.link navigate={~p"/"}>
             <.action_button title="MEET THE SPEAKERS" title_class="!text-lg !font-iregular font-bold" />
           </.link>
         </div>

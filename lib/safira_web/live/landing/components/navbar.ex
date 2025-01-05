@@ -51,13 +51,13 @@ defmodule SafiraWeb.Landing.Components.Navbar do
                         />
                       </:trigger_element>
                       <.dropdown_menu_item
-                        :if={is_user_type?(@current_user, :staff)}
+                        :if={user_type?(@current_user, :staff)}
                         link_type="live_patch"
                         to="/dashboard/attendees"
                         label="Dashboard"
                       />
                       <.dropdown_menu_item
-                        :if={is_user_type?(@current_user, :attendee)}
+                        :if={user_type?(@current_user, :attendee)}
                         link_type="live_patch"
                         to="/app"
                         label="App"
@@ -104,14 +104,14 @@ defmodule SafiraWeb.Landing.Components.Navbar do
             <.join_us />
           </div>
           <.link
-            :if={is_user_type?(@current_user, :staff)}
+            :if={user_type?(@current_user, :staff)}
             patch={~p"/dashboard/attendees"}
             class="font-terminal uppercase text-3xl text-white transition-colors duration-75 ease-in hover:text-accent"
           >
             Dashboard
           </.link>
           <.link
-            :if={is_user_type?(@current_user, :attendee)}
+            :if={user_type?(@current_user, :attendee)}
             patch={~p"/app"}
             class="font-terminal uppercase text-3xl text-white transition-colors duration-75 ease-in hover:text-accent"
           >
@@ -160,7 +160,7 @@ defmodule SafiraWeb.Landing.Components.Navbar do
     |> JS.dispatch("js:call", to: "#show-mobile-navbar", detail: %{call: "focus", args: []})
   end
 
-  defp is_user_type?(user, type) do
+  defp user_type?(user, type) do
     user && user.type == type
   end
 end
