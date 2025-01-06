@@ -11,11 +11,14 @@ config :ex_aws,
   json_codec: Jason,
   access_key_id: {:system, "AWS_ACCESS_KEY_ID"},
   secret_access_key: {:system, "AWS_SECRET_ACCESS_KEY"},
-  region: "eu-west-2",#{:system, "AWS_REGION"},
+  # {:system, "AWS_REGION"},
+  region: "eu-west-2",
   s3: [
     scheme: "https://",
-    host: "s3.eu-west-2.amazonaws.com", #{:system, "ASSET_HOST"},
-    region:  "eu-west-2", #{:system, "AWS_REGION"},
+    # {:system, "ASSET_HOST"},
+    host: "s3.eu-west-2.amazonaws.com",
+    # {:system, "AWS_REGION"},
+    region: "eu-west-2",
     access_key_id: {:system, "AWS_ACCESS_KEY_ID"},
     secret_access_key: {:system, "AWS_SECRET_ACCESS_KEY"}
   ]

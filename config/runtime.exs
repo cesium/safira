@@ -32,7 +32,7 @@ if config_env() in [:prod, :stg] do
 
   # Location of root certificates to verify database SSL connections
   database_ca_cert_filepath =
-  System.get_env("DATABASE_CA_CERT_FILEPATH") || "/etc/ssl/certs/ca-certificates.crt"
+    System.get_env("DATABASE_CA_CERT_FILEPATH") || "/etc/ssl/certs/ca-certificates.crt"
 
   maybe_ipv6 = if System.get_env("ECTO_IPV6") in ~w(true 1), do: [:inet6], else: []
 
