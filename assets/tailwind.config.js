@@ -4,7 +4,7 @@ const path = require("path")
 const colors = require("tailwindcss/colors");
 
 module.exports = {
-  //darkMode: "selector",
+  darkMode: "selector",
   content: [
     "./js/**/*.js",
     "../lib/safira_web.ex",
@@ -13,9 +13,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: colors.blue,
-        primaryDark: "#04041C",
-        accent: "#ff800d",
+        primary: "#04041C",
+        accent: "#ffdb0d",
         light: "#ffffff",
         lightMuted: "#a1a1aa",
         lightShade: "#e5e7eb",
@@ -30,8 +29,24 @@ module.exports = {
         gray: colors.gray
       },
       fontFamily: {
-        terminal: ["Terminal"]
-      }
+        terminal: ["Terminal"],
+        iregular: ["Inter-Regular"]
+      },
+      animation: {
+        "slide-in": "slide-in 1.5s ease-in-out",
+        "fade-in": "fade-in 0.5s ease-in-out",
+        "fade-in-slow": "fade-in 1.5s ease-in-out"
+      },
+      keyframes: {
+        "slide-in": {
+          "0%": { transform: "translateY(20%)", opacity: 0},
+          "100%": { transform: "translateY(0)", opacity: 1},
+        },
+        "fade-in": {
+          "0%": { opacity: 0},
+          "100%": { opacity: 1},
+        }
+      },
     },
   },
   plugins: [
@@ -86,6 +101,39 @@ module.exports = {
           }
         }
       }, {values})
+    }),
+
+    // Embeds FontAwesome icons (https://fontawesome.com/) into app.css bundle
+    plugin(function ({ matchComponents, theme }) {
+      let iconsDir = path.join(__dirname, "../deps/fontawesome/svgs")
+      let values = {}
+      let icons = [
+        ["", "", "/regular"],
+        ["-solid", "", "/solid"],
+        ["", "brand-", "/brands"]
+      ]
+      icons.forEach(([suffix, prefix, dir]) => {
+        fs.readdirSync(path.join(iconsDir, dir)).forEach(file => {
+          let name = prefix + path.basename(file, ".svg") + suffix
+          values[name] = { name, fullPath: path.join(iconsDir, dir, file) }
+        })
+      })
+      matchComponents({
+        "fa": ({ name, fullPath }) => {
+          let content = fs.readFileSync(fullPath).toString().replace(/\r?\n|\r/g, "")
+          return {
+            [`--fa-${name}`]: `url('data:image/svg+xml;utf8,${content}')`,
+            "-webkit-mask": `var(--fa-${name})`,
+            "mask": `var(--fa-${name})`,
+            "mask-repeat": "no-repeat",
+            "background-color": "currentColor",
+            "vertical-align": "middle",
+            "display": "inline-block",
+            "width": theme("spacing.5"),
+            "height": theme("spacing.5")
+          }
+        }
+      }, { values })
     })
   ]
 }

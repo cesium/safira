@@ -5,6 +5,31 @@ defmodule SafiraWeb.Config do
 
   alias Safira.Event
 
+  def landing_pages do
+    [
+      # %{
+      #  title: "Schedule",
+      #  url: "/schedule"
+      # },
+      # %{
+      #  title: "Team",
+      #  url: "/team"
+      # },
+      # %{
+      #  title: "Challenges",
+      #  url: "/challenges"
+      # },
+      # %{
+      #  title: "Speakers",
+      #  url: "/speakers"
+      # },
+      %{
+        title: "FAQs",
+        url: "/faqs"
+      }
+    ]
+  end
+
   def app_pages do
     if Event.event_started?() do
       [

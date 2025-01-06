@@ -19,10 +19,14 @@ defmodule SafiraWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", SafiraWeb do
+  # Landing
+  scope "/", SafiraWeb.Landing do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live_session :default, root_layout: {SafiraWeb.Layouts, :landing} do
+      live "/", HomeLive.Index, :index
+      live "/faqs", FAQLive.Index, :index
+    end
   end
 
   # Other scopes may use custom stacks.
@@ -114,6 +118,12 @@ defmodule SafiraWeb.Router do
         scope "/event", EventLive do
           live "/", Index, :index
           live "/edit", Index, :edit
+
+          scope "/faqs" do
+            live "/", Index, :faqs
+            live "/new", Index, :faqs_new
+            live "/:id/edit", Index, :faqs_edit
+          end
         end
 
         scope "/staffs", StaffLive do
