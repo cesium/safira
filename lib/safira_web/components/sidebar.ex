@@ -143,12 +143,23 @@ defmodule SafiraWeb.Components.Sidebar do
   attr :icon_color, :string, default: ""
 
   def sidebar_account_dropdown(assigns) do
+    user = assigns.user
+
+    base_path =
+      if user.type == :attendee do
+        "app"
+      else
+        "dashboard"
+      end
+
+    assigns = assigns |> Map.put(:base_path, base_path)
+
     ~H"""
     <.user_dropdown id={@id} border={@border} icon_color={@icon_color} user={@user}>
       <:img src={"https://github.com/identicons/#{@user.handle |> String.slice(0..2)}.png"} />
       <:title color={@title_color}><%= @user.name %></:title>
       <:subtitle color={@subtitle_color}>@<%= @user.handle %></:subtitle>
-      <:link navigate="/users/settings">Profile Settings</:link>
+      <:link navigate={"/#{@base_path}/profile_settings"}>Profile Settings</:link>
       <:link href="/users/log_out" method={:delete}>Sign out</:link>
     </.user_dropdown>
     """

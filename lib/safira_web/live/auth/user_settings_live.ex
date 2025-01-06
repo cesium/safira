@@ -1,6 +1,5 @@
 defmodule SafiraWeb.UserSettingsLive do
-  # use SafiraWeb, :app_view
-  use SafiraWeb, :backoffice_view
+  use SafiraWeb, :live_view
 
   alias Safira.Accounts
 

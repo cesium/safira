@@ -95,6 +95,8 @@ defmodule SafiraWeb.Router do
         end
 
         live "/vault", VaultLive.Index, :index
+
+        live "/profile_settings", ProfileSettingsLive, :edit
       end
 
       scope "/dashboard", Backoffice do
@@ -196,6 +198,8 @@ defmodule SafiraWeb.Router do
         end
 
         live "/scanner", ScannerLive.Index, :index
+
+        live "/profile_settings", ProfileSettingsLive, :edit
       end
     end
   end
