@@ -37,9 +37,6 @@ function deploy() {
   env=${1:-stg}
   file="fly-${env}.toml"
 
-  load_env_file ".env.${env}"
-  export MIX_ENV="${env}"
-
   if ! command -v flyctl &>/dev/null; then
     log_error "flyctl is not installed. Please install it and authenticate."
     exit 1
