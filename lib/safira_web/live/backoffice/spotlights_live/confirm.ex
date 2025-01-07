@@ -11,8 +11,12 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Confirm do
         <div class="flex flex-col">
           <p class="text-center text-2xl mb-4">Are you sure?</p>
           <p class="text-center pb-6">
-            Are you sure you want to start a spotlight for <%= @company.name %> with a duration of <%= @duration %> <%= if @duration == 1, do: "minute", else: "minutes" %>.
-          </p>
+          <%= gettext("Are you sure you want to start a spotlight for %{company_name} with a duration of %{duration} %{unit}.",
+            company_name: @company.name,
+            duration: @duration,
+            unit: ngettext("minute", "minutes", @duration)
+            ) %>
+            </p>
           <div class="flex justify-center space-x-8">
             <.button phx-click="cancel" class="w-full">Cancel</.button>
             <.button phx-click="confirm-spotlight" class="w-full" phx-target={@myself} type="button">
@@ -36,7 +40,6 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Confirm do
 
       case create_spotlight(attrs) do
         {:ok, spotlight} ->
-          IO.inspect(spotlight, label: "New Spotlight")
 
           {:noreply,
            socket
@@ -44,11 +47,9 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Confirm do
            |> push_navigate(to: ~p"/dashboard/spotlights")}
 
         {:error, changeset} ->
-          IO.inspect(changeset, label: "Failed to create Spotlight")
           {:noreply, socket |> put_flash(:error, "Failed to start spotlight.")}
       end
     else
-      IO.puts("Company or duration is missing in socket assigns.")
       {:noreply, socket |> put_flash(:error, "Missing company or duration information.")}
     end
   end

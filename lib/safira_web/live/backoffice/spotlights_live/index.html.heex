@@ -9,9 +9,9 @@
     </div>
   </:actions>
   <div class="flex flex-col items-center mt-8">
-    <img src={~p"/images/spotlight.svg"} alt="Spotlight" class="w-64 h-64 mb-4 invert dark:filter-none" />
+    <img src={~p"/images/spotlight.svg"} alt={gettext("Spotlight")} class="w-64 h-64 mb-4 invert dark:filter-none" />
     <%= if @spotlight do %>
-      <p><%= @spotlight.company.name %> is on spotlight!</p>
+      <p><%= gettext("%{company_name} is on spotlight!", company_name: @spotlight.company.name) %></p>
       <div 
         id="timer-countdown"
         phx-hook="Timer"
@@ -19,14 +19,14 @@
         00:00:00
       </div>
     <% else %>
-      <p>There are no companies on spotlight!</p>
+      <p><%= gettext("There are no companies on spotlight!") %></p>
       <.link patch={~p"/dashboard/spotlights/new"}>
         <.button class="mt-4">
-          Create Spotlight
+          <%= gettext("Create Spotlight") %>
         </.button>
       </.link>
     <% end %>
-  </div>
+  </div>  
 </.page>
 
 <.modal

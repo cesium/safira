@@ -10,7 +10,7 @@ export const Timer = {
             if (remainingTime <= 0) {
                 clearInterval(timerInterval);
                 timerElement.textContent = "00:00:00";
-                this.pushEvent("on_spotlight_end", {}); // Notifica o LiveView
+                this.pushEvent("on_spotlight_end", {}); 
                 return;
             }
 
@@ -22,7 +22,7 @@ export const Timer = {
         };
 
         const timerInterval = setInterval(updateTimer, 1000);
-        updateTimer(); // Atualiza inicialmente
+        updateTimer(); 
 
         this.cleanup = () => {
             clearInterval(timerInterval);

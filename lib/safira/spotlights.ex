@@ -16,12 +16,9 @@ defmodule Safira.Spotlights do
 
       spotlight_attrs = Map.put(attrs, :end, end_time)
 
-      IO.inspect(spotlight_attrs, label: "Spotlight attrs")
-
       %Spotlight{}
       |> Spotlight.changeset(spotlight_attrs)
       |> Repo.insert()
-      |> dbg()
     else
       IO.puts("Invalid duration provided.")
       {:error, "Invalid duration"}
