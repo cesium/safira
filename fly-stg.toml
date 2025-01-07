@@ -7,8 +7,10 @@ kill_signal = "SIGTERM"
 
 [env]
   PHX_HOST = "stg.seium.org"
-  MIX_ENV = "stg"
+  MIX_ENV = "prod"
   PORT = "8080"
+  FROM_EMAIL_NAME = "SEI '25 STG"
+  FROM_EMAIL_ADDRESS = "no-reply@seium.org"
 
 [http_service]
   internal_port = 8080
