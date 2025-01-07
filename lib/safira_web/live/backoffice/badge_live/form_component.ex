@@ -64,7 +64,7 @@ defmodule SafiraWeb.Backoffice.BadgeLive.FormComponent do
               <.image_uploader
                 class="h-full"
                 upload={@uploads.image}
-                image={Uploaders.Badge.url({@badge.image, @badge}, :original)}
+                image={Uploaders.Badge.url({@badge.image, @badge}, :original, signed: true)}
                 icon="hero-check-badge"
               />
             </div>

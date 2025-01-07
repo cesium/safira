@@ -18,7 +18,7 @@
       <%= if @product.image do %>
         <img
           class="w-full p-4"
-          src={Uploaders.Product.url({@product.image, @product}, :original)}
+          src={Uploaders.Product.url({@product.image, @product}, :original, signed: true)}
         />
       <% end %>
     </div>

@@ -23,7 +23,7 @@ config :ex_aws,
     secret_access_key: {:system, "AWS_SECRET_ACCESS_KEY"}
   ]
 
-#config :safira, Safira.Mailer,
+# config :safira, Safira.Mailer,
 #  adapter: Swoosh.Adapters.ExAmazonSES
 
 # ## SSL Support
