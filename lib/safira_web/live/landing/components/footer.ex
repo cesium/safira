@@ -5,6 +5,8 @@ defmodule SafiraWeb.Landing.Components.Footer do
   use SafiraWeb, :component
   import SafiraWeb.Landing.Components.Socials
 
+  alias Safira.Event
+
   def footer(assigns) do
     ~H"""
     <footer class="xl:px-[15rem] md:px-[8rem] px-[2.5rem]">
@@ -39,20 +41,20 @@ defmodule SafiraWeb.Landing.Components.Footer do
     [
       %{
         title: "Previous Edition",
-        url: "https://2024.seium.org/"
+        url: "https://2024.seium.org/",
+        enabled: true
       },
       %{
         title: "Report a Problem",
-        url: "https://cesium.link/f/safira-bugs"
+        url: "https://cesium.link/f/safira-bugs",
+        enabled: true
       },
       %{
         title: "Survival Guide",
-        url: "/docs/survival-guide.pdf"
-      },
-      %{
-        title: "General Regulation",
-        url: "/docs/regulation.pdf"
+        url: "/docs/survival-guide.pdf",
+        enabled: Event.get_feature_flag!("survival_guide_enabled")
       }
     ]
+    |> Enum.filter(fn x -> x.enabled end)
   end
 end

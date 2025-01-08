@@ -18,14 +18,14 @@ defmodule Safira.Constants do
       iex> get("unknown")
       {:error, "key not found"}
   """
-  def get(key) do
-    fetch_key_value(key)
+  def get(key, default \\ "") do
+    fetch_key_value(key, default)
   end
 
-  defp fetch_key_value(key) do
+  defp fetch_key_value(key, default) do
     case Repo.get_by(Pair, key: key) do
       nil ->
-        {:error, "key not found"}
+        {:ok, default}
 
       pair ->
         {:ok, pair.value[key]}
