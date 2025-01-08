@@ -23,10 +23,9 @@ config :ex_aws,
     secret_access_key: {:system, "AWS_SECRET_ACCESS_KEY"}
   ]
 
-  config :swoosh, :api_client, Swoosh.ApiClient.Hackney
+config :swoosh, :api_client, Swoosh.ApiClient.Hackney
 
-config :safira, Safira.Mailer,
-  adapter: Swoosh.Adapters.ExAwsAmazonSES
+config :safira, Safira.Mailer, adapter: Swoosh.Adapters.ExAwsAmazonSES
 
 # ## SSL Support
 #

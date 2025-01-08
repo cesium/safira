@@ -47,6 +47,7 @@ defmodule Safira.Event do
         with {:ok, start_time, _} <- DateTime.from_iso8601(start_time_str) do
           start_time
         end
+
       {:error, _} ->
         default_time = DateTime.utc_now()
         change_event_start_time(default_time)
