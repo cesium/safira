@@ -2,7 +2,79 @@ defmodule Safira.Event do
   @moduledoc """
   The event context.
   """
+  use Safira.Context
+
   alias Safira.Constants
+  alias Safira.Event.Faq
+
+  @pubsub Safira.PubSub
+
+  @doc """
+  Returns whether the registrations for the event are open
+
+  ## Examples
+
+      iex> registrations_open?()
+      false
+  """
+  def registrations_open? do
+    case Constants.get("registrations_open") do
+      {:ok, registrations_open} ->
+        case String.downcase(registrations_open) do
+          "true" -> true
+          _ -> false
+        end
+
+      _ ->
+        false
+    end
+  end
+
+  def change_registrations_open(registrations_open) do
+    Constants.set(
+      "registrations_open",
+      if registrations_open do
+        "true"
+      else
+        "false"
+      end
+    )
+  end
+
+  def get_event_start_time! do
+    with {:ok, start_time_str} <- Constants.get("start_time") do
+      with {:ok, start_time, _} <- DateTime.from_iso8601(start_time_str) do
+        start_time
+      end
+    end
+  end
+
+  def change_event_start_time(start_time) do
+    result = Constants.set("start_time", DateTime.to_iso8601(start_time))
+    broadcast_start_time_update("start_time", start_time)
+    result
+  end
+
+  @doc """
+  Subscribes the caller to the start time's updates.
+
+  ## Examples
+
+      iex> subscribe_to_start_time_update("start_time")
+      :ok
+  """
+  def subscribe_to_start_time_update(config) do
+    Phoenix.PubSub.subscribe(@pubsub, config)
+  end
+
+  defp broadcast_start_time_update(config, value) do
+    Phoenix.PubSub.broadcast(@pubsub, "start_time", {config, value})
+  end
+
+  def event_started? do
+    start_time = get_event_start_time!()
+    DateTime.compare(start_time, DateTime.utc_now()) == :lt
+  end
 
   @doc """
   Returns the event's start date.
@@ -75,4 +147,73 @@ defmodule Safira.Event do
   defp ensure_date(string) when is_binary(string), do: Date.from_iso8601!(string)
 
   defp ensure_date(date), do: date
+
+  @doc """
+  Gets a single FAQ.
+
+  Raises `Ecto.NoResultsError` if the FAQ does not exist.
+
+  ## Examples
+
+      iex> get_faq!(123)
+      %Faq{}
+
+      iex> get_faq!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_faq!(id), do: Repo.get!(Faq, id)
+
+  @doc """
+  Returns the list of FAQs.
+
+  ## Examples
+
+      iex> list_faqs()
+      [%Faq{}, %Faq{}]
+  """
+  def list_faqs do
+    Repo.all(Faq)
+  end
+
+  @doc """
+  Creates a new FAQ.
+
+  ## Examples
+
+      iex> create_faq(%{question: "Is SEI free?", answer: "Yes! SEI is completly free."})
+      {:ok, %Faq{}}
+  """
+  def create_faq(attrs \\ %{}) do
+    %Faq{}
+    |> Faq.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a FAQ.
+
+  ## Examples
+
+      iex> update_faq(faq, %{question: "Is SEI free?", answer: "Yes! SEI is completly free."})
+      {:ok, %Faq{}}
+  """
+  def update_faq(%Faq{} = faq, attrs) do
+    faq
+    |> Faq.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking FAQ changes.
+
+  ## Examples
+
+      iex> change_faq(faq)
+      %Ecto.Changeset{data: %Faq{}}
+
+  """
+  def change_faq(%Faq{} = faq, attrs \\ %{}) do
+    Faq.changeset(faq, attrs)
+  end
 end

@@ -17,7 +17,7 @@ defmodule SafiraWeb do
   those modules here.
   """
 
-  def static_paths, do: ~w(assets fonts images favicon.ico robots.txt)
+  def static_paths, do: ~w(assets fonts images docs favicon.ico robots.txt)
 
   def router do
     quote do
@@ -43,7 +43,7 @@ defmodule SafiraWeb do
         layouts: [html: SafiraWeb.Layouts]
 
       import Plug.Conn
-      import SafiraWeb.Gettext
+      use Gettext, backend: SafiraWeb.Gettext
 
       unquote(verified_routes())
     end
@@ -79,6 +79,13 @@ defmodule SafiraWeb do
       import SafiraWeb.Components.EnsurePermissions
       import SafiraWeb.BackofficeHelpers
 
+      unquote(html_helpers())
+    end
+  end
+
+  def landing_view do
+    quote do
+      use Phoenix.LiveView
       unquote(html_helpers())
     end
   end
@@ -119,7 +126,7 @@ defmodule SafiraWeb do
       # Core UI components and translation
       import SafiraWeb.CoreComponents
       import SafiraWeb.Components.Page
-      import SafiraWeb.Gettext
+      use Gettext, backend: SafiraWeb.Gettext
 
       import SafiraWeb.Helpers
 

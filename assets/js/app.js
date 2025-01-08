@@ -22,12 +22,13 @@ import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 import live_select from "live_select"
-import { QrScanner, Wheel, Confetti, Sorting } from "./hooks";
+import { QrScanner, Wheel, Confetti, Countdown, Sorting } from "./hooks";
 
 let Hooks = {
   QrScanner: QrScanner,
   Wheel: Wheel,
   Confetti: Confetti,
+  Countdown: Countdown,
   Sorting: Sorting,
   ...live_select
 };
@@ -40,7 +41,7 @@ let liveSocket = new LiveSocket("/live", Socket, {
 })
 
 // Show progress bar on live navigation and form submits
-topbar.config({barColors: {0: "#29d"}, shadowColor: "rgba(0, 0, 0, .3)"})
+topbar.config({barColors: {0: "#ffdb0d"}, shadowColor: "rgba(0, 0, 0, .3)"})
 window.addEventListener("phx:page-loading-start", _info => topbar.show(300))
 window.addEventListener("phx:page-loading-stop", _info => topbar.hide())
 

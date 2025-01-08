@@ -3,51 +3,76 @@ defmodule SafiraWeb.Config do
   Web configuration for the app.
   """
 
-  def app_pages do
+  alias Safira.Event
+
+  def landing_pages do
     [
+      # %{
+      #  title: "Schedule",
+      #  url: "/schedule"
+      # },
+      # %{
+      #  title: "Team",
+      #  url: "/team"
+      # },
+      # %{
+      #  title: "Challenges",
+      #  url: "/challenges"
+      # },
+      # %{
+      #  title: "Speakers",
+      #  url: "/speakers"
+      # },
       %{
-        key: :profile,
-        title: "Profile",
-        icon: "hero-user",
-        url: "/app/"
-      },
-      %{
-        key: :badgedex,
-        title: "Badgedex",
-        icon: "hero-check-badge",
-        url: "/app/badgedex"
-      },
-      %{
-        key: :wheel,
-        title: "Wheel",
-        icon: "hero-circle-stack",
-        url: "/app/wheel"
-      },
-      %{
-        key: :leaderboard,
-        title: "Leaderboard",
-        icon: "hero-trophy",
-        url: "/app/leaderboard"
-      },
-      %{
-        key: :store,
-        title: "Store",
-        icon: "hero-shopping-bag",
-        url: "/app/store"
-      },
-      %{
-        key: :vault,
-        title: "Vault",
-        icon: "hero-archive-box",
-        url: "/app/vault"
-      },
-      %{
-        key: :credential,
-        title: "Credential",
-        icon: "hero-ticket",
-        url: "/app/credential"
+        title: "FAQs",
+        url: "/faqs"
       }
     ]
+  end
+
+  def app_pages do
+    if Event.event_started?() do
+      [
+        %{
+          key: :badgedex,
+          title: "Badgedex",
+          icon: "hero-check-badge",
+          url: "/app/badgedex"
+        },
+        %{
+          key: :wheel,
+          title: "Wheel",
+          icon: "hero-circle-stack",
+          url: "/app/wheel"
+        },
+        %{
+          key: :leaderboard,
+          title: "Leaderboard",
+          icon: "hero-trophy",
+          url: "/app/leaderboard"
+        },
+        %{
+          key: :store,
+          title: "Store",
+          icon: "hero-shopping-bag",
+          url: "/app/store"
+        },
+        %{
+          key: :vault,
+          title: "Vault",
+          icon: "hero-archive-box",
+          url: "/app/vault"
+        },
+        %{
+          key: :credential,
+          title: "Credential",
+          icon: "hero-ticket",
+          url: "/app/credential"
+        }
+      ]
+    else
+      []
+    end
   end
 
   def backoffice_pages(user) do
@@ -137,6 +162,13 @@ defmodule SafiraWeb.Config do
         icon: "hero-qr-code",
         url: "/dashboard/scanner",
         scope: %{"scanner" => ["show"]}
+      },
+      %{
+        key: :event,
+        title: "Event",
+        icon: "hero-cog-8-tooth",
+        url: "/dashboard/event",
+        scope: %{"event" => ["edit"]}
       }
     ]
     |> Enum.filter(fn page -> has_permission?(permissions, page.scope) end)
