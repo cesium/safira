@@ -5,6 +5,8 @@ defmodule Safira.Release do
   """
   @app :safira
 
+  alias Safira.Accounts.Roles.Permissions
+
   def migrate do
     load_app()
 
