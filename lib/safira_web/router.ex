@@ -3,6 +3,7 @@ defmodule SafiraWeb.Router do
 
   import SafiraWeb.UserAuth
   import SafiraWeb.UserRoles
+  import SafiraWeb.EventRoles
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -18,10 +19,14 @@ defmodule SafiraWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", SafiraWeb do
+  # Landing
+  scope "/", SafiraWeb.Landing do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live_session :default, root_layout: {SafiraWeb.Layouts, :landing} do
+      live "/", HomeLive.Index, :index
+      live "/faqs", FAQLive.Index, :index
+    end
   end
 
   # Other scopes may use custom stacks.
@@ -51,15 +56,17 @@ defmodule SafiraWeb.Router do
   scope "/", SafiraWeb do
     pipe_through [:browser, :redirect_if_user_is_authenticated]
 
+    post "/users/log_in", UserSessionController, :create
+
     live_session :redirect_if_user_is_authenticated,
       on_mount: [{SafiraWeb.UserAuth, :redirect_if_user_is_authenticated}] do
-      live "/users/register", UserRegistrationLive, :new
       live "/users/log_in", UserLoginLive, :new
       live "/users/reset_password", UserForgotPasswordLive, :new
       live "/users/reset_password/:token", UserResetPasswordLive, :edit
-    end
 
-    post "/users/log_in", UserSessionController, :create
+      pipe_through :registrations_open
+      live "/users/register", UserRegistrationLive, :new
+    end
   end
 
   scope "/", SafiraWeb do
@@ -75,12 +82,17 @@ defmodule SafiraWeb.Router do
       scope "/app", App do
         pipe_through [:require_attendee_user]
 
+        live "/waiting", WaitingLive.Index, :index
+
+        pipe_through [:backoffice_enabled]
+
         scope "/credential", CredentialLive do
           pipe_through [:require_no_credential]
           live "/link", Edit, :edit
         end
 
         pipe_through [:require_credential]
+
         live "/", HomeLive.Index, :index
 
         live "/credential", CredentialLive.Index, :index
@@ -98,11 +110,22 @@ defmodule SafiraWeb.Router do
       end
 
       scope "/dashboard", Backoffice do
-        pipe_through :require_staff_user
+        pipe_through [:require_staff_user]
 
         scope "/attendees", AttendeeLive do
           live "/", Index, :index
           live "/:id", Show, :show
+        end
+
+        scope "/event", EventLive do
+          live "/", Index, :index
+          live "/edit", Index, :edit
+
+          scope "/faqs" do
+            live "/", Index, :faqs
+            live "/new", Index, :faqs_new
+            live "/:id/edit", Index, :faqs_edit
+          end
         end
 
         scope "/staffs", StaffLive do

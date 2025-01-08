@@ -4,7 +4,7 @@ defmodule SafiraWeb.UserRoles do
   """
   use SafiraWeb, :verified_routes
 
-  import SafiraWeb.Gettext
+  use Gettext, backend: SafiraWeb.Gettext
 
   import Plug.Conn
   import Phoenix.Controller

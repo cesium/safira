@@ -9,7 +9,9 @@ import Config
 
 config :safira,
   ecto_repos: [Safira.Repo],
-  generators: [timestamp_type: :utc_datetime]
+  generators: [timestamp_type: :utc_datetime],
+  umami_script_url: System.get_env("UMAMI_SCRIPT_URL") || "",
+  umami_website_id: System.get_env("UMAMI_WEBSITE_ID") || ""
 
 # Flop configuration
 config :flop,
@@ -27,7 +29,7 @@ config :safira, SafiraWeb.Endpoint,
   adapter: Bandit.PhoenixAdapter,
   render_errors: [
     formats: [html: SafiraWeb.ErrorHTML, json: SafiraWeb.ErrorJSON],
-    layout: false
+    layout: {SafiraWeb.Layouts, :landing}
   ],
   pubsub_server: Safira.PubSub,
   live_view: [signing_salt: "TzWGKiXG"]

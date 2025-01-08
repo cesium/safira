@@ -3,7 +3,7 @@ defmodule SafiraWeb.Components.TableSearch do
   Reusable table search component.
   """
   use Phoenix.Component
-  import SafiraWeb.Gettext
+  use Gettext, backend: SafiraWeb.Gettext
 
   attr :id, :string, required: true
   attr :params, :map, required: true

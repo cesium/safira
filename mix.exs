@@ -70,6 +70,13 @@ defmodule Safira.MixProject do
        app: false,
        compile: false,
        depth: 1},
+      {:fontawesome,
+       github: "FortAwesome/Font-Awesome",
+       tag: "6.6.0",
+       sparse: "svgs",
+       app: false,
+       compile: false,
+       depth: 1},
       {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
       {:live_select, "~> 1.4"},
 
@@ -113,7 +120,7 @@ defmodule Safira.MixProject do
         "esbuild safira --minify",
         "phx.digest"
       ],
-      lint: ["credo -C default"]
+      lint: ["credo --all --strict"]
     ]
   end
 end
