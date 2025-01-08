@@ -1,23 +1,29 @@
-defmodule SafiraWeb.UserSettingsLive do
-  use SafiraWeb, :live_view
+# TO fix:
+# redirect da password
+# notificacoes
+# design
+
+defmodule SafiraWeb.UserAuth.Components.UserProfileSettings do
+  use SafiraWeb, :live_component
 
   alias Safira.Accounts
 
-  import SafiraWeb.Components.Page
   import SafiraWeb.Components.Forms
   import SafiraWeb.Components.Avatar
 
   alias Safira.Accounts
 
-  def mount(_params, _session, socket) do
-    user = socket.assigns.current_user
+  def update(assigns, socket) do
+    user = assigns.user
 
-    profile_changeset = Accounts.change_user_registration(user, %{})
+    profile_changeset = Accounts.change_user_registration(user)
     email_changeset = Accounts.change_user_email(user)
     password_changeset = Accounts.change_user_password(user)
 
     socket =
       socket
+      |> assign(:user, user)
+      |> assign(:current_password, nil)
       |> assign(:profile_form, to_form(profile_changeset))
       |> assign(:email_form, to_form(email_changeset))
       |> assign(:modal_mail_visible, false)
@@ -34,14 +40,14 @@ defmodule SafiraWeb.UserSettingsLive do
   def handle_event("validate_profile", params, socket) do
     %{"user" => user_params} = params
 
-    changeset = Accounts.change_user_profile(socket.assigns.current_user, user_params)
+    changeset = Accounts.change_user_profile(socket.assigns.user, user_params)
     {:noreply, socket |> assign(profile_form: to_form(changeset, action: :validate))}
   end
 
   def handle_event("update_profile", params, socket) do
     %{"user" => user_params} = params
 
-    case Accounts.update_user_profile(socket.assigns.current_user, user_params) do
+    case Accounts.update_user_profile(socket.assigns.user, user_params) do
       {:ok, _} ->
         {:noreply,
          socket
@@ -63,7 +69,7 @@ defmodule SafiraWeb.UserSettingsLive do
     %{"email_form_current_password" => password, "user" => user_params} = params
 
     email_form =
-      socket.assigns.current_user
+      socket.assigns.user
       |> Accounts.change_user_email(user_params)
       |> Map.put(:action, :validate)
       |> to_form()
@@ -76,7 +82,7 @@ defmodule SafiraWeb.UserSettingsLive do
 
   def handle_event("update_email", params, socket) do
     %{"email_form_current_password" => password, "user" => user_params} = params
-    user = socket.assigns.current_user
+    user = socket.assigns.user
 
     case Accounts.apply_user_email(user, password, user_params) do
       {:ok, applied_user} ->
@@ -115,7 +121,7 @@ defmodule SafiraWeb.UserSettingsLive do
     %{"password_form_current_password" => password, "user" => user_params} = params
 
     password_form =
-      socket.assigns.current_user
+      socket.assigns.user
       |> Accounts.change_user_password(user_params)
       |> Map.put(:action, :validate)
       |> to_form()
@@ -128,7 +134,7 @@ defmodule SafiraWeb.UserSettingsLive do
 
   def handle_event("update_password", params, socket) do
     %{"password_form_current_password" => password, "user" => user_params} = params
-    user = socket.assigns.current_user
+    user = socket.assigns.user
 
     case Accounts.update_user_password(user, password, user_params) do
       {:ok, user} ->

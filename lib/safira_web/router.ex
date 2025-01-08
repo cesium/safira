@@ -74,8 +74,7 @@ defmodule SafiraWeb.Router do
 
     live_session :require_authenticated_user,
       on_mount: [{SafiraWeb.UserAuth, :ensure_authenticated}] do
-      live "/users/settings", UserSettingsLive, :edit
-      live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
+      live "/users/settings/confirm_email/:token", UserUpdateEmailConfirmation
 
       live "/scanner", ScannerLive.Index, :index
 

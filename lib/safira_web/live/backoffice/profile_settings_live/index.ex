@@ -1,17 +1,21 @@
 defmodule SafiraWeb.Backoffice.ProfileSettingsLive do
   use SafiraWeb, :backoffice_view
 
-  alias SafiraWeb.UserSettingsLive
-
-  def mount(params, session, socket) do
-    UserSettingsLive.mount(params, session, socket)
-  end
-
-  def handle_event(event, params, socket) do
-    UserSettingsLive.handle_event(event, params, socket)
-  end
-
   def render(assigns) do
-    UserSettingsLive.render(assigns)
+    assigns = assigns |> Map.put(:user, assigns.current_user)
+
+    ~H"""
+    <.page title="Profile Settings" subtitle="Manage your profile settings" size={:xl}>
+      <.live_component
+        module={SafiraWeb.UserAuth.Components.UserProfileSettings}
+        id="attendee-user-profile-settings"
+        user={@user}
+      />
+    </.page>
+    """
+  end
+
+  def mount(_, _, socket) do
+    {:ok, socket}
   end
 end
