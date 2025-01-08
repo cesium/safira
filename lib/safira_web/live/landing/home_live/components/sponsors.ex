@@ -35,7 +35,7 @@ defmodule SafiraWeb.Landing.HomeLive.Components.Sponsors do
                 <div class="w-32 sm:w-64 py-4">
                   <img
                     class="w-full max-h-32 px-1 sm:px-4"
-                    src={Uploaders.Company.url({sponsor.logo, sponsor}, :original)}
+                    src={Uploaders.Company.url({sponsor.logo, sponsor}, :original, signed: true)}
                   />
                 </div>
               <% else %>
