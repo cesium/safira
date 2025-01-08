@@ -1,5 +1,5 @@
 defmodule SafiraWeb.UserRegistrationLive do
-  use SafiraWeb, :live_view
+  use SafiraWeb, :landing_view
 
   alias Safira.Accounts
   alias Safira.Accounts.User
