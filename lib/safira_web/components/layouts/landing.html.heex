@@ -13,6 +13,11 @@
     <link rel="icon" type="image/png" sizes="16x16" href="images/icons/favicon-16x16.png" />
     <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
     </script>
+    <script
+      defer
+      src={Application.fetch_env!(:safira, :umami_script_url)}
+      data-website-id={Application.fetch_env!(:safira, :umami_website_id)}
+    />
   </head>
   <body class="bg-primary text-light font-iregular">
     <.sparkles />
