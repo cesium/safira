@@ -2,8 +2,11 @@ defmodule SafiraWeb.UserSessionControllerTest do
   use SafiraWeb.ConnCase, async: true
 
   import Safira.AccountsFixtures
+  alias Safira.Constants
 
   setup do
+    Constants.set("registrations_open", "true")
+    Constants.set("start_time", "2024-09-29T17:57:00Z")
     %{user: user_fixture()}
   end
 

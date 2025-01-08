@@ -4,6 +4,13 @@ defmodule SafiraWeb.UserRegistrationLiveTest do
   import Phoenix.LiveViewTest
   import Safira.AccountsFixtures
 
+  alias Safira.Constants
+
+  setup do
+    Constants.set("registrations_open", "true")
+    :ok
+  end
+
   describe "Registration page" do
     test "renders registration page", %{conn: conn} do
       {:ok, _lv, html} = live(conn, ~p"/users/register")

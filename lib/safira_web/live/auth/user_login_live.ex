@@ -1,21 +1,25 @@
 defmodule SafiraWeb.UserLoginLive do
   use SafiraWeb, :live_view
 
+  alias Safira.Event
+
   def render(assigns) do
     ~H"""
     <div class="mx-auto max-w-sm">
       <div class="px-32 py-12">
-        <img class="w-full h-full block" src={~p"/images/sei.svg"} />
+        <img class="w-full h-full block" src={~p"/images/sei-logo.svg"} />
       </div>
 
       <.header class="text-center">
         Log in to account
         <:subtitle>
-          Don't have an account?
-          <.link navigate={~p"/users/register"} class="font-semibold text-primary hover:underline">
-            Sign up
-          </.link>
-          for an account now.
+          <%= if @registrations_open do %>
+            Don't have an account?
+            <.link navigate={~p"/users/register"} class="font-semibold text-primary hover:underline">
+              Sign up
+            </.link>
+            for an account now.
+          <% end %>
         </:subtitle>
       </.header>
 
@@ -42,6 +46,8 @@ defmodule SafiraWeb.UserLoginLive do
   def mount(_params, _session, socket) do
     email = Phoenix.Flash.get(socket.assigns.flash, :email)
     form = to_form(%{"email" => email}, as: "user")
-    {:ok, assign(socket, form: form), temporary_assigns: [form: form]}
+
+    {:ok, assign(socket, form: form) |> assign(registrations_open: Event.registrations_open?()),
+     temporary_assigns: [form: form]}
   end
 end

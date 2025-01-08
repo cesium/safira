@@ -48,10 +48,15 @@ defmodule Safira.MixProject do
 
       # uploads
       {:waffle_ecto, "~> 0.0"},
-      {:waffle, "~> 1.1"},
+      {:waffle, "~> 1.1.9"},
+      {:ex_aws, "~> 2.1.2"},
+      {:ex_aws_s3, "~> 2.0"},
+      {:hackney, "~> 1.9"},
+      {:sweet_xml, "~> 0.6"},
 
       # mailer
-      {:swoosh, "~> 1.5"},
+      {:swoosh, "~> 1.17.6"},
+      {:gen_smtp, "~>1.2.0"},
       {:phoenix_html, "~> 4.0"},
       {:finch, "~> 0.13"},
 
@@ -67,6 +72,13 @@ defmodule Safira.MixProject do
        github: "tailwindlabs/heroicons",
        tag: "v2.1.1",
        sparse: "optimized",
+       app: false,
+       compile: false,
+       depth: 1},
+      {:fontawesome,
+       github: "FortAwesome/Font-Awesome",
+       tag: "6.6.0",
+       sparse: "svgs",
        app: false,
        compile: false,
        depth: 1},
@@ -113,7 +125,7 @@ defmodule Safira.MixProject do
         "esbuild safira --minify",
         "phx.digest"
       ],
-      lint: ["credo -C default"]
+      lint: ["credo --all --strict"]
     ]
   end
 end
