@@ -26,7 +26,7 @@ defmodule Safira.Release do
     end
 
     # Fetch all permissions
-    permissions = Safira.Accounts.Roles.Permissions.all()
+    permissions = Permissions.all()
 
     role =
       Safira.Roles.get_role_by_name(role)
