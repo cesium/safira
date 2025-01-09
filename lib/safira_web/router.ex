@@ -23,7 +23,7 @@ defmodule SafiraWeb.Router do
   scope "/", SafiraWeb.Landing do
     pipe_through :browser
 
-    live_session :default, root_layout: {SafiraWeb.Layouts, :landing} do
+    live_session :default do
       live "/", HomeLive.Index, :index
       live "/faqs", FAQLive.Index, :index
     end
