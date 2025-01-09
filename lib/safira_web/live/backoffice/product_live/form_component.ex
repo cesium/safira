@@ -4,8 +4,7 @@ defmodule SafiraWeb.Backoffice.ProductLive.FormComponent do
   alias Safira.Store
   alias Safira.Uploaders.Product
 
-  import SafiraWeb.Components.ImageUploader
-  import SafiraWeb.Components.Forms
+  import SafiraWeb.Components.{Forms, ImageUploader}
 
   @impl true
   def render(assigns) do
@@ -39,7 +38,7 @@ defmodule SafiraWeb.Backoffice.ProductLive.FormComponent do
               <.image_uploader
                 class="w-full h-full"
                 upload={@uploads.image}
-                image={Uploaders.Product.url({@product.image, @product}, :original)}
+                image={Uploaders.Product.url({@product.image, @product}, :original, signed: true)}
               />
             </div>
           </div>

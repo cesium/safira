@@ -44,6 +44,20 @@ defmodule Safira.Companies do
   end
 
   @doc """
+  Returns the count of companies.
+
+  ## Examples
+
+      iex> get_companies_count()
+      42
+
+  """
+  def get_companies_count do
+    Company
+    |> Repo.aggregate(:count, :id)
+  end
+
+  @doc """
   Gets a single company.
 
   Raises `Ecto.NoResultsError` if the Company does not exist.
@@ -275,4 +289,13 @@ defmodule Safira.Companies do
     current_spotlights_count <= tier.max_spotlights
   end
 
+  @doc """
+  Returns the list of tiers with companies.
+  """
+  def list_tiers_with_companies do
+    Tier
+    |> order_by(:priority)
+    |> preload(:companies)
+    |> Repo.all()
+  end
 end

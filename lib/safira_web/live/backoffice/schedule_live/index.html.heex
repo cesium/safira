@@ -1,0 +1,181 @@
+<.page title="Schedule">
+  <:actions>
+    <div class="flex flex-row gap-4 justify-center items-center">
+      <.table_search
+        id="schedule-table-name-search"
+        params={@params}
+        field={:title}
+        path={~p"/dashboard/schedule/activities"}
+        placeholder={gettext("Search for activities")}
+      />
+      <.ensure_permissions user={@current_user} permissions={%{"schedule" => ["edit"]}}>
+        <.link patch={~p"/dashboard/schedule/activities/new"}>
+          <.button>New Activity</.button>
+        </.link>
+      </.ensure_permissions>
+
+      <.ensure_permissions user={@current_user} permissions={%{"schedule" => ["edit"]}}>
+        <.link patch={~p"/dashboard/schedule/edit"}>
+          <.button>
+            <.icon name="hero-calendar-days" class="w-5 h-5" />
+          </.button>
+        </.link>
+      </.ensure_permissions>
+
+      <.ensure_permissions user={@current_user} permissions={%{"schedule" => ["edit"]}}>
+        <.link patch={~p"/dashboard/schedule/activities/speakers"}>
+          <.button>
+            <.icon name="hero-user" class="w-5 h-5" />
+          </.button>
+        </.link>
+      </.ensure_permissions>
+
+      <.ensure_permissions user={@current_user} permissions={%{"schedule" => ["edit"]}}>
+        <.link patch={~p"/dashboard/schedule/activities/categories"}>
+          <.button>
+            <.icon name="hero-tag" class="w-5 h-5" />
+          </.button>
+        </.link>
+      </.ensure_permissions>
+    </div>
+  </:actions>
+
+  <div class="py-4">
+    <.table id="activities-table" items={@streams.activities} meta={@meta} params={@params}>
+      <:col :let={{_id, activity}} sortable field={:title} label="Title">
+        <%= activity.title %>
+      </:col>
+      <:col :let={{_id, activity}} sortable field={:timestamp} label="Date">
+        <%= Timex.format!(activity.date, "{D}/{M}/{YYYY}") %>
+      </:col>
+      <:col :let={{_id, activity}} field={:time} label="Time">
+        <%= formatted_activity_times(activity) %>
+      </:col>
+      <:col :let={{_id, activity}} field={:category} label="Category">
+        <%= if activity.category do %>
+          <%= activity.category.name %>
+        <% else %>
+          <p class="opacity-60">-</p>
+        <% end %>
+      </:col>
+      <:action :let={{id, activity}}>
+        <.ensure_permissions user={@current_user} permissions={%{"schedule" => ["edit"]}}>
+          <div class="flex flex-row gap-2">
+            <.link patch={~p"/dashboard/schedule/activities/#{activity.id}/edit"}>
+              <.icon name="hero-pencil" class="w-5 h-5" />
+            </.link>
+            <.link
+              phx-click={JS.push("delete", value: %{id: activity.id}) |> hide("##{id}")}
+              data-confirm="Are you sure?"
+            >
+              <.icon name="hero-trash" class="w-5 h-5" />
+            </.link>
+          </div>
+        </.ensure_permissions>
+      </:action>
+    </.table>
+  </div>
+</.page>
+
+<.modal
+  :if={@live_action in [:edit, :new]}
+  id="activites-modal"
+  show
+  on_cancel={JS.navigate(~p"/dashboard/schedule/activities")}
+>
+  <.live_component
+    module={SafiraWeb.Backoffice.ScheduleLive.ActivityLive.FormComponent}
+    id={@activity.id || :new}
+    title={@page_title}
+    current_user={@current_user}
+    action={@live_action}
+    activity={@activity}
+    categories={@categories}
+    patch={~p"/dashboard/schedule/activities"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:speakers]}
+  id="speakers-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/schedule/activities")}
+>
+  <.live_component
+    module={SafiraWeb.Backoffice.ScheduleLive.SpeakerLive.Index}
+    id="speakers"
+    title={@page_title}
+    current_user={@current_user}
+    action={@live_action}
+    params={@params}
+    streams={@streams}
+    meta={@speakers_meta}
+    patch={~p"/dashboard/schedule/activities"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:speakers_edit, :speakers_new]}
+  id="speakers-modal"
+  show
+  on_cancel={JS.navigate(~p"/dashboard/schedule/activities/speakers")}
+>
+  <.live_component
+    module={SafiraWeb.Backoffice.ScheduleLive.SpeakerLive.FormComponent}
+    id={@speaker.id || :new}
+    title={@page_title}
+    current_user={@current_user}
+    action={@live_action}
+    speaker={@speaker}
+    patch={~p"/dashboard/schedule/activities/speakers"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:categories]}
+  id="categories-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/schedule/activities")}
+>
+  <.live_component
+    module={SafiraWeb.Backoffice.ScheduleLive.CategoryLive.Index}
+    id="categories"
+    title={@page_title}
+    current_user={@current_user}
+    action={@live_action}
+    patch={~p"/dashboard/schedule/activities"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:categories_edit, :categories_new]}
+  id="categories-modal"
+  show
+  on_cancel={JS.navigate(~p"/dashboard/schedule/activities/categories")}
+>
+  <.live_component
+    module={SafiraWeb.Backoffice.ScheduleLive.CategoryLive.FormComponent}
+    id={@category.id || :new}
+    title={@page_title}
+    current_user={@current_user}
+    action={@live_action}
+    category={@category}
+    patch={~p"/dashboard/schedule/activities/categories"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:edit_schedule]}
+  id="schedule-config-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/schedule/activities")}
+>
+  <.live_component
+    module={SafiraWeb.Backoffice.ScheduleLive.FormComponent}
+    id="schedule-config"
+    title={@page_title}
+    current_user={@current_user}
+    action={@live_action}
+    patch={~p"/dashboard/schedule/activities"}
+  />
+</.modal>

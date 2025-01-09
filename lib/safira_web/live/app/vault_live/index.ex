@@ -32,10 +32,10 @@ defmodule SafiraWeb.App.VaultLive.Index do
   defp get_item_image(type, data) do
     case type do
       :product ->
-        Uploaders.Product.url({data.image, data}, :original)
+        Uploaders.Product.url({data.image, data}, :original, signed: true)
 
       :prize ->
-        Uploaders.Prize.url({data.image, data}, :original)
+        Uploaders.Prize.url({data.image, data}, :original, signed: true)
     end
   end
 end

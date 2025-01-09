@@ -18,7 +18,7 @@ defmodule SafiraWeb.Helpers do
 
     case URI.parse(url) do
       %URI{host: host, path: path} ->
-        if host == app_host or Mix.env() == :dev do
+        if (host == app_host or Mix.env() == :dev) and not is_nil(path) do
           case extract_id_from_url_path(path) do
             :error -> {:error, "not a valid id"}
             result -> result
@@ -154,11 +154,23 @@ defmodule SafiraWeb.Helpers do
   end
 
   def draw_qr_code(qr_code) do
-    internal_route = "/qr_codes/#{qr_code.id}"
+    internal_route = "/app/attendees/#{qr_code.id}"
     url = build_url() <> internal_route
 
     url
     |> QRCodeEx.encode()
     |> QRCodeEx.svg(background_color: "#FFFFFF", color: "#04041C", width: 200)
+  end
+
+  def parse_date(date_str) do
+    {:ok, date, _} = DateTime.from_iso8601("#{date_str}:00Z")
+    date
+  end
+
+  def string_to_bool(str) do
+    case String.downcase(str) do
+      "true" -> true
+      _ -> false
+    end
   end
 end

@@ -5,7 +5,7 @@ defmodule SafiraWeb.Components.Table do
   use Phoenix.Component
 
   alias Plug.Conn.Query
-  import SafiraWeb.Gettext
+  use Gettext, backend: SafiraWeb.Gettext
   import SafiraWeb.CoreComponents
 
   attr :id, :string, required: true
@@ -86,7 +86,7 @@ defmodule SafiraWeb.Components.Table do
           </tbody>
         </table>
       </div>
-      <.pagination meta={@meta} params={@params} />
+      <.pagination :if={@meta.total_pages > 1} meta={@meta} params={@params} />
     </div>
     """
   end

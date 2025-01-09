@@ -3,13 +3,14 @@ defmodule SafiraWeb.Components.TableSearch do
   Reusable table search component.
   """
   use Phoenix.Component
-  import SafiraWeb.Gettext
+  use Gettext, backend: SafiraWeb.Gettext
 
   attr :id, :string, required: true
   attr :params, :map, required: true
   attr :field, :atom, required: true
   attr :path, :string, required: true
   attr :placeholder, :string, default: gettext("Search")
+  attr :class, :string, default: ""
 
   def table_search(assigns) do
     ~H"""
@@ -20,6 +21,7 @@ defmodule SafiraWeb.Components.TableSearch do
       field={@field}
       path={@path}
       placeholder={@placeholder}
+      class={@class}
     />
     """
   end
@@ -47,7 +49,7 @@ defmodule SafiraWeb.Components.TableSearchLiveComponent do
           name="search[query]"
           spellcheck="false"
           placeholder={@placeholder}
-          class="block w-80 p-2 ps-10 text-sm text-dark border border-lightShade rounded-md placeholder:text-darkMuted focus:outline-2 focus:border-lightShade ring-0 focus:outline-dark focus:outline-offset-2 dark:outline-darkShade dark:bg-dark dark:text-light dark:placeholder-lightMuted dark:focus:border-darkShade dark:focus:border-darkShade dark:border-darkShade focus:ring-0 dark:focus:outline-light"
+          class={"block w-80 p-2 ps-10 text-sm text-dark border border-lightShade rounded-md placeholder:text-darkMuted focus:outline-2 focus:border-lightShade ring-0 focus:outline-dark focus:outline-offset-2 dark:outline-darkShade dark:bg-dark dark:text-light dark:placeholder-lightMuted dark:focus:border-darkShade dark:focus:border-darkShade dark:border-darkShade focus:ring-0 dark:focus:outline-light #{@class}"}
         />
       </form>
     </div>

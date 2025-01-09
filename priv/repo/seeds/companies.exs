@@ -45,7 +45,9 @@ defmodule Safira.Repo.Seeds.Companies do
       changeset = Companies.change_company(%Company{}, company_seed)
 
       case Repo.insert(changeset) do
-        {:ok, _} -> :ok
+        {:ok, company} ->
+            Company.image_changeset(company, %{logo: %Plug.Upload{path: "priv/static/images/companies/placeholder-company.svg", content_type: "image/svg", filename: "placeholder-company.svg"}})
+            |> Repo.update()
         {:error, changeset} ->
           Mix.shell().error("Failed to insert company: #{company_seed.name}")
           Mix.shell().error(Kernel.inspect(changeset.errors))
