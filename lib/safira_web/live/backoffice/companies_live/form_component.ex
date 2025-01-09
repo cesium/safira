@@ -43,7 +43,6 @@ defmodule SafiraWeb.Backoffice.CompanyLive.FormComponent do
               options={options(@badges)}
               label="Badge"
               wrapper_class=""
-              required
             />
           </div>
           <div class="w-full">
