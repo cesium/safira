@@ -2,18 +2,17 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Index do
   use SafiraWeb, :backoffice_view
 
   alias Safira.Companies
+  alias Safira.Spotlights
+
+  import SafiraWeb.Components.Banner
 
   @impl true
   def mount(_params, _session, socket) do
-    spotlight = Safira.Spotlights.get_current_spotlight()
+    if connected?(socket) do
+        Spotlights.subscribe_to_spotlight_change()
+    end
 
-    socket =
-      assign(socket,
-        spotlight: spotlight,
-        has_spotlight: !is_nil(spotlight)
-      )
-
-    {:ok, socket}
+    {:ok, socket |> assign(:spotlight , Spotlights.get_current_spotlight())}
   end
 
   @impl true
@@ -69,12 +68,12 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Index do
   end
 
   @impl true
-  def handle_event("on_spotlight_end", params, socket) do
-    {:noreply, apply_action(socket, :on_spotlight_end, params)}
+  def handle_event("on_spotlight_end", _params, socket) do
+    {:noreply, socket |> push_navigate(to: "/dashboard/spotlights")}
   end
 
-  defp apply_action(socket, :on_spotlight_end, _params) do
-    socket
-    |> push_redirect(to: "/dashboard/spotlights")
+  @impl true
+  def handle_info(spotlight, socket) do
+    {:noreply, assign(socket, spotlight: spotlight)}
   end
 end

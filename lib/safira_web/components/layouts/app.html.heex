@@ -1,4 +1,5 @@
 <div class="relative h-screen flex overflow-hidden">
+  <.banner :if={@current_spotlight} title={gettext("Spotlights")} company_name={@current_spotlight.company.name} />
   <%= if Map.get(assigns, :event_started, true) do %>
     <.sidebar
       current_user={@current_user}

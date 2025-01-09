@@ -2,6 +2,7 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Confirm do
   use SafiraWeb, :live_component
 
   import Safira.Companies
+  alias Safira.Spotlights
 
   @impl true
   def render(assigns) do
@@ -38,15 +39,15 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Confirm do
         duration: socket.assigns.duration
       }
 
-      case create_spotlight(attrs) do
-        {:ok, spotlight} ->
+      case Spotlights.create_spotlight(attrs) do
+        {:ok, _spotlight} ->
 
           {:noreply,
            socket
            |> put_flash(:info, "Spotlight started successfully.")
            |> push_navigate(to: ~p"/dashboard/spotlights")}
 
-        {:error, changeset} ->
+        {:error, _changeset} ->
           {:noreply, socket |> put_flash(:error, "Failed to start spotlight.")}
       end
     else

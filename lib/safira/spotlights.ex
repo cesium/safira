@@ -19,9 +19,17 @@ defmodule Safira.Spotlights do
       %Spotlight{}
       |> Spotlight.changeset(spotlight_attrs)
       |> Repo.insert()
+      |> case do
+        {:ok, spotlight} ->
+          IO.inspect(spotlight)
+          broadcast_new_spotlight(spotlight.id)
+          {:ok, spotlight}
+
+        {:error, changeset} ->
+          {:error, changeset}
+      end
     else
-      IO.puts("Invalid duration provided.")
-      {:error, "Invalid duration"}
+      {:error, "invalid duration"}
     end
   end
 
@@ -42,7 +50,6 @@ defmodule Safira.Spotlights do
 
   def change_duration_spotlight(time) do
     Constants.set("duration_spotlights", time)
-    Phoenix.PubSub.broadcast(@pubsub, "spotlight:duration", time)
   end
 
   def get_spotlights_duration do
@@ -83,7 +90,11 @@ defmodule Safira.Spotlights do
       ** (Ecto.NoResultsError)
 
   """
-  def get_spotlight!(id), do: Repo.get!(Spotlight, id)
+  def get_spotlight!(id) do
+    Spotlight
+    |> preload([:company])
+    |> Repo.get!(id)
+  end
 
   @doc """
   Updates a spotlight.
@@ -130,6 +141,17 @@ defmodule Safira.Spotlights do
   """
   def change_spotlight(%Spotlight{} = spotlight, attrs \\ %{}) do
     Spotlight.changeset(spotlight, attrs)
-    Phoenix.PubSub.broadcast(@pubsub, "spotlight:change", spotlight)
+    subscribe_to_spotlight_change()
   end
+
+
+  def subscribe_to_spotlight_change() do
+    Phoenix.PubSub.subscribe(@pubsub, "spotlight")
+  end
+
+  defp broadcast_new_spotlight(spotlight_id) do
+    spotlight = get_spotlight!(spotlight_id)
+    Phoenix.PubSub.broadcast(@pubsub, "spotlight", spotlight)
+  end
+
 end
