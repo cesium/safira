@@ -21,7 +21,6 @@ defmodule Safira.Spotlights do
       |> Repo.insert()
       |> case do
         {:ok, spotlight} ->
-          IO.inspect(spotlight)
           broadcast_new_spotlight(spotlight.id)
           {:ok, spotlight}
 
