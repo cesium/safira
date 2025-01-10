@@ -1,7 +1,6 @@
 defmodule SafiraWeb.Landing.ScheduleLive.Index do
   use SafiraWeb, :landing_view
 
-  import SafiraWeb.Landing.HomeLive.Components.{Hero, Partners, Pitch, Sponsors, Speakers}
   import SafiraWeb.Landing.Components.Schedule
 
   alias Safira.Event
