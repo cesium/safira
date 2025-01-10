@@ -22,6 +22,7 @@ defmodule SafiraWeb.UserAuth.Components.UserProfileSettings do
       socket
       |> assign(:user, user)
       |> assign(:profile_form, to_form(profile_changeset))
+      |> assign(:current_password, nil)
       |> assign(:trigger_submit, false)
 
     {:ok, socket}
@@ -45,6 +46,7 @@ defmodule SafiraWeb.UserAuth.Components.UserProfileSettings do
     user = socket.assigns.user
 
     email_changed? = user.email != user_params["email"]
+
     password_changed? =
       user_params["password"] != nil && String.trim(user_params["password"]) != ""
 
@@ -77,6 +79,7 @@ defmodule SafiraWeb.UserAuth.Components.UserProfileSettings do
          socket
          |> assign(profile_form: profile_changeset)
          |> assign(user: applied_user)
+         |> assign(:current_password, nil)
          |> put_flash(:info, info)}
 
       {:error, changeset} ->
