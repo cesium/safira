@@ -88,11 +88,6 @@ defmodule SafiraWeb.UserAuth.Components.UserProfileSettings do
         {:noreply,
          socket
          |> assign(profile_form: to_form(changeset))}
-
-      {:error, _} ->
-        {:noreply,
-         socket
-         |> put_flash(:error, "An unexpected error happened while updating the profile.")}
     end
   end
 end
