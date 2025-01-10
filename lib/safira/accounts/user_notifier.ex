@@ -9,6 +9,7 @@ defmodule Safira.Accounts.UserNotifier do
   # Delivers the email using the application mailer.
   defp deliver(recipient, subject, body) do
     sender = {Mailer.get_sender_name(), Mailer.get_sender_address()}
+
     email =
       new()
       |> to(recipient)
