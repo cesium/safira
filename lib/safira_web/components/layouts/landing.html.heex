@@ -15,8 +15,8 @@
     </script>
     <script
       defer
-      src={Application.fetch_env!(:safira, :umami_script_url)}
-      data-website-id={Application.fetch_env!(:safira, :umami_website_id)}
+      src={Application.get_env(:safira, :umami_script_url)}
+      data-website-id={Application.get_env(:safira, :umami_website_id)}
     />
   </head>
   <body class="bg-primary text-light font-iregular">
