@@ -11,6 +11,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
   attr :event_end_date, Date, required: true
   attr :url, :string, required: true
   attr :params, :map, required: true
+  attr :has_filters?, :boolean, default: false
 
   def schedule(assigns) do
     ~H"""
@@ -21,15 +22,52 @@ defmodule SafiraWeb.Landing.Components.Schedule do
             date={fetch_current_date_from_params(assigns.params) || assigns.event_start_date}
             url={@url}
             params={@params}
+            filters={fetch_filters_from_params(assigns.params)}
             event_start_date={@event_start_date}
             event_end_date={@event_end_date}
+          />
+          <.filters
+            :if={@has_filters?}
+            url={@url}
+            current_day={fetch_current_date_from_params(assigns.params) || assigns.event_start_date}
+            filters={fetch_filters_from_params(assigns.params)}
           />
         </div>
       </div>
       <div>
-        <.schedule_table date={
-          fetch_current_date_from_params(assigns.params) || assigns.event_start_date
-        } />
+        <.schedule_table
+          date={fetch_current_date_from_params(assigns.params) || assigns.event_start_date}
+          filters={fetch_filters_from_params(assigns.params)}
+        />
+      </div>
+    </div>
+    """
+  end
+
+  defp filters(assigns) do
+    ~H"""
+    <div class="block relative mt-8">
+      <span class="w-full font-iregular text-lg text-gray-300 uppercase">Filter by</span>
+
+      <div class="grid grid-cols-2">
+        <%= for category <- fetch_categories() do %>
+          <.link
+            class={
+              if Enum.member?(@filters, category.id),
+                do: "text-md m-1 items-center rounded-full border px-12 py-2 text-center font-ibold
+                                  text-accent border-accent shadow-sm
+                                hover:border-white hover:bg-primary hover:opacity-80
+                                ",
+                else: "text-md m-1 items-center rounded-full border px-12 py-2 text-center font-ibold
+                                  text-white shadow-sm
+                                opacity-50 hover:border-accent hover:opacity-80
+                                "
+            }
+            patch={filter_url(@url, @current_day, @filters, category.id)}
+          >
+            <%= category.name %>
+          </.link>
+        <% end %>
       </div>
     </div>
     """
@@ -38,7 +76,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
   defp schedule_table(assigns) do
     ~H"""
     <div>
-      <%= for activity_section <- fetch_daily_activities(@date) do %>
+      <%= for activity_section <- fetch_daily_activities(@date, @filters) do %>
         <div class="flex lg:flex-row flex-col sm:w-full">
           <%= for activity <- activity_section do %>
             <%= if activity.category && activity.category.name == "Break" do %>
@@ -150,7 +188,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
           <.link
             :if={Date.compare(@date, @event_start_date) in [:gt]}
             class="cursor-pointer"
-            patch={day_url(@url, @date, -1)}
+            patch={day_url(@url, @date, -1, @filters)}
           >
             <.left_arrow />
           </.link>
@@ -169,7 +207,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
           <.link
             :if={Date.compare(@date, @event_end_date) in [:lt]}
             class="cursor-pointer"
-            patch={day_url(@url, @date, 1)}
+            patch={day_url(@url, @date, 1, @filters)}
           >
             <.right_arrow />
           </.link>
@@ -276,15 +314,39 @@ defmodule SafiraWeb.Landing.Components.Schedule do
     end
   end
 
-  defp day_url(url, current_day, shift) do
-    query = %{"date" => Timex.shift(current_day, days: shift)}
+  defp fetch_filters_from_params(params) do
+    Map.get(params, "filters", [])
+  end
+
+  defp day_url(url, current_day, shift, filters) do
+    query = %{"date" => Timex.shift(current_day, days: shift), "filters" => filters}
 
     "#{url}?#{Query.encode(query)}"
   end
 
-  defp fetch_daily_activities(day) do
+  defp filter_url(url, current_day, filters, category_id) do
+    new_filters = toggle_filter(filters, category_id)
+    query = %{"date" => current_day, "filters" => new_filters}
+
+    "#{url}?#{Query.encode(query)}"
+  end
+
+  defp toggle_filter(filters, category_id) do
+    if Enum.member?(filters, category_id) do
+      List.delete(filters, category_id)
+    else
+      filters ++ [category_id]
+    end
+  end
+
+  defp fetch_daily_activities(day, filters) do
     Activities.list_daily_activities(day)
+    |> Enum.filter(fn at -> filters == [] or at.category_id in filters end)
     |> Enum.group_by(& &1.time_start)
     |> Enum.map(&elem(&1, 1))
+  end
+
+  defp fetch_categories do
+    Activities.list_activity_categories()
   end
 end
