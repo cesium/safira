@@ -15,8 +15,8 @@ defmodule SafiraWeb.Landing.Components.Schedule do
 
   def schedule(assigns) do
     ~H"""
-    <div class="px-5 md:px-32 xl:grid xl:grid-cols-2 xl:px-16 2xl:px-32 relative select-none pt-20">
-      <div class="mb-20 xl:mb-0">
+    <div class="xl:grid 2xl:grid-cols-2 relative select-none">
+      <div class="mb-20 2xl:mb-0">
         <div class="sticky top-12">
           <.schedule_day
             date={fetch_current_date_from_params(assigns.params) || assigns.event_start_date}
@@ -49,7 +49,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
     <div class="block relative mt-8">
       <span class="w-full font-iregular text-lg text-gray-300 uppercase">Filter by</span>
 
-      <div class="grid grid-cols-2">
+      <div class="grid grid-cols-2 gap-x-4">
         <%= for category <- fetch_categories() do %>
           <.link
             class={
@@ -60,7 +60,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
                                 ",
                 else: "text-md m-1 items-center rounded-full border px-12 py-2 text-center font-ibold
                                   text-white shadow-sm
-                                opacity-50 hover:border-accent hover:opacity-80
+                                opacity-50 hover:border-accent hover:opacity-80 px-8
                                 "
             }
             patch={filter_url(@url, @current_day, @filters, category.id)}

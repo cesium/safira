@@ -7,10 +7,10 @@ defmodule SafiraWeb.Config do
 
   def landing_pages do
     [
-      # %{
-      #  title: "Schedule",
-      #  url: "/schedule"
-      # },
+      %{
+        title: "Schedule",
+        url: "/schedule"
+      },
       # %{
       #  title: "Team",
       #  url: "/team"
