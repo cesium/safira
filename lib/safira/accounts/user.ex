@@ -79,6 +79,32 @@ defmodule Safira.Accounts.User do
     |> validate_password(opts)
   end
 
+  @doc """
+  A user changeset for changing the profile (name, handle, password and email).
+  """
+  def profile_changeset(user, attrs, opts \\ []) do
+    user
+    |> cast(attrs, [:name, :handle, :email])
+    |> validate_handle()
+    |> email_changeset(attrs, opts |> Keyword.put(:check_email_changed, false))
+    |> if_changed_password_changeset(attrs, opts)
+  end
+
+  @doc """
+  A changeset for updating the password, which is applied only if a password is provided in the attributes.
+  This is useful when the user doesn't want update and so the password is neither included in the current
+  user data nor the new attributes, as it is not returned by the database.
+  """
+  defp if_changed_password_changeset(changeset, attrs, opts) do
+    password = Map.get(attrs, "password")
+    password_exists? = password != nil && String.trim(password) != ""
+
+    case password_exists? do
+      true -> password_changeset(changeset, attrs, opts)
+      false -> changeset
+    end
+  end
+
   defp validate_email(changeset, opts) do
     changeset
     |> validate_required([:email])
@@ -137,15 +163,26 @@ defmodule Safira.Accounts.User do
   @doc """
   A user changeset for changing the email.
 
-  It requires the email to change otherwise an error is added.
+  ## Options
+
+   * `:check_email_changed` - If true, it requires the email to change, otherwise an error is added.
+      Defaults to `true`.
   """
   def email_changeset(user, attrs, opts \\ []) do
     user
     |> cast(attrs, [:email])
     |> validate_email(opts)
-    |> case do
-      %{changes: %{email: _}} = changeset -> changeset
-      %{} = changeset -> add_error(changeset, :email, "did not change")
+    |> maybe_validate_email_changed(opts)
+  end
+
+  defp maybe_validate_email_changed(%{changes: %{email: _}} = changeset, _opts), do: changeset
+
+  defp maybe_validate_email_changed(changeset, opts) do
+    check_email_changed? = Keyword.get(opts, :check_email_changed, true)
+
+    case check_email_changed? do
+      true -> changeset |> add_error(:email, "did not change")
+      false -> changeset
     end
   end
 
@@ -203,14 +240,5 @@ defmodule Safira.Accounts.User do
     else
       add_error(changeset, :current_password, "password not correct")
     end
-  end
-
-  @doc """
-  A user changeset for changing the profile (name & handle).
-  """
-  def profile_changeset(user, attrs) do
-    user
-    |> cast(attrs, [:name, :handle])
-    |> validate_handle()
   end
 end

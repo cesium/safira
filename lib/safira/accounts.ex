@@ -251,6 +251,48 @@ defmodule Safira.Accounts do
   end
 
   @doc """
+  Returns an `%Ecto.Changeset{}` for changing the user profile (name, handle, password and email).
+  Doesn't validate the uniqueness of the email.
+
+  ## Examples
+
+      iex> change_user_profile(user)
+      %Ecto.Changeset{data: %User{}}
+
+  """
+  def change_user_profile(user, attrs \\ %{}) do
+    User.profile_changeset(user, attrs, validate_email: false)
+  end
+
+  @doc """
+  Updates the user profile (name, handle, password).
+
+  If everything succeed, emulates that the email was change without
+  actually changing it in the database.
+  """
+  def update_user_profile(%User{} = user, current_password, attrs) do
+    changeset =
+      user
+      |> User.profile_changeset(attrs, validate_email: true)
+      |> User.validate_current_password(current_password)
+
+    # E-mail is changed over e-mail
+    changeset_without_mail_update = Ecto.Changeset.change(changeset, email: user.email)
+
+    changeset_without_mail_update
+    |> Repo.update()
+    |> case do
+      # If the update of all fields was successful, we simulate the email update
+      {:ok, _} ->
+        Ecto.Changeset.apply_action(changeset, :update)
+
+      # Otherwise we return the changeset with the error
+      otherwise ->
+        otherwise
+    end
+  end
+
+  @doc """
   Returns an `%Ecto.Changeset{}` for tracking user changes.
 
   ## Examples
@@ -383,28 +425,6 @@ defmodule Safira.Accounts do
       {:ok, %{user: user}} -> {:ok, user}
       {:error, :user, changeset, _} -> {:error, changeset}
     end
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for changing the user profile (name & handle).
-
-  ## Examples
-
-      iex> change_user_profile(user)
-      %Ecto.Changeset{data: %User{}}
-
-  """
-  def change_user_profile(user, attrs \\ %{}) do
-    User.profile_changeset(user, attrs)
-  end
-
-  @doc """
-  Updates the user profile (name & handle).
-  """
-  def update_user_profile(%User{} = user, attrs) do
-    user
-    |> Accounts.change_user_profile(attrs)
-    |> Repo.update()
   end
 
   ## Session

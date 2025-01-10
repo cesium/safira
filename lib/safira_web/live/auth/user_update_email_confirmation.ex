@@ -25,7 +25,6 @@ defmodule SafiraWeb.UserUpdateEmailConfirmation do
     {:ok,
      socket
      |> assign(base_path: base_path)
-     |> push_navigate(to: ~p"/#{base_path}/profile_settings")
-    }
+     |> push_navigate(to: ~p"/#{base_path}/profile_settings")}
   end
 end

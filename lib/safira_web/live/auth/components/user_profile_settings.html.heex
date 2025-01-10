@@ -1,4 +1,4 @@
-<div>
+<div class="flex justify-center">
   <.flash_group flash={@flash} />
 
   <div class="flex flex-col gap-y-16 my-8 w-full max-w-md">
@@ -6,36 +6,50 @@
       <.avatar size={:xl} handle={@user.handle} />
     </div>
 
-    <.simple_form for={@profile_form} id="edit-profile-form" phx-change="validate_profile" phx-submit="update_profile"
-      class="flex flex-col w-full mt-[0px]" phx-target={@myself}>
-      <.simple_form for={@email_form} id="edit-email-form" phx-change="validate_email" phx-submit="update_email"
-        phx-target={@myself}>
-        <.simple_form for={@password_form} id="edit-password-form" phx-change="validate_password"
-          phx-submit="update_password" action={~p"/users/log_in?_action=password_updated"} method="post"
-          phx-trigger-action={@trigger_submit} phx-target={@myself}>
+    <.simple_form
+      for={@profile_form}
+      id="edit-profile-form"
+      phx-change="validate_profile"
+      phx-submit="update_profile"
+      action={~p"/users/log_in?_action=password_updated"}
+      method="post"
+      phx-trigger-action={@trigger_submit}
+      phx-target={@myself}
+    >
+      <div class="flex flex-col w-full mt-[0px]">
+        <div class="flex flex-col md:flex-row md:gap-x-8">
+          <div>
+            <.field field={@profile_form[:name]} type="text" label="Name" required />
 
-          <.field field={@profile_form[:name]} type="text" label="Name" required />
+            <.field field={@profile_form[:handle]} type="text" label="Username" required />
 
-          <.field field={@profile_form[:handle]} type="text" label="Username" required />
-          <.field field={@email_form[:email]} type="text" label="Email" required />
+            <.field field={@profile_form[:email]} type="text" label="Email" required />
+          </div>
 
-          <.field field={@email_form[:current_password]} type="password" label="Current Password"
-            value={@email_form_current_password} name="email_form_current_password" required />
+          <div>
+            <.field field={@profile_form[:password]} type="password" label="New password" />
 
-          <input name={@password_form[:email].name} type="hidden" id="hidden_user_email" value={@current_email} />
+            <.field
+              field={@profile_form[:password_confirmation]}
+              type="password"
+              label="Repeat New Password"
+            />
 
-          <.field field={@password_form[:password]} type="password" label="New password" required />
+            <.field
+              field={@profile_form[:current_password]}
+              type="password"
+              label="Current Password"
+              required
+            />
+          </div>
+        </div>
 
-          <.field field={@password_form[:password_confirmation]} type="password" label="Repeat New Password" required />
-
-          <.field field={@password_form[:current_password]} type="password" label="Current Password"
-            value={@password_form_current_password} name="password_form_current_password" required />
-
-          <.button>Save Profile</.button>
-        </.simple_form>
-      </.simple_form>
+        <div class="w-full flex justify-center">
+          <.button class="w-full">
+            Save Profile
+          </.button>
+        </div>
+      </div>
     </.simple_form>
-
-
   </div>
 </div>
