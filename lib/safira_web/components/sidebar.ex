@@ -145,14 +145,7 @@ defmodule SafiraWeb.Components.Sidebar do
   def sidebar_account_dropdown(assigns) do
     user = assigns.user
 
-    base_path =
-      if user.type == :attendee do
-        "app"
-      else
-        "dashboard"
-      end
-
-    assigns = assigns |> Map.put(:base_path, base_path)
+    assigns = assigns |> Map.put(:base_path, get_base_path_by_user_type(user))
 
     ~H"""
     <.user_dropdown id={@id} border={@border} icon_color={@icon_color} user={@user}>

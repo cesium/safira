@@ -90,11 +90,6 @@ defmodule Safira.Accounts.User do
     |> if_changed_password_changeset(attrs, opts)
   end
 
-  @doc """
-  A changeset for updating the password, which is applied only if a password is provided in the attributes.
-  This is useful when the user doesn't want update and so the password is neither included in the current
-  user data nor the new attributes, as it is not returned by the database.
-  """
   defp if_changed_password_changeset(changeset, attrs, opts) do
     password = Map.get(attrs, "password")
     password_exists? = password != nil && String.trim(password) != ""

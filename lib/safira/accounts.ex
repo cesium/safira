@@ -3,7 +3,6 @@ defmodule Safira.Accounts do
   The Accounts context.
   """
 
-  alias Safira.Accounts
   use Safira.Context
 
   alias Safira.Accounts.{Attendee, Course, Credential, Staff, User, UserNotifier, UserToken}
