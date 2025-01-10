@@ -23,7 +23,7 @@ defmodule SafiraWeb.UserAuth.Components.UserProfileSettings do
       |> assign(:user, user)
       |> assign(:profile_form, to_form(profile_changeset))
       |> assign(:current_password, nil)
-      |> assign(:trigger_submit, false)
+      |> assign(:trigger_form_action, false)
 
     {:ok, socket}
   end
@@ -37,7 +37,8 @@ defmodule SafiraWeb.UserAuth.Components.UserProfileSettings do
 
     {:noreply,
      socket
-     |> assign(profile_form: to_form(changeset, action: :validate))}
+     |> assign(profile_form: to_form(changeset, action: :validate))
+     |> assign(:current_password, current_password)}
   end
 
   def handle_event("update_profile", params, socket) do
@@ -80,6 +81,7 @@ defmodule SafiraWeb.UserAuth.Components.UserProfileSettings do
          |> assign(profile_form: profile_changeset)
          |> assign(user: applied_user)
          |> assign(:current_password, nil)
+         |> assign(trigger_form_action: password_changed?)
          |> put_flash(:info, info)}
 
       {:error, changeset} ->
@@ -93,17 +95,4 @@ defmodule SafiraWeb.UserAuth.Components.UserProfileSettings do
          |> put_flash(:error, "An unexpected error happened while updating the profile.")}
     end
   end
-
-  #    case Accounts.update_user_password(user, password, user_params) do
-  #      {:ok, user} ->
-  #        password_form =
-  #          user
-  #          |> Accounts.change_user_password(user_params)
-  #          |> to_form()
-  #
-  #        {:noreply,
-  #         socket
-  #         # TODO: Fix the redirect page
-  #         |> assign(trigger_submit: true, password_form: password_form)
-  #         |> put_flash(:info, "Password updated successfully.")}
 end

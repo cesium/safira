@@ -13,7 +13,7 @@
       phx-submit="update_profile"
       action={~p"/users/log_in?_action=password_updated"}
       method="post"
-      phx-trigger-action={@trigger_submit}
+      phx-trigger-action={@trigger_form_action}
       phx-target={@myself}
     >
       <div class="flex flex-col w-full mt-[0px]">
