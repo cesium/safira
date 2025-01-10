@@ -14,7 +14,7 @@ defmodule SafiraWeb.Landing.Components.Speaker do
       <img
         src={
           if @speaker.picture do
-            Uploaders.Speaker.url({@speaker.picture, @speaker}, :original)
+            Uploaders.Speaker.url({@speaker.picture, @speaker}, :original, signed: true)
           else
             "https://github.com/identicons/#{@speaker.name |> String.slice(0..2)}.png"
           end

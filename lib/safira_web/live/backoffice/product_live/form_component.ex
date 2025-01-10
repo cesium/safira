@@ -38,7 +38,7 @@ defmodule SafiraWeb.Backoffice.ProductLive.FormComponent do
               <.image_uploader
                 class="w-full h-full"
                 upload={@uploads.image}
-                image={Uploaders.Product.url({@product.image, @product}, :original)}
+                image={Uploaders.Product.url({@product.image, @product}, :original, signed: true)}
               />
             </div>
           </div>

@@ -69,7 +69,7 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.SpeakerLive.FormComponent do
                   class="w-full aspect-square"
                   upload={@uploads.picture}
                   icon="hero-user"
-                  image={Uploaders.Speaker.url({@speaker.picture, @speaker}, :original)}
+                  image={Uploaders.Speaker.url({@speaker.picture, @speaker}, :original, signed: true)}
                 />
               </div>
             </div>

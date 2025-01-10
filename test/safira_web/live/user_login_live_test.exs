@@ -4,6 +4,8 @@ defmodule SafiraWeb.UserLoginLiveTest do
   import Phoenix.LiveViewTest
   import Safira.AccountsFixtures
 
+  alias Safira.Event
+
   describe "Log in page" do
     test "redirects if already logged in", %{conn: conn} do
       result =
@@ -51,6 +53,8 @@ defmodule SafiraWeb.UserLoginLiveTest do
 
   describe "login navigation" do
     test "redirects to registration page when the Register button is clicked", %{conn: conn} do
+      Event.change_registrations_open(true)
+
       {:ok, lv, _html} = live(conn, ~p"/users/log_in")
 
       {:ok, _login_live, login_html} =

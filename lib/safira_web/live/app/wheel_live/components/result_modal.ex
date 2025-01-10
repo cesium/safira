@@ -53,12 +53,16 @@ defmodule SafiraWeb.App.WheelLive.Components.ResultModal do
                 <figure>
                   <img
                     :if={@drop_type == :prize}
-                    src={Uploaders.Prize.url({@drop.prize.image, @drop.prize}, :original)}
+                    src={
+                      Uploaders.Prize.url({@drop.prize.image, @drop.prize}, :original, signed: true)
+                    }
                     class="max-h-52"
                   />
                   <img
                     :if={@drop_type == :badge}
-                    src={Uploaders.Badge.url({@drop.badge.image, @drop.badge}, :original)}
+                    src={
+                      Uploaders.Badge.url({@drop.badge.image, @drop.badge}, :original, signed: true)
+                    }
                     class="min-h-52"
                   />
                 </figure>

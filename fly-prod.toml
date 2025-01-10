@@ -1,0 +1,32 @@
+app = "safira-prod"
+primary_region = "mad"
+kill_signal = "SIGTERM"
+
+[deploy]
+  release_command = "/app/bin/migrate"
+
+[env]
+  PHX_HOST = "seium.org"
+  MIX_ENV = "prod"
+  PORT = "8080"
+  FROM_EMAIL_NAME = "SEI '25"
+  FROM_EMAIL_ADDRESS = "no-reply@seium.org"
+  DNS_CLUSTER_QUERY = "safira-prod.internal"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]
+
+  [http_service.concurrency]
+    type = "connections"
+    hard_limit = 1000
+    soft_limit = 1000
+
+[[vm]]
+  memory = "512mb"
+  cpu_kind = "shared"
+  cpus = 1

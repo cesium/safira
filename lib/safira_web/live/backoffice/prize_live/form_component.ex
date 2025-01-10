@@ -37,7 +37,7 @@ defmodule SafiraWeb.PrizeLive.FormComponent do
               image_class="h-80"
               icon="hero-gift"
               upload={@uploads.image}
-              image={Uploaders.Prize.url({@prize.image, @prize}, :original)}
+              image={Uploaders.Prize.url({@prize.image, @prize}, :original, signed: true)}
             />
           </div>
         </div>

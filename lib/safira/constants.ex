@@ -7,8 +7,6 @@ defmodule Safira.Constants do
 
   alias Safira.Constants.Pair
 
-  @cache_service :safira_cache
-
   @doc """
   Get a value by key.
 
@@ -21,11 +19,7 @@ defmodule Safira.Constants do
       {:error, "key not found"}
   """
   def get(key) do
-    # Try to get the value from the cache
-    case Cachex.get(@cache_service, key) do
-      {:ok, nil} -> fetch_key_value(key)
-      {:ok, value} -> {:ok, value}
-    end
+    fetch_key_value(key)
   end
 
   defp fetch_key_value(key) do
@@ -34,8 +28,6 @@ defmodule Safira.Constants do
         {:error, "key not found"}
 
       pair ->
-        # Cache the value
-        Cachex.put(@cache_service, key, pair.value[key])
         {:ok, pair.value[key]}
     end
   end
@@ -51,7 +43,6 @@ defmodule Safira.Constants do
   def set(key, value) do
     case set_key_value(key, value) do
       {:ok, result} ->
-        Cachex.put(@cache_service, key, value)
         {:ok, result}
 
       {:error, reason} ->

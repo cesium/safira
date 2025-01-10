@@ -53,6 +53,21 @@ defmodule Safira.Roles do
   end
 
   @doc """
+    Gets a role by name.
+
+    ## Examples
+
+        iex> get_role_by_name("admin")
+        %Role{}
+
+        iex> get_role_by_name("user")
+        nil
+  """
+  def get_role_by_name(name) do
+    Repo.get_by(Role, name: name)
+  end
+
+  @doc """
     Creates a role.
 
     ## Examples

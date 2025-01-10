@@ -30,7 +30,7 @@
         <img
           :if={badge.image}
           class="p-2 w-64 h-64"
-          src={Uploaders.Badge.url({badge.image, badge}, :original)}
+          src={Uploaders.Badge.url({badge.image, badge}, :original, signed: true)}
         />
         <img :if={!badge.image} class="p-2 w-64 h-64" src="/images/badges/404-fallback.svg" />
         <p class="pt-1"><%= badge.name %></p>

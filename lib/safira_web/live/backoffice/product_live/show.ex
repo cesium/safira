@@ -7,7 +7,11 @@ defmodule SafiraWeb.Backoffice.ProductLive.Show do
             show: %{"products" => ["show"]}, edit: %{"products" => ["edit"]}}
 
   @impl true
-  def mount(_params, _session, socket) do
+  def mount(%{"id" => id}, _session, socket) do
+    if connected?(socket) do
+      Store.subscribe_to_product_update(id)
+    end
+
     {:ok, socket}
   end
 
@@ -18,6 +22,11 @@ defmodule SafiraWeb.Backoffice.ProductLive.Show do
      |> assign(:current_page, :store)
      |> assign(:page_title, page_title(socket.assigns.live_action))
      |> assign(:product, Store.get_product!(id))}
+  end
+
+  @impl true
+  def handle_info(updated_product, socket) do
+    {:noreply, assign(socket, product: updated_product)}
   end
 
   defp page_title(:show), do: "Show Product"

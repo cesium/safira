@@ -18,7 +18,7 @@ defmodule SafiraWeb.App.StoreLive.Components.ProductCard do
         <%= if @data.image do %>
           <img
             class={"w-full p-4 #{if @data.stock > 0 do "group-hover:scale-105" end} transition-transform duration-300"}
-            src={Uploaders.Product.url({@data.image, @data}, :original)}
+            src={Uploaders.Product.url({@data.image, @data}, :original, signed: true)}
           />
         <% end %>
       </figure>
