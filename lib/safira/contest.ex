@@ -6,7 +6,7 @@ defmodule Safira.Contest do
 
   alias Ecto.Multi
   alias Safira.Accounts.Attendee
-  alias Safira.Contest.{Badge, BadgeCategory, BadgeCondition, DailyTokens}
+  alias Safira.Contest.{Badge, BadgeCategory, BadgeCondition, BadgeRedeem, DailyTokens}
 
   @doc """
   Gets a single badge.
@@ -309,12 +309,72 @@ defmodule Safira.Contest do
     BadgeCondition.changeset(condition, attrs)
   end
 
+  def list_badge_redeems do
+    BadgeRedeem
+    |> Repo.all()
+  end
+
+  def create_badge_redeem(attrs) do
+    %BadgeRedeem{}
+    |> BadgeRedeem.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_badge_redeem(badge_redeem, attrs) do
+    badge_redeem
+    |> BadgeRedeem.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def delete_badge_redeem(badge_redeem) do
+    Repo.delete(badge_redeem)
+  end
+
+  def change_badge_redeem(badge_redeem, attrs \\ %{}) do
+    BadgeRedeem.changeset(badge_redeem, attrs)
+  end
+
   @doc """
   Changes the attendee token balance and updates the daily tokens.
   """
   def change_attendee_tokens(attendee, tokens) do
     change_attendee_tokens_transaction(attendee, tokens)
     |> Repo.transaction()
+  end
+
+  def redeem_badge(badge, attendee, staff) do
+    if staff_can_redeem?(badge, staff) do
+      redeem_badge_transaction(badge, attendee, staff)
+      |> Repo.transaction()
+    else
+      {:error, reason: "Staff not authorized"}
+    end
+  end
+
+  defp staff_can_redeem?(badge, staff) do
+    is_admin = Enum.member?(Map.get(staff.role.permissions, "badge"), "give_without_restrictions")
+    has_permission = Enum.member?(Map.get(staff.role.permissions, "badge"), "give")
+
+    on_time =
+      DateTime.compare(DateTime.utc_now(), badge.start) != :lt and
+        DateTime.compare(DateTime.utc_now(), badge.end)
+
+    is_admin or (has_permission and on_time)
+  end
+
+  def redeem_badge_transaction(badge, attendee, staff) do
+    Multi.new()
+    |> Multi.insert(
+      :redeem,
+      BadgeRedeem.changeset(%BadgeRedeem{}, %{
+        badge_id: badge.id,
+        attendee_id: attendee.id,
+        redeemed_by_id: staff.id
+      })
+    )
+    |> Multi.merge(fn %{redeem: _redeem} ->
+      change_attendee_tokens_transaction(attendee, attendee.tokens + badge.tokens)
+    end)
   end
 
   @doc """

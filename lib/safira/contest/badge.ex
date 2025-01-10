@@ -19,6 +19,7 @@ defmodule Safira.Contest.Badge do
     field :tokens, :integer
     field :begin, :utc_datetime
     field :end, :utc_datetime
+    # TODO: Filter redeems
     field :counts_for_day, :boolean, default: true
 
     belongs_to :category, Safira.Contest.BadgeCategory
