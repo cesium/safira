@@ -14,277 +14,40 @@
   <div class="mt-28 mb-24 grid grid-cols-1 gap-20 xl:grid-cols-2">
     <div class="hidden xl:flex">
       <ul class="font-terminal uppercase select-none text-xl">
-        <li class="mb-6 transition-all ease-in-out	ml-8 text-white text-opacity-100">
-          <button>FINAL BADGE CHALLENGE</button>
-        </li>
-        <li class="mb-6 transition-all ease-in-out	text-white text-opacity-20 hover:text-opacity-30">
+        <%= for challenge <- @challenges do %>
+          <li class="mb-6 transition-all ease-in-out uppercase	ml-8 text-white text-opacity-100">
+            <button phx-click="challenge_change" phx-value-challenge_id={challenge.id}>
+              <%= challenge.name %>
+            </button>
+          </li>
+        <% end %>
+        <!--li class="mb-6 transition-all ease-in-out uppercase	text-white text-opacity-20 hover:text-opacity-30">
           <button>DAILY BADGE CHALLENGES - DAY ONE</button>
-        </li>
+        </li-->
       </ul>
     </div>
     <div class="hidden xl:flex">
       <div style="opacity: 1; transform: none;">
         <h2 class="font-terminal uppercase select-none text-3xl text-white md:text-4xl xl:text-5xl">
-          Final Badge Challenge
+          <%= @selected_challenge.name %>
         </h2>
         <div class="mt-10">
           <p class="font-iregular text-white">
-            You participate in talks and workshops, you talk with every company you can and participate in every tournament. Now you are left with a bunch of badges, what do you do?! Every badge comes with a set of entries to the Final Badge Draw! On the last day of SEI, we will select three winning entries and their owners will be the lucky recipients of an amazing selection of prizes! The more badges you have, the more likely you are to win!
+            <%= @selected_challenge.description %>
           </p>
         </div>
         <div class="mt-3 flex flex-col"></div>
         <div>
           <h3 class="text-ibold md:text-md xl:text-md mt-5 mb-3 text-xl text-white ">Awards 🏆</h3>
-          <p class="text-iregular">
-            <a class="text-accent">1<sup class="font-mono">st</sup> place - Playstation 5</a>
-          </p>
-          <p class="text-iregular">
-            <a class="text-accent">
-              2<sup class="font-mono">nd</sup> place - Trotinete Elétrica Xiaomi Electric Scooter 4 Go
-            </a>
-          </p>
-          <p class="text-iregular">
-            <a class="text-accent">
-              3<sup class="font-mono">rd</sup> place - Headphones Sony XM4
-            </a>
-          </p>
+          <%= for cp <- @selected_challenge.prizes do %>
+            <p class="text-iregular">
+              <a class="text-accent">
+                <%= cp.place %><sup class="font-mono"><%= Helpers.place_suffix(cp.place) %></sup> place - <%= cp.prize.name %>
+              </a>
+            </p>
+          <% end %>
         </div>
       </div>
-    </div>
-    <div class="block transition-all xl:hidden">
-      <section id="0" class="py-20">
-        <div style="opacity: 1; transform: none;">
-          <h2 class="font-terminal-uppercase select-none text-3xl text-white md:text-4xl xl:text-5xl">
-            Final Badge Challenge
-          </h2>
-          <div class="mt-10">
-            <p class="font-iregular text-white">
-              You participate in talks and workshops, you talk with every company you can and participate in every tournament. Now you are left with a bunch of badges, what do you do?! Every badge comes with a set of entries to the Final Badge Draw! On the last day of SEI, we will select three winning entries and their owners will be the lucky recipients of an amazing selection of prizes! The more badges you have, the more likely you are to win!
-            </p>
-          </div>
-          <div class="mt-3 flex flex-col"></div>
-          <div>
-            <h3 class="text-ibold md:text-md xl:text-md mt-5 mb-3 text-xl text-white ">
-              Awards 🏆
-            </h3>
-            <p class="text-iregular">
-              <a class="text-quinary">1<sup class="font-mono">st</sup> place - Playstation 5</a>
-            </p>
-            <p class="text-iregular">
-              <a class="text-quinary">
-                2<sup class="font-mono">nd</sup> place - Trotinete Elétrica Xiaomi Electric Scooter 4 Go
-              </a>
-            </p>
-            <p class="text-iregular">
-              <a class="text-quinary">
-                3<sup class="font-mono">rd</sup> place - Headphones Sony XM4
-              </a>
-            </p>
-          </div>
-        </div>
-      </section>
-      <section id="1" class="py-20">
-        <div style="opacity: 1; transform: none;">
-          <h2 class="font-terminal-uppercase select-none text-3xl text-white md:text-4xl xl:text-5xl">
-            Daily Badge Challenges - day one
-          </h2>
-          <div class="mt-10">
-            <p class="font-iregular text-white">
-              This one is easy. The winners are the three people with the most badges won on the first day! If there is a tie, the participant with the most tokens wins! If there’s still a tie after that, we’ll toss a coin! The badges you win before SEI starts will be counted on this day.
-            </p>
-          </div>
-          <div class="mt-3 flex flex-col"></div>
-          <div>
-            <h3 class="text-ibold md:text-md xl:text-md mt-5 mb-3 text-xl text-white ">
-              Awards 🏆
-            </h3>
-            <p class="text-iregular">
-              <a class="text-quinary">
-                1<sup class="font-mono">st</sup> place - Monitor LG 26WQ500-B LCD 4K UHD 5ms 75Hz 25.7"
-              </a>
-            </p>
-            <p class="text-iregular">
-              <a class="text-quinary">
-                2<sup class="font-mono">nd</sup> place - Microfone Logitech Yeti
-              </a>
-            </p>
-            <p class="text-iregular">
-              <a class="text-quinary">
-                3<sup class="font-mono">rd</sup> place - Teclado Ducky One 3 Daybreak Mini
-              </a>
-            </p>
-          </div>
-        </div>
-      </section>
-      <section id="2" class="py-20">
-        <div style="opacity: 1; transform: none;">
-          <h2 class="font-terminal-uppercase select-none text-3xl text-white md:text-4xl xl:text-5xl">
-            Daily Badge Challenges - day two
-          </h2>
-          <div class="mt-10">
-            <p class="font-iregular text-white">
-              The same rules as day one apply. However only the badges you win on the second day count towards this prize.
-            </p>
-          </div>
-          <div class="mt-3 flex flex-col"></div>
-          <div>
-            <h3 class="text-ibold md:text-md xl:text-md mt-5 mb-3 text-xl text-white ">
-              Awards 🏆
-            </h3>
-            <p class="text-iregular">
-              <a class="text-quinary">
-                1<sup class="font-mono">st</sup> place - Cadeira de escritório Sky
-              </a>
-            </p>
-            <p class="text-iregular">
-              <a class="text-quinary">
-                2<sup class="font-mono">nd</sup> place - Soundbar LG SQC 2.1 Canais 300W
-              </a>
-            </p>
-            <p class="text-iregular">
-              <a class="text-quinary">
-                3<sup class="font-mono">rd</sup> place - Docking Station Conceptronic
-              </a>
-            </p>
-          </div>
-        </div>
-      </section>
-      <section id="3" class="py-20">
-        <div style="opacity: 1; transform: none;">
-          <h2 class="font-terminal-uppercase select-none text-3xl text-white md:text-4xl xl:text-5xl">
-            Daily Badge Challenges - day three
-          </h2>
-          <div class="mt-10">
-            <p class="font-iregular text-white">
-              The same rules as day one (again). However only the badges you win on the third day count towards this prize.
-            </p>
-          </div>
-          <div class="mt-3 flex flex-col"></div>
-          <div>
-            <h3 class="text-ibold md:text-md xl:text-md mt-5 mb-3 text-xl text-white ">
-              Awards 🏆
-            </h3>
-            <p class="text-iregular">
-              <a class="text-quinary">
-                1<sup class="font-mono">st</sup> place - Secretária ajustável em altura pro.tec Stryn
-              </a>
-            </p>
-            <p class="text-iregular">
-              <a class="text-quinary">
-                2<sup class="font-mono">nd</sup> place - Raspberry Pi 4 Model B 8GB RAM
-              </a>
-            </p>
-            <p class="text-iregular">
-              <a class="text-quinary">
-                3<sup class="font-mono">rd</sup> place - Câmara Polaroid GO
-              </a>
-            </p>
-          </div>
-        </div>
-      </section>
-      <section id="4" class="py-20">
-        <div style="opacity: 1; transform: none;">
-          <h2 class="font-terminal-uppercase select-none text-3xl text-white md:text-4xl xl:text-5xl">
-            Daily Badge Challenges - day four
-          </h2>
-          <div class="mt-10">
-            <p class="font-iregular text-white">
-              This is getting a little repetitive… The same rules as day one (again). The difference is that only the badges you win on the fourth day count towards this prize.
-            </p>
-          </div>
-          <div class="mt-3 flex flex-col"></div>
-          <div>
-            <h3 class="text-ibold md:text-md xl:text-md mt-5 mb-3 text-xl text-white ">
-              Awards 🏆
-            </h3>
-            <p class="text-iregular">
-              <a class="text-quinary">
-                1<sup class="font-mono">st</sup> place - Nintendo Switch OLED
-              </a>
-            </p>
-            <p class="text-iregular">
-              <a class="text-quinary">
-                2<sup class="font-mono">nd</sup> place - Rato Logitech MX Master 3 Wireless Pro 4000 DPI
-              </a>
-            </p>
-            <p class="text-iregular">
-              <a class="text-quinary">
-                3<sup class="font-mono">rd</sup> place - Máquina de café Nespresso Vertuo Next
-              </a>
-            </p>
-          </div>
-        </div>
-      </section>
-      <section id="5" class="py-20">
-        <div style="opacity: 1; transform: none;">
-          <h2 class="font-terminal-uppercase select-none text-3xl text-white md:text-4xl xl:text-5xl">
-            CV Challenge
-          </h2>
-          <div class="mt-10">
-            <p class="font-iregular text-white">
-              Our sponsors want your CV. You want them to have it.
-            </p>
-          </div>
-          <div class="mt-3 flex flex-col"></div>
-          <div>
-            <h3 class="text-ibold md:text-md xl:text-md mt-5 mb-3 text-xl text-white ">
-              Awards 🏆
-            </h3>
-            <p class="text-iregular">
-              <a class="text-quinary">1<sup class="font-mono">st</sup> place - Amazon Kindle</a>
-            </p>
-          </div>
-        </div>
-      </section>
-      <section id="6" class="py-20">
-        <div style="opacity: 1; transform: none;">
-          <h2 class="font-terminal-uppercase select-none text-3xl text-white md:text-4xl xl:text-5xl">
-            CTF Challenge
-          </h2>
-          <div class="mt-10">
-            <p class="font-iregular text-white">
-              Cybersecurity has never been more exciting! Put your skills to the test with our Capture the Flag game. Once a day, scavenge all the flags to win an exclusive badge - a medal of honour for all those who plow through this challenge until victory!
-            </p>
-            <p class="font-iregular text-white">
-              Note: the flag will always have same format: SEI{some_text}
-            </p>
-          </div>
-          <div class="mt-3 flex flex-col">
-            <a
-              href="/docs/ctf/SEI24_day1.7z"
-              target="_blank"
-              rel="noreferrer"
-              class="font-iregular text-quinary hover:underline"
-            >
-              CTF - 1st Day Challenge
-            </a>
-            <a
-              href="/docs/ctf/SEI24_day2.7z"
-              target="_blank"
-              rel="noreferrer"
-              class="font-iregular text-quinary hover:underline"
-            >CTF - 2nd Day Challenge</a><a
-              href="/docs/ctf/SEI24_day3.7z"
-              target="_blank"
-              rel="noreferrer"
-              class="font-iregular text-quinary hover:underline"
-            >CTF - 3rd Day Challenge</a><a
-              href="/docs/ctf/SEI24_day4.7z"
-              target="_blank"
-              rel="noreferrer"
-              class="font-iregular text-quinary hover:underline"
-            >CTF - 4th Day Challenge</a>
-          </div>
-          <div>
-            <h3 class="text-ibold md:text-md xl:text-md mt-5 mb-3 text-xl text-white ">
-              Awards 🏆
-            </h3>
-            <p class="text-iregular">
-              <a class="text-quinary">1<sup class="font-mono">st</sup> place - Exclusive Badge</a>
-            </p>
-          </div>
-        </div>
-      </section>
     </div>
   </div>
 </div>

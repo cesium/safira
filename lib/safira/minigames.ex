@@ -982,6 +982,7 @@ defmodule Safira.Minigames do
   """
   def list_challenges do
     Repo.all(Challenge)
+    |> Repo.preload(prizes: [:prize])
   end
 
   @doc """

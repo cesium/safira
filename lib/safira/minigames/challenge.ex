@@ -19,7 +19,7 @@ defmodule Safira.Minigames.Challenge do
     field :type, Ecto.Enum, values: @challenge_types
     field :date, :date
 
-    many_to_many :prizes, Prize, join_through: ChallengePrize
+    has_many :prizes, ChallengePrize, preload_order: [asc: :place]
 
     timestamps(type: :utc_datetime)
   end

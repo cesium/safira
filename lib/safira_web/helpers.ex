@@ -173,4 +173,14 @@ defmodule SafiraWeb.Helpers do
       _ -> false
     end
   end
+
+  def place_suffix(n) do
+    cond do
+      rem(n, 100) in 11..13 -> "th"
+      rem(n, 10) == 1 -> "st"
+      rem(n, 10) == 2 -> "nd"
+      rem(n, 10) == 3 -> "rd"
+      true -> "th"
+    end
+  end
 end
