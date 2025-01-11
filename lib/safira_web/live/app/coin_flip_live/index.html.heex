@@ -4,7 +4,7 @@
       💰 <%= @attendee_tokens %>
     </span>
   </:actions>
-  <div class="flex justify-center w-full">
+  <div class="flex justify-center w-min mx-auto mt-10">
     <.action_button
       icon="hero-minus"
       class="rounded-r-lg pl-6 pr-5"
@@ -15,7 +15,7 @@
       title={gettext("Play")}
       subtitle={"💰 #{@bet}"}
       class="rounded-none px-10"
-      disabled={not @coin_flip_active?}
+      disabled={@bet >= @attendee_tokens || not @coin_flip_active?}
       phx-click="create-room"
     />
     <.action_button
@@ -39,7 +39,10 @@
       current_user={@current_user}
     />
   </div>
-
+  <div id="coin" class="tails">
+    <div class="side-a"></div>
+    <div class="side-b"></div>
+  </div>
   <h2 class="text-3xl font-semibold font-terminal">Previous games:</h2>
   <div
     id="room-list-previous"
@@ -52,22 +55,13 @@
       room={room}
       current_user={@current_user}
     />
-    <%!-- <div
-      :for={{room, index} <- Enum.with_index(@room_list) |> Enum.filter(fn {room, _} -> room.player2_id != nil end)}
-      class="flex flex-col gap-3 items-center"
-    >
-      <span class="size-8 rounded-full bg-white text-black flex items-center justify-center font-extrabold">
-        ?
-      </span>
-      <span class="size-8 rounded-full bg-white"></span>
-    </div> --%>
   </div>
 </.page>
 
-<%!-- <.play_modal
-  :if={@playing}
+<.result_modal
+  :if={@won}
   wrapper_class="px-6"
   show
   id="confirm"
   on_cancel={JS.push("close-modal")}
-/> --%>
+/>

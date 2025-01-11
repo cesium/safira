@@ -12,7 +12,7 @@ defmodule Safira.Minigames do
   alias Safira.Constants
   alias Safira.Contest
   alias Safira.Inventory.Item
-  alias Safira.Minigames.{Prize, WheelDrop, CoinFlipRoom}
+  alias Safira.Minigames.{CoinFlipRoom, Prize, WheelDrop}
 
   @pubsub Safira.PubSub
 
@@ -526,6 +526,7 @@ defmodule Safira.Minigames do
   """
   def list_coin_flip_rooms do
     CoinFlipRoom
+    |> order_by([r], desc: r.inserted_at)
     |> Repo.all()
     |> Repo.preload(player1: :user, player2: :user)
   end
@@ -739,7 +740,9 @@ defmodule Safira.Minigames do
     end
   end
 
-  defp join_coin_flip_room_transaction(room, attendee) do
+  defp join_coin_flip_room_transaction(room, attendee_id) do
+    attendee = Accounts.get_attendee!(attendee_id)
+
     Multi.new()
     # Remove the room play cost from player2's balance
     |> Multi.merge(fn _changes ->
@@ -751,24 +754,29 @@ defmodule Safira.Minigames do
 
       room
       |> CoinFlipRoom.changeset(%{
-        player2_id: attendee.id,
+        player2_id: attendee_id,
         result: result,
         finished: true
       })
       |> repo.update()
     end)
     # Award tokens to winner
-    |> Multi.merge(fn %{coin_flip_room: updated_room} ->
+    |> Multi.merge(fn %{coin_flip_room: updated_room, player2: player2} ->
       updated_room = Repo.preload(updated_room, [:player1, :player2])
-      winner = if updated_room.result == "tails", do: attendee, else: updated_room.player1
+      winner = if updated_room.result == "tails", do: player2, else: updated_room.player1
+
+      # fee =
+      #   case Constants.get("coin_flip_fee") do
+      #     {:ok, fee} -> fee
+      #     {:error, _} -> 0
+      #   end
+
+      # * (1 - fee)
       winnings = room.bet * 2
 
       Contest.change_attendee_tokens_transaction(
         winner,
-        if(updated_room.result == "tails",
-          do: winner.tokens + winnings - room.bet,
-          else: winner.tokens + winnings
-        ),
+        winner.tokens + winnings,
         :winner_update_tokens,
         :previous_daily_tokens,
         :new_daily_tokens
@@ -808,7 +816,7 @@ defmodule Safira.Minigames do
         {:error, "You cannot join your own room."}
 
       %CoinFlipRoom{player2_id: nil} = room ->
-        case join_coin_flip_room_transaction(room, attendee) do
+        case join_coin_flip_room_transaction(room, attendee.id) do
           {:ok, result} ->
             coin_flip_room =
               result.coin_flip_room
@@ -828,7 +836,7 @@ defmodule Safira.Minigames do
     end
   end
 
-  defp flip_coin() do
+  defp flip_coin do
     if strong_randomizer() > 0.5 do
       "heads"
     else
@@ -862,11 +870,11 @@ defmodule Safira.Minigames do
       iex> subscribe_to_coin_flip_rooms_update()
       :ok
   """
-  def subscribe_to_coin_flip_rooms_update() do
+  def subscribe_to_coin_flip_rooms_update do
     Phoenix.PubSub.subscribe(@pubsub, coin_flip_rooms_topic())
   end
 
-  defp coin_flip_rooms_topic(), do: "coin_flip_rooms"
+  defp coin_flip_rooms_topic, do: "coin_flip_rooms"
 
   defp broadcast_coin_flip_rooms_update(action, value) do
     Phoenix.PubSub.broadcast(@pubsub, coin_flip_rooms_topic(), {action, value})

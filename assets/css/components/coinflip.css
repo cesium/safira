@@ -3,7 +3,6 @@
   margin: 0 auto;
   width: 100px;
   height: 100px;
-  cursor: pointer;
   perspective: 1000px; /* Add perspective to the parent element */
 }
 
@@ -11,7 +10,7 @@
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  box-shadow: 0 12px 20px -10px rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 0 45px rgba(255, 255, 255, 0.3), 0 12px 20px -10px rgba(0, 0, 0, 0.4);
   position: absolute;
   backface-visibility: hidden; /* Ensure backface is hidden */
 }
@@ -24,13 +23,13 @@
 
 .side-b {
   /* background-color: #3e3e3e; */
-  @apply bg-primary-900;
+  @apply bg-blue-900;
   transform: rotateY(180deg); /* Rotate the back side */
 }
 
 .side-b-not-rotated {
+  @apply bg-blue-900;
   /* background-color: #3e3e3e; */
-  @apply bg-primary-900;
 }
 
 .coin {
@@ -47,20 +46,32 @@
 }
 
 @keyframes flipHeads {
-  from {
+  0% {
     transform: rotateY(0);
+    scale: 1;
   }
-  to {
+  50% {
+    transform: rotateY(900deg); /* 2.5 full rotations */
+    scale: 1.2;
+  }
+  100% {
     transform: rotateY(1800deg); /* 5 full rotations */
+    scale: 1;
   }
 }
 
 @keyframes flipTails {
-  from {
+  0% {
     transform: rotateY(0);
+    scale: 1;
   }
-  to {
+  50% {
+    transform: rotateY(900deg); /* 2.5 full rotations */
+    scale: 1.2;
+  }
+  100% {
     transform: rotateY(1980deg); /* 5.5 full rotations */
+    scale: 1;
   }
 }
 
@@ -81,4 +92,16 @@
 
 .countdown-animation {
   animation: countdownAnimation infinite 1s ease-in-out;
+}
+
+.gray-overlay::after {
+  content: '';
+  position: absolute;
+  @apply rounded-md;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3); /* Gray color with 50% opacity */
+  z-index: 1;
 }

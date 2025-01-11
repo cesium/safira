@@ -1,6 +1,6 @@
 defmodule SafiraWeb.App.CoinFlipLive.Components.ResultModal do
   @moduledoc """
-  Lucky wheel drop result modal component.
+  Coin flip result modal component.
   """
   use SafiraWeb, :component
 
@@ -12,7 +12,7 @@ defmodule SafiraWeb.App.CoinFlipLive.Components.ResultModal do
   attr :content_class, :string, default: "bg-primaryDark"
   attr :show_vault_link, :boolean, default: true
 
-  def play_modal(assigns) do
+  def result_modal(assigns) do
     ~H"""
     <div
       id={@id}
@@ -20,6 +20,7 @@ defmodule SafiraWeb.App.CoinFlipLive.Components.ResultModal do
       phx-mounted={@show && show_modal(@id)}
       phx-remove={hide_modal(@id)}
       data-cancel={JS.exec(@on_cancel, "phx-remove")}
+      data-is_win={true}
       class="relative z-50 hidden"
     >
       <div id={"#{@id}-bg"} class="bg-dark/90 fixed inset-0 transition-opacity" aria-hidden="true" />

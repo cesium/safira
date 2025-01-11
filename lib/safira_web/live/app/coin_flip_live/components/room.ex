@@ -5,6 +5,7 @@ defmodule SafiraWeb.App.CoinFlipLive.Components.Room do
   use SafiraWeb, :component
 
   import SafiraWeb.CoreComponents
+  import SafiraWeb.Components.Avatar
 
   attr :room, :map, required: true
   attr :current_user, :map, required: true
@@ -14,84 +15,90 @@ defmodule SafiraWeb.App.CoinFlipLive.Components.Room do
     ~H"""
     <div
       id={@id}
-      class="flex flex-row items-center justify-center border border-darkMuted/70 rounded-md overflow-hidden"
+      phx-hook="CoinFlip"
+      data-stream-id={@id}
+      data-room-id={@room.id}
+      data-result={@room.result}
+      data-finished={to_string(@room.finished)}
+      data-player1-id={@room.player1_id}
+      data-player2-id={@room.player2_id}
+      class="flex flex-row items-center justify-between border border-darkShade bg-primary rounded-md overflow-hidden w-full max-w-96 h-52 p-4"
     >
-      <div class="relative flex flex-col items-center space-y-1 justify-between size-44">
-        <%!-- <span class="rounded-full bg-white size-16"></span> --%>
-        <img
-          src={"https://github.com/identicons/#{@room.player1.user.handle |> String.slice(0..2)}.png"}
-          class="size-full"
-        />
-        <span class="absolute bottom-0 bg-gradient-to-t from-primaryDark to-transparent size-full text-center flex flex-col justify-end pb-2">
-          <.button
-            class=" absolute size-2 top-0 -left-2 z-50"
-            phx-click="delete-room"
-            phx-value-room_id={@room.id}
-          >
-            a
-          </.button>
-          <%= @room.player1.user.handle %>
-        </span>
-        <div class="absolute coin size-12 top-1 left-2">
-          <div class="side-a"></div>
-        </div>
-      </div>
+      <.player_card
+        stream_id={@id}
+        player_id={@room.player1_id}
+        player={@room.player1}
+        current_user={@current_user}
+        room={@room}
+      />
       <div class="relative flex flex-col items-center justify-center h-full z-20">
-        <div
-          id={@id <> "-container"}
-          class="absolute flex flex-col gap-1 items-center"
-          phx-hook="CoinFlip"
-          data-stream-id={@id}
-          data-room-id={@room.id}
-          data-result={@room.result}
-          data-finished={to_string(@room.finished)}
-        >
-          <div id={@id <> "-coin"} class="coin">
-            <div class="side-a"></div>
-            <div class="side-b"></div>
-          </div>
-          <h1
-            id={@id <> "-countdown"}
-            class="text-2xl p-2 rounded-full bg-primaryDark/60 size-16 justify-center flex items-center"
-          >
-            3
-          </h1>
-          <span class="text-nowrap bg-primaryDark/60 py-1 px-2 rounded-md">
-            💰 <%= @room.bet %>
-          </span>
+        <div id={@id <> "-coin"} class="coin hidden">
+          <div class="side-a"></div>
+          <div class="side-b"></div>
         </div>
+        <h1
+          id={@id <> "-countdown"}
+          class="text-2xl p-2 rounded-full bg-blue-900/25 font-bold size-16 justify-center hidden items-center"
+        >
+          3
+        </h1>
       </div>
-      <div class="relative flex flex-col items-center space-y-1 justify-between size-44">
-        <%= if @room.player2_id do %>
-          <img
-            src={"https://github.com/identicons/#{@room.player2.user.handle |> String.slice(0..2)}.png"}
-            class="size-full"
-          />
-          <span class="absolute bottom-0 bg-gradient-to-t from-primaryDark to-transparent size-full text-center flex flex-col justify-end pb-2">
-            <%= @room.player2.user.handle %>
-          </span>
-          <div class="absolute coin size-12 top-1 right-2">
-            <div class="side-b-not-rotated"></div>
-          </div>
-        <% else %>
-          <.button
-            :if={@room.player1.user.id != @current_user.id}
-            class="px-7 size-full !bg-primaryDark !text-white hover:!bg-primary-950 rounded-none"
-            phx-click="join-room"
-            phx-value-room_id={@room.id}
-          >
-            <.icon name="hero-plus" class="size-12" />
-          </.button>
-          <.button
-            :if={@room.player1.user.id == @current_user.id}
-            class="px-7 my-auto size-full !bg-primaryDark !text-white hover:!bg-primary-950 rounded-none"
-            phx-click="delete-room"
-            phx-value-room_id={@room.id}
-          >
-            <.icon name="hero-x-mark" class="size-12" />
-          </.button>
-        <% end %>
-      </div>
+      <.player_card
+        stream_id={@id}
+        player_id={@room.player2_id}
+        player={@room.player2}
+        current_user={@current_user}
+        room={@room}
+      />
+    </div>
+    """
+  end
+
+  attr :stream_id, :string, required: true
+  attr :player_id, :string, required: true
+  attr :player, :map, required: true
+  attr :current_user, :map, required: true
+  attr :room, :map, required: true
+
+  defp player_card(assigns) do
+    ~H"""
+    <div
+      id={"#{@stream_id}-#{@player_id}-card"}
+      class="relative flex flex-col items-center space-y-1 border border-darkShade/80 bg-blue-900/25 rounded-md h-full w-32 p-1 select-none"
+    >
+      <%= if @player_id do %>
+        <div class="h-full flex items-center">
+          <.avatar handle={@player.user.handle} size={:lg} />
+        </div>
+        <span class="text-center flex flex-col truncate pb-3 text-xs">
+          <%= @player.user.handle %>
+        </span>
+        <span class="text-nowrap bg-primary/60 py-1 px-2 rounded-md align-middle">
+          <.icon name="hero-currency-dollar-solid" class="text-yellow-300" />
+          <span id={"#{@stream_id}-#{@player_id}-bet"} data-bet={@room.bet}><%= @room.bet %></span>
+        </span>
+        <div class="absolute coin size-10 top-1 right-2">
+          <div :if={@player_id == @room.player1_id} class="side-a"></div>
+          <div :if={@player_id == @room.player2_id} class="side-b-not-rotated"></div>
+        </div>
+      <% else %>
+        <.button
+          :if={@room.player1.user.id != @current_user.id}
+          class="px-7 size-full rounded-none !bg-transparent !text-white"
+          phx-click="join-room"
+          phx-value-room_id={@room.id}
+        >
+          <.icon name="hero-plus" class="size-12" />
+        </.button>
+        <.button
+          :if={@room.player1.user.id == @current_user.id}
+          class="px-7 my-auto size-full rounded-none !bg-transparent !text-white"
+          phx-click="delete-room"
+          phx-value-room_id={@room.id}
+        >
+          <.icon name="hero-x-mark" class="size-12" />
+        </.button>
+      <% end %>
     </div>
     """
   end
