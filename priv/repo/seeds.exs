@@ -15,7 +15,7 @@ defmodule Safira.Repo.Seeds do
       "badges.exs",
       "store.exs",
       "vault.exs",
-      "prizes.exs",
+      "minigames.exs",
       "companies.exs",
       "activities.exs",
       "event.exs"
