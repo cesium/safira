@@ -146,7 +146,7 @@ defmodule SafiraWeb.Config do
         key: :statistics,
         title: "Statistics",
         icon: "hero-chart-bar",
-        url: "/dashboard/statistics",
+        url: "/dashboard/umami_sso",
         scope: %{"statistics" => ["show"]}
       },
       %{

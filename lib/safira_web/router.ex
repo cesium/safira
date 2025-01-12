@@ -216,6 +216,8 @@ defmodule SafiraWeb.Router do
           live "/wheel", MinigamesLive.Index, :edit_wheel
         end
 
+        get "/umami_sso", UmamiSSOController, :sso_redirect
+
         live "/scanner", ScannerLive.Index, :index
       end
     end

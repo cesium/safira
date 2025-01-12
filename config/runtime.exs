@@ -24,7 +24,10 @@ config :safira,
   from_email_name: System.get_env("FROM_EMAIL_NAME") || "SEI",
   from_email_address: System.get_env("FROM_EMAIL_ADDRESS") || "no-reply@seium.org",
   umami_script_url: System.get_env("UMAMI_SCRIPT_URL") || "",
-  umami_website_id: System.get_env("UMAMI_WEBSITE_ID") || ""
+  umami_website_id: System.get_env("UMAMI_WEBSITE_ID") || "",
+  umami_instance_url: System.get_env("UMAMI_INSTANCE_URL") || "",
+  umami_guest_user_name: System.get_env("UMAMI_GUEST_USER_NAME") || "",
+  umami_guest_user_password: System.get_env("UMAMI_GUEST_USER_PASSWORD") || ""
 
 if config_env() in [:prod, :stg] do
   database_url =
