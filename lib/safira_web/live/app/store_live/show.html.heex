@@ -10,7 +10,7 @@
         <%= if @product.image do %>
           <img
             class="w-full p-4 group-hover:scale-105 transition-transform duration-300"
-            src={Uploaders.Product.url({@product.image, @product}, :original)}
+            src={Uploaders.Product.url({@product.image, @product}, :original, signed: true)}
           />
         <% end %>
       </figure>

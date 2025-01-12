@@ -402,7 +402,7 @@ defmodule SafiraWeb.CoreComponents do
 
   def label(assigns) do
     ~H"""
-    <label for={@for} class="block text-sm font-semibold leading-6">
+    <label for={@for} class="block text-sm font-semibold leading-6 dark:text-white">
       <%= render_slot(@inner_block) %>
     </label>
     """

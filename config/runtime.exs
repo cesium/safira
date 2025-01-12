@@ -20,7 +20,13 @@ if System.get_env("PHX_SERVER") do
   config :safira, SafiraWeb.Endpoint, server: true
 end
 
-if config_env() == :prod do
+config :safira,
+  from_email_name: System.get_env("FROM_EMAIL_NAME") || "SEI",
+  from_email_address: System.get_env("FROM_EMAIL_ADDRESS") || "no-reply@seium.org",
+  umami_script_url: System.get_env("UMAMI_SCRIPT_URL") || "",
+  umami_website_id: System.get_env("UMAMI_WEBSITE_ID") || ""
+
+if config_env() in [:prod, :stg] do
   database_url =
     System.get_env("DATABASE_URL") ||
       raise """
@@ -28,10 +34,24 @@ if config_env() == :prod do
       For example: ecto://USER:PASS@HOST/DATABASE
       """
 
+  %URI{host: database_host} = URI.parse(database_url)
+
+  # Location of root certificates to verify database SSL connections
+  database_ca_cert_filepath =
+    System.get_env("DATABASE_CA_CERT_FILEPATH") || "/etc/ssl/certs/ca-certificates.crt"
+
   maybe_ipv6 = if System.get_env("ECTO_IPV6") in ~w(true 1), do: [:inet6], else: []
 
   config :safira, Safira.Repo,
-    # ssl: true,
+    ssl: true,
+    ssl_opts: [
+      verify: :verify_peer,
+      cacertfile: database_ca_cert_filepath,
+      server_name_indication: to_charlist(database_host),
+      customize_hostname_check: [
+        match_fun: :public_key.pkix_verify_hostname_match_fun(:https)
+      ]
+    ],
     url: database_url,
     pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
     socket_options: maybe_ipv6
@@ -48,7 +68,7 @@ if config_env() == :prod do
       You can generate one by calling: mix phx.gen.secret
       """
 
-  host = System.get_env("PHX_HOST") || "example.com"
+  host = System.get_env("PHX_HOST") || "seium.org"
   port = String.to_integer(System.get_env("PORT") || "4000")
 
   config :safira, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")

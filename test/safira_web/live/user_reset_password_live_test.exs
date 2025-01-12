@@ -4,7 +4,7 @@ defmodule SafiraWeb.UserResetPasswordLiveTest do
   import Phoenix.LiveViewTest
   import Safira.AccountsFixtures
 
-  alias Safira.Accounts
+  alias Safira.{Accounts, Event}
 
   setup do
     user = user_fixture()
@@ -13,6 +13,8 @@ defmodule SafiraWeb.UserResetPasswordLiveTest do
       extract_user_token(fn url ->
         Accounts.deliver_user_reset_password_instructions(user, url)
       end)
+
+    Event.change_registrations_open(true)
 
     %{token: token, user: user}
   end

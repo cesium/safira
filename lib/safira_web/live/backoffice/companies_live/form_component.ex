@@ -43,7 +43,6 @@ defmodule SafiraWeb.Backoffice.CompanyLive.FormComponent do
               options={options(@badges)}
               label="Badge"
               wrapper_class=""
-              required
             />
           </div>
           <div class="w-full">
@@ -53,7 +52,7 @@ defmodule SafiraWeb.Backoffice.CompanyLive.FormComponent do
               image_class="h-80"
               icon="hero-building-office"
               upload={@uploads.logo}
-              image={Uploaders.Company.url({@company.logo, @company}, :original)}
+              image={Uploaders.Company.url({@company.logo, @company}, :original, signed: true)}
             />
           </div>
         </div>

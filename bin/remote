@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+
+set -Eeuo pipefail
+
+BASE_DIR=$(dirname "${BASH_SOURCE[0]:-$0}")
+cd "${BASE_DIR}/.." || exit 127
+
+# shellcheck source=../scripts/helpers.sh
+. scripts/helpers.sh
+# shellcheck source=../scripts/logging.sh
+. scripts/logging.sh
+# shellcheck source=../scripts/utils.sh
+. scripts/utils.sh
+
+PROGRAM=$(basename "${BASH_SOURCE[0]:-$0}")
+VERSION=0.5.5
+
+function display_help() {
+  cat <<EOF
+  $(help_title_section Usage)
+    ${PROGRAM} [options] <command>
+
+  $(help_title_section Commands)
+    prod              Start production remote console.
+    stg               Start staging remote console [default command].
+
+  $(help_title_section Options)
+    -h --help         Show this screen.
+    -v --version      Show version.
+EOF
+}
+
+function start_remote_console() {
+  local file
+
+  env=${1:-stg}
+  file="fly-${env}.toml"
+
+  export TERM="xterm-256color"
+
+  if ! command -v flyctl &>/dev/null; then
+    log_error "flyctl is not installed. Please install it and authenticate."
+    exit 1
+  fi
+
+  fly --config "${file}" ssh console --pty -C "/app/bin/safira remote"
+}
+
+case ${1:-stg} in
+  -h | --help)
+    display_help
+    ;;
+  -v | --version)
+    display_version "${VERSION}" "${PROGRAM}"
+    ;;
+  prod | stg)
+    start_remote_console "${1:-stg}"
+    ;;
+  *)
+    display_help >&2
+    exit 1
+    ;;
+esac

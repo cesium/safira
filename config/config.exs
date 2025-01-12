@@ -9,9 +9,7 @@ import Config
 
 config :safira,
   ecto_repos: [Safira.Repo],
-  generators: [timestamp_type: :utc_datetime],
-  umami_script_url: System.get_env("UMAMI_SCRIPT_URL") || "",
-  umami_website_id: System.get_env("UMAMI_WEBSITE_ID") || ""
+  generators: [timestamp_type: :utc_datetime]
 
 # Flop configuration
 config :flop,

@@ -33,7 +33,7 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.SpeakerLive.Index do
                 <%= if speaker.picture do %>
                   <img
                     class="rounded-full h-10"
-                    src={Uploaders.Speaker.url({speaker.picture, speaker}, :original)}
+                    src={Uploaders.Speaker.url({speaker.picture, speaker}, :original, signed: true)}
                   />
                 <% else %>
                   <.avatar handle={speaker.name} />
