@@ -8,6 +8,7 @@ defmodule Safira.Repo.Migrations.AddChallenges do
       add :name, :string, null: false
       add :description, :text, null: false
       add :type, :string, null: false
+      add :display_priority, :integer, null: false, default: 0
 
       add :date, :date, null: true
 

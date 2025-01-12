@@ -20,14 +20,4 @@ defmodule SafiraWeb.Landing.ChallengesLive.Index do
      |> assign(:challenges, challenges)
      |> assign(:selected_challenge, Enum.at(challenges, 0))}
   end
-
-  @impl true
-  def handle_event("challenge_change", %{"challenge_id" => challenge_id} = params, socket) do
-    {:noreply,
-     socket
-     |> assign(
-       :selected_challenge,
-       Enum.find(socket.assigns.challenges, fn c -> c.id == challenge_id end)
-     )}
-  end
 end

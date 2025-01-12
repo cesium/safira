@@ -5,8 +5,6 @@ defmodule SafiraWeb.ChallengeLive.FormComponent do
   alias Safira.Minigames.Challenge
   import SafiraWeb.Components.Forms
 
-  import Phoenix.HTML.Form
-
   @impl true
   def render(assigns) do
     ~H"""
@@ -26,9 +24,10 @@ defmodule SafiraWeb.ChallengeLive.FormComponent do
         phx-submit="save"
       >
         <.field field={@form[:name]} type="text" label="Name" required />
-        <div class="grid grid-cols-2 space-x-4">
+        <div class="grid grid-cols-3 space-x-4">
           <.field field={@form[:type]} type="select" options={type_options()} label="Type" required />
           <.field field={@form[:date]} type="date" label="Date" />
+          <.field field={@form[:display_priority]} type="number" label="Display Position" />
         </div>
         <.field field={@form[:description]} type="textarea" label="Description" required />
 
@@ -111,7 +110,7 @@ defmodule SafiraWeb.ChallengeLive.FormComponent do
 
   defp save_challenge(socket, :edit, challenge_params) do
     case Minigames.update_challenge(socket.assigns.challenge, challenge_params) do
-      {:ok, challenge} ->
+      {:ok, _challenge} ->
         {:noreply,
          socket
          |> put_flash(:info, "Challenge updated successfully")
@@ -124,7 +123,7 @@ defmodule SafiraWeb.ChallengeLive.FormComponent do
 
   defp save_challenge(socket, :new, challenge_params) do
     case Minigames.create_challenge(challenge_params) do
-      {:ok, challenge} ->
+      {:ok, _challenge} ->
         {:noreply,
          socket
          |> put_flash(:info, "Challenge created successfully")

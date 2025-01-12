@@ -981,12 +981,15 @@ defmodule Safira.Minigames do
 
   """
   def list_challenges do
-    Repo.all(Challenge)
+    Challenge
+    |> order_by([c], asc: c.display_priority)
+    |> Repo.all()
     |> Repo.preload(prizes: [:prize])
   end
 
   def list_challenges(opts) when is_list(opts) do
     Challenge
+    |> order_by([c], asc: c.display_priority)
     |> apply_filters(opts)
     |> Repo.all()
     |> Repo.preload(prizes: [:prize])
@@ -994,11 +997,13 @@ defmodule Safira.Minigames do
 
   def list_challenges(params) do
     Challenge
+    |> order_by([c], asc: c.display_priority)
     |> Flop.validate_and_run(params, for: Challenge, preload: [prizes: [:prize]])
   end
 
   def list_challenges(%{} = params, opts) when is_list(opts) do
     Challenge
+    |> order_by([c], asc: c.display_priority)
     |> apply_filters(opts)
     |> Flop.validate_and_run(params, for: Challenge, preload: [prizes: [:prize]])
   end

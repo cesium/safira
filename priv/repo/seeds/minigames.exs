@@ -40,7 +40,7 @@ defmodule Safira.Repo.Seeds.Minigames do
   end
 
   defp seed_challenges do
-    for challenge <- @challenges do
+    for {challenge, i} <- Enum.with_index(@challenges) do
       [name, description, type, date_str] = String.split(challenge, ";")
 
       date = if date_str == "", do: nil, else: Date.from_iso8601!(date_str)
@@ -49,7 +49,8 @@ defmodule Safira.Repo.Seeds.Minigames do
         name: name,
         description: description,
         type: String.to_atom(type),
-        date: date
+        date: date,
+        display_priority: i
       })
 
       prize_count = Enum.random(1..3)

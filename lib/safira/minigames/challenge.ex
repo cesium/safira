@@ -5,9 +5,9 @@ defmodule Safira.Minigames.Challenge do
 
   use Safira.Schema
 
-  alias Safira.Minigames.{ChallengePrize, Prize}
+  alias Safira.Minigames.ChallengePrize
 
-  @required_fields ~w(name description type)a
+  @required_fields ~w(display_priority name description type)a
   @optional_fields ~w(date)a
 
   @challenge_types ~w(daily global other)a
@@ -19,6 +19,7 @@ defmodule Safira.Minigames.Challenge do
   schema "challenges" do
     field :name, :string
     field :description, :string
+    field :display_priority, :integer
 
     field :type, Ecto.Enum, values: @challenge_types
     field :date, :date
@@ -35,7 +36,8 @@ defmodule Safira.Minigames.Challenge do
     |> validate_required(@required_fields)
     |> cast_assoc(:prizes,
       sort_param: :prizes_sort,
-      drop_param: :prizes_drop
+      drop_param: :prizes_drop,
+      with: &ChallengePrize.embedded_changeset/2
     )
   end
 
