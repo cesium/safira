@@ -10,8 +10,8 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Tiers.Index do
       <.page title={@title}>
         <ul id="tiers" class="h-96 mt-8 pb-8 flex flex-col space-y-2 overflow-y-auto">
           <li
-            :for={{_, tier} <- @streams.tiers}
-            id={"tier-" <> tier.id}
+          :for={{id, tier} <- @streams.tiers}
+          id={id}
             class="even:bg-lightShade/20 dark:even:bg-darkShade/20 py-4 px-4 flex flex-row justify-between"
           >
             <div class="flex flex-row gap-2 items-center">
@@ -34,18 +34,5 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Tiers.Index do
     {:ok,
      socket
      |> stream(:tiers, Companies.list_tiers())}
-  end
-
-  @impl true
-  def handle_event("update-sorting", %{"ids" => ids}, socket) do
-    ids
-    |> Enum.with_index(0)
-    |> Enum.each(fn {"tier-" <> id, index} ->
-      id
-      |> Companies.get_tier!()
-      |> Companies.update_tier(%{priority: index})
-    end)
-
-    {:noreply, socket}
   end
 end

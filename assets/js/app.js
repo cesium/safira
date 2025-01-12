@@ -21,7 +21,7 @@ import "phoenix_html"
 import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
-import { QrScanner, Wheel, Confetti, Sorting , Timer, SpotlightBanner} from "./hooks";
+import { QrScanner, Wheel, Confetti, Sorting , Timer, Banner} from "./hooks";
 
 let Hooks = {
   QrScanner: QrScanner,
@@ -29,7 +29,7 @@ let Hooks = {
   Confetti: Confetti,
   Sorting: Sorting,
   Timer: Timer,
-  SpotlightBanner: SpotlightBanner
+  Banner: Banner
   };
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")

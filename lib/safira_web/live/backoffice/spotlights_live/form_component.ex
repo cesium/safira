@@ -32,7 +32,7 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.FormComponent do
 
   @impl true
   def mount(socket) do
-    duration = Spotlights.get_spotlights_duration() || 0
+    duration = Spotlights.get_spotlight_duration() || 0
     form = to_form(%{"duration" => duration}, as: :spotlight_config)
 
     {:ok, socket |> assign(form: form)}
@@ -40,7 +40,7 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.FormComponent do
 
   @impl true
   def handle_event("save", %{"spotlight_config" => %{"duration" => duration}}, socket) do
-    Spotlights.change_duration_spotlight(String.to_integer(duration))
+    Spotlights.change_spotlight_duration(String.to_integer(duration))
     {:noreply, socket |> push_patch(to: ~p"/dashboard/spotlights/")}
   end
 end

@@ -1,4 +1,4 @@
-export const SpotlightBanner = {
+export const Banner = {
   mounted() {
     const banner = this.el;
 

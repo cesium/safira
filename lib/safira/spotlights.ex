@@ -43,21 +43,17 @@ defmodule Safira.Spotlights do
     |> Repo.one()
   end
 
-  def get_duration do
-    Constants.get("duration_spotlights")
+  def change_spotlight_duration(time) do
+    Constants.set("spotlight_duration", time)
   end
 
-  def change_duration_spotlight(time) do
-    Constants.set("duration_spotlights", time)
-  end
-
-  def get_spotlights_duration do
-    case Constants.get("duration_spotlights") do
+  def get_spotlight_duration do
+    case Constants.get("spotlight_duration") do
       {:ok, duration} ->
         duration
 
       {:error, _} ->
-        change_duration_spotlight(0)
+        change_spotlight_duration(0)
         0
     end
   end
@@ -140,11 +136,11 @@ defmodule Safira.Spotlights do
   """
   def change_spotlight(%Spotlight{} = spotlight, attrs \\ %{}) do
     Spotlight.changeset(spotlight, attrs)
-    subscribe_to_spotlight_change()
+    subscribe_to_spotlight_event()
   end
 
 
-  def subscribe_to_spotlight_change() do
+  def subscribe_to_spotlight_event() do
     Phoenix.PubSub.subscribe(@pubsub, "spotlight")
   end
 

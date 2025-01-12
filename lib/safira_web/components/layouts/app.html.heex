@@ -18,7 +18,11 @@
     />
   <% end %>
   <div class="flex flex-col flex-1 overflow-hidden">
-      <.banner :if={@current_spotlight} title={gettext("Spotlights")} company_name={@current_spotlight.company.name} duration={@current_spotlight.end} />
+    <.banner
+      :if={@current_spotlight}
+      text={gettext("%{company_name} is on spotlight!", company_name: @current_spotlight.company.name)}
+      duration={@current_spotlight.end}
+    />    
     <div class="bg-primary flex justify-end lg:hidden px-4 sm:px-6 py-2">
       <button
         class="sidebar-toggle flex items-center justify-center w-16 z-20 dark:text-light text-white"

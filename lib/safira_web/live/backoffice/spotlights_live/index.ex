@@ -4,12 +4,10 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Index do
   alias Safira.Companies
   alias Safira.Spotlights
 
-  import SafiraWeb.Components.Banner
-
   @impl true
   def mount(_params, _session, socket) do
     if connected?(socket) do
-        Spotlights.subscribe_to_spotlight_change()
+        Spotlights.subscribe_to_spotlight_event()
     end
 
     {:ok, socket |> assign(:spotlight , Spotlights.get_current_spotlight())}
@@ -31,12 +29,12 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Index do
   defp apply_action(socket, :config, _params) do
     socket
     |> assign(:page_title, "Spotlights Config")
-    |> assign(:spotlight_id, nil)
   end
 
   defp apply_action(socket, :index, _params) do
     socket
-    |> assign(:page_title, "Spotlights")
+    |> assign(:page_title, "Spotlights Config")
+    |> assign(:spotlight_id, nil)
   end
 
   defp apply_action(socket, :tiers, _params) do
@@ -59,7 +57,7 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Index do
   end
 
   defp apply_action(socket, :confirm, %{"id" => company_id}) do
-    {:ok, duration} = Safira.Spotlights.get_duration()
+    {:ok, duration} = Safira.Spotlights.get_spotlight_duration()
 
     socket
     |> assign(:page_title, "Confirm Spotlight")

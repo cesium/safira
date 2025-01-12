@@ -12,7 +12,7 @@ defmodule SafiraWeb.Spotlight do
 
   def on_mount(:fetch_current_spotlight, _params, _session, socket) do
     if connected?(socket) do
-      Spotlights.subscribe_to_spotlight_change()
+      Spotlights.subscribe_to_spotlight_event()
     end
 
     {:cont,

@@ -264,9 +264,9 @@ defmodule Safira.Companies do
     (Repo.aggregate(from(t in Tier), :max, :priority) || -1) + 1
   end
 
-  def update_tier_multiplier(%Tier{} = tier, multiplier , max_spotlights) do
+  def update_tier_spotlight_configuration(%Tier{} = tier, spotlight_multiplier , max_spotlights) do
     tier
-    |> Tier.changeset_multiplier(%{multiplier: multiplier, max_spotlights: max_spotlights})
+    |> Tier.changeset_multiplier(%{spotlight_multiplier: spotlight_multiplier, max_spotlights: max_spotlights})
     |> Repo.update()
   end
 

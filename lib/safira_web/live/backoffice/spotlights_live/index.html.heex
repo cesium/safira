@@ -31,7 +31,7 @@
 
 <.modal
   :if={@live_action in [:config]}
-  id="spotlight-config"
+  id="spotlight-config-modal"
   show
   on_cancel={JS.patch(~p"/dashboard/spotlights")}
 >
@@ -46,7 +46,7 @@
 
 <.modal
   :if={@live_action in [:tiers]}
-  id="tiers-config"
+  id="tiers-config-modal"
   show
   on_cancel={JS.patch(~p"/dashboard/spotlights/config")}
 >
@@ -90,7 +90,7 @@
 
 <.modal
   :if={@live_action in [:confirm]}
-  id="spotlight-confirm"
+  id="spotlight-confirm-modal"
   show
   on_cancel={JS.patch(~p"/dashboard/spotlights")}
 >

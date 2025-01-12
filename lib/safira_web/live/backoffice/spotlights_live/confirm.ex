@@ -12,7 +12,7 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Confirm do
         <div class="flex flex-col">
           <p class="text-center text-2xl mb-4">Are you sure?</p>
           <p class="text-center pb-6">
-          <%= gettext("Are you sure you want to start a spotlight for %{company_name} with a duration of %{duration} %{unit}.",
+          <%= gettext("Are you sure you want to start a spotlight for %{company_name} with a duration of %{duration} %{unit}?",
             company_name: @company.name,
             duration: @duration,
             unit: ngettext("minute", "minutes", @duration)
@@ -58,9 +58,5 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Confirm do
   @impl true
   def handle_event("cancel", _params, socket) do
     {:noreply, socket |> push_patch(to: ~p"/dashboard/spotlights")}
-  end
-
-  defp create_spotlight(attrs) do
-    Safira.Spotlights.create_spotlight(attrs)
   end
 end
