@@ -8,6 +8,7 @@ export const CoinFlip = {
     const finished = this.el.dataset.finished;
     const player1Id = this.el.dataset.player1Id;
     const player2Id = this.el.dataset.player2Id;
+    const fee = this.el.dataset.fee;
     
     
     document.getElementById(`${streamId}-coin`).addEventListener('animationend', async (event) => {
@@ -15,14 +16,14 @@ export const CoinFlip = {
       const result = this.el.dataset.result;
       console.log('animation end');
       await delay(500);
-      this.updateBetDisplay(streamId, player1Id, player2Id, result);
+      this.updateBetDisplay(streamId, player1Id, player2Id, fee, result);
       await delay(1000);
       this.pushEvent('animation-done', { room_id: roomId });
       console.log('animation done');
       console.log(event.animationName)
-      });
+    });
 
-    this.initializeGame(player1Id, player2Id, streamId, result, finished);
+    this.initializeGame(player1Id, player2Id, streamId, fee, result, finished);
   },
   updated() {
     const roomId = this.el.dataset.roomId;
@@ -31,11 +32,12 @@ export const CoinFlip = {
     const finished = this.el.dataset.finished;
     const player1Id = this.el.dataset.player1Id;
     const player2Id = this.el.dataset.player2Id;
+    const fee = this.el.dataset.fee;
     
-    this.initializeGame(player1Id, player2Id, streamId, result, finished);
+    this.initializeGame(player1Id, player2Id, streamId, fee, result, finished);
   },
-
-  initializeGame(player1Id, player2Id, streamId, result, finished) {
+  
+  initializeGame(player1Id, player2Id, streamId, fee, result, finished) {
     const coin = document.getElementById(`${streamId}-coin`);
     const counter = document.getElementById(`${streamId}-countdown`);
     coin.style.display = 'none';
@@ -70,7 +72,7 @@ export const CoinFlip = {
         coin.children[0].hidden = true;
         coin.children[1].style.transform = 'rotateY(0deg)';
       }
-      this.updateBetDisplay(streamId, player1Id, player2Id, result);
+      this.updateBetDisplay(streamId, player1Id, player2Id, fee, result);
       return;
     }
     
@@ -79,7 +81,7 @@ export const CoinFlip = {
 
     }
   },
-  updateBetDisplay(streamId, player1Id, player2Id, result) {
+  updateBetDisplay(streamId, player1Id, player2Id, fee, result) {
     const player1Card = document.getElementById(`${streamId}-${player1Id}-card`);
     const player1Bet = document.getElementById(`${streamId}-${player1Id}-bet`);
     const player2Card = document.getElementById(`${streamId}-${player2Id}-card`);
@@ -92,7 +94,7 @@ export const CoinFlip = {
 
     if (result === 'heads') {
       player2Card.classList.add('gray-overlay');
-      player1Bet.textContent = player1Bet.dataset.bet * 2;
+      player1Bet.textContent = Math.round(player1Bet.dataset.bet * 2 * (1 - fee));
       // player1Bet.classList.add('text-green-500');
       player2Bet.textContent = `-${player2Bet.dataset.bet}`;
       player2Bet.classList.add('text-red-500');
@@ -100,7 +102,7 @@ export const CoinFlip = {
       player1Card.classList.add('gray-overlay');
       player1Bet.textContent = `-${player1Bet.dataset.bet}`;
       player1Bet.classList.add('text-red-500');
-      player2Bet.textContent = player2Bet.dataset.bet * 2;
+      player2Bet.textContent = Math.round(player2Bet.dataset.bet * 2 * (1 - fee));
       // player2Bet.classList.add('text-green-500');
     }
   }

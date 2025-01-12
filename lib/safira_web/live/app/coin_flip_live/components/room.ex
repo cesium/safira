@@ -10,6 +10,7 @@ defmodule SafiraWeb.App.CoinFlipLive.Components.Room do
   attr :room, :map, required: true
   attr :current_user, :map, required: true
   attr :id, :string, required: true
+  attr :coin_flip_fee, :float, required: true
 
   def room(assigns) do
     ~H"""
@@ -22,6 +23,7 @@ defmodule SafiraWeb.App.CoinFlipLive.Components.Room do
       data-finished={to_string(@room.finished)}
       data-player1-id={@room.player1_id}
       data-player2-id={@room.player2_id}
+      data-fee={@coin_flip_fee}
       class="flex flex-row items-center justify-between border border-darkShade bg-primary rounded-md overflow-hidden w-full max-w-96 h-52 p-4"
     >
       <.player_card

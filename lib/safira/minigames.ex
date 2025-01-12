@@ -589,14 +589,23 @@ defmodule Safira.Minigames do
   def create_coin_flip_room(attrs \\ %{}) do
     attendee = Accounts.get_attendee!(attrs["attendee_id"])
 
-    case create_coin_flip_room_transaction(attendee, attrs["bet"]) do
-      {:ok, result} ->
-        coin_flip_room = Repo.preload(result.coin_flip_room, player1: :user)
-        broadcast_coin_flip_rooms_update("create", coin_flip_room)
-        {:ok, coin_flip_room}
+    cond do
+      not coin_flip_active?() ->
+        {:error, "The coin flip game is not active."}
 
-      {:error, changeset} ->
-        {:error, changeset}
+      has_active_coin_flip_game?(attendee.id) ->
+        {:error, "You already have an active game."}
+
+      true ->
+        case create_coin_flip_room_transaction(attendee, attrs["bet"]) do
+          {:ok, result} ->
+            coin_flip_room = Repo.preload(result.coin_flip_room, player1: :user)
+            broadcast_coin_flip_rooms_update("create", coin_flip_room)
+            {:ok, coin_flip_room}
+
+          {:error, _, changeset, _} ->
+            {:error, changeset}
+        end
     end
   end
 
@@ -659,6 +668,33 @@ defmodule Safira.Minigames do
           {:error, changeset}
       end
     end
+  end
+
+  @doc """
+  Checks if an attendee has an active (unfinished) coin flip game.
+
+  Takes an attendee ID and checks if they are either player1 or player2 in any unfinished coin flip room.
+
+  ## Parameters
+    * `attendee_id` - The ID of the attendee to check
+
+  ## Returns
+    * `true` - If the attendee has an active game
+    * `false` - If the attendee has no active games
+
+  ## Examples
+
+      iex> has_active_coin_flip_game?(123)
+      true
+
+      iex> has_active_coin_flip_game?(456)
+      false
+  """
+  def has_active_coin_flip_game?(attendee_id) do
+    CoinFlipRoom
+    |> where([r], not r.finished)
+    |> where([r], r.player1_id == ^attendee_id or r.player2_id == ^attendee_id)
+    |> Repo.exists?()
   end
 
   @doc """
@@ -765,14 +801,13 @@ defmodule Safira.Minigames do
       updated_room = Repo.preload(updated_room, [:player1, :player2])
       winner = if updated_room.result == "tails", do: player2, else: updated_room.player1
 
-      # fee =
-      #   case Constants.get("coin_flip_fee") do
-      #     {:ok, fee} -> fee
-      #     {:error, _} -> 0
-      #   end
+      fee =
+        case Constants.get("coin_flip_fee") do
+          {:ok, fee} -> fee
+          {:error, _} -> 0
+        end
 
-      # * (1 - fee)
-      winnings = room.bet * 2
+      winnings = round(room.bet * 2 * (1 - fee))
 
       Contest.change_attendee_tokens_transaction(
         winner,
@@ -811,28 +846,37 @@ defmodule Safira.Minigames do
       {:error, "The room is already full."}
   """
   def join_coin_flip_room(room_id, attendee) do
-    case get_coin_flip_room!(room_id) do
-      %CoinFlipRoom{player1_id: player1_id} when player1_id == attendee.id ->
-        {:error, "You cannot join your own room."}
+    cond do
+      not coin_flip_active?() ->
+        {:error, "The coin flip game is not active."}
 
-      %CoinFlipRoom{player2_id: nil} = room ->
-        case join_coin_flip_room_transaction(room, attendee.id) do
-          {:ok, result} ->
-            coin_flip_room =
-              result.coin_flip_room
-              |> Map.put(:finished, false)
-              |> Map.put(:player2, attendee)
-              |> Repo.preload(player2: :user)
+      has_active_coin_flip_game?(attendee.id) ->
+        {:error, "You already have an active game."}
 
-            broadcast_coin_flip_rooms_update("update", coin_flip_room)
-            {:ok, coin_flip_room}
+      true ->
+        case get_coin_flip_room!(room_id) do
+          %CoinFlipRoom{player1_id: player1_id} when player1_id == attendee.id ->
+            {:error, "You cannot join your own room."}
 
-          {:error, _changeset} ->
-            {:error, "Failed to join the room."}
+          %CoinFlipRoom{player2_id: nil} = room ->
+            case join_coin_flip_room_transaction(room, attendee.id) do
+              {:ok, result} ->
+                coin_flip_room =
+                  result.coin_flip_room
+                  |> Map.put(:finished, false)
+                  |> Map.put(:player2, attendee)
+                  |> Repo.preload(player2: :user)
+
+                broadcast_coin_flip_rooms_update("update", coin_flip_room)
+                {:ok, coin_flip_room}
+
+              {:error, _changeset} ->
+                {:error, "Failed to join the room."}
+            end
+
+          _ ->
+            {:error, "The room is already full."}
         end
-
-      _ ->
-        {:error, "The room is already full."}
     end
   end
 

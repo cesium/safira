@@ -32,11 +32,13 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.CoinFlip.FormComponent do
                 wrapper_class="my-6"
               />
               <.field
-                field={@form[:price]}
-                name="price"
+                field={@form[:fee]}
+                name="fee"
                 type="number"
                 help_text={
-                  gettext("Price in tokens that attendees need to pay to spin the lucky wheel.")
+                  gettext(
+                    "Fee in percentage that gets removed from the total bet. Must be a number between 0 and 100."
+                  )
                 }
               />
             </div>
@@ -57,7 +59,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.CoinFlip.FormComponent do
        form:
          to_form(
            %{
-             "price" => Minigames.get_coin_flip_fee(),
+             "fee" => Minigames.get_coin_flip_fee() * 100,
              "is_active" => Minigames.coin_flip_active?()
            },
            as: :coin_flip_configuration
@@ -66,7 +68,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.CoinFlip.FormComponent do
   end
 
   def handle_event("validate", params, socket) do
-    changeset = validate_configuration(params["price"], params["is_active"])
+    changeset = validate_configuration(params["fee"], params["is_active"])
 
     {:noreply,
      assign(socket, form: to_form(changeset, action: :validate, as: :wheel_configuration))}
@@ -74,7 +76,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.CoinFlip.FormComponent do
 
   def handle_event("save", params, socket) do
     if valid_config?(params) do
-      Minigames.change_coin_flip_fee(params["price"] |> String.to_integer())
+      Minigames.change_coin_flip_fee((params["fee"] |> String.to_integer()) / 100)
       Minigames.change_coin_flip_active("true" == params["is_active"])
       {:noreply, socket |> push_patch(to: ~p"/dashboard/minigames/")}
     else
@@ -82,15 +84,15 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.CoinFlip.FormComponent do
     end
   end
 
-  defp validate_configuration(price, is_active) do
-    {%{}, %{price: :integer, is_active: :boolean}}
-    |> Changeset.cast(%{price: price, is_active: is_active}, [:price, :is_active])
-    |> Changeset.validate_required([:price])
-    |> Changeset.validate_number(:price, greater_than_or_equal_to: 0)
+  defp validate_configuration(fee, is_active) do
+    {%{}, %{fee: :integer, is_active: :boolean}}
+    |> Changeset.cast(%{fee: fee, is_active: is_active}, [:fee, :is_active])
+    |> Changeset.validate_required([:fee])
+    |> Changeset.validate_number(:fee, greater_than_or_equal_to: 0, less_than_or_equal_to: 100)
   end
 
   defp valid_config?(params) do
-    validation = validate_configuration(params["price"], params["is_active"])
+    validation = validate_configuration(params["fee"], params["is_active"])
     validation.errors == []
   end
 end

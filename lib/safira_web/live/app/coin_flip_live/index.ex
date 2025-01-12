@@ -9,7 +9,7 @@ defmodule SafiraWeb.App.CoinFlipLive.Index do
   @impl true
   def mount(_params, _session, socket) do
     if connected?(socket) do
-      Minigames.subscribe_to_coin_flip_config_update("price")
+      Minigames.subscribe_to_coin_flip_config_update("fee")
       Minigames.subscribe_to_coin_flip_config_update("is_active")
       Minigames.subscribe_to_coin_flip_rooms_update()
     end
@@ -17,7 +17,7 @@ defmodule SafiraWeb.App.CoinFlipLive.Index do
     previous_room_list =
       Minigames.list_coin_flip_rooms()
       |> Enum.filter(& &1.finished)
-      |> Enum.take(6)
+      |> Enum.take(4)
 
     {:ok,
      socket
@@ -45,8 +45,8 @@ defmodule SafiraWeb.App.CoinFlipLive.Index do
          |> assign(:attendee_tokens, socket.assigns.attendee_tokens - socket.assigns.bet)
          |> stream_insert(:room_list, room)}
 
-      {:error, _} ->
-        {:noreply, socket}
+      {:error, msg} ->
+        {:noreply, socket |> put_flash(:error, msg)}
     end
   end
 
@@ -90,7 +90,7 @@ defmodule SafiraWeb.App.CoinFlipLive.Index do
 
     attendee_tokens =
       if won?(room, socket.assigns.current_user) do
-        socket.assigns.attendee_tokens + room.bet * 2
+        socket.assigns.attendee_tokens + round(room.bet * 2 * (1 - socket.assigns.coin_flip_fee))
       else
         socket.assigns.attendee_tokens
       end
@@ -100,7 +100,7 @@ defmodule SafiraWeb.App.CoinFlipLive.Index do
       socket
       # Set the wheel to not in spin mode
       |> stream_delete(:room_list, room)
-      |> stream_insert(:previous_room_list, room, limit: 6, at: 0)
+      |> stream_insert(:previous_room_list, room, limit: 4, at: 0)
       |> assign(:attendee_tokens, attendee_tokens)
       #  |> assign(:won, won?(room, socket.assigns.current_user))
     }
