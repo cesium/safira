@@ -985,6 +985,24 @@ defmodule Safira.Minigames do
     |> Repo.preload(prizes: [:prize])
   end
 
+  def list_challenges(opts) when is_list(opts) do
+    Challenge
+    |> apply_filters(opts)
+    |> Repo.all()
+    |> Repo.preload(prizes: [:prize])
+  end
+
+  def list_challenges(params) do
+    Challenge
+    |> Flop.validate_and_run(params, for: Challenge, preload: [prizes: [:prize]])
+  end
+
+  def list_challenges(%{} = params, opts) when is_list(opts) do
+    Challenge
+    |> apply_filters(opts)
+    |> Flop.validate_and_run(params, for: Challenge, preload: [prizes: [:prize]])
+  end
+
   @doc """
   Gets a single challenge.
 
@@ -999,7 +1017,7 @@ defmodule Safira.Minigames do
       ** (Ecto.NoResultsError)
 
   """
-  def get_challenge!(id), do: Repo.get!(Challenge, id)
+  def get_challenge!(id), do: Repo.get!(Challenge, id) |> Repo.preload(prizes: [:prize])
 
   @doc """
   Creates a challenge.

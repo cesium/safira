@@ -12,6 +12,10 @@ defmodule Safira.Minigames.Challenge do
 
   @challenge_types ~w(daily global other)a
 
+  @derive {
+    Flop.Schema,
+    filterable: [:name], sortable: [:name, :date, :type], default_limit: 11
+  }
   schema "challenges" do
     field :name, :string
     field :description, :string
@@ -19,7 +23,7 @@ defmodule Safira.Minigames.Challenge do
     field :type, Ecto.Enum, values: @challenge_types
     field :date, :date
 
-    has_many :prizes, ChallengePrize, preload_order: [asc: :place]
+    has_many :prizes, ChallengePrize, preload_order: [asc: :place], on_replace: :delete
 
     timestamps(type: :utc_datetime)
   end
@@ -29,5 +33,13 @@ defmodule Safira.Minigames.Challenge do
     challenge
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
+    |> cast_assoc(:prizes,
+      sort_param: :prizes_sort,
+      drop_param: :prizes_drop
+    )
+  end
+
+  def challenge_types do
+    @challenge_types
   end
 end

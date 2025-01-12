@@ -217,6 +217,15 @@ defmodule SafiraWeb.Router do
             end
           end
 
+          scope "/challenges", ChallengeLive do
+            live "/", Index, :index
+            live "/new", Index, :new
+
+            scope "/:id" do
+              live "/edit", Index, :edit
+            end
+          end
+
           live "/", MinigamesLive.Index, :index
           live "/wheel/drops", MinigamesLive.Index, :edit_wheel_drops
           live "/wheel/simulator", MinigamesLive.Index, :simulate_wheel

@@ -7,7 +7,7 @@ defmodule Safira.Minigames.ChallengePrize do
 
   alias Safira.Minigames.{Challenge, Prize}
 
-  @required_fields ~w(prize_id challenge_id place)a
+  @required_fields ~w(prize_id place)a
 
   schema "challenges_prizes" do
     belongs_to :prize, Prize
@@ -21,7 +21,7 @@ defmodule Safira.Minigames.ChallengePrize do
   @doc false
   def changeset(challenge_prize, attrs) do
     challenge_prize
-    |> cast(attrs, @required_fields)
+    |> cast(attrs, [:prize_id, :challenge_id, :place])
     |> validate_required(@required_fields)
     |> validate_number(:place, greater_than: 0)
   end

@@ -183,4 +183,12 @@ defmodule SafiraWeb.Helpers do
       true -> "th"
     end
   end
+
+  def trim_string(str, length) do
+    if String.length(str) > length do
+      "#{String.slice(str, 0..(length - 1))}..."
+    else
+      str
+    end
+  end
 end

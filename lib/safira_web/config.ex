@@ -136,6 +136,13 @@ defmodule SafiraWeb.Config do
         scope: %{"minigames" => ["show"]}
       },
       %{
+        key: :challenges,
+        title: "Challenges",
+        icon: "hero-beaker",
+        url: "/dashboard/minigames/challenges",
+        scope: %{"minigames" => ["show"]}
+      },
+      %{
         key: :minigames,
         title: "Minigames",
         icon: "hero-sparkles",

@@ -1,0 +1,68 @@
+<.page title="Challenges">
+  <:actions>
+    <div class="flex flex-row gap-4 justify-center items-center">
+      <.table_search
+        id="challenges-table-name-search"
+        params={@params}
+        field={:name}
+        path={~p"/dashboard/minigames/challenges"}
+        placeholder={gettext("Search for challenges")}
+      />
+      <.ensure_permissions user={@current_user} permissions={%{"challenges" => ["edit"]}}>
+        <.link patch={~p"/dashboard/minigames/challenges/new"}>
+          <.button>New Challenge</.button>
+        </.link>
+      </.ensure_permissions>
+    </div>
+  </:actions>
+  <div class="py-4">
+    <.table
+      id="challenges-table"
+      items={@streams.challenges}
+      meta={@meta}
+      params={@params}
+      row_click={&JS.navigate(~p"/dashboard/minigames/challenges/#{elem(&1, 1).id}/edit")}
+    >
+      <:col :let={{_id, challenge}} label="Name" sortable field={:name}>
+        <%= challenge.name %>
+      </:col>
+      <:col :let={{_id, challenge}} label="Description" sortable field={:description}>
+        <%= Helpers.trim_string(challenge.description, 128) %>
+      </:col>
+      <:action :let={{_id, challenge}}>
+        <.ensure_permissions user={@current_user} permissions={%{"challenges" => ["edit"]}}>
+          <.link patch={~p"/dashboard/minigames/challenges/#{challenge}/edit"}>
+            <.icon name="hero-pencil" class="w-5 h-5" />
+          </.link>
+        </.ensure_permissions>
+      </:action>
+      <:action :let={{id, challenge}}>
+        <.ensure_permissions user={@current_user} permissions={%{"challenges" => ["delete"]}}>
+          <.link
+            phx-click={JS.push("delete", value: %{id: challenge.id}) |> hide("##{id}")}
+            data-confirm="Are you sure?"
+          >
+            <.icon name="hero-trash" class="w-5 h-5" />
+          </.link>
+        </.ensure_permissions>
+      </:action>
+    </.table>
+  </div>
+</.page>
+
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="challenge-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/minigames/challenges")}
+>
+  <.live_component
+    module={SafiraWeb.ChallengeLive.FormComponent}
+    id={@challenge.id || :new}
+    title={@page_title}
+    action={@live_action}
+    challenge={@challenge}
+    prizes={@prizes}
+    patch={~p"/dashboard/minigames/challenges"}
+  />
+</.modal>
