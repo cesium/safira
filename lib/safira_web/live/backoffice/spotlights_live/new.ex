@@ -39,6 +39,7 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.New do
          )
      )}
   end
+
   defp options(companies) do
     companies
     |> Enum.filter(&Safira.Companies.can_create_spotlight?(&1.id))
