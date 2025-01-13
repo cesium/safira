@@ -2,7 +2,6 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.New do
   use SafiraWeb, :live_component
 
   import SafiraWeb.Components.Forms
-  import Safira.Companies
 
   @impl true
   def render(assigns) do
