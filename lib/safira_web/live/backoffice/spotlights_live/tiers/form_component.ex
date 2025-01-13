@@ -52,8 +52,12 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Tiers.FormComponent do
     save_tier(socket, action, tier_params["spotlight_multiplier"], tier_params["max_spotlights"])
   end
 
-  defp save_tier(socket, :tiers_edit, spotlight_multiplier,max_spotlights) do
-    case Companies.update_tier_spotlight_configuration(socket.assigns.tier, spotlight_multiplier, max_spotlights) do
+  defp save_tier(socket, :tiers_edit, spotlight_multiplier, max_spotlights) do
+    case Companies.update_tier_spotlight_configuration(
+           socket.assigns.tier,
+           spotlight_multiplier,
+           max_spotlights
+         ) do
       {:ok, _tier} ->
         {:noreply,
          socket

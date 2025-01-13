@@ -16,9 +16,9 @@ defmodule SafiraWeb.Spotlight do
     end
 
     {:cont,
-      socket
-      |> assign(:current_spotlight, Spotlights.get_current_spotlight())
-      |> attach_hook(:spotlight_updated, :handle_info, &handle_info/2)}
+     socket
+     |> assign(:current_spotlight, Spotlights.get_current_spotlight())
+     |> attach_hook(:spotlight_updated, :handle_info, &handle_info/2)}
   end
 
   def handle_info(%Spotlight{} = spotlight, socket) do

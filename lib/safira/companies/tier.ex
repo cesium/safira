@@ -29,6 +29,6 @@ defmodule Safira.Companies.Tier do
   def changeset_multiplier(tier, attrs) do
     tier
     |> cast(attrs, [:spotlight_multiplier, :max_spotlights])
-    |> validate_required([:spotlight_multiplier , :max_spotlights])
+    |> validate_required([:spotlight_multiplier, :max_spotlights])
   end
 end

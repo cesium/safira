@@ -3,7 +3,6 @@ defmodule SafiraWeb.Router do
 
   import SafiraWeb.UserAuth
   import SafiraWeb.UserRoles
-  import SafiraWeb.Spotlight
   import SafiraWeb.EventRoles
 
   pipeline :browser do
@@ -74,7 +73,10 @@ defmodule SafiraWeb.Router do
     pipe_through [:browser, :require_authenticated_user]
 
     live_session :require_authenticated_user,
-      on_mount: [{SafiraWeb.UserAuth, :ensure_authenticated}, {SafiraWeb.Spotlight, :fetch_current_spotlight}] do
+      on_mount: [
+        {SafiraWeb.UserAuth, :ensure_authenticated},
+        {SafiraWeb.Spotlight, :fetch_current_spotlight}
+      ] do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
 

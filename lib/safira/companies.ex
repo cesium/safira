@@ -5,7 +5,7 @@ defmodule Safira.Companies do
 
   use Safira.Context
 
-  alias Safira.Companies.{Company,Tier}
+  alias Safira.Companies.{Company, Tier}
   alias Safira.Spotlights.Spotlight
 
   @doc """
@@ -264,9 +264,12 @@ defmodule Safira.Companies do
     (Repo.aggregate(from(t in Tier), :max, :priority) || -1) + 1
   end
 
-  def update_tier_spotlight_configuration(%Tier{} = tier, spotlight_multiplier , max_spotlights) do
+  def update_tier_spotlight_configuration(%Tier{} = tier, spotlight_multiplier, max_spotlights) do
     tier
-    |> Tier.changeset_multiplier(%{spotlight_multiplier: spotlight_multiplier, max_spotlights: max_spotlights})
+    |> Tier.changeset_multiplier(%{
+      spotlight_multiplier: spotlight_multiplier,
+      max_spotlights: max_spotlights
+    })
     |> Repo.update()
   end
 
@@ -286,7 +289,7 @@ defmodule Safira.Companies do
 
     current_spotlights_count = get_company_spotlights_count(company_id)
 
-    current_spotlights_count <= tier.max_spotlights
+    current_spotlights_count < tier.max_spotlights
   end
 
   @doc """

@@ -6,7 +6,6 @@ defmodule Safira.Spotlights do
 
   @pubsub Safira.PubSub
 
-
   def create_spotlight(attrs) do
     now = DateTime.utc_now()
     duration = attrs.duration
@@ -139,7 +138,6 @@ defmodule Safira.Spotlights do
     subscribe_to_spotlight_event()
   end
 
-
   def subscribe_to_spotlight_event() do
     Phoenix.PubSub.subscribe(@pubsub, "spotlight")
   end
@@ -148,5 +146,4 @@ defmodule Safira.Spotlights do
     spotlight = get_spotlight!(spotlight_id)
     Phoenix.PubSub.broadcast(@pubsub, "spotlight", spotlight)
   end
-
 end

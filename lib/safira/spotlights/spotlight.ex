@@ -1,6 +1,8 @@
 defmodule Safira.Spotlights.Spotlight do
   use Safira.Schema
 
+  @required_fields ~w(end company_id)a
+
   schema "spotlights" do
     field :end, :utc_datetime
 
@@ -12,8 +14,8 @@ defmodule Safira.Spotlights.Spotlight do
   @doc false
   def changeset(spotlight, attrs) do
     spotlight
-    |> cast(attrs, [:end, :company_id])
-    |> validate_required([:end, :company_id])
+    |> cast(attrs, @required_fields)
+    |> validate_required(@required_fields)
     |> foreign_key_constraint(:company_id)
   end
 end

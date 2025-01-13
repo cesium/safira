@@ -3,6 +3,7 @@ defmodule SafiraWeb.Components.Banner do
 
   attr :text, :string, default: ""
   attr :duration, :integer, default: 5000
+
   def banner(assigns) do
     ~H"""
     <div
