@@ -1,11 +1,12 @@
-defmodule Safira.Minigames.ChallengePrize do
+defmodule Safira.Challenges.ChallengePrize do
   @moduledoc """
   Association between challenges and prizes
   """
 
   use Safira.Schema
 
-  alias Safira.Minigames.{Challenge, Prize}
+  alias Safira.Challenges.Challenge
+  alias Safira.Minigames.Prize
 
   @required_fields ~w(challenge_id prize_id place)a
 

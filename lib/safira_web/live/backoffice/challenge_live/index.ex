@@ -1,8 +1,10 @@
 defmodule SafiraWeb.Backoffice.ChallengeLive.Index do
   use SafiraWeb, :backoffice_view
 
+  alias Safira.Challenges
+  alias Safira.Challenges.Challenge
+
   alias Safira.Minigames
-  alias Safira.Minigames.Challenge
 
   alias SafiraWeb.Helpers
 
@@ -21,7 +23,7 @@ defmodule SafiraWeb.Backoffice.ChallengeLive.Index do
 
   @impl true
   def handle_params(params, _url, socket) do
-    case Minigames.list_challenges(params) do
+    case Challenges.list_challenges(params) do
       {:ok, {challenges, meta}} ->
         {:noreply,
          socket
@@ -40,7 +42,7 @@ defmodule SafiraWeb.Backoffice.ChallengeLive.Index do
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
     |> assign(:page_title, "Edit Challenge")
-    |> assign(:challenge, Minigames.get_challenge!(id))
+    |> assign(:challenge, Challenges.get_challenge!(id))
   end
 
   defp apply_action(socket, :new, _params) do
@@ -57,8 +59,8 @@ defmodule SafiraWeb.Backoffice.ChallengeLive.Index do
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
-    challenge = Minigames.get_challenge!(id)
-    {:ok, _} = Minigames.delete_challenge(challenge)
+    challenge = Challenges.get_challenge!(id)
+    {:ok, _} = Challenges.delete_challenge(challenge)
 
     {:noreply, stream_delete(socket, :challenges, challenge)}
   end

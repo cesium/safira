@@ -16,14 +16,15 @@
       <ul class="font-terminal uppercase select-none text-xl">
         <%= for challenge <- @challenges do %>
           <li class="mb-6 transition-all ease-in-out uppercase	ml-8 text-white text-opacity-100">
-            <button phx-click="challenge_change" phx-value-challenge_id={challenge.id}>
+            <button
+              phx-click="challenge_change"
+              class="uppercase"
+              phx-value-challenge_id={challenge.id}
+            >
               <%= challenge.name %>
             </button>
           </li>
         <% end %>
-        <!--li class="mb-6 transition-all ease-in-out uppercase	text-white text-opacity-20 hover:text-opacity-30">
-          <button>DAILY BADGE CHALLENGES - DAY ONE</button>
-        </li-->
       </ul>
     </div>
     <div class="hidden xl:flex">

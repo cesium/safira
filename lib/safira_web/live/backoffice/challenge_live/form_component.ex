@@ -1,8 +1,8 @@
 defmodule SafiraWeb.ChallengeLive.FormComponent do
   use SafiraWeb, :live_component
 
-  alias Safira.Minigames
-  alias Safira.Minigames.Challenge
+  alias Safira.Challenges
+  alias Safira.Challenges.Challenge
   import SafiraWeb.Components.Forms
 
   @impl true
@@ -94,13 +94,13 @@ defmodule SafiraWeb.ChallengeLive.FormComponent do
      socket
      |> assign(assigns)
      |> assign_new(:form, fn ->
-       to_form(Minigames.change_challenge(challenge))
+       to_form(Challenges.change_challenge(challenge))
      end)}
   end
 
   @impl true
   def handle_event("validate", %{"challenge" => challenge_params}, socket) do
-    changeset = Minigames.change_challenge(socket.assigns.challenge, challenge_params)
+    changeset = Challenges.change_challenge(socket.assigns.challenge, challenge_params)
     {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
   end
 
@@ -109,7 +109,7 @@ defmodule SafiraWeb.ChallengeLive.FormComponent do
   end
 
   defp save_challenge(socket, :edit, challenge_params) do
-    case Minigames.update_challenge(socket.assigns.challenge, challenge_params) do
+    case Challenges.update_challenge(socket.assigns.challenge, challenge_params) do
       {:ok, _challenge} ->
         {:noreply,
          socket
@@ -122,7 +122,7 @@ defmodule SafiraWeb.ChallengeLive.FormComponent do
   end
 
   defp save_challenge(socket, :new, challenge_params) do
-    case Minigames.create_challenge(challenge_params) do
+    case Challenges.create_challenge(challenge_params) do
       {:ok, _challenge} ->
         {:noreply,
          socket
