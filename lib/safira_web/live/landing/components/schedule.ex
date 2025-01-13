@@ -15,7 +15,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
 
   def schedule(assigns) do
     ~H"""
-    <div class="xl:grid 2xl:grid-cols-2 relative select-none">
+    <div class="xl:grid 2xl:grid-cols-2 gap-8 relative select-none">
       <div class="mb-20 2xl:mb-0">
         <div class="sticky top-12">
           <.schedule_day
@@ -47,20 +47,20 @@ defmodule SafiraWeb.Landing.Components.Schedule do
   defp filters(assigns) do
     ~H"""
     <div class="block relative mt-8">
-      <span class="w-full font-iregular text-lg text-gray-300 uppercase">Filter by</span>
+      <span class="w-full font-iregular text-lg uppercase"><%= gettext("Filter by") %></span>
 
-      <div class="grid grid-cols-2 gap-x-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 pt-4">
         <%= for category <- fetch_categories() do %>
           <.link
             class={
               if Enum.member?(@filters, category.id),
-                do: "text-md m-1 items-center rounded-full border px-12 py-2 text-center font-ibold
+                do: "text-md m-1 items-center rounded-full border-2 px-12 py-2 text-center font-bold
                                   text-accent border-accent shadow-sm
-                                hover:border-white hover:bg-primary hover:opacity-80
+                                hover:opacity-60
                                 ",
-                else: "text-md m-1 items-center rounded-full border px-12 py-2 text-center font-ibold
+                else: "text-md m-1 items-center rounded-full border-2 px-12 py-2 text-center font-bold
                                   text-white shadow-sm
-                                opacity-50 hover:border-accent hover:opacity-80 px-8
+                                hover:border-accent hover:text-accent px-8
                                 "
             }
             patch={filter_url(@url, @current_day, @filters, category.id)}
