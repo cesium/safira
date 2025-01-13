@@ -9,7 +9,6 @@ defmodule Safira.Spotlights do
   def create_spotlight(company_id) do
     now = DateTime.utc_now()
     duration = get_spotlight_duration()
-
     if duration > 0 do
       end_time = DateTime.add(now, duration, :minute)
 
@@ -20,7 +19,6 @@ defmodule Safira.Spotlights do
         {:ok, spotlight} ->
           broadcast_new_spotlight(spotlight.id)
           {:ok, spotlight}
-
         {:error, changeset} ->
           {:error, changeset}
       end
