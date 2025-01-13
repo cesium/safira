@@ -1,7 +1,7 @@
 defmodule Safira.Spotlights do
-@moduledoc """
-The `Spotlights` module provides functions for managing spotlights.
-"""
+  @moduledoc """
+  The `Spotlights` module provides functions for managing spotlights.
+  """
 
   use Safira.Context
   alias Safira.Constants
