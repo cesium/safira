@@ -2,6 +2,7 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.New do
   use SafiraWeb, :live_component
 
   import SafiraWeb.Components.Forms
+  import Safira.Companies
 
   @impl true
   def render(assigns) do
@@ -38,9 +39,10 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.New do
          )
      )}
   end
-
   defp options(companies) do
-    Enum.map(companies, &{&1.name, &1.id})
+    companies
+    |> Enum.filter(&Safira.Companies.can_create_spotlight?(&1.id))
+    |> Enum.map(&{&1.name, &1.id})
   end
 
   @impl true
