@@ -22,7 +22,7 @@ defmodule SafiraWeb.Landing.ChallengesLive.Index do
   end
 
   @impl true
-  def handle_event("challenge_change", %{"challenge_id" => challenge_id} = params, socket) do
+  def handle_event("challenge_change", %{"challenge_id" => challenge_id}, socket) do
     {:noreply,
      socket
      |> assign(
