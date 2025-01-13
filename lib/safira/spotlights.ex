@@ -1,8 +1,11 @@
 defmodule Safira.Spotlights do
-  use Safira.Context
+@moduledoc """
+The `Spotlights` module provides functions for managing spotlights.
+"""
 
-  alias Safira.Spotlights.Spotlight
+  use Safira.Context
   alias Safira.Constants
+  alias Safira.Spotlights.Spotlight
 
   @pubsub Safira.PubSub
 
@@ -136,7 +139,7 @@ defmodule Safira.Spotlights do
     subscribe_to_spotlight_event()
   end
 
-  def subscribe_to_spotlight_event() do
+  def subscribe_to_spotlight_event do
     Phoenix.PubSub.subscribe(@pubsub, "spotlight")
   end
 

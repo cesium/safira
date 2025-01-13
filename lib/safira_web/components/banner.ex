@@ -1,4 +1,5 @@
 defmodule SafiraWeb.Components.Banner do
+  @moduledoc false
   use SafiraWeb, :component
 
   attr :text, :string, default: ""

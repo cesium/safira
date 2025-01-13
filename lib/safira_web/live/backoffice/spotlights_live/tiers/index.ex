@@ -1,4 +1,7 @@
 defmodule SafiraWeb.Backoffice.SpotlightLive.Tiers.Index do
+@moduledoc """
+A LiveComponent for managing the tiers of the companies.
+"""
   use SafiraWeb, :live_component
 
   alias Safira.Companies

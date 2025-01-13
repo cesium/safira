@@ -1,4 +1,7 @@
 defmodule Safira.Spotlights.Spotlight do
+  @moduledoc """
+  Spotlight schema.
+  """
   use Safira.Schema
 
   @required_fields ~w(end company_id)a
