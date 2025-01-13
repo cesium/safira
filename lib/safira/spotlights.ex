@@ -6,17 +6,15 @@ defmodule Safira.Spotlights do
 
   @pubsub Safira.PubSub
 
-  def create_spotlight(attrs) do
+  def create_spotlight(company_id) do
     now = DateTime.utc_now()
-    duration = attrs.duration
+    duration = get_spotlight_duration()
 
     if duration > 0 do
       end_time = DateTime.add(now, duration, :minute)
 
-      spotlight_attrs = Map.put(attrs, :end, end_time)
-
       %Spotlight{}
-      |> Spotlight.changeset(spotlight_attrs)
+      |> Spotlight.changeset(%{company_id: company_id, end: end_time})
       |> Repo.insert()
       |> case do
         {:ok, spotlight} ->

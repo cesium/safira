@@ -37,13 +37,7 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Confirm do
   def handle_event("confirm-spotlight", _params, socket) do
     if socket.assigns.company && socket.assigns.duration &&
          can_create_spotlight?(socket.assigns.company.id) do
-      attrs = %{
-        company_id: socket.assigns.company.id,
-        company_name: socket.assigns.company.name,
-        duration: socket.assigns.duration
-      }
-
-      case Spotlights.create_spotlight(attrs) do
+      case Spotlights.create_spotlight(socket.assigns.company.id) do
         {:ok, _spotlight} ->
           {:noreply,
            socket
