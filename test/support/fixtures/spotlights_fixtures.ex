@@ -4,17 +4,13 @@ defmodule Safira.SpotlightsFixtures do
   entities via the `Safira.Spotlights` context.
   """
 
+  alias Safira.CompaniesFixtures
+
   @doc """
   Generate a spotlight.
   """
-  def spotlight_fixture(attrs \\ %{}) do
-    {:ok, spotlight} =
-      attrs
-      |> Enum.into(%{
-        end: ~U[2024-11-20 22:32:00Z]
-      })
-      |> Safira.Spotlights.create_spotlight()
-
+  def spotlight_fixture() do
+    {:ok, spotlight} = Safira.Spotlights.create_spotlight(CompaniesFixtures.company_fixture().id)
     spotlight
   end
 end
