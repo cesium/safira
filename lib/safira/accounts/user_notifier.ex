@@ -6,16 +6,15 @@ defmodule Safira.Accounts.UserNotifier do
 
   alias Safira.Mailer
 
-  @from_name Application.compile_env!(:safira, :from_email_name)
-  @from_email Application.compile_env!(:safira, :from_email_address)
-
   # Delivers the email using the application mailer.
   defp deliver(recipient, subject, body) do
+    sender = {Mailer.get_sender_name(), Mailer.get_sender_address()}
+
     email =
       new()
       |> to(recipient)
-      |> from({@from_name, @from_email})
-      |> subject("[#{@from_name}] #{subject}")
+      |> from(sender)
+      |> subject("[#{elem(sender, 0)}] #{subject}")
       |> text_body(body)
 
     with {:ok, _metadata} <- Mailer.deliver(email) do

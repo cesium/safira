@@ -85,7 +85,9 @@ defmodule SafiraWeb do
 
   def landing_view do
     quote do
-      use Phoenix.LiveView
+      use Phoenix.LiveView,
+        layout: {SafiraWeb.Layouts, :landing}
+
       unquote(html_helpers())
     end
   end

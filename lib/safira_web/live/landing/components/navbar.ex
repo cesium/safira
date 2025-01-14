@@ -95,6 +95,7 @@ defmodule SafiraWeb.Landing.Components.Navbar do
           <%= for page <- @pages do %>
             <.link
               patch={page.url}
+              phx-click={hide_mobile_navbar()}
               class="font-terminal uppercase text-3xl text-white transition-colors duration-75 ease-in hover:text-accent"
             >
               <%= page.title %>
@@ -106,6 +107,7 @@ defmodule SafiraWeb.Landing.Components.Navbar do
           <.link
             :if={user_type?(@current_user, :staff)}
             patch={~p"/dashboard/attendees"}
+            phx-click={hide_mobile_navbar()}
             class="font-terminal uppercase text-3xl text-white transition-colors duration-75 ease-in hover:text-accent"
           >
             Dashboard
@@ -113,6 +115,7 @@ defmodule SafiraWeb.Landing.Components.Navbar do
           <.link
             :if={user_type?(@current_user, :attendee)}
             patch={~p"/app"}
+            phx-click={hide_mobile_navbar()}
             class="font-terminal uppercase text-3xl text-white transition-colors duration-75 ease-in hover:text-accent"
           >
             App
@@ -121,6 +124,7 @@ defmodule SafiraWeb.Landing.Components.Navbar do
             :if={@current_user}
             method="delete"
             href={~p"/users/log_out"}
+            phx-click={hide_mobile_navbar()}
             class="font-terminal uppercase text-3xl text-white transition-colors duration-75 ease-in hover:text-accent"
           >
             Sign Out

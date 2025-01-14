@@ -17,16 +17,12 @@ defmodule SafiraWeb.Landing.FAQLive.Components.Faq do
       </div>
       <div class="flex items-center justify-end">
         <button
-          class="font-terminal uppercase w-16 transform select-none rounded-full bg-accent px-2 text-xl text-white transition-transform duration-300 hover:scale-110"
+          class="font-terminal uppercase w-16 select-none rounded-full bg-accent px-2 text-xl text-white hover:scale-110"
           phx-click={
             JS.toggle(
               to: "#faq-answer-#{@id}",
-              in:
-                {"ease-out duration-300 transition-max-height", "opacity-0 max-h-0",
-                 "opacity-100 max-h-48"},
-              out:
-                {"ease-out duration-300 transition-max-height", "opacity-100 max-h-48",
-                 "opacity-0 max-h-0"}
+              in: {"", "opacity-0 max-h-0", "opacity-100 max-h-48"},
+              out: {"", "opacity-100 max-h-48", "opacity-0 max-h-0"}
             )
             |> JS.toggle(to: "#faq-answer-toggle-show-#{@id}")
             |> JS.toggle(to: "#faq-answer-toggle-hide-#{@id}")

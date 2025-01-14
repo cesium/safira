@@ -9,11 +9,7 @@ import Config
 
 config :safira,
   ecto_repos: [Safira.Repo],
-  generators: [timestamp_type: :utc_datetime],
-  from_email_name: System.get_env("FROM_EMAIL_NAME") || "SEI",
-  from_email_address: System.get_env("FROM_EMAIL_ADDRESS") || "no-reply@seium.org",
-  umami_script_url: System.get_env("UMAMI_SCRIPT_URL") || "",
-  umami_website_id: System.get_env("UMAMI_WEBSITE_ID") || ""
+  generators: [timestamp_type: :utc_datetime]
 
 # Flop configuration
 config :flop,
