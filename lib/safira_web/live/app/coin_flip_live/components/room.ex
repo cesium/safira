@@ -9,6 +9,7 @@ defmodule SafiraWeb.App.CoinFlipLive.Components.Room do
 
   attr :room, :map, required: true
   attr :current_user, :map, required: true
+  attr :attendee_tokens, :integer, required: true
   attr :id, :string, required: true
   attr :coin_flip_fee, :float, required: true
 
@@ -24,23 +25,25 @@ defmodule SafiraWeb.App.CoinFlipLive.Components.Room do
       data-player1-id={@room.player1_id}
       data-player2-id={@room.player2_id}
       data-fee={@coin_flip_fee}
-      class="flex flex-row items-center justify-between border border-darkShade bg-primary rounded-md overflow-hidden w-full max-w-96 h-52 p-4"
+      class="relative flex flex-row items-center justify-between border border-darkShade bg-primary rounded-md overflow-hidden w-full max-w-96 h-52 p-3 sm:p-4"
     >
       <.player_card
         stream_id={@id}
         player_id={@room.player1_id}
         player={@room.player1}
         current_user={@current_user}
+        attendee_tokens={@attendee_tokens}
         room={@room}
       />
-      <div class="relative flex flex-col items-center justify-center h-full z-20">
+      <div class="absolute inset-0 flex flex-col items-center justify-center h-full z-20 pointer-events-none">
+        <h1 id={@id <> "-vs-text"} class="font-bold align-middle">VS</h1>
         <div id={@id <> "-coin"} class="coin hidden">
           <div class="side-a"></div>
           <div class="side-b"></div>
         </div>
         <h1
           id={@id <> "-countdown"}
-          class="text-2xl p-2 rounded-full bg-blue-900/25 font-bold size-16 justify-center hidden items-center"
+          class="absolute text-2xl p-2 rounded-full bg-blue-900/25 font-bold size-16 justify-center hidden items-center"
         >
           3
         </h1>
@@ -50,6 +53,7 @@ defmodule SafiraWeb.App.CoinFlipLive.Components.Room do
         player_id={@room.player2_id}
         player={@room.player2}
         current_user={@current_user}
+        attendee_tokens={@attendee_tokens}
         room={@room}
       />
     </div>
@@ -60,13 +64,14 @@ defmodule SafiraWeb.App.CoinFlipLive.Components.Room do
   attr :player_id, :string, required: true
   attr :player, :map, required: true
   attr :current_user, :map, required: true
+  attr :attendee_tokens, :integer, required: true
   attr :room, :map, required: true
 
   defp player_card(assigns) do
     ~H"""
     <div
       id={"#{@stream_id}-#{@player_id}-card"}
-      class="relative flex flex-col items-center space-y-1 border border-darkShade/80 bg-blue-900/25 rounded-md h-full w-32 p-1 select-none"
+      class="relative flex flex-col flex-shrink-0 items-center space-y-1 border border-darkShade/80 bg-blue-900/25 rounded-md h-full w-32 p-1 select-none"
     >
       <%= if @player_id do %>
         <div class="h-full flex items-center">
@@ -89,6 +94,7 @@ defmodule SafiraWeb.App.CoinFlipLive.Components.Room do
           class="px-7 size-full rounded-none !bg-transparent !text-white"
           phx-click="join-room"
           phx-value-room_id={@room.id}
+          disabled={@attendee_tokens < @room.bet}
         >
           <.icon name="hero-plus" class="size-12" />
         </.button>

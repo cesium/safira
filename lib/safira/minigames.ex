@@ -870,7 +870,7 @@ defmodule Safira.Minigames do
                 broadcast_coin_flip_rooms_update("update", coin_flip_room)
                 {:ok, coin_flip_room}
 
-              {:error, _changeset} ->
+              {:error, _, _changeset, _} ->
                 {:error, "Failed to join the room."}
             end
 

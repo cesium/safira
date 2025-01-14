@@ -2,7 +2,6 @@ defmodule SafiraWeb.App.CoinFlipLive.Index do
   use SafiraWeb, :app_view
 
   import SafiraWeb.App.CoinFlipLive.Components.Room
-  import SafiraWeb.App.CoinFlipLive.Components.ResultModal
 
   alias Safira.Minigames
 
@@ -13,6 +12,8 @@ defmodule SafiraWeb.App.CoinFlipLive.Index do
       Minigames.subscribe_to_coin_flip_config_update("is_active")
       Minigames.subscribe_to_coin_flip_rooms_update()
     end
+
+    room_list = Minigames.list_coin_flip_rooms() |> Enum.filter(&(!&1.finished))
 
     previous_room_list =
       Minigames.list_coin_flip_rooms()
@@ -26,10 +27,11 @@ defmodule SafiraWeb.App.CoinFlipLive.Index do
      |> assign(:coin_flip_fee, Minigames.get_coin_flip_fee())
      |> assign(:result, nil)
      |> assign(:coin_flip_active?, Minigames.coin_flip_active?())
-     |> assign(:won, false)
      |> assign(:bet, 10)
-     |> stream(:room_list, Minigames.list_coin_flip_rooms() |> Enum.filter(&(!&1.finished)))
-     |> stream(:previous_room_list, previous_room_list)}
+     |> stream(:room_list, room_list)
+     |> assign(:room_list_count, room_list |> Enum.count())
+     |> stream(:previous_room_list, previous_room_list)
+     |> assign(:previous_room_list_count, previous_room_list |> Enum.count())}
   end
 
   def handle_event("create-room", _params, socket) do
@@ -39,11 +41,10 @@ defmodule SafiraWeb.App.CoinFlipLive.Index do
     }
 
     case Minigames.create_coin_flip_room(params) do
-      {:ok, room} ->
+      {:ok, _room} ->
         {:noreply,
          socket
-         |> assign(:attendee_tokens, socket.assigns.attendee_tokens - socket.assigns.bet)
-         |> stream_insert(:room_list, room)}
+         |> assign(:attendee_tokens, socket.assigns.attendee_tokens - socket.assigns.bet)}
 
       {:error, msg} ->
         {:noreply, socket |> put_flash(:error, msg)}
@@ -69,20 +70,13 @@ defmodule SafiraWeb.App.CoinFlipLive.Index do
       {:ok, room} ->
         {:noreply,
          socket
-         |> assign(:attendee_tokens, socket.assigns.attendee_tokens - room.bet)
-         |> assign(:won, false)}
+         |> assign(:attendee_tokens, socket.assigns.attendee_tokens - room.bet)}
 
       {:error, msg} ->
         {:noreply,
          socket
          |> put_flash(:error, msg)}
     end
-  end
-
-  def handle_event("close-modal", _params, socket) do
-    {:noreply,
-     socket
-     |> assign(:won, false)}
   end
 
   def handle_event("animation-done", %{"room_id" => room_id}, socket) do
@@ -100,7 +94,9 @@ defmodule SafiraWeb.App.CoinFlipLive.Index do
       socket
       # Set the wheel to not in spin mode
       |> stream_delete(:room_list, room)
+      |> assign(:room_list_count, socket.assigns.room_list_count - 1)
       |> stream_insert(:previous_room_list, room, limit: 4, at: 0)
+      |> assign(:previous_room_list_count, socket.assigns.previous_room_list_count + 1)
       |> assign(:attendee_tokens, attendee_tokens)
       #  |> assign(:won, won?(room, socket.assigns.current_user))
     }
@@ -132,9 +128,17 @@ defmodule SafiraWeb.App.CoinFlipLive.Index do
 
   @impl true
   def handle_info({"create", room}, socket) do
-    {:noreply,
-     socket
-     |> stream_insert(:room_list, room)}
+    if room.player1_id == socket.assigns.current_user.attendee.id do
+      {:noreply,
+       socket
+       |> stream_insert(:room_list, room, at: 0)
+       |> assign(:room_list_count, socket.assigns.room_list_count + 1)}
+    else
+      {:noreply,
+       socket
+       |> stream_insert(:room_list, room)
+       |> assign(:room_list_count, socket.assigns.room_list_count + 1)}
+    end
   end
 
   @impl true
@@ -144,7 +148,8 @@ defmodule SafiraWeb.App.CoinFlipLive.Index do
      |> stream_delete(
        :room_list,
        deleted_room
-     )}
+     )
+     |> assign(:room_list_count, socket.assigns.room_list_count - 1)}
   end
 
   @impl true
@@ -152,12 +157,13 @@ defmodule SafiraWeb.App.CoinFlipLive.Index do
     if room.finished do
       {:noreply,
        socket
-       #  |> stream_delete(:room_list, room)
-       |> stream_insert(:previous_room_list, room)}
+       |> stream_insert(:previous_room_list, room)
+       |> assign(:previous_room_list_count, socket.assigns.previous_room_list_count + 1)}
     else
       {:noreply,
        socket
-       |> stream_insert(:room_list, room)}
+       |> stream_insert(:room_list, room)
+       |> assign(:room_list_count, socket.assigns.room_list_count + 1)}
     end
   end
 

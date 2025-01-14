@@ -40,10 +40,12 @@ export const CoinFlip = {
   initializeGame(player1Id, player2Id, streamId, fee, result, finished) {
     const coin = document.getElementById(`${streamId}-coin`);
     const counter = document.getElementById(`${streamId}-countdown`);
+    const vsText = document.getElementById(`${streamId}-vs-text`);
     coin.style.display = 'none';
     counter.style.display = 'none';
 
     const startCountdown = async () => {
+      vsText.style.display = 'none';
       counter.style.display = 'flex';
       for (let i = 3; i > 0; i--) {
         counter.textContent = i.toString();
@@ -64,6 +66,7 @@ export const CoinFlip = {
     }
     
     if (finished === 'true') {
+      vsText.style.display = 'none';
       counter.style.display = 'none';
       coin.style.display = 'block';
       if (result === 'heads') {
