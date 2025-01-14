@@ -43,7 +43,7 @@ defmodule Safira.SpotlightsTest do
 
     test "change_spotlight/1 returns a spotlight changeset" do
       spotlight = spotlight_fixture()
-      assert :ok = Spotlights.change_spotlight(spotlight)
+      assert %Ecto.Changeset{} = Spotlights.change_spotlight(spotlight)
     end
   end
 end

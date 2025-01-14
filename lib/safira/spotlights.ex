@@ -136,7 +136,6 @@ defmodule Safira.Spotlights do
   """
   def change_spotlight(%Spotlight{} = spotlight, attrs \\ %{}) do
     Spotlight.changeset(spotlight, attrs)
-    subscribe_to_spotlight_event()
   end
 
   def subscribe_to_spotlight_event do

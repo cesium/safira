@@ -9,7 +9,7 @@ defmodule Safira.SpotlightsFixtures do
   @doc """
   Generate a spotlight.
   """
-  def spotlight_fixture() do
+  def spotlight_fixture do
     {:ok, spotlight} = Safira.Spotlights.create_spotlight(CompaniesFixtures.company_fixture().id)
     spotlight
   end
