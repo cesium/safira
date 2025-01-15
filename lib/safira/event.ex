@@ -96,8 +96,8 @@ defmodule Safira.Event do
   def get_active_feature_flags! do
     feature_flag_keys()
     |> Constants.get_many!()
-    |> Enum.filter(fn {k, v} -> v == "true" end)
-    |> Enum.map(fn {k, v} -> k end)
+    |> Enum.filter(fn {_k, v} -> v == "true" end)
+    |> Enum.map(fn {k, _v} -> k end)
   end
 
   def get_feature_flag!(flag) do
