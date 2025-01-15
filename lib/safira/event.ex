@@ -86,10 +86,18 @@ defmodule Safira.Event do
       "login_enabled",
       "schedule_enabled",
       "challenges_enabled",
-      "speaker_enabled",
+      "speakers_enabled",
       "team_enabled",
-      "survival_guide_enabled"
+      "survival_guide_enabled",
+      "faqs_enabled"
     ]
+  end
+
+  def get_active_feature_flags! do
+    feature_flag_keys()
+    |> Constants.get_many!()
+    |> Enum.filter(fn {k, v} -> v end)
+    |> Enum.map(fn {k, v} -> k end)
   end
 
   def get_feature_flag!(flag) do

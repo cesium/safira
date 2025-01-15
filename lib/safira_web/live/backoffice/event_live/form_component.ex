@@ -29,8 +29,9 @@ defmodule SafiraWeb.Backoffice.EventLive.FormComponent do
               <.field field={@form[:login_enabled]} type="switch" label="Login Enabled" />
               <.field field={@form[:schedule_enabled]} type="switch" label="Schedule Enabled" />
               <.field field={@form[:challenges_enabled]} type="switch" label="Challenges Enabled" />
-              <.field field={@form[:speaker_enabled]} type="switch" label="Speaker Enabled" />
+              <.field field={@form[:speakers_enabled]} type="switch" label="Speaker Enabled" />
               <.field field={@form[:team_enabled]} type="switch" label="Team Enabled" />
+              <.field field={@form[:faqs_enabled]} type="switch" label="FAQs Enabled" />
               <.field
                 field={@form[:survival_guide_enabled]}
                 type="switch"

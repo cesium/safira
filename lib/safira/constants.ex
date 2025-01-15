@@ -22,6 +22,13 @@ defmodule Safira.Constants do
     fetch_key_value(key, default)
   end
 
+  def get_many!(keys) do
+    Pair
+    |> where([p], p.key in ^keys)
+    |> Repo.all()
+    |> Enum.map(fn p -> {p.key, p.value[p.key]} end)
+  end
+
   defp fetch_key_value(key, default) do
     case Repo.get_by(Pair, key: key) do
       nil ->
