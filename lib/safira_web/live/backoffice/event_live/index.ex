@@ -53,4 +53,14 @@ defmodule SafiraWeb.Backoffice.EventLive.Index do
     |> assign(:page_title, "New FAQ")
     |> assign(:faq, %Faq{})
   end
+
+  defp apply_action(socket, :teams, _params) do
+    socket
+    |> assign(:page_title, "Team")
+  end
+
+  defp apply_action(socket, :teams_new,_params) do
+    socket
+    |> assign(:page_title, "New Team")
+  end
 end
