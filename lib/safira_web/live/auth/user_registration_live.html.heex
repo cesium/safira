@@ -1,26 +1,39 @@
-<div class="mx-auto max-w-sm py-2">
-  <div class="px-32 py-12">
-    <img class="w-full h-full block" src={~p"/images/sei-logo.svg"} />
+<div class="mx-auto max-w-lg py-2">
+  <div class="px-28 sm:px-40 py-12">
+    <img
+      class="w-full h-full block select-none pointer-events-none"
+      src={~p"/images/star-struck-void.svg"}
+    />
   </div>
-  <.header class="text-center">
-    <h1 class="text-3xl text-center font-terminal uppercase">Register for an account</h1>
+  <.header class="text-center px-4">
+    <h1 class="text-3xl text-center font-terminal uppercase font-semibold">Event Registration</h1>
     <:subtitle>
       <%= gettext("Already registered?") %>
-      <.link navigate={~p"/users/log_in"} class="font-semibold text-primary hover:underline">
+      <.link navigate={~p"/users/log_in"} class="font-semibold text-accent hover:underline">
         Log in
       </.link>
       <%= gettext("to your account now") %>
     </:subtitle>
   </.header>
 
-  <.simple_form
+  <.form
     for={@form}
     id="registration_form"
     phx-change="validate"
     phx-trigger-action={@trigger_submit}
     action={~p"/users/register"}
+    class="w-90 flex flex-col px-6 sm:px-0 sm:grid grid-cols-2 gap-4 py-10"
   >
-    <.input field={@form[:email]} type="email" label="Email" required />
+    <.input field={@form[:name]} type="text" label="Name" placeholder="John Doe" required />
+    <.input field={@form[:handle]} type="handle" label="Username" required placeholder="johndoe" />
+    <.input
+      field={@form[:email]}
+      type="email"
+      label="Email"
+      required
+      wrapper_class="col-span-2"
+      placeholder="john.doe@cesium.pt"
+    />
     <.input field={@form[:password]} type="password" label="Password" required />
     <.input
       field={@form[:password_confirmation]}
@@ -28,40 +41,38 @@
       label="Confirm Password"
       required
     />
-    <.input field={@form[:name]} type="text" label="Name" required />
-    <.input field={@form[:handle]} type="text" label="Nickname" required />
 
-    <.inputs_for :let={att} field={@form[:attendee]}>
-      <.input
-        class="text-black"
-        field={att[:course_id]}
-        type="select"
-        label="Course"
-        prompt="Choose a course"
-        options={@courses}
-      />
-    </.inputs_for>
-
-    <.label>
+    <.label class="col-span-2 pt-4">
       <div class="flex">
-        <div class="mr-1 mt-1">
-          <.input name="consent" label="" type="checkbox" value={false} class="w-fit" required />
+        <div class="mr-1 mt-1 pr-2">
+          <.input name="consent" label="" type="checkbox" value={false} required />
         </div>
 
         <div class="inline">
           <%= gettext("I have read and agree to the ") %>
-          <.link href={~p"/docs/regulation.pdf"} target="_blank">
-            <%= gettext("General Regulation") %>
-          </.link>
-          <%= gettext(" and ") %>
-          <.link href={~p"/docs/privacy_policy.pdf"} target="_blank">
-            <%= gettext("Privacy Policy") %>
+          <.link
+            href={~p"/docs/privacy_policy.pdf"}
+            target="_blank"
+            class="font-semibold text-accent hover:underline"
+          >
+            <%= gettext("Privacy Policy.") %>
           </.link>
         </div>
       </div>
     </.label>
-    <:actions>
-      <.action_button title="Create an account" subtitle="" class="w-full" disabled={false} />
-    </:actions>
-  </.simple_form>
+    <.label class="col-span-2 pb-8">
+      <div class="flex">
+        <div class="mr-1 mt-1 pr-2">
+          <.input name="newsletter" label="" type="checkbox" value={true} />
+        </div>
+
+        <div class="inline">
+          <%= gettext("I want to receive marketing emails promoting the event.") %>
+        </div>
+      </div>
+    </.label>
+    <div class="col-span-2 w-full flex items-center">
+      <.action_button title="Register" subtitle="" class="mx-12" disabled={false} />
+    </div>
+  </.form>
 </div>

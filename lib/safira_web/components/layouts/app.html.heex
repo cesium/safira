@@ -1,37 +1,39 @@
-<div class="relative h-screen flex overflow-hidden">
-  <%= if Map.get(assigns, :event_started, true) do %>
-    <.sidebar
-      current_user={@current_user}
-      pages={SafiraWeb.Config.app_pages()}
-      current_page={Map.get(assigns, :current_page, nil)}
-      background="bg-primary"
-      border="border-darkShade"
-      logo_padding="px-16 pt-8 pb-4"
-      logo_images={%{light: "/images/sei-logo.svg", dark: "/images/sei-logo.svg"}}
-      logo_url={~p"/app/"}
-      user_dropdown_name_color="text-light"
-      user_dropdown_handle_color="text-lightMuted"
-      user_dropdown_icon_color="text-lightShade"
-      link_class="px-3 group flex items-center py-2 text-sm font-medium rounded-md transition-colors"
-      link_active_class="bg-light text-primary"
-      link_inactive_class="hover:bg-primary-500/10 text-light"
-    />
-  <% end %>
-  <div class="flex flex-col flex-1 overflow-hidden">
-    <div class="bg-primary flex justify-end lg:hidden px-4 sm:px-6 py-2">
-      <button
-        class="sidebar-toggle flex items-center justify-center w-16 dark:text-light text-dark"
-        aria-expanded="false"
-        phx-click={show_mobile_sidebar()}
-      >
-        <.icon class="w-8 h-8" name="hero-bars-3" />
-      </button>
-    </div>
-    <main class="text-light bg-primary flex-1 relative z-0 overflow-y-auto focus:outline-none">
-      <div class="px-6 sm:px-6 lg:px-8 py-8">
-        <.flash_group flash={@flash} />
-        <%= @inner_content %>
+<body>
+  <div class="relative h-screen flex overflow-hidden">
+    <%= if Map.get(assigns, :event_started, true) do %>
+      <.sidebar
+        current_user={@current_user}
+        pages={SafiraWeb.Config.app_pages()}
+        current_page={Map.get(assigns, :current_page, nil)}
+        background="bg-primary"
+        border="border-darkShade"
+        logo_padding="px-16 pt-8 pb-4"
+        logo_images={%{light: "/images/sei-logo.svg", dark: "/images/sei-logo.svg"}}
+        logo_url={~p"/app/"}
+        user_dropdown_name_color="text-light"
+        user_dropdown_handle_color="text-lightMuted"
+        user_dropdown_icon_color="text-lightShade"
+        link_class="px-3 group flex items-center py-2 text-sm font-medium rounded-md transition-colors"
+        link_active_class="bg-light text-primary"
+        link_inactive_class="hover:bg-primary-500/10 text-light"
+      />
+    <% end %>
+    <div class="flex flex-col flex-1 overflow-hidden">
+      <div class="bg-primary flex justify-end lg:hidden px-4 sm:px-6 py-2">
+        <button
+          class="sidebar-toggle flex items-center justify-center w-16 dark:text-light text-dark"
+          aria-expanded="false"
+          phx-click={show_mobile_sidebar()}
+        >
+          <.icon class="w-8 h-8" name="hero-bars-3" />
+        </button>
       </div>
-    </main>
+      <main class="text-light bg-primary flex-1 relative z-0 overflow-y-auto focus:outline-none">
+        <div class="px-6 sm:px-6 lg:px-8 py-8">
+          <.flash_group flash={@flash} />
+          <%= @inner_content %>
+        </div>
+      </main>
+    </div>
   </div>
-</div>
+</body>

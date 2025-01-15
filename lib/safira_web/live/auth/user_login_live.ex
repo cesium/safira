@@ -17,7 +17,7 @@ defmodule SafiraWeb.UserLoginLive do
         <:subtitle>
           <%= if @registrations_open do %>
             Don't have an account?
-            <.link navigate={~p"/users/register"} class="font-semibold text-primary hover:underline">
+            <.link navigate={~p"/users/register"} class="font-semibold text-accent hover:underline">
               Sign up
             </.link>
             for an account now.
