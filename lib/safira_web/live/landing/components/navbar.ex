@@ -59,7 +59,11 @@ defmodule SafiraWeb.Landing.Components.Navbar do
                       <.dropdown_menu_item
                         :if={user_type?(@current_user, :attendee)}
                         link_type="live_patch"
-                        to={if @current_user.confirmed_at, do: "/app", else: "/users/confirmation_pending"}
+                        to={
+                          if @current_user.confirmed_at,
+                            do: "/app",
+                            else: "/users/confirmation_pending"
+                        }
                         label="App"
                       />
                       <.dropdown_menu_item

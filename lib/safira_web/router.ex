@@ -24,7 +24,6 @@ defmodule SafiraWeb.Router do
     pipe_through :browser
 
     live_session :default, on_mount: [{SafiraWeb.UserAuth, :mount_current_user}] do
-
       live "/", HomeLive.Index, :index
       live "/faqs", FAQLive.Index, :index
     end

@@ -208,7 +208,6 @@ defmodule Safira.Accounts do
 
   """
   def register_attendee_user(attrs) do
-
     Ecto.Multi.new()
     |> Ecto.Multi.insert(
       :user,
