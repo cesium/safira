@@ -14,7 +14,7 @@ defmodule SafiraWeb.UserRoles do
   def require_confirmed_user(conn, _opts) do
     if is_nil(conn.assigns.current_user.confirmed_at) do
       conn
-      |> redirect(to: ~p"/confirmation_pending")
+      |> redirect(to: ~p"/users/confirmation_pending")
       |> halt()
     else
       conn

@@ -1,4 +1,4 @@
-<body class="bg-primary text-light font-iregular relative">
+<body class="bg-primary text-light font-iregular relative min-h-screen">
   <.sparkles />
   <.navbar
     pages={SafiraWeb.Config.landing_pages()}
@@ -6,6 +6,7 @@
     current_user={Map.get(assigns, :current_user)}
   />
   <main>
+    <.flash_group flash={@flash} />
     <%= @inner_content %>
   </main>
   <.footer />

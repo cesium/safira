@@ -1,5 +1,5 @@
 defmodule SafiraWeb.UserConfirmationLive do
-  use SafiraWeb, :live_view
+  use SafiraWeb, :landing_view
 
   import SafiraWeb.Components.Button
 
@@ -8,7 +8,7 @@ defmodule SafiraWeb.UserConfirmationLive do
   def render(%{live_action: :edit} = assigns) do
     ~H"""
     <div class="mx-auto max-w-sm">
-      <img class="w-52 h-52 m-auto block" src={~p"/images/sei.svg"} />
+      <img class="w-52 h-52 m-auto block" src={~p"/images/sei-logo.svg"} />
       <.header class="text-center">
         <%= gettext("Verify your Account") %>
         <:subtitle>

@@ -1,5 +1,5 @@
 defmodule SafiraWeb.ConfirmationPendingLive do
-  use SafiraWeb, :live_view
+  use SafiraWeb, :landing_view
 
   alias Safira.Accounts
 
@@ -10,31 +10,38 @@ defmodule SafiraWeb.ConfirmationPendingLive do
   @impl true
   def render(assigns) do
     ~H"""
-    <div>
-      <img class="w-52 h-52 m-auto block" src={~p"/images/sei.svg"} />
-      <h1 class="font-terminal uppercase text-4xl sm:text-6xl text-center mt-24">
-        <%= gettext("Just one more step remaining!") %>
-      </h1>
-      <p class="font-terminal text-xl sm:text-2xl text-center mt-4">
-        <%= gettext(
-          "We have sent you an email containing instructions on how to verify your account. Click the link in it to conclude your registration for SEI'25!"
-        ) %>
-      </p>
-      <p class="font-terminal text-md sm:text-xl text-center mt-2">
-        <%= gettext(
-          "If you haven't received an email, check your Spam and Junk folders. If it is not there, click the button below to receive a new link."
-        ) %>
-      </p>
-      <div
-        id="seconds-remaining"
-        class="font-terminal text-center text-2xl sm:text-4xl mt-12"
-        phx-hook="Countdown"
-      >
-        <.action_button title={gettext("Re-send Verification Email")} phx-click="resend" />
+    <div class="mx-auto max-w-lg py-12">
+      <div class="w-full flex items-center justify-center">
+        <span class="ring-2 sm:ring-4 ring-white rounded-full p-4 sm:p-6">
+          <.icon name="hero-envelope" class="w-10 h-10 sm:w-16 sm:h-16" />
+        </span>
       </div>
-      <.link class="text-center block mt-8 underline" href="/users/log_out" method="delete">
-        Sign out
-      </.link>
+      <h1 class="px-4 font-terminal uppercase text-3xl text-center mt-8 sm:mt-10">
+        <%= gettext("We need to verify your email address!") %>
+      </h1>
+      <p class="text-center mt-6 px-4">
+        <%= gettext(
+          "We have sent an email to %{user_email} containing instructions on how to verify your account.",
+          user_email: @current_user.email
+        ) %>
+      </p>
+      <p class="text-center mt-4 px-4">
+        <%= gettext("If you don't see it, you may need to check your spam folder.") %>
+      </p>
+      <p class="text-center mt-4 px-4">
+        <%= gettext("Still can't find it?") %>
+      </p>
+      <div class="font-terminal px-4 sm:px-24 text-center text-2xl sm:text-4xl mt-12">
+        <.action_button
+          title={gettext("Re-send Verification Email")}
+          phx-click="resend"
+          class="!h-14"
+          title_class="text-lg !font-iregular !normal-case"
+        />
+      </div>
+      <p class="text-sm sm:text-md text-center mt-8 opacity-80 px-4">
+        <%= gettext("Need help? Contact us at geral@seium.org.") %>
+      </p>
     </div>
     """
   end
