@@ -11,25 +11,23 @@
   height: 100%;
   border-radius: 50%;
   box-shadow: inset 0 0 45px rgba(255, 255, 255, 0.3), 0 12px 20px -10px rgba(0, 0, 0, 0.4);
+  background-size: contain;
   position: absolute;
   backface-visibility: hidden; /* Ensure backface is hidden */
 }
 
 .side-a {
-  /* background-color: #bb0000; */
-  @apply bg-accent;
+  background-image: url('/images/coin-void.svg');
   z-index: 100;
 }
 
 .side-b {
-  /* background-color: #3e3e3e; */
-  @apply bg-blue-900;
+  background-image: url('/images/coin-dollar-sign.svg');
   transform: rotateY(180deg); /* Rotate the back side */
 }
 
 .side-b-not-rotated {
-  @apply bg-blue-900;
-  /* background-color: #3e3e3e; */
+  background-image: url('/images/coin-dollar-sign.svg');
 }
 
 .coin {

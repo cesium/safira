@@ -98,7 +98,6 @@ defmodule SafiraWeb.App.CoinFlipLive.Index do
       |> stream_insert(:previous_room_list, room, limit: 4, at: 0)
       |> assign(:previous_room_list_count, socket.assigns.previous_room_list_count + 1)
       |> assign(:attendee_tokens, attendee_tokens)
-      #  |> assign(:won, won?(room, socket.assigns.current_user))
     }
   end
 
