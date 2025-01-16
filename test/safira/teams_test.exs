@@ -91,7 +91,9 @@ defmodule Safira.TeamsTest do
       team_member = team_member_fixture()
       update_attrs = %{name: "some updated name"}
 
-      assert {:ok, %TeamMember{} = team_member} = Teams.update_team_member(team_member, update_attrs)
+      assert {:ok, %TeamMember{} = team_member} =
+               Teams.update_team_member(team_member, update_attrs)
+
       assert team_member.name == "some updated name"
     end
 

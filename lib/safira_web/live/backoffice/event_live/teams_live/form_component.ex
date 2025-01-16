@@ -9,14 +9,9 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.FormComponent do
     ~H"""
     <div>
       <.page title={@title}>
-        <.simple_form
-          for={@form}
-          id="team-form"
-          phx-target={@myself}
-          phx-submit="save"
-        >
+        <.simple_form for={@form} id="team-form" phx-target={@myself} phx-submit="save">
           <div class="w-full space-y-2">
-            <.field field={@form[:team]} type="text" label="Team Name" required />
+          <.field field={@form[:name]} name="team[name]" type="text" label="Team Name" required />
           </div>
           <:actions>
             <.button phx-disable-with="Saving...">Save Team</.button>

@@ -128,7 +128,10 @@ defmodule SafiraWeb.Router do
           scope "/teams" do
             live "/", Index, :teams
             live "/new", Index, :teams_new
-            live "/:id/edit", Index, :teams_edit
+            scope "/:id/edit" do
+              live "/", Index, :teams_edit
+              live "/members", Index, :teams_members
+            end
           end
         end
 

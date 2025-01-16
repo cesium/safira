@@ -4,7 +4,7 @@ defmodule Safira.Repo.Migrations.CreateTeamMembers do
   def change do
     create table(:team_members) do
       add :name, :string
-      add :team_id, references(:teams, on_delete: :nothing)
+      add :team_id, :binary_id, primary_key: true
 
       timestamps(type: :utc_datetime)
     end

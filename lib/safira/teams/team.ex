@@ -1,7 +1,9 @@
 defmodule Safira.Teams.Team do
-  use Ecto.Schema
-  import Ecto.Changeset
+  use  Safira.Schema
 
+
+
+  @required_fields ~w(name)a
   schema "teams" do
     field :name, :string
     field :priority, :integer
@@ -12,9 +14,8 @@ defmodule Safira.Teams.Team do
   @doc false
   def changeset(team, attrs) do
     team
-    |> cast(attrs, [:name, :priority])
-    |> validate_required([:name, :priority])
-    |> validate_length(:name, min: 1, max: 255)
-    |> validate_number(:priority, greater_than: 0) 
+    |> cast(attrs, @required_fields)
+    |> validate_required(@required_fields)
+    |> foreign_key_constraint(:name)
   end
 end

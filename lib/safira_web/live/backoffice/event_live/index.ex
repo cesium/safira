@@ -3,6 +3,7 @@ defmodule SafiraWeb.Backoffice.EventLive.Index do
 
   alias Safira.Event
   alias Safira.Event.Faq
+  alias Safira.Teams
 
   on_mount {SafiraWeb.StaffRoles,
             show: %{"event" => ["show"]},
@@ -59,8 +60,21 @@ defmodule SafiraWeb.Backoffice.EventLive.Index do
     |> assign(:page_title, "Team")
   end
 
-  defp apply_action(socket, :teams_new,_params) do
+  defp apply_action(socket, :teams_new, _params) do
     socket
     |> assign(:page_title, "New Team")
+  end
+
+  defp apply_action(socket, :teams_edit, %{"id" => team_id}) do
+    socket
+    |> assign(:page_title, "Edit Team")
+    |> assign(:team_id, team_id)
+  end
+
+  defp apply_action(socket, :teams_members, %{"id" => team_id}) do
+    socket
+    |> assign(:page_title, "Team Members")
+    |> assign(:team, Teams.get_team!(team_id))
+    |> assign(:members, Teams.list_team_members(team_id))
   end
 end

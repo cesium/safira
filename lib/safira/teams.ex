@@ -50,9 +50,8 @@ defmodule Safira.Teams do
 
   """
   def create_team(attrs \\ %{}) do
-    IO.inspect(attrs, label: "Nome recebido")
     %Team{}
-    |> Team.changeset(attrs)
+    |> Team.changeset(%{name: attrs["name"]})
     |> Repo.insert()
   end
 
@@ -110,12 +109,21 @@ defmodule Safira.Teams do
 
   ## Examples
 
-      iex> list_team_members()
+      iex> list_team_members(team_id)
       [%TeamMember{}, ...]
 
   """
-  def list_team_members do
-    Repo.all(TeamMember)
+  def list_team_members(team_id1) do
+    team_id = case team_id1 do
+      %Safira.Teams.Team{id: id} -> id
+      _ -> team_id1
+    end
+
+    if team_id do
+      Repo.all(from tm in TeamMember, where: tm.team_id == ^team_id)
+    else
+      {:error, "Team id is required"}
+    end
   end
 
   @doc """
