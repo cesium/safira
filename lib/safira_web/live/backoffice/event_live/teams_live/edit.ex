@@ -65,8 +65,6 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.Edit do
   end
 
   defp save_team(socket, :teams_update, team_params) do
-    IO.inspect(socket.assigns.team)
-
     case Teams.update_team(socket.assigns.team, team_params) do
       {:ok, _team} ->
         {:noreply,

@@ -33,8 +33,6 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MembersEdit do
   end
 
   def update(assigns, socket) do
-    IO.inspect(socket)
-
     {:ok,
      socket
      |> assign(assigns)
@@ -52,9 +50,6 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MembersEdit do
   end
 
   defp update_member(socket, :teams_members_edit, member_params) do
-    IO.inspect(member_params)
-    IO.inspect(socket.assigns.member)
-
     case Teams.update_team_member(socket.assigns.member, member_params) do
       {:ok, _member} ->
         {:noreply,

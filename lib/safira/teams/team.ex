@@ -1,4 +1,7 @@
 defmodule Safira.Teams.Team do
+  @moduledoc """
+  Team schema.
+  """
   use Safira.Schema
 
   @required_fields ~w(name)a

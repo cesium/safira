@@ -12,7 +12,7 @@ defmodule Safira.TeamsTest do
 
     test "list_teams/0 returns all teams" do
       team = team_fixture()
-      assert Teams.list_teams() == [team]
+      assert Teams.list_teams == [team]
     end
 
     test "get_team!/1 returns the team with given id" do
@@ -21,11 +21,10 @@ defmodule Safira.TeamsTest do
     end
 
     test "create_team/1 with valid data creates a team" do
-      valid_attrs = %{name: "some name", priority: 42}
+      valid_attrs = %{name: "some name"}
 
       assert {:ok, %Team{} = team} = Teams.create_team(valid_attrs)
       assert team.name == "some name"
-      assert team.priority == 42
     end
 
     test "create_team/1 with invalid data returns error changeset" do
@@ -34,11 +33,10 @@ defmodule Safira.TeamsTest do
 
     test "update_team/2 with valid data updates the team" do
       team = team_fixture()
-      update_attrs = %{name: "some updated name", priority: 43}
+      update_attrs = %{name: "some updated name"}
 
       assert {:ok, %Team{} = team} = Teams.update_team(team, update_attrs)
       assert team.name == "some updated name"
-      assert team.priority == 43
     end
 
     test "update_team/2 with invalid data returns error changeset" do

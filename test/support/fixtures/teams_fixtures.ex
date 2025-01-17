@@ -11,8 +11,7 @@ defmodule Safira.TeamsFixtures do
     {:ok, team} =
       attrs
       |> Enum.into(%{
-        name: "some name",
-        priority: 42
+        name: "some name"
       })
       |> Safira.Teams.create_team()
 
