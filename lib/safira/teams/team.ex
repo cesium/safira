@@ -1,12 +1,11 @@
 defmodule Safira.Teams.Team do
   use  Safira.Schema
 
-
-
   @required_fields ~w(name)a
   schema "teams" do
     field :name, :string
     field :priority, :integer
+    has_many :team_members, Safira.Teams.TeamMember
 
     timestamps(type: :utc_datetime)
   end

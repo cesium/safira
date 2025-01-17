@@ -114,13 +114,9 @@ defmodule Safira.Teams do
 
   """
   def list_team_members(team_id1) do
-    team_id = case team_id1 do
-      %Safira.Teams.Team{id: id} -> id
-      _ -> team_id1
-    end
-
-    if team_id do
-      Repo.all(from tm in TeamMember, where: tm.team_id == ^team_id)
+    IO.inspect(team_id1)
+    if team_id1 do
+      Repo.all(from tm in TeamMember, where: tm.team_id == ^team_id1)
     else
       {:error, "Team id is required"}
     end

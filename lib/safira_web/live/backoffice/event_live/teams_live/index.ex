@@ -41,6 +41,4 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.Index do
      socket
      |> stream(:teams, Teams.list_teams())}
   end
-
-
 end
