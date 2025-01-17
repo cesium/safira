@@ -152,13 +152,14 @@ defmodule SafiraWeb.Landing.Components.Schedule do
                 <%= @activity.location %>
               </p>
             </div>
-            <!-- Enroll -->
+            <!-- Enrol -->
             <div class="float-right mr-5 flex flex-1 items-center justify-end">
               <p
-                :if={@activity.has_enrolments}
                 class="relative hover:underline cursor-pointer -mr-3 font-iregular text-lg text-accent sm:mr-1"
+                phx-click="enrol"
+                phx-value-activity_id={@activity.id}
               >
-                <%= gettext("Enroll") %>
+                <%= gettext("Enrol") %>
               </p>
             </div>
             <!-- Expand -->

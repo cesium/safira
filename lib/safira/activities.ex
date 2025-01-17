@@ -5,7 +5,7 @@ defmodule Safira.Activities do
 
   use Safira.Context
 
-  alias Safira.Activities.{Activity, ActivityCategory, Speaker}
+  alias Safira.Activities.{Activity, ActivityCategory, Enrolment, Speaker}
 
   @doc """
   Returns the list of activities.
@@ -438,5 +438,27 @@ defmodule Safira.Activities do
     |> where([s], s.highlighted)
     |> Repo.all()
     |> Repo.preload(:activities)
+  end
+
+  def enrol(attendee_id, activity_id) do
+    Ecto.Multi.new()
+    # We need to read the activity before updating the enrolment count to avoid
+    # a race condition where the enrolment count changes after the activity was last
+    # read from the database, and before this transaction began
+    |> Ecto.Multi.one(:activity, Activity |> where([a], a.id == ^activity_id))
+    |> Ecto.Multi.insert(
+      :enrolment,
+      Enrolment.changeset(
+        %Enrolment{},
+        %{
+          attendee_id: attendee_id,
+          activity_id: activity_id
+        }
+      )
+    )
+    |> Ecto.Multi.update(:new_activity, fn %{activity: act} ->
+      Activity.changeset(act, %{enrolment_count: act.enrolment_count + 1})
+    end)
+    |> Repo.transaction()
   end
 end

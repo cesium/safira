@@ -7,7 +7,7 @@ defmodule Safira.Activities.Activity do
   alias Safira.Event
 
   @required_fields ~w(title date time_start time_end)a
-  @optional_fields ~w(description category_id location has_enrolments max_enrolments)a
+  @optional_fields ~w(description category_id location has_enrolments max_enrolments enrolment_count)a
 
   @derive {
     Flop.Schema,
@@ -34,6 +34,7 @@ defmodule Safira.Activities.Activity do
     field :time_end, :time
     field :has_enrolments, :boolean, default: false
     field :max_enrolments, :integer, default: 0
+    field :enrolment_count, :integer, default: 0
 
     belongs_to :category, Safira.Activities.ActivityCategory
 

@@ -27,4 +27,38 @@ defmodule SafiraWeb.Landing.HomeLive.Index do
   def handle_params(params, _url, socket) do
     {:noreply, socket |> assign(:params, params)}
   end
+
+  @impl true
+  def handle_event("enrol", %{"activity_id" => activity_id}, socket) do
+    if is_nil(socket.assigns.current_user) do
+      {:noreply,
+       socket
+       |> put_flash(:error, gettext("You must be logged in to enrol in activities"))
+       |> push_navigate(to: ~p"/users/log_in")}
+    else
+      if socket.assigns.current_user.type == :attendee do
+        actual_enrol(activity_id, socket)
+      else
+        {:noreply,
+         socket
+         |> put_flash(:error, gettext("Only attendees can enrol in activities"))}
+      end
+    end
+  end
+
+  defp actual_enrol(activity_id, socket) do
+    IO.inspect("HELLO")
+
+    case Activities.enrol(socket.assigns.current_user.attendee.id, activity_id) do
+      {:ok, _} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, gettext("Successfully enrolled"))}
+
+      {:error, _} ->
+        {:noreplu,
+         socket
+         |> put_flash(:error, gettext("Something happened"))}
+    end
+  end
 end
