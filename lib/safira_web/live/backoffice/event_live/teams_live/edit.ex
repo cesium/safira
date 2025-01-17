@@ -8,37 +8,30 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.Edit do
   def render(assigns) do
     ~H"""
     <div>
-      <.page
-        title={@title}
-      >
+      <.page title={@title}>
         <:actions>
-        <.link navigate={~p"/dashboard/event/teams/#{@team.id}/edit/members"}>
+          <.link navigate={~p"/dashboard/event/teams/#{@team.id}/edit/members"}>
             <.button>
               <.icon name="hero-adjustments-horizontal" />
             </.button>
           </.link>
         </:actions>
-        <.simple_form
-          for={@form}
-          id="edit-team-form"
-          phx-target={@myself}
-          phx-submit="save"
-        >
+        <.simple_form for={@form} id="edit-team-form" phx-target={@myself} phx-submit="save">
           <div class="flex flex-col md:flex-row w-full gap-4">
             <div class="w-full space-y-2">
               <.field field={@form[:name]} name="team[name]" type="text" label="New Team Name" />
             </div>
           </div>
           <ul class="h-96 mt-8 pb-8 flex flex-col space-y-2 overflow-y-auto">
-          <li
-            :for={{id, members} <- @streams.members}
-            id={id}
-            class="even:bg-lightShade/20 dark:even:bg-darkShade/20 px-4 py-4 flex flex-row w-full justify-between"
-        >
-            <p><%= members.name %></p>
-            <.link navigate={~p"/dashboard/event/teams/#{@team.id}/edit/members/#{members.id}"}>
-              <.icon name="hero-pencil" class="w-5 h-5" />
-            </.link>
+            <li
+              :for={{id, members} <- @streams.members}
+              id={id}
+              class="even:bg-lightShade/20 dark:even:bg-darkShade/20 px-4 py-4 flex flex-row w-full justify-between"
+            >
+              <p><%= members.name %></p>
+              <.link navigate={~p"/dashboard/event/teams/#{@team.id}/edit/members/#{members.id}"}>
+                <.icon name="hero-pencil" class="w-5 h-5" />
+              </.link>
             </li>
           </ul>
           <:actions>
@@ -71,9 +64,9 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.Edit do
     save_team(socket, :teams_update, team_params)
   end
 
-
   defp save_team(socket, :teams_update, team_params) do
     IO.inspect(socket.assigns.team)
+
     case Teams.update_team(socket.assigns.team, team_params) do
       {:ok, _team} ->
         {:noreply,
@@ -87,5 +80,4 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.Edit do
          |> assign(:form, to_form(changeset))}
     end
   end
-
 end

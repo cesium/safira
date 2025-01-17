@@ -76,8 +76,9 @@
   :if={@live_action in [:teams_members]}
   id={"team-#{@team.id}"}
   show
-  on_cancel={JS.patch(~p"/dashboard/event/teams/")}>
- <.live_component
+  on_cancel={JS.patch(~p"/dashboard/event/teams/")}
+>
+  <.live_component
     module={SafiraWeb.Live.Backoffice.EventLive.TeamsLive.Members}
     id="team-#{@team.id}"
     title={@page_title}

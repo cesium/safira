@@ -8,16 +8,8 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.Members do
   def render(assigns) do
     ~H"""
     <div>
-      <.page
-        title={@title}
-        subtitle={gettext("Manage your team members here.")}
-      >
-        <.simple_form
-          for={@form}
-          id="member-form"
-          phx-target={@myself}
-          phx-submit="save"
-        >
+      <.page title={@title} subtitle={gettext("Manage your team members here.")}>
+        <.simple_form for={@form} id="member-form" phx-target={@myself} phx-submit="save">
           <div class="w-full space-y-2">
             <.field field={@form[:name]} name="member[name]" type="text" label="Member Name" required />
           </div>
@@ -54,7 +46,6 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.Members do
     member_params = Map.put(member_params, "team_id", socket.assigns.team.id)
     save_member(socket, :members_new, member_params)
   end
-
 
   defp save_member(socket, :members_new, member_params) do
     case Teams.create_team_member(member_params) do

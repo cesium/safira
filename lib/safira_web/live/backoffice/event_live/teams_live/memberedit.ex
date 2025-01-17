@@ -11,7 +11,7 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MembersEdit do
       <.page title={@title}>
         <.simple_form for={@form} id="member-form" phx-target={@myself} phx-submit="save">
           <div class="w-full space-y-2">
-          <.field field={@form[:name]} name="member[name]" type="text" label="Member Name" required />
+            <.field field={@form[:name]} name="member[name]" type="text" label="Member Name" required />
           </div>
           <:actions>
             <.button phx-disable-with="Saving...">Update Member</.button>
@@ -34,6 +34,7 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MembersEdit do
 
   def update(assigns, socket) do
     IO.inspect(socket)
+
     {:ok,
      socket
      |> assign(assigns)
@@ -53,6 +54,7 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MembersEdit do
   defp update_member(socket, :teams_members_edit, member_params) do
     IO.inspect(member_params)
     IO.inspect(socket.assigns.member)
+
     case Teams.update_team_member(socket.assigns.member, member_params) do
       {:ok, _member} ->
         {:noreply,
