@@ -22,7 +22,8 @@ import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 import live_select from "live_select"
-import { QrScanner, Wheel, Confetti, Countdown, Sorting } from "./hooks";
+import { QrScanner, Wheel, Confetti, Sorting } from "./hooks";
+import darkModeHook from "../vendor/dark_mode"
 
 let Hooks = {
   QrScanner: QrScanner,
@@ -32,6 +33,7 @@ let Hooks = {
   Sorting: Sorting,
   ...live_select
 };
+Hooks.DarkThemeToggle = darkModeHook
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let liveSocket = new LiveSocket("/live", Socket, {
@@ -39,6 +41,12 @@ let liveSocket = new LiveSocket("/live", Socket, {
   params: {_csrf_token: csrfToken},
   hooks: Hooks
 })
+
+if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+  document.documentElement.classList.add('dark');
+} else {
+  document.documentElement.classList.remove('dark')
+}
 
 // Show progress bar on live navigation and form submits
 topbar.config({barColors: {0: "#ffdb0d"}, shadowColor: "rgba(0, 0, 0, .3)"})

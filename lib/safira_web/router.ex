@@ -104,6 +104,11 @@ defmodule SafiraWeb.Router do
           live "/product/:id", Show, :show
         end
 
+        scope "/profile", ProfileLive do
+          live "/", Index, :index
+          live "/settings", Index, :edit
+        end
+
         live "/vault", VaultLive.Index, :index
       end
 
