@@ -22,7 +22,7 @@ import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 import live_select from "live_select"
-import { QrScanner, Wheel, Confetti, Countdown, Sorting } from "./hooks";
+import { QrScanner, Wheel, Confetti, Countdown, Sorting, Redirect } from "./hooks";
 
 let Hooks = {
   QrScanner: QrScanner,
@@ -30,6 +30,7 @@ let Hooks = {
   Confetti: Confetti,
   Countdown: Countdown,
   Sorting: Sorting,
+  Redirect: Redirect,
   ...live_select
 };
 

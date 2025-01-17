@@ -31,7 +31,7 @@ defmodule SafiraWeb.Landing.Components.Navbar do
                   <div class="flex flex-row gap-12">
                     <%= for page <- @pages do %>
                       <.link
-                        patch={page.url}
+                        navigate={page.url}
                         class="text-sm text-white transition-colors duration-75 ease-in hover:text-accent"
                       >
                         <%= page.title %>
@@ -98,7 +98,7 @@ defmodule SafiraWeb.Landing.Components.Navbar do
         <div class="flex flex-col w-full items-center gap-16">
           <%= for page <- @pages do %>
             <.link
-              patch={page.url}
+              navigate={page.url}
               phx-click={hide_mobile_navbar()}
               class="font-terminal uppercase text-3xl text-white transition-colors duration-75 ease-in hover:text-accent"
             >
