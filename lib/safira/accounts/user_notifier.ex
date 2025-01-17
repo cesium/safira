@@ -6,6 +6,14 @@ defmodule Safira.Accounts.UserNotifier do
 
   alias Safira.Mailer
 
+  use Phoenix.Swoosh, view: SafiraWeb.EmailView
+
+  defp base_email(opts) do
+    new()
+    |> to(opts[:to])
+    |> from({Mailer.get_sender_name(), Mailer.get_sender_address()})
+  end
+
   # Delivers the email using the application mailer.
   defp deliver(recipient, subject, body) do
     sender = {Mailer.get_sender_name(), Mailer.get_sender_address()}
@@ -46,20 +54,31 @@ defmodule Safira.Accounts.UserNotifier do
   Deliver instructions to reset a user password.
   """
   def deliver_reset_password_instructions(user, url) do
-    deliver(user.email, "Reset password instructions", """
+    # deliver(user.email, "Reset password instructions", """
 
-    ==============================
+    # ==============================
 
-    Hi #{user.email},
+    # Hi #{user.email},
 
-    You can reset your password by visiting the URL below:
+    # You can reset your password by visiting the URL below:
 
-    #{url}
+    # #{url}
 
-    If you didn't request this change, please ignore this.
+    # If you didn't request this change, please ignore this.
 
-    ==============================
-    """)
+    # ==============================
+    # """)
+    email =
+      base_email(to: user.email)
+      |> subject("Reset password instructions")
+      |> assign(:user_name, user.name)
+      |> assign(:reset_password_link, url)
+      |> render_body("reset_password.html")
+
+    case Mailer.deliver(email) do
+      {:ok, _metadata} -> {:ok, email}
+      {:error, reason} -> {:error, reason}
+    end
   end
 
   @doc """
