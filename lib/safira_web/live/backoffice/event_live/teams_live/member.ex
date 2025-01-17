@@ -16,11 +16,10 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.Members do
           for={@form}
           id="member-form"
           phx-target={@myself}
-          phx-change="validate"
           phx-submit="save"
         >
           <div class="w-full space-y-2">
-            <.field field={@form[:name]} type="text" label="Member Name" required />
+            <.field field={@form[:name]} name="member[name]" type="text" label="Member Name" required />
           </div>
           <:actions>
             <.button phx-disable-with="Saving...">Add Team Member</.button>
@@ -51,15 +50,11 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.Members do
   end
 
   @impl true
-  def handle_event("validate", %{"member" => member_params}, socket) do
-    changeset = Teams.change_team_member(socket.assigns.member, member_params)
-    {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
+  def handle_event("save", %{"member" => member_params}, socket) do
+    member_params = Map.put(member_params, "team_id", socket.assigns.team.id)
+    save_member(socket, :members_new, member_params)
   end
 
-  @impl true
-  def handle_event("save", %{"member" => member_params}, socket) do
-    save_member(socket, socket.assigns.action, member_params)
-  end
 
   defp save_member(socket, :members_new, member_params) do
     case Teams.create_team_member(member_params) do
@@ -76,16 +71,10 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.Members do
     end
   end
 
-  defp save_member(socket, :members_edit, member_params) do
-    case Teams.update_team_member(socket.assigns.member, member_params) do
-      {:ok, _member} ->
-        {:noreply,
-         socket
-         |> put_flash(:info, "Member updated successfully")
-         |> push_patch(to: socket.assigns.patch)}
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, form: to_form(changeset))}
-    end
+  defp save_member(socket, :teams_members, _member_params) do
+    {:noreply,
+     socket
+     |> put_flash(:error, "Invalid action for saving a member.")
+     |> push_patch(to: socket.assigns.patch)}
   end
 end

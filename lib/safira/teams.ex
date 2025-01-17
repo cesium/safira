@@ -114,7 +114,6 @@ defmodule Safira.Teams do
 
   """
   def list_team_members(team_id1) do
-    IO.inspect(team_id1)
     if team_id1 do
       Repo.all(from tm in TeamMember, where: tm.team_id == ^team_id1)
     else
@@ -152,7 +151,7 @@ defmodule Safira.Teams do
   """
   def create_team_member(attrs \\ %{}) do
     %TeamMember{}
-    |> TeamMember.changeset(attrs)
+    |> TeamMember.changeset(%{name: attrs["name"], team_id: attrs["team_id"]})
     |> Repo.insert()
   end
 
@@ -170,7 +169,7 @@ defmodule Safira.Teams do
   """
   def update_team_member(%TeamMember{} = team_member, attrs) do
     team_member
-    |> TeamMember.changeset(attrs)
+    |> TeamMember.changeset(%{name: attrs["name"]})
     |> Repo.update()
   end
 

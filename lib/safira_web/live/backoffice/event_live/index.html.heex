@@ -59,7 +59,7 @@
   :if={@live_action in [:teams_edit]}
   id="teams-edit-modal"
   show
-  on_cancel={JS.patch(~p"/dashboard/event/teams")}
+  on_cancel={JS.patch(~p"/dashboard/event/teams/")}
 >
   <.live_component
     module={SafiraWeb.Live.Backoffice.EventLive.TeamsLive.Edit}
@@ -76,7 +76,7 @@
   :if={@live_action in [:teams_members]}
   id={"team-#{@team.id}"}
   show
-  on_cancel={JS.patch(~p"/dashboard/event/teams/{@team.id}/edit")}>
+  on_cancel={JS.patch(~p"/dashboard/event/teams/")}>
  <.live_component
     module={SafiraWeb.Live.Backoffice.EventLive.TeamsLive.Members}
     id="team-#{@team.id}"
@@ -84,7 +84,24 @@
     team={@team}
     action={@live_action}
     form={@form}
-    patch={~p"/dashboard/event/teams/{@team.id}/edit"}
+    patch={~p"/dashboard/event/teams/"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:teams_members_edit]}
+  id="event-modal-teams-members-edit"
+  show
+  on_cancel={JS.patch(~p"/dashboard/event/teams/")}
+>
+  <.live_component
+    module={SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MembersEdit}
+    id={@member.id}
+    member={@member}
+    title={@page_title}
+    action={@live_action}
+    form={@form}
+    patch={~p"/dashboard/event/teams/"}
   />
 </.modal>
 

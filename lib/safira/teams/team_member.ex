@@ -5,7 +5,7 @@ defmodule Safira.Teams.TeamMember do
   schema "team_members" do
     field :name, :string
     belongs_to :team, Safira.Teams.Team
-    
+
     timestamps(type: :utc_datetime)
   end
 
