@@ -34,46 +34,42 @@ defmodule Safira.Accounts.UserNotifier do
   Deliver instructions to confirm account.
   """
   def deliver_confirmation_instructions(user, url) do
-    deliver(user.email, "Confirmation instructions", """
+    email =
+      base_email(to: user.email)
+      |> subject("SEI | Confirm your email")
+      |> assign(:user_name, user.name)
+      |> assign(:confirm_email_link, url)
+      |> render_body("confirm_email.html")
 
-    ==============================
-
-    Hi #{user.email},
-
-    You can confirm your account by visiting the URL below:
-
-    #{url}
-
-    If you didn't create an account with us, please ignore this.
-
-    ==============================
-    """)
+    case Mailer.deliver(email) do
+      {:ok, _metadata} -> {:ok, email}
+      {:error, reason} -> {:error, reason}
+    end
   end
 
   @doc """
   Deliver instructions to reset a user password.
   """
   def deliver_reset_password_instructions(user, url) do
-    # deliver(user.email, "Reset password instructions", """
-
-    # ==============================
-
-    # Hi #{user.email},
-
-    # You can reset your password by visiting the URL below:
-
-    # #{url}
-
-    # If you didn't request this change, please ignore this.
-
-    # ==============================
-    # """)
     email =
       base_email(to: user.email)
-      |> subject("Reset password instructions")
+      |> subject("SEI | Reset password")
       |> assign(:user_name, user.name)
       |> assign(:reset_password_link, url)
       |> render_body("reset_password.html")
+
+    case Mailer.deliver(email) do
+      {:ok, _metadata} -> {:ok, email}
+      {:error, reason} -> {:error, reason}
+    end
+  end
+
+  def deliver_welcome_email(user) do
+    email =
+      base_email(to: user.email)
+      |> subject("Welcome to SEI")
+      |> assign(:user_name, user.name)
+      |> render_body("welcome.html")
 
     case Mailer.deliver(email) do
       {:ok, _metadata} -> {:ok, email}
