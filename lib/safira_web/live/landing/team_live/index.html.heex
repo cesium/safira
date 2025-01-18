@@ -8,8 +8,10 @@
           <%= gettext("CeSIUM has teamed up with the best team possible.") %>
         </h1>
       </div>
-      <div class="mt-10">
-        <.team team_name={@team_name} members={@members} />
+      <div class="font-terminal mt-10">
+        <%= for team <- @teams do %>
+          <.team team_name={team.name} members={team.members} />
+        <% end %>
       </div>
     </div>
   </div>  

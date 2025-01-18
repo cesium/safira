@@ -6,7 +6,7 @@ defmodule SafiraWeb.Teamcomponent do
 
   def team(assigns) do
     ~H"""
-    <div class="text-center my-8">
+    <div class="text-left my-8">
       <h2 class="text-2xl font-bold uppercase text-white mb-6"><%= @team_name %></h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         <div
@@ -18,7 +18,7 @@ defmodule SafiraWeb.Teamcomponent do
             alt={"Foto de " <> member.name}
             class="w-36 h-36 object-cover border-2 border-white"
           />
-          <p class="mt-4 text-lg font-semibold text-white uppercase"><%= member.name %></p>
+          <p class="mt-2 text-lg font-semibold text-white uppercase"><%= member.name %></p>
         </div>
       </div>
     </div>

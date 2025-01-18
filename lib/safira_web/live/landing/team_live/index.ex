@@ -1,19 +1,27 @@
 defmodule SafiraWeb.Landing.TeamLive.Index do
   use SafiraWeb, :live_view
 
+  alias Safira.Teams
   import SafiraWeb.Teamcomponent
-  alias Safira.Event
 
   @impl true
   def mount(_params, _session, socket) do
-    members = [
-      %{photo_url: "/images/icons/image_team.png", name: "Dário Guimarães"},
-      %{photo_url: "/images/icons/image_team.png", name: "Enzo Vieira"},
-      %{photo_url: "/images/icons/image_team.png", name: "João Lobo"},
-      %{photo_url: "/images/icons/image_team.png", name: "Rui Lopes"},
-      %{photo_url: "/images/icons/image_team.png", name: "Tiago Bacelar"}
-    ]
+    teams = Teams.list_teams()
 
-    {:ok, assign(socket, team_name: "Tech", members: members)}
+    teams_with_members =
+      Enum.map(teams, fn team ->
+        members = Teams.list_team_members(team.id)
+        %{
+          name: team.name,
+          members: Enum.map(members, fn member ->
+            %{
+              photo_url: Map.get(member, :photo_url, "/images/image_team.png"),
+              name: member.name
+            }
+          end)
+        }
+      end)
+
+    {:ok, assign(socket, teams: teams_with_members)}
   end
 end
