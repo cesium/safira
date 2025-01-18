@@ -459,7 +459,13 @@ defmodule Safira.Accounts do
     with {:ok, query} <- UserToken.verify_email_token_query(token, "confirm"),
          %User{} = user <- Repo.one(query),
          {:ok, %{user: user}} <- Repo.transaction(confirm_user_multi(user)) do
-      {:ok, user}
+      case UserNotifier.deliver_welcome_email(user) do
+        {:ok, _} ->
+          {:ok, user}
+
+        {:error, _message} ->
+          {:ok, user}
+      end
     else
       _ -> :error
     end
