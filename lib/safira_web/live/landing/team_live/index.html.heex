@@ -1,0 +1,15 @@
+<div class="xl:px-[15rem] md:px-[8rem] px-[2.5rem]">
+    <div class="spacing relative z-20 flex flex-col justify-between py-20 lg:h-3/4">
+      <div class="font-terminal-uppercase relative z-50 font-bold">
+        <h5 class="text-[rgb(255_128_13/var(--tw-text-opacity))] text-2xl font-ibold">
+          <%= gettext("TEAM") %>
+        </h5>
+        <h1 class="font-terminal uppercase mb-4 select-none text-4xl font-bold lg:text-8xl">
+          <%= gettext("CeSIUM has teamed up with the best team possible.") %>
+        </h1>
+      </div>
+      <div class="mt-10">
+        <.team team_name={@team_name} members={@members} />
+      </div>
+    </div>
+  </div>  

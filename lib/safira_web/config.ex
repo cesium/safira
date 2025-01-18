@@ -11,10 +11,10 @@ defmodule SafiraWeb.Config do
       #  title: "Schedule",
       #  url: "/schedule"
       # },
-      # %{
-      #  title: "Team",
-      #  url: "/team"
-      # },
+      %{
+        title: "Team",
+        url: "/team"
+       },
       # %{
       #  title: "Challenges",
       #  url: "/challenges"

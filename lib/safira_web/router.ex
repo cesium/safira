@@ -26,6 +26,7 @@ defmodule SafiraWeb.Router do
     live_session :default do
       live "/", HomeLive.Index, :index
       live "/faqs", FAQLive.Index, :index
+      live "/team", TeamLive.Index, :index
     end
   end
 
