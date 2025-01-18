@@ -64,6 +64,9 @@ defmodule Safira.Accounts.UserNotifier do
     end
   end
 
+  @doc """
+  Deliver welcome email.
+  """
   def deliver_welcome_email(user) do
     email =
       base_email(to: user.email)
