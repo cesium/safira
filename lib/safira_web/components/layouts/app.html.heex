@@ -18,7 +18,10 @@
       link_inactive_class="hover:bg-primary-500/10 text-light"
     />
     <div class="flex flex-col flex-1 overflow-hidden">
-      <div :if={Map.get(assigns, :event_started, true)} class="flex justify-end lg:hidden px-4 sm:px-6 py-2">
+      <div
+        :if={Map.get(assigns, :event_started, true)}
+        class="flex justify-end lg:hidden px-4 sm:px-6 py-2"
+      >
         <button
           class="sidebar-toggle flex items-center justify-center w-16 text-light"
           aria-expanded="false"

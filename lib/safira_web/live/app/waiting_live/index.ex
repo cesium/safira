@@ -9,13 +9,20 @@ defmodule SafiraWeb.App.WaitingLive.Index do
   def render(assigns) do
     ~H"""
     <div>
-      <.sparkles/>
+      <.sparkles />
       <!-- 3D physics based credential scene  -->
-      <div id="credential-scene" phx-hook="CredentialScene" data-attendee_name={@current_user.name} class="absolute -z-10 overflow-hidden top-0 left-0 w-screen h-full">
+      <div
+        id="credential-scene"
+        phx-hook="CredentialScene"
+        data-attendee_name={@current_user.name}
+        class="absolute -z-10 overflow-hidden top-0 left-0 w-screen h-full"
+      >
       </div>
       <!-- Timer to the event  -->
       <div class="z-20 mt-8">
-        <h1 class="font-terminal text-center text-2xl sm:text-4xl uppercase"><%= gettext("Waiting for the event to start!") %></h1>
+        <h1 class="font-terminal text-center text-2xl sm:text-4xl uppercase">
+          <%= gettext("Waiting for the event to start!") %>
+        </h1>
         <div
           id="seconds-remaining"
           class="font-terminal text-center text-4xl sm:text-6xl mt-12 uppercase"

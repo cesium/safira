@@ -1,8 +1,6 @@
 defmodule SafiraWeb.UserConfirmationLive do
   use SafiraWeb, :landing_view
 
-  import SafiraWeb.Components.Button
-
   alias Safira.Accounts
 
   def render(%{live_action: :edit} = assigns) do

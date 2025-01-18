@@ -53,7 +53,6 @@ defmodule Safira.Repo.Seeds.Accounts do
         }
       }
 
-
       case User.registration_changeset(%User{}, Map.delete(attrs, "attendee")) |> Repo.insert() do
         {:ok, user} ->
           case Attendee.changeset(%Attendee{}, Map.put(Map.get(attrs, "attendee"), "user_id", user.id)) |> Repo.insert() do

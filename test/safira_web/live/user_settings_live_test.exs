@@ -37,7 +37,7 @@ defmodule SafiraWeb.UserSettingsLiveTest do
   describe "update email form" do
     setup %{conn: conn} do
       password = valid_user_password()
-      user = user_fixture(%{"password" => password})
+      user = user_fixture(%{password: password})
 
       token =
         extract_user_token(fn url ->
@@ -102,7 +102,7 @@ defmodule SafiraWeb.UserSettingsLiveTest do
   describe "update password form" do
     setup %{conn: conn} do
       password = valid_user_password()
-      user = user_fixture(%{"password" => password})
+      user = user_fixture(%{password: password})
 
       token =
         extract_user_token(fn url ->
@@ -121,11 +121,11 @@ defmodule SafiraWeb.UserSettingsLiveTest do
 
       form =
         form(lv, "#password_form", %{
-          "current_password" => password,
-          "user" => %{
-            "email" => user.email,
-            "password" => new_password,
-            "password_confirmation" => new_password
+          current_password: password,
+          user: %{
+            email: user.email,
+            password: new_password,
+            password_confirmation: new_password
           }
         })
 
@@ -168,10 +168,10 @@ defmodule SafiraWeb.UserSettingsLiveTest do
       result =
         lv
         |> form("#password_form", %{
-          "current_password" => "invalid",
-          "user" => %{
-            "password" => "too short",
-            "password_confirmation" => "does not match"
+          current_password: "invalid",
+          user: %{
+            password: "too short",
+            password_confirmation: "does not match"
           }
         })
         |> render_submit()
