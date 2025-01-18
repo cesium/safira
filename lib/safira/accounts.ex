@@ -201,16 +201,28 @@ defmodule Safira.Accounts do
   ## Examples
 
       iex> register_attendee_user(%{field: value})
-      {:ok, %User{}}
+      {:ok, %{user: %User{}, attendee: %Attendee{}}}
 
       iex> register_attendee_user(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
+      {:error, :struct, %Ecto.Changeset{}, %{}}
 
   """
   def register_attendee_user(attrs) do
-    %User{}
-    |> User.registration_changeset(attrs |> Map.put(:type, :attendee))
-    |> Repo.insert()
+    Ecto.Multi.new()
+    |> Ecto.Multi.insert(
+      :user,
+      User.registration_changeset(%User{}, Map.delete(attrs, :attendee),
+        hash_password: true,
+        validate_email: true
+      )
+    )
+    |> Ecto.Multi.insert(
+      :attendee,
+      fn %{user: user} ->
+        Attendee.changeset(%Attendee{}, %{user_id: user.id})
+      end
+    )
+    |> Repo.transaction()
   end
 
   @doc """
@@ -260,6 +272,7 @@ defmodule Safira.Accounts do
   """
   def change_user_registration(%User{} = user, attrs \\ %{}) do
     User.registration_changeset(user, attrs, hash_password: false, validate_email: false)
+    |> User.password_confirmation_changeset(attrs)
   end
 
   ## Settings

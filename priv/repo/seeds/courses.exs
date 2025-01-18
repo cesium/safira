@@ -1,6 +1,5 @@
 defmodule Safira.Repo.Seeds.Courses do
   alias Safira.Accounts
-  alias Safira.Repo
 
   @courses File.read!("priv/fake/courses.txt") |> String.split("\n")
 
