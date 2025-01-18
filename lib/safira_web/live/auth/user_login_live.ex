@@ -1,5 +1,5 @@
 defmodule SafiraWeb.UserLoginLive do
-  use SafiraWeb, :live_view
+  use SafiraWeb, :landing_view
 
   alias Safira.Event
 
@@ -7,9 +7,9 @@ defmodule SafiraWeb.UserLoginLive do
 
   def render(assigns) do
     ~H"""
-    <div class="mx-auto max-w-sm">
-      <div class="px-32 py-12">
-        <img class="w-full h-full block" src={~p"/images/sei-logo.svg"} />
+    <div class="mx-auto max-w-sm px-4 py-2">
+      <div class="px-24 sm:px-32 py-6 sm:py-12">
+        <img class="w-full h-full block" src={~p"/images/star-struck-void.svg"} />
       </div>
 
       <.header class="text-center">
@@ -30,13 +30,20 @@ defmodule SafiraWeb.UserLoginLive do
         <.input field={@form[:password]} type="password" label="Password" required />
 
         <:actions>
-          <.input field={@form[:remember_me]} type="checkbox" label="Keep me logged in" />
+          <div class="flex items-center">
+            <div class="mr-1 pr-2">
+              <.input field={@form[:remember_me]} type="checkbox" />
+            </div>
+            <div class="inline text-sm">
+              <%= gettext("Keep me logged in.") %>
+            </div>
+          </div>
           <.link href={~p"/users/reset_password"} class="text-sm font-semibold">
             Forgot your password?
           </.link>
         </:actions>
         <:actions>
-          <.action_button title="Log in" class="w-full" />
+          <.action_button title="Log in" class="w-full mt-6" />
         </:actions>
       </.simple_form>
     </div>
