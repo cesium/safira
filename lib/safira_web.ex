@@ -17,7 +17,7 @@ defmodule SafiraWeb do
   those modules here.
   """
 
-  def static_paths, do: ~w(assets docs fonts images favicon.ico robots.txt)
+  def static_paths, do: ~w(assets docs fonts images models favicon.ico robots.txt)
 
   def router do
     quote do
