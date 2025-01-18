@@ -11,10 +11,18 @@ defmodule Safira.Accounts.UserNotifier do
   defp base_html_email(recipient, subject) do
     sender = {Mailer.get_sender_name(), Mailer.get_sender_address()}
 
+    phx_host =
+      if System.get_env("PHX_HOST") != nil do
+        "https://" <> System.get_env("PHX_HOST")
+      else
+        ""
+      end
+
     new()
     |> to(recipient)
     |> from(sender)
     |> subject("[#{elem(sender, 0)}] #{subject}")
+    |> assign(:phx_host, phx_host)
   end
 
   # Delivers the email using the application mailer.
