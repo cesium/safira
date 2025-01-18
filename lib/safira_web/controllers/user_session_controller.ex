@@ -20,7 +20,8 @@ defmodule SafiraWeb.UserSessionController do
 
       {:error, _, %Ecto.Changeset{} = _changeset, _} ->
         conn
-        |> put_flash(:error, "Unable to register. Check the errors below")
+        |> put_flash(:error, "Unable to register. This email may already be registered.")
+        |> redirect(to: ~p"/users/register")
     end
   end
 

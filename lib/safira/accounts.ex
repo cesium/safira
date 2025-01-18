@@ -211,7 +211,10 @@ defmodule Safira.Accounts do
     Ecto.Multi.new()
     |> Ecto.Multi.insert(
       :user,
-      User.registration_changeset(%User{}, Map.delete(attrs, :attendee))
+      User.registration_changeset(%User{}, Map.delete(attrs, :attendee),
+        hash_password: true,
+        validate_email: true
+      )
     )
     |> Ecto.Multi.insert(
       :attendee,
@@ -269,6 +272,7 @@ defmodule Safira.Accounts do
   """
   def change_user_registration(%User{} = user, attrs \\ %{}) do
     User.registration_changeset(user, attrs, hash_password: false, validate_email: false)
+    |> User.password_confirmation_changeset(attrs)
   end
 
   ## Settings

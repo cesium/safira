@@ -77,7 +77,7 @@
     <.label class="col-span-2 pb-8">
       <div class="flex">
         <div class="mr-1 mt-1 pr-2">
-          <.input name="newsletter" label="" type="checkbox" value={false} />
+          <.input label="" type="checkbox" field={@form[:allows_marketing]} />
         </div>
 
         <div class="inline">
@@ -86,7 +86,7 @@
       </div>
     </.label>
     <div class="col-span-2 w-full flex items-center">
-      <.action_button title="Register" subtitle="" class="mx-12" disabled={false} />
+      <.action_button title="Register" subtitle="" class="mx-12" disabled={@errors} />
     </div>
   </.form>
 </div>
