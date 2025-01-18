@@ -1,0 +1,92 @@
+<div class="mx-auto max-w-lg py-2">
+  <div class="px-28 sm:px-40 py-12">
+    <img
+      class="w-full h-full block select-none pointer-events-none"
+      src={~p"/images/star-struck-void.svg"}
+    />
+  </div>
+  <.header class="text-center px-4">
+    <h1 class="text-3xl text-center font-terminal uppercase font-semibold">Event Registration</h1>
+    <:subtitle>
+      <%= gettext("Already registered?") %>
+      <.link navigate={~p"/users/log_in"} class="font-semibold text-accent hover:underline">
+        Log in
+      </.link>
+      <%= gettext("to your account now") %>
+    </:subtitle>
+  </.header>
+
+  <.form
+    for={@form}
+    id="registration_form"
+    phx-change="validate"
+    phx-trigger-action={@trigger_submit}
+    action={~p"/users/register"}
+    class="w-90 flex flex-col px-6 sm:px-0 sm:grid grid-cols-2 gap-4 py-10"
+  >
+    <.input
+      field={@form[:name]}
+      type="text"
+      label="Name"
+      placeholder="John Doe"
+      autocomplete="off"
+      required
+    />
+    <.input
+      field={@form[:handle]}
+      type="handle"
+      label="Username"
+      autocomplete="off"
+      required
+      placeholder="johndoe"
+    />
+    <.input
+      field={@form[:email]}
+      type="email"
+      label="Email"
+      required
+      wrapper_class="col-span-2"
+      placeholder="john.doe@cesium.pt"
+    />
+    <.input field={@form[:password]} type="password" label="Password" required />
+    <.input
+      field={@form[:password_confirmation]}
+      type="password"
+      label="Confirm Password"
+      required
+    />
+
+    <.label class="col-span-2 pt-4">
+      <div class="flex">
+        <div class="mr-1 mt-1 pr-2">
+          <.input name="consent" label="" type="checkbox" value={false} required />
+        </div>
+
+        <div class="inline">
+          <%= gettext("I have read and agree to the ") %>
+          <.link
+            href={~p"/docs/privacy_policy.pdf"}
+            target="_blank"
+            class="font-semibold text-accent hover:underline"
+          >
+            <%= gettext("Privacy Policy.") %>
+          </.link>
+        </div>
+      </div>
+    </.label>
+    <.label class="col-span-2 pb-8">
+      <div class="flex">
+        <div class="mr-1 mt-1 pr-2">
+          <.input label="" type="checkbox" field={@form[:allows_marketing]} />
+        </div>
+
+        <div class="inline">
+          <%= gettext("I want to receive marketing emails promoting the event.") %>
+        </div>
+      </div>
+    </.label>
+    <div class="col-span-2 w-full flex items-center">
+      <.action_button title="Register" subtitle="" class="mx-12" disabled={@errors} />
+    </div>
+  </.form>
+</div>

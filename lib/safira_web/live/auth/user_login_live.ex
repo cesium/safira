@@ -3,6 +3,8 @@ defmodule SafiraWeb.UserLoginLive do
 
   alias Safira.Event
 
+  import SafiraWeb.Components.Button
+
   def render(assigns) do
     ~H"""
     <div class="mx-auto max-w-sm">
@@ -15,7 +17,7 @@ defmodule SafiraWeb.UserLoginLive do
         <:subtitle>
           <%= if @registrations_open do %>
             Don't have an account?
-            <.link navigate={~p"/users/register"} class="font-semibold text-primary hover:underline">
+            <.link navigate={~p"/users/register"} class="font-semibold text-accent hover:underline">
               Sign up
             </.link>
             for an account now.
@@ -34,9 +36,7 @@ defmodule SafiraWeb.UserLoginLive do
           </.link>
         </:actions>
         <:actions>
-          <.button phx-disable-with="Logging in..." class="w-full">
-            Log in <span aria-hidden="true">→</span>
-          </.button>
+          <.action_button title="Log in" class="w-full" />
         </:actions>
       </.simple_form>
     </div>

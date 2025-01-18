@@ -1,34 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="csrf-token" content={get_csrf_token()} />
-    <.live_title>
-      <%= assigns[:page_title] || "SEI '25" %>
-    </.live_title>
-    <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
-    <link rel="apple-touch-icon" sizes="180x180" href="/images/icons/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/images/icons/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/images/icons/favicon-16x16.png" />
-    <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
-    </script>
-    <script
-      defer
-      src={Application.get_env(:safira, :umami_script_url)}
-      data-website-id={Application.get_env(:safira, :umami_website_id)}
-    />
-  </head>
-  <body class="bg-primary text-light font-iregular">
-    <.sparkles />
-    <.navbar
-      pages={SafiraWeb.Config.landing_pages()}
-      registrations_open?={Safira.Event.registrations_open?()}
-      current_user={Map.get(assigns, :current_user)}
-    />
-    <main>
-      <%= @inner_content %>
-    </main>
-    <.footer />
-  </body>
-</html>
+<body class="bg-primary text-light font-iregular relative min-h-screen">
+  <.sparkles />
+  <.navbar
+    pages={SafiraWeb.Config.landing_pages()}
+    registrations_open?={Safira.Event.registrations_open?()}
+    current_user={Map.get(assigns, :current_user)}
+  />
+  <main>
+    <.flash_group flash={@flash} />
+    <%= @inner_content %>
+  </main>
+  <.footer />
+</body>
