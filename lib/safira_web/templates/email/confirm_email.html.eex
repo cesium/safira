@@ -4,7 +4,7 @@
     <link
       rel="preload"
       as="image"
-      href=<%= "#{System.get_env("PHX_HOST")}/images/email/sei-logo.png" %>
+      href=<%= "#{@phx_host}/images/email/sei-logo.png" %>
     />
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
     <meta name="x-apple-disable-message-reformatting" />
@@ -47,7 +47,7 @@
                 <div class="gmail-blend-screen">
                   <img
                     alt="SEI Logo"
-                    src=<%= "#{System.get_env("PHX_HOST")}/images/email/sei-logo.png" %>
+                    src=<%= "#{@phx_host}/images/email/sei-logo.png" %>
                     style="margin-left:auto;margin-right:auto;display:block;outline:none;border:none;text-decoration:none;filter:invert(0%)"
                   />
                 </div>
