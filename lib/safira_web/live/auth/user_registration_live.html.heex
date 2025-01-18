@@ -24,8 +24,8 @@
     action={~p"/users/register"}
     class="w-90 flex flex-col px-6 sm:px-0 sm:grid grid-cols-2 gap-4 py-10"
   >
-    <.input field={@form[:name]} type="text" label="Name" placeholder="John Doe" required />
-    <.input field={@form[:handle]} type="handle" label="Username" required placeholder="johndoe" />
+    <.input field={@form[:name]} type="text" label="Name" placeholder="John Doe" autocomplete="off" required />
+    <.input field={@form[:handle]} type="handle" label="Username" autocomplete="off" required placeholder="johndoe" />
     <.input
       field={@form[:email]}
       type="email"
