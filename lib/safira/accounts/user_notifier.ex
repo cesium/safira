@@ -92,19 +92,15 @@ defmodule Safira.Accounts.UserNotifier do
   Deliver instructions to update a user email.
   """
   def deliver_update_email_instructions(user, url) do
-    deliver(user.email, "Update email instructions", """
+    email =
+      base_html_email(user.email, "Change your email")
+      |> assign(:user_name, user.name)
+      |> assign(:confirm_email_link, url)
+      |> render_body("confirm_email_change.html")
 
-    ==============================
-
-    Hi #{user.email},
-
-    You can change your email by visiting the URL below:
-
-    #{url}
-
-    If you didn't request this change, please ignore this.
-
-    ==============================
-    """)
+    case Mailer.deliver(email) do
+      {:ok, _metadata} -> {:ok, email}
+      {:error, reason} -> {:error, reason}
+    end
   end
 end

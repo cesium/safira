@@ -1,27 +1,37 @@
 defmodule SafiraWeb.UserForgotPasswordLive do
-  use SafiraWeb, :live_view
+  use SafiraWeb, :landing_view
 
   alias Safira.Accounts
 
+  import SafiraWeb.Components.Button
+
   def render(assigns) do
     ~H"""
-    <div class="mx-auto max-w-sm">
+    <div class="mx-auto max-w-sm my-32 px-4">
       <.header class="text-center">
         Forgot your password?
         <:subtitle>We'll send a password reset link to your inbox</:subtitle>
       </.header>
 
       <.simple_form for={@form} id="reset_password_form" phx-submit="send_email">
-        <.input field={@form[:email]} type="email" placeholder="Email" required />
+        <.input
+          field={@form[:email]}
+          type="email"
+          placeholder="john.doe@cesium.pt"
+          label="Email"
+          required
+        />
         <:actions>
-          <.button phx-disable-with="Sending..." class="w-full">
-            Send password reset instructions
-          </.button>
+          <.action_button
+            title={gettext("Send password reset instructions")}
+            title_class="text-lg !font-iregular !normal-case"
+            class="!h-14"
+          />
         </:actions>
       </.simple_form>
-      <p class="text-center text-sm mt-4">
-        <.link href={~p"/users/register"}>Register</.link>
-        | <.link href={~p"/users/log_in"}>Log in</.link>
+      <p class="text-center text-sm mt-8">
+        <.link href={~p"/users/register"} class="hover:underline">Register</.link>
+        | <.link href={~p"/users/log_in"} class="hover:underline">Log in</.link>
       </p>
     </div>
     """
