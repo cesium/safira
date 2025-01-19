@@ -8,7 +8,7 @@ defmodule SafiraWeb.UserLoginLive do
   def render(assigns) do
     ~H"""
     <div class="mx-auto max-w-sm px-4 py-2">
-      <div class="px-24 sm:px-32 py-6 sm:py-12">
+      <div class="px-24 sm:px-20 py-6 sm:py-12">
         <img class="w-full h-full block" src={~p"/images/star-struck-void.svg"} />
       </div>
 

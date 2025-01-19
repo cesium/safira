@@ -62,7 +62,6 @@ defmodule SafiraWeb.Router do
       on_mount: [{SafiraWeb.UserAuth, :redirect_if_user_is_authenticated}] do
       live "/users/log_in", UserLoginLive, :new
       live "/users/reset_password", UserForgotPasswordLive, :new
-      live "/users/reset_password/:token", UserResetPasswordLive, :edit
 
       pipe_through :registrations_open
       live "/users/register", UserRegistrationLive, :new
@@ -229,6 +228,8 @@ defmodule SafiraWeb.Router do
     pipe_through [:browser]
 
     delete "/users/log_out", UserSessionController, :delete
+
+    live "/users/reset_password/:token", UserResetPasswordLive, :edit
 
     live_session :current_user,
       on_mount: [{SafiraWeb.UserAuth, :mount_current_user}] do
