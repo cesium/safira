@@ -3,24 +3,33 @@ defmodule SafiraWeb.App.WaitingLive.Index do
 
   alias Safira.Event
 
+  import SafiraWeb.Landing.Components.Sparkles
+
   @impl true
   def render(assigns) do
     ~H"""
     <div>
-      <img class="w-52 h-52 m-auto block" src={~p"/images/sei.svg"} />
-      <h1 class="font-terminal uppercase text-4xl sm:text-6xl text-center mt-24">
-        You are registered for SEI'25!
-      </h1>
-      <h2 class="font-terminal text-xl sm:text-2xl text-center mt-4">We are almost ready</h2>
+      <.sparkles />
+      <!-- 3D physics based credential scene  -->
       <div
-        id="seconds-remaining"
-        class="font-terminal text-center text-2xl sm:text-4xl mt-12"
-        phx-hook="Countdown"
+        id="credential-scene"
+        phx-hook="CredentialScene"
+        data-attendee_name={@current_user.name}
+        class="absolute -z-10 overflow-hidden top-0 left-0 w-screen h-full"
       >
       </div>
-      <.link class="text-center block mt-8 underline" href="/users/log_out" method="delete">
-        Sign out
-      </.link>
+      <!-- Timer to the event  -->
+      <div class="z-20 mt-8">
+        <h1 class="font-terminal text-center text-2xl sm:text-4xl uppercase">
+          <%= gettext("Waiting for the event to start!") %>
+        </h1>
+        <div
+          id="seconds-remaining"
+          class="font-terminal text-center text-4xl sm:text-6xl mt-12 uppercase"
+          phx-hook="Countdown"
+        >
+        </div>
+      </div>
     </div>
     """
   end

@@ -5,11 +5,14 @@ defmodule SafiraWeb.ErrorHTMLTest do
   import Phoenix.Template
 
   test "renders 404.html" do
-    assert render_to_string(SafiraWeb.ErrorHTML, "404", "html", []) =~
-             "You're in the wrong line of code, pal.\n"
+    html = render_to_string(SafiraWeb.ErrorHTML, "404", "html", [])
+    assert html =~ "404"
+    assert html =~ "in the wrong line of code, pal."
   end
 
   test "renders 500.html" do
-    assert render_to_string(SafiraWeb.ErrorHTML, "500", "html", []) == "Internal Server Error\n"
+    html = render_to_string(SafiraWeb.ErrorHTML, "500", "html", [])
+    assert html =~ "500"
+    assert html =~ "Sorry! Our monkeys gave up on working."
   end
 end

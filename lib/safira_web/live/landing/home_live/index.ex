@@ -9,7 +9,7 @@ defmodule SafiraWeb.Landing.HomeLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    speakers = Activities.list_highlighted_speakers()
+    speakers = Enum.take_random(Activities.list_highlighted_speakers(), 6)
 
     {:ok,
      socket

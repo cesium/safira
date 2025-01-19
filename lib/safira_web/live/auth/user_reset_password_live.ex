@@ -1,23 +1,25 @@
 defmodule SafiraWeb.UserResetPasswordLive do
-  use SafiraWeb, :live_view
+  use SafiraWeb, :landing_view
 
   alias Safira.Accounts
 
+  import SafiraWeb.Components.Button
+
   def render(assigns) do
     ~H"""
-    <div class="mx-auto max-w-sm">
-      <.header class="text-center">Reset Password</.header>
-
+    <div class="mx-auto max-w-sm my-32 px-4">
+      <.header class="text-center">
+        <%= gettext("Reset Password") %>
+        <:subtitle>
+          <%= gettext("Select a new password here.") %>
+        </:subtitle>
+      </.header>
       <.simple_form
         for={@form}
         id="reset_password_form"
         phx-submit="reset_password"
         phx-change="validate"
       >
-        <.error :if={@form.errors != []}>
-          Oops, something went wrong! Please check the errors below.
-        </.error>
-
         <.input field={@form[:password]} type="password" label="New password" required />
         <.input
           field={@form[:password_confirmation]}
@@ -26,14 +28,14 @@ defmodule SafiraWeb.UserResetPasswordLive do
           required
         />
         <:actions>
-          <.button phx-disable-with="Resetting..." class="w-full">Reset Password</.button>
+          <.action_button
+            title={gettext("Reset Password")}
+            title_class="text-lg !font-iregular !normal-case"
+            class="!h-14"
+            disabled={@form.errors != []}
+          />
         </:actions>
       </.simple_form>
-
-      <p class="text-center text-sm mt-4">
-        <.link href={~p"/users/register"}>Register</.link>
-        | <.link href={~p"/users/log_in"}>Log in</.link>
-      </p>
     </div>
     """
   end
