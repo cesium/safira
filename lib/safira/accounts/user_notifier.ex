@@ -25,22 +25,6 @@ defmodule Safira.Accounts.UserNotifier do
     |> assign(:phx_host, phx_host)
   end
 
-  # Delivers the email using the application mailer.
-  defp deliver(recipient, subject, body) do
-    sender = {Mailer.get_sender_name(), Mailer.get_sender_address()}
-
-    email =
-      new()
-      |> to(recipient)
-      |> from(sender)
-      |> subject("[#{elem(sender, 0)}] #{subject}")
-      |> text_body(body)
-
-    with {:ok, _metadata} <- Mailer.deliver(email) do
-      {:ok, email}
-    end
-  end
-
   @doc """
   Deliver instructions to confirm account.
   """
