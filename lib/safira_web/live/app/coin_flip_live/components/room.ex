@@ -36,14 +36,14 @@ defmodule SafiraWeb.App.CoinFlipLive.Components.Room do
         room={@room}
       />
       <div class="absolute inset-0 flex flex-col items-center justify-center h-full z-20 pointer-events-none">
-        <h1 id={@id <> "-vs-text"} class="font-bold align-middle">VS</h1>
+        <h1 id={@id <> "-vs-text"} class="font-terminal font-bold align-middle">VS</h1>
         <div id={@id <> "-coin"} class="coin hidden">
           <div class="side-a"></div>
           <div class="side-b"></div>
         </div>
         <h1
           id={@id <> "-countdown"}
-          class="absolute text-2xl p-2 rounded-full bg-blue-900/25 font-bold size-16 justify-center hidden items-center"
+          class="absolute text-2xl p-2 rounded-full bg-blue-900/25 font-terminal font-bold size-16 justify-center hidden items-center"
         >
           3
         </h1>
@@ -82,7 +82,9 @@ defmodule SafiraWeb.App.CoinFlipLive.Components.Room do
         </span>
         <span class="text-nowrap bg-primary/60 py-1 px-2 rounded-md align-middle">
           <.icon name="hero-currency-dollar-solid" class="text-yellow-300" />
-          <span id={"#{@stream_id}-#{@player_id}-bet"} data-bet={@room.bet}><%= @room.bet %></span>
+          <span id={"#{@stream_id}-#{@player_id}-bet"} class="font-terminal" data-bet={@room.bet}>
+            <%= @room.bet %>
+          </span>
         </span>
         <div class="absolute coin size-10 top-1 right-2">
           <div :if={@player_id == @room.player1_id} class="side-a"></div>

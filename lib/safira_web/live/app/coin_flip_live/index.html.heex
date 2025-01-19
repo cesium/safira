@@ -4,25 +4,51 @@
       💰 <%= @attendee_tokens %>
     </span>
   </:actions>
-  <div class="flex justify-center w-min mx-auto mt-5 sm:mt-10">
-    <.action_button
-      icon="hero-minus"
-      class="rounded-r-lg pl-6 pr-5"
-      disabled={@bet <= 10 || not @coin_flip_active?}
-      phx-click="decrease-bet"
-    />
+  <div class="flex flex-col sm:flex-row justify-between mt-12 w-full gap-6 sm:gap-10 items-center">
+    <div class="flex border-2 divide-x-2 rounded-full w-full sm:px-3 max-w-lg overflow-hidden">
+      <div class="flex items-center py-2 w-full pl-2">
+        <.icon name="hero-currency-dollar-solid" class="text-yellow-300 ml-2" />
+        <.form for={%{}} phx-change="set-bet" class="w-full">
+          <input
+            name="bet"
+            type="number"
+            min="10"
+            max={@attendee_tokens}
+            value={@bet}
+            phx-debounce="250"
+            class="w-full bg-transparent border-none focus:ring-transparent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none safira-number-input-without-bg"
+          />
+        </.form>
+      </div>
+      <div class="flex items-stretch divide-x-2">
+        <button
+          phx-click="set-bet"
+          phx-value-bet={round(@bet / 2)}
+          class="px-3 py-2 sm:px-4 sm:py-3 active:bg-blue-900/35 transition duration-200 font-terminal font-bold"
+        >
+          1/2
+        </button>
+        <button
+          phx-click="set-bet"
+          phx-value-bet={@bet * 2}
+          class="px-3 py-2 sm:px-5 sm:py-3 active:bg-blue-900/35 transition duration-200 font-terminal font-bold"
+        >
+          x2
+        </button>
+        <button
+          phx-click="set-bet"
+          phx-value-bet={@attendee_tokens}
+          class="pl-3 pr-4 py-2 sm:px-4 sm:py-3 active:bg-blue-900/35 transition duration-200 font-terminal font-bold"
+        >
+          MAX
+        </button>
+      </div>
+    </div>
     <.action_button
       title={gettext("Play")}
-      subtitle={"💰 #{@bet}"}
-      class="rounded-none px-10"
-      disabled={@bet >= @attendee_tokens || not @coin_flip_active?}
+      class="max-w-80 mx-0"
+      disabled={@bet > @attendee_tokens || not @coin_flip_active?}
       phx-click="create-room"
-    />
-    <.action_button
-      icon="hero-plus"
-      class="rounded-l-lg pr-6 pl-5"
-      disabled={@bet >= @attendee_tokens - 10 || not @coin_flip_active?}
-      phx-click="increase-bet"
     />
   </div>
   <div class="flex flex-row justify-center w-full pt-16"></div>

@@ -1,112 +1,146 @@
-const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+const ANIMATION_DELAYS = {
+  RESULT_DISPLAY: 500,
+  ANIMATION_DONE: 1000,
+  COUNTDOWN: 1000
+};
+
+const GAME_STATES = {
+  HEADS: 'heads',
+  TAILS: 'tails',
+  FINISHED: 'true'
+};
+
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const CoinFlip = {
   mounted() {
-    const roomId = this.el.dataset.roomId;
-    const streamId = this.el.dataset.streamId;
-    const result = this.el.dataset.result;
-    const finished = this.el.dataset.finished;
-    const player1Id = this.el.dataset.player1Id;
-    const player2Id = this.el.dataset.player2Id;
-    const fee = this.el.dataset.fee;
-    
-    
-    document.getElementById(`${streamId}-coin`).addEventListener('animationend', async (event) => {
-      const player2Id = this.el.dataset.player2Id;
-      const result = this.el.dataset.result;
-      console.log('animation end');
-      await delay(500);
-      this.updateBetDisplay(streamId, player1Id, player2Id, fee, result);
-      await delay(1000);
-      this.pushEvent('animation-done', { room_id: roomId });
-      console.log('animation done');
-      console.log(event.animationName)
-    });
-
-    this.initializeGame(player1Id, player2Id, streamId, fee, result, finished);
+    this.initializeFromDOM();
+    this.setupEventListeners();
   },
+
   updated() {
-    const roomId = this.el.dataset.roomId;
-    const streamId = this.el.dataset.streamId;
-    const result = this.el.dataset.result;
-    const finished = this.el.dataset.finished;
-    const player1Id = this.el.dataset.player1Id;
-    const player2Id = this.el.dataset.player2Id;
-    const fee = this.el.dataset.fee;
-    
-    this.initializeGame(player1Id, player2Id, streamId, fee, result, finished);
+    this.initializeFromDOM();
   },
-  
-  initializeGame(player1Id, player2Id, streamId, fee, result, finished) {
+
+  initializeFromDOM() {
+    const data = this.getGameData();
+    this.initializeGame(data);
+  },
+
+  getGameData() {
+    const { dataset } = this.el;
+    return {
+      roomId: dataset.roomId,
+      streamId: dataset.streamId,
+      result: dataset.result,
+      finished: dataset.finished,
+      player1Id: dataset.player1Id,
+      player2Id: dataset.player2Id,
+      fee: dataset.fee
+    };
+  },
+
+  setupEventListeners() {
+    const { streamId, roomId } = this.getGameData();
     const coin = document.getElementById(`${streamId}-coin`);
-    const counter = document.getElementById(`${streamId}-countdown`);
-    const vsText = document.getElementById(`${streamId}-vs-text`);
-    coin.style.display = 'none';
-    counter.style.display = 'none';
-
-    const startCountdown = async () => {
-      vsText.style.display = 'none';
-      counter.style.display = 'flex';
-      for (let i = 3; i > 0; i--) {
-        counter.textContent = i.toString();
-        counter.classList.add('countdown-animation');
-        await delay(1000);
-        counter.classList.remove('countdown-animation');
-      };
-
-      counter.style.display = 'none'
-      coin.style.display = 'block';
     
-      if (result === 'heads') {
-        coin.classList.add('heads');
-      } else {
-        coin.classList.add('tails');
-      }
+    coin.addEventListener("animationend", async () => {
+      const { player1Id, player2Id, fee, result } = this.getGameData();
       
-    }
-    
-    if (finished === 'true') {
-      vsText.style.display = 'none';
-      counter.style.display = 'none';
-      coin.style.display = 'block';
-      if (result === 'heads') {
-        coin.children[1].hidden = true;
-      } else {
-        coin.children[0].hidden = true;
-        coin.children[1].style.transform = 'rotateY(0deg)';
-      }
+      await delay(ANIMATION_DELAYS.RESULT_DISPLAY);
+      this.updateBetDisplay(streamId, player1Id, player2Id, fee, result);
+      
+      await delay(ANIMATION_DELAYS.ANIMATION_DONE);
+      this.pushEvent("animation-done", { room_id: roomId });
+    });
+  },
+
+  initializeGame({ player1Id, player2Id, streamId, fee, result, finished }) {
+    const elements = this.getGameElements(streamId);
+    this.hideInitialElements(elements);
+
+    if (finished === GAME_STATES.FINISHED) {
+      this.handleFinishedGame(elements, result);
       this.updateBetDisplay(streamId, player1Id, player2Id, fee, result);
       return;
     }
-    
-    if (finished === 'false' && (result === 'heads' || result === 'tails')) {
-    startCountdown();
 
+    if (finished === 'false' && (result === GAME_STATES.HEADS || result === GAME_STATES.TAILS)) {
+      this.startCountdown(elements, result);
     }
   },
-  updateBetDisplay(streamId, player1Id, player2Id, fee, result) {
-    const player1Card = document.getElementById(`${streamId}-${player1Id}-card`);
-    const player1Bet = document.getElementById(`${streamId}-${player1Id}-bet`);
-    const player2Card = document.getElementById(`${streamId}-${player2Id}-card`);
-    const player2Bet = document.getElementById(`${streamId}-${player2Id}-bet`);
 
-    if (!player1Bet || !player2Bet) {
-      console.error('Bet elements not found');
+  getGameElements(streamId) {
+    return {
+      coin: document.getElementById(`${streamId}-coin`),
+      counter: document.getElementById(`${streamId}-countdown`),
+      vsText: document.getElementById(`${streamId}-vs-text`)
+    };
+  },
+
+  hideInitialElements({ coin, counter, vsText }) {
+    coin.style.display = "none";
+    counter.style.display = "none";
+  },
+
+  async startCountdown({ vsText, counter, coin }, result) {
+    vsText.style.display = "none";
+    counter.style.display = "flex";
+
+    for (let i = 3; i > 0; i--) {
+      counter.textContent = i.toString();
+      counter.classList.add("countdown-animation");
+      await delay(ANIMATION_DELAYS.COUNTDOWN);
+      counter.classList.remove("countdown-animation");
+    }
+
+    counter.style.display = "none";
+    coin.style.display = "block";
+    coin.classList.add(result);
+  },
+
+  handleFinishedGame({ vsText, counter, coin }, result) {
+    vsText.style.display = "none";
+    counter.style.display = "none";
+    coin.style.display = "block";
+
+    if (result === GAME_STATES.HEADS) {
+      coin.children[1].hidden = true;
+    } else {
+      coin.children[0].hidden = true;
+      coin.children[1].style.transform = "rotateY(0deg)";
+    }
+  },
+
+  updateBetDisplay(streamId, player1Id, player2Id, fee, result) {
+    const elements = {
+      player1: {
+        card: document.getElementById(`${streamId}-${player1Id}-card`),
+        bet: document.getElementById(`${streamId}-${player1Id}-bet`)
+      },
+      player2: {
+        card: document.getElementById(`${streamId}-${player2Id}-card`),
+        bet: document.getElementById(`${streamId}-${player2Id}-bet`)
+      }
+    };
+
+    if (!elements.player1.bet || !elements.player2.bet) {
+      console.error("Bet elements not found");
       return;
     }
 
-    if (result === 'heads') {
-      player2Card.classList.add('gray-overlay');
-      player1Bet.textContent = Math.round(player1Bet.dataset.bet * 2 * (1 - fee));
-      // player1Bet.classList.add('text-green-500');
-      player2Bet.textContent = `-${player2Bet.dataset.bet}`;
-      player2Bet.classList.add('text-red-500');
+    const calculateWinnings = (bet) => Math.floor(bet * 2 * (1 - fee));
+
+    if (result === GAME_STATES.HEADS) {
+      elements.player2.card.classList.add("gray-overlay");
+      elements.player1.bet.textContent = calculateWinnings(elements.player1.bet.dataset.bet);
+      elements.player2.bet.textContent = `-${elements.player2.bet.dataset.bet}`;
+      elements.player2.bet.classList.add("text-red-500");
     } else {
-      player1Card.classList.add('gray-overlay');
-      player1Bet.textContent = `-${player1Bet.dataset.bet}`;
-      player1Bet.classList.add('text-red-500');
-      player2Bet.textContent = Math.round(player2Bet.dataset.bet * 2 * (1 - fee));
-      // player2Bet.classList.add('text-green-500');
+      elements.player1.card.classList.add("gray-overlay");
+      elements.player1.bet.textContent = `-${elements.player1.bet.dataset.bet}`;
+      elements.player1.bet.classList.add("text-red-500");
+      elements.player2.bet.textContent = calculateWinnings(elements.player2.bet.dataset.bet);
     }
   }
 };

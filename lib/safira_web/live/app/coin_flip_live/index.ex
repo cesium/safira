@@ -13,12 +13,9 @@ defmodule SafiraWeb.App.CoinFlipLive.Index do
       Minigames.subscribe_to_coin_flip_rooms_update()
     end
 
-    room_list = Minigames.list_coin_flip_rooms() |> Enum.filter(&(!&1.finished))
+    room_list = Minigames.list_current_coin_flip_rooms()
 
-    previous_room_list =
-      Minigames.list_coin_flip_rooms()
-      |> Enum.filter(& &1.finished)
-      |> Enum.take(4)
+    previous_room_list = Minigames.list_previous_coin_flip_rooms(4)
 
     {:ok,
      socket
@@ -46,8 +43,8 @@ defmodule SafiraWeb.App.CoinFlipLive.Index do
          socket
          |> assign(:attendee_tokens, socket.assigns.attendee_tokens - socket.assigns.bet)}
 
-      {:error, msg} ->
-        {:noreply, socket |> put_flash(:error, msg)}
+      {:error, message} ->
+        {:noreply, socket |> put_flash(:error, message)}
     end
   end
 
@@ -72,10 +69,10 @@ defmodule SafiraWeb.App.CoinFlipLive.Index do
          socket
          |> assign(:attendee_tokens, socket.assigns.attendee_tokens - room.bet)}
 
-      {:error, msg} ->
+      {:error, message} ->
         {:noreply,
          socket
-         |> put_flash(:error, msg)}
+         |> put_flash(:error, message)}
     end
   end
 
@@ -84,7 +81,7 @@ defmodule SafiraWeb.App.CoinFlipLive.Index do
 
     attendee_tokens =
       if won?(room, socket.assigns.current_user) do
-        socket.assigns.attendee_tokens + round(room.bet * 2 * (1 - socket.assigns.coin_flip_fee))
+        socket.assigns.attendee_tokens + floor(room.bet * 2 * (1 - socket.assigns.coin_flip_fee))
       else
         socket.assigns.attendee_tokens
       end
@@ -92,7 +89,6 @@ defmodule SafiraWeb.App.CoinFlipLive.Index do
     {
       :noreply,
       socket
-      # Set the wheel to not in spin mode
       |> stream_delete(:room_list, room)
       |> assign(:room_list_count, socket.assigns.room_list_count - 1)
       |> stream_insert(:previous_room_list, room, limit: 4, at: 0)
@@ -102,17 +98,12 @@ defmodule SafiraWeb.App.CoinFlipLive.Index do
   end
 
   @impl true
-  def handle_event("decrease-bet", _params, socket) do
-    {:noreply,
-     socket
-     |> assign(:bet, socket.assigns.bet - 10)}
-  end
+  def handle_event("set-bet", %{"bet" => bet}, socket) do
+    bet = if bet != "", do: String.to_integer(bet), else: 0
 
-  @impl true
-  def handle_event("increase-bet", _params, socket) do
     {:noreply,
      socket
-     |> assign(:bet, socket.assigns.bet + 10)}
+     |> assign(:bet, bet)}
   end
 
   @impl true
@@ -153,16 +144,10 @@ defmodule SafiraWeb.App.CoinFlipLive.Index do
 
   @impl true
   def handle_info({"update", room}, socket) do
-    if room.finished do
+    if not room.finished do
       {:noreply,
        socket
-       |> stream_insert(:previous_room_list, room)
-       |> assign(:previous_room_list_count, socket.assigns.previous_room_list_count + 1)}
-    else
-      {:noreply,
-       socket
-       |> stream_insert(:room_list, room)
-       |> assign(:room_list_count, socket.assigns.room_list_count + 1)}
+       |> stream_insert(:room_list, room)}
     end
   end
 

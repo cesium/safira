@@ -532,6 +532,45 @@ defmodule Safira.Minigames do
   end
 
   @doc """
+  Returns the list of current active coin flip rooms, ordered by most recent first.
+
+  ## Examples
+
+      iex> list_current_coin_flip_rooms()
+      [%CoinFlipRoom{finished: false}, ...]
+  """
+  def list_current_coin_flip_rooms do
+    CoinFlipRoom
+    |> where([r], not r.finished)
+    |> order_by([r], desc: r.inserted_at)
+    |> Repo.all()
+    |> Repo.preload(player1: :user, player2: :user)
+  end
+
+  @doc """
+    Returns the list of previous (finished) coin flip rooms, ordered by most recent first.
+
+    ## Examples
+
+        iex> list_previous_coin_flip_rooms()
+        [%CoinFlipRoom{finished: true}, ...]
+        iex> list_previous_coin_flip_rooms(10)
+        [%CoinFlipRoom{finished: true}, ...]
+  """
+  def list_previous_coin_flip_rooms(limit \\ nil) do
+    query =
+      CoinFlipRoom
+      |> where([r], r.finished)
+      |> order_by([r], desc: r.inserted_at)
+
+    query = if limit, do: query |> limit(^limit), else: query
+
+    query
+    |> Repo.all()
+    |> Repo.preload(player1: :user, player2: :user)
+  end
+
+  @doc """
   Gets a single coin_flip_room.
 
   Raises `Ecto.NoResultsError` if the Coin flip room does not exist.
@@ -595,6 +634,9 @@ defmodule Safira.Minigames do
 
       has_active_coin_flip_game?(attendee.id) ->
         {:error, "You already have an active game."}
+
+      attrs["bet"] <= 0 ->
+        {:error, "The bet amount must be greater than 0."}
 
       true ->
         case create_coin_flip_room_transaction(attendee, attrs["bet"]) do
@@ -673,10 +715,10 @@ defmodule Safira.Minigames do
   @doc """
   Checks if an attendee has an active (unfinished) coin flip game.
 
-  Takes an attendee ID and checks if they are either player1 or player2 in any unfinished coin flip room.
+  Takes an attendee id and checks if they are either player1 or player2 in any unfinished coin flip room.
 
   ## Parameters
-    * `attendee_id` - The ID of the attendee to check
+    * `attendee_id` - The id of the attendee to check
 
   ## Returns
     * `true` - If the attendee has an active game
@@ -807,7 +849,7 @@ defmodule Safira.Minigames do
           {:error, _} -> 0
         end
 
-      winnings = round(room.bet * 2 * (1 - fee))
+      winnings = floor(room.bet * 2 * (1 - fee))
 
       Contest.change_attendee_tokens_transaction(
         winner,
