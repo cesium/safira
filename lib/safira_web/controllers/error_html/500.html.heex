@@ -1,1 +1,19 @@
-Internal Server Error
+<body class="bg-primary text-light font-iregular relative min-h-screen">
+  <.sparkles />
+  <.navbar
+    pages={SafiraWeb.Config.landing_pages()}
+    registrations_open?={Safira.Event.registrations_open?()}
+  />
+  <main>
+    <body class="bg-primary text-light font-iregular relative min-h-screen">
+      <.sparkles />
+      <div class="flex w-full justify-center items-center flex-col py-48 font-terminal uppercase xl:px-[15rem] md:px-[8rem] px-[2.5rem]">
+        <h5 class="z-0 w-full text-accent text-9xl">500</h5>
+        <h1 class="z-0 text-5xl text-white lg:text-8xl xl:text-8xl">
+          <%= gettext("Sorry! Our monkeys gave up on working.") %>
+        </h1>
+      </div>
+    </body>
+  </main>
+  <.footer />
+</body>
