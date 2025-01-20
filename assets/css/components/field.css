@@ -50,6 +50,16 @@
   @apply block w-full border-gray-300 rounded-md shadow-sm focus:border-secondary-500 focus:ring-secondary-500 dark:border-gray-600 dark:focus:border-secondary-500 sm:text-sm disabled:cursor-not-allowed dark:text-gray-300 focus:outline-none;
 }
 
+/* Number inputs with no background */
+.safira-number-input-without-bg {
+  border:none;
+  background-image:none;
+  background-color:transparent;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
 /* Switch */
 
 .safira-switch {
