@@ -104,6 +104,12 @@ defmodule Safira.Teams do
 
   alias Safira.Teams.TeamMember
 
+
+  def update_team_member_foto(%TeamMember{} = member, attrs) do
+    member
+    |> TeamMember.image_changeset(attrs)
+    |> Repo.update()
+  end
   @doc """
   Returns the list of team_members.
 

@@ -8,11 +8,8 @@ defmodule SafiraWeb.Teamcomponent do
     ~H"""
     <div class="text-left my-8">
       <h2 class="text-2xl font-bold uppercase text-white mb-6"><%= @team_name %></h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        <div
-          :for={member <- @members}
-          class="flex flex-col items-center"
-        >
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div :for={member <- @members} class="flex flex-col items-center">
           <img
             src={member.photo_url}
             alt={"Foto de " <> member.name}

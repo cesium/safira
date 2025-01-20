@@ -6,6 +6,8 @@ defmodule Safira.Repo.Migrations.CreateTeamMembers do
       add :id, :binary_id, primary_key: true
       add :name, :string
       add :team_id, references(:teams, on_delete: :nothing, type: :binary_id)
+      add :url, :string
+      add :image, :string
 
       timestamps(type: :utc_datetime)
     end

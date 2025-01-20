@@ -12,7 +12,7 @@ defmodule Safira.TeamsTest do
 
     test "list_teams/0 returns all teams" do
       team = team_fixture()
-      assert Teams.list_teams == [team]
+      assert Teams.list_teams() == [team]
     end
 
     test "get_team!/1 returns the team with given id" do

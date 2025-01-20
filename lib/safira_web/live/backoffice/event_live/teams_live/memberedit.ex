@@ -2,7 +2,10 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MembersEdit do
   use SafiraWeb, :live_component
 
   alias Safira.Teams
+  alias Safira.Uploaders.Member
+
   import SafiraWeb.Components.Forms
+  import SafiraWeb.Components.ImageUploader
 
   @impl true
   def render(assigns) do

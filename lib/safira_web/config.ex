@@ -14,7 +14,7 @@ defmodule SafiraWeb.Config do
       %{
         title: "Team",
         url: "/team"
-       },
+      },
       # %{
       #  title: "Challenges",
       #  url: "/challenges"
