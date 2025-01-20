@@ -29,7 +29,7 @@ defmodule SafiraWeb.Backoffice.AttendeeLive.TokensLive.FormComponent do
           />
           <:actions>
             <.button
-              data-confirm={"Do you wan to save these changes? #{assigns.attendee.user.name} will be changed."}
+              data-confirm={"Do you wan to save these changes? #{assigns.attendee.user.name} will have #{get_tokens(assigns.form.params)} tokens."}
               phx-disable-with="Saving..."
             >
               <%= gettext("Save Tokens") %>
@@ -61,6 +61,7 @@ defmodule SafiraWeb.Backoffice.AttendeeLive.TokensLive.FormComponent do
   @impl true
   def handle_event("validate", params, socket) do
     changeset = Accounts.change_attendee(socket.assigns.attendee, params)
+    form = to_form(changeset, action: :validate)
     {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
   end
 
@@ -76,4 +77,11 @@ defmodule SafiraWeb.Backoffice.AttendeeLive.TokensLive.FormComponent do
         {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
     end
   end
+
+  defp get_tokens(
+         %{"_target" => ["attendee", "tokens"], "attendee" => %{"tokens" => tokens}} = _params
+       ),
+       do: tokens
+
+  defp get_tokens(_params), do: 0
 end
