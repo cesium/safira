@@ -18,32 +18,58 @@ defmodule SafiraWeb.Backoffice.AttendeeLive.TokensLive.FormComponent do
           id="tokens-form"
           phx-target={@myself}
           phx-change="validate"
-          phx-submit="save"
+          phx-submit="confirm-modal"
         >
           <.field
-            field={assigns.form[:tokens]}
-            type="number"
-            value={assigns.attendee.tokens}
-            label="Tokens"
+            wrapper_class="col-span-4"
+            value={@option}
+            placeholder="Select an action type"
+            options={["Add", "Remove"]}
+            name="set_action"
+            label="Action"
+            type="select"
             required
           />
+          <.field field={assigns.form[:tokens]} type="number" value={0} label="Tokens" required />
           <:actions>
-            <.button
-              data-confirm={"Do you wan to save these changes? #{assigns.attendee.user.name} will have #{get_tokens(assigns.form.params)} tokens."}
-              phx-disable-with="Saving..."
-            >
+            <.button phx-disable-with="Saving...">
               <%= gettext("Save Tokens") %>
             </.button>
           </:actions>
         </.simple_form>
       </.page>
+
+      <.modal
+        :if={@live_action in [:confirm_tokens]}
+        id="tokens-confirm-modal"
+        show
+        on_cancel={JS.patch(~p"/dashboard/attendees/#{assigns.attendee.id}")}
+      >
+        <div class="mb-8">
+          <h2 class="text-xl font-regular">
+            <%= gettext("Do you want to save these changes? %{name} will have %{tokens} tokens.",
+              name: @attendee.user.name,
+              tokens: assigns.current_tokens
+            ) %>
+          </h2>
+        </div>
+        <div class="flex flex-row gap-x-4">
+          <.button phx-click="save" phx-target={@myself} class="w-full">
+            <%= gettext("Confirm") %>
+          </.button>
+
+          <.button phx-click="cancel" phx-value="Remove" phx-target={@myself} class="w-full">
+            <%= gettext("Cancel") %>
+          </.button>
+        </div>
+      </.modal>
     </div>
     """
   end
 
   @impl true
   def mount(socket) do
-    {:ok, socket}
+    {:ok, socket |> assign(:live_action, :default)}
   end
 
   @impl true
@@ -53,20 +79,55 @@ defmodule SafiraWeb.Backoffice.AttendeeLive.TokensLive.FormComponent do
     {:ok,
      socket
      |> assign(assigns)
+     |> assign(:current_tokens, attendee.tokens)
+     |> assign(:option, "Add")
      |> assign_new(:form, fn ->
        to_form(form)
      end)}
   end
 
   @impl true
-  def handle_event("validate", params, socket) do
-    changeset = Accounts.change_attendee(socket.assigns.attendee, params)
-    {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
+  def handle_event("validate", %{"attendee" => %{"tokens" => ""}} = _params, socket) do
+    {:noreply, socket}
   end
 
   @impl true
-  def handle_event("save", %{"attendee" => %{"tokens" => tokens}}, socket) do
+  def handle_event(
+        "validate",
+        %{"attendee" => %{"tokens" => tokens}, "set_action" => "Add"} = _params,
+        socket
+      ) do
+    changeset = Accounts.change_attendee(socket.assigns.attendee, %{"tokens" => tokens})
+    tokens_int = String.to_integer(tokens)
+
+    {:noreply,
+     socket
+     |> assign(:form, to_form(changeset, action: :validate))
+     |> assign(:option, "Add")
+     |> assign(:current_tokens, socket.assigns.attendee.tokens + tokens_int)}
+  end
+
+  @impl true
+  def handle_event(
+        "validate",
+        %{"attendee" => %{"tokens" => tokens}, "set_action" => "Remove"} = _params,
+        socket
+      ) do
+    changeset = Accounts.change_attendee(socket.assigns.attendee, %{"tokens" => tokens})
+    tokens_int = String.to_integer(tokens)
+    current_tokens = socket.assigns.attendee.tokens - tokens_int
+
+    {:noreply,
+     socket
+     |> assign(:form, to_form(changeset, action: :validate))
+     |> assign(:option, "Remove")
+     |> assign(:current_tokens, max(0, current_tokens))}
+  end
+
+  @impl true
+  def handle_event("save", _params, socket) do
     attendee = socket.assigns.attendee
+    tokens = socket.assigns.current_tokens
 
     case Contest.change_attendee_tokens(attendee, tokens) do
       {:ok, _attendee} ->
@@ -77,10 +138,12 @@ defmodule SafiraWeb.Backoffice.AttendeeLive.TokensLive.FormComponent do
     end
   end
 
-  defp get_tokens(
-         %{"_target" => ["attendee", "tokens"], "attendee" => %{"tokens" => tokens}} = _params
-       ),
-       do: tokens
+  @impl true
+  def handle_event("confirm-modal", _params, socket) do
+    {:noreply, assign(socket, live_action: :confirm_tokens)}
+  end
 
-  defp get_tokens(_params), do: 0
+  def handle_event("cancel", _params, socket) do
+    {:noreply, assign(socket, live_action: :default)}
+  end
 end
