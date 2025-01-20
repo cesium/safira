@@ -52,13 +52,13 @@ defmodule SafiraWeb.Landing.Components.Navbar do
                       </:trigger_element>
                       <.dropdown_menu_item
                         :if={user_type?(@current_user, :staff)}
-                        link_type="live_patch"
+                        link_type="a"
                         to="/dashboard/attendees"
                         label="Dashboard"
                       />
                       <.dropdown_menu_item
                         :if={user_type?(@current_user, :attendee)}
-                        link_type="live_patch"
+                        link_type="a"
                         to={
                           if @current_user.confirmed_at,
                             do: "/app",

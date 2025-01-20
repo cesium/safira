@@ -20,7 +20,7 @@ defmodule Safira.Contest.DailyTokens do
     daily_tokens
     |> cast(attrs, @required_fields)
     |> foreign_key_constraint(:attendee_id)
-    |> validate_number(:tokens, greater_than: 0)
+    |> validate_number(:tokens, greater_than_or_equal_to: 0)
     |> validate_required(@required_fields)
     |> unique_constraint([:date, :attendee_id])
   end

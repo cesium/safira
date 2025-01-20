@@ -46,6 +46,12 @@ defmodule SafiraWeb.Config do
           url: "/app/wheel"
         },
         %{
+          key: :coin_flip,
+          title: "Coin Flip",
+          icon: "hero-circle-stack",
+          url: "/app/coin_flip"
+        },
+        %{
           key: :leaderboard,
           title: "Leaderboard",
           icon: "hero-trophy",
@@ -66,7 +72,7 @@ defmodule SafiraWeb.Config do
         %{
           key: :credential,
           title: "Credential",
-          icon: "hero-ticket",
+          icon: "hero-qr-code",
           url: "/app/credential"
         }
       ]
