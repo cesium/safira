@@ -33,36 +33,37 @@ defmodule SafiraWeb.ChallengeLive.FormComponent do
 
         <h3 class="font-semibold leading-8"><%= gettext("Prizes") %></h3>
 
-        <.inputs_for :let={prizes_form} field={@form[:prizes]}>
-          <input type="hidden" name="challenge[prizes_sort][]" value={prizes_form.index} />
-          <div class="grid grid-cols-11 space-x-4">
-            <.field
-              field={prizes_form[:prize_id]}
-              type="select"
-              options={prize_options(@prizes)}
-              label="Prize"
-              wrapper_class="w-full col-span-5"
-              required
-            />
-            <.field
-              field={prizes_form[:place]}
-              type="number"
-              label="Place"
-              wrapper_class="col-span-5"
-              required
-            />
-            <button
-              type="button"
-              name="challenge[prizes_drop][]"
-              value={prizes_form.index}
-              phx-click={JS.dispatch("change")}
-              class="flex items-center justify-end"
-            >
-              <.icon name="hero-trash" class="w-6 h-6" />
-            </button>
-          </div>
-        </.inputs_for>
-
+        <div class="max-h-40 overflow-y-scroll">
+          <.inputs_for :let={prizes_form} field={@form[:prizes]}>
+            <input type="hidden" name="challenge[prizes_sort][]" value={prizes_form.index} />
+            <div class="grid grid-cols-11 space-x-4">
+              <.field
+                field={prizes_form[:prize_id]}
+                type="select"
+                options={prize_options(@prizes)}
+                label="Prize"
+                wrapper_class="w-full col-span-5"
+                required
+              />
+              <.field
+                field={prizes_form[:place]}
+                type="number"
+                label="Place"
+                wrapper_class="col-span-5"
+                required
+              />
+              <button
+                type="button"
+                name="challenge[prizes_drop][]"
+                value={prizes_form.index}
+                phx-click={JS.dispatch("change")}
+                class="flex items-center justify-end"
+              >
+                <.icon name="hero-trash" class="w-6 h-6" />
+              </button>
+            </div>
+          </.inputs_for>
+        </div>
         <input type="hidden" name="challenge[prizes_drop][]" />
 
         <:actions>

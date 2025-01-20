@@ -3,7 +3,6 @@ defmodule Safira.Repo.Seeds.Prizes do
   alias Safira.Repo
 
   @prizes File.read!("priv/fake/prizes.txt") |> String.split("\n")
-  @challenges File.read!("priv/fake/challenges.txt") |> String.split("\n")
 
   def run do
     case Minigames.list_prizes() do
