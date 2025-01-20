@@ -46,6 +46,7 @@
     </div>
     <.action_button
       title={gettext("Play")}
+      subtitle={gettext("CURRENT FEE: %{fee}%", fee: round(@coin_flip_fee * 100))}
       class="max-w-80 mx-0"
       disabled={@bet > @attendee_tokens || not @coin_flip_active?}
       phx-click="create-room"

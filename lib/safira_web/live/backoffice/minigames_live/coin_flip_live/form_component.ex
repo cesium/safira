@@ -59,7 +59,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.CoinFlip.FormComponent do
        form:
          to_form(
            %{
-             "fee" => Minigames.get_coin_flip_fee() * 100,
+             "fee" => round(Minigames.get_coin_flip_fee() * 100),
              "is_active" => Minigames.coin_flip_active?()
            },
            as: :coin_flip_configuration

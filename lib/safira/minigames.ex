@@ -288,12 +288,16 @@ defmodule Safira.Minigames do
   def spin_wheel(attendee) do
     attendee = Accounts.get_attendee!(attendee.id)
 
-    case spin_wheel_transaction(attendee) do
-      {:ok, result} ->
-        {:ok, get_wheel_drop_type(result.drop), result.drop}
+    if wheel_active?() do
+      case spin_wheel_transaction(attendee) do
+        {:ok, result} ->
+          {:ok, get_wheel_drop_type(result.drop), result.drop}
 
-      {:error, _} ->
-        {:error, "An error occurred while spinning the wheel."}
+        {:error, _} ->
+          {:error, "An error occurred while spinning the wheel."}
+      end
+    else
+      {:error, "The wheel is not active."}
     end
   end
 

@@ -69,7 +69,7 @@ defmodule SafiraWeb.CoreComponents do
               phx-window-keydown={JS.exec("data-cancel", to: "##{@id}")}
               phx-key="escape"
               phx-click-away={JS.exec("data-cancel", to: "##{@id}")}
-              class="shadow-zinc-700/10 relative hidden border dark:border-darkShade rounded-2xl bg-light dark:bg-dark p-14 shadow-lg transition"
+              class="shadow-zinc-700/10 relative hidden border dark:border-darkShade rounded-2xl bg-light dark:bg-dark p-8 sm:p-14 shadow-lg transition"
             >
               <div class="absolute top-6 right-5">
                 <button
