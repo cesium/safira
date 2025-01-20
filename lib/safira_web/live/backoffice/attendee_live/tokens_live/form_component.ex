@@ -61,7 +61,6 @@ defmodule SafiraWeb.Backoffice.AttendeeLive.TokensLive.FormComponent do
   @impl true
   def handle_event("validate", params, socket) do
     changeset = Accounts.change_attendee(socket.assigns.attendee, params)
-    form = to_form(changeset, action: :validate)
     {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
   end
 
