@@ -5,8 +5,6 @@ defmodule SafiraWeb.Landing.Components.Footer do
   use SafiraWeb, :component
   import SafiraWeb.Landing.Components.Socials
 
-  alias Safira.Event
-
   def footer(assigns) do
     ~H"""
     <footer class="xl:px-[15rem] md:px-[8rem] px-[2.5rem]">
