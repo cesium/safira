@@ -11,7 +11,7 @@
       id="edit-profile-form"
       phx-change="validate_profile"
       phx-submit="update_profile"
-      action={~p"/users/log_in?_action=password_updated"}
+      action={"/users/log_in?_action=password_updated&_redirect_url=/#{@base_path}/profile_settings&_notification_text=#{@notification_text}"}
       method="post"
       phx-trigger-action={@trigger_form_action}
       phx-target={@myself}

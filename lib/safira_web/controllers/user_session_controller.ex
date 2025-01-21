@@ -9,9 +9,12 @@ defmodule SafiraWeb.UserSessionController do
   end
 
   def create(conn, %{"_action" => "password_updated"} = params) do
+    redirect_url = Map.get(params, "_redirect_url", ~p"/app/")
+    notification_text = Map.get(params, "_notification_text", "Password updated successfully!")
+
     conn
-    |> put_session(:user_return_to, ~p"/users/settings")
-    |> create(params, "Password updated successfully!")
+    |> put_session(:user_return_to, redirect_url)
+    |> create(params, notification_text)
   end
 
   def create(conn, params) do

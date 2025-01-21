@@ -275,17 +275,24 @@ defmodule Safira.Accounts do
       |> User.profile_changeset(attrs, validate_email: true)
       |> User.validate_current_password(current_password)
 
-    # E-mail is changed over e-mail
-    changeset_without_mail_update = Ecto.Changeset.change(changeset, email: user.email)
+    # Just simulation a complete update, to check if everything is valid
+    applied_user = Ecto.Changeset.apply_action(changeset, :update)
 
-    changeset_without_mail_update
-    |> Repo.update()
-    |> case do
-      # If the update of all fields was successful, we simulate the email update
+    case applied_user do
       {:ok, _} ->
-        Ecto.Changeset.apply_action(changeset, :update)
+        # If everything was ok, we can update the user without the mail changes (just can be changed over an url sent by mail)
+        changeset_without_mail_update = Ecto.Changeset.change(changeset, email: user.email)
 
-      # Otherwise we return the changeset with the error
+        Ecto.Multi.new()
+        |> Ecto.Multi.update(:user, changeset_without_mail_update)
+        |> Ecto.Multi.delete_all(:tokens, UserToken.by_user_and_contexts_query(user, :all))
+        |> Repo.transaction()
+        |> case do
+          # Return the user with ALL the changes
+          {:ok, _} -> applied_user
+          {:error, :user, changeset, _} -> {:error, changeset}
+        end
+
       otherwise ->
         otherwise
     end

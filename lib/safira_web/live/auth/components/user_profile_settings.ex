@@ -1,6 +1,7 @@
 # TO fix:
-# redirect da password
-# notificacoes
+# notificacoes só dao uma vez
+# email e password n podem ser alterados ao mesmo tempo pq estoura o submit do form
+# nao limpar os tokens da password da BD qnd ela n é alterada
 # refazer o  status
 
 defmodule SafiraWeb.UserAuth.Components.UserProfileSettings do
@@ -18,12 +19,16 @@ defmodule SafiraWeb.UserAuth.Components.UserProfileSettings do
 
     profile_changeset = Accounts.change_user_profile(user)
 
+    base_path = get_base_path_by_user_type(user)
+
     socket =
       socket
-      |> assign(:user, user)
+      |> assign(user: user)
       |> assign(:profile_form, to_form(profile_changeset))
-      |> assign(:current_password, nil)
-      |> assign(:trigger_form_action, false)
+      |> assign(current_password: nil)
+      |> assign(trigger_form_action: false)
+      |> assign(base_path: base_path)
+      |> assign(notification_text: nil)
 
     {:ok, socket}
   end
@@ -38,7 +43,7 @@ defmodule SafiraWeb.UserAuth.Components.UserProfileSettings do
     {:noreply,
      socket
      |> assign(profile_form: to_form(changeset, action: :validate))
-     |> assign(:current_password, current_password)}
+     |> assign(current_password: current_password)}
   end
 
   def handle_event("update_profile", params, socket) do
@@ -80,8 +85,9 @@ defmodule SafiraWeb.UserAuth.Components.UserProfileSettings do
          socket
          |> assign(profile_form: profile_changeset)
          |> assign(user: applied_user)
-         |> assign(:current_password, nil)
+         |> assign(current_password: nil)
          |> assign(trigger_form_action: password_changed?)
+         |> assign(notification_text: info)
          |> put_flash(:info, info)}
 
       {:error, changeset} ->
