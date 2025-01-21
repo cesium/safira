@@ -40,13 +40,13 @@
 
 <.modal
   :if={@live_action in [:tokens_edit]}
-  id="attendee-money-modal"
+  id="tokens-modal"
   show
   on_cancel={JS.patch(~p"/dashboard/attendees/#{@attendee.id}")}
 >
   <.live_component
     module={SafiraWeb.Backoffice.AttendeeLive.TokensLive.FormComponent}
-    id={@attendee.id || :new}
+    id={@attendee.id}
     current_user={@current_user}
     action={@live_action}
     attendee={@attendee}
