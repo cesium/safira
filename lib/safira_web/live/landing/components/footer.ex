@@ -52,7 +52,7 @@ defmodule SafiraWeb.Landing.Components.Footer do
       %{
         title: "Survival Guide",
         url: "/docs/survival-guide.pdf",
-        enabled: Event.get_feature_flag!("survival_guide_enabled")
+        enabled: true
       }
     ]
     |> Enum.filter(fn x -> x.enabled end)

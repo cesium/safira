@@ -18,8 +18,8 @@ defmodule Safira.Constants do
       iex> get("unknown")
       {:error, "key not found"}
   """
-  def get(key, default \\ "") do
-    fetch_key_value(key, default)
+  def get(key) do
+    fetch_key_value(key)
   end
 
   def get_many!(keys) do
@@ -29,10 +29,10 @@ defmodule Safira.Constants do
     |> Enum.map(fn p -> {p.key, p.value[p.key]} end)
   end
 
-  defp fetch_key_value(key, default) do
+  defp fetch_key_value(key) do
     case Repo.get_by(Pair, key: key) do
       nil ->
-        {:ok, default}
+        {:error, "key not found"}
 
       pair ->
         {:ok, pair.value[key]}
