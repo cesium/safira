@@ -32,6 +32,11 @@ config :safira, SafiraWeb.Endpoint,
   pubsub_server: Safira.PubSub,
   live_view: [signing_salt: "TzWGKiXG"]
 
+config :safira, Safira.Standalone,
+  conn_opts: [
+    host: "127.0.0.1",
+    port: 6379
+  ]
 # Configures the mailer
 #
 # By default it uses the "Local" adapter which stores the emails

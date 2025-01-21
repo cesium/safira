@@ -42,6 +42,7 @@ defmodule Safira.MixProject do
       {:phoenix_ecto, "~> 4.4"},
       {:postgrex, ">= 0.0.0"},
       {:flop, "~> 0.25.0"},
+      {:nebulex_redis_adapter, "~> 2.4.2"},
 
       # security
       {:bcrypt_elixir, "~> 3.0"},

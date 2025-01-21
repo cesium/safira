@@ -10,6 +10,7 @@ defmodule Safira.Application do
     children = [
       SafiraWeb.Telemetry,
       Safira.Repo,
+      Safira.Standalone,
       {DNSCluster, query: Application.get_env(:safira, :dns_cluster_query) || :ignore},
       # Start the PubSub system
       {Phoenix.PubSub, name: Safira.PubSub},

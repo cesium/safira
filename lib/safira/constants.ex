@@ -23,12 +23,33 @@ defmodule Safira.Constants do
   end
 
   defp fetch_key_value(key) do
+    case Safira.Standalone.get!(key) do
+      nil ->
+        get_from_db(key)
+
+      value ->
+        {:ok, value}
+    end
+  end
+
+  @doc """
+  Get a value by key from the database.
+
+  ## Examples
+
+      iex> get_from_db("key")
+      {:ok, "value"}
+
+      iex> get_from_db("unknown")
+      {:error, "key not found"}
+  """
+  defp get_from_db(key) do
     case Repo.get_by(Pair, key: key) do
       nil ->
         {:error, "key not found"}
 
       pair ->
-        {:ok, pair.value[key]}
+        {:ok, Map.get(pair.value, key)}
     end
   end
 
@@ -61,12 +82,16 @@ defmodule Safira.Constants do
   end
 
   defp create_key_value_pair(key, value) do
+    Safira.Standalone.put(key, value)
+
     %Pair{}
     |> Pair.changeset(%{key: key, value: %{key => value}})
     |> Repo.insert()
   end
 
   defp update_key_value_pair(pair, key, value) do
+    Safira.Standalone.put(key, value)
+
     pair
     |> Pair.changeset(%{value: Map.put(pair.value, key, value)})
     |> Repo.update()
