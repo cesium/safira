@@ -47,7 +47,8 @@ defmodule SafiraWeb.Backoffice.AttendeeLive.TokensLive.FormComponent do
       >
         <div class="mb-8">
           <h2 class="text-xl font-regular">
-            <%= gettext("Do you want to save these changes? This will leave %{name} with %{tokens} tokens.",
+            <%= gettext(
+              "Do you want to save these changes? This will leave %{name} with %{tokens} tokens.",
               name: @attendee.user.name,
               tokens: @current_tokens
             ) %>
@@ -87,7 +88,12 @@ defmodule SafiraWeb.Backoffice.AttendeeLive.TokensLive.FormComponent do
   end
 
   @impl true
-  def handle_event("validate", %{"attendee" => %{"tokens" => tokens} = attendee_params, "set_action" => action} = _params, socket) do
+  def handle_event(
+        "validate",
+        %{"attendee" => %{"tokens" => tokens} = attendee_params, "set_action" => action} =
+          _params,
+        socket
+      ) do
     case {tokens, action} do
       {"", _} ->
         {:noreply, socket}
@@ -97,10 +103,10 @@ defmodule SafiraWeb.Backoffice.AttendeeLive.TokensLive.FormComponent do
         changeset = Accounts.change_attendee(socket.assigns.attendee, attendee_params)
 
         {:noreply,
-        socket
-        |> assign(:form, to_form(changeset, action: :validate))
-        |> assign(:option, "Add")
-        |> assign(:current_tokens, socket.assigns.attendee.tokens + tokens_int)}
+         socket
+         |> assign(:form, to_form(changeset, action: :validate))
+         |> assign(:option, "Add")
+         |> assign(:current_tokens, socket.assigns.attendee.tokens + tokens_int)}
 
       {tokens, "Remove"} ->
         tokens_int = String.to_integer(tokens)
@@ -108,13 +114,12 @@ defmodule SafiraWeb.Backoffice.AttendeeLive.TokensLive.FormComponent do
         changeset = Accounts.change_attendee(socket.assigns.attendee, attendee_params)
 
         {:noreply,
-        socket
-        |> assign(:form, to_form(changeset, action: :validate))
-        |> assign(:option, "Remove")
-        |> assign(:current_tokens, current_tokens)}
+         socket
+         |> assign(:form, to_form(changeset, action: :validate))
+         |> assign(:option, "Remove")
+         |> assign(:current_tokens, current_tokens)}
     end
   end
-
 
   @impl true
   def handle_event("save", _params, socket) do
