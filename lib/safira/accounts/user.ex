@@ -8,7 +8,7 @@ defmodule Safira.Accounts.User do
   alias Safira.Accounts.Staff
 
   @required_fields ~w(name email handle password type)a
-  @optional_fields ~w(confirmed_at)a
+  @optional_fields ~w(confirmed_at allows_marketing)a
 
   @derive {
     Flop.Schema,
@@ -40,6 +40,7 @@ defmodule Safira.Accounts.User do
     field :current_password, :string, virtual: true, redact: true
     field :confirmed_at, :utc_datetime
     field :type, Ecto.Enum, values: [:attendee, :staff], default: :attendee
+    field :allows_marketing, :boolean, default: false
 
     has_one :attendee, Attendee, on_delete: :delete_all
     has_one :staff, Staff, on_delete: :delete_all
@@ -77,6 +78,7 @@ defmodule Safira.Accounts.User do
     |> validate_email(opts)
     |> validate_handle()
     |> validate_password(opts)
+    |> cast_assoc(:attendee, with: &Attendee.changeset/2)
   end
 
   @doc """
@@ -126,6 +128,8 @@ defmodule Safira.Accounts.User do
     |> validate_format(:handle, ~r/^[a-z0-9_]+$/,
       message: "can only contain lowercase letters, numbers, and underscores"
     )
+    |> unsafe_validate_unique(:handle, Safira.Repo)
+    |> unique_constraint(:handle)
   end
 
   defp maybe_hash_password(changeset, opts) do
@@ -198,6 +202,12 @@ defmodule Safira.Accounts.User do
     |> cast(attrs, [:password])
     |> validate_confirmation(:password, message: "does not match password")
     |> validate_password(opts)
+  end
+
+  def password_confirmation_changeset(user, attrs) do
+    user
+    |> cast(attrs, [:password])
+    |> validate_confirmation(:password, message: "does not match password")
   end
 
   @doc """

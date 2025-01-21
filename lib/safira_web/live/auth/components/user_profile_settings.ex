@@ -1,9 +1,3 @@
-# TO fix:
-# notificacoes só dao uma vez
-# email e password n podem ser alterados ao mesmo tempo pq estoura o submit do form
-# nao limpar os tokens da password da BD qnd ela n é alterada
-# refazer o  status
-
 defmodule SafiraWeb.UserAuth.Components.UserProfileSettings do
   use SafiraWeb, :live_component
 
@@ -19,12 +13,18 @@ defmodule SafiraWeb.UserAuth.Components.UserProfileSettings do
 
     profile_changeset = Accounts.change_user_profile(user)
 
+    # The new_user_session_changeset is used on the form that, on submit, creates a new user session, for the new password.
+    # Since the user can change the email and pass at the same time on the main form, isn't possible use it to send the submit to create a new session
+    # token, since the email isn't validated yet (need e-mail confirmation)
+    new_user_session_changeset = Accounts.change_user_password(user)
+
     base_path = get_base_path_by_user_type(user)
 
     socket =
       socket
       |> assign(user: user)
       |> assign(:profile_form, to_form(profile_changeset))
+      |> assign(new_user_session_form: to_form(new_user_session_changeset))
       |> assign(current_password: nil)
       |> assign(trigger_form_action: false)
       |> assign(base_path: base_path)
@@ -40,9 +40,17 @@ defmodule SafiraWeb.UserAuth.Components.UserProfileSettings do
 
     changeset = Accounts.change_user_profile(user, user_params)
 
+    # The new_user_session_changeset need to be updated with the new password, but never with the new email (that will not be changed yet, on form submit)
+    new_user_session_changeset =
+      Accounts.change_user_password(user, %{
+        email: user.email,
+        password: Map.get(user_params, "password_confirmation", "")
+      })
+
     {:noreply,
      socket
      |> assign(profile_form: to_form(changeset, action: :validate))
+     |> assign(new_user_session_form: to_form(new_user_session_changeset))
      |> assign(current_password: current_password)}
   end
 

@@ -11,9 +11,6 @@
       id="edit-profile-form"
       phx-change="validate_profile"
       phx-submit="update_profile"
-      action={"/users/log_in?_action=password_updated&_redirect_url=/#{@base_path}/profile_settings&_notification_text=#{@notification_text}"}
-      method="post"
-      phx-trigger-action={@trigger_form_action}
       phx-target={@myself}
     >
       <div class="flex flex-col w-full mt-[0px]">
@@ -51,6 +48,20 @@
           </.button>
         </div>
       </div>
+    </.simple_form>
+
+    <.simple_form
+      for={@new_user_session_form}
+      id="new-user-session-form"
+      action={"/users/log_in?_action=password_updated&_redirect_url=/#{@base_path}/profile_settings&_notification_text=#{@notification_text}"}
+      method="post"
+      phx-trigger-action={@trigger_form_action}
+      phx-target={@myself}
+      hidden
+    >
+      <.field field={@new_user_session_form[:email]} type="text" label="Email" required />
+
+      <.field field={@new_user_session_form[:password]} type="password" label="New password" />
     </.simple_form>
   </div>
 </div>

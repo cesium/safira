@@ -1,0 +1,92 @@
+<.page title={gettext("Coin Flip")} size={:xl} title_class="font-terminal uppercase">
+  <:actions>
+    <span class="text-semibold text-xl border-2 px-4 py-2 rounded-full font-terminal">
+      💰 <%= @attendee_tokens %>
+    </span>
+  </:actions>
+  <div class="flex flex-col sm:flex-row justify-between mt-12 w-full gap-6 sm:gap-10 items-center">
+    <div class="flex border-2 divide-x-2 rounded-full w-full sm:px-3 max-w-lg overflow-hidden">
+      <div class="flex items-center py-2 w-full pl-2">
+        <.icon name="hero-currency-dollar-solid" class="text-yellow-300 ml-2" />
+        <.form for={%{}} phx-change="set-bet" class="w-full">
+          <input
+            name="bet"
+            type="number"
+            min="10"
+            max={@attendee_tokens}
+            value={@bet}
+            phx-debounce="250"
+            class="w-full bg-transparent border-none focus:ring-transparent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none safira-number-input-without-bg"
+          />
+        </.form>
+      </div>
+      <div class="flex items-stretch divide-x-2">
+        <button
+          phx-click="set-bet"
+          phx-value-bet={round(@bet / 2)}
+          class="px-3 py-2 sm:px-4 sm:py-3 active:bg-blue-900/35 transition duration-200 font-terminal font-bold"
+        >
+          1/2
+        </button>
+        <button
+          phx-click="set-bet"
+          phx-value-bet={@bet * 2}
+          class="px-3 py-2 sm:px-5 sm:py-3 active:bg-blue-900/35 transition duration-200 font-terminal font-bold"
+        >
+          x2
+        </button>
+        <button
+          phx-click="set-bet"
+          phx-value-bet={@attendee_tokens}
+          class="pl-3 pr-4 py-2 sm:px-4 sm:py-3 active:bg-blue-900/35 transition duration-200 font-terminal font-bold"
+        >
+          MAX
+        </button>
+      </div>
+    </div>
+    <.action_button
+      title={gettext("Play")}
+      subtitle={gettext("CURRENT FEE: %{fee}%", fee: round(@coin_flip_fee * 100))}
+      class="max-w-80 mx-0"
+      disabled={@bet > @attendee_tokens || not @coin_flip_active?}
+      phx-click="create-room"
+    />
+  </div>
+  <div class="flex flex-row justify-center w-full pt-16"></div>
+  <h2 class="text-3xl font-semibold font-terminal pl-2"><%= gettext("CURRENT GAMES:") %></h2>
+  <p :if={@room_list_count == 0} class="text-2xl  w-full text-center my-16 sm:my-24">
+    <%= gettext("No games in progress.") %>
+  </p>
+  <div
+    id="room-list-current"
+    class="flex flex-col w-full md:flex-row flex-wrap items-center h-auto gap-4 my-5"
+    phx-update="stream"
+  >
+    <.room
+      :for={{id, room} <- @streams.room_list}
+      id={id}
+      room={room}
+      current_user={@current_user}
+      attendee_tokens={@attendee_tokens}
+      coin_flip_fee={@coin_flip_fee}
+    />
+  </div>
+  <h2 class="text-3xl font-semibold font-terminal pl-2"><%= gettext("PREVIOUS GAMES:") %></h2>
+  <p :if={@previous_room_list_count == 0} class="text-2xl w-full text-center my-16 sm:my-24">
+    <%= gettext("No previous games yet.") %>
+  </p>
+  <div
+    id="room-list-previous"
+    class="flex flex-col w-full md:flex-row flex-wrap items-center h-auto gap-4 my-5"
+    phx-update="stream"
+  >
+    <.room
+      :for={{id, room} <- @streams.previous_room_list}
+      id={id}
+      room={room}
+      current_user={@current_user}
+      attendee_tokens={@attendee_tokens}
+      coin_flip_fee={@coin_flip_fee}
+    />
+  </div>
+</.page>

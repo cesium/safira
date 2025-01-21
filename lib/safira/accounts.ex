@@ -201,16 +201,28 @@ defmodule Safira.Accounts do
   ## Examples
 
       iex> register_attendee_user(%{field: value})
-      {:ok, %User{}}
+      {:ok, %{user: %User{}, attendee: %Attendee{}}}
 
       iex> register_attendee_user(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
+      {:error, :struct, %Ecto.Changeset{}, %{}}
 
   """
   def register_attendee_user(attrs) do
-    %User{}
-    |> User.registration_changeset(attrs |> Map.put(:type, :attendee))
-    |> Repo.insert()
+    Ecto.Multi.new()
+    |> Ecto.Multi.insert(
+      :user,
+      User.registration_changeset(%User{}, Map.delete(attrs, :attendee),
+        hash_password: true,
+        validate_email: true
+      )
+    )
+    |> Ecto.Multi.insert(
+      :attendee,
+      fn %{user: user} ->
+        Attendee.changeset(%Attendee{}, %{user_id: user.id})
+      end
+    )
+    |> Repo.transaction()
   end
 
   @doc """
@@ -283,9 +295,18 @@ defmodule Safira.Accounts do
         # If everything was ok, we can update the user without the mail changes (just can be changed over an url sent by mail)
         changeset_without_mail_update = Ecto.Changeset.change(changeset, email: user.email)
 
+        password_changed? =
+          attrs["password"] != nil && String.trim(attrs["password"]) != ""
+
+        tokens_to_delete = if password_changed?, do: :all, else: ["false"]
+
         Ecto.Multi.new()
         |> Ecto.Multi.update(:user, changeset_without_mail_update)
-        |> Ecto.Multi.delete_all(:tokens, UserToken.by_user_and_contexts_query(user, :all))
+        # The tokens will just be deleted if the password was changed
+        |> Ecto.Multi.delete_all(
+          :tokens,
+          UserToken.by_user_and_contexts_query(user, tokens_to_delete)
+        )
         |> Repo.transaction()
         |> case do
           # Return the user with ALL the changes
@@ -309,6 +330,7 @@ defmodule Safira.Accounts do
   """
   def change_user_registration(%User{} = user, attrs \\ %{}) do
     User.registration_changeset(user, attrs, hash_password: false, validate_email: false)
+    |> User.password_confirmation_changeset(attrs)
   end
 
   ## Settings
@@ -495,7 +517,13 @@ defmodule Safira.Accounts do
     with {:ok, query} <- UserToken.verify_email_token_query(token, "confirm"),
          %User{} = user <- Repo.one(query),
          {:ok, %{user: user}} <- Repo.transaction(confirm_user_multi(user)) do
-      {:ok, user}
+      case UserNotifier.deliver_welcome_email(user) do
+        {:ok, _} ->
+          {:ok, user}
+
+        {:error, _message} ->
+          {:ok, user}
+      end
     else
       _ -> :error
     end

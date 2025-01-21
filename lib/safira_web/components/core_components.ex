@@ -69,7 +69,7 @@ defmodule SafiraWeb.CoreComponents do
               phx-window-keydown={JS.exec("data-cancel", to: "##{@id}")}
               phx-key="escape"
               phx-click-away={JS.exec("data-cancel", to: "##{@id}")}
-              class="shadow-zinc-700/10 relative hidden border dark:border-darkShade rounded-2xl bg-light dark:bg-dark p-14 shadow-lg transition"
+              class="shadow-zinc-700/10 relative hidden border dark:border-darkShade rounded-2xl bg-light dark:bg-dark p-8 sm:p-14 shadow-lg transition"
             >
               <div class="absolute top-6 right-5">
                 <button
@@ -280,7 +280,7 @@ defmodule SafiraWeb.CoreComponents do
   attr :type, :string,
     default: "text",
     values: ~w(checkbox color date datetime-local email file month number password
-               range search select tel text textarea time url week)
+               range search select tel text textarea time url week handle)
 
   attr :field, Phoenix.HTML.FormField,
     doc: "a form field struct retrieved from the form, for example: @form[:email]"
@@ -294,6 +294,9 @@ defmodule SafiraWeb.CoreComponents do
   attr :rest, :global,
     include: ~w(accept autocomplete capture cols disabled form list max maxlength min minlength
                 multiple pattern placeholder readonly required rows size step)
+
+  attr :wrapper_class, :string, default: ""
+  attr :class, :string, default: ""
 
   slot :inner_block
 
@@ -313,7 +316,7 @@ defmodule SafiraWeb.CoreComponents do
       end)
 
     ~H"""
-    <div phx-feedback-for={@name}>
+    <div phx-feedback-for={@name} class={@wrapper_class}>
       <label class="flex items-center gap-4 text-sm leading-6 text-zinc-600">
         <input type="hidden" name={@name} value="false" />
         <input
@@ -322,7 +325,7 @@ defmodule SafiraWeb.CoreComponents do
           name={@name}
           value="true"
           checked={@checked}
-          class="rounded border-zinc-300 text-zinc-900 focus:ring-0"
+          class={"rounded border-zinc-300 text-accent focus:ring-0 #{@class}"}
           {@rest}
         />
         <%= @label %>
@@ -334,12 +337,12 @@ defmodule SafiraWeb.CoreComponents do
 
   def input(%{type: "select"} = assigns) do
     ~H"""
-    <div phx-feedback-for={@name}>
+    <div phx-feedback-for={@name} class={@wrapper_class}>
       <.label for={@id}><%= @label %></.label>
       <select
         id={@id}
         name={@name}
-        class="mt-2 block w-full rounded-md border border-gray-300 bg-white shadow-sm focus:border-zinc-400 focus:ring-0 sm:text-sm"
+        class={"mt-2 block w-full rounded-md border border-gray-300 bg-white shadow-sm focus:border-zinc-400 focus:ring-0 sm:text-sm #{@class}"}
         multiple={@multiple}
         {@rest}
       >
@@ -353,7 +356,7 @@ defmodule SafiraWeb.CoreComponents do
 
   def input(%{type: "textarea"} = assigns) do
     ~H"""
-    <div phx-feedback-for={@name}>
+    <div phx-feedback-for={@name} class={@wrapper_class}>
       <.label for={@id}><%= @label %></.label>
       <textarea
         id={@id}
@@ -361,6 +364,7 @@ defmodule SafiraWeb.CoreComponents do
         class={[
           "mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6",
           "min-h-[6rem] phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400",
+          @class,
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
         ]}
@@ -371,10 +375,39 @@ defmodule SafiraWeb.CoreComponents do
     """
   end
 
+  def input(%{type: "handle"} = assigns) do
+    ~H"""
+    <div phx-feedback-for={@name} class={@wrapper_class}>
+      <.label for={@id}><%= @label %></.label>
+      <div class={[
+        "mt-2 flex bg-white w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6",
+        "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400 select-none",
+        @class,
+        @errors == [] && "border-zinc-300 focus:border-zinc-400",
+        @errors != [] && "border-rose-400 focus:border-rose-400"
+      ]}>
+        <span class="pl-3 self-center text-zinc-600 border-r pr-2 mr-3 border-zinc-400/50">@</span>
+        <input
+          type={@type}
+          name={@name}
+          id={@id}
+          value={Phoenix.HTML.Form.normalize_value(@type, @value)}
+          class={[
+            "block w-full border-none focus:outline-none focus:ring-transparent mr-4 text-zinc-900 sm:text-sm sm:leading-6 border-0 ring-0 py-[0.5rem]",
+            @class
+          ]}
+          {@rest}
+        />
+      </div>
+      <.error :for={msg <- @errors}><%= msg %></.error>
+    </div>
+    """
+  end
+
   # All other inputs text, datetime-local, url, password, etc. are handled here...
   def input(assigns) do
     ~H"""
-    <div phx-feedback-for={@name}>
+    <div phx-feedback-for={@name} class={@wrapper_class}>
       <.label for={@id}><%= @label %></.label>
       <input
         type={@type}
@@ -384,6 +417,7 @@ defmodule SafiraWeb.CoreComponents do
         class={[
           "mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6",
           "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400",
+          @class,
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
         ]}
@@ -398,11 +432,12 @@ defmodule SafiraWeb.CoreComponents do
   Renders a label.
   """
   attr :for, :string, default: nil
+  attr :class, :string, default: ""
   slot :inner_block, required: true
 
   def label(assigns) do
     ~H"""
-    <label for={@for} class="block text-sm font-semibold leading-6 dark:text-white">
+    <label for={@for} class={"block text-sm font-semibold leading-6 dark:text-white #{@class}"}>
       <%= render_slot(@inner_block) %>
     </label>
     """
