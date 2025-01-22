@@ -19,12 +19,14 @@ defmodule SafiraWeb.Landing.Components.Footer do
         </div>
 
         <div class="flex-2">
-          <div class="w-full flex flex-wrap flex-row-reverse select-none justify-items-center whitespace-nowrap font-iregular text-sm text-white">
-            <%= for link <- footer_links() do %>
-              <.link
-                href={link.url}
-                class="flex grow w-full lg:w-1/2 py-4 pl-4 hover:underline justify-center lg:justify-end"
-              >
+          <div class="grid lg:grid-flow-col lg:auto-rows-max gap-8 grid-cols-1 lg:grid-rows-2 select-none justify-items-center whitespace-nowrap font-iregular text-sm text-white">
+            <%= for {link, idx} <- Enum.with_index(footer_links()) do %>
+              <!-- In order to properly align links to the right, if there are an odd number of links
+                   enabled we need to add a fake cell to the grid in order to create space on the left
+                   side of the row and fil it. Otherwise, the links would be left aligned -->
+              <div :if={idx == 1 and rem(length(footer_links()), 2) == 1} class="hidden lg:block">
+              </div>
+              <.link href={link.url} class="block w-full hover:underline text-center lg:text-right">
                 <%= link.title %>
               </.link>
             <% end %>
