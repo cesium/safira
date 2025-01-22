@@ -28,7 +28,7 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.Members do
               class="h-full"
               upload={@uploads.image}
               image={Uploaders.Member.url({@member.image, @member}, :original, signed: true)}
-              icon="hero-check-badge"
+              icon="hero-photo"
             />
           </div>
           <:actions>

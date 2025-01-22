@@ -2,7 +2,6 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MembersEdit do
   use SafiraWeb, :live_component
 
   alias Safira.Teams
-
   import SafiraWeb.Components.Forms
 
   @impl true
@@ -17,6 +16,15 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MembersEdit do
           <:actions>
             <.button phx-disable-with="Saving...">Update Member</.button>
           </:actions>
+          <.link
+            phx-click={
+              JS.push("delete", value: %{id: @member.id})
+            }
+            data-confirm="Are you sure?"
+            phx-target={@myself}
+          >
+            <.icon name="hero-trash" class="w-5 h-5" />
+          </.link>
         </.simple_form>
       </.page>
     </div>
@@ -28,26 +36,36 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MembersEdit do
     {:ok,
      socket
      |> assign(assigns)
-     |> assign_new(:form, fn ->
-       to_form(Teams.change_team_member(member))
-     end)}
+     |> assign_new(:form, fn -> to_form(Teams.change_team_member(member)) end)}
   end
 
   def update(assigns, socket) do
     {:ok,
      socket
      |> assign(assigns)
-     |> assign_new(:member, fn ->
-       Teams.get_team_member!(socket.assigns.member_id)
-     end)
-     |> assign_new(:form, fn ->
-       to_form(Teams.change_team_member(%{}))
-     end)}
+     |> assign_new(:member, fn -> Teams.get_team_member!(socket.assigns.member_id) end)
+     |> assign_new(:form, fn -> to_form(Teams.change_team_member(%{})) end)}
   end
 
   @impl true
   def handle_event("save", %{"member" => member_params}, socket) do
     update_member(socket, :teams_members_edit, member_params)
+  end
+
+  @impl true
+  def handle_event("delete", %{"id" => id}, socket) do
+    member = Teams.get_team_member!(id)
+
+    case Teams.delete_team_member(member) do
+      {:ok, _} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, "Member deleted successfully")
+         |> push_patch(to: socket.assigns.patch)}
+
+      {:error, _reason} ->
+        {:noreply, socket |> put_flash(:error, "Failed to delete member")}
+    end
   end
 
   defp update_member(socket, :teams_members_edit, member_params) do
@@ -59,9 +77,7 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MembersEdit do
          |> push_patch(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply,
-         socket
-         |> assign(:form, to_form(changeset))}
+        {:noreply, socket |> assign(:form, to_form(changeset))}
     end
   end
 end
