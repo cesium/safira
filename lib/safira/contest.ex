@@ -310,6 +310,19 @@ defmodule Safira.Contest do
   end
 
   @doc """
+  Deletes a badge condition.
+
+  ## Examples
+
+      iex> delete_condition(condition)
+      {:ok, %BadgeCondition{}}
+
+  """
+  def delete_condition(%BadgeCondition{} = condition) do
+    Repo.delete(condition)
+  end
+
+  @doc """
   Changes the attendee token balance and updates the daily tokens.
   """
   def change_attendee_tokens(attendee, tokens) do

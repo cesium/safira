@@ -19,15 +19,24 @@ defmodule SafiraWeb.Backoffice.BadgeLive.ConditionLive.Index do
 
         <ul class="h-96 mt-8 pb-8 flex flex-col space-y-2 overflow-y-auto">
           <li
-            :for={{_, condition} <- @streams.conditions}
-            class="even:bg-lightShade/20 dark:even:bg-darkShade/20 py-4 px-4"
+            :for={{id, condition} <- @streams.conditions}
+            id={id}
+            class="even:bg-lightShade/20 dark:even:bg-darkShade/20 py-4 px-4 flex flex-row justify-between items-center"
           >
             <p class="text-dark dark:text-light flex flex-row justify-between">
               <%= condition_description(condition) %>
+            </p>
+            <div class="flex flex-row gap-2">
               <.link navigate={~p"/dashboard/badges/#{@badge.id}/conditions/#{condition.id}/edit"}>
                 <.icon name="hero-pencil" class="w-5 h-5" />
               </.link>
-            </p>
+              <.link
+                phx-click={JS.push("delete", value: %{id: condition.id}) |> hide("##{id}")}
+                data-confirm="Are you sure?"
+              >
+                <.icon name="hero-trash" class="w-5 h-5" />
+              </.link>
+            </div>
           </li>
           <div class="only:flex hidden h-full items-center justify-center">
             <p class="text-center text-lightMuted dark:text-darkMuted mt-8">
@@ -56,13 +65,36 @@ defmodule SafiraWeb.Backoffice.BadgeLive.ConditionLive.Index do
      )}
   end
 
+  @impl true
+  def handle_event("delete", %{"id" => id}, socket) do
+    condition = Contest.get_badge_condition!(id)
+
+    {:ok, _} = Contest.delete_condition(condition)
+
+    {:noreply, stream_delete(socket, :conditions, condition)}
+  end
+
   def condition_description(condition) do
     if condition.category_id do
-      gettext("When receiving a badge of type %{category_name}.",
-        category_name: condition.category.name
+      gettext(
+        "Attendee has redeemed %{amount_needed} %{badge_cardinality} of type %{category_name}.",
+        amount_needed: condition.amount_needed,
+        category_name: condition.category.name,
+        badge_cardinality: ngettext("badge", "badges", condition.amount_needed)
       )
     else
-      gettext("When receiving any badge.")
-    end
+      gettext("Attendee has redeemed %{amount_needed} %{badge_cardinality} of any type.",
+        amount_needed: condition.amount_needed,
+        badge_cardinality: ngettext("badge", "badges", condition.amount_needed)
+      )
+    end <>
+      if condition.begin && condition.end do
+        gettext(" (from %{begin} to %{end})",
+          begin: Timex.format!(condition.begin, "{0D}/{0M}/{YYYY} {h24}:{m}"),
+          end: Timex.format!(condition.end, "{0D}/{0M}/{YYYY} {h24}:{m}")
+        )
+      else
+        gettext(" (available throughout the event's duration)")
+      end
   end
 end
