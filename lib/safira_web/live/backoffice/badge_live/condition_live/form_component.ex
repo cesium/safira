@@ -1,5 +1,4 @@
 defmodule SafiraWeb.Backoffice.BadgeLive.ConditionLive.FormComponent do
-  alias Safira.Moon
   use SafiraWeb, :live_component
 
   alias Safira.Contest
@@ -36,15 +35,9 @@ defmodule SafiraWeb.Backoffice.BadgeLive.ConditionLive.FormComponent do
                 options={categories_options(@categories)}
               />
               <p>
-                <%= gettext("and:") %>
+                <%= gettext("award them %{badge_name}.", badge_name: @badge.name) %>
               </p>
             </div>
-            <div>
-              <.field field={@form[:logic]} label_class="hidden" wrapper_class="!mb-0" type="lua" />
-            </div>
-            <p>
-              <%= gettext("award them %{badge_name}.", badge_name: @badge.name) %>
-            </p>
           </div>
           <:actions>
             <.button phx-disable-with="Saving...">Save Condition</.button>
@@ -81,35 +74,11 @@ defmodule SafiraWeb.Backoffice.BadgeLive.ConditionLive.FormComponent do
   end
 
   def handle_event("save", %{"badge_condition" => badge_condition_params}, socket) do
-    if Map.get(badge_condition_params, "logic", nil) &&
-         badge_condition_params["logic"] |> String.trim() != "" do
-      case Moon.eval(badge_condition_params["logic"], attendee: %{badges: []}) do
-        {:ok, result} ->
-          if result in [true, false] do
-            save_condition(
-              socket,
-              socket.assigns.action,
-              badge_condition_params |> Map.put("badge_id", socket.assigns.badge.id)
-            )
-          else
-            {:noreply,
-             socket
-             |> put_flash(
-               :error,
-               "The logic must return a boolean value (got #{inspect(result)})"
-             )}
-          end
-
-        {:error, message} ->
-          {:noreply, socket |> put_flash(:error, message)}
-      end
-    else
-      save_condition(
-        socket,
-        socket.assigns.action,
-        badge_condition_params |> Map.put("badge_id", socket.assigns.badge.id)
-      )
-    end
+    save_condition(
+      socket,
+      socket.assigns.action,
+      badge_condition_params |> Map.put("badge_id", socket.assigns.badge.id)
+    )
   end
 
   defp save_condition(socket, :conditions_edit, badge_condition_params) do

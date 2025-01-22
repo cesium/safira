@@ -93,7 +93,6 @@ defmodule Safira.MixProject do
       #  utilities
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
-      {:lua, "~> 0.0.14"},
       {:timex, "~> 3.7.11"},
 
       # server
