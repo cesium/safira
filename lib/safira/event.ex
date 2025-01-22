@@ -89,7 +89,8 @@ defmodule Safira.Event do
       "speakers_enabled",
       "team_enabled",
       "survival_guide_enabled",
-      "faqs_enabled"
+      "faqs_enabled",
+      "general_regulation_enabled"
     ]
   end
 
@@ -126,7 +127,7 @@ defmodule Safira.Event do
   """
   def get_event_start_date do
     case Constants.get("event_start_date") do
-      {:ok, ""} ->
+      {:error, "key not found"} ->
         # If the date is not set, set it to today's date by default
         today = Timex.today()
         change_event_start_date(today)
@@ -148,7 +149,7 @@ defmodule Safira.Event do
   """
   def get_event_end_date do
     case Constants.get("event_end_date") do
-      {:ok, ""} ->
+      {:error, "key not found"} ->
         # If the date is not set, set it to today's date by default
         today = Timex.today()
         change_event_end_date(today)

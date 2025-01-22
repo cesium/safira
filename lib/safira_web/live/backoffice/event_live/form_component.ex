@@ -37,6 +37,11 @@ defmodule SafiraWeb.Backoffice.EventLive.FormComponent do
                 type="switch"
                 label="Survival Guide Enabled"
               />
+              <.field
+                field={@form[:general_regulation_enabled]}
+                type="switch"
+                label="General Regulation Enabled"
+              />
             </div>
             <!-- Other -->
             <.field field={@form[:start_time]} type="datetime-local" label="Start Date/Time" required />

@@ -5,6 +5,8 @@ defmodule SafiraWeb.Landing.Components.Footer do
   use SafiraWeb, :component
   import SafiraWeb.Landing.Components.Socials
 
+  alias Safira.Event
+
   def footer(assigns) do
     ~H"""
     <footer class="xl:px-[15rem] md:px-[8rem] px-[2.5rem]">
@@ -17,9 +19,12 @@ defmodule SafiraWeb.Landing.Components.Footer do
         </div>
 
         <div class="flex-2">
-          <div class="grid select-none grid-rows-2 justify-items-center gap-8 whitespace-nowrap font-iregular text-sm text-white lg:grid-cols-2 lg:justify-items-start">
+          <div class="w-full flex flex-wrap flex-row-reverse select-none justify-items-center whitespace-nowrap font-iregular text-sm text-white">
             <%= for link <- footer_links() do %>
-              <.link href={link.url} class="hover:underline text-center lg:text-right w-full">
+              <.link
+                href={link.url}
+                class="flex grow w-full lg:w-1/2 py-4 pl-4 hover:underline justify-center lg:justify-end"
+              >
                 <%= link.title %>
               </.link>
             <% end %>
@@ -50,6 +55,16 @@ defmodule SafiraWeb.Landing.Components.Footer do
       %{
         title: "Survival Guide",
         url: "/docs/survival-guide.pdf",
+        enabled: Event.get_feature_flag!("survival_guide_enabled")
+      },
+      %{
+        title: "General Regulation",
+        url: "/docs/regulation.pdf",
+        enabled: Event.get_feature_flag!("general_regulation_enabled")
+      },
+      %{
+        title: "Privacy Policy",
+        url: "/docs/privacy_policy.pdf",
         enabled: true
       }
     ]
