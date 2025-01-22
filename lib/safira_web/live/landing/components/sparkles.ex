@@ -4,7 +4,7 @@ defmodule SafiraWeb.Landing.Components.Sparkles do
 
   def sparkles(assigns) do
     ~H"""
-    <div class="relative overflow-x-clip select-none -z-10">
+    <div class="absolute inset-0 overflow-x-clip select-none -z-10 h-full overflow-y-hidden pointer-events-none">
       <div class="absolute -top-[300px] -left-[900px] w-[2000px] hidden md:block animate-fade-in-slow">
         <.shape id="desktop-sparkle-1" />
       </div>

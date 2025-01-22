@@ -1,14 +1,22 @@
 <.page title="Minigames">
-  <div class="grid grid-cols-3 py-8">
+  <div class="grid sm:grid-cols-3 py-8 gap-5 sm:gap-10">
     <.ensure_permissions user={@current_user} permissions={%{"minigames" => ["edit"]}}>
       <.link
         patch={~p"/dashboard/minigames/wheel"}
         class="flex flex-col items-center w-full text-2xl gap-4 font-semibold py-8 rounded-2xl dark:bg-darkShade/10 dark:hover:bg-darkShade/20 bg-lightShade/30 hover:bg-lightShade/40 transition-colors"
       >
         <%= gettext("Lucky Wheel") %>
-        <div class="w-16">
-          <img src={~p"/images/wheel.svg"} class="dark:invert" />
-        </div>
+        <img src={~p"/images/wheel.svg"} class="size-16 sm:size-24 dark:invert" />
+      </.link>
+    </.ensure_permissions>
+
+    <.ensure_permissions user={@current_user} permissions={%{"minigames" => ["edit"]}}>
+      <.link
+        patch={~p"/dashboard/minigames/coin_flip"}
+        class="flex flex-col items-center w-full text-2xl gap-4 font-semibold py-8 rounded-2xl dark:bg-darkShade/10 dark:hover:bg-darkShade/20 bg-lightShade/30 hover:bg-lightShade/40 transition-colors"
+      >
+        <%= gettext("Coin Flip") %>
+        <img src={~p"/images/coin-flip.svg"} class="size-16 sm:size-24 dark:invert" />
       </.link>
     </.ensure_permissions>
   </div>
@@ -17,12 +25,27 @@
 <.modal
   :if={@live_action in [:edit_wheel]}
   id="wheel-config-modal"
+  wrapper_class="p-3"
   show
   on_cancel={JS.patch(~p"/dashboard/minigames/")}
 >
   <.live_component
     id="wheel-configurator"
     module={SafiraWeb.Backoffice.MinigamesLive.Wheel.FormComponent}
+    patch={~p"/dashboard/minigames/"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:edit_coin_flip]}
+  id="coin-flip-config-modal"
+  wrapper_class="p-3"
+  show
+  on_cancel={JS.patch(~p"/dashboard/minigames/")}
+>
+  <.live_component
+    id="coin-flip-configurator"
+    module={SafiraWeb.Backoffice.MinigamesLive.CoinFlip.FormComponent}
     patch={~p"/dashboard/minigames/"}
   />
 </.modal>

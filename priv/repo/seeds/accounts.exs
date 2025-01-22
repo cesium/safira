@@ -2,6 +2,7 @@ defmodule Safira.Repo.Seeds.Accounts do
   alias Safira.Accounts
   alias Safira.Repo
   alias Safira.Roles
+  alias Safira.Accounts.{Attendee, User}
 
   @names File.read!("priv/fake/names.txt") |> String.split("\n")
 
@@ -33,21 +34,33 @@ defmodule Safira.Repo.Seeds.Accounts do
   end
 
   def seed_attendees(names) do
+    courses = Accounts.list_courses()
+
     for {name, i} <- Enum.with_index(names) do
       email = "attendee#{i}@seium.org"
       handle = name |> String.downcase() |> String.replace(~r/\s/, "_")
 
-      user = %{
-        name: name,
-        handle: handle,
-        email: email,
-        password: "password1234"
+      attrs = %{
+        "name" => name,
+        "handle" => handle,
+        "email" => email,
+        "password" => "password1234",
+        "password_confirmation" => "password1234",
+        "attendee" => %{
+          "course_id" => Enum.random(courses).id,
+          "tokens" => :rand.uniform(999),
+          "entries" => :rand.uniform(200)
+        }
       }
 
-      case Accounts.register_attendee_user(user) do
-        {:ok, changeset} ->
-          user = Repo.update!(Accounts.User.confirm_changeset(changeset))
-          Accounts.create_attendee(%{user_id: user.id, tokens: :rand.uniform(999), entries: :rand.uniform(200)})
+      case User.registration_changeset(%User{}, Map.delete(attrs, "attendee")) |> Repo.insert() do
+        {:ok, user} ->
+          case Attendee.changeset(%Attendee{}, Map.put(Map.get(attrs, "attendee"), "user_id", user.id)) |> Repo.insert() do
+            {:ok, _attendee} ->
+              Repo.update!(Accounts.User.confirm_changeset(user))
+            {:error, changeset} ->
+              Mix.shell().error(Kernel.inspect(changeset.errors))
+          end
         {:error, changeset} ->
           Mix.shell().error(Kernel.inspect(changeset.errors))
       end

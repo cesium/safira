@@ -17,7 +17,7 @@ defmodule SafiraWeb do
   those modules here.
   """
 
-  def static_paths, do: ~w(assets fonts images docs favicon.ico robots.txt)
+  def static_paths, do: ~w(assets docs fonts images models favicon.ico robots.txt)
 
   def router do
     quote do
@@ -46,6 +46,21 @@ defmodule SafiraWeb do
       use Gettext, backend: SafiraWeb.Gettext
 
       unquote(verified_routes())
+    end
+  end
+
+  def view do
+    quote do
+      use Phoenix.View,
+        root: "lib/safira_web/templates",
+        namespace: SafiraWeb
+
+      # Import convenience functions from controllers
+      import Phoenix.Controller,
+        only: [view_module: 1, view_template: 1]
+
+      # Include shared imports and aliases for views
+      unquote(html_helpers())
     end
   end
 

@@ -116,4 +116,134 @@ defmodule Safira.MinigamesTest do
       assert %Ecto.Changeset{} = Minigames.change_wheel_drop(wheel_drop)
     end
   end
+
+  describe "coin_flip_game" do
+    alias Safira.Accounts
+    alias Safira.Minigames.CoinFlipRoom
+
+    import Safira.AccountsFixtures
+
+    setup do
+      # Set up test users and enable the game
+      player1 = attendee_fixture(%{tokens: 100})
+      player2 = attendee_fixture(%{tokens: 100})
+      Minigames.change_coin_flip_active(true)
+
+      %{player1: player1, player2: player2}
+    end
+
+    test "creates room with valid bet", %{player1: player1} do
+      attrs = %{"attendee_id" => player1.id, "bet" => 50}
+
+      assert {:ok, %CoinFlipRoom{} = room} = Minigames.create_coin_flip_room(attrs)
+      assert room.bet == 50
+      assert room.player1_id == player1.id
+      assert is_nil(room.player2_id)
+      assert is_nil(room.result)
+      assert room.finished == false
+
+      # Check player1's tokens were deducted
+      player1 = Accounts.get_attendee!(player1.id)
+      assert player1.tokens == 50
+    end
+
+    test "cannot create room with insufficient tokens", %{player1: player1} do
+      attrs = %{"attendee_id" => player1.id, "bet" => 150}
+
+      assert {:error, _} = Minigames.create_coin_flip_room(attrs)
+      # Tokens should not change
+      player1 = Accounts.get_attendee!(player1.id)
+      assert player1.tokens == 100
+    end
+
+    test "cannot create multiple rooms", %{player1: player1} do
+      {:ok, _room} =
+        Minigames.create_coin_flip_room(%{
+          "attendee_id" => player1.id,
+          "bet" => 50
+        })
+
+      assert {:error, "You already have an active game."} =
+               Minigames.create_coin_flip_room(%{
+                 "attendee_id" => player1.id,
+                 "bet" => 50
+               })
+    end
+
+    test "cannot join room when there is an existing room", %{player1: player1, player2: player2} do
+      {:ok, _room} =
+        Minigames.create_coin_flip_room(%{
+          "attendee_id" => player1.id,
+          "bet" => 50
+        })
+
+      {:ok, room2} =
+        Minigames.create_coin_flip_room(%{
+          "attendee_id" => player2.id,
+          "bet" => 50
+        })
+
+      assert {:error, "You already have an active game."} =
+               Minigames.join_coin_flip_room(room2.id, player1)
+    end
+
+    test "joining room starts game", %{player1: player1, player2: player2} do
+      {:ok, room} =
+        Minigames.create_coin_flip_room(%{
+          "attendee_id" => player1.id,
+          "bet" => 50
+        })
+
+      assert {:ok, updated_room} = Minigames.join_coin_flip_room(room.id, player2)
+      assert updated_room.player2_id == player2.id
+      assert updated_room.result in ["heads", "tails"]
+      assert updated_room.finished == false
+
+      # Check if room in database is finished
+      room = Minigames.get_coin_flip_room!(room.id)
+      assert room.finished == true
+
+      # Check final token amounts
+      player1 = Accounts.get_attendee!(player1.id)
+      player2 = Accounts.get_attendee!(player2.id)
+
+      case updated_room.result do
+        "heads" ->
+          # Won
+          assert player1.tokens == 150
+          # Lost
+          assert player2.tokens == 50
+
+        "tails" ->
+          # Lost
+          assert player1.tokens == 50
+          # Won
+          assert player2.tokens == 150
+      end
+    end
+
+    test "cannot join full room", %{player1: player1, player2: player2} do
+      player3 = attendee_fixture(%{tokens: 100})
+
+      {:ok, room} =
+        Minigames.create_coin_flip_room(%{
+          "attendee_id" => player1.id,
+          "bet" => 50
+        })
+
+      {:ok, _} = Minigames.join_coin_flip_room(room.id, player2)
+
+      assert {:error, "The room is already full."} =
+               Minigames.join_coin_flip_room(room.id, player3)
+    end
+
+    test "cannot create room when game is disabled", %{player1: player1} do
+      Minigames.change_coin_flip_active(false)
+
+      attrs = %{"attendee_id" => player1.id, "bet" => 50}
+
+      assert {:error, "The coin flip game is not active."} =
+               Minigames.create_coin_flip_room(attrs)
+    end
+  end
 end

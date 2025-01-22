@@ -40,12 +40,17 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.SpeakerLive.Index do
                 <% end %>
                 <div class="self-center">
                   <p class="text-base font-semibold"><%= speaker.name %></p>
-                  <p class="font-normal"><%= speaker.title %></p>
+                  <p class="font-normal truncate max-w-[12rem]"><%= speaker.title %></p>
                 </div>
               </div>
             </:col>
             <:col :let={{_id, speaker}} sortable field={:company} label="Company">
               <%= speaker.company %>
+            </:col>
+            <:col :let={{_id, speaker}} field={:highlighted} label="Highlighted">
+              <span class="w-full flex justify-center">
+                <.input type="checkbox" disabled={true} checked={speaker.highlighted} name="" />
+              </span>
             </:col>
             <:action :let={{id, speaker}}>
               <.ensure_permissions user={@current_user} permissions={%{"schedule" => ["edit"]}}>

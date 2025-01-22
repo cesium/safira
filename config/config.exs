@@ -27,7 +27,7 @@ config :safira, SafiraWeb.Endpoint,
   adapter: Bandit.PhoenixAdapter,
   render_errors: [
     formats: [html: SafiraWeb.ErrorHTML, json: SafiraWeb.ErrorJSON],
-    layout: {SafiraWeb.Layouts, :landing}
+    layout: {SafiraWeb.Layouts, :root}
   ],
   pubsub_server: Safira.PubSub,
   live_view: [signing_salt: "TzWGKiXG"]
