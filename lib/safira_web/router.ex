@@ -26,6 +26,7 @@ defmodule SafiraWeb.Router do
     live_session :default, on_mount: [{SafiraWeb.UserAuth, :mount_current_user}] do
       live "/", HomeLive.Index, :index
       live "/faqs", FAQLive.Index, :index
+      live "/schedule", ScheduleLive.Index, :index
     end
   end
 

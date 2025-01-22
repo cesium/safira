@@ -6,13 +6,15 @@
   />
   <.pitch :if={@has_schedule? || @has_highlighted_speakers? || @has_sponsors?} />
 </div>
-<.schedule
-  :if={@has_schedule?}
-  event_start_date={@event_start_date}
-  event_end_date={@event_end_date}
-  url={~p"/"}
-  params={@params}
-/>
+<div class="px-5 md:px-32 xl:px-16 xl:px-32 pt-20">
+  <.schedule
+    :if={@has_schedule?}
+    event_start_date={@event_start_date}
+    event_end_date={@event_end_date}
+    url={~p"/"}
+    params={@params}
+  />
+</div>
 <div class="xl:px-[15rem] md:px-[8rem] px-[2.5rem]">
   <.speakers :if={@has_highlighted_speakers?} speakers={@streams.speakers} />
   <.sponsors :if={@has_sponsors?} tiers={@tiers} />
