@@ -7,12 +7,11 @@ defmodule Safira.TeamsFixtures do
   @doc """
   Generate a team.
   """
+
   def team_fixture(attrs \\ %{}) do
     {:ok, team} =
       attrs
-      |> Enum.into(%{
-        name: "some name"
-      })
+      |> Enum.into(%{name: "some name"})
       |> Safira.Teams.create_team()
 
     team
@@ -21,12 +20,13 @@ defmodule Safira.TeamsFixtures do
   @doc """
   Generate a team_member.
   """
+
   def team_member_fixture(attrs \\ %{}) do
+    team = team_fixture()
+
     {:ok, team_member} =
       attrs
-      |> Enum.into(%{
-        name: "some name"
-      })
+      |> Enum.into(%{name: "some name", team_id: team.id})
       |> Safira.Teams.create_team_member()
 
     team_member

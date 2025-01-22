@@ -9,10 +9,9 @@ defmodule Safira.TeamsTest do
     import Safira.TeamsFixtures
 
     @invalid_attrs %{name: nil, priority: nil}
-
     test "list_teams/0 returns all teams" do
       team = team_fixture()
-      assert Teams.list_teams() == [team]
+      assert Teams.list_teams([]) == [team]
     end
 
     test "get_team!/1 returns the team with given id" do
@@ -66,7 +65,7 @@ defmodule Safira.TeamsTest do
 
     test "list_team_members/0 returns all team_members" do
       team_member = team_member_fixture()
-      assert Teams.list_team_members() == [team_member]
+      assert Teams.list_team_members([]) == [team_member]
     end
 
     test "get_team_member!/1 returns the team_member with given id" do
