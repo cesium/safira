@@ -123,6 +123,7 @@ defmodule Safira.Repo.Seeds.Activities do
         |> Map.put(:date, next_first_tuesday_of_february())
         |> Map.put(:category_id, Map.get(categories, type).id)
         |> Map.put(:title, Map.get(activity, :title) || Faker.Company.bs() |> String.capitalize())
+        |> Map.put(:description, Faker.Lorem.paragraph())
         |> Map.put(:location, Map.get(activity, :location) || "CP2 - B1"))
 
       insert_activity(changeset, type, speakers)

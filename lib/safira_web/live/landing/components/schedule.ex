@@ -12,6 +12,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
   attr :url, :string, required: true
   attr :params, :map, required: true
   attr :has_filters?, :boolean, default: false
+  attr :descriptions_enabled, :boolean, default: false
 
   def schedule(assigns) do
     ~H"""
@@ -38,6 +39,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
         <.schedule_table
           date={fetch_current_date_from_params(assigns.params) || assigns.event_start_date}
           filters={fetch_filters_from_params(assigns.params)}
+          descriptions_enabled={assigns.descriptions_enabled}
         />
       </div>
     </div>
@@ -82,7 +84,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
             <%= if activity.category && activity.category.name == "Break" do %>
               <.schedule_break activity={activity} />
             <% else %>
-              <.schedule_activity activity={activity} />
+              <.schedule_activity activity={activity} descriptions_enabled={@descriptions_enabled} />
             <% end %>
           <% end %>
         </div>
@@ -131,10 +133,14 @@ defmodule SafiraWeb.Landing.Components.Schedule do
             </.link>
           </li>
         </ul>
+
+        <p id={"schedule-#{@activity.id}"} class="overflow-hidden pb-4" style="display: none;">
+          <%= @activity.description %>
+        </p>
         <!-- Spacing -->
         <div class="h-20 w-2"></div>
 
-        <div class="absolute bottom-0 mt-auto sm:w-full py-3">
+        <div class="absolute bottom-0 mt-auto w-full py-3">
           <div class="flex flex-wrap justify-center">
             <!-- Location -->
             <div class="flex w-auto items-center">
@@ -151,6 +157,23 @@ defmodule SafiraWeb.Landing.Components.Schedule do
                 <%= gettext("Enroll") %>
               </p>
             </div>
+            <!-- Expand -->
+            <button
+              :if={not is_nil(@activity.description) and @activity.description != ""}
+              class="font-terminal uppercase w-16 select-none rounded-full bg-accent px-2 text-xl text-white hover:scale-110"
+              phx-click={
+                JS.toggle(
+                  to: "#schedule-#{@activity.id}",
+                  in: {"", "opacity-0 max-h-0", "opacity-100 max-h-48"},
+                  out: {"", "opacity-100 max-h-48", "opacity-0 max-h-0"}
+                )
+                |> JS.toggle(to: "#schedule-toggle-show-#{@activity.id}")
+                |> JS.toggle(to: "#schedule-toggle-hide-#{@activity.id}")
+              }
+            >
+              <span id={"schedule-toggle-show-#{@activity.id}"}>+</span>
+              <span id={"schedule-toggle-hide-#{@activity.id}"} style="display: none;">-</span>
+            </button>
           </div>
         </div>
       </div>
