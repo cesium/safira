@@ -1,4 +1,4 @@
-<div class="xl:px-[15rem] md:px-[8rem] px-[2.5rem]">
+<div class=" md:px-[6rem] px-[2.5rem]">
   <div class="spacing relative z-20 flex flex-col justify-between py-20 lg:h-3/4">
     <div class="font-terminal-uppercase relative z-50 font-bold">
       <h5 class="text-[rgb(255_128_13/var(--tw-text-opacity))] text-2xl font-ibold">
@@ -8,18 +8,20 @@
         <%= gettext("CeSIUM has teamed up with the best team possible.") %>
       </h1>
     </div>
-    <div class="font-terminal mt-10">
-      <div class="text-4xl ">
-        <%= gettext("Organization") %>
-      </div>
-      <div>
-        <%= gettext(
-          "They walk around, full of work, gathering speakers, attracting partners and giving their imagination wings, all for this to be your favorite week."
-        ) %>
+    <div class="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div class="mt-8">
+        <h2 class="text-4xl mb-4 font-terminal text-white">
+          <%= gettext("Organization") %>
+        </h2>
+        <p class="text-lg text-gray-300">
+          <%= gettext(
+            "They walk around, full of work, gathering speakers, attracting partners and giving their imagination wings, all for this to be your favorite week."
+          ) %>
+        </p>
       </div>
       <%= for team <- @teams do %>
-        <.team team_name={team.name} members={team.team_members} />
-      <% end %>
+          <.team team_name={team.name} members={team.team_members} />
+        <% end %>
     </div>
   </div>
 </div>
