@@ -17,9 +17,7 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MembersEdit do
             <.button phx-disable-with="Saving...">Update Member</.button>
           </:actions>
           <.link
-            phx-click={
-              JS.push("delete", value: %{id: @member.id})
-            }
+            phx-click={JS.push("delete", value: %{id: @member.id})}
             data-confirm="Are you sure?"
             phx-target={@myself}
           >
