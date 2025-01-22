@@ -7,7 +7,7 @@ defmodule Safira.Uploaders.Member do
   alias Safira.Teams.TeamMember
 
   @versions [:original]
-  @extension_whitelist ~w(.svg .png)
+  @extension_whitelist ~w(.jpg .jpeg .png)
 
   def validate({file, _}) do
     file_extension = file.file_name |> Path.extname() |> String.downcase()

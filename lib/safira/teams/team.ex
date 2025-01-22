@@ -5,6 +5,7 @@ defmodule Safira.Teams.Team do
   use Safira.Schema
 
   @required_fields ~w(name)a
+
   schema "teams" do
     field :name, :string
     field :priority, :integer

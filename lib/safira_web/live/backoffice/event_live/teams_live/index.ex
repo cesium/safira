@@ -45,7 +45,7 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.Index do
 
   @impl true
   def mount(socket) do
-    {:ok, socket |> stream(:teams, Teams.list_teams())}
+    {:ok, socket |> stream(:teams, Teams.list_teams(preloads: [:team_members]))}
   end
 
   @impl true

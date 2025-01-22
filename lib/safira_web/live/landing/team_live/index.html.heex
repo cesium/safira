@@ -18,7 +18,7 @@
         ) %>
       </div>
       <%= for team <- @teams do %>
-        <.team team_name={team.name} members={team.members} />
+        <.team team_name={team.name} members={team.team_members} />
       <% end %>
     </div>
   </div>

@@ -2,9 +2,7 @@ defmodule Safira.Teams do
   @moduledoc """
   The Teams context.
   """
-
-  import Ecto.Query, warn: false
-  alias Safira.Repo
+  use Safira.Context
 
   alias Safira.Teams.Team
 
@@ -17,8 +15,10 @@ defmodule Safira.Teams do
       [%Team{}, ...]
 
   """
-  def list_teams do
-    Repo.all(Team)
+  def list_teams(opts) when is_list(opts) do
+    Team
+    |> apply_filters(opts)
+    |> Repo.all()
   end
 
   @doc """
@@ -104,12 +104,12 @@ defmodule Safira.Teams do
 
   alias Safira.Teams.TeamMember
 
-
   def update_team_member_foto(%TeamMember{} = member, attrs) do
     member
     |> TeamMember.image_changeset(attrs)
     |> Repo.update()
   end
+
   @doc """
   Returns the list of team_members.
 
