@@ -1,4 +1,7 @@
 defmodule SafiraWeb.UserUpdateEmailConfirmation do
+  @moduledoc """
+  A live view where the new email is confirmed an updated, over the token passed in the URL.
+  """
   use SafiraWeb, :live_view
 
   alias Safira.Accounts

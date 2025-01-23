@@ -292,7 +292,7 @@ defmodule Safira.Accounts do
 
     case applied_user do
       {:ok, _} ->
-        # If everything was ok, we can update the user without the mail changes (just can be changed over an url sent by mail)
+        # Removing the email from the changeset, since the mail just will be updated over mail confirmation
         changeset_without_mail_update = Ecto.Changeset.change(changeset, email: user.email)
 
         password_changed? =

@@ -1,4 +1,9 @@
 defmodule SafiraWeb.UserAuth.Components.UserProfileSettings do
+  @moduledoc """
+  Component responsible for the user profile settings (change name, handle, password, email, etc.)
+  Can be used in the backoffice or in the app.
+  """
+
   use SafiraWeb, :live_component
 
   alias Safira.Accounts
@@ -13,9 +18,10 @@ defmodule SafiraWeb.UserAuth.Components.UserProfileSettings do
 
     profile_changeset = Accounts.change_user_profile(user)
 
-    # The new_user_session_changeset is used on the form that, on submit, creates a new user session, for the new password.
-    # Since the user can change the email and pass at the same time on the main form, isn't possible use it to send the submit to create a new session
-    # token, since the email isn't validated yet (need e-mail confirmation)
+    # The new_user_session_changeset is for the form that, on submit, creates a new user session after the password
+    # update. A second form is needed because the user can change the email and password at the same time on the
+    # main form, and so isn't possible use it to send the submit to create a new session token, since the email
+    # isn't validated yet (need e-mail confirmation)
     new_user_session_changeset = Accounts.change_user_password(user)
 
     base_path = get_base_path_by_user_type(user)
@@ -40,7 +46,8 @@ defmodule SafiraWeb.UserAuth.Components.UserProfileSettings do
 
     changeset = Accounts.change_user_profile(user, user_params)
 
-    # The new_user_session_changeset need to be updated with the new password, but never with the new email (that will not be changed yet, on form submit)
+    # The new_user_session_changeset need to be updated with the new password,
+    # but never with the new email (that will not be changed yet, on form submit)
     new_user_session_changeset =
       Accounts.change_user_password(user, %{
         email: user.email,
