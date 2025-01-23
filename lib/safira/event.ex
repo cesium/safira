@@ -30,14 +30,13 @@ defmodule Safira.Event do
     end
   end
 
+  defp bool_to_string(true), do: "true"
+  defp bool_to_string(false), do: "false"
+
   def change_registrations_open(registrations_open) do
     Constants.set(
       "registrations_open",
-      if registrations_open do
-        "true"
-      else
-        "false"
-      end
+      bool_to_string(registrations_open)
     )
   end
 
@@ -82,6 +81,41 @@ defmodule Safira.Event do
     DateTime.compare(start_time, DateTime.utc_now()) == :lt
   end
 
+  def feature_flag_keys do
+    [
+      "login_enabled",
+      "schedule_enabled",
+      "challenges_enabled",
+      "speakers_enabled",
+      "team_enabled",
+      "survival_guide_enabled",
+      "faqs_enabled",
+      "general_regulation_enabled"
+    ]
+  end
+
+  def get_active_feature_flags! do
+    feature_flag_keys()
+    |> Constants.get_many!()
+    |> Enum.filter(fn {_k, v} -> v == "true" end)
+    |> Enum.map(fn {k, _v} -> k end)
+  end
+
+  def get_feature_flag!(flag) do
+    with {:ok, value} <- Constants.get(flag), do: value == "true"
+  end
+
+  def get_feature_flags do
+    feature_flag_keys()
+    |> Enum.map(fn k -> with {:ok, v} <- Constants.get(k), do: {k, v} end)
+    |> Enum.into(%{})
+  end
+
+  def change_feature_flags(flags) do
+    flags
+    |> Enum.each(fn {k, v} -> Constants.set(k, bool_to_string(v)) end)
+  end
+
   @doc """
   Returns the event's start date.
   If the date is not set, it will be set to today's date by default.
@@ -93,14 +127,14 @@ defmodule Safira.Event do
   """
   def get_event_start_date do
     case Constants.get("event_start_date") do
-      {:ok, date} ->
-        ensure_date(date)
-
-      {:error, _} ->
+      {:error, "key not found"} ->
         # If the date is not set, set it to today's date by default
         today = Timex.today()
         change_event_start_date(today)
         today
+
+      {:ok, date} ->
+        ensure_date(date)
     end
   end
 
@@ -115,14 +149,14 @@ defmodule Safira.Event do
   """
   def get_event_end_date do
     case Constants.get("event_end_date") do
-      {:ok, date} ->
-        ensure_date(date)
-
-      {:error, _} ->
+      {:error, "key not found"} ->
         # If the date is not set, set it to today's date by default
         today = Timex.today()
         change_event_end_date(today)
         today
+
+      {:ok, date} ->
+        ensure_date(date)
     end
   end
 
