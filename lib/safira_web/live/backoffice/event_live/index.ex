@@ -70,13 +70,13 @@ defmodule SafiraWeb.Backoffice.EventLive.Index do
     |> assign(:page_title, "New Team")
   end
 
-  defp apply_action(socket, :teams_edit, %{"id" => team_id}) do
+  defp apply_action(socket, :teams_edit, %{"team_id" => team_id}) do
     socket
     |> assign(:page_title, "Edit Team")
     |> assign(:team, Teams.get_team!(team_id))
   end
 
-  defp apply_action(socket, :teams_members, %{"id" => team_id}) do
+  defp apply_action(socket, :teams_members, %{"team_id" => team_id}) do
     socket
     |> assign(:page_title, "Team Members")
     |> assign(:team, Teams.get_team!(team_id))

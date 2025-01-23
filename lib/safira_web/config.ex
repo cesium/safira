@@ -14,14 +14,10 @@ defmodule SafiraWeb.Config do
         url: "/schedule",
         feature_flag: "schedule_enabled"
       },
-      # %{
-      #  title: "Team",
-      #  url: "/team",
-      #  feature_flag: "team_enabled"
-      # },
       %{
         title: "Team",
-        url: "/team"
+        url: "/team",
+        feature_flag: "team_enabled"
       },
       # %{
       #  title: "Challenges",

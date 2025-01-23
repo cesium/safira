@@ -137,10 +137,10 @@ defmodule SafiraWeb.Router do
             live "/", Index, :teams
             live "/new", Index, :teams_new
 
-            scope "/:id/edit" do
+            scope "/:team_id/edit" do
               live "/", Index, :teams_edit
               live "/members", Index, :teams_members
-              live "/members/:member_id", Index, :teams_members_edit
+              live "/members/:id", Index, :teams_members_edit
             end
           end
         end

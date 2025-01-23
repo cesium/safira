@@ -19,7 +19,12 @@
           ) %>
         </p>
       </div>
-      <%= for team <- @teams do %>
+      <%= for {team, index} <- Enum.with_index(@teams) do %>
+        <%= if index == 1 do %>
+          <div class="flex items-center justify-center my-8">
+            <img src="/images/sei-logo.svg" class="w-1/2" />
+          </div>
+        <% end %>
         <.team team_name={team.name} members={team.team_members} />
       <% end %>
     </div>

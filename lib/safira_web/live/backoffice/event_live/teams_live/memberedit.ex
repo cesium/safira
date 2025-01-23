@@ -15,14 +15,14 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MembersEdit do
           </div>
           <:actions>
             <.button phx-disable-with="Saving...">Update Member</.button>
+            <.link
+              phx-click={JS.push("delete", value: %{id: @member.id})}
+              data-confirm="Are you sure?"
+              phx-target={@myself}
+            >
+              <.icon name="hero-trash" class="w-5 h-5" />
+            </.link>
           </:actions>
-          <.link
-            phx-click={JS.push("delete", value: %{id: @member.id})}
-            data-confirm="Are you sure?"
-            phx-target={@myself}
-          >
-            <.icon name="hero-trash" class="w-5 h-5" />
-          </.link>
         </.simple_form>
       </.page>
     </div>
