@@ -13,6 +13,8 @@
     event_end_date={@event_end_date}
     url={~p"/"}
     params={@params}
+    enrolments={@enrolments}
+    user_role={Map.get(@current_user, :type, :attendee)}
   />
 </div>
 <div class="xl:px-[15rem] md:px-[8rem] px-[2.5rem]">

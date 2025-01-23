@@ -55,6 +55,7 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.ActivityLive.FormComponent do
                 wrapper_class="w-full"
               />
               <.field_multiselect
+                mode={:tags}
                 id="speakers"
                 field={@form[:speakers]}
                 target={@myself}

@@ -40,6 +40,8 @@ defmodule SafiraWeb.Landing.Components.Schedule do
           date={fetch_current_date_from_params(assigns.params) || assigns.event_start_date}
           filters={fetch_filters_from_params(assigns.params)}
           descriptions_enabled={assigns.descriptions_enabled}
+          user_role={assigns.user_role}
+          enrolments={assigns.enrolments}
         />
       </div>
     </div>
@@ -84,7 +86,12 @@ defmodule SafiraWeb.Landing.Components.Schedule do
             <%= if activity.category && activity.category.name == "Break" do %>
               <.schedule_break activity={activity} />
             <% else %>
-              <.schedule_activity activity={activity} descriptions_enabled={@descriptions_enabled} />
+              <.schedule_activity
+                activity={activity}
+                descriptions_enabled={@descriptions_enabled}
+                user_role={@user_role}
+                enrolments={@enrolments}
+              />
             <% end %>
           <% end %>
         </div>
@@ -155,6 +162,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
             <!-- Enrol -->
             <div class="float-right mr-5 flex flex-1 items-center justify-end">
               <p
+                :if={enrolments_enabled(@activity, @user_role, @enrolments)}
                 class="relative hover:underline cursor-pointer -mr-3 font-iregular text-lg text-accent sm:mr-1"
                 phx-click="enrol"
                 phx-value-activity_id={@activity.id}
@@ -164,7 +172,10 @@ defmodule SafiraWeb.Landing.Components.Schedule do
             </div>
             <!-- Expand -->
             <button
-              :if={not is_nil(@activity.description) and @activity.description != ""}
+              :if={
+                @descriptions_enabled and not is_nil(@activity.description) and
+                  @activity.description != ""
+              }
               class="font-terminal uppercase w-16 select-none rounded-full bg-accent px-2 text-xl text-white hover:scale-110"
               phx-click={
                 JS.toggle(
@@ -392,5 +403,13 @@ defmodule SafiraWeb.Landing.Components.Schedule do
       end
     end)
     |> Enum.reverse()
+  end
+
+  defp enrolments_enabled(activity, user_role, enrolments) do
+    not_full = activity.max_enrolments > activity.enrolment_count
+    already_enrolled = Enum.member?(enrolments, activity)
+    is_staff = user_role == :staff
+
+    not_full and activity.has_enrolments and not already_enrolled and not is_staff
   end
 end

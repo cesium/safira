@@ -20,6 +20,7 @@ defmodule SafiraWeb.Landing.HomeLive.Index do
      |> assign(:registrations_open?, Event.registrations_open?())
      |> assign(:has_sponsors?, Companies.get_companies_count() > 0)
      |> assign(:has_schedule?, Activities.get_activities_count() > 0)
+     |> assign(:enrolments, get_enrolments(socket.assigns.current_user))
      |> stream(:speakers, speakers |> Enum.shuffle())}
   end
 
@@ -46,9 +47,15 @@ defmodule SafiraWeb.Landing.HomeLive.Index do
     end
   end
 
-  defp actual_enrol(activity_id, socket) do
-    IO.inspect("HELLO")
+  defp get_enrolments(user) do
+    if is_nil(user) or user.type != :attendee do
+      []
+    else
+      Activities.get_attendee_enrolments(user.attendee.id)
+    end
+  end
 
+  defp actual_enrol(activity_id, socket) do
     case Activities.enrol(socket.assigns.current_user.attendee.id, activity_id) do
       {:ok, _} ->
         {:noreply,

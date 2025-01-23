@@ -42,6 +42,8 @@ defmodule Safira.Activities.Activity do
       join_through: "activities_speakers",
       on_replace: :delete
 
+    has_many :enrolments, Safira.Activities.Enrolment
+
     timestamps(type: :utc_datetime)
   end
 

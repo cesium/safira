@@ -89,7 +89,7 @@ defmodule Safira.Activities do
   """
   def get_activity!(id) do
     Activity
-    |> preload(:speakers)
+    |> preload([:speakers, enrolments: [attendee: [:user]]])
     |> Repo.get!(id)
   end
 
@@ -440,6 +440,12 @@ defmodule Safira.Activities do
     |> Repo.preload(:activities)
   end
 
+  def get_attendee_enrolments(attendee_id) do
+    Enrolment
+    |> where([e], e.attendee_id == ^attendee_id)
+    |> Repo.all()
+  end
+
   def enrol(attendee_id, activity_id) do
     Ecto.Multi.new()
     # We need to read the activity before updating the enrolment count to avoid
@@ -460,5 +466,19 @@ defmodule Safira.Activities do
       Activity.changeset(act, %{enrolment_count: act.enrolment_count + 1})
     end)
     |> Repo.transaction()
+  end
+
+  def create_enrolment(attrs) do
+    %Enrolment{}
+    |> Enrolment.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def delete_enrolment(%Enrolment{} = enrolment, attrs \\ %{}) do
+    Repo.delete(enrolment)
+  end
+
+  def change_enrolment(%Enrolment{} = enrolment, attrs \\ %{}) do
+    Enrolment.changeset(enrolment, attrs)
   end
 end
