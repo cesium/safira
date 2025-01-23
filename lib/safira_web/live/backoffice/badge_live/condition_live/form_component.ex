@@ -13,7 +13,8 @@ defmodule SafiraWeb.Backoffice.BadgeLive.ConditionLive.FormComponent do
         title={@title}
         subtitle={
           gettext(
-            "If the following statement is true, for any attendee, the badge is automatically awarded to them."
+            "If the following statement is true, for any attendee, the %{badge_name} badge is automatically awarded to them.",
+            badge_name: @badge.name
           )
         }
       >
@@ -56,7 +57,7 @@ defmodule SafiraWeb.Backoffice.BadgeLive.ConditionLive.FormComponent do
                 options={categories_options(@categories)}
               />
               <p>
-                <%= gettext("category, award them %{badge_name}.", badge_name: @badge.name) %>
+                <%= gettext("category.") %>
               </p>
             </div>
             <div class="flex flex-row items-center gap-2">
