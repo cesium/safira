@@ -55,14 +55,16 @@ defmodule SafiraWeb.UserSessionControllerTest do
         conn
         |> post(~p"/users/log_in", %{
           "_action" => "password_updated",
+          "_redirect_url" => "/dashboard/profile_settings",
+          "_notification_text" => "Your best notification message!",
           "user" => %{
             "email" => user.email,
             "password" => valid_user_password()
           }
         })
 
-      assert redirected_to(conn) == ~p"/users/settings"
-      assert Phoenix.Flash.get(conn.assigns.flash, :info) =~ "Password updated successfully"
+      assert redirected_to(conn) == ~p"/dashboard/profile_settings"
+      assert Phoenix.Flash.get(conn.assigns.flash, :info) =~ "Your best notification message!"
     end
 
     test "redirects to login page with invalid credentials", %{conn: conn} do
