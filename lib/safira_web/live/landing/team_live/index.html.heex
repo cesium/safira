@@ -19,8 +19,8 @@
           ) %>
         </p>
       </div>
-      <%= for {team, index} <- Enum.with_index(@teams) do %>
-        <%= if index == 1 do %>
+      <%= for {team, index} <- Enum.with_index(Enum.sort_by(@teams, & &1.priority)) do %>
+        <%= if index == 3 do %>
           <div class="flex items-center justify-center my-8">
             <img src="/images/sei-logo.svg" class="w-1/2" />
           </div>

@@ -4,7 +4,7 @@ defmodule Safira.Teams.Team do
   """
   use Safira.Schema
 
-  @required_fields ~w(name)a
+  @required_fields ~w(name priority)a
 
   schema "teams" do
     field :name, :string
@@ -16,6 +16,7 @@ defmodule Safira.Teams.Team do
 
   @doc false
   def changeset(team, attrs) do
+    IO.inspect(attrs)
     team
     |> cast(attrs, @required_fields)
     |> validate_required(@required_fields)

@@ -51,7 +51,7 @@ defmodule Safira.Teams do
   """
   def create_team(attrs \\ %{}) do
     %Team{}
-    |> Team.changeset(%{name: attrs["name"]})
+    |> Team.changeset(attrs)
     |> Repo.insert()
   end
 
@@ -100,6 +100,10 @@ defmodule Safira.Teams do
   """
   def change_team(%Team{} = team, attrs \\ %{}) do
     Team.changeset(team, attrs)
+  end
+
+  def get_next_team_priority do
+    (Repo.aggregate(from(t in Team), :max, :priority) || -1) + 1
   end
 
   alias Safira.Teams.TeamMember
