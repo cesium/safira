@@ -5,6 +5,8 @@ defmodule SafiraWeb.Landing.ScheduleLive.Index do
 
   alias Safira.Event
 
+  on_mount {SafiraWeb.VerifyFeatureFlag, "schedule_enabled"}
+
   @impl true
   def mount(_params, _session, socket) do
     {:ok,

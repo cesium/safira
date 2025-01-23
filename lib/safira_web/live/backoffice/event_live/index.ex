@@ -15,7 +15,12 @@ defmodule SafiraWeb.Backoffice.EventLive.Index do
   def mount(_params, _session, socket) do
     registrations_open = Event.registrations_open?()
     start_time = Event.get_event_start_time!()
-    form = to_form(%{"registrations_open" => registrations_open, "start_time" => start_time})
+    feature_flags = Event.get_feature_flags()
+
+    form =
+      %{"registrations_open" => registrations_open, "start_time" => start_time}
+      |> Map.merge(feature_flags)
+      |> to_form()
 
     {:ok,
      socket

@@ -5,6 +5,8 @@ defmodule SafiraWeb.Landing.Components.Footer do
   use SafiraWeb, :component
   import SafiraWeb.Landing.Components.Socials
 
+  alias Safira.Event
+
   def footer(assigns) do
     ~H"""
     <footer class="xl:px-[15rem] md:px-[8rem] px-[2.5rem]">
@@ -17,9 +19,14 @@ defmodule SafiraWeb.Landing.Components.Footer do
         </div>
 
         <div class="flex-2">
-          <div class="grid select-none grid-rows-2 justify-items-center gap-8 whitespace-nowrap font-iregular text-sm text-white lg:grid-cols-2 lg:justify-items-start">
-            <%= for link <- footer_links() do %>
-              <.link href={link.url} class="hover:underline text-center lg:text-right w-full">
+          <div class="grid lg:grid-flow-col lg:auto-rows-max gap-8 grid-cols-1 lg:grid-rows-2 select-none justify-items-center whitespace-nowrap font-iregular text-sm text-white">
+            <%= for {link, idx} <- Enum.with_index(footer_links()) do %>
+              <!-- In order to properly align links to the right, if there are an odd number of links
+                   enabled we need to add a fake cell to the grid in order to create space on the left
+                   side of the row and fil it. Otherwise, the links would be left aligned -->
+              <div :if={idx == 1 and rem(length(footer_links()), 2) == 1} class="hidden lg:block">
+              </div>
+              <.link href={link.url} class="block w-full hover:underline text-center lg:text-right">
                 <%= link.title %>
               </.link>
             <% end %>
@@ -39,20 +46,30 @@ defmodule SafiraWeb.Landing.Components.Footer do
     [
       %{
         title: "Previous Edition",
-        url: "https://2024.seium.org/"
+        url: "https://2024.seium.org/",
+        enabled: true
       },
       %{
         title: "Report a Problem",
-        url: "https://cesium.link/f/safira-bugs"
+        url: "https://cesium.link/f/safira-bugs",
+        enabled: true
       },
       %{
         title: "Survival Guide",
-        url: "/docs/survival-guide.pdf"
+        url: "/docs/survival-guide.pdf",
+        enabled: Event.get_feature_flag!("survival_guide_enabled")
       },
       %{
         title: "General Regulation",
-        url: "/docs/regulation.pdf"
+        url: "/docs/regulation.pdf",
+        enabled: Event.get_feature_flag!("general_regulation_enabled")
+      },
+      %{
+        title: "Privacy Policy",
+        url: "/docs/privacy_policy.pdf",
+        enabled: true
       }
     ]
+    |> Enum.filter(fn x -> x.enabled end)
   end
 end

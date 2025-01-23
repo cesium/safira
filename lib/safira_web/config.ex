@@ -6,10 +6,18 @@ defmodule SafiraWeb.Config do
   alias Safira.Event
 
   def landing_pages do
+    enabled_flags = Event.get_active_feature_flags!()
+
     [
+      %{
+        title: "Schedule",
+        url: "/schedule",
+        feature_flag: "schedule_enabled"
+      },
       # %{
-      #  title: "Schedule",
-      #  url: "/schedule"
+      #  title: "Team",
+      #  url: "/team",
+      #  feature_flag: "team_enabled"
       # },
       %{
         title: "Team",
@@ -17,17 +25,21 @@ defmodule SafiraWeb.Config do
       },
       # %{
       #  title: "Challenges",
-      #  url: "/challenges"
+      #  url: "/challenges",
+      #  feature_flag: "challenges_enabled"
       # },
       # %{
       #  title: "Speakers",
-      #  url: "/speakers"
+      #  url: "/speakers",
+      #  feature_flag: "speakers_enabled"
       # },
       %{
         title: "FAQs",
-        url: "/faqs"
+        url: "/faqs",
+        feature_flag: "faqs_enabled"
       }
     ]
+    |> Enum.filter(fn x -> Enum.member?(enabled_flags, x.feature_flag) end)
   end
 
   def app_pages do
