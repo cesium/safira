@@ -224,7 +224,13 @@ defmodule SafiraWeb.Router do
           live "/coin_flip", MinigamesLive.Index, :edit_coin_flip
         end
 
-        live "/scanner", ScannerLive.Index, :index
+        scope "/scanner", ScannerLive do
+          live "/", Index, :index
+
+          scope "/badge", BadgeLive do
+            live "/:id/give", Index, :edit
+          end
+        end
       end
     end
   end
