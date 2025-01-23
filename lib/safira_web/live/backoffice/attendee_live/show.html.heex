@@ -1,8 +1,17 @@
 <.page title="Attendee">
   <:actions>
-    <.button>
-      <.icon name="hero-flag" class="w-5 h-5" />
-    </.button>
+    <div class="flex flex-row gap-x-4">
+      <.ensure_permissions user={@current_user} permissions={%{"attendees" => ["edit"]}}>
+        <.link patch={~p"/dashboard/attendees/#{@attendee.id}/edit/tokens"}>
+          <.button>
+            <.icon name="hero-currency-euro" class="w-5 h-5" />
+          </.button>
+        </.link>
+      </.ensure_permissions>
+      <.button>
+        <.icon name="hero-flag" class="w-5 h-5" />
+      </.button>
+    </div>
   </:actions>
   <div class="flex flex-col items-center gap-4 w-full sm:w-fit py-8">
     <.avatar size={:xl} handle={@attendee.user.handle} />
@@ -28,3 +37,19 @@
     </div>
   </div>
 </.page>
+
+<.modal
+  :if={@live_action in [:tokens_edit]}
+  id="attendee-tokens-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/attendees/#{@attendee.id}")}
+>
+  <.live_component
+    module={SafiraWeb.Backoffice.AttendeeLive.TokensLive.FormComponent}
+    id={@attendee.id}
+    current_user={@current_user}
+    action={@live_action}
+    attendee={@attendee}
+    patch={~p"/dashboard/attendees/#{@attendee.id}"}
+  />
+</.modal>

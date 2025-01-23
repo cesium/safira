@@ -26,6 +26,7 @@ defmodule SafiraWeb.Router do
     live_session :default, on_mount: [{SafiraWeb.UserAuth, :mount_current_user}] do
       live "/", HomeLive.Index, :index
       live "/faqs", FAQLive.Index, :index
+      live "/schedule", ScheduleLive.Index, :index
     end
   end
 
@@ -115,12 +116,18 @@ defmodule SafiraWeb.Router do
         live "/profile_settings", ProfileSettingsLive, :edit
       end
 
+      scope "/downloads" do
+        pipe_through [:require_staff_user]
+        get "/attendees", CSVController, :attendees_data
+      end
+
       scope "/dashboard", Backoffice do
         pipe_through [:require_staff_user]
 
         scope "/attendees", AttendeeLive do
           live "/", Index, :index
           live "/:id", Show, :show
+          live "/:id/edit/tokens", Show, :tokens_edit
         end
 
         scope "/event", EventLive do
