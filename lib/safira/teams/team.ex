@@ -16,7 +16,6 @@ defmodule Safira.Teams.Team do
 
   @doc false
   def changeset(team, attrs) do
-    IO.inspect(attrs)
     team
     |> cast(attrs, @required_fields)
     |> validate_required(@required_fields)

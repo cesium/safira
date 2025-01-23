@@ -48,9 +48,9 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.FormComponent do
 
   defp save_team(socket, :teams_new, team_params) do
     case Teams.create_team(
-      team_params
-      |> Map.put("priority", Teams.get_next_team_priority)
-    ) do
+           team_params
+           |> Map.put("priority", Teams.get_next_team_priority())
+         ) do
       {:ok, _team} ->
         {:noreply,
          socket
