@@ -12,7 +12,7 @@ defmodule SafiraWeb.ChallengeLive.FormComponent do
       <.header>
         <%= @title %>
         <:subtitle>
-          The Challenges attendee participate in order to win prizes.
+          <%= gettext("The Challenges attendee participate in order to win prizes.") %>
         </:subtitle>
       </.header>
 
@@ -27,7 +27,6 @@ defmodule SafiraWeb.ChallengeLive.FormComponent do
         <div class="grid grid-cols-3 space-x-4">
           <.field field={@form[:type]} type="select" options={type_options()} label="Type" required />
           <.field field={@form[:date]} type="date" label="Date" />
-          <.field field={@form[:display_priority]} type="number" label="Display Position" />
         </div>
         <.field field={@form[:description]} type="textarea" label="Description" required />
 

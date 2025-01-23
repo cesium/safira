@@ -7,8 +7,8 @@ defmodule Safira.Challenges.Challenge do
 
   alias Safira.Challenges.ChallengePrize
 
-  @required_fields ~w(display_priority name description type)a
-  @optional_fields ~w(date)a
+  @required_fields ~w(name description type)a
+  @optional_fields ~w(display_priority date)a
 
   @challenge_types ~w(daily global other)a
 
@@ -19,7 +19,7 @@ defmodule Safira.Challenges.Challenge do
   schema "challenges" do
     field :name, :string
     field :description, :string
-    field :display_priority, :integer
+    field :display_priority, :integer, default: 0
 
     field :type, Ecto.Enum, values: @challenge_types
     field :date, :date

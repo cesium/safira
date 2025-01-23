@@ -22,7 +22,11 @@
       meta={@meta}
       params={@params}
       row_click={&JS.navigate(~p"/dashboard/minigames/challenges/#{elem(&1, 1).id}/edit")}
+      sortable
     >
+      <:col :let={{_id, _challenge}} label="">
+        <.icon name="hero-bars-3" class="w-5 h-5 handle cursor-pointer ml-4" />
+      </:col>
       <:col :let={{_id, challenge}} label="Name" sortable field={:name}>
         <%= challenge.name %>
       </:col>

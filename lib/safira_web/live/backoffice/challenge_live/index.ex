@@ -64,4 +64,16 @@ defmodule SafiraWeb.Backoffice.ChallengeLive.Index do
 
     {:noreply, stream_delete(socket, :challenges, challenge)}
   end
+
+  @impl true
+  def handle_event("update-sorting", %{"ids" => ids}, socket) do
+    ids
+    |> Enum.with_index(0)
+    |> Enum.each(fn {"challenges-" <> id, priority} ->
+      Challenges.get_challenge!(id)
+      |> Challenges.update_challenge(%{display_priority: priority})
+    end)
+
+    {:noreply, socket}
+  end
 end
