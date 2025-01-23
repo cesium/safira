@@ -294,7 +294,7 @@ defmodule Safira.Accounts do
       |> User.profile_changeset(attrs, validate_email: true)
       |> User.validate_current_password(current_password)
 
-    # Just simulation a complete update, to check if everything is valid
+    # Just simulate a complete update, to check if everything is valid
     applied_user = Ecto.Changeset.apply_action(changeset, :update)
 
     case applied_user do

@@ -94,8 +94,6 @@ defmodule SafiraWeb.Router do
           live "/link", Edit, :edit
         end
 
-        live "/profile", ProfileLive.Index, :index
-
         pipe_through [:require_credential]
 
         live "/", HomeLive.Index, :index
