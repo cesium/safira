@@ -16,7 +16,7 @@ defmodule SafiraWeb.Teamcomponent do
           <img
             src={Uploaders.Member.url({member.image, member}, :original, signed: true)}
             alt={"#{member.name}'s photo"}
-            class="w-48 h-48 object-cover"
+            class="w-36 h-36 object-cover"
           />
           <p class="mt-2 text-lg font-semibold text-white uppercase"><%= member.name %></p>
         </div>

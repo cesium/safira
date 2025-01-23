@@ -1,5 +1,5 @@
 defmodule SafiraWeb.Landing.TeamLive.Index do
-  use SafiraWeb, :live_view
+  use SafiraWeb, :landing_view
 
   alias Safira.Teams
   import SafiraWeb.Teamcomponent
