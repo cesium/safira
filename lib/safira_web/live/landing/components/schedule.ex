@@ -14,6 +14,9 @@ defmodule SafiraWeb.Landing.Components.Schedule do
   attr :has_filters?, :boolean, default: false
   attr :descriptions_enabled, :boolean, default: false
 
+  attr :user_role, :atom, required: true
+  attr :enrolments, :list, required: true
+
   def schedule(assigns) do
     ~H"""
     <div class="xl:grid 2xl:grid-cols-2 gap-8 relative select-none">
