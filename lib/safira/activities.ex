@@ -308,6 +308,23 @@ defmodule Safira.Activities do
   end
 
   @doc """
+  Returns the list of daily speakers.
+
+  ## Examples
+    iex> list_daily_speakers(~D[2022-01-01])
+      [%Speaker{}, ...]
+  """
+  def list_daily_speakers(day) do
+    Activity
+    |> where([a], a.date == ^day)
+    |> order_by([a], asc: a.time_start)
+    |> join(:inner, [a], as in "activities_speakers", on: a.id == as.activity_id)
+    |> join(:inner, [a, as], s in Speaker, on: as.speaker_id == s.id)
+    |> select([a, as, s], %{speaker: s, activity: a})
+    |> Repo.all()
+  end
+
+  @doc """
   Gets a single speaker.
 
   Raises `Ecto.NoResultsError` if the Speaker does not exist.

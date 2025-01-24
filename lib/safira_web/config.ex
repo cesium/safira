@@ -24,11 +24,11 @@ defmodule SafiraWeb.Config do
         url: "/challenges",
         feature_flag: "challenges_enabled"
       },
-      # %{
-      #  title: "Speakers",
-      #  url: "/speakers",
-      #  feature_flag: "speakers_enabled"
-      # },
+      %{
+        title: "Speakers",
+        url: "/speakers",
+        feature_flag: "speakers_enabled"
+      },
       %{
         title: "FAQs",
         url: "/faqs",
