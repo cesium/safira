@@ -165,6 +165,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
                 :if={enrolments_enabled(@activity, @user_role, @enrolments)}
                 class="relative hover:underline cursor-pointer -mr-3 font-iregular text-lg text-accent sm:mr-1"
                 phx-click="enrol"
+                data-confirm={"#{gettext("You are enrolling for")} #{@activity.title}. #{gettext("This action cannot be undone. Are you sure?")}"}
                 phx-value-activity_id={@activity.id}
               >
                 <%= gettext("Enrol") %>

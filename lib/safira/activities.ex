@@ -468,13 +468,7 @@ defmodule Safira.Activities do
     |> Repo.transaction()
   end
 
-  def create_enrolment(attrs) do
-    %Enrolment{}
-    |> Enrolment.changeset(attrs)
-    |> Repo.insert()
-  end
-
-  def delete_enrolment(%Enrolment{} = enrolment, attrs \\ %{}) do
+  def delete_enrolment(%Enrolment{} = enrolment) do
     Repo.delete(enrolment)
   end
 

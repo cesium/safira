@@ -21,6 +21,7 @@ defmodule SafiraWeb.Landing.HomeLive.Index do
      |> assign(:has_sponsors?, Companies.get_companies_count() > 0)
      |> assign(:has_schedule?, Activities.get_activities_count() > 0)
      |> assign(:enrolments, get_enrolments(socket.assigns.current_user))
+     |> assign(:user_role, get_user_role(socket.assigns.current_user))
      |> stream(:speakers, speakers |> Enum.shuffle())}
   end
 
@@ -35,7 +36,7 @@ defmodule SafiraWeb.Landing.HomeLive.Index do
       {:noreply,
        socket
        |> put_flash(:error, gettext("You must be logged in to enrol in activities"))
-       |> push_navigate(to: ~p"/users/log_in")}
+       |> redirect(to: ~p"/users/log_in?redirect=/")}
     else
       if socket.assigns.current_user.type == :attendee do
         actual_enrol(activity_id, socket)
@@ -66,6 +67,14 @@ defmodule SafiraWeb.Landing.HomeLive.Index do
         {:noreplu,
          socket
          |> put_flash(:error, gettext("Something happened"))}
+    end
+  end
+
+  defp get_user_role(user) do
+    if is_nil(user) do
+      :attendee
+    else
+      user.type
     end
   end
 end

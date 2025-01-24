@@ -182,7 +182,7 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.EnrolmentLive.FormComponent do
     if valid_enrolments do
       # For each enrolment, update or create it
       Enum.each(enrolments, fn {_, _, _enrolment, form} ->
-        Activities.create_enrolment(form.params)
+        Activities.enrol(form.params.attendee_id, form.params.activity_id)
       end)
 
       {:noreply,

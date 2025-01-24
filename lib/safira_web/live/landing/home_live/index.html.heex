@@ -14,7 +14,7 @@
     url={~p"/"}
     params={@params}
     enrolments={@enrolments}
-    user_role={Map.get(@current_user, :type, :attendee)}
+    user_role={@user_role}
   />
 </div>
 <div class="xl:px-[15rem] md:px-[8rem] px-[2.5rem]">
