@@ -33,6 +33,11 @@ defmodule SafiraWeb.Config do
         title: "FAQs",
         url: "/faqs",
         feature_flag: "faqs_enabled"
+      },
+      %{
+        title: "Call for Staff",
+        url: "https://forms.gle/XWHoNu4LjC8BogF68",
+        feature_flag: "call_for_staff_enabled"
       }
     ]
     |> Enum.filter(fn x -> Enum.member?(enabled_flags, x.feature_flag) end)

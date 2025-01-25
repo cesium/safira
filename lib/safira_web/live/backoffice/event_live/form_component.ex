@@ -33,6 +33,11 @@ defmodule SafiraWeb.Backoffice.EventLive.FormComponent do
               <.field field={@form[:team_enabled]} type="switch" label="Team Enabled" />
               <.field field={@form[:faqs_enabled]} type="switch" label="FAQs Enabled" />
               <.field
+                field={@form[:call_for_staff_enabled]}
+                type="switch"
+                label="Call for Staff Enabled"
+              />
+              <.field
                 field={@form[:survival_guide_enabled]}
                 type="switch"
                 label="Survival Guide Enabled"
