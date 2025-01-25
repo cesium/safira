@@ -14,9 +14,13 @@ defmodule SafiraWeb.Teamcomponent do
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
         <div :for={member <- @members} class="flex flex-col items-center">
           <img
-            src={Uploaders.Member.url({member.image, member}, :original, signed: true)}
+            src={
+              if member.image,
+                do: Uploaders.Member.url({member.image, member}, :original, signed: true),
+                else: "/images/image_team.png"
+            }
             alt={"#{member.name}'s photo"}
-            class="w-48 h-48 object-cover"
+            class="w-36 h-36 object-cover"
           />
           <p class="mt-2 text-lg font-semibold text-white uppercase"><%= member.name %></p>
         </div>

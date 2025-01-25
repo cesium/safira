@@ -161,7 +161,7 @@ defmodule Safira.Teams do
   """
   def create_team_member(attrs \\ %{}) do
     %TeamMember{}
-    |> TeamMember.changeset(%{name: attrs["name"], team_id: attrs["team_id"]})
+    |> TeamMember.changeset(attrs)
     |> Repo.insert()
   end
 

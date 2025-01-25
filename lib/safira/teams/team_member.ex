@@ -25,8 +25,8 @@ defmodule Safira.Teams.TeamMember do
   end
 
   @doc false
-  def image_changeset(company, attrs) do
-    company
+  def image_changeset(team_member, attrs) do
+    team_member
     |> cast_attachments(attrs, [:image])
   end
 end
