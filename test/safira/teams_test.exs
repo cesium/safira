@@ -20,7 +20,7 @@ defmodule Safira.TeamsTest do
     end
 
     test "create_team/1 with valid data creates a team" do
-      valid_attrs = %{name: "some name"}
+      valid_attrs = %{name: "some name", priority: 0}
 
       assert {:ok, %Team{} = team} = Teams.create_team(valid_attrs)
       assert team.name == "some name"
@@ -65,7 +65,7 @@ defmodule Safira.TeamsTest do
 
     test "list_team_members/0 returns all team_members" do
       team_member = team_member_fixture()
-      assert Teams.list_team_members([]) == [team_member]
+      assert Teams.list_team_members(nil) == {:ok, [team_member]}
     end
 
     test "get_team_member!/1 returns the team_member with given id" do
@@ -74,7 +74,7 @@ defmodule Safira.TeamsTest do
     end
 
     test "create_team_member/1 with valid data creates a team_member" do
-      valid_attrs = %{name: "some name"}
+      valid_attrs = %{name: "some name", team_id: team_fixture().id}
 
       assert {:ok, %TeamMember{} = team_member} = Teams.create_team_member(valid_attrs)
       assert team_member.name == "some name"
