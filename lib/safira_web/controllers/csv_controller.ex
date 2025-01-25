@@ -1,0 +1,39 @@
+defmodule SafiraWeb.CSVController do
+  use SafiraWeb, :controller
+
+  alias Safira.Accounts
+
+  def attendees_data(conn, _params) do
+    if user_authorized?(conn.assigns.current_user, "attendees", "show") do
+      data = write_attendees_csv()
+
+      conn
+      |> put_resp_content_type("text/csv")
+      |> put_resp_header("content-disposition", "attachment; filename=\"attendees.csv\"")
+      |> send_resp(200, data)
+    else
+      conn
+      |> put_flash(:error, "You do not have permission to view this resource")
+      |> put_status(403)
+      |> redirect(to: ~p"/")
+      |> halt()
+    end
+  end
+
+  defp write_attendees_csv do
+    Accounts.list_attendees(order_by: :inserted_at)
+    |> Enum.map(fn user ->
+      [
+        "#{user.name},#{user.email},@#{user.handle},#{Timex.format!(user.inserted_at, "{0D}-{0M}-{YYYY} {h24}:{m}:{s}")},#{user.attendee.tokens},#{user.attendee.entries}"
+      ]
+    end)
+    |> Kernel.then(fn l -> ["Name,Email,Username,Registered at,Tokens,Entries"] ++ l end)
+    |> Enum.join("\n")
+    |> to_string()
+  end
+
+  defp user_authorized?(user, scope, action) do
+    not is_nil(user.staff) and
+      Enum.member?(Map.get(user.staff.role.permissions, scope), action)
+  end
+end
