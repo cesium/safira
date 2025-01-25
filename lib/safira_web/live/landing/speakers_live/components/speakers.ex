@@ -11,8 +11,6 @@ defmodule SafiraWeb.Landing.SpeakersLive.Components.Speakers do
   attr :event_end_date, Date, required: true
   attr :url, :string, required: true
   attr :params, :map, required: true
-  attr :has_filters?, :boolean, default: false
-  attr :descriptions_enabled, :boolean, default: false
 
   def speakers(assigns) do
     ~H"""
@@ -23,47 +21,15 @@ defmodule SafiraWeb.Landing.SpeakersLive.Components.Speakers do
             date={fetch_current_date_from_params(assigns.params) || assigns.event_start_date}
             url={@url}
             params={@params}
-            filters={fetch_filters_from_params(assigns.params)}
             event_start_date={@event_start_date}
             event_end_date={@event_end_date}
           />
         </div>
       </div>
       <div>
-        <.schedule_table
-          date={fetch_current_date_from_params(assigns.params) || assigns.event_start_date}
-          filters={fetch_filters_from_params(assigns.params)}
-          descriptions_enabled={assigns.descriptions_enabled}
-        />
-      </div>
-    </div>
-    """
-  end
-
-  defp filters(assigns) do
-    ~H"""
-    <div class="block relative mt-8">
-      <span class="w-full font-iregular text-lg uppercase"><%= gettext("Filter by") %></span>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 pt-4">
-        <%= for category <- fetch_categories() do %>
-          <.link
-            class={
-              if Enum.member?(@filters, category.id),
-                do: "text-md m-1 items-center rounded-full border-2 px-12 py-2 text-center font-bold
-                                  text-accent border-accent shadow-sm
-                                hover:opacity-60
-                                ",
-                else: "text-md m-1 items-center rounded-full border-2 px-12 py-2 text-center font-bold
-                                  text-white shadow-sm
-                                hover:border-accent hover:text-accent px-8
-                                "
-            }
-            patch={filter_url(@url, @current_day, @filters, category.id)}
-          >
-            <%= category.name %>
-          </.link>
-        <% end %>
+        <.schedule_table date={
+          fetch_current_date_from_params(assigns.params) || assigns.event_start_date
+        } />
       </div>
     </div>
     """
@@ -82,27 +48,21 @@ defmodule SafiraWeb.Landing.SpeakersLive.Components.Speakers do
   defp speaker(assigns) do
     ~H"""
     <div class="border-t-2 border-white py-4 text-white transition-all">
-      <div class="mb-2 flex">
-        <div class="w-[210px] select-none">
-          <img
-            alt="Marcelo Pereira"
-            loading="lazy"
-            width="210"
-            height="210"
-            decoding="async"
-            data-nimg="1"
-            style="color: transparent; width: 100%; height: auto;"
-            sizes="100vw"
-            src={
-              if @speaker.picture do
-                Uploaders.Speaker.url({@speaker.picture, @speaker}, :original, signed: true)
-              else
-                "https://github.com/identicons/#{@speaker.name |> String.slice(0..2)}.png"
-              end
-            }
-          />
-        </div>
-        <div class="ml-4 flex w-full flex-col justify-between">
+      <div class="mb-2 flex grid grid-cols-1 sm:grid-cols-2">
+        <img
+          alt={@speaker.name}
+          width="210"
+          height="210"
+          class="select-none m-auto sm:mb-auto mb-4"
+          src={
+            if @speaker.picture do
+              Uploaders.Speaker.url({@speaker.picture, @speaker}, :original, signed: true)
+            else
+              "https://github.com/identicons/#{@speaker.name |> String.slice(0..2)}.png"
+            end
+          }
+        />
+        <div class="flex w-full flex-col justify-between">
           <div class="flex justify-between">
             <div>
               <h2 class="font-terminal-uppercase text-xl"><%= @speaker.name %></h2>
@@ -128,7 +88,7 @@ defmodule SafiraWeb.Landing.SpeakersLive.Components.Speakers do
               <%= @activity.title %> <%= format_time(@activity.time_start) %>
             </p>
             <button
-              class="ml-4 w-16 rounded-full border border-gray-500 px-2 font-iextrabold text-xl text-white transition-colors hover:bg-white/20"
+              class="ml-4 w-16 rounded-full border border-gray-500 px-2 text-xl text-white"
               phx-click={
                 JS.toggle(
                   to: "#speaker-#{@speaker.id}-#{@activity.id}",
@@ -157,17 +117,9 @@ defmodule SafiraWeb.Landing.SpeakersLive.Components.Speakers do
   end
 
   defp social(assigns) do
-    {icon, url} =
-      case assigns.platform do
-        "github" -> {"fa-brand-github", "https://github.com/#{assigns.profile}"}
-        "linkedin" -> {"fa-brand-linkedin", "https://linkedin.com/in/#{assigns.profile}"}
-        "x" -> {"fa-brand-twitter", "https://x.com/#{assigns.profile}"}
-        "website" -> {"hero-globe-alt", assigns.profile}
-      end
-
     ~H"""
-    <.link :if={not is_nil(@profile)} href={url} target="_blank">
-      <.icon name={icon} class="h-5 w-5" />
+    <.link :if={not is_nil(@profile)} href={social_media_link(@platform, @profile)} target="_blank">
+      <.icon name={social_media_icon(@platform)} class="h-5 w-5" />
     </.link>
     """
   end
@@ -175,12 +127,12 @@ defmodule SafiraWeb.Landing.SpeakersLive.Components.Speakers do
   defp schedule_day(assigns) do
     ~H"""
     <div class="flex sm:w-full select-none justify-center">
-      <div class="flex sm:w-full justify-between text-4xl xs:text-5xl sm:text-7xl lg:text-8xl xl:mx-20 xl:text-7xl">
+      <div class="flex justify-between text-4xl xs:text-5xl sm:text-7xl lg:text-8xl xl:mx-20 xl:text-7xl">
         <div class="right relative flex items-center justify-center mt-[0.15em]">
           <.link
             :if={Date.compare(@date, @event_start_date) in [:gt]}
             class="cursor-pointer"
-            patch={day_url(@url, @date, -1, @filters)}
+            patch={day_url(@url, @date, -1)}
           >
             <.left_arrow />
           </.link>
@@ -188,10 +140,10 @@ defmodule SafiraWeb.Landing.SpeakersLive.Components.Speakers do
 
         <div class="-mt-8 md:-mt-10">
           <h5 class="font-terminal uppercase text-2xl text-accent md:text-3xl">
-            <%= @date |> Timex.format!("{D} {Mshort}") %>
+            <%= gettext("Happening on") %>
           </h5>
-          <h2 class="font-terminal uppercase">
-            <%= @date |> Timex.format!("{WDfull}") %>
+          <h2 class="font-terminal uppercase text-center">
+            <%= @date |> Timex.format!("{D} {Mshort}") %>
           </h2>
         </div>
 
@@ -199,7 +151,7 @@ defmodule SafiraWeb.Landing.SpeakersLive.Components.Speakers do
           <.link
             :if={Date.compare(@date, @event_end_date) in [:lt]}
             class="cursor-pointer"
-            patch={day_url(@url, @date, 1, @filters)}
+            patch={day_url(@url, @date, 1)}
           >
             <.right_arrow />
           </.link>
@@ -306,19 +258,26 @@ defmodule SafiraWeb.Landing.SpeakersLive.Components.Speakers do
     end
   end
 
-  defp fetch_filters_from_params(params) do
-    Map.get(params, "filters", [])
+  defp social_media_icon(social) do
+    case social do
+      "github" -> "fa-brand-github"
+      "linkedin" -> "fa-brand-linkedin"
+      "x" -> "fa-brand-twitter"
+      "website" -> "hero-globe-alt"
+    end
   end
 
-  defp day_url(url, current_day, shift, filters) do
-    query = %{"date" => Timex.shift(current_day, days: shift), "filters" => filters}
-
-    "#{url}?#{Query.encode(query)}"
+  defp social_media_link(social, profile) do
+    case social do
+      "github" -> "https://github.com/#{profile}"
+      "linkedin" -> "https://linkedin.com/in/#{profile}"
+      "x" -> "https://x.com/#{profile}"
+      "website" -> profile
+    end
   end
 
-  defp filter_url(url, current_day, filters, category_id) do
-    new_filters = toggle_filter(filters, category_id)
-    query = %{"date" => current_day, "filters" => new_filters}
+  defp day_url(url, current_day, shift) do
+    query = %{"date" => Timex.shift(current_day, days: shift)}
 
     "#{url}?#{Query.encode(query)}"
   end
@@ -327,17 +286,5 @@ defmodule SafiraWeb.Landing.SpeakersLive.Components.Speakers do
     hour = if time.hour < 10, do: "0#{time.hour}", else: "#{time.hour}"
     minute = if time.minute < 10, do: "0#{time.minute}", else: "#{time.minute}"
     "#{hour}:#{minute}"
-  end
-
-  defp toggle_filter(filters, category_id) do
-    if Enum.member?(filters, category_id) do
-      List.delete(filters, category_id)
-    else
-      filters ++ [category_id]
-    end
-  end
-
-  defp fetch_categories do
-    Activities.list_activity_categories()
   end
 end
