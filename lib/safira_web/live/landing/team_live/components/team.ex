@@ -10,8 +10,8 @@ defmodule SafiraWeb.Teamcomponent do
   def team(assigns) do
     ~H"""
     <div class="text-left my-8">
-      <h2 class="text-xl font-bold uppercase text-white mb-2 ml-2"><%= @team_name %></h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+      <h2 class="text-lg font-bold uppercase text-white mb-2 ml-2"><%= @team_name %></h2>
+      <div class="grid grid-cols-3">
         <div :for={member <- @members} class="flex flex-col items-start">
           <img
             src={
@@ -20,9 +20,9 @@ defmodule SafiraWeb.Teamcomponent do
                 else: "/images/image_team.png"
             }
             alt={"#{member.name}'s photo"}
-            class="w-36 h-36 object-cover"
+            class="md:w-48 md:h-48 w-24 h-24 object-cover"
           />
-          <p class="font-terminal text-lg text-white uppercase mb-8"><%= member.name %></p>
+          <p class="font-terminal text-md text-white uppercase mb-8"><%= member.name %></p>
         </div>
       </div>
     </div>
