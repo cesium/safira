@@ -3,7 +3,7 @@ defmodule SafiraWeb.Landing.Components.Navbar do
   use SafiraWeb, :component
 
   import SafiraWeb.Components.{Avatar, Dropdown}
-  import SafiraWeb.Landing.Components.JoinUs
+  import SafiraWeb.Landing.Components.{JoinUs, JoinStaff}
 
   attr :pages, :list, default: []
   attr :registrations_open?, :boolean, default: false
@@ -38,7 +38,10 @@ defmodule SafiraWeb.Landing.Components.Navbar do
                       </.link>
                     <% end %>
                   </div>
-                  <div :if={@registrations_open? && !@current_user} class="flex pl-20">
+                  <div class="flex pl-20">
+                    <.join_staff />
+                  </div>
+                  <div :if={@registrations_open? && !@current_user} class="flex pl-5">
                     <.join_us />
                   </div>
                   <div :if={@current_user} class="flex pl-16">
@@ -105,6 +108,9 @@ defmodule SafiraWeb.Landing.Components.Navbar do
               <%= page.title %>
             </.link>
           <% end %>
+          <div class="flex">
+            <.join_staff />
+          </div>
           <div :if={@registrations_open? && !@current_user} class="flex">
             <.join_us />
           </div>
