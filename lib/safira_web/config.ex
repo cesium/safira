@@ -52,6 +52,12 @@ defmodule SafiraWeb.Config do
           url: "/app/coin_flip"
         },
         %{
+          key: :slots,
+          title: "Slots",
+          icon: "hero-circle-stack",
+          url: "/app/slots"
+        },
+        %{
           key: :leaderboard,
           title: "Leaderboard",
           icon: "hero-trophy",

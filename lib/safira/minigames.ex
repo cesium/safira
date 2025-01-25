@@ -12,7 +12,7 @@ defmodule Safira.Minigames do
   alias Safira.Constants
   alias Safira.Contest
   alias Safira.Inventory.Item
-  alias Safira.Minigames.{CoinFlipRoom, Prize, WheelDrop}
+  alias Safira.Minigames.{CoinFlipRoom, Prize, SlotsPaytable, SlotsReelIcon, WheelDrop}
 
   @pubsub Safira.PubSub
 
@@ -968,5 +968,211 @@ defmodule Safira.Minigames do
 
   defp broadcast_coin_flip_rooms_update(action, value) do
     Phoenix.PubSub.broadcast(@pubsub, coin_flip_rooms_topic(), {action, value})
+  end
+
+  @doc """
+  Returns the list of slots_reel_icons.
+
+  ## Examples
+
+      iex> list_slots_reel_icons()
+      [%SlotsReelIcon{}, ...]
+
+  """
+  def list_slots_reel_icons do
+    Repo.all(SlotsReelIcon)
+  end
+
+  @doc """
+  Gets a single slots_reel_icon.
+
+  Raises `Ecto.NoResultsError` if the Slots reel does not exist.
+
+  ## Examples
+
+      iex> get_slots_reel_icon!(123)
+      %SlotsReelIcon{}
+
+      iex> get_slots_reel_icon!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_slots_reel_icon!(id), do: Repo.get!(SlotsReelIcon, id)
+
+  @doc """
+  Creates a slots_reel_icon.
+
+  ## Examples
+
+      iex> create_slots_reel_icon(%{field: value})
+      {:ok, %SlotsReelIcon{}}
+
+      iex> create_slots_reel_icon(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_slots_reel_icon(attrs \\ %{}) do
+    %SlotsReelIcon{}
+    |> SlotsReelIcon.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a slots_reel_icon.
+
+  ## Examples
+
+      iex> update_slots_reel_icon(slots_reel_icon, %{field: new_value})
+      {:ok, %SlotsReelIcon{}}
+
+      iex> update_slots_reel_icon(slots_reel_icon, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_slots_reel_icon(%SlotsReelIcon{} = slots_reel_icon, attrs) do
+    slots_reel_icon
+    |> SlotsReelIcon.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a slots_reel_icon.
+
+  ## Examples
+
+      iex> delete_slots_reel_icon(slots_reel_icon)
+      {:ok, %SlotsReelIcon{}}
+
+      iex> delete_slots_reel_icon(slots_reel_icon)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_slots_reel_icon(%SlotsReelIcon{} = slots_reel_icon) do
+    Repo.delete(slots_reel_icon)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking slots_reel_icon changes.
+
+  ## Examples
+
+      iex> change_slots_reel_icon(slots_reel_icon)
+      %Ecto.Changeset{data: %SlotsReelIcon{}}
+
+  """
+  def change_slots_reel_icon(%SlotsReelIcon{} = slots_reel_icon, attrs \\ %{}) do
+    SlotsReelIcon.changeset(slots_reel_icon, attrs)
+  end
+
+  @doc """
+  Updates a slots reel image.
+
+  ## Examples
+
+      iex> update_slots_reel_icon_image(slots_reel_icon, %{image: image})
+      {:ok, %SlotsReelIcon{}}
+
+      iex> update_slots_reel_icon_image(slots_reel_icon, %{image: bad_image})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_slots_reel_icon_image(%SlotsReelIcon{} = slots_reel_icon, attrs) do
+    slots_reel_icon
+    |> SlotsReelIcon.image_changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Returns the list of slots_paytables.
+
+  ## Examples
+
+      iex> list_slots_paytables()
+      [%SlotsPaytable{}, ...]
+
+  """
+  def list_slots_paytables do
+    Repo.all(SlotsPaytable)
+  end
+
+  @doc """
+  Gets a single slots_paytable.
+
+  Raises `Ecto.NoResultsError` if the Slots paytable does not exist.
+
+  ## Examples
+
+      iex> get_slots_paytable!(123)
+      %SlotsPaytable{}
+
+      iex> get_slots_paytable!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_slots_paytable!(id), do: Repo.get!(SlotsPaytable, id)
+
+  @doc """
+  Creates a slots_paytable.
+
+  ## Examples
+
+      iex> create_slots_paytable(%{field: value})
+      {:ok, %SlotsPaytable{}}
+
+      iex> create_slots_paytable(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_slots_paytable(attrs \\ %{}) do
+    %SlotsPaytable{}
+    |> SlotsPaytable.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a slots_paytable.
+
+  ## Examples
+
+      iex> update_slots_paytable(slots_paytable, %{field: new_value})
+      {:ok, %SlotsPaytable{}}
+
+      iex> update_slots_paytable(slots_paytable, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_slots_paytable(%SlotsPaytable{} = slots_paytable, attrs) do
+    slots_paytable
+    |> SlotsPaytable.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a slots_paytable.
+
+  ## Examples
+
+      iex> delete_slots_paytable(slots_paytable)
+      {:ok, %SlotsPaytable{}}
+
+      iex> delete_slots_paytable(slots_paytable)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_slots_paytable(%SlotsPaytable{} = slots_paytable) do
+    Repo.delete(slots_paytable)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking slots_paytable changes.
+
+  ## Examples
+
+      iex> change_slots_paytable(slots_paytable)
+      %Ecto.Changeset{data: %SlotsPaytable{}}
+
+  """
+  def change_slots_paytable(%SlotsPaytable{} = slots_paytable, attrs \\ %{}) do
+    SlotsPaytable.changeset(slots_paytable, attrs)
   end
 end

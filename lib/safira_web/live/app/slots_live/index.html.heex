@@ -1,0 +1,27 @@
+<.page title={gettext("Wheel")} size={:xl} title_class="font-terminal uppercase">
+  <:actions>
+    <span class="text-semibold text-xl border-2 px-4 py-2 rounded-full font-terminal">
+      💰 <%= @attendee_tokens %>
+    </span>
+  </:actions>
+  <.machine />
+  <div class="flex flex-row justify-center w-full pt-16">
+    <.action_button
+      title={gettext("Spin")}
+      subtitle={"💰 #{@wheel_price}"}
+      class="w-64"
+      disabled={!can_spin?(@wheel_active?, @attendee_tokens, @wheel_price, @in_spin?)}
+      phx-click="spin"
+    />
+  </div>
+</.page>
+
+<.result_modal
+  :if={@result}
+  drop_type={@result.type}
+  drop={@result.drop}
+  wrapper_class="px-6"
+  show
+  id="confirm"
+  on_cancel={JS.push("close-modal")}
+/>

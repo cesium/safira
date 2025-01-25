@@ -47,4 +47,38 @@ defmodule Safira.MinigamesFixtures do
 
     coin_flip_room
   end
+
+  @doc """
+  Generate a slots_reel_icon.
+  """
+  def slots_reel_icon_fixture(attrs \\ %{}) do
+    {:ok, slots_reel_icon} =
+      attrs
+      |> Enum.into(%{
+        image: "some image",
+        reel_0_index: 42,
+        reel_1_index: 42,
+        reel_2_index: 42
+      })
+      |> Safira.Minigames.create_slots_reel_icon()
+
+    slots_reel_icon
+  end
+
+  @doc """
+  Generate a slots_paytable.
+  """
+  def slots_paytable_fixture(attrs \\ %{}) do
+    {:ok, slots_paytable} =
+      attrs
+      |> Enum.into(%{
+        position_figure_0: 42,
+        position_figure_1: 42,
+        position_figure_2: 42,
+        multiplier: 42
+      })
+      |> Safira.Minigames.create_slots_paytable()
+
+    slots_paytable
+  end
 end

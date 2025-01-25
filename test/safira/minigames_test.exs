@@ -246,4 +246,166 @@ defmodule Safira.MinigamesTest do
                Minigames.create_coin_flip_room(attrs)
     end
   end
+
+  describe "slots_reel_icons" do
+    alias Safira.Minigames.SlotsReelIcon
+
+    import Safira.MinigamesFixtures
+
+    @invalid_attrs %{image: nil, reel_0_index: nil, reel_1_index: nil, reel_2_index: nil}
+
+    test "list_slots_reel_icons/0 returns all slots_reel_icons" do
+      slots_reel_icon = slots_reel_icon_fixture()
+      assert Minigames.list_slots_reel_icons() == [slots_reel_icon]
+    end
+
+    test "get_slots_reel_icon!/1 returns the slots_reel_icon with given id" do
+      slots_reel_icon = slots_reel_icon_fixture()
+      assert Minigames.get_slots_reel_icon!(slots_reel_icon.id) == slots_reel_icon
+    end
+
+    test "create_slots_reel_icon/1 with valid data creates a slots_reel_icon" do
+      valid_attrs = %{image: "some image", reel_0_index: 42, reel_1_index: 42, reel_2_index: 42}
+
+      assert {:ok, %SlotsReelIcon{} = slots_reel_icon} =
+               Minigames.create_slots_reel_icon(valid_attrs)
+
+      assert slots_reel_icon.image == "some image"
+      assert slots_reel_icon.reel_0_index == 42
+      assert slots_reel_icon.reel_1_index == 42
+      assert slots_reel_icon.reel_2_index == 42
+    end
+
+    test "create_slots_reel_icon/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Minigames.create_slots_reel_icon(@invalid_attrs)
+    end
+
+    test "update_slots_reel_icon/2 with valid data updates the slots_reel_icon" do
+      slots_reel_icon = slots_reel_icon_fixture()
+
+      update_attrs = %{
+        image: "some updated image",
+        reel_0_index: 43,
+        reel_1_index: 43,
+        reel_2_index: 43
+      }
+
+      assert {:ok, %SlotsReelIcon{} = slots_reel_icon} =
+               Minigames.update_slots_reel_icon(slots_reel_icon, update_attrs)
+
+      assert slots_reel_icon.image == "some updated image"
+      assert slots_reel_icon.reel_0_index == 43
+      assert slots_reel_icon.reel_1_index == 43
+      assert slots_reel_icon.reel_2_index == 43
+    end
+
+    test "update_slots_reel_icon/2 with invalid data returns error changeset" do
+      slots_reel_icon = slots_reel_icon_fixture()
+
+      assert {:error, %Ecto.Changeset{}} =
+               Minigames.update_slots_reel_icon(slots_reel_icon, @invalid_attrs)
+
+      assert slots_reel_icon == Minigames.get_slots_reel_icon!(slots_reel_icon.id)
+    end
+
+    test "delete_slots_reel_icon/1 deletes the slots_reel_icon" do
+      slots_reel_icon = slots_reel_icon_fixture()
+      assert {:ok, %SlotsReelIcon{}} = Minigames.delete_slots_reel_icon(slots_reel_icon)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Minigames.get_slots_reel_icon!(slots_reel_icon.id)
+      end
+    end
+
+    test "change_slots_reel_icon/1 returns a slots_reel_icon changeset" do
+      slots_reel_icon = slots_reel_icon_fixture()
+      assert %Ecto.Changeset{} = Minigames.change_slots_reel_icon(slots_reel_icon)
+    end
+  end
+
+  describe "slots_paytables" do
+    alias Safira.Minigames.SlotsPaytable
+
+    import Safira.MinigamesFixtures
+
+    @invalid_attrs %{
+      multiplier: nil,
+      position_figure_0: nil,
+      position_figure_1: nil,
+      position_figure_2: nil
+    }
+
+    test "list_slots_paytables/0 returns all slots_paytables" do
+      slots_paytable = slots_paytable_fixture()
+      assert Minigames.list_slots_paytables() == [slots_paytable]
+    end
+
+    test "get_slots_paytable!/1 returns the slots_paytable with given id" do
+      slots_paytable = slots_paytable_fixture()
+      assert Minigames.get_slots_paytable!(slots_paytable.id) == slots_paytable
+    end
+
+    test "create_slots_paytable/1 with valid data creates a slots_paytable" do
+      valid_attrs = %{
+        multiplier: 42,
+        position_figure_0: 42,
+        position_figure_1: 42,
+        position_figure_2: 42
+      }
+
+      assert {:ok, %SlotsPaytable{} = slots_paytable} =
+               Minigames.create_slots_paytable(valid_attrs)
+
+      assert slots_paytable.multiplier == 42
+      assert slots_paytable.position_figure_0 == 42
+      assert slots_paytable.position_figure_1 == 42
+      assert slots_paytable.position_figure_2 == 42
+    end
+
+    test "create_slots_paytable/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Minigames.create_slots_paytable(@invalid_attrs)
+    end
+
+    test "update_slots_paytable/2 with valid data updates the slots_paytable" do
+      slots_paytable = slots_paytable_fixture()
+
+      update_attrs = %{
+        multiplier: 43,
+        position_figure_0: 43,
+        position_figure_1: 43,
+        position_figure_2: 43
+      }
+
+      assert {:ok, %SlotsPaytable{} = slots_paytable} =
+               Minigames.update_slots_paytable(slots_paytable, update_attrs)
+
+      assert slots_paytable.multiplier == 43
+      assert slots_paytable.position_figure_0 == 43
+      assert slots_paytable.position_figure_1 == 43
+      assert slots_paytable.position_figure_2 == 43
+    end
+
+    test "update_slots_paytable/2 with invalid data returns error changeset" do
+      slots_paytable = slots_paytable_fixture()
+
+      assert {:error, %Ecto.Changeset{}} =
+               Minigames.update_slots_paytable(slots_paytable, @invalid_attrs)
+
+      assert slots_paytable == Minigames.get_slots_paytable!(slots_paytable.id)
+    end
+
+    test "delete_slots_paytable/1 deletes the slots_paytable" do
+      slots_paytable = slots_paytable_fixture()
+      assert {:ok, %SlotsPaytable{}} = Minigames.delete_slots_paytable(slots_paytable)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Minigames.get_slots_paytable!(slots_paytable.id)
+      end
+    end
+
+    test "change_slots_paytable/1 returns a slots_paytable changeset" do
+      slots_paytable = slots_paytable_fixture()
+      assert %Ecto.Changeset{} = Minigames.change_slots_paytable(slots_paytable)
+    end
+  end
 end

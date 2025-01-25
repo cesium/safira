@@ -6,3 +6,4 @@ export { Countdown } from "./countdown.js";
 export { CoinFlip } from "./coinflip.js";
 export { Redirect } from "./redirect.js";
 export { CredentialScene } from "./credential-scene.js";
+export { ReelAnimation } from "./ReelAnimation.js";

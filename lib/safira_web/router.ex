@@ -104,6 +104,8 @@ defmodule SafiraWeb.Router do
 
         live "/coin_flip", CoinFlipLive.Index, :index
 
+        live "/slots", SlotsLive.Index, :index
+
         scope "/store", StoreLive do
           live "/", Index, :index
           live "/product/:id", Show, :show
@@ -222,6 +224,11 @@ defmodule SafiraWeb.Router do
           live "/wheel", MinigamesLive.Index, :edit_wheel
 
           live "/coin_flip", MinigamesLive.Index, :edit_coin_flip
+
+          live "/slots", MinigamesLive.Index, :edit_slots
+          live "/slots/reels_icons", MinigamesLive.Index, :edit_slots_reel_icons_icons
+          live "/slots/reels_position", MinigamesLive.Index, :edit_slots_reel_icons_position
+          live "/slots/paytable", MinigamesLive.Index, :edit_slots_paytable
         end
 
         live "/scanner", ScannerLive.Index, :index
