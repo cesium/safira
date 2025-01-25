@@ -15,7 +15,7 @@ defmodule Safira.Teams do
       [%Team{}, ...]
 
   """
-  def list_teams(opts) when is_list(opts) do
+  def list_teams(opts \\ []) when is_list(opts) do
     Team
     |> apply_filters(opts)
     |> Repo.all()
@@ -123,11 +123,21 @@ defmodule Safira.Teams do
       [%TeamMember{}, ...]
 
   """
-  def list_team_members(team_id1) do
-    if team_id1 do
-      Repo.all(from tm in TeamMember, where: tm.team_id == ^team_id1)
-    else
-      {:error, "Team id is required"}
+  def list_team_members(team_id \\ nil) do
+    members = Repo.all(TeamMember)
+
+    case team_id do
+      nil ->
+        {:ok, members}
+
+      _ ->
+        filtered_members = Enum.filter(members, fn member -> member.team_id == team_id end)
+
+        if Enum.empty?(filtered_members) do
+          {:error, "No members found for the given team ID"}
+        else
+          {:ok, filtered_members}
+        end
     end
   end
 
@@ -179,7 +189,7 @@ defmodule Safira.Teams do
   """
   def update_team_member(%TeamMember{} = team_member, attrs) do
     team_member
-    |> TeamMember.changeset(%{name: attrs["name"]})
+    |> TeamMember.changeset(attrs)
     |> Repo.update()
   end
 

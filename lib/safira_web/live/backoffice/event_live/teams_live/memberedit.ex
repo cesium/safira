@@ -37,14 +37,6 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MembersEdit do
      |> assign_new(:form, fn -> to_form(Teams.change_team_member(member)) end)}
   end
 
-  def update(assigns, socket) do
-    {:ok,
-     socket
-     |> assign(assigns)
-     |> assign_new(:member, fn -> Teams.get_team_member!(socket.assigns.member_id) end)
-     |> assign_new(:form, fn -> to_form(Teams.change_team_member(%{})) end)}
-  end
-
   @impl true
   def handle_event("save", %{"member" => member_params}, socket) do
     update_member(socket, :teams_members_edit, member_params)

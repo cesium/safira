@@ -32,15 +32,6 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.FormComponent do
      end)}
   end
 
-  def update(assigns, socket) do
-    {:ok,
-     socket
-     |> assign(assigns)
-     |> assign_new(:form, fn ->
-       to_form(%{})
-     end)}
-  end
-
   @impl true
   def handle_event("save", %{"team" => team_params}, socket) do
     save_team(socket, socket.assigns.action, team_params)

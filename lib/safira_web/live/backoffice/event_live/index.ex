@@ -85,9 +85,17 @@ defmodule SafiraWeb.Backoffice.EventLive.Index do
   end
 
   defp apply_action(socket, :teams_members_edit, %{"id" => member_id}) do
-    socket
-    |> assign(:page_title, "Edit Team Member")
-    |> assign(:team, Teams.get_team_member!(member_id).team)
-    |> assign(:member, Teams.get_team_member!(member_id))
+    case Teams.get_team_member!(member_id) do
+      nil ->
+        socket
+        |> put_flash(:error, "Team member not found")
+        |> push_patch(to: socket.assigns.patch)
+
+      member ->
+        socket
+        |> assign(:page_title, "Edit Team Member")
+        |> assign(:team, member.team)
+        |> assign(:member, member)
+    end
   end
 end

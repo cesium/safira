@@ -6,6 +6,7 @@ defmodule Safira.Teams.TeamMember do
 
   @required_fields ~w(name team_id)a
   @optional_fields ~w(url)a
+
   schema "team_members" do
     field :name, :string
     belongs_to :team, Safira.Teams.Team
