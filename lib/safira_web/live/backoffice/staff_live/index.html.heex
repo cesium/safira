@@ -31,11 +31,23 @@
         </div>
       </:col>
       <:col :let={{_id, user}} label="Email"><%= user.email %></:col>
-      <:col :let={{_id, _user}} label="Status">
-        <div class="flex items-center">
-          <div class="h-2.5 w-2.5 rounded-full animate-pulse bg-green-500 me-2"></div>
-          Online
-        </div>
+      <:col :let={{_id, user}} label="Status">
+        <%= if user.is_online do %>
+          <div class="mt-2 flex items-center space-x-2">
+            <span class="relative flex h-3 w-3">
+              <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75 duration-500">
+              </span>
+              <span class="relative inline-flex h-3 w-3 rounded-full bg-green-500"></span>
+            </span>
+
+            <p>Online</p>
+          </div>
+        <% else %>
+          <div class="mt-2 flex items-center space-x-2">
+            <span class="inline-flex h-3 w-3 rounded-full bg-red-500"></span>
+            <p>Offline</p>
+          </div>
+        <% end %>
       </:col>
       <:action :let={{_id, user}}>
         <.ensure_permissions user={@current_user} permissions={%{"staffs" => ["edit"]}}>

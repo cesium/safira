@@ -9,6 +9,8 @@ services:
       POSTGRES_HOST: ${DB_HOST:-localhost}
     volumes:
       - /var/lib/postgresql/data
+    ports:
+      - 2345:5432
   web:
     container_name: safira_web
     env_file: .env.dev
