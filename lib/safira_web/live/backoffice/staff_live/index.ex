@@ -6,8 +6,6 @@ defmodule SafiraWeb.Backoffice.StaffLive.Index do
 
   import SafiraWeb.Components.{Table, TableSearch}
 
-  require Logger
-
   on_mount {SafiraWeb.StaffRoles,
             index: %{"staffs" => ["show"]},
             edit: %{"staffs" => ["edit"]},
