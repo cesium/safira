@@ -41,9 +41,8 @@ defmodule SafiraWeb.Backoffice.StaffLive.Index do
   end
 
   @impl true
-  def handle_info(%Presence.Diff{joins: joins, leaves: leaves}, socket) when map_size(leaves) == 0 do
-    Logger.info("Presence diff of joins received")
-
+  def handle_info(%Presence.Diff{joins: joins, leaves: leaves}, socket)
+      when map_size(leaves) == 0 do
     [socket] =
       for {_, %{metas: [data]}} <- joins do
         staff = Map.put(data, :is_online, true)
@@ -54,9 +53,8 @@ defmodule SafiraWeb.Backoffice.StaffLive.Index do
   end
 
   @impl true
-  def handle_info(%Presence.Diff{joins: joins, leaves: leaves}, socket) when map_size(joins) == 0 do
-    Logger.info("Presence diff of leaves received")
-
+  def handle_info(%Presence.Diff{joins: joins, leaves: leaves}, socket)
+      when map_size(joins) == 0 do
     [socket] =
       for {_, %{metas: [data]}} <- leaves do
         staff = Map.put(data, :is_online, false)
