@@ -5,9 +5,9 @@ defmodule SafiraWeb.Presence.Server do
   """
   use GenServer
 
-  alias SafiraWeb.Presence
   alias Phoenix.PubSub
   alias Phoenix.Socket.Broadcast
+  alias SafiraWeb.Presence
 
   require Logger
 

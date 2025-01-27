@@ -1,8 +1,14 @@
 defmodule SafiraWeb.Presence do
-  @moduledoc false
+  @moduledoc """
+  Wrapper for `Phoenix.Presence` to use in Safira.
+  """
   use Phoenix.Presence, otp_app: :safira, pubsub_server: Safira.PubSub
 
   defmodule __MODULE__.Diff do
+    @moduledoc """
+    Struct to represent the diff of presences.
+    """
+
     @keys ~w(joins leaves)a
     @enforce_keys @keys
     defstruct @keys
