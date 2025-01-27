@@ -27,26 +27,24 @@
         }
         duration={@current_spotlight.end}
       />
-      <div class="bg-primary flex justify-end lg:hidden px-4 sm:px-6 py-2">
-        <div
-          :if={Map.get(assigns, :event_started, true)}
-          class="flex justify-end lg:hidden px-4 sm:px-6 py-2"
+      <div
+        :if={Map.get(assigns, :event_started, true)}
+        class="flex justify-end lg:hidden px-4 sm:px-6 py-2"
+      >
+        <button
+          class="sidebar-toggle flex items-center justify-center w-16 text-light"
+          aria-expanded="false"
+          phx-click={show_mobile_sidebar()}
         >
-          <button
-            class="sidebar-toggle flex items-center justify-center w-16 z-20 dark:text-light text-white"
-            aria-expanded="false"
-            phx-click={show_mobile_sidebar()}
-          >
-            <.icon class="w-8 h-8" name="hero-bars-3" />
-          </button>
-        </div>
-        <main class="text-light flex-1 relative z-0 overflow-y-auto focus:outline-none font-iregular">
-          <div class="px-6 sm:px-6 lg:px-8 py-8">
-            <.flash_group flash={@flash} />
-            <%= @inner_content %>
-          </div>
-        </main>
+          <.icon class="w-8 h-8" name="hero-bars-3" />
+        </button>
       </div>
+      <main class="text-light flex-1 relative z-0 overflow-y-auto focus:outline-none font-iregular">
+        <div class="px-6 sm:px-6 lg:px-8 py-8">
+          <.flash_group flash={@flash} />
+          <%= @inner_content %>
+        </div>
+      </main>
     </div>
   </div>
 </div>
