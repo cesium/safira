@@ -5,3 +5,6 @@ export { Banner } from "./banner.js";
 export { Sorting } from "./sorting.js";
 export { Timer } from "./time.js";
 export { Countdown } from "./countdown.js";
+export { CoinFlip } from "./coinflip.js";
+export { Redirect } from "./redirect.js";
+export { CredentialScene } from "./credential-scene.js";

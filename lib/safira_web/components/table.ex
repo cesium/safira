@@ -33,7 +33,7 @@ defmodule SafiraWeb.Components.Table do
 
     ~H"""
     <div class="relative overflow-x-auto">
-      <div class="border rounded-lg bg-light border-lightShade dark:bg-dark dark:border-darkShade">
+      <div class="border rounded-lg bg-light border-lightShade dark:bg-dark dark:border-darkShade overflow-x-scroll scrollbar-hide">
         <table id={@id} class="w-full text-sm text-left text-dark dark:text-light">
           <thead class="text-xs border-b border-lightShade dark:border-darkShade font-normal uppercase text-darkMuted dark:text-lightMuted">
             <tr>

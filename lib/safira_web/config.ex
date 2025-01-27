@@ -6,28 +6,41 @@ defmodule SafiraWeb.Config do
   alias Safira.Event
 
   def landing_pages do
+    enabled_flags = Event.get_active_feature_flags!()
+
     [
-      # %{
-      #  title: "Schedule",
-      #  url: "/schedule"
-      # },
+      %{
+        title: "Schedule",
+        url: "/schedule",
+        feature_flag: "schedule_enabled"
+      },
       # %{
       #  title: "Team",
-      #  url: "/team"
+      #  url: "/team",
+      #  feature_flag: "team_enabled"
       # },
       # %{
       #  title: "Challenges",
-      #  url: "/challenges"
+      #  url: "/challenges",
+      #  feature_flag: "challenges_enabled"
       # },
       # %{
       #  title: "Speakers",
-      #  url: "/speakers"
+      #  url: "/speakers",
+      #  feature_flag: "speakers_enabled"
       # },
       %{
         title: "FAQs",
-        url: "/faqs"
+        url: "/faqs",
+        feature_flag: "faqs_enabled"
+      },
+      %{
+        title: "Call for Staff",
+        url: "https://forms.gle/XWHoNu4LjC8BogF68",
+        feature_flag: "call_for_staff_enabled"
       }
     ]
+    |> Enum.filter(fn x -> Enum.member?(enabled_flags, x.feature_flag) end)
   end
 
   def app_pages do
@@ -44,6 +57,12 @@ defmodule SafiraWeb.Config do
           title: "Wheel",
           icon: "hero-circle-stack",
           url: "/app/wheel"
+        },
+        %{
+          key: :coin_flip,
+          title: "Coin Flip",
+          icon: "hero-circle-stack",
+          url: "/app/coin_flip"
         },
         %{
           key: :leaderboard,
@@ -66,7 +85,7 @@ defmodule SafiraWeb.Config do
         %{
           key: :credential,
           title: "Credential",
-          icon: "hero-ticket",
+          icon: "hero-qr-code",
           url: "/app/credential"
         }
       ]

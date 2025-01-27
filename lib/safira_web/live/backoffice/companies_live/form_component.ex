@@ -43,14 +43,16 @@ defmodule SafiraWeb.Backoffice.CompanyLive.FormComponent do
               options={options(@badges)}
               label="Badge"
               wrapper_class=""
-              required
             />
           </div>
           <div class="w-full">
             <.field_label>Logo</.field_label>
+            <p class="text-sm mb-4">
+              <%= gettext("For better results, upload a white logo with a transparent background.") %>
+            </p>
             <.image_uploader
               class="w-full h-80"
-              image_class="h-80"
+              image_class="h-80 p-16 bg-dark hover:bg-dark/90 w-full transition-colors rounded-xl"
               icon="hero-building-office"
               upload={@uploads.logo}
               image={Uploaders.Company.url({@company.logo, @company}, :original, signed: true)}
@@ -148,6 +150,7 @@ defmodule SafiraWeb.Backoffice.CompanyLive.FormComponent do
   end
 
   defp options(tiers) do
-    Enum.map(tiers, &{&1.name, &1.id})
+    [{gettext("None"), nil}] ++
+      Enum.map(tiers, &{&1.name, &1.id})
   end
 end

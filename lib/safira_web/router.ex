@@ -23,9 +23,10 @@ defmodule SafiraWeb.Router do
   scope "/", SafiraWeb.Landing do
     pipe_through :browser
 
-    live_session :default, root_layout: {SafiraWeb.Layouts, :landing} do
+    live_session :default, on_mount: [{SafiraWeb.UserAuth, :mount_current_user}] do
       live "/", HomeLive.Index, :index
       live "/faqs", FAQLive.Index, :index
+      live "/schedule", ScheduleLive.Index, :index
     end
   end
 
@@ -62,10 +63,10 @@ defmodule SafiraWeb.Router do
       on_mount: [{SafiraWeb.UserAuth, :redirect_if_user_is_authenticated}] do
       live "/users/log_in", UserLoginLive, :new
       live "/users/reset_password", UserForgotPasswordLive, :new
-      live "/users/reset_password/:token", UserResetPasswordLive, :edit
 
       pipe_through :registrations_open
       live "/users/register", UserRegistrationLive, :new
+      post "/users/register", UserSessionController, :new
     end
   end
 
@@ -77,9 +78,12 @@ defmodule SafiraWeb.Router do
         {SafiraWeb.UserAuth, :ensure_authenticated},
         {SafiraWeb.Spotlight, :fetch_current_spotlight}
       ] do
+      live "/users/confirmation_pending", ConfirmationPendingLive, :index
+
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
 
+      pipe_through [:require_confirmed_user]
       live "/scanner", ScannerLive.Index, :index
 
       scope "/app", App do
@@ -102,12 +106,19 @@ defmodule SafiraWeb.Router do
 
         live "/wheel", WheelLive.Index, :index
 
+        live "/coin_flip", CoinFlipLive.Index, :index
+
         scope "/store", StoreLive do
           live "/", Index, :index
           live "/product/:id", Show, :show
         end
 
         live "/vault", VaultLive.Index, :index
+      end
+
+      scope "/downloads" do
+        pipe_through [:require_staff_user]
+        get "/attendees", CSVController, :attendees_data
       end
 
       scope "/dashboard", Backoffice do
@@ -128,6 +139,7 @@ defmodule SafiraWeb.Router do
         scope "/attendees", AttendeeLive do
           live "/", Index, :index
           live "/:id", Show, :show
+          live "/:id/edit/tokens", Show, :tokens_edit
         end
 
         scope "/event", EventLive do
@@ -229,6 +241,8 @@ defmodule SafiraWeb.Router do
           live "/wheel/drops", MinigamesLive.Index, :edit_wheel_drops
           live "/wheel/simulator", MinigamesLive.Index, :simulate_wheel
           live "/wheel", MinigamesLive.Index, :edit_wheel
+
+          live "/coin_flip", MinigamesLive.Index, :edit_coin_flip
         end
 
         live "/scanner", ScannerLive.Index, :index
@@ -240,6 +254,8 @@ defmodule SafiraWeb.Router do
     pipe_through [:browser]
 
     delete "/users/log_out", UserSessionController, :delete
+
+    live "/users/reset_password/:token", UserResetPasswordLive, :edit
 
     live_session :current_user,
       on_mount: [{SafiraWeb.UserAuth, :mount_current_user}] do

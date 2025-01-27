@@ -21,7 +21,8 @@ import "phoenix_html"
 import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
-import { QrScanner, Wheel, Confetti, Sorting , Timer, Banner} from "./hooks";
+import live_select from "live_select"
+import { QrScanner, Wheel, Confetti, Countdown, Sorting, CoinFlip, Redirect, CredentialScene,Timer ,Banner} from "./hooks";
 
 let Hooks = {
   QrScanner: QrScanner,
@@ -29,8 +30,12 @@ let Hooks = {
   Confetti: Confetti,
   Sorting: Sorting,
   Timer: Timer,
-  Banner: Banner
-  };
+  Banner: Banner,
+  CoinFlip: CoinFlip,
+  Redirect: Redirect,
+  CredentialScene: CredentialScene,
+  ...live_select
+};
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let liveSocket = new LiveSocket("/live", Socket, {

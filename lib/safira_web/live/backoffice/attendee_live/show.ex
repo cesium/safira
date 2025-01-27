@@ -7,7 +7,7 @@ defmodule SafiraWeb.Backoffice.AttendeeLive.Show do
             show: %{"attendees" => ["show"]}, edit: %{"attendees" => ["edit"]}}
 
   def mount(_params, _session, socket) do
-    {:ok, socket}
+    {:ok, socket |> assign(:current_page, :attendees)}
   end
 
   def handle_params(%{"id" => attendee_id}, _, socket) do

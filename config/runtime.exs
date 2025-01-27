@@ -20,6 +20,12 @@ if System.get_env("PHX_SERVER") do
   config :safira, SafiraWeb.Endpoint, server: true
 end
 
+config :safira,
+  from_email_name: System.get_env("FROM_EMAIL_NAME") || "SEI",
+  from_email_address: System.get_env("FROM_EMAIL_ADDRESS") || "no-reply@seium.org",
+  umami_script_url: System.get_env("UMAMI_SCRIPT_URL") || "",
+  umami_website_id: System.get_env("UMAMI_WEBSITE_ID") || ""
+
 if config_env() in [:prod, :stg] do
   database_url =
     System.get_env("DATABASE_URL") ||

@@ -7,9 +7,18 @@ defmodule SafiraWeb.UserSettingsLiveTest do
 
   describe "Settings page" do
     test "renders settings page", %{conn: conn} do
+      user = user_fixture()
+
+      token =
+        extract_user_token(fn url ->
+          Safira.Accounts.deliver_user_confirmation_instructions(user, url)
+        end)
+
+      Safira.Accounts.confirm_user(token)
+
       {:ok, _lv, html} =
         conn
-        |> log_in_user(user_fixture())
+        |> log_in_user(user)
         |> live(~p"/users/settings")
 
       assert html =~ "Change Email"
@@ -29,6 +38,14 @@ defmodule SafiraWeb.UserSettingsLiveTest do
     setup %{conn: conn} do
       password = valid_user_password()
       user = user_fixture(%{password: password})
+
+      token =
+        extract_user_token(fn url ->
+          Safira.Accounts.deliver_user_confirmation_instructions(user, url)
+        end)
+
+      Safira.Accounts.confirm_user(token)
+
       %{conn: log_in_user(conn, user), user: user, password: password}
     end
 
@@ -86,6 +103,14 @@ defmodule SafiraWeb.UserSettingsLiveTest do
     setup %{conn: conn} do
       password = valid_user_password()
       user = user_fixture(%{password: password})
+
+      token =
+        extract_user_token(fn url ->
+          Safira.Accounts.deliver_user_confirmation_instructions(user, url)
+        end)
+
+      Safira.Accounts.confirm_user(token)
+
       %{conn: log_in_user(conn, user), user: user, password: password}
     end
 
@@ -96,11 +121,11 @@ defmodule SafiraWeb.UserSettingsLiveTest do
 
       form =
         form(lv, "#password_form", %{
-          "current_password" => password,
-          "user" => %{
-            "email" => user.email,
-            "password" => new_password,
-            "password_confirmation" => new_password
+          current_password: password,
+          user: %{
+            email: user.email,
+            password: new_password,
+            password_confirmation: new_password
           }
         })
 
@@ -143,10 +168,10 @@ defmodule SafiraWeb.UserSettingsLiveTest do
       result =
         lv
         |> form("#password_form", %{
-          "current_password" => "invalid",
-          "user" => %{
-            "password" => "too short",
-            "password_confirmation" => "does not match"
+          current_password: "invalid",
+          user: %{
+            password: "too short",
+            password_confirmation: "does not match"
           }
         })
         |> render_submit()
