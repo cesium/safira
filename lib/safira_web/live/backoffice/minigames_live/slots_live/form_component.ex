@@ -36,26 +36,33 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.Slots.FormComponent do
               <.button phx-disable-with="Saving..."><%= gettext("Save Configuration") %></.button>
             </div>
           </.form>
-          <div class="flex gap-10">
+          <div class="flex gap-10 mt-4 text-center">
             <.link
               patch={~p"/dashboard/minigames/slots/reels_icons"}
-              class="flex flex-col items-center w-full text-2xl gap-4 font-semibold py-8 rounded-2xl dark:bg-darkShade/10 dark:hover:bg-darkShade/20 bg-lightShade/30 hover:bg-lightShade/40 transition-colors"
+              class="flex flex-col items-center justify-center w-full text-2xl gap-4 font-semibold py-8 rounded-2xl dark:bg-darkShade/10 dark:hover:bg-darkShade/20 bg-lightShade/30 hover:bg-lightShade/40 transition-colors"
             >
               <%= gettext("Edit reels icons") %>
             </.link>
 
             <.link
               patch={~p"/dashboard/minigames/slots/reels_position"}
-              class="flex flex-col items-center w-full text-2xl gap-4 font-semibold py-8 rounded-2xl dark:bg-darkShade/10 dark:hover:bg-darkShade/20 bg-lightShade/30 hover:bg-lightShade/40 transition-colors"
+              class="flex flex-col items-center justify-center w-full text-2xl gap-4 font-semibold py-8 rounded-2xl dark:bg-darkShade/10 dark:hover:bg-darkShade/20 bg-lightShade/30 hover:bg-lightShade/40 transition-colors"
             >
               <%= gettext("Edit reels position") %>
             </.link>
 
             <.link
               patch={~p"/dashboard/minigames/slots/paytable"}
-              class="flex flex-col items-center w-full text-2xl gap-4 font-semibold py-8 rounded-2xl dark:bg-darkShade/10 dark:hover:bg-darkShade/20 bg-lightShade/30 hover:bg-lightShade/40 transition-colors"
+              class="flex flex-col items-center justify-center w-full text-2xl gap-4 font-semibold py-8 rounded-2xl dark:bg-darkShade/10 dark:hover:bg-darkShade/20 bg-lightShade/30 hover:bg-lightShade/40 transition-colors"
             >
               <%= gettext("Edit paytable") %>
+            </.link>
+
+            <.link
+              patch={~p"/dashboard/minigames/slots/payline"}
+              class="flex flex-col items-center justify-center w-full text-2xl gap-4 font-semibold py-8 rounded-2xl dark:bg-darkShade/10 dark:hover:bg-darkShade/20 bg-lightShade/30 hover:bg-lightShade/40 transition-colors"
+            >
+              <%= gettext("Edit payline") %>
             </.link>
           </div>
         </div>
@@ -71,9 +78,9 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.Slots.FormComponent do
        form:
          to_form(
            %{
-             "is_active" => Minigames.coin_flip_active?()
+             "is_active" => Minigames.slots_active?()
            },
-           as: :coin_flip_configuration
+           as: :slots_configuration
          )
      )}
   end
@@ -87,7 +94,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.Slots.FormComponent do
 
   def handle_event("save", params, socket) do
     if valid_config?(params) do
-      Minigames.change_coin_flip_active("true" == params["is_active"])
+      Minigames.change_slots_active("true" == params["is_active"])
       {:noreply, socket |> push_patch(to: ~p"/dashboard/minigames/")}
     else
       {:noreply, socket}

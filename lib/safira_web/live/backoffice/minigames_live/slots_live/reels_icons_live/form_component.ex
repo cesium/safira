@@ -1,4 +1,4 @@
-defmodule SafiraWeb.Backoffice.MinigamesLive.ReelsIcons.FormComponent do
+defmodule SafiraWeb.Backoffice.MinigamesLive.ReelIcons.FormComponent do
   @moduledoc false
   alias Safira.Minigames.SlotsReelIcon
   use SafiraWeb, :live_component
@@ -11,7 +11,10 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.ReelsIcons.FormComponent do
   def render(assigns) do
     ~H"""
     <div>
-      <.page title={gettext("Reels Configuration")} subtitle={gettext("Configures slots reels.")}>
+      <.page
+        title={gettext("Reel Icons Configuration")}
+        subtitle={gettext("Configures slots reel icons.")}
+      >
         <div class="mt-8">
           <.simple_form
             id="slots-reels-config-form"
@@ -34,10 +37,10 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.ReelsIcons.FormComponent do
             <div class="w-full pb-2">
               <.field_label>Upload Images</.field_label>
               <.image_uploader
-                class="size-32 border-2 border-dashed"
+                class="size-36 border-2 border-dashed"
                 upload={@uploads.images}
                 preview_disabled
-                icon="hero-photo"
+                icon="hero-squares-plus"
               />
               <div class="mt-4 flex gap-4 overflow-x-auto p-2 border rounded-md">
                 <%= for entry <- @uploads.images.entries do %>
@@ -72,9 +75,18 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.ReelsIcons.FormComponent do
                 <% end %> --%>
               </div>
             </div>
-            <h3 class="font-semibold">
-              <%= gettext("Number of icons: %{num_icons}", num_icons: length(@uploads.images.entries)) %>
-            </h3>
+            <div>
+              <h3 class="font-semibold">
+                <%= gettext("Number of icons: %{num_icons}",
+                  num_icons: length(@uploads.images.entries)
+                ) %>
+              </h3>
+              <p class="text-slate-500">
+                <.icon name="hero-exclamation-triangle" class="text-warning-600 mr-1" /><%= gettext(
+                  "For optimal icon placement the number of icons should be a mutiple of 3."
+                ) %>
+              </p>
+            </div>
             <div class="flex justify-end">
               <.button phx-disable-with="Saving..."><%= gettext("Save Configuration") %></.button>
             </div>

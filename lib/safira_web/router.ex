@@ -229,6 +229,7 @@ defmodule SafiraWeb.Router do
           live "/slots/reels_icons", MinigamesLive.Index, :edit_slots_reel_icons_icons
           live "/slots/reels_position", MinigamesLive.Index, :edit_slots_reel_icons_position
           live "/slots/paytable", MinigamesLive.Index, :edit_slots_paytable
+          live "/slots/payline", MinigamesLive.Index, :edit_slots_payline
         end
 
         live "/scanner", ScannerLive.Index, :index

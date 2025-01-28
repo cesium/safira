@@ -109,7 +109,7 @@
 >
   <.live_component
     id="wheel-configurator"
-    module={SafiraWeb.Backoffice.MinigamesLive.ReelsIcons.FormComponent}
+    module={SafiraWeb.Backoffice.MinigamesLive.ReelIcons.FormComponent}
     current_user={@current_user}
     patch={~p"/dashboard/minigames/slots"}
   />
@@ -124,6 +124,34 @@
   <.live_component
     id="wheel-configurator"
     module={SafiraWeb.Backoffice.MinigamesLive.ReelsPosition.FormComponent}
+    current_user={@current_user}
+    patch={~p"/dashboard/minigames/slots"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:edit_slots_paytable]}
+  id="wheel-simulate-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/minigames/slots")}
+>
+  <.live_component
+    id="wheel-configurator"
+    module={SafiraWeb.Backoffice.MinigamesLive.SlotsPaytable.FormComponent}
+    current_user={@current_user}
+    patch={~p"/dashboard/minigames/slots"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:edit_slots_payline]}
+  id="wheel-simulate-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/minigames/slots")}
+>
+  <.live_component
+    id="wheel-configurator"
+    module={SafiraWeb.Backoffice.MinigamesLive.SlotsPayline.FormComponent}
     current_user={@current_user}
     patch={~p"/dashboard/minigames/slots"}
   />

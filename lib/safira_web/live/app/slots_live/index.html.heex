@@ -10,7 +10,7 @@
       title={gettext("Spin")}
       subtitle={"💰 #{@wheel_price}"}
       class="w-64"
-      disabled={!can_spin?(@wheel_active?, @attendee_tokens, @wheel_price, @in_spin?)}
+      disabled={!can_spin?(@slots_active?, @attendee_tokens, @wheel_price, @in_spin?)}
       phx-click="spin"
     />
   </div>

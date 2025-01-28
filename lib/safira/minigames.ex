@@ -1175,4 +1175,151 @@ defmodule Safira.Minigames do
   def change_slots_paytable(%SlotsPaytable{} = slots_paytable, attrs \\ %{}) do
     SlotsPaytable.changeset(slots_paytable, attrs)
   end
+
+  @doc """
+  Changes the slots active status.
+
+  ## Examples
+
+      iex> change_slots_active(true)
+      :ok
+  """
+  def change_slots_active(active) do
+    Constants.set("slots_active_status", active)
+    broadcast_slots_config_update("is_active", active)
+  end
+
+  @doc """
+  Gets the slots active status.
+
+  ## Examples
+
+      iex> slots_active?()
+      true
+  """
+  def slots_active? do
+    case Constants.get("slots_active_status") do
+      {:ok, active} ->
+        active
+
+      {:error, _} ->
+        # If the active status is not set, set it to false by default
+        change_slots_active(true)
+        true
+    end
+  end
+
+  @doc """
+  Subscribes the caller to the slots' configuration updates.
+
+  ## Examples
+
+      iex> subscribe_to_slots_config_update()
+      :ok
+  """
+  def subscribe_to_slots_config_update(config) do
+    Phoenix.PubSub.subscribe(@pubsub, slots_config_topic(config))
+  end
+
+  defp slots_config_topic(config), do: "slots:#{config}"
+
+  defp broadcast_slots_config_update(config, value) do
+    Phoenix.PubSub.broadcast(@pubsub, slots_config_topic(config), {config, value})
+  end
+
+  alias Safira.Minigames.SlotsPayline
+
+  @doc """
+  Returns the list of slots_paylines.
+
+  ## Examples
+
+      iex> list_slots_paylines()
+      [%SlotsPayline{}, ...]
+
+  """
+  def list_slots_paylines do
+    Repo.all(SlotsPayline)
+  end
+
+  @doc """
+  Gets a single slots_payline.
+
+  Raises `Ecto.NoResultsError` if the Slots payline does not exist.
+
+  ## Examples
+
+      iex> get_slots_payline!(123)
+      %SlotsPayline{}
+
+      iex> get_slots_payline!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_slots_payline!(id), do: Repo.get!(SlotsPayline, id)
+
+  @doc """
+  Creates a slots_payline.
+
+  ## Examples
+
+      iex> create_slots_payline(%{field: value})
+      {:ok, %SlotsPayline{}}
+
+      iex> create_slots_payline(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_slots_payline(attrs \\ %{}) do
+    %SlotsPayline{}
+    |> SlotsPayline.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a slots_payline.
+
+  ## Examples
+
+      iex> update_slots_payline(slots_payline, %{field: new_value})
+      {:ok, %SlotsPayline{}}
+
+      iex> update_slots_payline(slots_payline, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_slots_payline(%SlotsPayline{} = slots_payline, attrs) do
+    slots_payline
+    |> SlotsPayline.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a slots_payline.
+
+  ## Examples
+
+      iex> delete_slots_payline(slots_payline)
+      {:ok, %SlotsPayline{}}
+
+      iex> delete_slots_payline(slots_payline)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_slots_payline(%SlotsPayline{} = slots_payline) do
+    Repo.delete(slots_payline)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking slots_payline changes.
+
+  ## Examples
+
+      iex> change_slots_payline(slots_payline)
+      %Ecto.Changeset{data: %SlotsPayline{}}
+
+  """
+  def change_slots_payline(%SlotsPayline{} = slots_payline, attrs \\ %{}) do
+    SlotsPayline.changeset(slots_payline, attrs)
+  end
 end

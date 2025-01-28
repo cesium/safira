@@ -2,11 +2,10 @@ defmodule Safira.Repo.Migrations.CreateSlotsPaytables do
   use Ecto.Migration
 
   def change do
-    create table(:slots_paytables) do
+    create table(:slots_paytables, primary_key: false) do
+      add :id, :binary_id, primary_key: true
       add :multiplier, :integer
-      add :position_figure_0, :integer
-      add :position_figure_1, :integer
-      add :position_figure_2, :integer
+      add :probability, :float
 
       timestamps(type: :utc_datetime)
     end

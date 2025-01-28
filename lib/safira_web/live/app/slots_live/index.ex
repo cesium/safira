@@ -9,18 +9,17 @@ defmodule SafiraWeb.App.SlotsLive.Index do
   @impl true
   def mount(_params, _session, socket) do
     if connected?(socket) do
-      Minigames.subscribe_to_wheel_config_update("price")
-      Minigames.subscribe_to_wheel_config_update("is_active")
+      Minigames.subscribe_to_slots_config_update("is_active")
     end
 
     {:ok,
      socket
-     |> assign(:current_page, :wheel)
+     |> assign(:current_page, :slots)
      |> assign(:in_spin?, false)
      |> assign(:attendee_tokens, socket.assigns.current_user.attendee.tokens)
      |> assign(:wheel_price, Minigames.get_wheel_price())
      |> assign(:result, nil)
-     |> assign(:wheel_active?, Minigames.wheel_active?())}
+     |> assign(:slots_active?, Minigames.slots_active?())}
   end
 
   @impl true
@@ -91,7 +90,7 @@ defmodule SafiraWeb.App.SlotsLive.Index do
 
   @impl true
   def handle_info({"is_active", value}, socket) do
-    {:noreply, socket |> assign(:wheel_active?, value)}
+    {:noreply, socket |> assign(:slots_active?, value)}
   end
 
   defp can_spin?(wheel_active?, tokens, price, in_spin?) do

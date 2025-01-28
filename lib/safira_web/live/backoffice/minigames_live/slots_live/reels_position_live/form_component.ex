@@ -18,7 +18,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.ReelsPosition.FormComponent do
             <div
               :for={i <- 0..2}
               id={"reel-#{i}"}
-              class="flex flex-col border-2 rounded-md max-w-36 max-h-72 overflow-scroll p-2"
+              class="flex flex-col border-2 rounded-md max-w-36 max-h-72 overflow-scroll p-2 scrollbar-hide"
               phx-hook="Sorting"
             >
               <div

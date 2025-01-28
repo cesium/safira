@@ -81,4 +81,20 @@ defmodule Safira.MinigamesFixtures do
 
     slots_paytable
   end
+
+  @doc """
+  Generate a slots_payline.
+  """
+  def slots_payline_fixture(attrs \\ %{}) do
+    {:ok, slots_payline} =
+      attrs
+      |> Enum.into(%{
+        position_0: 42,
+        position_1: 42,
+        position_2: 42
+      })
+      |> Safira.Minigames.create_slots_payline()
+
+    slots_payline
+  end
 end

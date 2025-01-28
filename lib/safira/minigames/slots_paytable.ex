@@ -1,15 +1,13 @@
 defmodule Safira.Minigames.SlotsPaytable do
   @moduledoc """
-  Slots paytable.
+  Schema for slots paytable that defines multipliers and their probabilities.
+  Used to determine winning combinations and their payouts in the slots game.
   """
-  use Ecto.Schema
-  import Ecto.Changeset
+  use Safira.Schema
 
   schema "slots_paytables" do
     field :multiplier, :integer
-    field :position_figure_0, :integer
-    field :position_figure_1, :integer
-    field :position_figure_2, :integer
+    field :probability, :float
 
     timestamps(type: :utc_datetime)
   end
@@ -17,7 +15,9 @@ defmodule Safira.Minigames.SlotsPaytable do
   @doc false
   def changeset(slots_paytable, attrs) do
     slots_paytable
-    |> cast(attrs, [:multiplier, :position_figure_0, :position_figure_1, :position_figure_2])
-    |> validate_required([:multiplier, :position_figure_0, :position_figure_1, :position_figure_2])
+    |> cast(attrs, [:multiplier, :probability])
+    |> validate_required([:multiplier, :probability])
+    |> validate_number(:multiplier, greater_than: 0)
+    |> validate_number(:probability, greater_than_or_equal_to: 0, less_than_or_equal_to: 1)
   end
 end

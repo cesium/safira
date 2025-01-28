@@ -408,4 +408,67 @@ defmodule Safira.MinigamesTest do
       assert %Ecto.Changeset{} = Minigames.change_slots_paytable(slots_paytable)
     end
   end
+
+  describe "slots_paylines" do
+    alias Safira.Minigames.SlotsPayline
+
+    import Safira.MinigamesFixtures
+
+    @invalid_attrs %{position_1: nil, position_0: nil, position_2: nil}
+
+    test "list_slots_paylines/0 returns all slots_paylines" do
+      slots_payline = slots_payline_fixture()
+      assert Minigames.list_slots_paylines() == [slots_payline]
+    end
+
+    test "get_slots_payline!/1 returns the slots_payline with given id" do
+      slots_payline = slots_payline_fixture()
+      assert Minigames.get_slots_payline!(slots_payline.id) == slots_payline
+    end
+
+    test "create_slots_payline/1 with valid data creates a slots_payline" do
+      valid_attrs = %{position_1: 42, position_0: 42, position_2: 42}
+
+      assert {:ok, %SlotsPayline{} = slots_payline} = Minigames.create_slots_payline(valid_attrs)
+      assert slots_payline.position_1 == 42
+      assert slots_payline.position_0 == 42
+      assert slots_payline.position_2 == 42
+    end
+
+    test "create_slots_payline/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Minigames.create_slots_payline(@invalid_attrs)
+    end
+
+    test "update_slots_payline/2 with valid data updates the slots_payline" do
+      slots_payline = slots_payline_fixture()
+      update_attrs = %{position_1: 43, position_0: 43, position_2: 43}
+
+      assert {:ok, %SlotsPayline{} = slots_payline} =
+               Minigames.update_slots_payline(slots_payline, update_attrs)
+
+      assert slots_payline.position_1 == 43
+      assert slots_payline.position_0 == 43
+      assert slots_payline.position_2 == 43
+    end
+
+    test "update_slots_payline/2 with invalid data returns error changeset" do
+      slots_payline = slots_payline_fixture()
+
+      assert {:error, %Ecto.Changeset{}} =
+               Minigames.update_slots_payline(slots_payline, @invalid_attrs)
+
+      assert slots_payline == Minigames.get_slots_payline!(slots_payline.id)
+    end
+
+    test "delete_slots_payline/1 deletes the slots_payline" do
+      slots_payline = slots_payline_fixture()
+      assert {:ok, %SlotsPayline{}} = Minigames.delete_slots_payline(slots_payline)
+      assert_raise Ecto.NoResultsError, fn -> Minigames.get_slots_payline!(slots_payline.id) end
+    end
+
+    test "change_slots_payline/1 returns a slots_payline changeset" do
+      slots_payline = slots_payline_fixture()
+      assert %Ecto.Changeset{} = Minigames.change_slots_payline(slots_payline)
+    end
+  end
 end
