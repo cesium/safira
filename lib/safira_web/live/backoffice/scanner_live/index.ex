@@ -13,7 +13,14 @@ defmodule SafiraWeb.Backoffice.ScannerLive.Index do
 
   @impl true
   def handle_params(params, _url, socket) do
-    case Contest.list_badges(params) do
+    badges =
+      if user_can_bypass_badge_restrictions?(socket) do
+        Contest.list_badges(params)
+      else
+        Contest.list_available_badges(params)
+      end
+
+    case badges do
       {:ok, {badges, meta}} ->
         {:noreply,
          socket
@@ -31,5 +38,12 @@ defmodule SafiraWeb.Backoffice.ScannerLive.Index do
   defp apply_action(socket, :index, _params) do
     socket
     |> assign(:page_title, "Listing Badges")
+  end
+
+  defp user_can_bypass_badge_restrictions?(socket) do
+    permissions = socket.assigns.current_user.staff.role.permissions
+
+    Map.has_key?(permissions, "badges") and
+      Map.get(permissions, "badges") |> Enum.member?("give_without_restrictions")
   end
 end
