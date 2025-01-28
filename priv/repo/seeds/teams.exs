@@ -3,7 +3,7 @@ defmodule Safira.Repo.Seeds.Teams do
   alias Safira.Teams.Team
 
   @teams [
-    {"Organização", ["Alice", "Bob", "Charlie"]},
+    {"Main Organization", ["Alice", "Bob", "Charlie"]},
     {"Tech", ["Dave", "Eve", "Frank", "Grace", "Heidi"]},
     {"Marketing", ["Ivan", "Judy", "Mallory", "Niaj", "Olivia"]},
     {"Programa", ["Peggy", "Sybil", "Trent", "Victor", "Walter"]},
