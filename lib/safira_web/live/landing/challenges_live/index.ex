@@ -1,6 +1,8 @@
 defmodule SafiraWeb.Landing.ChallengesLive.Index do
   @moduledoc false
 
+  on_mount {SafiraWeb.VerifyFeatureFlag, "challenges_enabled"}
+
   use SafiraWeb, :landing_view
 
   alias Safira.Challenges
