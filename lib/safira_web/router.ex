@@ -27,6 +27,7 @@ defmodule SafiraWeb.Router do
       live "/", HomeLive.Index, :index
       live "/faqs", FAQLive.Index, :index
       live "/schedule", ScheduleLive.Index, :index
+      live "/challenges", ChallengesLive.Index, :index
     end
   end
 
@@ -214,6 +215,15 @@ defmodule SafiraWeb.Router do
 
         scope "/minigames" do
           scope "/prizes", PrizeLive do
+            live "/", Index, :index
+            live "/new", Index, :new
+
+            scope "/:id" do
+              live "/edit", Index, :edit
+            end
+          end
+
+          scope "/challenges", ChallengeLive do
             live "/", Index, :index
             live "/new", Index, :new
 
