@@ -12,7 +12,7 @@ defmodule SafiraWeb.Landing.Components.Sparkles do
         <img src="/images/starts.svg" id="desktop-sparkle-2" />
       </div>
       <div class="absolute right w-[700px] block md:hidden animate-fade-in">
-        <img src="/images/starts.svg" id="desktop-sparkle-3" />
+        <img src="/images/starts.svg" id="mobile-sparkle" />
       </div>
     </div>
     """
