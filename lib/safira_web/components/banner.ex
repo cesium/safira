@@ -1,9 +1,8 @@
 defmodule SafiraWeb.Components.Banner do
   @moduledoc false
   use SafiraWeb, :component
-
   attr :text, :string, default: ""
-  attr :duration, :integer, default: 5000
+  attr :end_time, :any, default: nil
 
   def banner(assigns) do
     ~H"""
@@ -11,12 +10,11 @@ defmodule SafiraWeb.Components.Banner do
       id="banner"
       phx-hook="Banner"
       class="relative w-full bg-white text-center p-4 text-black font-bold shadow-lg z-10 transition-transform transform"
-      style="top: 0;"
-      data-duration={@duration}
+      data-end={@end_time}
     >
       <p><%= @text %></p>
-      <div id="timer-countdown" phx-hook="Timer" data-finish-time={DateTime.to_unix(@duration)}>
-        00:00:00
+      <div id="timer-countdown">
+        --:--:--
       </div>
     </div>
     """

@@ -6,11 +6,16 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    if connected?(socket) do
-      Spotlights.subscribe_to_spotlight_event()
-    end
+    case Spotlights.get_current_spotlight() do
+      nil ->
+        {:ok, socket |> assign(:current_spotlight, nil)}
 
-    {:ok, socket |> assign(:spotlight, Spotlights.get_current_spotlight())}
+      spotlight ->
+        {:ok,
+         socket
+         |> assign(:current_spotlight, spotlight)
+         |> push_event("start-countdown", %{end_time: spotlight.end})}
+    end
   end
 
   @impl true
@@ -63,15 +68,5 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Index do
     |> assign(:page_title, "Confirm Spotlight")
     |> assign(:company, Companies.get_company!(company_id))
     |> assign(:duration, duration)
-  end
-
-  @impl true
-  def handle_event("on_spotlight_end", _params, socket) do
-    {:noreply, socket |> push_navigate(to: "/dashboard/spotlights")}
-  end
-
-  @impl true
-  def handle_info(spotlight, socket) do
-    {:noreply, assign(socket, spotlight: spotlight)}
   end
 end

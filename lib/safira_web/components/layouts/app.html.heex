@@ -25,7 +25,7 @@
             company_name: @current_spotlight.company.name
           )
         }
-        duration={@current_spotlight.end}
+        end_time={@current_spotlight.end}
       />
       <div
         :if={Map.get(assigns, :event_started, true)}

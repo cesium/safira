@@ -14,16 +14,14 @@
       alt={gettext("Spotlight")}
       class="w-64 h-64 mb-4 invert dark:filter-none"
     />
-    <%= if @spotlight do %>
+    <%= if @current_spotlight do %>
       <p>
-        <%= gettext("%{company_name} is on spotlight!", company_name: @spotlight.company.name) %>
+        <%= gettext("%{company_name} is on spotlight!",
+          company_name: @current_spotlight.company.name
+        ) %>
       </p>
-      <div
-        id="timer-countdown"
-        phx-hook="Timer"
-        data-finish-time={DateTime.to_unix(@spotlight.end)}
-      >
-        00:00:00
+      <div id="seconds-remaining" phx-hook="Countdown">
+        --:--:--
       </div>
     <% else %>
       <p><%= gettext("There are no companies on spotlight!") %></p>

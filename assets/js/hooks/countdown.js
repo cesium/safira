@@ -1,3 +1,5 @@
+import { datepicker } from "jquery";
+
 export const Countdown = {
     mounted() {
         let countdownInterval = null;
@@ -27,9 +29,10 @@ export const Countdown = {
             }, 100);
         };
 
-        window.addEventListener("phx:highlight", (e) => {
-            const startTime = new Date(e.detail.start_time).getTime();
-            startCountdown(startTime);
+        this.handleEvent("start-countdown", (data) => {
+            console.log("Starting countdown", data);
+            const time = new Date (date.end_time).getTime();
+            startCountdown(time);
         });
     }
 };
