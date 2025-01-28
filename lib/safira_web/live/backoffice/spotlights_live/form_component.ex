@@ -15,6 +15,7 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.FormComponent do
   def render(assigns) do
     ~H"""
     <div>
+      <.flash_group flash={@flash} />
       <.page title={@title}>
         <:actions>
           <.link navigate={~p"/dashboard/spotlights/config/tiers"}>
@@ -46,7 +47,12 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.FormComponent do
 
   @impl true
   def handle_event("save", %{"spotlight_config" => %{"duration" => duration}}, socket) do
-    Spotlights.change_spotlight_duration(String.to_integer(duration))
-    {:noreply, socket |> push_patch(to: ~p"/dashboard/spotlights/")}
+    case Spotlights.change_spotlight_duration(String.to_integer(duration)) do
+      {:ok, _} ->
+        {:noreply, push_patch(socket, to: ~p"/dashboard/spotlights/")}
+
+      {:error, _} ->
+        {:noreply, put_flash(socket, :error, "Duration can't be more than 60 minutes")}
+    end
   end
 end

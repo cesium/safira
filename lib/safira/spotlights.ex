@@ -43,6 +43,10 @@ defmodule Safira.Spotlights do
     |> Repo.one()
   end
 
+  def change_spotlight_duration(time) when time > 60 do
+    {:error, "duration cannot be greater than 60 minutes"}
+  end
+
   def change_spotlight_duration(time) do
     Constants.set("spotlight_duration", time)
   end
