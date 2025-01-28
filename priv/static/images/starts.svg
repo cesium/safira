@@ -1,0 +1,13 @@
+<svg id="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 375.62 375.64">
+  <defs>
+    <radialGradient id="gradient">
+      <stop offset="10%" stop-color="#330bff" />
+      <stop offset="93%" stop-color="#04030f" />
+    </radialGradient>
+  </defs>
+  <g>
+    <g>
+      <path style="fill: url(#gradient)" d="M375.62,186.16c-147.78,23.59-165.87,41.69-189.43,189.48C165.84,227.48,148.16,209.8,0,189.47,147.78,165.89,165.88,147.79,189.43,0,209.79,148.16,227.47,165.84,375.62,186.16Z" />
+    </g>
+  </g>
+</svg>
