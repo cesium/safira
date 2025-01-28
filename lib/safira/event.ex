@@ -90,7 +90,8 @@ defmodule Safira.Event do
       "team_enabled",
       "survival_guide_enabled",
       "faqs_enabled",
-      "general_regulation_enabled"
+      "general_regulation_enabled",
+      "call_for_staff_enabled"
     ]
   end
 
