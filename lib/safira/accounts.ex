@@ -828,4 +828,17 @@ defmodule Safira.Accounts do
     |> where([c], c.attendee_id == ^attendee.id)
     |> Repo.one()
   end
+
+  def generate_credentials(count) do
+    for _ <- 1..count do
+      {:ok, credential} = create_credential(%{})
+
+      png =
+        credential.id
+        |> QRCodeEx.encode()
+        |> QRCodeEx.png()
+
+      {credential.id, [png]}
+    end
+  end
 end
