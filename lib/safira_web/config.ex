@@ -19,11 +19,11 @@ defmodule SafiraWeb.Config do
         url: "/team",
         feature_flag: "team_enabled"
       },
-      # %{
-      #  title: "Challenges",
-      #  url: "/challenges",
-      #  feature_flag: "challenges_enabled"
-      # },
+       %{
+        title: "Challenges",
+        url: "/challenges",
+        feature_flag: "challenges_enabled"
+      },
       # %{
       #  title: "Speakers",
       #  url: "/speakers",
@@ -139,6 +139,13 @@ defmodule SafiraWeb.Config do
         icon: "hero-gift",
         url: "/dashboard/minigames/prizes",
         scope: %{"minigames" => ["show"]}
+      },
+      %{
+        key: :challenges,
+        title: "Challenges",
+        icon: "hero-beaker",
+        url: "/dashboard/minigames/challenges",
+        scope: %{"challenges" => ["show"]}
       },
       %{
         key: :minigames,
