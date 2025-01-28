@@ -1,12 +1,22 @@
 <.page title="Attendees">
   <:actions>
-    <.table_search
-      id="attendees-table-name-search"
-      params={@params}
-      field={:name}
-      path={~p"/dashboard/attendees"}
-      placeholder={gettext("Search for attendees")}
-    />
+    <div class="flex flex-row w-full gap-4">
+      <.link patch={~p"/downloads/attendees"} target="_blank">
+        <.button>
+          <span class="flex flex-row items-center gap-2">
+            <.icon name="hero-cloud-arrow-down" class="w-5 h-5" />
+            <span class="hidden sm:block"><%= gettext("Export attendees") %></span>
+          </span>
+        </.button>
+      </.link>
+      <.table_search
+        id="attendees-table-name-search"
+        params={@params}
+        field={:name}
+        path={~p"/dashboard/attendees"}
+        placeholder={gettext("Search for attendees")}
+      />
+    </div>
   </:actions>
 
   <div class="py-4">
@@ -21,6 +31,9 @@
         </div>
       </:col>
       <:col :let={{_id, user}} label="Email"><%= user.email %></:col>
+      <:col :let={{_id, user}} label="Joined">
+        <%= user.inserted_at |> relative_datetime() %>
+      </:col>
       <:col :let={{_id, user}} sortable field={:tokens} label="Tokens">
         <%= user.attendee.tokens %>
       </:col>
