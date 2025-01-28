@@ -48,12 +48,12 @@ defmodule SafiraWeb.Landing.SpeakersLive.Components.Speakers do
   defp speaker(assigns) do
     ~H"""
     <div class="border-t-2 border-white py-4 text-white transition-all">
-      <div class="mb-2 flex grid grid-cols-1 sm:grid-cols-2">
+      <div class="mb-2 flex sm:flex-nowrap flex-wrap gap-8">
         <img
           alt={@speaker.name}
-          width="210"
-          height="210"
-          class="select-none m-auto sm:mb-auto mb-4"
+          width="150"
+          height="150"
+          class="select-none m-auto sm:m-0 sm:mb-auto mb-4"
           src={
             if @speaker.picture do
               Uploaders.Speaker.url({@speaker.picture, @speaker}, :original, signed: true)
@@ -65,7 +65,7 @@ defmodule SafiraWeb.Landing.SpeakersLive.Components.Speakers do
         <div class="flex w-full flex-col justify-between">
           <div class="flex justify-between">
             <div>
-              <h2 class="font-terminal-uppercase text-xl"><%= @speaker.name %></h2>
+              <h2 class="font-terminal uppercase text-xl"><%= @speaker.name %></h2>
               <p class=""><%= @speaker.title %></p>
               <p class=""><%= @speaker.company %></p>
             </div>
@@ -126,7 +126,7 @@ defmodule SafiraWeb.Landing.SpeakersLive.Components.Speakers do
 
   defp schedule_day(assigns) do
     ~H"""
-    <div class="flex sm:w-full select-none justify-center">
+    <div class="block sm:w-full select-none justify-center">
       <div class="flex justify-between text-4xl xs:text-5xl sm:text-7xl lg:text-8xl xl:mx-20 xl:text-7xl">
         <div class="right relative flex items-center justify-center mt-[0.15em]">
           <.link
@@ -156,6 +156,15 @@ defmodule SafiraWeb.Landing.SpeakersLive.Components.Speakers do
             <.right_arrow />
           </.link>
         </div>
+      </div>
+
+      <div class="text-left text-md mt-12 max-w-96 m-auto">
+        <p>
+          <%= gettext(
+            "During this week, you have the opportunity to interact with many recognized speakers, national, international and notorious companies!"
+          ) %>
+        </p>
+        <p class="mt-4"><%= gettext("You can get to know them better here.") %></p>
       </div>
     </div>
     """
@@ -262,7 +271,7 @@ defmodule SafiraWeb.Landing.SpeakersLive.Components.Speakers do
     case social do
       "github" -> "fa-brand-github"
       "linkedin" -> "fa-brand-linkedin"
-      "x" -> "fa-brand-twitter"
+      "x" -> "fa-brand-x-twitter"
       "website" -> "hero-globe-alt"
     end
   end
