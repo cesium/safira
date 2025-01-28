@@ -121,7 +121,7 @@ defmodule SafiraWeb.Router do
       scope "/downloads" do
         pipe_through [:require_staff_user]
         get "/attendees", CSVController, :attendees_data
-        get "/qr_codes", CSVController, :generate_credentials
+        post "/qr_codes", CSVController, :generate_credentials
       end
 
       scope "/dashboard", Backoffice do
@@ -148,6 +148,7 @@ defmodule SafiraWeb.Router do
         scope "/event", EventLive do
           live "/", Index, :index
           live "/edit", Index, :edit
+          live "/credentials", Index, :credentials
 
           scope "/faqs" do
             live "/", Index, :faqs

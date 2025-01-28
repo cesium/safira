@@ -3,17 +3,17 @@ defmodule SafiraWeb.CSVController do
 
   alias Safira.Accounts
 
-  def generate_credentials(conn, _params) do
-    count = 10
+  def generate_credentials(conn, %{"count" => count}) do
+    {count_int, ""} = Integer.parse(count)
 
-    if user_authorized?(conn.assigns.current_user, "attendees", "show") do
+    if user_authorized?(conn.assigns.current_user, "event", "generate_credentials") do
       conn =
         conn
         |> put_resp_content_type("application/zip")
         |> put_resp_header("content-disposition", "attachment; filename=qr_codes.zip")
         |> send_chunked(200)
 
-      Accounts.generate_credentials(count)
+      Accounts.generate_credentials(count_int)
       |> Enum.map(fn {id, png} -> Zstream.entry("#{id}.png", png) end)
       |> Zstream.zip()
       |> Enum.reduce(conn, fn chunk, conn ->
