@@ -6,7 +6,7 @@ defmodule Safira.Contest do
 
   alias Ecto.Multi
   alias Safira.Accounts.Attendee
-  alias Safira.Contest.{Badge, BadgeCategory, BadgeCondition, DailyTokens}
+  alias Safira.Contest.{Badge, BadgeCategory, BadgeCondition, BadgeRedeem, DailyTokens}
 
   @doc """
   Gets a single badge.
@@ -389,6 +389,124 @@ defmodule Safira.Contest do
     end)
     |> Multi.insert_or_update(daily_tokens_update_operation_name, fn changes ->
       DailyTokens.changeset(Map.get(changes, daily_tokens_fetch_operation_name), %{tokens: tokens})
+    end)
+  end
+
+  @doc """
+  Returns the list of badge_redeems.
+
+  ## Examples
+
+      iex> list_badge_redeems()
+      [%BadgeRedeem{}, ...]
+
+  """
+  def list_badge_redeems do
+    Repo.all(BadgeRedeem)
+  end
+
+  @doc """
+  Gets a single badge_redeem.
+
+  Raises `Ecto.NoResultsError` if the Badge redeem does not exist.
+
+  ## Examples
+
+      iex> get_badge_redeem!(123)
+      %BadgeRedeem{}
+
+      iex> get_badge_redeem!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_badge_redeem!(id), do: Repo.get!(BadgeRedeem, id)
+
+  @doc """
+  Creates a badge_redeem.
+
+  ## Examples
+
+      iex> create_badge_redeem(%{field: value})
+      {:ok, %BadgeRedeem{}}
+
+      iex> create_badge_redeem(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_badge_redeem(attrs \\ %{}) do
+    %BadgeRedeem{}
+    |> BadgeRedeem.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a badge_redeem.
+
+  ## Examples
+
+      iex> update_badge_redeem(badge_redeem, %{field: new_value})
+      {:ok, %BadgeRedeem{}}
+
+      iex> update_badge_redeem(badge_redeem, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_badge_redeem(%BadgeRedeem{} = badge_redeem, attrs) do
+    badge_redeem
+    |> BadgeRedeem.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a badge_redeem.
+
+  ## Examples
+
+      iex> delete_badge_redeem(badge_redeem)
+      {:ok, %BadgeRedeem{}}
+
+      iex> delete_badge_redeem(badge_redeem)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_badge_redeem(%BadgeRedeem{} = badge_redeem) do
+    Repo.delete(badge_redeem)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking badge_redeem changes.
+
+  ## Examples
+
+      iex> change_badge_redeem(badge_redeem)
+      %Ecto.Changeset{data: %BadgeRedeem{}}
+
+  """
+  def change_badge_redeem(%BadgeRedeem{} = badge_redeem, attrs \\ %{}) do
+    BadgeRedeem.changeset(badge_redeem, attrs)
+  end
+
+  @doc """
+  Redeems a badge for an attendee.
+
+  ## Examples
+
+      iex> redeem_badge(badge, attendee, staff)
+      {:ok, %Attendee{}}
+
+  """
+  def redeem_badge(badge, attendee, staff) do
+    Multi.new()
+    |> Multi.insert(
+      :redeem,
+      BadgeRedeem.changeset(%BadgeRedeem{}, %{
+        badge_id: badge.id,
+        attendee_id: attendee.id,
+        redeemed_by_id: staff.id
+      })
+    )
+    |> Multi.merge(fn %{redeem: _redeem} ->
+      change_attendee_tokens_transaction(attendee, attendee.tokens + badge.tokens)
     end)
   end
 end
