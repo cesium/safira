@@ -1,5 +1,3 @@
-import { datepicker } from "jquery";
-
 export const Countdown = {
     mounted() {
         let countdownInterval = null;
@@ -30,8 +28,7 @@ export const Countdown = {
         };
 
         this.handleEvent("start-countdown", (data) => {
-            console.log("Starting countdown", data);
-            const time = new Date (date.end_time).getTime();
+            const time = new Date (data.end_time).getTime();
             startCountdown(time);
         });
     }
