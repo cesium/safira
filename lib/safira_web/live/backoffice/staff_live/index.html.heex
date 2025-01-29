@@ -20,8 +20,8 @@
   </:actions>
 
   <div class="py-4">
-    <.table id="staffs-table" items={@streams.staffs} meta={@meta} params={@params}>
-      <:col :let={{_id, user}} sortable field={:name} label="Name">
+    <.table id="staffs-table" items={@staffs} meta={@meta} params={@params}>
+      <:col :let={user} sortable field={:name} label="Name">
         <div class="flex gap-4 flex-center items-center">
           <.avatar handle={user.handle} />
           <div class="self-center">
@@ -30,8 +30,8 @@
           </div>
         </div>
       </:col>
-      <:col :let={{_id, user}} label="Email"><%= user.email %></:col>
-      <:col :let={{_id, user}} label="Status">
+      <:col :let={user} label="Email"><%= user.email %></:col>
+      <:col :let={user} label="Status">
         <%= if user.is_online do %>
           <div class="mt-2 flex items-center space-x-2">
             <span class="relative flex h-3 w-3">
@@ -49,7 +49,7 @@
           </div>
         <% end %>
       </:col>
-      <:action :let={{_id, user}}>
+      <:action :let={user}>
         <.ensure_permissions user={@current_user} permissions={%{"staffs" => ["edit"]}}>
           <.link patch={~p"/dashboard/staffs/#{user.staff.id}/edit"}>
             <.icon name="hero-pencil" class="w-5 h-5" />
