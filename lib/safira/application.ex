@@ -17,7 +17,6 @@ defmodule Safira.Application do
       {Finch, name: Safira.Finch},
       # Start the Presence system
       SafiraWeb.Presence,
-      SafiraWeb.Presence.Server,
       # Start Safira web server
       SafiraWeb.Endpoint
     ]

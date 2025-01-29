@@ -1,6 +1,7 @@
 defmodule SafiraWeb.Backoffice.StaffLive.Index do
   use SafiraWeb, :backoffice_view
 
+  alias Phoenix.Socket.Broadcast
   alias Safira.Accounts
   alias SafiraWeb.Presence
 
@@ -39,8 +40,11 @@ defmodule SafiraWeb.Backoffice.StaffLive.Index do
   end
 
   @impl true
-  def handle_info(%Presence.Diff{joins: joins, leaves: leaves}, socket)
-      when map_size(leaves) == 0 do
+  def handle_info(%Broadcast{event: "presence_diff", payload: payload}, socket) do
+    apply_presence_diff(socket, payload[:joins], payload[:leaves])
+  end
+
+  defp apply_presence_diff(socket, joins, leaves) when map_size(leaves) == 0 do
     [socket] =
       for {_, %{metas: [data]}} <- joins do
         staff = Map.put(data, :is_online, true)
@@ -50,9 +54,7 @@ defmodule SafiraWeb.Backoffice.StaffLive.Index do
     {:noreply, socket}
   end
 
-  @impl true
-  def handle_info(%Presence.Diff{joins: joins, leaves: leaves}, socket)
-      when map_size(joins) == 0 do
+  defp apply_presence_diff(socket, joins, leaves) when map_size(joins) == 0 do
     [socket] =
       for {_, %{metas: [data]}} <- leaves do
         staff = Map.put(data, :is_online, false)
