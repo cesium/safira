@@ -116,16 +116,19 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPaytable.FormComponent do
   def handle_event("delete-entry", %{"id" => id}, socket) do
     entries = socket.assigns.entries
     # Find the drop to delete in the drops list
-    drop = Enum.find(entries, fn {drop_id, _, _} -> drop_id == id end) |> elem(2)
+    drop = Enum.find(entries, fn {drop_id, _, _} -> drop_id == id end) |> elem(1)
 
     # If the drop has an id, delete it from the database
     if drop.id != nil do
-      Minigames.delete_wheel_drop(drop)
+      Minigames.delete_slots_paytable(drop)
     end
+    
+    nothing_probability = calculate_nothing_probability(entries)
 
     # Remove the drop from the list
     {:noreply,
-     socket |> assign(entries: Enum.reject(entries, fn {drop_id, _, _} -> drop_id == id end))}
+     socket |> assign(entries: Enum.reject(entries, fn {drop_id, _, _} -> drop_id == id end))
+     |> assign(nothing_probability: nothing_probability)}
   end
 
   @impl true
@@ -154,8 +157,11 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPaytable.FormComponent do
     # Find if all the changesets are valid
     valid_drops =
       forms_valid?(Enum.map(drops, fn {_, _, form} -> form end)) and
-        calculate_nothing_probability(drops) == 0
+        calculate_nothing_probability(drops) >= 0
 
+        IO.inspect(drops)
+        IO.inspect(valid_drops)
+        IO.inspect(forms_valid?(Enum.map(drops, fn {_, _, form} -> form end)))
     if valid_drops do
       # For each drop, update or create it
       Enum.each(drops, fn {_, drop, form} ->
@@ -217,9 +223,14 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPaytable.FormComponent do
 
   defp forms_valid?(forms) do
     Enum.all?(forms, fn form ->
-      form.source.valid? and
-        not is_nil(form.params["multiplier"]) and
-        not is_nil(form.params["probability"])
+      form.source.valid? and has_valid_values?(form)
     end)
+  end
+  
+  defp has_valid_values?(form) do
+    params_valid = not is_nil(form.params["multiplier"]) and not is_nil(form.params["probability"])
+    data_valid = not is_nil(form.data.multiplier) and not is_nil(form.data.probability)
+    
+    params_valid or data_valid
   end
 end

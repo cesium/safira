@@ -49,14 +49,19 @@ defmodule SafiraWeb.App.SlotsLive.Components.Machine do
       |> Map.update!(2, &[{reel, reel.reel_2_index} | &1])
     end)
     |> Map.new(fn {k, v} ->
-      {k, v |> Enum.filter(fn {_, index} -> index != -1 end) |> Enum.sort_by(&elem(&1, 1))}
+      sorted = v 
+               |> Enum.filter(fn {_, index} -> index != -1 end) 
+               |> Enum.sort_by(&elem(&1, 1))
+      
+      # Rotate first 3 items to end
+      {first_three, rest} = Enum.split(sorted, 3)
+      {k, rest ++ first_three}
     end)
   end
 
   defp build_reel_background(reel_images) do
     urls =
       reel_images
-      |> Enum.sort_by(&elem(&1, 1))
       |> Enum.map_join(", ", fn {reel, _} ->
         url = SlotsReelIcon.url({reel.image, reel}, :original, signed: true)
         "url('#{url}')"
@@ -67,7 +72,6 @@ defmodule SafiraWeb.App.SlotsLive.Components.Machine do
 
   defp build_background_positions(reel_images) do
     reel_images
-    |> Enum.sort_by(&elem(&1, 1))
     |> Enum.with_index()
     |> Enum.map_join(", ", fn {_reel, index} ->
       position = index * 79

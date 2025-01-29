@@ -7,7 +7,7 @@ defmodule Safira.Repo.Migrations.CreateSlotsPaylines do
       add :position_0, :integer
       add :position_1, :integer
       add :position_2, :integer
-      add :multiplier_id, references(:slots_paytables, type: :binary_id, on_delete: :delete_all)
+      add :paytable_id, references(:slots_paytables, type: :binary_id, on_delete: :delete_all)
 
       timestamps(type: :utc_datetime)
     end

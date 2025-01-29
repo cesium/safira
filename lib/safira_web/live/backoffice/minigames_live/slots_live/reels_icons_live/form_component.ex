@@ -83,7 +83,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.ReelIcons.FormComponent do
               </h3>
               <p class="text-slate-500">
                 <.icon name="hero-exclamation-triangle" class="text-warning-600 mr-1" /><%= gettext(
-                  "For optimal icon placement the number of icons should be a mutiple of 3."
+                  "For optimal icon placement the number of icons should be 9 and each icon should be a square image."
                 ) %>
               </p>
             </div>
@@ -104,7 +104,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.ReelIcons.FormComponent do
      |> assign(:reel, %SlotsReelIcon{})
      |> allow_upload(:images,
        accept: Uploaders.SlotsReelIcon.extension_whitelist(),
-       max_entries: 10
+       max_entries: 15
      )
      |> assign(form: to_form(%{}))}
   end

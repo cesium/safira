@@ -68,7 +68,7 @@ defmodule SafiraWeb.App.SlotsLive.Index do
 
   # In your LiveView:
   def handle_event("spin", _params, socket) do
-    # target = [1, 2, 1] # Your target positions
+    # target = [0, 0, 0] # Your target positions
     target = Enum.map(1..3, fn _ -> Enum.random(1..9) end)
     {:noreply, push_event(socket, "roll_reels", %{multiplier: 2, target: target})}
   end

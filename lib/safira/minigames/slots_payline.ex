@@ -6,10 +6,10 @@ defmodule Safira.Minigames.SlotsPayline do
   use Safira.Schema
 
   schema "slots_paylines" do
-    field :position_1, :integer
     field :position_0, :integer
+    field :position_1, :integer
     field :position_2, :integer
-    belongs_to :multiplier, Safira.Minigames.SlotsPaytable
+    belongs_to :paytable, Safira.Minigames.SlotsPaytable
 
     timestamps(type: :utc_datetime)
   end

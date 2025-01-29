@@ -5,7 +5,6 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPayline.FormComponent do
 
   alias Safira.Contest
   alias Safira.Minigames
-  alias Safira.Minigames.WheelDrop
 
   import SafiraWeb.Components.Forms
 
@@ -29,7 +28,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPayline.FormComponent do
             </.button>
           </div>
           <ul class="h-[45vh] overflow-y-scroll scrollbar-hide mt-4 border-b-[1px] border-lightShade  dark:border-darkShade">
-            <%= for {id, type, _drop, form} <- @entries do %>
+            <%= for {id, _drop, form} <- @entries do %>
               <li class="border-b-[1px] last:border-b-0 border-lightShade dark:border-darkShade">
                 <.simple_form
                   id={id}
@@ -40,29 +39,10 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPayline.FormComponent do
                 >
                   <.field type="hidden" name="identifier" value={id} />
                   <div class="grid space-x-2 grid-cols-9 pl-1">
-                    <%!-- <%= if type == :nil do %>
-                      <.field
-                        wrapper_class="col-span-4"
-                        value={nil}
-                        placeholder="Select drop type"
-                        options={[
-                          {"Select a drop type", nil},
-                          {"Prize", :prize},
-                          {"Badge", :badge},
-                          {"Tokens", :tokens},
-                          {"Entries", :entries}
-                        ]}
-                        name="set_type"
-                        label="Type"
-                        type="select"
-                      />
-                    <% else %>
-                      <%= if type == :prize do %> --%>
                     <.field field={form[:position_0]} wrapper_class="col-span-1" type="number" />
                     <.field field={form[:position_1]} wrapper_class="col-span-1" type="number" />
                     <.field field={form[:position_2]} wrapper_class="col-span-1" type="number" />
-                    <.field field={form[:multiplier]} type="select" wrapper_class="col-span-2" />
-                    <%!-- <.field field={form[:probability]} type="number" wrapper_class="col-span-2" /> --%>
+                    <.field field={form[:paytable_id]} type="select" wrapper_class="col-span-2" options={generate_options(@paytables)} />
                     <.link
                       phx-click={JS.push("delete-entry", value: %{id: id})}
                       data-confirm="Are you sure?"
@@ -103,17 +83,17 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPayline.FormComponent do
   def mount(socket) do
     # Load the wheel drops
     entries =
-      Minigames.list_wheel_drops()
+      Minigames.list_slots_paylines()
       |> Enum.map(fn entry ->
-        {Ecto.UUID.generate(), Minigames.get_wheel_drop_type(entry), entry,
-         to_form(Minigames.change_wheel_drop(entry))}
+        {Ecto.UUID.generate(), entry,
+         to_form(Minigames.change_slots_payline(entry))}
       end)
 
     {:ok,
      socket
      |> assign(entries: entries)
-     |> assign(nothing_probability: calculate_nothing_probability(entries))
-     |> assign(prizes: Minigames.list_prizes())
+     |> assign(nothing_probability: 0)
+     |> assign(paytables: Minigames.list_slots_paytables())
      |> assign(badges: Contest.list_badges())}
   end
 
@@ -128,8 +108,8 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPayline.FormComponent do
        :entries,
        entries ++
          [
-           {Ecto.UUID.generate(), nil, %WheelDrop{},
-            to_form(Minigames.change_wheel_drop(%WheelDrop{}))}
+           {Ecto.UUID.generate(), %SlotsPayline{},
+            to_form(Minigames.change_slots_payline(%SlotsPayline{}))}
          ]
      )}
   end
@@ -138,7 +118,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPayline.FormComponent do
   def handle_event("delete-entry", %{"id" => id}, socket) do
     entries = socket.assigns.entries
     # Find the drop to delete in the drops list
-    drop = Enum.find(entries, fn {drop_id, _, _, _} -> drop_id == id end) |> elem(2)
+    drop = Enum.find(entries, fn {drop_id, _, _} -> drop_id == id end) |> elem(2)
 
     # If the drop has an id, delete it from the database
     if drop.id != nil do
@@ -147,45 +127,40 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPayline.FormComponent do
 
     # Remove the drop from the list
     {:noreply,
-     socket |> assign(entries: Enum.reject(entries, fn {drop_id, _, _, _} -> drop_id == id end))}
+     socket |> assign(entries: Enum.reject(entries, fn {drop_id, _, _} -> drop_id == id end))}
   end
 
   @impl true
   def handle_event("validate", drop_params, socket) do
     entries = socket.assigns.entries
     entry = get_drop_data_by_id(entries, drop_params["identifier"])
-    changeset = Minigames.change_wheel_drop(entry, drop_params["wheel_drop"])
+    changeset = Minigames.change_slots_payline(entry, drop_params["slots_payline"])
 
     # Update the form with the new changeset and the drop type if it changed
     entries =
       socket.assigns.entries
-      |> update_drop_type_form_if_type_changed(drop_params["identifier"], drop_params["set_type"])
       |> update_drop_form(drop_params["identifier"], to_form(changeset, action: :validate))
-
-    nothing_probability = calculate_nothing_probability(entries)
 
     {:noreply,
      socket
-     |> assign(entries: entries)
-     |> assign(nothing_probability: nothing_probability)}
+     |> assign(entries: entries)}
   end
 
   @impl true
   def handle_event("save", _params, socket) do
-    drops = socket.assigns.drops
+    entries = socket.assigns.entries
 
     # Find if all the changesets are valid
     valid_drops =
-      forms_valid?(Enum.map(drops, fn {_, _, _, form} -> form end)) and
-        calculate_nothing_probability(drops) >= 0
+      forms_valid?(Enum.map(entries, fn {_, _, form} -> form end))
 
     if valid_drops do
       # For each drop, update or create it
-      Enum.each(drops, fn {_, _, drop, form} ->
+      Enum.each(entries, fn {_, drop, form} ->
         if drop.id != nil do
-          Minigames.update_wheel_drop(drop, form.params)
+          Minigames.update_slots_payline(drop, form.params)
         else
-          Minigames.create_wheel_drop(form.params)
+          Minigames.create_slots_payline(form.params)
         end
       end)
 
@@ -207,24 +182,24 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPayline.FormComponent do
 
   defp update_drop_type_form_if_type_changed(drops, _id, _type), do: drops
 
-  defp update_drop_form(drops, id, new_form) do
-    Enum.map(drops, fn
-      {^id, drop_type, drop, _} -> {id, drop_type, drop, new_form}
+  defp update_drop_form(entries, id, new_form) do
+    Enum.map(entries, fn
+      {^id, entry, _} -> {id, entry, new_form}
       other -> other
     end)
   end
 
   def get_drop_data_by_id(drops, id) do
-    Enum.find(drops, &(elem(&1, 0) == id)) |> elem(2)
+    Enum.find(drops, &(elem(&1, 0) == id)) |> elem(1)
   end
 
   defp generate_options(values) do
-    Enum.map(values, &{&1.name, &1.id})
+    Enum.map(values, &{&1.multiplier, &1.id})
   end
 
   defp calculate_nothing_probability(drops) do
     drops
-    |> Enum.map(&elem(&1, 3))
+    |> Enum.map(&elem(&1, 2))
     |> Enum.reduce(1.0, fn form, acc ->
       from_data =
         if form.data.probability != nil do
@@ -247,10 +222,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPayline.FormComponent do
 
   defp forms_valid?(forms) do
     Enum.all?(forms, fn form ->
-      form.source.valid? and
-        (form.params["prize_id"] || form.data.prize_id || form.params["badge_id"] ||
-           form.data.badge_id || form.params["tokens"] || form.data.tokens ||
-           form.params["entries"] || form.data.entries)
+      form.source.valid?
     end)
   end
 end
