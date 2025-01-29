@@ -4,32 +4,58 @@ defmodule Safira.Spotlights do
   """
 
   use Safira.Context
+
+  alias Ecto.Multi
+  alias Safira.Companies
   alias Safira.Constants
   alias Safira.Spotlights.Spotlight
 
   @pubsub Safira.PubSub
 
   def create_spotlight(company_id) do
-    now = DateTime.utc_now()
-    duration = get_spotlight_duration()
+    case create_spotlight_transaction(company_id) do
+      {:ok, %{spotlight: spotlight}} ->
+        broadcast_new_spotlight(spotlight.id)
+        {:ok, spotlight.id}
 
-    if duration > 0 do
-      end_time = DateTime.add(now, duration, :minute)
+      {:error, :no_current_spotlight, msg, _details} ->
+        {:error, msg}
 
-      %Spotlight{}
-      |> Spotlight.changeset(%{company_id: company_id, end: end_time})
-      |> Repo.insert()
-      |> case do
-        {:ok, spotlight} ->
-          broadcast_new_spotlight(spotlight.id)
-          {:ok, spotlight}
+      {:error, :company_can_create_spotlight, msg, _details} ->
+        {:error, msg}
 
-        {:error, changeset} ->
-          {:error, changeset}
-      end
-    else
-      {:error, "invalid duration"}
+      {:error, reason} ->
+        {:error, "Failed to create spotlight: #{inspect(reason)}"}
     end
+  end
+
+  defp create_spotlight_transaction(company_id) do
+    Multi.new()
+    |> Multi.run(:company_can_create_spotlight, fn _repo, _changes ->
+      if Companies.can_create_spotlight?(company_id) do
+        {:ok, company_id}
+      else
+        {:error, :company_can_create_spotlight,
+         "this company has reached the max spotlights count", %{}}
+      end
+    end)
+    |> Multi.run(:no_current_spotlight, fn _repo, _changes ->
+      if get_current_spotlight() do
+        {:error, "there is already a spotlight in progress"}
+      else
+        {:ok, nil}
+      end
+    end)
+    |> Multi.run(:spotlight_end_time, fn _repo, _changes ->
+      now = DateTime.utc_now()
+      duration = get_spotlight_duration()
+      end_time = DateTime.add(now, duration, :minute)
+      {:ok, end_time}
+    end)
+    |> Multi.insert(:spotlight, fn %{spotlight_end_time: end_time} ->
+      Spotlight.changeset(%Spotlight{}, %{company_id: company_id, end: end_time})
+    end)
+    |> Repo.transaction()
   end
 
   def get_current_spotlight do

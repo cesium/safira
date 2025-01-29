@@ -22,6 +22,7 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Index do
   def handle_params(params, _url, socket) do
     {:noreply,
      socket
+     |> assign(:current_page, :spotlights)
      |> apply_action(socket.assigns.live_action, params)}
   end
 

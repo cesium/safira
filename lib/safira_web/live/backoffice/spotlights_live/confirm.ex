@@ -44,8 +44,11 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Confirm do
            |> put_flash(:info, "Spotlight started successfully.")
            |> push_navigate(to: ~p"/dashboard/spotlights")}
 
-        {:error, _changeset} ->
-          {:noreply, socket |> put_flash(:error, "Failed to start spotlight.")}
+        {:error, msg} ->
+          {:noreply,
+           socket
+           |> put_flash(:error, msg)
+           |> push_patch(to: ~p"/dashboard/spotlights")}
       end
     else
       {:noreply, socket |> put_flash(:error, "Missing company or duration information.")}
