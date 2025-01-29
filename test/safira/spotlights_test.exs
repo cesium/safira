@@ -13,7 +13,7 @@ defmodule Safira.SpotlightsTest do
 
     import Safira.SpotlightsFixtures
 
-    @invalid_attrs %{end: nil}
+    @invalid_attrs %{end: nil, company_id: nil}
 
     test "list_spotlights/0 returns all spotlights" do
       spotlight = spotlight_fixture()
@@ -27,7 +27,7 @@ defmodule Safira.SpotlightsTest do
 
     test "update_spotlight/2 with valid data updates the spotlight" do
       spotlight = spotlight_fixture()
-      update_attrs = %{end: ~U[2024-11-21 22:32:00Z]}
+      update_attrs = %{end: ~U[2024-11-21 22:32:00Z], company_id: spotlight.company_id}
 
       assert {:ok, %Spotlight{} = spotlight} =
                Spotlights.update_spotlight(spotlight, update_attrs)

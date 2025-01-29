@@ -16,7 +16,7 @@ defmodule Safira.Spotlights do
     case create_spotlight_transaction(company_id) do
       {:ok, %{spotlight: spotlight}} ->
         broadcast_new_spotlight(spotlight.id)
-        {:ok, spotlight.id}
+        {:ok, spotlight}
 
       {:error, :no_current_spotlight, msg, _details} ->
         {:error, msg}
