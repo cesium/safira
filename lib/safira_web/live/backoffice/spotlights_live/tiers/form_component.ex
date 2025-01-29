@@ -1,9 +1,6 @@
 defmodule SafiraWeb.Backoffice.SpotlightLive.Tiers.FormComponent do
   @moduledoc """
   A LiveComponent for managing the spotlight configuration in the backoffice.
-
-  This component renders a form for updating the spotlight duration and handles the form submission of the tier configuration.
-
   """
   use SafiraWeb, :live_component
 

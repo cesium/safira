@@ -12,6 +12,24 @@ defmodule Safira.Spotlights do
 
   @pubsub Safira.PubSub
 
+  @doc """
+  Creates a new spotlight for the given company.
+
+  ## Examples
+
+      iex> create_spotlight(1)
+      {:ok, %Spotlight{}}
+
+      iex> create_spotlight(2)
+      {:error, "this company has reached the max spotlights count"}
+
+      iex> create_spotlight(3)
+      {:error, "there is already a spotlight in progress"}
+
+      iex> create_spotlight(4)
+      {:error, "Failed to create spotlight: some_reason"}
+
+  """
   def create_spotlight(company_id) do
     case create_spotlight_transaction(company_id) do
       {:ok, %{spotlight: spotlight}} ->
@@ -58,6 +76,14 @@ defmodule Safira.Spotlights do
     |> Repo.transaction()
   end
 
+  @doc """
+  Returns the current spotlight.
+
+  ## Examples
+
+      iex> get_current_spotlight()
+      %Spotlight{}
+  """
   def get_current_spotlight do
     now = DateTime.utc_now()
 
@@ -69,6 +95,17 @@ defmodule Safira.Spotlights do
     |> Repo.one()
   end
 
+  @doc """
+  Changes the spotlight duration.
+
+  ## Examples
+
+      iex> change_spotlight_duration(30)
+      :ok
+
+      iex> change_spotlight_duration(70)
+      {:error, "duration cannot be greater than 60 minutes"}
+  """
   def change_spotlight_duration(time) when time > 60 do
     {:error, "duration cannot be greater than 60 minutes"}
   end
@@ -77,6 +114,18 @@ defmodule Safira.Spotlights do
     Constants.set("spotlight_duration", time)
   end
 
+  @doc """
+  Retrieves the spotlight duration from the constants.
+
+  ## Examples
+
+    iex> get_spotlight_duration()
+    30
+
+    iex> get_spotlight_duration()
+    0
+
+  """
   def get_spotlight_duration do
     case Constants.get("spotlight_duration") do
       {:ok, duration} ->
@@ -104,8 +153,6 @@ defmodule Safira.Spotlights do
   @doc """
   Gets a single spotlight.
 
-  Raises `Ecto.NoResultsError` if the Spotlight does not exist.
-
   ## Examples
 
       iex> get_spotlight!(123)
@@ -113,7 +160,6 @@ defmodule Safira.Spotlights do
 
       iex> get_spotlight!(456)
       ** (Ecto.NoResultsError)
-
   """
   def get_spotlight!(id) do
     Spotlight
@@ -131,7 +177,6 @@ defmodule Safira.Spotlights do
 
       iex> update_spotlight(spotlight, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
-
   """
   def update_spotlight(%Spotlight{} = spotlight, attrs) do
     spotlight
@@ -149,7 +194,6 @@ defmodule Safira.Spotlights do
 
       iex> delete_spotlight(spotlight)
       {:error, %Ecto.Changeset{}}
-
   """
   def delete_spotlight(%Spotlight{} = spotlight) do
     Repo.delete(spotlight)
@@ -162,12 +206,19 @@ defmodule Safira.Spotlights do
 
       iex> change_spotlight(spotlight)
       %Ecto.Changeset{data: %Spotlight{}}
-
   """
   def change_spotlight(%Spotlight{} = spotlight, attrs \\ %{}) do
     Spotlight.changeset(spotlight, attrs)
   end
 
+  @doc """
+  Subscribes the current process to the "spotlight" event using Phoenix PubSub.
+
+  ## Examples
+
+    iex> Safira.Spotlights.subscribe_to_spotlight_event()
+    :ok
+  """
   def subscribe_to_spotlight_event do
     Phoenix.PubSub.subscribe(@pubsub, "spotlight")
   end

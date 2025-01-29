@@ -1,4 +1,7 @@
 defmodule SafiraWeb.Backoffice.SpotlightLive.New do
+  @moduledoc """
+  A LiveComponent for managing the spotlight configuration in the backoffice.
+  """
   use SafiraWeb, :live_component
 
   import SafiraWeb.Components.Forms

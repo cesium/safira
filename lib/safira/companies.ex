@@ -264,6 +264,14 @@ defmodule Safira.Companies do
     (Repo.aggregate(from(t in Tier), :max, :priority) || -1) + 1
   end
 
+  @doc """
+  Updates the spotlight configuration for a given tier.
+
+  ## Examples
+
+      iex> update_tier_spotlight_configuration(tier, 1.5, 10)
+      {:ok, %Tier{}}
+  """
   def update_tier_spotlight_configuration(%Tier{} = tier, spotlight_multiplier, max_spotlights) do
     tier
     |> Tier.changeset_multiplier(%{
@@ -273,16 +281,43 @@ defmodule Safira.Companies do
     |> Repo.update()
   end
 
+  @doc """
+  Changes the multiplier for a given tier.
+
+  ## Examples
+
+      iex> change_tier_multiplier(tier, %{multiplier: 1.5})
+      %Ecto.Changeset{data: %Tier{}, changes: %{multiplier: 1.5}}
+  """
   def change_tier_multiplier(%Tier{} = tier, attrs \\ %{}) do
     Tier.changeset_multiplier(tier, attrs)
   end
 
+  @doc """
+  Retrieves the count of spotlights for a given company.
+
+  ## Examples
+
+      iex> get_company_spotlights_count(123)
+      5
+  """
   def get_company_spotlights_count(company_id) do
     Spotlight
     |> where([s], s.company_id == ^company_id)
     |> Repo.aggregate(:count, :id)
   end
 
+  @doc """
+  Determines if a company can create a new spotlight based on its current tier and the number of existing spotlights.
+
+  ## Examples
+
+      iex> can_create_spotlight?(123)
+      true
+
+      iex> can_create_spotlight?(456)
+      false
+  """
   def can_create_spotlight?(company_id) do
     company = get_company!(company_id)
     tier = Repo.preload(company, :tier).tier
