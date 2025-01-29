@@ -75,7 +75,10 @@ defmodule SafiraWeb.Router do
     pipe_through [:browser, :require_authenticated_user]
 
     live_session :require_authenticated_user,
-      on_mount: [{SafiraWeb.UserAuth, :ensure_authenticated}] do
+      on_mount: [
+        {SafiraWeb.UserAuth, :ensure_authenticated},
+        {SafiraWeb.Spotlight, :fetch_current_spotlight}
+      ] do
       live "/users/confirmation_pending", ConfirmationPendingLive, :index
 
       live "/users/settings", UserSettingsLive, :edit
@@ -121,6 +124,18 @@ defmodule SafiraWeb.Router do
 
       scope "/dashboard", Backoffice do
         pipe_through [:require_staff_user]
+
+        scope "/spotlights", SpotlightLive do
+          live "/", Index, :index
+          live "/new", Index, :new
+          live "/new/:id", Index, :confirm
+          live "/config", Index, :config
+
+          scope "/config" do
+            live "/tiers", Index, :tiers
+            live "/tiers/:id/edit", Index, :tiers_edit
+          end
+        end
 
         scope "/attendees", AttendeeLive do
           live "/", Index, :index
