@@ -25,7 +25,7 @@ defmodule SafiraWeb.UserLoginLive do
         </:subtitle>
       </.header>
 
-      <.simple_form for={@form} id="login_form" action={~p"/users/log_in"} phx-update="ignore">
+      <.simple_form for={@form} id="login_form" action={~p"/users/log_in?action=#{@action}&action_id=#{@action_id}"} phx-update="ignore">
         <.input field={@form[:email]} type="email" label="Email" required />
         <.input field={@form[:password]} type="password" label="Password" required />
 
@@ -50,11 +50,14 @@ defmodule SafiraWeb.UserLoginLive do
     """
   end
 
-  def mount(_params, _session, socket) do
+  def mount(params, _session, socket) do
     email = Phoenix.Flash.get(socket.assigns.flash, :email)
     form = to_form(%{"email" => email}, as: "user")
 
-    {:ok, assign(socket, form: form) |> assign(registrations_open: Event.registrations_open?()),
+    {:ok, assign(socket, form: form)
+    |> assign(registrations_open: Event.registrations_open?())
+    |> assign(:action_id, Map.get(params, "action_id"))
+    |> assign(:action, Map.get(params, "action")),
      temporary_assigns: [form: form]}
   end
 end

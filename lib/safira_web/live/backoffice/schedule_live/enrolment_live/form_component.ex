@@ -187,7 +187,7 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.EnrolmentLive.FormComponent do
 
       {:noreply,
        socket
-       |> put_flash(:info, "Wheel configuration changed successfully")
+       |> put_flash(:info, "Enrolments changed successfully")
        |> push_patch(to: socket.assigns.patch)}
     else
       {:noreply, socket}

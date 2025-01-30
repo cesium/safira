@@ -36,7 +36,7 @@ defmodule SafiraWeb.Landing.HomeLive.Index do
       {:noreply,
        socket
        |> put_flash(:error, gettext("You must be logged in to enrol in activities"))
-       |> redirect(to: ~p"/users/log_in?redirect=/")}
+       |> redirect(to: ~p"/users/log_in?action=enrol&action_id=#{activity_id}")}
     else
       if socket.assigns.current_user.type == :attendee do
         actual_enrol(activity_id, socket)
