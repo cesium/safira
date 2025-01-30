@@ -27,9 +27,10 @@ defmodule SafiraWeb.Landing.SpeakersLive.Components.Speakers do
         </div>
       </div>
       <div>
-        <.schedule_table date={
-          fetch_current_date_from_params(assigns.params) || assigns.event_start_date
-        } />
+        <.schedule_table
+          date={fetch_current_date_from_params(assigns.params) || assigns.event_start_date}
+          selected_speaker_id={fetch_speaker_id_from_params(assigns.params)}
+        />
       </div>
     </div>
     """
@@ -39,7 +40,7 @@ defmodule SafiraWeb.Landing.SpeakersLive.Components.Speakers do
     ~H"""
     <div>
       <%= for %{speaker: speaker, activity: activity} <- Activities.list_daily_speakers(@date) do %>
-        <.speaker speaker={speaker} activity={activity} />
+        <.speaker speaker={speaker} activity={activity} selected={speaker.id == @selected_speaker_id} />
       <% end %>
     </div>
     """
@@ -79,7 +80,7 @@ defmodule SafiraWeb.Landing.SpeakersLive.Components.Speakers do
           <div
             id={"speaker-#{@speaker.id}-#{@activity.id}"}
             class="overflow-hidden pb-4 mt-8"
-            style="display: none;"
+            style={if not @selected, do: "display: none;"}
           >
             <p><%= @speaker.biography %></p>
           </div>
@@ -90,17 +91,33 @@ defmodule SafiraWeb.Landing.SpeakersLive.Components.Speakers do
             <button
               class="ml-4 w-16 rounded-full border border-gray-500 px-2 text-xl text-white"
               phx-click={
-                JS.toggle(
-                  to: "#speaker-#{@speaker.id}-#{@activity.id}",
-                  in: {"", "opacity-0 max-h-0", "opacity-100 max-h-48"},
-                  out: {"", "opacity-100 max-h-48", "opacity-0 max-h-0"}
-                )
+                if @selected do
+                  JS.toggle(
+                    to: "#speaker-#{@speaker.id}-#{@activity.id}",
+                    in: {"", "opacity-100 max-h-48", "opacity-0 max-h-0"},
+                    out: {"", "opacity-0 max-h-0", "opacity-100 max-h-48"}
+                  )
+                else
+                  JS.toggle(
+                    to: "#speaker-#{@speaker.id}-#{@activity.id}",
+                    in: {"", "opacity-0 max-h-0", "opacity-100 max-h-48"},
+                    out: {"", "opacity-100 max-h-48", "opacity-0 max-h-0"}
+                  )
+                end
                 |> JS.toggle(to: "#speaker-toggle-show-#{@speaker.id}-#{@activity.id}")
                 |> JS.toggle(to: "#speaker-toggle-hide-#{@speaker.id}-#{@activity.id}")
               }
             >
-              <span id={"speaker-toggle-show-#{@speaker.id}-#{@activity.id}"}>+</span>
-              <span id={"speaker-toggle-hide-#{@speaker.id}-#{@activity.id}"} style="display: none;">
+              <span
+                id={"speaker-toggle-show-#{@speaker.id}-#{@activity.id}"}
+                style={if @selected, do: "display: none;"}
+              >
+                +
+              </span>
+              <span
+                id={"speaker-toggle-hide-#{@speaker.id}-#{@activity.id}"}
+                style={if not @selected, do: "display: none;"}
+              >
                 -
               </span>
             </button>
@@ -265,6 +282,10 @@ defmodule SafiraWeb.Landing.SpeakersLive.Components.Speakers do
           _ -> nil
         end
     end
+  end
+
+  defp fetch_speaker_id_from_params(params) do
+    Map.get(params, "speaker_id")
   end
 
   defp social_media_icon(social) do

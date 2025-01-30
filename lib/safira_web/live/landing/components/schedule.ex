@@ -128,9 +128,13 @@ defmodule SafiraWeb.Landing.Components.Schedule do
                 <%= if index != 0, do: "," %>
               </span>
             <% end %>
-            <.link navigate={~p"/"} class="my-[0.4em] hover:underline">
+            <!-- Must be an <a> tag as to force page to reload completely so the #id rerouting works -->
+            <a
+              href={"/speakers?date=#{@activity.date}&speaker_id=#{speaker.id}#speaker-#{speaker.id}-#{@activity.id}"}
+              class="my-[0.4em] hover:underline"
+            >
               <%= speaker.name %>
-            </.link>
+            </a>
           </li>
         </ul>
 
