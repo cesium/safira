@@ -35,7 +35,12 @@ defmodule SafiraWeb.Landing.Components.Speaker do
   end
 
   defp speaker_link(speaker) do
-    activity = Enum.at(speaker.activities, 0)
-    "/speakers?date=#{activity.date}&speaker_id=#{speaker.id}#sp-#{speaker.id}-#{activity.id}"
+    case Enum.at(speaker.activities, 0) do
+      nil ->
+        "/speakers"
+
+      activity ->
+        "/speakers?date=#{activity.date}&speaker_id=#{speaker.id}#sp-#{speaker.id}-#{activity.id}"
+    end
   end
 end
