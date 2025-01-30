@@ -28,6 +28,7 @@ defmodule SafiraWeb.Router do
       live "/faqs", FAQLive.Index, :index
       live "/schedule", ScheduleLive.Index, :index
       live "/challenges", ChallengesLive.Index, :index
+      live "/speakers", SpeakersLive.Index, :index
     end
   end
 
