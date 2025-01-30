@@ -92,7 +92,7 @@ defmodule SafiraWeb.Landing.SpeakersLive.Components.Speakers do
               <%= @activity.title %> <%= format_time(@activity.time_start) %>
             </p>
             <button
-              class="ml-4 w-16 rounded-full border border-gray-500 px-2 text-xl text-white"
+              class="ml-4 font-terminal uppercase w-16 select-none rounded-full bg-accent px-2 text-xl text-white hover:scale-110"
               phx-click={
                 if @selected do
                   JS.toggle(
@@ -138,7 +138,12 @@ defmodule SafiraWeb.Landing.SpeakersLive.Components.Speakers do
 
   defp social(assigns) do
     ~H"""
-    <.link :if={not is_nil(@profile)} href={social_media_link(@platform, @profile)} target="_blank">
+    <.link
+      :if={not is_nil(@profile)}
+      href={social_media_link(@platform, @profile)}
+      target="_blank"
+      class="hover:text-accent"
+    >
       <.icon name={social_media_icon(@platform)} class="h-5 w-5" />
     </.link>
     """

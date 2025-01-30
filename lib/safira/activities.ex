@@ -437,5 +437,6 @@ defmodule Safira.Activities do
     |> apply_filters(opts)
     |> where([s], s.highlighted)
     |> Repo.all()
+    |> Repo.preload(:activities)
   end
 end
