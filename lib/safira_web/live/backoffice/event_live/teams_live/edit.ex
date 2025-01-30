@@ -55,7 +55,10 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.Edit do
      |> assign(assigns)
      |> stream(
        :members,
-       Teams.list_team_members(assigns.team.id)
+       case Teams.list_team_members(assigns.team.id) do
+         {:ok, members} -> members
+         _ -> []
+       end
      )}
   end
 

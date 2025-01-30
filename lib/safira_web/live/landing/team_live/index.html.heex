@@ -1,16 +1,16 @@
-<div class="xl:px-[15rem] md:px-[8rem] px-[2.5rem]">
-  <div class="spacing relative z-20 flex flex-col justify-between py-20 lg:h-3/4">
-    <div class="font-terminal-uppercase relative z-50 font-bold">
-      <h5 class="text-accent text-2xl font-ibold uppercase">
+<div class="py-14 sm:py-20 xl:px-[15rem] md:px-[8rem] px-[2.5rem]">
+  <div class="relative z-20 flex flex-col justify-between py-20 lg:h-3/4">
+    <div class="font-terminal uppercase relative z-50 font-bold animate-slide-in">
+      <h5 class="text-accent text-2xl">
         <%= gettext("Team") %>
       </h5>
       <h1 class="font-terminal uppercase mb-4 select-none text-4xl font-bold lg:text-8xl">
         <%= gettext("CeSIUM has teamed up with the best team possible.") %>
       </h1>
     </div>
-    <div class="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <div class="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-x-32 gap-y-8">
       <div class="mt-8">
-        <h2 class="text-4xl mb-4 font-terminal text-white uppercase">
+        <h2 class="text-4xl mb-4 font-terminal text-white uppercase font-semibold">
           <%= gettext("Organization") %>
         </h2>
         <p class="text-lg text-gray-300">
@@ -21,7 +21,7 @@
       </div>
       <%= for {team, index} <- Enum.with_index(Enum.sort_by(@teams, & &1.priority)) do %>
         <%= if index == 3 do %>
-          <div class="flex items-center justify-center my-8">
+          <div class="hidden lg:flex items-center justify-center my-8">
             <img src="/images/sei-logo.svg" class="w-1/2" />
           </div>
         <% end %>

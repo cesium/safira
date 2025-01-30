@@ -1,4 +1,4 @@
-defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MembersEdit do
+defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MemberLive.FormComponent do
   use SafiraWeb, :live_component
 
   alias Safira.Teams

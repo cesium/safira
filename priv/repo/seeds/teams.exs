@@ -3,12 +3,12 @@ defmodule Safira.Repo.Seeds.Teams do
   alias Safira.Teams.Team
 
   @teams [
-    {"Main Organization", ["Alice", "Bob", "Charlie"]},
+    {"Main Organization", ["Alice", "Bob"]},
     {"Tech", ["Dave", "Eve", "Frank", "Grace", "Heidi"]},
     {"Marketing", ["Ivan", "Judy", "Mallory", "Niaj", "Olivia"]},
-    {"Programa", ["Peggy", "Sybil", "Trent", "Victor", "Walter"]},
-    {"Patrocínios", ["Xander", "Yvonne", "Zara", "Aaron", "Betty"]},
-    {"Logística", ["Carol"]}
+    {"Program", ["Peggy", "Sybil", "Trent", "Victor", "Walter"]},
+    {"Sponsorships", ["Xander", "Yvonne", "Zara", "Aaron", "Betty"]},
+    {"Logistics", ["Carol"]}
   ]
 
   def run do

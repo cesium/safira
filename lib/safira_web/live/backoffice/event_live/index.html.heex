@@ -106,7 +106,7 @@
   on_cancel={JS.patch(~p"/dashboard/event/teams/")}
 >
   <.live_component
-    module={SafiraWeb.Live.Backoffice.EventLive.TeamsLive.Members}
+    module={SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MemberLive.Index}
     id="team-#{@team.id}"
     title={@page_title}
     team={@team}
@@ -124,7 +124,7 @@
   on_cancel={JS.patch(~p"/dashboard/event/teams/")}
 >
   <.live_component
-    module={SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MembersEdit}
+    module={SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MemberLive.FormComponent}
     id={@member.id}
     member={@member}
     title={@page_title}

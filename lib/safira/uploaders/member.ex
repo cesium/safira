@@ -15,7 +15,7 @@ defmodule Safira.Uploaders.Member do
   end
 
   def storage_dir(_, {_file, %TeamMember{} = team_member}) do
-    "uploads/contest/members/#{team_member.id}"
+    "uploads/team/members/#{team_member.id}"
   end
 
   def filename(version, _) do
