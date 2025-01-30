@@ -21,5 +21,6 @@ defmodule Safira.Activities.Enrolment do
     enrolment
     |> cast(attrs, @required_fields)
     |> validate_required(@required_fields)
+    |> unique_constraint([:activity_id, :attendee_id])
   end
 end
