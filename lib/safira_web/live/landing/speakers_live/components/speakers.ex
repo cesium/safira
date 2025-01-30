@@ -48,7 +48,10 @@ defmodule SafiraWeb.Landing.SpeakersLive.Components.Speakers do
 
   defp speaker(assigns) do
     ~H"""
-    <div class="border-t-2 border-white py-4 text-white transition-all">
+    <div
+      id={"sp-#{@speaker.id}-#{@activity.id}"}
+      class="border-t-2 border-white py-4 text-white transition-all"
+    >
       <div class="mb-2 flex sm:flex-nowrap flex-wrap gap-8">
         <img
           alt={@speaker.name}
