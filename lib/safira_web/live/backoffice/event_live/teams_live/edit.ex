@@ -33,6 +33,10 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.Edit do
                 <.icon name="hero-pencil" class="w-5 h-5" />
               </.link>
             </li>
+            <div class="hidden only:flex flex-col gap-4 items-center w-full justify-center h-full">
+              <.icon name="hero-user" class="w-12 h-12" />
+              <p><%= gettext("No members found.") %></p>
+            </div>
           </ul>
           <:actions>
             <.button phx-disable-with="Saving...">Save Team</.button>
