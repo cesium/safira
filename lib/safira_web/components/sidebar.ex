@@ -118,7 +118,7 @@ defmodule SafiraWeb.Components.Sidebar do
 
   def sidebar_nav_links(assigns) do
     ~H"""
-    <div class="space-y-1">
+    <div class="space-y-1 z-14">
       <%= for page <- @pages do %>
         <.link
           navigate={page.url}

@@ -12,6 +12,7 @@ defmodule SafiraWeb.Layouts do
 
   import SafiraWeb.Components.Sidebar
   import SafiraWeb.Landing.Components.{Footer, Navbar, Sparkles}
+  import SafiraWeb.Components.Banner
 
   embed_templates "layouts/*"
 end

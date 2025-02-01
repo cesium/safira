@@ -128,9 +128,13 @@ defmodule SafiraWeb.Landing.Components.Schedule do
                 <%= if index != 0, do: "," %>
               </span>
             <% end %>
-            <.link navigate={~p"/"} class="my-[0.4em] hover:underline">
+            <!-- Must be an <a> tag as to force page to reload completely so the #id rerouting works -->
+            <a
+              href={"/speakers?date=#{@activity.date}&speaker_id=#{speaker.id}#sp-#{speaker.id}-#{@activity.id}"}
+              class="my-[0.4em] hover:underline"
+            >
               <%= speaker.name %>
-            </.link>
+            </a>
           </li>
         </ul>
 
@@ -365,11 +369,27 @@ defmodule SafiraWeb.Landing.Components.Schedule do
   defp fetch_daily_activities(day, filters) do
     Activities.list_daily_activities(day)
     |> Enum.filter(fn at -> filters == [] or at.category_id in filters end)
-    |> Enum.group_by(& &1.time_start)
-    |> Enum.map(&elem(&1, 1))
+    |> group_activities()
   end
 
   defp fetch_categories do
     Activities.list_activity_categories()
+  end
+
+  defp group_activities(activities) do
+    Enum.reduce(activities, [], fn activity, acc ->
+      case acc do
+        [] ->
+          [[activity]]
+
+        [[head | tail] | rest] = grouped ->
+          if activity.time_start == head.time_start do
+            [[activity, head | tail] | rest]
+          else
+            [[activity] | grouped]
+          end
+      end
+    end)
+    |> Enum.reverse()
   end
 end

@@ -1,0 +1,79 @@
+<div class="py-14 sm:py-28 xl:px-[15rem] md:px-[8rem] px-[2.5rem]">
+  <div class="relative z-20 font-bold animate-slide-in">
+    <h5 class="font-terminal uppercase m-1 text-2xl text-accent">
+      <%= gettext("Challenges") %>
+    </h5>
+    <h1 class="font-terminal uppercase relative z-20 text-white text-5xl xs:text-5xl sm:text-6xl w-full md:text-7xl lg:text-8xl 2xl:w-5/6 2xl:text-8xl 2xl:leading-[5rem]">
+      <span class="relative z-20">
+        <%= gettext("Participate in new challenges every") %>
+        <span class="underline decoration-8 underline-offset-8"><%= gettext("day") %></span>
+      </span>
+    </h1>
+  </div>
+
+  <div class="mt-28 mb-24 grid grid-cols-1 gap-20 xl:grid-cols-2">
+    <div class="hidden xl:flex">
+      <ul class="font-terminal uppercase select-none text-xl">
+        <%= for challenge <- @challenges do %>
+          <li class={"mb-6 transition-all ease-in-out uppercase text-white text-opacity-50 #{if @selected_challenge.id == challenge.id do "!text-opacity-100 ml-8" end}"}>
+            <button
+              phx-click="challenge_change"
+              class="uppercase"
+              phx-value-challenge_id={challenge.id}
+            >
+              <%= challenge.name %>
+            </button>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+    <div class="hidden xl:flex">
+      <div>
+        <h2 class="font-terminal uppercase select-none text-3xl text-white md:text-4xl xl:text-5xl">
+          <%= @selected_challenge.name %>
+        </h2>
+        <div class="mt-10">
+          <p class="font-iregular text-white">
+            <%= @selected_challenge.description %>
+          </p>
+        </div>
+        <div class="mt-3 flex flex-col"></div>
+        <div>
+          <h3 class="md:text-md xl:text-md mt-5 mb-3 text-xl text-white ">Awards 🏆</h3>
+          <%= for cp <- @selected_challenge.prizes do %>
+            <p class="text-iregular">
+              <a class="text-accent">
+                <%= cp.place %><sup class="font-mono"><%= Helpers.place_suffix(cp.place) %></sup> place - <%= cp.prize.name %>
+              </a>
+            </p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 space-y-20 xl:hidden">
+      <%= for challenge <- @challenges do %>
+        <div>
+          <h2 class="font-terminal uppercase select-none text-3xl text-white md:text-4xl xl:text-5xl">
+            <%= challenge.name %>
+          </h2>
+          <div class="mt-10">
+            <p class="font-iregular text-white">
+              <%= challenge.description %>
+            </p>
+          </div>
+          <div class="mt-3 flex flex-col"></div>
+          <div>
+            <h3 class="md:text-md xl:text-md mt-5 mb-3 text-xl text-white ">Awards 🏆</h3>
+            <%= for cp <- challenge.prizes do %>
+              <p class="text-iregular">
+                <a class="text-accent">
+                  <%= cp.place %><sup class="font-mono"><%= Helpers.place_suffix(cp.place) %></sup> place - <%= cp.prize.name %>
+                </a>
+              </p>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
