@@ -173,6 +173,13 @@ defmodule SafiraWeb.Landing.Components.Schedule do
               >
                 <%= gettext("Enrol") %>
               </p>
+              <p
+                :if={already_enrolled(@activity, @enrolments)}
+                class="relative -mr-3 font-iregular text-lg text-accent sm:mr-1"
+                phx-value-activity_id={@activity.id}
+              >
+                <%= gettext("Enrolled") %>
+              </p>
             </div>
             <!-- Expand -->
             <button
@@ -409,11 +416,21 @@ defmodule SafiraWeb.Landing.Components.Schedule do
     |> Enum.reverse()
   end
 
+  defp already_enrolled(activity, enrolments) do
+    Enum.member?(Enum.map(enrolments, & &1.activity_id), activity.id)
+  end
+
   defp enrolments_enabled(activity, user_role, enrolments) do
     not_full = activity.max_enrolments > activity.enrolment_count
-    already_enrolled = Enum.member?(enrolments, activity)
     is_staff = user_role == :staff
 
-    not_full and activity.has_enrolments and not already_enrolled and not is_staff
+    enrolled_at_same_time =
+      Enum.any?(enrolments, fn e ->
+        Time.compare(e.activity.time_start, activity.time_end) == :lt and
+          Time.compare(e.activity.time_end, activity.time_start) == :gt and
+          e.activity.date == activity.date
+      end)
+
+    not_full and activity.has_enrolments and not enrolled_at_same_time and not is_staff
   end
 end

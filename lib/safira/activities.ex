@@ -440,12 +440,33 @@ defmodule Safira.Activities do
     |> Repo.preload(:activities)
   end
 
+  @doc """
+  Returns the list of enrolments of an attendee.
+
+  ## Examples
+
+      iex> get_attendee_enrolments(attendee_id)
+      [%Enrolment{}, ...]
+
+  """
   def get_attendee_enrolments(attendee_id) do
     Enrolment
     |> where([e], e.attendee_id == ^attendee_id)
+    |> preload(:activity)
     |> Repo.all()
   end
 
+  @doc """
+  Enrols an attendee in an activity
+
+  ## Examples
+
+      iex> enrol(attendee_id, activity_id)
+      {:ok, %{enrolment: %Enrolment{}, activity: %Activity{}, new_activity: %Activity{}}}
+
+      iex> enrol(attendee_id, activity_id)
+      {:error, :struct, %Ecto.Changeset{}, %{}}
+  """
   def enrol(attendee_id, activity_id) do
     Ecto.Multi.new()
     # We need to read the activity before updating the enrolment count to avoid
@@ -468,10 +489,42 @@ defmodule Safira.Activities do
     |> Repo.transaction()
   end
 
-  def delete_enrolment(%Enrolment{} = enrolment) do
-    Repo.delete(enrolment)
+  @doc """
+  Deletes an enrolment
+
+  ## Examples
+
+      iex> unenrol(attendee_id, activity_id)
+      {:ok, %{enrolment: %Enrolment{}, activity: %Activity{}, new_activity: %Activity{}}}
+
+      iex> unenrol(attendee_id, activity_id)
+      {:error, :struct, %Ecto.Changeset{}, %{}}
+  """
+  def unenrol(enrolment) do
+    Ecto.Multi.new()
+    # We need to read the activity before updating the enrolment count to avoid
+    # a race condition where the enrolment count changes after the activity was last
+    # read from the database, and before this transaction began
+    |> Ecto.Multi.one(:activity, Activity |> where([a], a.id == ^enrolment.activity_id))
+    |> Ecto.Multi.delete(
+      :enrolment,
+      enrolment
+    )
+    |> Ecto.Multi.update(:new_activity, fn %{activity: act} ->
+      Activity.changeset(act, %{enrolment_count: act.enrolment_count - 1})
+    end)
+    |> Repo.transaction()
   end
 
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking enrolment changes.
+
+  ## Examples
+
+      iex> change_enrolment(enrolment)
+      %Ecto.Changeset{data: %Enrolment{}}
+
+  """
   def change_enrolment(%Enrolment{} = enrolment, attrs \\ %{}) do
     Enrolment.changeset(enrolment, attrs)
   end

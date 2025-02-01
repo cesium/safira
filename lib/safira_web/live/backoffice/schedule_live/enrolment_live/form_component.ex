@@ -48,7 +48,7 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.EnrolmentLive.FormComponent do
                     </div>
                   </.simple_form>
                 <% else %>
-                  <div class="grid space-x-2 grid-cols-9 pl-1 mb-6">
+                  <div class="grid space-x-2 grid-cols-9 pl-1 my-3">
                     <p class="col-span-8"><%= enrolment.attendee.user.name %></p>
                     <.link
                       phx-click={JS.push("delete-enrolment", value: %{id: id})}
@@ -89,8 +89,8 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.EnrolmentLive.FormComponent do
 
     {:ok,
      socket
+     |> assign(assigns)
      |> assign(:enrolments, enrolments)
-     |> assign(:activity, assigns.activity)
      |> assign(:attendees, Accounts.list_attendees())}
   end
 
@@ -157,7 +157,7 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.EnrolmentLive.FormComponent do
 
     # If the enrolment has an id, delete it from the database
     if enrolment.id != nil do
-      Activities.delete_enrolment(enrolment)
+      Activities.unenrol(enrolment)
     end
 
     # Remove the enrolment from the list
@@ -181,8 +181,8 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.EnrolmentLive.FormComponent do
 
     if valid_enrolments do
       # For each enrolment, update or create it
-      Enum.each(enrolments, fn {_, _, _enrolment, form} ->
-        Activities.enrol(form.params.attendee_id, form.params.activity_id)
+      Enum.each(enrolments, fn {_, new, _enrolment, form} ->
+        if new, do: Activities.enrol(form.params["attendee_id"], form.params["activity_id"])
       end)
 
       {:noreply,

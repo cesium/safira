@@ -54,6 +54,10 @@ defmodule Safira.Activities.Activity do
     |> validate_required(@required_fields)
     |> validate_activity_date()
     |> validate_activity_times()
+    |> check_constraint(:max_enrolments,
+      name: :activity_not_overbooked,
+      message: "Activity overbooked"
+    )
   end
 
   @doc false
