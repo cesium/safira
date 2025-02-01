@@ -8,6 +8,8 @@ defmodule Safira.Contest do
   alias Safira.Accounts.Attendee
   alias Safira.Contest.{Badge, BadgeCategory, BadgeCondition, BadgeRedeem, DailyTokens}
 
+  @pubsub Safira.PubSub
+
   @doc """
   Gets a single badge.
 
@@ -22,7 +24,11 @@ defmodule Safira.Contest do
       ** (Ecto.NoResultsError)
 
   """
-  def get_badge!(id), do: Repo.get!(Badge, id)
+  def get_badge!(id) do
+    Badge
+    |> preload(:category)
+    |> Repo.get!(id)
+  end
 
   @doc """
   Lists all badges.
@@ -53,6 +59,62 @@ defmodule Safira.Contest do
     Badge
     |> apply_filters(opts)
     |> Flop.validate_and_run(params, for: Badge)
+  end
+
+  @doc """
+  Lists all badges belonging to an attendee.
+
+  ## Examples
+
+      iex> list_attendee_badges(123)
+      [%Badge{}, %Badge{}]
+
+  """
+  def list_attendee_badges(attendee_id) do
+    Badge
+    |> join(:inner, [b], br in BadgeRedeem, on: b.id == br.badge_id)
+    |> where([b, br], br.attendee_id == ^attendee_id)
+    |> select([b], b)
+    |> Repo.all()
+  end
+
+  @doc """
+  Lists all badge redeems belonging to an attendee.
+
+  ## Examples
+
+      iex> list_attendee_redeems(123)
+      [%BadgeRedeem{}, %BadgeRedeem{}]
+
+  """
+  def list_attendee_redeems(attendee_id) do
+    BadgeRedeem
+    |> where([br], br.attendee_id == ^attendee_id)
+    |> preload([:badge])
+    |> Repo.all()
+  end
+
+  @doc """
+  Lists all badges with their respective redeem status associated with an attendee odered by redeemed date.
+
+  ## Examples
+
+      iex> list_attendee_all_badges_redeem_status(123)
+      [%Badge{}, %Badge{}]
+  """
+  def list_attendee_all_badges_redeem_status(attendee_id) do
+    all_badges = Repo.all(from b in Badge, preload: [:category])
+
+    redeems =
+      BadgeRedeem
+      |> where([br], br.attendee_id == ^attendee_id)
+      |> select([br], {br.badge_id, br.inserted_at})
+      |> Repo.all()
+      |> Map.new()
+
+    Enum.map(all_badges, fn badge ->
+      Map.put(badge, :redeemed_at, Map.get(redeems, badge.id, nil))
+    end) |> Enum.sort(&(&1.redeemed_at > &2.redeemed_at))
   end
 
   @doc """
@@ -419,7 +481,11 @@ defmodule Safira.Contest do
       ** (Ecto.NoResultsError)
 
   """
-  def get_badge_redeem!(id), do: Repo.get!(BadgeRedeem, id)
+  def get_badge_redeem!(id, opts \\ []) do
+    BadgeRedeem
+    |> apply_filters(opts)
+    |> Repo.get!(id)
+  end
 
   @doc """
   Creates a badge_redeem.
@@ -496,17 +562,48 @@ defmodule Safira.Contest do
 
   """
   def redeem_badge(badge, attendee, staff) do
-    Multi.new()
-    |> Multi.insert(
-      :redeem,
-      BadgeRedeem.changeset(%BadgeRedeem{}, %{
-        badge_id: badge.id,
-        attendee_id: attendee.id,
-        redeemed_by_id: staff.id
-      })
-    )
-    |> Multi.merge(fn %{redeem: _redeem} ->
-      change_attendee_tokens_transaction(attendee, attendee.tokens + badge.tokens)
-    end)
+    result =
+      Multi.new()
+      # Insert the badge redeem
+      |> Multi.insert(
+        :redeem,
+        BadgeRedeem.changeset(%BadgeRedeem{}, %{
+          badge_id: badge.id,
+          attendee_id: attendee.id,
+          redeemed_by_id: staff.id
+        })
+      )
+      # Update the attendee token balance (including daily tokens)
+      |> Multi.merge(fn %{redeem: _redeem} ->
+        change_attendee_tokens_transaction(attendee, attendee.tokens + badge.tokens)
+      end)
+      # Run the transaction
+      |> Repo.transaction()
+
+    case result do
+      {:ok, %{redeem: redeem}} ->
+        broadcast_attendee_redeems_update(redeem.id)
+        {:ok, redeem}
+      {:error, _} -> {:error, "failed to redeem badge"}
+    end
+  end
+
+  @doc """
+  Subscribes the caller to the specific attendee's badge redeems updates.
+
+  ## Examples
+
+      iex> subscribe_to_attendee_redeems_update(attendee_id)
+      :ok
+  """
+  def subscribe_to_attendee_redeems_update(attendee_id) do
+    Phoenix.PubSub.subscribe(@pubsub, topic(attendee_id))
+  end
+
+  defp topic(attendee_id), do: "attendee:redeems:#{attendee_id}"
+
+  defp broadcast_attendee_redeems_update(redeem_id) do
+    redeem = get_badge_redeem!(redeem_id)
+    Phoenix.PubSub.broadcast(@pubsub, topic(redeem.attendee_id), Map.put(redeem, :badge, get_badge!(redeem.badge_id)))
   end
 end

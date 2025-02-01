@@ -1,7 +1,6 @@
 defmodule SafiraWeb.Backoffice.ScannerLive.Index do
   use SafiraWeb, :backoffice_view
 
-  alias Safira.Accounts.Roles.Permissions
   alias Safira.Contest
 
   import SafiraWeb.Components.TableSearch

@@ -718,6 +718,28 @@ defmodule Safira.Accounts do
   end
 
   @doc """
+  Gets a single attendee associated to the given credential.
+
+  Raises `Ecto.NoResultsError` if the attendee does not exist.
+
+  ## Examples
+
+      iex> get_attendee_from_credential!(123)
+      %Attendee{}
+
+      iex> get_attendee_from_credential!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_attendee_from_credential(credential_id) do
+    Credential
+    |> where([c], c.id == ^credential_id)
+    |> join(:inner, [c], a in assoc(c, :attendee))
+    |> select([c, a], a)
+    |> Repo.one()
+  end
+
+  @doc """
   Returns the list of courses.
 
   ## Examples

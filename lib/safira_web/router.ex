@@ -104,6 +104,11 @@ defmodule SafiraWeb.Router do
 
         live "/coin_flip", CoinFlipLive.Index, :index
 
+        scope "/badges", BadgeLive do
+          live "/", Index, :index
+          # live "/:id", Show, :show
+        end
+
         scope "/store", StoreLive do
           live "/", Index, :index
           live "/product/:id", Show, :show

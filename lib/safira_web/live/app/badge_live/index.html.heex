@@ -1,0 +1,9 @@
+<.page title={gettext("Badgedex")} size={:xl} title_class="font-terminal uppercase">
+    <div id="badges" phx-update="stream" class="flex flex-wrap gap-4 justify-between">
+        <%= for {id, badge} <- @streams.badges do %>
+            <.link id={id} patch={~p"/app/badges/#{badge.id}"}>
+                <.badge id={badge.id} badge={badge} disabled={!badge.redeemed_at} :if={!badge.category.hidden || badge.redeemed_at} hover_zoom />
+            </.link>
+        <% end %>
+    </div>
+</.page>
