@@ -5,6 +5,9 @@ defmodule Safira.Minigames.SlotsPayline do
   """
   use Safira.Schema
 
+  @required_fields ~w(paytable_id)a
+  @optional_fields ~w(position_0 position_1 position_2)a
+
   schema "slots_paylines" do
     field :position_0, :integer
     field :position_1, :integer
@@ -17,8 +20,8 @@ defmodule Safira.Minigames.SlotsPayline do
   @doc false
   def changeset(slots_payline, attrs) do
     slots_payline
-    |> cast(attrs, [:position_0, :position_1, :position_2])
-    |> foreign_key_constraint(:multiplier_id)
-    |> validate_required([:position_0, :position_1, :position_2])
+    |> cast(attrs, @required_fields ++ @optional_fields)
+    |> foreign_key_constraint(:paytable_id)
+    |> validate_required(@required_fields)
   end
 end

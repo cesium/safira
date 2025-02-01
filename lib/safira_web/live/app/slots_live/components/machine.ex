@@ -49,10 +49,11 @@ defmodule SafiraWeb.App.SlotsLive.Components.Machine do
       |> Map.update!(2, &[{reel, reel.reel_2_index} | &1])
     end)
     |> Map.new(fn {k, v} ->
-      sorted = v 
-               |> Enum.filter(fn {_, index} -> index != -1 end) 
-               |> Enum.sort_by(&elem(&1, 1))
-      
+      sorted =
+        v
+        |> Enum.filter(fn {_, index} -> index != -1 end)
+        |> Enum.sort_by(&elem(&1, 1))
+
       # Rotate first 3 items to end
       {first_three, rest} = Enum.split(sorted, 3)
       {k, rest ++ first_three}

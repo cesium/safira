@@ -39,10 +39,30 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPayline.FormComponent do
                 >
                   <.field type="hidden" name="identifier" value={id} />
                   <div class="grid space-x-2 grid-cols-9 pl-1">
-                    <.field field={form[:position_0]} wrapper_class="col-span-1" type="number" />
-                    <.field field={form[:position_1]} wrapper_class="col-span-1" type="number" />
-                    <.field field={form[:position_2]} wrapper_class="col-span-1" type="number" />
-                    <.field field={form[:paytable_id]} type="select" wrapper_class="col-span-2" options={generate_options(@paytables)} />
+                    <.field
+                      field={form[:position_0]}
+                      wrapper_class="col-span-1"
+                      type="select"
+                      options={generate_position_options(@slots_reel_icons, 0)}
+                    />
+                    <.field
+                      field={form[:position_1]}
+                      wrapper_class="col-span-1"
+                      type="select"
+                      options={generate_position_options(@slots_reel_icons, 1)}
+                    />
+                    <.field
+                      field={form[:position_2]}
+                      wrapper_class="col-span-1"
+                      type="select"
+                      options={generate_position_options(@slots_reel_icons, 2)}
+                    />
+                    <.field
+                      field={form[:paytable_id]}
+                      type="select"
+                      wrapper_class="col-span-2"
+                      options={generate_options_multiplier(@paytables)}
+                    />
                     <.link
                       phx-click={JS.push("delete-entry", value: %{id: id})}
                       data-confirm="Are you sure?"
@@ -85,31 +105,35 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPayline.FormComponent do
     entries =
       Minigames.list_slots_paylines()
       |> Enum.map(fn entry ->
-        {Ecto.UUID.generate(), entry,
-         to_form(Minigames.change_slots_payline(entry))}
+        {Ecto.UUID.generate(), entry, to_form(Minigames.change_slots_payline(entry))}
       end)
+
+    slots_reel_icons = Minigames.list_slots_reel_icons()
 
     {:ok,
      socket
      |> assign(entries: entries)
      |> assign(nothing_probability: 0)
      |> assign(paytables: Minigames.list_slots_paytables())
-     |> assign(badges: Contest.list_badges())}
+     |> assign(slots_reel_icons: slots_reel_icons)}
   end
 
   @impl true
   def handle_event("add-entry", _, socket) do
     entries = socket.assigns.entries
+    default_paytable = List.first(socket.assigns.paytables)
+    default_paytable_id = if default_paytable != nil, do: default_paytable.id, else: nil
 
-    # Add a new drop to the list
     {:noreply,
      socket
      |> assign(
        :entries,
        entries ++
          [
-           {Ecto.UUID.generate(), %SlotsPayline{},
-            to_form(Minigames.change_slots_payline(%SlotsPayline{}))}
+           {Ecto.UUID.generate(), %SlotsPayline{paytable_id: default_paytable_id},
+            to_form(
+              Minigames.change_slots_payline(%SlotsPayline{paytable_id: default_paytable_id})
+            )}
          ]
      )}
   end
@@ -118,11 +142,11 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPayline.FormComponent do
   def handle_event("delete-entry", %{"id" => id}, socket) do
     entries = socket.assigns.entries
     # Find the drop to delete in the drops list
-    drop = Enum.find(entries, fn {drop_id, _, _} -> drop_id == id end) |> elem(2)
+    drop = Enum.find(entries, fn {drop_id, _, _} -> drop_id == id end) |> elem(1)
 
     # If the drop has an id, delete it from the database
     if drop.id != nil do
-      Minigames.delete_wheel_drop(drop)
+      Minigames.delete_slots_payline(drop)
     end
 
     # Remove the drop from the list
@@ -154,13 +178,17 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPayline.FormComponent do
     valid_drops =
       forms_valid?(Enum.map(entries, fn {_, _, form} -> form end))
 
+    IO.inspect(valid_drops, label: "Valid Drops")
+
     if valid_drops do
       # For each drop, update or create it
       Enum.each(entries, fn {_, drop, form} ->
         if drop.id != nil do
           Minigames.update_slots_payline(drop, form.params)
         else
-          Minigames.create_slots_payline(form.params)
+          IO.inspect(form.params, label: "Form Params")
+          res = Minigames.create_slots_payline(form.params)
+          IO.inspect(res, label: "Create Result")
         end
       end)
 
@@ -193,8 +221,21 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPayline.FormComponent do
     Enum.find(drops, &(elem(&1, 0) == id)) |> elem(1)
   end
 
-  defp generate_options(values) do
+  defp generate_options_multiplier(values) do
     Enum.map(values, &{&1.multiplier, &1.id})
+  end
+
+  defp generate_position_options(slots_icons, reel_index) do
+    visible_count = Minigames.count_visible_slots_reel_icons(slots_icons)[reel_index]
+
+    visible_count_array =
+      if visible_count == nil do
+        []
+      else
+        Enum.map(0..(visible_count - 1), fn pos -> {Integer.to_string(pos), pos} end)
+      end
+
+    [{"Any", nil}] ++ visible_count_array
   end
 
   defp calculate_nothing_probability(drops) do

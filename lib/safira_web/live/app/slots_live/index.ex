@@ -19,6 +19,7 @@ defmodule SafiraWeb.App.SlotsLive.Index do
      |> assign(:attendee_tokens, socket.assigns.current_user.attendee.tokens)
      |> assign(:wheel_price, Minigames.get_wheel_price())
      |> assign(:result, nil)
+     |> assign(:bet, 10)
      |> assign(:slots_active?, Minigames.slots_active?())}
   end
 
@@ -66,16 +67,52 @@ defmodule SafiraWeb.App.SlotsLive.Index do
      |> assign(:result, nil)}
   end
 
-  # In your LiveView:
   def handle_event("spin", _params, socket) do
-    # target = [0, 0, 0] # Your target positions
-    target = Enum.map(1..3, fn _ -> Enum.random(1..9) end)
-    {:noreply, push_event(socket, "roll_reels", %{multiplier: 2, target: target})}
+    if socket.assigns.bet <= 0 do
+      {:noreply,
+       socket
+       |> put_flash(:error, gettext("Please set a bet amount greater than 0."))}
+    else
+      case Minigames.spin_slots(socket.assigns.current_user.attendee, socket.assigns.bet) do
+        {:ok, target, attendee_tokens} ->
+          IO.inspect("Spin successful")
+          IO.inspect(socket.assigns.bet)
+          IO.inspect(target)
+          IO.inspect(attendee_tokens)
+          IO.inspect(socket.assigns.attendee_tokens)
+
+          {:noreply,
+           socket
+           |> assign(:in_spin?, true)
+           |> assign(:new_attendee_tokens, attendee_tokens)
+           |> assign(:attendee_tokens, socket.assigns.attendee_tokens - socket.assigns.bet)
+           |> push_event("roll_reels", %{target: target})}
+
+        {:error, message} ->
+          {:noreply,
+           socket
+           |> assign(:in_spin?, false)
+           |> assign(:attendee_tokens, socket.assigns.attendee_tokens + socket.assigns.bet)
+           |> put_flash(:error, message)}
+      end
+    end
   end
 
   @impl true
   def handle_event("roll_complete", _params, socket) do
-    {:noreply, socket}
+    {:noreply,
+     socket
+     |> assign(:in_spin?, false)
+     |> assign(:attendee_tokens, socket.assigns.new_attendee_tokens)}
+  end
+
+  @impl true
+  def handle_event("set-bet", %{"bet" => bet}, socket) do
+    bet = if bet != "", do: String.to_integer(bet), else: 0
+
+    {:noreply,
+     socket
+     |> assign(:bet, bet)}
   end
 
   @impl true

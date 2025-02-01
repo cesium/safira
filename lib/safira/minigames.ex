@@ -1322,4 +1322,176 @@ defmodule Safira.Minigames do
   def change_slots_payline(%SlotsPayline{} = slots_payline, attrs \\ %{}) do
     SlotsPayline.changeset(slots_payline, attrs)
   end
+
+  @doc """
+  Spins the wheel for the given attendee.
+
+  ## Examples
+
+      iex> spin_wheel(attendee)
+      {:ok, :prize, %WheelDrop{}}
+
+      iex> spin_wheel(attendee)
+      {:ok, :tokens, %WheelDrop{}}
+
+      iex> spin_wheel(attendee)
+      {:ok, nil, %WheelDrop{}}
+  """
+  def spin_slots(attendee, bet) do
+    attendee = Accounts.get_attendee!(attendee.id)
+
+    if slots_active?() do
+      case spin_slots_transaction(attendee, bet) do
+        {:ok, result} ->
+          IO.inspect(result.paytable_entry, label: "Paytable Entry")
+          {:ok, result.target, result.attendee_state_tokens.tokens}
+
+        {:error, _} ->
+          {:error, "An error occurred while spinning the slots."}
+      end
+    else
+      {:error, "The slots are not active."}
+    end
+  end
+
+  defp spin_slots_transaction(attendee, bet) do
+    Multi.new()
+    # Remove the bet from attendee's balance
+    |> Multi.merge(fn _changes ->
+      Contest.change_attendee_tokens_transaction(attendee, attendee.tokens - bet, :attendee)
+    end)
+    |> Multi.put(:paylines, list_slots_paylines())
+    |> Multi.put(:slots_reel_icons_count, count_visible_slots_reel_icons(list_slots_reel_icons()))
+    # Get random multiplier from paytable based on probabilities
+    |> Multi.run(:paytable_entry, fn _repo, %{paylines: paylines} ->
+      {:ok, generate_slots_multiplier(paylines)}
+    end)
+    # Get random payline for the selected multiplier
+    |> Multi.run(:target, fn _repo,
+                             %{
+                               paylines: paylines,
+                               slots_reel_icons_count: slots_reel_icons_count,
+                               paytable_entry: multiplier
+                             } ->
+      {:ok, generate_slots_target(paylines, slots_reel_icons_count, multiplier)}
+    end)
+    # Award tokens based on multiplier
+    |> Multi.merge(fn %{paytable_entry: multiplier, attendee: attendee} ->
+      winnings = bet * multiplier.multiplier
+
+      Contest.change_attendee_tokens_transaction(
+        attendee,
+        attendee.tokens + winnings,
+        :attendee_state_tokens,
+        :previous_daily_tokens,
+        :new_daily_tokens
+      )
+    end)
+    |> Repo.transaction()
+  end
+
+  defp generate_slots_multiplier(paylines) do
+    random = strong_randomizer() |> Float.round(12)
+    multipliers = list_slots_paytables()
+
+    cumulative_probabilities =
+      multipliers
+      |> Enum.sort_by(& &1.probability)
+      |> Enum.map_reduce(0, fn multiplier, acc ->
+        {Float.round(acc + multiplier.probability, 12), acc + multiplier.probability}
+      end)
+
+    total_prob = elem(cumulative_probabilities, 1)
+
+    if random > total_prob do
+      # Return losing multiplier for remaining probability
+      %SlotsPaytable{multiplier: 0, probability: 1 - total_prob}
+    else
+      prob =
+        cumulative_probabilities
+        |> elem(0)
+        |> Enum.filter(fn x -> x >= random end)
+        |> Enum.at(0)
+
+      paytable_entry =
+        Enum.sort_by(multipliers, & &1.probability)
+        |> Enum.at(cumulative_probabilities |> elem(0) |> Enum.find_index(fn x -> x == prob end))
+
+      filtered_paylines = paylines |> Enum.filter(&(&1.paytable_id == paytable_entry.id))
+
+      if Enum.empty?(filtered_paylines) do
+        # Generate random multiplier if no payline exists
+        %SlotsPaytable{multiplier: 0, probability: 1 - total_prob}
+      else
+        paytable_entry
+      end
+    end
+  end
+
+  defp generate_slots_target(paylines, slots_reel_icons_count, multiplier) do
+    if multiplier.multiplier == 0 do
+      # For losing case, generate target that doesn't match any payline
+      all_paylines = list_slots_paylines()
+      generate_non_matching_target(all_paylines, slots_reel_icons_count)
+    else
+      paylines = paylines |> Enum.filter(&(&1.paytable_id == multiplier.id))
+      payline = Enum.random(paylines)
+      # if the position is nil than it should be random
+      position_0 =
+        if payline.position_0 == nil,
+          do: Enum.random(0..(slots_reel_icons_count[0] - 1)),
+          else: payline.position_0
+
+      position_1 =
+        if payline.position_1 == nil,
+          do: Enum.random(0..(slots_reel_icons_count[1] - 1)),
+          else: payline.position_1
+
+      position_2 =
+        if payline.position_2 == nil,
+          do: Enum.random(0..(slots_reel_icons_count[2] - 1)),
+          else: payline.position_2
+
+      [position_0, position_1, position_2]
+    end
+  end
+
+  defp generate_non_matching_target(paylines, slots_reel_icons_count) do
+    target = [
+      Enum.random(0..(slots_reel_icons_count[0] - 1)),
+      Enum.random(0..(slots_reel_icons_count[1] - 1)),
+      Enum.random(0..(slots_reel_icons_count[2] - 1))
+    ]
+
+    if Enum.any?(paylines, fn p ->
+         [p.position_0, p.position_1, p.position_2] == target
+       end) do
+      generate_non_matching_target(paylines, slots_reel_icons_count)
+    else
+      target
+    end
+  end
+
+  @doc """
+  Counts the number of visible slots reel icons in each reel.
+
+  ## Examples
+
+      iex> count_visible_slots_reel_icons(slots_icons)
+      %{0 => 3, 1 => 3, 2 => 3}
+  """
+  def count_visible_slots_reel_icons(slots_icons) do
+    slots_icons
+    |> Enum.reduce(%{}, fn icon, acc ->
+      visible_in_reel_0 = icon.reel_0_index != -1
+      visible_in_reel_1 = icon.reel_1_index != -1
+      visible_in_reel_2 = icon.reel_2_index != -1
+
+      Map.merge(acc, %{
+        0 => if(visible_in_reel_0, do: Map.get(acc, 0, 0) + 1, else: Map.get(acc, 0, 0)),
+        1 => if(visible_in_reel_1, do: Map.get(acc, 1, 0) + 1, else: Map.get(acc, 1, 0)),
+        2 => if(visible_in_reel_2, do: Map.get(acc, 2, 0) + 1, else: Map.get(acc, 2, 0))
+      })
+    end)
+  end
 end

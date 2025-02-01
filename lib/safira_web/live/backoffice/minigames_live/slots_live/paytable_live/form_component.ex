@@ -122,12 +122,13 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPaytable.FormComponent do
     if drop.id != nil do
       Minigames.delete_slots_paytable(drop)
     end
-    
+
     nothing_probability = calculate_nothing_probability(entries)
 
     # Remove the drop from the list
     {:noreply,
-     socket |> assign(entries: Enum.reject(entries, fn {drop_id, _, _} -> drop_id == id end))
+     socket
+     |> assign(entries: Enum.reject(entries, fn {drop_id, _, _} -> drop_id == id end))
      |> assign(nothing_probability: nothing_probability)}
   end
 
@@ -159,9 +160,10 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPaytable.FormComponent do
       forms_valid?(Enum.map(drops, fn {_, _, form} -> form end)) and
         calculate_nothing_probability(drops) >= 0
 
-        IO.inspect(drops)
-        IO.inspect(valid_drops)
-        IO.inspect(forms_valid?(Enum.map(drops, fn {_, _, form} -> form end)))
+    IO.inspect(drops)
+    IO.inspect(valid_drops)
+    IO.inspect(forms_valid?(Enum.map(drops, fn {_, _, form} -> form end)))
+
     if valid_drops do
       # For each drop, update or create it
       Enum.each(drops, fn {_, drop, form} ->
@@ -226,11 +228,13 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPaytable.FormComponent do
       form.source.valid? and has_valid_values?(form)
     end)
   end
-  
+
   defp has_valid_values?(form) do
-    params_valid = not is_nil(form.params["multiplier"]) and not is_nil(form.params["probability"])
+    params_valid =
+      not is_nil(form.params["multiplier"]) and not is_nil(form.params["probability"])
+
     data_valid = not is_nil(form.data.multiplier) and not is_nil(form.data.probability)
-    
+
     params_valid or data_valid
   end
 end
