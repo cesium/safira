@@ -6,7 +6,7 @@
   />
   <.pitch :if={@has_schedule? || @has_highlighted_speakers? || @has_sponsors?} />
 </div>
-<div class="px-5 md:px-32 xl:px-16 xl:px-32 pt-20">
+<div class="px-5 md:px-32 xl:px-32 pt-20">
   <.schedule
     :if={@has_schedule?}
     event_start_date={@event_start_date}

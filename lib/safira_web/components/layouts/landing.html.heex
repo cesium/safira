@@ -9,5 +9,14 @@
     <.flash_group flash={@flash} />
     <%= @inner_content %>
   </main>
-  <.footer />
+  <.footer>
+    <:tip :if={
+      Safira.Event.get_feature_flag!("challenges_enabled") and
+        Map.get(assigns, :current_page, nil) != :challenges
+    }>
+      Have you checked out the
+      <.link class="underline" navigate={~p"/challenges"}>challenges</.link>
+      yet? 🏆
+    </:tip>
+  </.footer>
 </div>

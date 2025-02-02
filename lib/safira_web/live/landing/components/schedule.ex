@@ -62,7 +62,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
                                 ",
                 else: "text-md m-1 items-center rounded-full border-2 px-12 py-2 text-center font-bold
                                   text-white shadow-sm
-                                hover:border-accent hover:text-accent px-8
+                                hover:bg-white/20 px-8 transition-colors
                                 "
             }
             patch={filter_url(@url, @current_day, @filters, category.id)}
@@ -95,10 +95,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
 
   defp schedule_activity(assigns) do
     ~H"""
-    <div
-      id={@activity.id}
-      class="mx-2 sm:w-full border-t border-white p-[10px] ml-[10px] relative hover:bg-white/10 transition-colors"
-    >
+    <div id={@activity.id} class="mx-2 sm:w-full border-t border-white p-[10px] ml-[10px] relative">
       <div class="relative h-full">
         <!-- Times -->
         <p class="text-lg font-iregular font-bold text-white xs:text-xl">
@@ -114,17 +111,17 @@ defmodule SafiraWeb.Landing.Components.Schedule do
           </span>
         </p>
         <!-- Speakers -->
-        <ul class="my-[0.4em] flex font-iregular text-sm text-gray-400 z-10 gap-2 sm:gap-0">
+        <ul class="my-[0.4em] flex font-iregular text-sm text-gray-400 z-10 gap-2 xl:gap-0">
           <li
             :for={{speaker, index} <- Enum.with_index(@activity.speakers, fn el, i -> {el, i} end)}
-            class="list-none sm:float-left"
+            class="list-none xl:float-left"
           >
             <%= if index == length(@activity.speakers) - 1 and length(@activity.speakers) != 1 do %>
-              <bdi class="ml-[5px] hidden sm:inline">
+              <bdi class="ml-[5px] hidden xl:inline">
                 <%= gettext("and") %>
               </bdi>
             <% else %>
-              <span class="hidden sm:inline">
+              <span class="hidden xl:inline">
                 <%= if index != 0, do: "," %>
               </span>
             <% end %>
@@ -164,7 +161,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
             <!-- Expand -->
             <button
               :if={not is_nil(@activity.description) and @activity.description != ""}
-              class="font-terminal uppercase w-16 select-none rounded-full bg-accent px-2 text-xl text-white hover:scale-110"
+              class="font-terminal uppercase w-16 select-none rounded-full px-2 text-xl text-white border border-white hover:bg-white/20 transition-colors"
               phx-click={
                 JS.toggle(
                   to: "#schedule-#{@activity.id}",
@@ -187,10 +184,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
 
   defp schedule_break(assigns) do
     ~H"""
-    <div
-      id={@activity.id}
-      class="mx-2 sm:w-full border-t border-white p-[10px] ml-[10px] relative hover:bg-white/10 transition-colors"
-    >
+    <div id={@activity.id} class="mx-2 sm:w-full border-t border-white p-[10px] ml-[10px] relative">
       <div class="relative h-full flex flex-row justify-between items-center">
         <p class="font-iregular text-xl text-white font-bold">
           <%= @activity.title %>
@@ -210,7 +204,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
   defp schedule_day(assigns) do
     ~H"""
     <div class="flex sm:w-full select-none justify-center">
-      <div class="flex sm:w-full justify-between text-4xl xs:text-5xl sm:text-7xl lg:text-8xl xl:mx-20 xl:text-7xl">
+      <div class="flex w-full justify-between text-4xl xs:text-5xl sm:text-7xl lg:text-8xl xl:mx-20 xl:text-7xl">
         <div class="right relative flex items-center justify-center mt-[0.15em]">
           <.link
             :if={Date.compare(@date, @event_start_date) in [:gt]}

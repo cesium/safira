@@ -68,7 +68,7 @@ defmodule Safira.Activities do
   def list_daily_activities(day) do
     Activity
     |> where([a], a.date == ^day)
-    |> order_by([a], a.time_start)
+    |> order_by([a], asc: a.time_start)
     |> preload([:speakers, :category])
     |> Repo.all()
   end
