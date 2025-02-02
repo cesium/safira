@@ -73,8 +73,8 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MemberLive.Index do
     if socket.assigns.member do
       save_member(socket, :teams_members_edit, member_params)
     else
-    member_params = Map.put(member_params, "team_id", socket.assigns.member.team_id)
-    save_member(socket, :members_new, member_params)
+      member_params = Map.put(member_params, "team_id", socket.assigns.member.team_id)
+      save_member(socket, :members_new, member_params)
     end
   end
 

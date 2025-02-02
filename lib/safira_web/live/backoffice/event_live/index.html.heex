@@ -101,7 +101,7 @@
 
 <.modal
   :if={@live_action in [:teams_members, :teams_members_edit]}
-  id={"event-modal-teams-members-edit"}
+  id="event-modal-teams-members-edit"
   show
   on_cancel={JS.patch(~p"/dashboard/event/teams/")}
 >
@@ -116,7 +116,6 @@
     patch={~p"/dashboard/event/teams/"}
   />
 </.modal>
-
 
 <.modal
   :if={@live_action in [:edit]}
