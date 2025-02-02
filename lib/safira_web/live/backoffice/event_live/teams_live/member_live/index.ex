@@ -32,7 +32,14 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MemberLive.Index do
             />
           </div>
           <:actions>
-            <.button phx-disable-with="Saving...">Add Team Member</.button>
+            <.button phx-disable-with="Saving...">Save</.button>
+            <.link
+              phx-click={JS.push("delete", value: %{id: @member.id})}
+              data-confirm="Are you sure?"
+              phx-target={@myself}
+            >
+              <.icon name="hero-trash" class="w-5 h-5" />
+            </.link>
           </:actions>
         </.simple_form>
       </.page>
@@ -63,14 +70,47 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MemberLive.Index do
 
   @impl true
   def handle_event("save", %{"member" => member_params}, socket) do
-    member_params = Map.put(member_params, "team_id", socket.assigns.team.id)
+    if socket.assigns.member do
+      save_member(socket, :teams_members_edit, member_params)
+    else
+    member_params = Map.put(member_params, "team_id", socket.assigns.member.team_id)
     save_member(socket, :members_new, member_params)
+    end
   end
 
   @impl true
   def handle_event("validate", %{"member" => member_params}, socket) do
     changeset = Teams.change_team_member(socket.assigns.member, member_params)
     {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
+  end
+
+  @impl true
+  def handle_event("delete", %{"team_id" => team_id}, socket) do
+    member = Teams.get_team_member!(team_id)
+
+    case Teams.delete_team_member(member) do
+      {:ok, _member} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, "Member deleted successfully")
+         |> push_patch(to: socket.assigns.patch)}
+
+      {:error, _reason} ->
+        {:noreply, socket |> put_flash(:error, "Failed to delete member")}
+    end
+  end
+
+  defp save_member(socket, :teams_members_edit, member_params) do
+    case Teams.update_team_member(socket.assigns.member, member_params) do
+      {:ok, _member} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, "Member updated successfully")
+         |> push_patch(to: socket.assigns.patch)}
+
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:noreply, socket |> assign(:form, to_form(changeset))}
+    end
   end
 
   defp save_member(socket, :members_new, member_params) do

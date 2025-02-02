@@ -100,14 +100,14 @@
 </.modal>
 
 <.modal
-  :if={@live_action in [:teams_members]}
-  id={"team-#{@team.id}"}
+  :if={@live_action in [:teams_members, :teams_members_edit]}
+  id={"event-modal-teams-members-edit"}
   show
   on_cancel={JS.patch(~p"/dashboard/event/teams/")}
 >
   <.live_component
     module={SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MemberLive.Index}
-    id="team-#{@team.id}"
+    id={"team-{@team.id}" || {@member.id}}
     title={@page_title}
     team={@team}
     action={@live_action}
@@ -117,23 +117,6 @@
   />
 </.modal>
 
-<.modal
-  :if={@live_action in [:teams_members_edit]}
-  id="event-modal-teams-members-edit"
-  show
-  on_cancel={JS.patch(~p"/dashboard/event/teams/")}
->
-  <.live_component
-    module={SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MemberLive.FormComponent}
-    id={@member.id}
-    member={@member}
-    title={@page_title}
-    action={@live_action}
-    form={@form}
-    team={@team}
-    patch={~p"/dashboard/event/teams/"}
-  />
-</.modal>
 
 <.modal
   :if={@live_action in [:edit]}
