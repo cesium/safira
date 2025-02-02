@@ -1,14 +1,6 @@
 <.page title="Staffs">
   <:actions>
     <div class="flex flex-row gap-x-4">
-      <.ensure_permissions user={@current_user} permissions={%{"staffs" => ["roles_edit"]}}>
-        <.link patch={~p"/dashboard/staffs/roles"}>
-          <.button>
-            <.icon name="hero-shield-exclamation" class="w-5 h-5" />
-          </.button>
-        </.link>
-      </.ensure_permissions>
-
       <.table_search
         id="staffs-table-name-search"
         params={@params}
@@ -16,6 +8,20 @@
         path={~p"/dashboard/staffs"}
         placeholder={gettext("Search for users")}
       />
+
+      <.ensure_permissions user={@current_user} permissions={%{"staffs" => ["edit"]}}>
+        <.link patch={~p"/dashboard/staffs/new"}>
+          <.button>New Staff</.button>
+        </.link>
+      </.ensure_permissions>
+
+      <.ensure_permissions user={@current_user} permissions={%{"staffs" => ["roles_edit"]}}>
+        <.link patch={~p"/dashboard/staffs/roles"}>
+          <.button>
+            <.icon name="hero-shield-exclamation" class="w-5 h-5" />
+          </.button>
+        </.link>
+      </.ensure_permissions>
     </div>
   </:actions>
 
@@ -61,6 +67,26 @@
 </.page>
 
 <.modal
+  :if={@live_action in [:new, :edit]}
+  id="staff-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/staffs")}
+>
+  <.live_component
+    module={SafiraWeb.Backoffice.StaffLive.FormComponent}
+    id={@user.id || :new}
+    title="Edit Staff"
+    action={@live_action}
+    patch={~p"/dashboard/staffs"}
+    title={@page_title}
+    current_user={@current_user}
+    action={@live_action}
+    user={@user}
+    roles={@roles}
+  />
+</.modal>
+
+<.modal
   :if={@live_action in [:roles]}
   id="staff-modal"
   show
@@ -85,21 +111,6 @@
     module={SafiraWeb.Backoffice.StaffLive.RoleLive.FormComponent}
     id={@params["id"] || "new-role"}
     title="New Role"
-    action={@live_action}
-    patch={~p"/dashboard/staffs"}
-  />
-</.modal>
-
-<.modal
-  :if={@live_action in [:edit]}
-  id="staff-modal"
-  show
-  on_cancel={JS.patch(~p"/dashboard/staffs")}
->
-  <.live_component
-    module={SafiraWeb.Backoffice.StaffLive.FormComponent}
-    id={@params["id"]}
-    title="Edit Staff"
     action={@live_action}
     patch={~p"/dashboard/staffs"}
   />

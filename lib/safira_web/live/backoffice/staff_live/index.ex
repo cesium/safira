@@ -7,8 +7,13 @@ defmodule SafiraWeb.Backoffice.StaffLive.Index do
 
   import SafiraWeb.Components.{Table, TableSearch}
 
+  alias Safira.Accounts.{Staff, User}
+  alias Safira.Roles
+  alias Safira.Repo
+
   on_mount {SafiraWeb.StaffRoles,
             index: %{"staffs" => ["show"]},
+            new: %{"staffs" => ["edit"]},
             edit: %{"staffs" => ["edit"]},
             roles: %{"staffs" => ["roles_edit"]},
             roles_edit: %{"staffs" => ["roles_edit"]},
@@ -32,7 +37,8 @@ defmodule SafiraWeb.Backoffice.StaffLive.Index do
          |> assign(:meta, meta)
          |> assign(:params, params)
          |> assign(:current_page, :staffs)
-         |> assign(:staffs, staffs)}
+         |> stream(:staffs, staffs, reset: true)
+         |> apply_action(socket.assigns.live_action, params)}
 
       {:error, _} ->
         {:noreply, socket}
@@ -66,5 +72,39 @@ defmodule SafiraWeb.Backoffice.StaffLive.Index do
       nil -> staff
       _ -> Map.put(staff, :is_online, value)
     end
+  end
+
+  defp apply_action(socket, :index, _params) do
+    socket
+    |> assign(:page_title, "Listing Staffs")
+  end
+
+  defp apply_action(socket, :new, _params) do
+    roles =
+      Roles.list_roles()
+      |> Enum.map(&{&1.name, &1.id})
+
+    socket
+    |> assign(:page_title, "New Staff")
+    |> assign(:user, %User{})
+    |> assign(:roles, roles)
+  end
+
+  defp apply_action(socket, :edit, %{"id" => id}) do
+    roles =
+      Roles.list_roles()
+      |> Enum.map(&{&1.name, &1.id})
+
+    staff = Accounts.get_staff!(id) |> Repo.preload(:user)
+    user = if staff.user, do: staff.user, else: %User{}
+
+    socket
+    |> assign(:page_title, "Edit Staff")
+    |> assign(:user, user)
+    |> assign(:roles, roles)
+  end
+
+  defp apply_action(socket, _live_action, _params) do
+    socket
   end
 end

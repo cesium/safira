@@ -3,7 +3,8 @@ defmodule SafiraWeb.Backoffice.StaffLive.FormComponent do
 
   import SafiraWeb.Components.Forms
   alias Safira.Accounts
-  alias Safira.Roles
+  alias Safira.Accounts.User
+  alias Safira.Repo
 
   @impl true
   def render(assigns) do
@@ -19,7 +20,19 @@ defmodule SafiraWeb.Backoffice.StaffLive.FormComponent do
         >
           <div class="flex flex-col md:flex-row w-full gap-4">
             <div class="w-full space-y-2">
-              <.field field={@form[:role_id]} type="select" label="Role" options={@roles} required />
+              <.field field={@form[:name]} type="text" label="Name" required />
+              <.field field={@form[:email]} type="email" label="Email" required />
+              <.field
+                field={@form[:password]}
+                type="password"
+                label="Password"
+                value={@generated_password}
+                required
+              />
+              <.field field={@form[:handle]} type="text" label="Handle" required />
+              <.inputs_for :let={att} field={@form[:staff]}>
+                <.field field={att[:role_id]} type="select" label="Role" options={@roles} required />
+              </.inputs_for>
             </div>
           </div>
           <:actions>
@@ -33,41 +46,64 @@ defmodule SafiraWeb.Backoffice.StaffLive.FormComponent do
 
   @impl true
   def mount(socket) do
-    roles =
-      Roles.list_roles()
-      |> Enum.map(&{&1.name, &1.id})
-
-    {:ok,
-     socket
-     |> assign(:roles, roles)}
+    {:ok, socket}
   end
 
   @impl true
-  def update(%{id: id} = assigns, socket) do
-    staff = Accounts.get_staff!(id)
-    change_staff = Accounts.change_staff(staff, %{})
-    form = to_form(change_staff, as: "staff")
+  def update(%{user: user} = assigns, socket) do
+    user = user |> Repo.preload(:staff)
+    user_changeset = Accounts.change_user_registration(user)
+
+    password =
+      :crypto.strong_rand_bytes(12)
+      |> Base.encode64()
+      |> binary_part(0, 12)
 
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(:staff, staff)
-     |> assign(:form, form)}
+     |> assign(:generated_password, password)
+     |> assign(:form, to_form(user_changeset))}
   end
 
   @impl true
-  def handle_event("validate", %{"staff" => staff_params}, socket) do
-    {:noreply,
-     socket
-     |> assign_new(:form, fn ->
-       to_form(Accounts.change_staff(socket.assigns.staff, staff_params))
-     end)}
+  def handle_event("validate", %{"user" => user_params}, socket) do
+
+    changeset =
+      Accounts.change_user_registration(%User{}, user_params) |> IO.inspect()
+
+    {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
   end
 
-  def handle_event("save", %{"staff" => staff_params}, socket) do
-    staff = socket.assigns.staff
+  def handle_event("save", %{"user" => user_params}, socket) do
+    save_staff(socket, socket.assigns.action, user_params)
+  end
 
-    case Accounts.update_staff(staff, staff_params) do
+  defp save_staff(socket, :new, user_params) do
+    case Accounts.register_staff_user(user_params) do
+      {:ok, _staff} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, "Staff created successfully")
+         |> push_patch(to: socket.assigns.patch)}
+
+      {:error, _, %Ecto.Changeset{} = changeset, _} ->
+        IO.inspect(changeset)
+
+        {:noreply,
+         socket
+         |> put_flash(:error, gettext("Something went wrong while creating the staff."))
+         |> assign(:form, to_form(changeset, action: :validate))}
+    end
+  end
+
+  defp save_staff(socket, :edit, user_params) do
+    user = socket.assigns.user |> Repo.preload(:staff)
+    user_params = user_params |> Map.delete("password")
+    IO.inspect(user, label: "user")
+    IO.inspect(user_params)
+
+    case Accounts.update_user(user, user_params) do
       {:ok, _staff} ->
         {:noreply,
          socket
@@ -78,8 +114,7 @@ defmodule SafiraWeb.Backoffice.StaffLive.FormComponent do
         {:noreply,
          socket
          |> put_flash(:error, gettext("Something went wrong when updating the staff."))
-         |> assign(:form, to_form(changeset))
-         |> push_patch(to: socket.assigns.patch)}
+         |> assign(:form, to_form(changeset))}
     end
   end
 end

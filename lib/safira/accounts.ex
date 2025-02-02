@@ -132,15 +132,17 @@ defmodule Safira.Accounts do
     |> Flop.validate_and_run(params, for: User)
   end
 
-  def update_staff(%Staff{} = staff, attrs) do
-    Staff.changeset(staff, attrs)
+  def update_user(%User{} = user, attrs) do
+    user
+    |> User.registration_changeset(attrs |> IO.inspect(label: "attrs do staff q chegaram ao update"))
+    |> IO.inspect(label: "changeset")
     |> Repo.update()
   end
 
   @doc """
   Changes a staff
   """
-  def change_staff(%Staff{} = staff, attrs) do
+  def change_staff(%Staff{} = staff, attrs \\ %{}) do
     Staff.changeset(staff, attrs)
   end
 
@@ -246,9 +248,32 @@ defmodule Safira.Accounts do
 
   """
   def register_staff_user(attrs) do
-    %User{}
-    |> User.registration_changeset(attrs |> Map.put(:type, :staff))
-    |> Repo.insert()
+    attrs = attrs |> Map.put("type", :staff) |> IO.inspect(label: "attrs")
+
+    Ecto.Multi.new()
+    |> Ecto.Multi.insert(
+      :user,
+      User.registration_changeset(
+        %User{},
+        Map.delete(attrs, "staff") |> IO.inspect(label: "apagou"),
+        hash_password: true,
+        validate_email: true
+      )
+      |> IO.inspect(label: "changeset")
+    )
+    |> Ecto.Multi.insert(
+      :staff,
+      fn %{user: user} ->
+        staff_attrs =
+          attrs
+          |> Map.get("staff")
+          |> Map.put("user_id", user.id)
+          |> IO.inspect(label: "staff_attrs")
+
+        Staff.changeset(%Staff{}, staff_attrs)
+      end
+    )
+    |> Repo.transaction()
   end
 
   @doc """

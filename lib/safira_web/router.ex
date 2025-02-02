@@ -166,6 +166,8 @@ defmodule SafiraWeb.Router do
 
         scope "/staffs", StaffLive do
           live "/", Index, :index
+          live "/new", Index, :new
+
           live "/:id/edit", Index, :edit
 
           scope "/roles" do

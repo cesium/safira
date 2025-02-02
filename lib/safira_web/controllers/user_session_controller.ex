@@ -5,7 +5,7 @@ defmodule SafiraWeb.UserSessionController do
   alias SafiraWeb.UserAuth
 
   def new(conn, %{"user" => user_params}) do
-    case Accounts.register_attendee_user(user_params) do
+    case Accounts.register_attendee_user(user_params |> IO.inspect()) do
       {:ok, %{user: user, attendee: _}} ->
         {:ok, _} =
           Accounts.deliver_user_confirmation_instructions(

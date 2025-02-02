@@ -74,11 +74,13 @@ defmodule Safira.Accounts.User do
   def registration_changeset(user, attrs, opts \\ []) do
     user
     |> cast(attrs, @required_fields ++ @optional_fields)
+    |> IO.inspect(label: "tou aqui")
     |> validate_required(@required_fields |> Enum.reject(&(&1 in [:email, :password, :handle])))
     |> validate_email(opts)
     |> validate_handle()
     |> validate_password(opts)
     |> cast_assoc(:attendee, with: &Attendee.changeset/2)
+    |> cast_assoc(:staff, with: &Staff.changeset/2)
   end
 
   defp validate_email(changeset, opts) do
@@ -91,7 +93,7 @@ defmodule Safira.Accounts.User do
 
   defp validate_password(changeset, opts) do
     changeset
-    |> validate_required([:password])
+    # |> validate_required([:password])
     |> validate_length(:password, min: 12, max: 72)
     # Examples of additional password validation:
     # |> validate_format(:password, ~r/[a-z]/, message: "at least one lower case character")
