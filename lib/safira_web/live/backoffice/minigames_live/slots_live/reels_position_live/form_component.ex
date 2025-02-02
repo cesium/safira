@@ -14,7 +14,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.ReelsPosition.FormComponent do
         subtitle={gettext("Configures slots reels.")}
       >
         <div class="mt-8">
-          <div class="flex flex-row gap-10 mx-auto justify-center">
+          <div class="flex flex-row gap-10 mx-auto my-2 justify-center">
             <div
               :for={i <- 0..2}
               id={"reel-#{i}"}
@@ -29,7 +29,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.ReelsPosition.FormComponent do
                 <img
                   src={Uploaders.SlotsReelIcon.url({reel.image, reel}, :original, signed: true)}
                   alt="Icon"
-                  class="size-20 bg-black"
+                  class="size-20 bg-primary"
                 />
                 <div class={[
                   "handle absolute inset-0 flex items-center justify-center bg-white bg-opacity-50 opacity-0 group-hover:opacity-100",
@@ -50,13 +50,34 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.ReelsPosition.FormComponent do
             </div>
           </div>
           <div>
-            <p>Drag and drop the icons to change their order</p>
-            <p>Number of icons: <%= length(@slots_icons_per_column[0]) %></p>
-            <p>Number of icons: <%= length(@slots_icons_per_column[1]) %></p>
-            <p>Number of icons: <%= length(@slots_icons_per_column[2]) %></p>
+            <%= for i <- 0..2 do %>
+              <p class={
+                count_visible_icons(@visibility[i]) != count_visible_icons(@visibility[0]) &&
+                  "text-red-600"
+              }>
+                <span class="font-semibold">Reel <%= i %>:</span> <%= count_visible_icons(
+                  @visibility[i]
+                ) %> visible icons
+              </p>
+            <% end %>
+            <p class="text-slate-500 mt-4">
+              <.icon name="hero-exclamation-triangle" class="text-warning-500 mr-1" /><%= gettext(
+                "For optimal icon placement the number of icons should be 9."
+              ) %>
+            </p>
+            <p class="text-slate-500">
+              <.icon name="hero-information-circle" class="text-blue-500 mr-1" /><%= gettext(
+                "Drag and drop the icons to change their order."
+              ) %>
+            </p>
           </div>
           <div class="flex justify-end">
-            <.button phx-click="save" phx-target={@myself} phx-disable-with="Saving...">
+            <.button
+              phx-click="save"
+              phx-target={@myself}
+              phx-disable-with="Saving..."
+              disabled={not all_reels_match?(@visibility)}
+            >
               <%= gettext("Save Configuration") %>
             </.button>
           </div>
@@ -261,5 +282,14 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.ReelsPosition.FormComponent do
     slots_reel_icons
     |> Enum.filter(fn icon -> Map.has_key?(reel_order, icon.id) end)
     |> Enum.sort_by(fn icon -> reel_order[icon.id] end)
+  end
+
+  defp count_visible_icons(visibility) do
+    Enum.count(visibility, fn {_id, visible} -> visible end)
+  end
+
+  defp all_reels_match?(visibility) do
+    counts = Enum.map(0..2, fn i -> count_visible_icons(visibility[i]) end)
+    Enum.all?(counts, fn count -> count == List.first(counts) end)
   end
 end

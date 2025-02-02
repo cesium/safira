@@ -56,7 +56,8 @@ export const ReelAnimation = {
         const currentPos = this.absolutePositions[reelIndex]
         const currentIcon = Math.floor((currentPos / iconSize) % numImages)
         
-        let distance = target - currentIcon
+        const reversedTarget = numImages - target
+        let distance = reversedTarget - currentIcon
         if (distance <= 0) {
           distance += numImages
         }
@@ -82,11 +83,13 @@ export const ReelAnimation = {
           reel.style.backgroundPositionY = positions.join(', ')
         }, reelIndex * 150)
 
+
         setTimeout(() => {
           // Clear transition after animation
           reel.style.transition = 'none'
           this.absolutePositions[reelIndex] = newPosition
-          this.positions[reelIndex] = Math.floor((newPosition / iconSize) % numImages)
+          // Also adjust the final position calculation
+          this.positions[reelIndex] = numImages - Math.floor((newPosition / iconSize) % numImages)
           this.rotations[reelIndex]++
           resolve()
         }, (8 + delta/iconSize) * rotationSpeed + reelIndex * 150 + extraTime)

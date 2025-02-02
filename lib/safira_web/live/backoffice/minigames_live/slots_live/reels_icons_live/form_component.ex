@@ -23,18 +23,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.ReelIcons.FormComponent do
             phx-change="validate"
             phx-target={@myself}
           >
-            <%!-- <div class="w-full pb-6">
-              <.field_label>Number of icons</.field_label>
-              <.input
-                field={@form[:number_of_icons]}
-                name="number_of_icons"
-                type="number"
-                min="1"
-                value={@number_of_icons}
-                phx-debounce="blur"
-              />
-            </div> --%>
-            <div class="w-full pb-2">
+            <div class="w-full">
               <.field_label>Upload Images</.field_label>
               <.image_uploader
                 class="size-36 border-2 border-dashed"
@@ -46,7 +35,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.ReelIcons.FormComponent do
                 <%= for entry <- @uploads.images.entries do %>
                   <div class="relative group flex-shrink-0 bg-dark rounded-lg">
                     <.live_img_preview entry={entry} class="size-32 object-cover rounded-lg" />
-                    <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100">
+                    <div class="absolute inset-0 flex items-center justify-center bg-primary bg-opacity-50 opacity-0 group-hover:opacity-100 rounded-lg">
                       <button
                         type="button"
                         class="text-white"
@@ -54,7 +43,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.ReelIcons.FormComponent do
                         phx-value-ref={entry.ref}
                         phx-target={@myself}
                       >
-                        &times;
+                        <.icon name="hero-x-mark" />
                       </button>
                     </div>
                     <%= for err <- upload_errors(@uploads.images, entry) do %>
@@ -67,26 +56,13 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.ReelIcons.FormComponent do
                     <span class="text-gray-400">No images uploaded</span>
                   </div>
                 <% end %>
-                <%!--                 
-                <%= for i <- length(@uploads.images.entries)..(@number_of_icons - 1) do %>
-                  <div class="size-32 border border-gray-300 rounded-lg flex items-center justify-center">
-                    <span class="text-gray-400">Empty slot <%= i + 1 %></span>
-                  </div>
-                <% end %> --%>
               </div>
             </div>
-            <div>
-              <h3 class="font-semibold">
-                <%= gettext("Number of icons: %{num_icons}",
-                  num_icons: length(@uploads.images.entries)
-                ) %>
-              </h3>
-              <p class="text-slate-500">
-                <.icon name="hero-exclamation-triangle" class="text-warning-600 mr-1" /><%= gettext(
-                  "For optimal icon placement the number of icons should be 9 and each icon should be a square image."
-                ) %>
-              </p>
-            </div>
+            <p class="text-slate-500">
+              <.icon name="hero-exclamation-triangle" class="text-warning-600 mr-1" /><%= gettext(
+                "Each icon should be a square image."
+              ) %>
+            </p>
             <div class="flex justify-end">
               <.button phx-disable-with="Saving..."><%= gettext("Save Configuration") %></.button>
             </div>

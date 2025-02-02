@@ -18,8 +18,8 @@ defmodule SafiraWeb.App.SlotsLive.Components.Machine do
 
     ~H"""
     <div id="slots-machine" phx-hook="ReelAnimation" data-num-icons={length(reels_by_position[0])}>
-      <div class="flex justify-center">
-        <div class="slots-container flex gap-5 rounded-3xl py-6 px-12 ring-2 ring-white">
+      <div class="flex justify-center my-12">
+        <div class="slots-container flex gap-5 rounded-3xl py-6 px-2 items-center justify-center ring-2 ring-white w-full max-w-96">
           <%= for reel_num <- 0..2 do %>
             <div
               id={"slots-reel-#{reel_num}"}

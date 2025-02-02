@@ -5,57 +5,59 @@
     </span>
   </:actions>
   <.machine />
-  <div class="flex border-2 divide-x-2 rounded-full w-full sm:px-3 max-w-lg overflow-hidden">
-    <div class="flex items-center py-2 w-full pl-2">
-      <.icon name="hero-currency-dollar-solid" class="text-yellow-300 ml-2" />
-      <.form for={%{}} phx-change="set-bet" class="w-full">
-        <input
-          name="bet"
-          type="number"
-          min="10"
-          max={@attendee_tokens}
-          value={@bet}
-          phx-debounce="250"
-          class="w-full bg-transparent border-none focus:ring-transparent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none safira-number-input-without-bg"
-        />
-      </.form>
+  <div class="flex flex-col md:flex-row gap-6">
+    <div class="flex border-2 divide-x-2 rounded-full w-full sm:px-3 max-w-lg overflow-hidden">
+      <div class="flex items-center py-2 w-full pl-2">
+        <.icon name="hero-currency-dollar-solid" class="text-yellow-300 ml-2" />
+        <.form for={%{}} phx-change="set-bet" class="w-full">
+          <input
+            name="bet"
+            type="number"
+            min="10"
+            max={@attendee_tokens}
+            value={@bet}
+            phx-debounce="250"
+            class="w-full bg-transparent border-none focus:ring-transparent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none safira-number-input-without-bg"
+          />
+        </.form>
+      </div>
+      <div class="flex items-stretch divide-x-2">
+        <button
+          phx-click="set-bet"
+          phx-value-bet={round(@bet / 2)}
+          class="px-3 py-2 sm:px-4 sm:py-3 active:bg-blue-900/35 transition duration-200 font-terminal font-bold"
+        >
+          1/2
+        </button>
+        <button
+          phx-click="set-bet"
+          phx-value-bet={@bet * 2}
+          class="px-3 py-2 sm:px-5 sm:py-3 active:bg-blue-900/35 transition duration-200 font-terminal font-bold"
+        >
+          x2
+        </button>
+        <button
+          phx-click="set-bet"
+          phx-value-bet={@attendee_tokens}
+          class="pl-3 pr-4 py-2 sm:px-4 sm:py-3 active:bg-blue-900/35 transition duration-200 font-terminal font-bold"
+        >
+          MAX
+        </button>
+      </div>
     </div>
-    <div class="flex items-stretch divide-x-2">
-      <button
-        phx-click="set-bet"
-        phx-value-bet={round(@bet / 2)}
-        class="px-3 py-2 sm:px-4 sm:py-3 active:bg-blue-900/35 transition duration-200 font-terminal font-bold"
-      >
-        1/2
-      </button>
-      <button
-        phx-click="set-bet"
-        phx-value-bet={@bet * 2}
-        class="px-3 py-2 sm:px-5 sm:py-3 active:bg-blue-900/35 transition duration-200 font-terminal font-bold"
-      >
-        x2
-      </button>
-      <button
-        phx-click="set-bet"
-        phx-value-bet={@attendee_tokens}
-        class="pl-3 pr-4 py-2 sm:px-4 sm:py-3 active:bg-blue-900/35 transition duration-200 font-terminal font-bold"
-      >
-        MAX
-      </button>
-    </div>
+    <.action_button
+      title={gettext("Spin")}
+      class="max-w-80"
+      disabled={@bet > @attendee_tokens || not @slots_active? || @in_spin?}
+      phx-click="spin-slots"
+    />
   </div>
-  <.action_button
-    title={gettext("Spin")}
-    class="max-w-80 mx-0"
-    disabled={@bet > @attendee_tokens || not @slots_active? || @in_spin?}
-    phx-click="spin"
-  />
 </.page>
 
 <.result_modal
-  :if={@result}
-  drop_type={@result.type}
-  drop={@result.drop}
+  :if={@result && not @in_spin? && @result.winnings > 0}
+  multiplier={@result.multiplier}
+  winnings={@result.winnings}
   wrapper_class="px-6"
   show
   id="confirm"

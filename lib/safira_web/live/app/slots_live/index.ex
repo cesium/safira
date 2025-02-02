@@ -67,14 +67,14 @@ defmodule SafiraWeb.App.SlotsLive.Index do
      |> assign(:result, nil)}
   end
 
-  def handle_event("spin", _params, socket) do
+  def handle_event("spin-slots", _params, socket) do
     if socket.assigns.bet <= 0 do
       {:noreply,
        socket
        |> put_flash(:error, gettext("Please set a bet amount greater than 0."))}
     else
       case Minigames.spin_slots(socket.assigns.current_user.attendee, socket.assigns.bet) do
-        {:ok, target, attendee_tokens} ->
+        {:ok, target, multiplier, attendee_tokens, winnings} ->
           IO.inspect("Spin successful")
           IO.inspect(socket.assigns.bet)
           IO.inspect(target)
@@ -84,7 +84,12 @@ defmodule SafiraWeb.App.SlotsLive.Index do
           {:noreply,
            socket
            |> assign(:in_spin?, true)
-           |> assign(:new_attendee_tokens, attendee_tokens)
+           |> assign(:result, %{
+             multiplier: multiplier,
+             target: target,
+             new_attendee_tokens: attendee_tokens,
+             winnings: winnings
+           })
            |> assign(:attendee_tokens, socket.assigns.attendee_tokens - socket.assigns.bet)
            |> push_event("roll_reels", %{target: target})}
 
@@ -103,7 +108,7 @@ defmodule SafiraWeb.App.SlotsLive.Index do
     {:noreply,
      socket
      |> assign(:in_spin?, false)
-     |> assign(:attendee_tokens, socket.assigns.new_attendee_tokens)}
+     |> assign(:attendee_tokens, socket.assigns.result.new_attendee_tokens)}
   end
 
   @impl true

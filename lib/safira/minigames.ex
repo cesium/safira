@@ -1344,7 +1344,9 @@ defmodule Safira.Minigames do
       case spin_slots_transaction(attendee, bet) do
         {:ok, result} ->
           IO.inspect(result.paytable_entry, label: "Paytable Entry")
-          {:ok, result.target, result.attendee_state_tokens.tokens}
+
+          {:ok, result.target, result.paytable_entry.multiplier,
+           result.attendee_state_tokens.tokens, result.winnings}
 
         {:error, _} ->
           {:error, "An error occurred while spinning the slots."}
@@ -1375,10 +1377,12 @@ defmodule Safira.Minigames do
                              } ->
       {:ok, generate_slots_target(paylines, slots_reel_icons_count, multiplier)}
     end)
+    |> Multi.run(:winnings, fn _repo, %{paytable_entry: paytable_entry} ->
+      winnings = bet * paytable_entry.multiplier
+      {:ok, winnings}
+    end)
     # Award tokens based on multiplier
-    |> Multi.merge(fn %{paytable_entry: multiplier, attendee: attendee} ->
-      winnings = bet * multiplier.multiplier
-
+    |> Multi.merge(fn %{attendee: attendee, winnings: winnings} ->
       Contest.change_attendee_tokens_transaction(
         attendee,
         attendee.tokens + winnings,
