@@ -13,7 +13,7 @@ defmodule Safira.Repo.Seeds.Prizes do
     end
   end
 
-  def seed_prizes do
+  defp seed_prizes do
     for name <- @prizes do
       prize_seed = %{
         name: name,

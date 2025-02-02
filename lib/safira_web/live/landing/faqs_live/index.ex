@@ -4,6 +4,8 @@ defmodule SafiraWeb.Landing.FAQLive.Index do
   alias Safira.Event
   import SafiraWeb.Landing.FAQLive.Components.{Faq, FindUs}
 
+  on_mount {SafiraWeb.VerifyFeatureFlag, "faqs_enabled"}
+
   @impl true
   def mount(_params, _session, socket) do
     {:ok,

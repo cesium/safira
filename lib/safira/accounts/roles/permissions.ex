@@ -8,6 +8,7 @@ defmodule Safira.Accounts.Roles.Permissions do
     %{
       "attendees" => ["show", "edit"],
       "staffs" => ["show", "edit", "roles_edit"],
+      "challenges" => ["show", "edit", "delete"],
       "companies" => ["edit"],
       "products" => ["show", "edit", "delete"],
       "purchases" => ["show", "redeem", "refund"],

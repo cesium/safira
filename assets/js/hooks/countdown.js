@@ -27,9 +27,9 @@ export const Countdown = {
             }, 100);
         };
 
-        window.addEventListener("phx:highlight", (e) => {
-            const startTime = new Date(e.detail.start_time).getTime();
-            startCountdown(startTime);
+        this.handleEvent("start-countdown", (data) => {
+            const time = new Date (data.end_time).getTime();
+            startCountdown(time);
         });
     }
 };

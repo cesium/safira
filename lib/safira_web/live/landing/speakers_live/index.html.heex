@@ -1,0 +1,20 @@
+<div class="py-14 sm:py-28 xl:px-[15rem] md:px-[8rem] px-[2.5rem]">
+  <div class="relative z-20 font-bold animate-slide-in">
+    <h5 class="font-terminal uppercase m-1 text-2xl text-accent">
+      <%= gettext("Speakers") %>
+    </h5>
+    <h1 class="font-terminal uppercase relative z-20 text-white text-5xl xs:text-5xl sm:text-6xl w-full md:text-7xl lg:text-8xl 2xl:w-5/6 2xl:text-8xl 2xl:leading-[5rem]">
+      <span class="relative z-20">
+        <%= gettext("A crazy cool selection of speakers.") %>
+      </span>
+    </h1>
+  </div>
+  <div class="mt-40">
+    <.speakers
+      event_start_date={@event_start_date}
+      event_end_date={@event_end_date}
+      url={~p"/speakers"}
+      params={@params}
+    />
+  </div>
+</div>

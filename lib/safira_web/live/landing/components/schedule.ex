@@ -11,25 +11,65 @@ defmodule SafiraWeb.Landing.Components.Schedule do
   attr :event_end_date, Date, required: true
   attr :url, :string, required: true
   attr :params, :map, required: true
+  attr :has_filters?, :boolean, default: false
+  attr :descriptions_enabled, :boolean, default: false
 
   def schedule(assigns) do
     ~H"""
-    <div class="px-5 md:px-32 xl:grid xl:grid-cols-2 xl:px-16 2xl:px-32 relative select-none pt-20">
-      <div class="mb-20 xl:mb-0">
+    <div class="xl:grid 2xl:grid-cols-2 gap-8 relative select-none">
+      <div class="mb-20 2xl:mb-0">
         <div class="sticky top-12">
           <.schedule_day
             date={fetch_current_date_from_params(assigns.params) || assigns.event_start_date}
             url={@url}
             params={@params}
+            filters={fetch_filters_from_params(assigns.params)}
             event_start_date={@event_start_date}
             event_end_date={@event_end_date}
+          />
+          <.filters
+            :if={@has_filters?}
+            url={@url}
+            current_day={fetch_current_date_from_params(assigns.params) || assigns.event_start_date}
+            filters={fetch_filters_from_params(assigns.params)}
           />
         </div>
       </div>
       <div>
-        <.schedule_table date={
-          fetch_current_date_from_params(assigns.params) || assigns.event_start_date
-        } />
+        <.schedule_table
+          date={fetch_current_date_from_params(assigns.params) || assigns.event_start_date}
+          filters={fetch_filters_from_params(assigns.params)}
+          descriptions_enabled={assigns.descriptions_enabled}
+        />
+      </div>
+    </div>
+    """
+  end
+
+  defp filters(assigns) do
+    ~H"""
+    <div class="block relative mt-8">
+      <span class="w-full font-iregular text-lg uppercase"><%= gettext("Filter by") %></span>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 pt-4">
+        <%= for category <- fetch_categories() do %>
+          <.link
+            class={
+              if Enum.member?(@filters, category.id),
+                do: "text-md m-1 items-center rounded-full border-2 px-12 py-2 text-center font-bold
+                                  text-accent border-accent shadow-sm
+                                hover:opacity-60
+                                ",
+                else: "text-md m-1 items-center rounded-full border-2 px-12 py-2 text-center font-bold
+                                  text-white shadow-sm
+                                hover:border-accent hover:text-accent px-8
+                                "
+            }
+            patch={filter_url(@url, @current_day, @filters, category.id)}
+          >
+            <%= category.name %>
+          </.link>
+        <% end %>
       </div>
     </div>
     """
@@ -38,13 +78,13 @@ defmodule SafiraWeb.Landing.Components.Schedule do
   defp schedule_table(assigns) do
     ~H"""
     <div>
-      <%= for activity_section <- fetch_daily_activities(@date) do %>
+      <%= for activity_section <- fetch_daily_activities(@date, @filters) do %>
         <div class="flex lg:flex-row flex-col sm:w-full">
           <%= for activity <- activity_section do %>
             <%= if activity.category && activity.category.name == "Break" do %>
               <.schedule_break activity={activity} />
             <% else %>
-              <.schedule_activity activity={activity} />
+              <.schedule_activity activity={activity} descriptions_enabled={@descriptions_enabled} />
             <% end %>
           <% end %>
         </div>
@@ -88,15 +128,23 @@ defmodule SafiraWeb.Landing.Components.Schedule do
                 <%= if index != 0, do: "," %>
               </span>
             <% end %>
-            <.link navigate={~p"/"} class="my-[0.4em] hover:underline">
+            <!-- Must be an <a> tag as to force page to reload completely so the #id rerouting works -->
+            <a
+              href={"/speakers?date=#{@activity.date}&speaker_id=#{speaker.id}#sp-#{speaker.id}-#{@activity.id}"}
+              class="my-[0.4em] hover:underline"
+            >
               <%= speaker.name %>
-            </.link>
+            </a>
           </li>
         </ul>
+
+        <p id={"schedule-#{@activity.id}"} class="overflow-hidden pb-4" style="display: none;">
+          <%= @activity.description %>
+        </p>
         <!-- Spacing -->
         <div class="h-20 w-2"></div>
 
-        <div class="absolute bottom-0 mt-auto sm:w-full py-3">
+        <div class="absolute bottom-0 mt-auto w-full py-3">
           <div class="flex flex-wrap justify-center">
             <!-- Location -->
             <div class="flex w-auto items-center">
@@ -113,6 +161,23 @@ defmodule SafiraWeb.Landing.Components.Schedule do
                 <%= gettext("Enroll") %>
               </p>
             </div>
+            <!-- Expand -->
+            <button
+              :if={not is_nil(@activity.description) and @activity.description != ""}
+              class="font-terminal uppercase w-16 select-none rounded-full bg-accent px-2 text-xl text-white hover:scale-110"
+              phx-click={
+                JS.toggle(
+                  to: "#schedule-#{@activity.id}",
+                  in: {"", "opacity-0 max-h-0", "opacity-100 max-h-48"},
+                  out: {"", "opacity-100 max-h-48", "opacity-0 max-h-0"}
+                )
+                |> JS.toggle(to: "#schedule-toggle-show-#{@activity.id}")
+                |> JS.toggle(to: "#schedule-toggle-hide-#{@activity.id}")
+              }
+            >
+              <span id={"schedule-toggle-show-#{@activity.id}"}>+</span>
+              <span id={"schedule-toggle-hide-#{@activity.id}"} style="display: none;">-</span>
+            </button>
           </div>
         </div>
       </div>
@@ -150,7 +215,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
           <.link
             :if={Date.compare(@date, @event_start_date) in [:gt]}
             class="cursor-pointer"
-            patch={day_url(@url, @date, -1)}
+            patch={day_url(@url, @date, -1, @filters)}
           >
             <.left_arrow />
           </.link>
@@ -169,7 +234,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
           <.link
             :if={Date.compare(@date, @event_end_date) in [:lt]}
             class="cursor-pointer"
-            patch={day_url(@url, @date, 1)}
+            patch={day_url(@url, @date, 1, @filters)}
           >
             <.right_arrow />
           </.link>
@@ -276,15 +341,39 @@ defmodule SafiraWeb.Landing.Components.Schedule do
     end
   end
 
-  defp day_url(url, current_day, shift) do
-    query = %{"date" => Timex.shift(current_day, days: shift)}
+  defp fetch_filters_from_params(params) do
+    Map.get(params, "filters", [])
+  end
+
+  defp day_url(url, current_day, shift, filters) do
+    query = %{"date" => Timex.shift(current_day, days: shift), "filters" => filters}
 
     "#{url}?#{Query.encode(query)}"
   end
 
-  defp fetch_daily_activities(day) do
+  defp filter_url(url, current_day, filters, category_id) do
+    new_filters = toggle_filter(filters, category_id)
+    query = %{"date" => current_day, "filters" => new_filters}
+
+    "#{url}?#{Query.encode(query)}"
+  end
+
+  defp toggle_filter(filters, category_id) do
+    if Enum.member?(filters, category_id) do
+      List.delete(filters, category_id)
+    else
+      filters ++ [category_id]
+    end
+  end
+
+  defp fetch_daily_activities(day, filters) do
     Activities.list_daily_activities(day)
+    |> Enum.filter(fn at -> filters == [] or at.category_id in filters end)
     |> Enum.group_by(& &1.time_start)
     |> Enum.map(&elem(&1, 1))
+  end
+
+  defp fetch_categories do
+    Activities.list_activity_categories()
   end
 end

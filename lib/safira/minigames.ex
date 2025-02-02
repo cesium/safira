@@ -13,6 +13,7 @@ defmodule Safira.Minigames do
   alias Safira.Contest
   alias Safira.Inventory.Item
   alias Safira.Minigames.{CoinFlipRoom, Prize, WheelDrop}
+  alias Safira.Minigames.{Prize, WheelDrop}
 
   @pubsub Safira.PubSub
 

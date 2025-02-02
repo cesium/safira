@@ -469,7 +469,11 @@ defmodule SafiraWeb.CoreComponents do
 
   def header(assigns) do
     ~H"""
-    <header class={[@actions != [] && "flex items-center justify-between gap-6", @class]}>
+    <header class={[
+      @actions != [] &&
+        "flex items-left sm:items-center justify-between gap-2 sm:gap-6 flex-col sm:flex-row",
+      @class
+    ]}>
       <div class="flex flex-col justify-center">
         <h1 class={"font-semibold leading-8 #{@title_class}"}>
           <%= render_slot(@inner_block) %>
