@@ -95,6 +95,37 @@ defmodule Safira.Contest do
   end
 
   @doc """
+  Lists all badge redeems belonging to a badge.
+
+  ## Examples
+
+      iex> list_badge_redeems(123)
+      [%BadgeRedeem{}, %BadgeRedeem{}]
+
+  """
+  def list_badge_redeems(badge_id, opts \\ []) do
+    BadgeRedeem
+    |> where([br], br.badge_id == ^badge_id)
+    |> preload(attendee: [:user])
+    |> apply_filters(opts)
+    |> Repo.all()
+  end
+
+  @doc """
+  Counts the number of badge redeems for a badge.
+
+  ## Examples
+
+      iex> count_badge_redeems(123)
+      5
+  """
+  def count_badge_redeems(badge_id) do
+    BadgeRedeem
+    |> where([br], br.badge_id == ^badge_id)
+    |> Repo.aggregate(:count, :id)
+  end
+
+  @doc """
   Lists all badges with their respective redeem status associated with an attendee odered by redeemed date.
 
   ## Examples
@@ -102,7 +133,7 @@ defmodule Safira.Contest do
       iex> list_attendee_all_badges_redeem_status(123)
       [%Badge{}, %Badge{}]
   """
-  def list_attendee_all_badges_redeem_status(attendee_id) do
+  def list_attendee_all_badges_redeem_status(attendee_id, only_owned \\ false) do
     all_badges = Repo.all(from b in Badge, preload: [:category])
 
     redeems =
@@ -114,7 +145,11 @@ defmodule Safira.Contest do
 
     Enum.map(all_badges, fn badge ->
       Map.put(badge, :redeemed_at, Map.get(redeems, badge.id, nil))
-    end) |> Enum.sort(&(&1.redeemed_at > &2.redeemed_at))
+    end)
+    |> Enum.sort(&(&1.redeemed_at > &2.redeemed_at))
+    |> Enum.filter(fn badge ->
+      !only_owned or badge.redeemed_at != nil
+    end)
   end
 
   @doc """
@@ -149,6 +184,23 @@ defmodule Safira.Contest do
     |> apply_filters(opts)
     |> where([b], b.begin <= ^DateTime.utc_now() and b.end >= ^DateTime.utc_now())
     |> Flop.validate_and_run(params, for: Badge)
+  end
+
+  @doc """
+  Checks if an attendee owns a badge.
+
+  ## Examples
+
+      iex> attendee_owns_badge?(123, 456)
+      true
+
+  """
+  def attendee_owns_badge?(attendee_id, badge_id) do
+    BadgeRedeem
+    |> where([br], br.attendee_id == ^attendee_id and br.badge_id == ^badge_id)
+    |> Repo.one()
+    |> is_nil()
+    |> Kernel.not()
   end
 
   @doc """
@@ -584,7 +636,9 @@ defmodule Safira.Contest do
       {:ok, %{redeem: redeem}} ->
         broadcast_attendee_redeems_update(redeem.id)
         {:ok, redeem}
-      {:error, _} -> {:error, "failed to redeem badge"}
+
+      {:error, _} ->
+        {:error, "failed to redeem badge"}
     end
   end
 
@@ -604,6 +658,11 @@ defmodule Safira.Contest do
 
   defp broadcast_attendee_redeems_update(redeem_id) do
     redeem = get_badge_redeem!(redeem_id)
-    Phoenix.PubSub.broadcast(@pubsub, topic(redeem.attendee_id), Map.put(redeem, :badge, get_badge!(redeem.badge_id)))
+
+    Phoenix.PubSub.broadcast(
+      @pubsub,
+      topic(redeem.attendee_id),
+      Map.put(redeem, :badge, get_badge!(redeem.badge_id))
+    )
   end
 end

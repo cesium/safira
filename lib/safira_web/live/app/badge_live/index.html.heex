@@ -1,9 +1,32 @@
 <.page title={gettext("Badgedex")} size={:xl} title_class="font-terminal uppercase">
-    <div id="badges" phx-update="stream" class="flex flex-wrap gap-4 justify-between">
-        <%= for {id, badge} <- @streams.badges do %>
-            <.link id={id} patch={~p"/app/badges/#{badge.id}"}>
-                <.badge id={badge.id} badge={badge} disabled={!badge.redeemed_at} :if={!badge.category.hidden || badge.redeemed_at} hover_zoom />
-            </.link>
-        <% end %>
+  <:actions>
+    <div class="flex flex-row items-center gap-6">
+      <p class="font-semibold text-2xl uppercase font-terminal"><%= gettext("Show") %></p>
+      <.action_button
+        class="!w-24 !m-0 !h-12"
+        phx-click="swap-selection"
+        title={next_selection_text(@selection)}
+      />
     </div>
+  </:actions>
+  <div class="flex w-full items-center justify-center flex-col mt-6">
+    <div
+      id="badges"
+      phx-update="stream"
+      class="grid grid-cols-1 gap-x-10 gap-y-5 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6"
+    >
+      <%= for {id, badge} <- @streams.badges do %>
+        <.link id={id} patch={~p"/app/badges/#{badge.id}"}>
+          <.badge
+            :if={!badge.category.hidden || badge.redeemed_at}
+            id={badge.id}
+            badge={badge}
+            disabled={!badge.redeemed_at}
+            hover_zoom
+            width="w-full"
+          />
+        </.link>
+      <% end %>
+    </div>
+  </div>
 </.page>

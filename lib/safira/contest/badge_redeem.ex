@@ -4,6 +4,8 @@ defmodule Safira.Contest.BadgeRedeem do
   """
   use Safira.Schema
 
+  alias Safira.Accounts.{Attendee, Staff}
+
   @required_fields ~w(badge_id attendee_id)a
   @optional_fields ~w(redeemed_by_id)a
 
@@ -21,5 +23,6 @@ defmodule Safira.Contest.BadgeRedeem do
     badge_redeem
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
+    |> unique_constraint([:attendee_id, :badge_id])
   end
 end

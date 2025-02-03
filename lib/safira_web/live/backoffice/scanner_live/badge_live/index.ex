@@ -59,9 +59,9 @@ defmodule SafiraWeb.Backoffice.ScannerLive.BadgeLive.Index do
   @impl true
   def mount(_params, _session, socket) do
     {:ok,
-      socket
-      |> assign(:current_page, :scanner)
-      |> assign(:modal_data, nil)}
+     socket
+     |> assign(:current_page, :scanner)
+     |> assign(:modal_data, nil)}
   end
 
   @impl true
@@ -77,8 +77,16 @@ defmodule SafiraWeb.Backoffice.ScannerLive.BadgeLive.Index do
           case Accounts.get_attendee_from_credential(id) do
             nil ->
               {:noreply, socket |> assign(:modal_data, :not_linked)}
+
             attendee ->
-              handle_redeem_badge(%{badge_id: socket.assigns.badge.id, attendee: attendee, staff: socket.assigns.current_user.staff}, socket)
+              handle_redeem_badge(
+                %{
+                  badge_id: socket.assigns.badge.id,
+                  attendee: attendee,
+                  staff: socket.assigns.current_user.staff
+                },
+                socket
+              )
           end
         else
           {:noreply, socket |> assign(:modal_data, :not_found)}
@@ -100,13 +108,14 @@ defmodule SafiraWeb.Backoffice.ScannerLive.BadgeLive.Index do
     case Contest.redeem_badge(badge, attendee, staff) do
       {:ok, _} ->
         {:noreply, socket |> assign(:modal_data, nil)}
+
       {:error, _} ->
         {:noreply, socket |> assign(:modal_data, :not_linked)}
     end
   end
 
   def error_message(:not_found),
-  do: gettext("This credential is not registered in the event's system! (404)")
+    do: gettext("This credential is not registered in the event's system! (404)")
 
   def error_message(:not_linked),
     do: gettext("This credential is not linked to any attendee! (400)")
