@@ -58,10 +58,14 @@ defmodule SafiraWeb.Landing.HomeLive.Index do
 
   defp actual_enrol(activity_id, socket) do
     case Activities.enrol(socket.assigns.current_user.attendee.id, activity_id) do
-      {:ok, _} ->
+      {:ok, %{enrolment: enrolment}} ->
         {:noreply,
          socket
-         |> put_flash(:info, gettext("Successfully enrolled"))}
+         |> put_flash(:info, gettext("Successfully enrolled"))
+         |> assign(
+           :enrolments,
+           Activities.get_attendee_enrolments(socket.assigns.current_user.attendee.id)
+         )}
 
       {:error, _} ->
         {:noreply,
