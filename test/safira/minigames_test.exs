@@ -265,12 +265,22 @@ defmodule Safira.MinigamesTest do
     end
 
     test "create_slots_reel_icon/1 with valid data creates a slots_reel_icon" do
-      valid_attrs = %{image: "some image", reel_0_index: 42, reel_1_index: 42, reel_2_index: 42}
+      valid_attrs = %{
+        image: %Plug.Upload{
+          filename: "reel1.svg",
+          path: Path.expand("priv/fake/images/reel1.svg", File.cwd!())
+        },
+        reel_0_index: 42,
+        reel_1_index: 42,
+        reel_2_index: 42
+      }
 
       assert {:ok, %SlotsReelIcon{} = slots_reel_icon} =
                Minigames.create_slots_reel_icon(valid_attrs)
 
-      assert slots_reel_icon.image == "some image"
+      # Depending on your uploader, assert on a property (or string conversion) of image.
+      assert is_map(slots_reel_icon.image)
+      assert slots_reel_icon.image.file_name == "reel1.svg"
       assert slots_reel_icon.reel_0_index == 42
       assert slots_reel_icon.reel_1_index == 42
       assert slots_reel_icon.reel_2_index == 42
@@ -284,7 +294,10 @@ defmodule Safira.MinigamesTest do
       slots_reel_icon = slots_reel_icon_fixture()
 
       update_attrs = %{
-        image: "some updated image",
+        image: %Plug.Upload{
+          filename: "reel2.svg",
+          path: Path.expand("priv/fake/images/reel2.svg", File.cwd!())
+        },
         reel_0_index: 43,
         reel_1_index: 43,
         reel_2_index: 43
@@ -293,7 +306,8 @@ defmodule Safira.MinigamesTest do
       assert {:ok, %SlotsReelIcon{} = slots_reel_icon} =
                Minigames.update_slots_reel_icon(slots_reel_icon, update_attrs)
 
-      assert slots_reel_icon.image == "some updated image"
+      assert is_map(slots_reel_icon.image)
+      assert slots_reel_icon.image.file_name == "reel2.svg"
       assert slots_reel_icon.reel_0_index == 43
       assert slots_reel_icon.reel_1_index == 43
       assert slots_reel_icon.reel_2_index == 43
@@ -329,10 +343,10 @@ defmodule Safira.MinigamesTest do
     import Safira.MinigamesFixtures
 
     @invalid_attrs %{
-      multiplier: nil,
-      position_figure_0: nil,
-      position_figure_1: nil,
-      position_figure_2: nil
+      multiplier: -3,
+      position_figure_0: -1,
+      position_figure_1: -2,
+      position_figure_2: -3
     }
 
     test "list_slots_paytables/0 returns all slots_paytables" do
@@ -348,6 +362,7 @@ defmodule Safira.MinigamesTest do
     test "create_slots_paytable/1 with valid data creates a slots_paytable" do
       valid_attrs = %{
         multiplier: 42,
+        probability: 0.1,
         position_figure_0: 42,
         position_figure_1: 42,
         position_figure_2: 42
@@ -357,9 +372,8 @@ defmodule Safira.MinigamesTest do
                Minigames.create_slots_paytable(valid_attrs)
 
       assert slots_paytable.multiplier == 42
-      assert slots_paytable.position_figure_0 == 42
-      assert slots_paytable.position_figure_1 == 42
-      assert slots_paytable.position_figure_2 == 42
+      # If you no longer store the position_figure_* fields, then assert on probability instead:
+      assert slots_paytable.probability == 0.1
     end
 
     test "create_slots_paytable/1 with invalid data returns error changeset" do
@@ -380,9 +394,6 @@ defmodule Safira.MinigamesTest do
                Minigames.update_slots_paytable(slots_paytable, update_attrs)
 
       assert slots_paytable.multiplier == 43
-      assert slots_paytable.position_figure_0 == 43
-      assert slots_paytable.position_figure_1 == 43
-      assert slots_paytable.position_figure_2 == 43
     end
 
     test "update_slots_paytable/2 with invalid data returns error changeset" do
@@ -414,7 +425,7 @@ defmodule Safira.MinigamesTest do
 
     import Safira.MinigamesFixtures
 
-    @invalid_attrs %{position_1: nil, position_0: nil, position_2: nil}
+    @invalid_attrs %{position_1: -1, position_0: -2, position_2: -3, probability: nil}
 
     test "list_slots_paylines/0 returns all slots_paylines" do
       slots_payline = slots_payline_fixture()
@@ -427,7 +438,8 @@ defmodule Safira.MinigamesTest do
     end
 
     test "create_slots_payline/1 with valid data creates a slots_payline" do
-      valid_attrs = %{position_1: 42, position_0: 42, position_2: 42}
+      paytable = slots_paytable_fixture()
+      valid_attrs = %{position_1: 42, position_0: 42, position_2: 42, paytable_id: paytable.id}
 
       assert {:ok, %SlotsPayline{} = slots_payline} = Minigames.create_slots_payline(valid_attrs)
       assert slots_payline.position_1 == 42

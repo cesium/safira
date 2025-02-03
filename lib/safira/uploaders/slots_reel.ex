@@ -14,8 +14,12 @@ defmodule Safira.Uploaders.SlotsReelIcon do
     Enum.member?(extension_whitelist(), file_extension)
   end
 
-  def storage_dir(_, {_file, %SlotsReelIcon{} = speaker}) do
-    "uploads/slots_reel_icons/#{speaker.id}"
+  def storage_dir(_, {_file, %SlotsReelIcon{} = slots_reel_icon}) do
+    "uploads/slots_reel_icons/#{slots_reel_icon.id}"
+  end
+
+  def storage_dir(_, {_file, nil}) do
+    "uploads/slots_reel_icons/"
   end
 
   def filename(version, _) do

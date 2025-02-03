@@ -23,5 +23,8 @@ defmodule Safira.Minigames.SlotsPayline do
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> foreign_key_constraint(:paytable_id)
     |> validate_required(@required_fields)
+    |> validate_number(:position_0, greater_than_or_equal_to: 0)
+    |> validate_number(:position_1, greater_than_or_equal_to: 0)
+    |> validate_number(:position_2, greater_than_or_equal_to: 0)
   end
 end
