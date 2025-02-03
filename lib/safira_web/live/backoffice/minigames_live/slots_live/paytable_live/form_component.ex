@@ -5,7 +5,6 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPaytable.FormComponent do
 
   alias Safira.Contest
   alias Safira.Minigames
-  alias Safira.Minigames.WheelDrop
 
   import SafiraWeb.Components.Forms
 
@@ -14,13 +13,6 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPaytable.FormComponent do
     ~H"""
     <div>
       <.page title={gettext("Slots Paytable")} subtitle={gettext("Configures the slots paytable.")}>
-        <:actions>
-          <.link patch={~p"/dashboard/minigames/wheel/simulator"}>
-            <.button>
-              <.icon name="hero-play" class="w-5 h-5" />
-            </.button>
-          </.link>
-        </:actions>
         <div class="pt-8">
           <div class="flex flex-row justify-between items-center">
             <h2 class="font-semibold"><%= gettext("Entries") %></h2>
@@ -29,7 +21,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPaytable.FormComponent do
             </.button>
           </div>
           <ul class="h-[45vh] overflow-y-scroll scrollbar-hide mt-4 border-b-[1px] border-lightShade  dark:border-darkShade">
-            <%= for {id, _drop, form} <- @entries do %>
+            <%= for {id, _entry, form} <- @entries do %>
               <li class="border-b-[1px] last:border-b-0 border-lightShade dark:border-darkShade">
                 <.simple_form
                   id={id}
@@ -80,7 +72,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPaytable.FormComponent do
 
   @impl true
   def mount(socket) do
-    # Load the wheel drops
+    # Load the slots paytable entries
     entries =
       Minigames.list_slots_paytables()
       |> Enum.map(fn entry ->
@@ -99,7 +91,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPaytable.FormComponent do
   def handle_event("add-entry", _, socket) do
     entries = socket.assigns.entries
 
-    # Add a new drop to the list
+    # Add a new entry to the list
     {:noreply,
      socket
      |> assign(
@@ -115,33 +107,33 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPaytable.FormComponent do
   @impl true
   def handle_event("delete-entry", %{"id" => id}, socket) do
     entries = socket.assigns.entries
-    # Find the drop to delete in the drops list
-    drop = Enum.find(entries, fn {drop_id, _, _} -> drop_id == id end) |> elem(1)
+    # Find the entry to delete in the entries list
+    entry = Enum.find(entries, fn {entry_id, _, _} -> entry_id == id end) |> elem(1)
 
-    # If the drop has an id, delete it from the database
-    if drop.id != nil do
-      Minigames.delete_slots_paytable(drop)
+    # If the entry has an id, delete it from the database
+    if entry.id != nil do
+      Minigames.delete_slots_paytable(entry)
     end
 
     nothing_probability = calculate_nothing_probability(entries)
 
-    # Remove the drop from the list
+    # Remove the entry from the list
     {:noreply,
      socket
-     |> assign(entries: Enum.reject(entries, fn {drop_id, _, _} -> drop_id == id end))
+     |> assign(entries: Enum.reject(entries, fn {entry_id, _, _} -> entry_id == id end))
      |> assign(nothing_probability: nothing_probability)}
   end
 
   @impl true
-  def handle_event("validate", drop_params, socket) do
+  def handle_event("validate", entry_params, socket) do
     entries = socket.assigns.entries
-    entry = get_entry_data_by_id(entries, drop_params["identifier"])
-    changeset = Minigames.change_slots_paytable(entry, drop_params["slots_paytable"])
+    entry = get_entry_data_by_id(entries, entry_params["identifier"])
+    changeset = Minigames.change_slots_paytable(entry, entry_params["slots_paytable"])
 
-    # Update the form with the new changeset and the drop type if it changed
+    # Update the form with the new changeset and the entry type if it changed
     entries =
       socket.assigns.entries
-      |> update_drop_form(drop_params["identifier"], to_form(changeset, action: :validate))
+      |> update_entry_form(entry_params["identifier"], to_form(changeset, action: :validate))
 
     nothing_probability = calculate_nothing_probability(entries)
 
@@ -153,22 +145,18 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPaytable.FormComponent do
 
   @impl true
   def handle_event("save", _params, socket) do
-    drops = socket.assigns.entries
+    entries = socket.assigns.entries
 
     # Find if all the changesets are valid
-    valid_drops =
-      forms_valid?(Enum.map(drops, fn {_, _, form} -> form end)) and
-        calculate_nothing_probability(drops) >= 0
+    valid_entries =
+      forms_valid?(Enum.map(entries, fn {_, _, form} -> form end)) and
+        calculate_nothing_probability(entries) >= 0
 
-    IO.inspect(drops)
-    IO.inspect(valid_drops)
-    IO.inspect(forms_valid?(Enum.map(drops, fn {_, _, form} -> form end)))
-
-    if valid_drops do
-      # For each drop, update or create it
-      Enum.each(drops, fn {_, drop, form} ->
-        if drop.id != nil do
-          Minigames.update_slots_paytable(drop, form.params)
+    if valid_entries do
+      # For each entry, update or create it
+      Enum.each(entries, fn {_, entry, form} ->
+        if entry.id != nil do
+          Minigames.update_slots_paytable(entry, form.params)
         else
           Minigames.create_slots_paytable(form.params)
         end
@@ -183,25 +171,19 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPaytable.FormComponent do
     end
   end
 
-  defp update_drop_type_form_if_type_changed(drops, _id, _type), do: drops
-
-  defp update_drop_form(entries, id, new_form) do
+  defp update_entry_form(entries, id, new_form) do
     Enum.map(entries, fn
       {^id, entry, _} -> {id, entry, new_form}
       other -> other
     end)
   end
 
-  def get_entry_data_by_id(drops, id) do
-    Enum.find(drops, &(elem(&1, 0) == id)) |> elem(1)
+  def get_entry_data_by_id(entries, id) do
+    Enum.find(entries, &(elem(&1, 0) == id)) |> elem(1)
   end
 
-  defp generate_options(values) do
-    Enum.map(values, &{&1.name, &1.id})
-  end
-
-  defp calculate_nothing_probability(drops) do
-    drops
+  defp calculate_nothing_probability(entries) do
+    entries
     |> Enum.map(&elem(&1, 2))
     |> Enum.reduce(1.0, fn form, acc ->
       from_data =

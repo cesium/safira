@@ -1343,8 +1343,6 @@ defmodule Safira.Minigames do
     if slots_active?() do
       case spin_slots_transaction(attendee, bet) do
         {:ok, result} ->
-          IO.inspect(result.paytable_entry, label: "Paytable Entry")
-
           {:ok, result.target, result.paytable_entry.multiplier,
            result.attendee_state_tokens.tokens, result.winnings}
 

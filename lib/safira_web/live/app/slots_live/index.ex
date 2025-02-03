@@ -18,48 +18,9 @@ defmodule SafiraWeb.App.SlotsLive.Index do
      |> assign(:current_page, :slots)
      |> assign(:in_spin?, false)
      |> assign(:attendee_tokens, socket.assigns.current_user.attendee.tokens)
-     |> assign(:wheel_price, Minigames.get_wheel_price())
      |> assign(:result, nil)
      |> assign(:bet, 10)
      |> assign(:slots_active?, Minigames.slots_active?())}
-  end
-
-  @impl true
-  def handle_event("spin-wheel", _params, socket) do
-    {:noreply,
-     socket
-     # Set the wheel to spin mode
-     |> assign(:in_spin?, true)
-     # Deduct the price from the attendee's tokens (client side)
-     |> assign(:attendee_tokens, socket.assigns.attendee_tokens - socket.assigns.wheel_price)
-     |> push_event("spin-wheel", %{})}
-  end
-
-  def handle_event("get-prize", _params, socket) do
-    case Minigames.spin_wheel(socket.assigns.current_user.attendee) do
-      {:ok, type, drop} ->
-        {:noreply,
-         socket
-         |> assign(:result, %{type: type, drop: drop})
-         |> assign(
-           :attendee_tokens,
-           if type == :tokens do
-             socket.assigns.attendee_tokens + drop.tokens
-           else
-             socket.assigns.attendee_tokens
-           end
-         )
-         # Reset wheel
-         |> assign(:in_spin?, false)}
-
-      {:error, message} ->
-        {:noreply,
-         socket
-         |> assign(:in_spin?, false)
-         # Restore attendee tokens if the spin fails
-         |> assign(:attendee_tokens, socket.assigns.attendee_tokens + socket.assigns.wheel_price)
-         |> put_flash(:error, message)}
-    end
   end
 
   def handle_event("close-modal", _params, socket) do
@@ -76,12 +37,6 @@ defmodule SafiraWeb.App.SlotsLive.Index do
     else
       case Minigames.spin_slots(socket.assigns.current_user.attendee, socket.assigns.bet) do
         {:ok, target, multiplier, attendee_tokens, winnings} ->
-          IO.inspect("Spin successful")
-          IO.inspect(socket.assigns.bet)
-          IO.inspect(target)
-          IO.inspect(attendee_tokens)
-          IO.inspect(socket.assigns.attendee_tokens)
-
           {:noreply,
            socket
            |> assign(:in_spin?, true)
@@ -127,16 +82,7 @@ defmodule SafiraWeb.App.SlotsLive.Index do
   end
 
   @impl true
-  def handle_info({"price", value}, socket) do
-    {:noreply, socket |> assign(:wheel_price, value)}
-  end
-
-  @impl true
   def handle_info({"is_active", value}, socket) do
     {:noreply, socket |> assign(:slots_active?, value)}
-  end
-
-  defp can_spin?(wheel_active?, tokens, price, in_spin?) do
-    !in_spin? && wheel_active? && tokens >= price
   end
 end
