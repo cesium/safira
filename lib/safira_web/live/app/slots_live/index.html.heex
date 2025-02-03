@@ -5,7 +5,7 @@
     </span>
   </:actions>
   <.machine />
-  <div class="flex flex-col md:flex-row gap-6">
+  <div class="flex flex-col md:flex-row gap-6 items-center md:justify-between">
     <div class="flex border-2 divide-x-2 rounded-full w-full sm:px-3 max-w-lg overflow-hidden">
       <div class="flex items-center py-2 w-full pl-2">
         <.icon name="hero-currency-dollar-solid" class="text-yellow-300 ml-2" />
@@ -47,11 +47,20 @@
     </div>
     <.action_button
       title={gettext("Spin")}
-      class="max-w-80"
+      class="max-w-80 mx-0"
       disabled={@bet > @attendee_tokens || not @slots_active? || @in_spin?}
       phx-click="spin-slots"
     />
   </div>
+  <.link
+    patch={~p"/app/slots/paytable"}
+    class="flex items-center max-w-80 mx-auto mt-8 md:mt-20 justify-center"
+  >
+    <.icon name="hero-arrow-top-right-on-square" class="text-accent mr-2" />
+    <span class="text-accent font-terminal font-bold">
+      <%= gettext("View paytable") %>
+    </span>
+  </.link>
 </.page>
 
 <.result_modal
@@ -62,4 +71,12 @@
   show
   id="confirm"
   on_cancel={JS.push("close-modal")}
+/>
+
+<.paytable_modal
+  :if={@live_action in [:show_paytable]}
+  wrapper_class="px-6"
+  show
+  id="paytable-modal"
+  on_cancel={JS.patch(~p"/app/slots")}
 />

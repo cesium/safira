@@ -110,7 +110,10 @@ defmodule SafiraWeb.Router do
 
         live "/coin_flip", CoinFlipLive.Index, :index
 
-        live "/slots", SlotsLive.Index, :index
+        scope "/slots", SlotsLive do
+          live "/", Index, :index
+          live "/paytable", Index, :show_paytable
+        end
 
         scope "/store", StoreLive do
           live "/", Index, :index

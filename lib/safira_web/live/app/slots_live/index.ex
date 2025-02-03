@@ -3,6 +3,7 @@ defmodule SafiraWeb.App.SlotsLive.Index do
 
   import SafiraWeb.App.SlotsLive.Components.ResultModal
   import SafiraWeb.App.SlotsLive.Components.Machine
+  import SafiraWeb.App.SlotsLive.Components.PaytableModal
 
   alias Safira.Minigames
 
