@@ -70,10 +70,10 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MemberLive.Index do
 
   @impl true
   def handle_event("save", %{"member" => member_params}, socket) do
-    if socket.assigns.member do
+    if socket.assigns.member.id do
       save_member(socket, :teams_members_edit, member_params)
     else
-      member_params = Map.put(member_params, "team_id", socket.assigns.member.team_id)
+      member_params = Map.put(member_params, "team_id", socket.assigns.team.id)
       save_member(socket, :members_new, member_params)
     end
   end
@@ -85,11 +85,11 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MemberLive.Index do
   end
 
   @impl true
-  def handle_event("delete", %{"team_id" => team_id}, socket) do
-    member = Teams.get_team_member!(team_id)
+  def handle_event("delete", %{"id" => id}, socket) do
+    member = Teams.get_team_member!(id)
 
     case Teams.delete_team_member(member) do
-      {:ok, _member} ->
+      {:ok, _} ->
         {:noreply,
          socket
          |> put_flash(:info, "Member deleted successfully")
