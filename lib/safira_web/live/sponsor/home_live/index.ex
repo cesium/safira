@@ -1,10 +1,11 @@
 defmodule SafiraWeb.Sponsor.HomeLive.Index do
   use SafiraWeb, :sponsor_view
 
-  alias Safira.Accounts
+  alias Safira.Contest
 
   import SafiraWeb.Sponsor.HomeLive.Components.Attendee
   import SafiraWeb.Components.Table
+  import SafiraWeb.Components.TableSearch
 
   @impl true
   def mount(_params, _session, socket) do
@@ -13,21 +14,28 @@ defmodule SafiraWeb.Sponsor.HomeLive.Index do
 
   @impl true
   def handle_params(params, _url, socket) do
-    case Accounts.list_attendees(params) do
-      {:ok, {attendees, meta}} ->
-        {:noreply,
+    badge_id = socket.assigns.current_user.company.badge_id
+
+    if is_nil(badge_id) do
+      {:noreply,
          socket
          |> assign(:current_page, :visitors)
-         |> assign(:meta, meta)
          |> assign(:params, params)
-         |> stream(:visitors, attendees, reset: true)}
+         |> assign(:meta, %Flop.Meta{current_offset: 0, current_page: 0})
+         |> stream(:redeems, [], reset: true)}
+    else
+      case Contest.list_badge_redeems_meta(socket.assigns.current_user.company.badge_id, params) do
+        {:ok, {redeems, meta}} ->
+          {:noreply,
+          socket
+          |> assign(:current_page, :visitors)
+          |> assign(:meta, meta)
+          |> assign(:params, params)
+          |> stream(:redeems, redeems, reset: true)}
 
-      {:error, _} ->
-        {:error, socket}
+        {:error, _} ->
+          {:error, socket}
+      end
     end
-  end
-
-  defp get_attendee_image(_attendee) do
-    "/images/attendee.svg"
   end
 end

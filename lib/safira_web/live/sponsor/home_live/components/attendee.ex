@@ -4,18 +4,22 @@ defmodule SafiraWeb.Sponsor.HomeLive.Components.Attendee do
   """
   use SafiraWeb, :component
 
+  import SafiraWeb.Components.Avatar
+
   attr :id, :string, required: true
   attr :name, :string, required: true
   attr :image, :string, required: true
 
   def attendee(assigns) do
     ~H"""
-    <li id={@id} class="flex flex-row items-center justify-center">
-      <.link href={"/attendees/#{@id}"}>
-        <div class="py-4 px-4">
-          <img class="w-16 h-16 m-auto" src={@image} />
-          <h1 class="font-terminal uppercase text-xl">
-            <%= @name %>
+    <li id={@id} class="flex flex-row p-4">
+      <.link href={"/attendees/#{@id}"} class="w-full h-full">
+        <div class="px-4">
+          <div class="m-auto w-fit">
+          <.avatar size={:lg} handle={@user.handle} />
+          </div>
+          <h1 class="font-terminal text-center uppercase text-xl">
+            <%= @user.name %>
           </h1>
         </div>
       </.link>

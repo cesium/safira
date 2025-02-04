@@ -5,16 +5,23 @@
 >
   <h2><%= gettext("Visitors") %></h2>
 
+  <.table_search
+        id="visitor-table-name-search"
+        params={@params}
+        field={:name}
+        path={~p"/sponsor/"}
+        placeholder={gettext("Search for visitors")}
+      />
+
   <ul
     id="visitors-list"
-    class="grid grid-cols-2 md:grid-cols-4 space-y-4 py-8"
+    class="grid grid-cols-2 md:grid-cols-4"
     phx-update="stream"
   >
     <.attendee
-      :for={{id, attendee} <- @streams.visitors}
+      :for={{id, redeem} <- @streams.redeems}
       id={id}
-      name={attendee.name}
-      image={get_attendee_image(attendee)}
+      user={redeem.attendee.user}
     />
   </ul>
 
