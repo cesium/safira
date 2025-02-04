@@ -57,6 +57,7 @@ defmodule Safira.Repo.Seeds.Badges do
         name: name,
         description: description,
         tokens: :rand.uniform(999),
+        entries: 0,
         begin: begin_time,
         end: end_time,
         category_id: category.id

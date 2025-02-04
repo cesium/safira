@@ -38,6 +38,7 @@ defmodule SafiraWeb.Backoffice.BadgeLive.FormComponent do
               <.field field={@form[:name]} type="text" label="Name" required />
               <.field field={@form[:description]} type="textarea" label="Description" required />
               <.field field={@form[:tokens]} type="number" label="Tokens" required />
+              <.field field={@form[:entries]} type="number" label="Entries" required />
               <.field
                 field={@form[:category_id]}
                 options={categories_options(@categories)}

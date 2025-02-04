@@ -35,7 +35,7 @@ defmodule SafiraWeb.Components.Badge do
         ]}
         src="/images/badges/404-fallback.svg"
       />
-      <span class="text-sm font-semibold">
+      <span class="text-sm font-semibold text-center">
         <%= @badge.name %>
       </span>
       <span class="text-sm font-semibold">

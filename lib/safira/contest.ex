@@ -629,6 +629,11 @@ defmodule Safira.Contest do
       |> Multi.merge(fn %{redeem: _redeem} ->
         change_attendee_tokens_transaction(attendee, attendee.tokens + badge.tokens)
       end)
+      # Update final draw entries
+      |> Multi.update(
+        :attendee_update_entries,
+        Attendee.changeset(attendee, %{entries: attendee.entries + badge.entries})
+      )
       # Run the transaction
       |> Repo.transaction()
 

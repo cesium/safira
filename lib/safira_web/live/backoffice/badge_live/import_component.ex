@@ -95,6 +95,7 @@ defmodule SafiraWeb.Backoffice.BadgeLive.ImportComponent do
                 <th>image</th>
                 <th>category</th>
                 <th>tokens</th>
+                <th>entries</th>
                 <th>counts_for_day</th>
               </tr>
             </thead>
@@ -107,6 +108,7 @@ defmodule SafiraWeb.Backoffice.BadgeLive.ImportComponent do
                 <td class="border">lucky_bastard.svg</td>
                 <td class="border">General</td>
                 <td class="border">100</td>
+                <td class="border">0</td>
                 <td class="border">true</td>
               </tr>
             </tbody>
@@ -179,7 +181,8 @@ defmodule SafiraWeb.Backoffice.BadgeLive.ImportComponent do
       badges_csv_path
       |> File.stream!()
       |> CSV.parse_stream()
-      |> Enum.reduce(categories, fn [_, _, _, _, _, category_name, _, _] = row, acc_categories ->
+      |> Enum.reduce(categories, fn [_, _, _, _, _, category_name, _, _, _] = row,
+                                    acc_categories ->
         {updated_categories, category} = find_or_create_category(category_name, acc_categories)
         import_badge(row, category, dest)
         updated_categories
@@ -192,7 +195,8 @@ defmodule SafiraWeb.Backoffice.BadgeLive.ImportComponent do
   end
 
   def import_badge(row, category, dest) do
-    [name, description, begin_time, end_time, image_name, _, tokens, counts_for_day] = row
+    [name, description, begin_time, end_time, image_name, _, tokens, entries, counts_for_day] =
+      row
 
     case Contest.create_badge(%{
            name: name,
@@ -200,6 +204,7 @@ defmodule SafiraWeb.Backoffice.BadgeLive.ImportComponent do
            begin: Timex.parse!(begin_time, "{YYYY}-{0M}-{0D} {h24}:{m}"),
            end: Timex.parse!(end_time, "{YYYY}-{0M}-{0D} {h24}:{m}"),
            tokens: tokens,
+           entries: entries,
            counts_for_day: string_to_bool(counts_for_day),
            category_id: category.id
          }) do
