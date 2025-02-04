@@ -14,7 +14,7 @@ defmodule SafiraWeb.App.WheelLive.Components.Wheel do
           <div
             id="wheel"
             class="h-full w-full rounded-full drop-shadow-[0_0px_10px_rgba(0,0,0,0.7)]"
-            style="background: conic-gradient(#ff800d,#fc993f,#ff800d,#fc993f,#ff800d);"
+            style="background: conic-gradient(#ffdb0d,#bfa408,#ffdb0d,#bfa408,#ffdb0d);"
           >
             <%= for i <- 0..@slices do %>
               <div
