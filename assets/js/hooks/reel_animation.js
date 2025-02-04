@@ -4,7 +4,6 @@ const iconSize = 79
 
 export const ReelAnimation = {
   mounted() {
-    const numIcons = this.el.dataset.numIcons
     this.positions = Array(3).fill(0)
     this.absolutePositions = Array(3).fill(0)
     this.rotations = Array(3).fill(0)

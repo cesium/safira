@@ -17,7 +17,7 @@ defmodule SafiraWeb.App.SlotsLive.Components.Machine do
       |> assign(:reel_height, calculate_height(reels_by_position))
 
     ~H"""
-    <div id="slots-machine" phx-hook="ReelAnimation" data-num-icons={length(reels_by_position[0])}>
+    <div id="slots-machine" phx-hook="ReelAnimation">
       <div class="flex justify-center my-12">
         <div class="slots-container flex gap-5 rounded-3xl py-6 px-2 items-center justify-center ring-2 ring-white w-full max-w-96">
           <%= for reel_num <- 0..2 do %>
