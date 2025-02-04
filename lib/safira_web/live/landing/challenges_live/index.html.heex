@@ -34,7 +34,7 @@
         </h2>
         <div class="mt-10">
           <p class="font-iregular text-white">
-            <%= @selected_challenge.description %>
+            <.markdown content={@selected_challenge.description} class="[&_a]:text-accent" />
           </p>
         </div>
         <div class="mt-3 flex flex-col"></div>
@@ -58,7 +58,7 @@
           </h2>
           <div class="mt-10">
             <p class="font-iregular text-white">
-              <%= challenge.description %>
+              <.markdown content={challenge.description} class="[&_a]:text-accent" />
             </p>
           </div>
           <div class="mt-3 flex flex-col"></div>
