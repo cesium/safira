@@ -7,7 +7,7 @@ defmodule Safira.Activities.Activity do
   alias Safira.Event
 
   @required_fields ~w(title date time_start time_end)a
-  @optional_fields ~w(description category_id location has_enrolments max_enrolments)a
+  @optional_fields ~w(description category_id location has_enrolments max_enrolments enrolment_count)a
 
   @derive {
     Flop.Schema,
@@ -34,12 +34,15 @@ defmodule Safira.Activities.Activity do
     field :time_end, :time
     field :has_enrolments, :boolean, default: false
     field :max_enrolments, :integer, default: 0
+    field :enrolment_count, :integer, default: 0
 
     belongs_to :category, Safira.Activities.ActivityCategory
 
     many_to_many :speakers, Safira.Activities.Speaker,
       join_through: "activities_speakers",
       on_replace: :delete
+
+    has_many :enrolments, Safira.Activities.Enrolment
 
     timestamps(type: :utc_datetime)
   end
@@ -51,6 +54,10 @@ defmodule Safira.Activities.Activity do
     |> validate_required(@required_fields)
     |> validate_activity_date()
     |> validate_activity_times()
+    |> check_constraint(:max_enrolments,
+      name: :activity_not_overbooked,
+      message: "Activity overbooked"
+    )
   end
 
   @doc false

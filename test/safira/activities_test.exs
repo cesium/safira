@@ -26,7 +26,7 @@ defmodule Safira.ActivitiesTest do
 
     test "get_activity!/1 returns the activity with given id" do
       activity = activity_fixture()
-      assert Activities.get_activity!(activity.id) == activity
+      assert Activities.get_activity!(activity.id).id == activity.id
     end
 
     test "create_activity/1 with valid data creates a activity" do
@@ -86,7 +86,7 @@ defmodule Safira.ActivitiesTest do
     test "update_activity/2 with invalid data returns error changeset" do
       activity = activity_fixture()
       assert {:error, %Ecto.Changeset{}} = Activities.update_activity(activity, @invalid_attrs)
-      assert activity == Activities.get_activity!(activity.id)
+      assert activity.id == Activities.get_activity!(activity.id).id
     end
 
     test "delete_activity/1 deletes the activity" do

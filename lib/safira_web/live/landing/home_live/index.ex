@@ -3,7 +3,6 @@ defmodule SafiraWeb.Landing.HomeLive.Index do
   use SafiraWeb, :landing_view
 
   import SafiraWeb.Landing.HomeLive.Components.{Hero, Partners, Pitch, Sponsors, Speakers}
-  import SafiraWeb.Landing.Components.Schedule
 
   alias Safira.{Activities, Event}
 
@@ -26,5 +25,10 @@ defmodule SafiraWeb.Landing.HomeLive.Index do
   @impl true
   def handle_params(params, _url, socket) do
     {:noreply, socket |> assign(:params, params)}
+  end
+
+  @impl true
+  def handle_info({:update_flash, {flash_type, msg}}, socket) do
+    {:noreply, put_flash(socket, flash_type, msg)}
   end
 end

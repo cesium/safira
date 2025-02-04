@@ -508,6 +508,8 @@ defmodule SafiraWeb.Components.Forms do
   attr :field, HTML.FormField,
     doc: "A form field struct retrieved from the form, for example: `@form[:email]`."
 
+  attr :mode, :atom, default: :single, doc: "The mode of the multi select."
+
   attr :rest, :global,
     include: ~w(value_mapper placeholder),
     doc: "Any other attribute to be added to the input."
@@ -525,7 +527,7 @@ defmodule SafiraWeb.Components.Forms do
 
       <.live_select
         id={assigns.id || @field.id}
-        mode={:tags}
+        mode={@mode}
         field={@field}
         phx-target={@target}
         container_class={"#{@wrapper_class}"}
