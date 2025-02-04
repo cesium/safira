@@ -66,29 +66,14 @@
 </.modal>
 
 <.modal
-  :if={@live_action in [:teams_new]}
-  id="teams-new-modal"
-  show
-  on_cancel={JS.patch(~p"/dashboard/event/teams")}
->
-  <.live_component
-    module={SafiraWeb.Live.Backoffice.EventLive.TeamsLive.FormComponent}
-    id={:teams_new}
-    title={@page_title}
-    action={@live_action}
-    patch={~p"/dashboard/event/teams"}
-  />
-</.modal>
-
-<.modal
-  :if={@live_action in [:teams_edit]}
+  :if={@live_action in [:teams_new ,:teams_edit]}
   id="teams-edit-modal"
   show
   on_cancel={JS.patch(~p"/dashboard/event/teams/")}
 >
   <.live_component
     module={SafiraWeb.Live.Backoffice.EventLive.TeamsLive.Edit}
-    id="teams_edit"
+    id="teams-edit"
     title={@page_title}
     team={@team}
     action={@live_action}

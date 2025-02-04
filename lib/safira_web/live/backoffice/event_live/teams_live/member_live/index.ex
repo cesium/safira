@@ -11,7 +11,7 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MemberLive.Index do
   def render(assigns) do
     ~H"""
     <div>
-      <.page title={@title} subtitle={gettext("Manage your team members here.")}>
+      <.page title={@title} >
         <.simple_form
           for={@form}
           id="member-form"
@@ -25,21 +25,15 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MemberLive.Index do
           <div class="w-full pb-6">
             <.field_label>Photo</.field_label>
             <.image_uploader
-              class="h-full"
+              class="h-80"
+              image_class="h-80"
               upload={@uploads.image}
               image={Uploaders.Member.url({@member.image, @member}, :original, signed: true)}
-              icon="hero-photo"
+              icon="hero-user-circle"
             />
           </div>
           <:actions>
             <.button phx-disable-with="Saving...">Save</.button>
-            <.link
-              phx-click={JS.push("delete", value: %{id: @member.id})}
-              data-confirm="Are you sure?"
-              phx-target={@myself}
-            >
-              <.icon name="hero-trash" class="w-5 h-5" />
-            </.link>
           </:actions>
         </.simple_form>
       </.page>
@@ -82,22 +76,6 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MemberLive.Index do
   def handle_event("validate", %{"member" => member_params}, socket) do
     changeset = Teams.change_team_member(socket.assigns.member, member_params)
     {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
-  end
-
-  @impl true
-  def handle_event("delete", %{"id" => id}, socket) do
-    member = Teams.get_team_member!(id)
-
-    case Teams.delete_team_member(member) do
-      {:ok, _} ->
-        {:noreply,
-         socket
-         |> put_flash(:info, "Member deleted successfully")
-         |> push_patch(to: socket.assigns.patch)}
-
-      {:error, _reason} ->
-        {:noreply, socket |> put_flash(:error, "Failed to delete member")}
-    end
   end
 
   defp save_member(socket, :teams_members_edit, member_params) do

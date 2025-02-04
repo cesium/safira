@@ -20,17 +20,26 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.Index do
           phx-update="stream"
         >
           <li
-            :for={{_, team} <- @streams.teams}
-            id={team.id}
+            :for={{id, team} <- @streams.teams}
+            id={id}
             class="even:bg-lightShade/20 dark:even:bg-darkShade/20 px-4 py-4 flex flex-row w-full justify-between"
           >
             <div class="flex flex-row gap-2 items-center">
               <.icon name="hero-bars-3" class="w-5 h-5 handle cursor-pointer ml-4" />
               <p><%= team.name %></p>
             </div>
+            <div>
             <.link navigate={~p"/dashboard/event/teams/#{team.id}/edit/"}>
               <.icon name="hero-pencil" class="w-5 h-5" />
             </.link>
+            <.link
+              phx-click={JS.push("delete", value: %{id: team.id})}
+              data-confirm="Are you sure?"
+              phx-target={@myself}
+            >
+              <.icon name="hero-trash" class="w-5 h-5" />
+            </.link>
+            </div>
           </li>
         </ul>
       </.page>
@@ -59,5 +68,21 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.Index do
     end)
 
     {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("delete", %{"id" => id}, socket) do
+    team = Teams.get_team!(id)
+
+    case Teams.delete_team(team) do
+      {:ok, _} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, "Team deleted successfully")
+         |> stream_delete(:teams, team)}
+
+      {:error, _reason} ->
+        {:noreply, socket |> put_flash(:error, "Failed to delete team")}
+    end
   end
 end
