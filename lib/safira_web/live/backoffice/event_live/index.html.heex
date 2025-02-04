@@ -5,8 +5,10 @@
         <.icon name="hero-lifebuoy" class="w-5 h-5" />
       </.button>
     </.link>
-    <.link patch={~p"/dashboard/event/edit"}>
-      <.button><%= gettext("Edit Settings") %></.button>
+    <.link patch={~p"/dashboard/event/credentials"}>
+      <.button>
+        <.icon name="hero-qr-code" class="w-5 h-5" />
+      </.button>
     </.link>
   </:actions>
 
@@ -86,7 +88,7 @@
     module={SafiraWeb.Backoffice.EventLive.GenerateCredentialsLive.FormComponent}
     id={:credentials}
     title={@page_title}
-    patch={~p"/dashboard/event/credentials"}
+    patch={~p"/dashboard/event/"}
   />
 </.modal>
 

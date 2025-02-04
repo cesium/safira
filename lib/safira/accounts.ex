@@ -833,8 +833,15 @@ defmodule Safira.Accounts do
     for _ <- 1..count do
       {:ok, credential} = create_credential(%{})
 
+      phx_host =
+        if System.get_env("PHX_HOST") != nil do
+          "https://" <> System.get_env("PHX_HOST")
+        else
+          ""
+        end
+
       png =
-        credential.id
+        "#{phx_host}/attendee/#{credential.id}"
         |> QRCodeEx.encode()
         |> QRCodeEx.png()
 
