@@ -10,6 +10,7 @@ defmodule SafiraWeb.Landing.FAQLive.Index do
   def mount(_params, _session, socket) do
     {:ok,
      socket
+     |> assign(:current_page, :faqs)
      |> stream(:faqs, Event.list_faqs())}
   end
 end

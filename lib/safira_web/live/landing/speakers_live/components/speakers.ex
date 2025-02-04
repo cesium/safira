@@ -92,7 +92,8 @@ defmodule SafiraWeb.Landing.SpeakersLive.Components.Speakers do
               <%= @activity.title %> <%= format_time(@activity.time_start) %>
             </p>
             <button
-              class="ml-4 font-terminal uppercase w-16 select-none rounded-full bg-accent px-2 text-xl text-white hover:scale-110"
+              :if={@speaker.biography}
+              class="ml-4 font-terminal uppercase w-16 select-none rounded-full px-2 text-xl text-white border border-white hover:bg-white/20 transition-colors"
               phx-click={
                 if @selected do
                   JS.toggle(

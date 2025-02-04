@@ -12,6 +12,7 @@ defmodule SafiraWeb.Landing.HomeLive.Index do
 
     {:ok,
      socket
+     |> assign(:current_page, :home)
      |> assign(:tiers, Companies.list_tiers_with_companies())
      |> assign(:event_start_date, Event.get_event_start_date())
      |> assign(:event_end_date, Event.get_event_end_date())

@@ -33,6 +33,14 @@ defmodule Safira.Event do
   defp bool_to_string(true), do: "true"
   defp bool_to_string(false), do: "false"
 
+  @doc """
+  Changes whether the registrations for the event are open
+
+  ## Examples
+
+      iex> change_registrations_open(true)
+      :ok
+  """
   def change_registrations_open(registrations_open) do
     Constants.set(
       "registrations_open",
@@ -40,6 +48,14 @@ defmodule Safira.Event do
     )
   end
 
+  @doc """
+  Returns the event's start time.
+
+  ## Examples
+
+      iex> get_event_start_time()
+      ~U[2025-02-11T08:00:00Z]
+  """
   def get_event_start_time! do
     case Constants.get("start_time") do
       {:ok, start_time_str} ->
@@ -54,6 +70,14 @@ defmodule Safira.Event do
     end
   end
 
+  @doc """
+  Changes the event's start time.
+
+  ## Examples
+
+      iex> change_event_start_time(~U[2025-02-11T08:00:00Z])
+      :ok
+  """
   def change_event_start_time(start_time) do
     result = Constants.set("start_time", DateTime.to_iso8601(start_time))
     broadcast_start_time_update("start_time", start_time)
@@ -76,6 +100,14 @@ defmodule Safira.Event do
     Phoenix.PubSub.broadcast(@pubsub, "start_time", {config, value})
   end
 
+  @doc """
+  Returns whether the event has started.
+
+  ## Examples
+
+      iex> event_started?()
+      false
+  """
   def event_started? do
     start_time = get_event_start_time!()
     DateTime.compare(start_time, DateTime.utc_now()) == :lt
@@ -95,6 +127,14 @@ defmodule Safira.Event do
     ]
   end
 
+  @doc """
+  Returns the active feature flags.
+
+  ## Examples
+
+      iex> get_active_feature_flags()
+      ["login_enabled", "schedule_enabled"]
+  """
   def get_active_feature_flags! do
     feature_flag_keys()
     |> Constants.get_many!()
@@ -102,16 +142,57 @@ defmodule Safira.Event do
     |> Enum.map(fn {k, _v} -> k end)
   end
 
+  @doc """
+  Returns the feature flag.
+
+  Raises `Ecto.NoResultsError` if the flag does not exist.
+
+  ## Examples
+
+      iex> get_feature_flag!("login_enabled")
+      true
+  """
   def get_feature_flag!(flag) do
     with {:ok, value} <- Constants.get(flag), do: value == "true"
   end
 
+  @doc """
+  Returns the feature flag.
+
+  ## Examples
+
+      iex> get_feature_flag("login_enabled")
+      true
+  """
+  def get_feature_flag(flag) do
+    case Constants.get(flag) do
+      {:ok, value} -> value == "true"
+      _ -> false
+    end
+  end
+
+  @doc """
+  Returns the feature flags.
+
+  ## Examples
+
+      iex> get_feature_flags()
+      %{"login_enabled" => true, "schedule_enabled" => false}
+  """
   def get_feature_flags do
     feature_flag_keys()
     |> Enum.map(fn k -> with {:ok, v} <- Constants.get(k), do: {k, v} end)
     |> Enum.into(%{})
   end
 
+  @doc """
+  Changes the feature flags.
+
+  ## Examples
+
+      iex> change_feature_flags([{"login_enabled", true}, {"schedule_enabled", false}])
+      :ok
+  """
   def change_feature_flags(flags) do
     flags
     |> Enum.each(fn {k, v} -> Constants.set(k, bool_to_string(v)) end)

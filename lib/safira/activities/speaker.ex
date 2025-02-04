@@ -80,11 +80,8 @@ defmodule Safira.Activities.Speaker.Socials do
 
   def validate_linkedin(changeset) do
     changeset
-    |> validate_format(
-      :linkedin,
-      ~r/^[a-zA-Z0-9]{3,100}$/,
-      message: "not a valid linkedin handle"
-    )
+    |> validate_length(:linkedin, min: 3, max: 100, message: "not a valid linkedin handle")
+    |> validate_format(:linkedin, ~r/^\S+$/, message: "cannot contain spaces")
   end
 
   def validate_x(changeset) do

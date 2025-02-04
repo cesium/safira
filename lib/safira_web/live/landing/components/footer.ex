@@ -7,17 +7,18 @@ defmodule SafiraWeb.Landing.Components.Footer do
 
   alias Safira.Event
 
+  slot :tip, required: false
+
   def footer(assigns) do
     ~H"""
     <footer class="xl:px-[15rem] md:px-[8rem] px-[2.5rem]">
-      <div class="flex flex-col justify-between gap-16 py-10 lg:flex-row">
+      <div class="flex flex-col justify-between gap-16 py-10 lg:flex-row items-center">
         <div class="flex select-none items-start justify-center lg:justify-start">
           <img src="/images/sei-logo.svg" width={100} height={100} alt="SEI Logo" />
           <p class="pl-6 text-white font-semibold lg:flex-1">
             Semana da <br /> Engenharia <br /> Informática
           </p>
         </div>
-
         <div class="flex-2">
           <div class="grid lg:grid-flow-col lg:auto-rows-max gap-8 grid-cols-1 lg:grid-rows-2 select-none justify-items-center whitespace-nowrap font-iregular text-sm text-white">
             <%= for {link, idx} <- Enum.with_index(footer_links()) do %>
@@ -36,6 +37,20 @@ defmodule SafiraWeb.Landing.Components.Footer do
               <.socials />
             </div>
           </div>
+        </div>
+      </div>
+      <div
+        :if={@tip != []}
+        class="hidden lg:flex flex-col items-center w-full justify-center absolute bottom-0 left-0 overflow-clip select-none"
+      >
+        <div class="group flex flex-col items-center justify-center">
+          <p class="bg-white text-black text-center p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+            <%= render_slot(@tip) %>
+          </p>
+          <img
+            src={~p"/images/star-struck-void.svg"}
+            class="w-32 h-32 translate-y-11 group-hover:translate-y-6 transition-transform"
+          />
         </div>
       </div>
     </footer>

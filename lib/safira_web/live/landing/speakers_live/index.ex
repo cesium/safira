@@ -12,7 +12,8 @@ defmodule SafiraWeb.Landing.SpeakersLive.Index do
     {:ok,
      socket
      |> assign(:event_start_date, Event.get_event_start_date())
-     |> assign(:event_end_date, Event.get_event_end_date())}
+     |> assign(:event_end_date, Event.get_event_end_date())
+     |> assign(:current_page, :speakers)}
   end
 
   @impl true
