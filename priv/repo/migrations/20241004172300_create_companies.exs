@@ -8,7 +8,6 @@ defmodule Safira.Repo.Migrations.CreateCompanies do
       add :url, :string
       add :logo, :string
 
-      add :user_id, references(:users, type: :binary_id, on_delete: :delete_all)
       add :badge_id, references(:badges, type: :binary_id, on_delete: :delete_all)
       add :tier_id, references(:tiers, type: :binary_id, on_delete: :restrict), null: false
 
@@ -16,6 +15,5 @@ defmodule Safira.Repo.Migrations.CreateCompanies do
     end
 
     create unique_index(:companies, [:badge_id])
-    create unique_index(:companies, [:user_id])
   end
 end

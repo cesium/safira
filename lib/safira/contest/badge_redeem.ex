@@ -11,14 +11,13 @@ defmodule Safira.Contest.BadgeRedeem do
   @optional_fields ~w(redeemed_by_id)a
 
   @derive {Flop.Schema,
-    filterable: [:badge_id, :attendee_id, :redeemed_by_id, :name],
-    sortable: [:inserted_at, :updated_at],
-    default_limit: 10,
-    max_limit: 50,
-    join_fields: [
-      name: [binding: :user, field: :name]
-    ]
-  }
+           filterable: [:badge_id, :attendee_id, :redeemed_by_id, :name],
+           sortable: [:inserted_at, :updated_at],
+           default_limit: 10,
+           max_limit: 50,
+           join_fields: [
+             name: [binding: :user, field: :name]
+           ]}
   schema "badge_redeems" do
     belongs_to :badge, Badge
 

@@ -1,28 +1,18 @@
-<.page
-  title={gettext("Hello, %{company_name} 👋", company_name: @current_user.name)}
-  title_class="font-terminal uppercase"
-  size={:xl}
->
-  <h2><%= gettext("Visitors") %></h2>
-
-  <.table_search
-        id="visitor-table-name-search"
-        params={@params}
-        field={:name}
-        path={~p"/sponsor/"}
-        placeholder={gettext("Search for visitors")}
-      />
-
-  <ul
-    id="visitors-list"
-    class="grid grid-cols-2 md:grid-cols-4"
-    phx-update="stream"
-  >
-    <.attendee
-      :for={{id, redeem} <- @streams.redeems}
-      id={id}
-      user={redeem.attendee.user}
+<.page title={gettext("Visitors")} title_class="font-terminal uppercase" size={:xl}>
+  <div>
+    <.table_search
+      id="visitor-table-name-search"
+      params={@params}
+      field={:name}
+      path={~p"/sponsor/"}
+      placeholder={gettext("Search by name")}
     />
+    <.simple_form for={@form} phx-change="validate">
+      <.field field={@form[:all]} type="switch" label="Include non visitors" />
+    </.simple_form>
+  </div>
+  <ul id="visitors-list" class="grid grid-cols-2 md:grid-cols-4" phx-update="stream">
+    <.attendee :for={{id, user} <- @streams.users} id={id} user={user} />
   </ul>
 
   <.pagination meta={@meta} params={@params} />
