@@ -4,11 +4,15 @@ defmodule Safira.ContestTest do
   alias Safira.Contest
 
   describe "badge_redeems" do
+    alias Safira.AccountsFixtures
     alias Safira.Contest.BadgeRedeem
 
     import Safira.ContestFixtures
 
-    @invalid_attrs %{}
+    @invalid_attrs %{
+      badge_id: nil,
+      attendee_id: nil
+    }
 
     test "list_badge_redeems/0 returns all badge_redeems" do
       badge_redeem = badge_redeem_fixture()
@@ -21,9 +25,12 @@ defmodule Safira.ContestTest do
     end
 
     test "create_badge_redeem/1 with valid data creates a badge_redeem" do
-      valid_attrs = %{}
+      valid_attrs = %{
+        badge_id: badge_fixture().id,
+        attendee_id: AccountsFixtures.attendee_fixture().id
+      }
 
-      assert {:ok, %BadgeRedeem{} = badge_redeem} = Contest.create_badge_redeem(valid_attrs)
+      assert {:ok, %BadgeRedeem{}} = Contest.create_badge_redeem(valid_attrs)
     end
 
     test "create_badge_redeem/1 with invalid data returns error changeset" do
@@ -32,9 +39,13 @@ defmodule Safira.ContestTest do
 
     test "update_badge_redeem/2 with valid data updates the badge_redeem" do
       badge_redeem = badge_redeem_fixture()
-      update_attrs = %{}
 
-      assert {:ok, %BadgeRedeem{} = badge_redeem} =
+      update_attrs = %{
+        badge_id: badge_fixture().id,
+        attendee_id: AccountsFixtures.attendee_fixture().id
+      }
+
+      assert {:ok, %BadgeRedeem{}} =
                Contest.update_badge_redeem(badge_redeem, update_attrs)
     end
 

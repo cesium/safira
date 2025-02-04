@@ -138,38 +138,46 @@ defmodule SafiraWeb.Backoffice.BadgeLive.ImportComponent do
     {:noreply, assign(socket, status: :compressing)}
   end
 
-  def handle_progress(:dir, entry, socket) do
-    if entry.done? do
-      temp_dir = System.tmp_dir!()
+  def handle_progress(:dir, %{done?: false}, socket) do
+    {:noreply, assign(socket, status: :uploading)}
+  end
 
-      [{dest, _paths}] =
-        consume_uploaded_entries(socket, :dir, fn %{path: path}, _entry ->
-          case :zip.list_dir(~c"#{path}") do
-            {:ok, [{:zip_comment, []}, {:zip_file, first, _, _, _, _} | _]} ->
-              dest_path = Path.join(temp_dir, Path.basename(to_string(first)))
+  def handle_progress(:dir, %{done?: true}, socket) do
+    temp_dir = System.tmp_dir!()
 
-              case :zip.unzip(~c"#{path}", cwd: ~c"#{temp_dir}") do
-                {:ok, paths} -> {:ok, {dest_path, paths}}
-                {:error, reason} -> {:error, reason}
-              end
+    [{dest, _paths}] =
+      consume_uploaded_entries(socket, :dir, fn %{path: path}, _entry ->
+        extract_zip(path, temp_dir)
+      end)
 
-            {:error, reason} ->
-              {:error, reason}
-          end
-        end)
+    handle_import_result(dest, socket)
+  end
 
-      case import_badges(dest) do
-        {:ok, _} ->
-          {:noreply,
-           socket
-           |> put_flash(:success, "Finished importing badges.")
-           |> push_navigate(to: ~p"/dashboard/badges")}
+  defp extract_zip(path, temp_dir) do
+    case :zip.list_dir(~c"#{path}") do
+      {:ok, [{:zip_comment, []}, {:zip_file, first, _, _, _, _} | _]} ->
+        dest_path = Path.join(temp_dir, Path.basename(to_string(first)))
 
-        {:error, reason} ->
-          {:noreply, socket |> assign(status: :error) |> assign(error_reason: reason)}
-      end
-    else
-      {:noreply, assign(socket, status: :uploading)}
+        case :zip.unzip(~c"#{path}", cwd: ~c"#{temp_dir}") do
+          {:ok, paths} -> {:ok, {dest_path, paths}}
+          {:error, reason} -> {:error, reason}
+        end
+
+      {:error, reason} ->
+        {:error, reason}
+    end
+  end
+
+  defp handle_import_result(dest, socket) do
+    case import_badges(dest) do
+      {:ok, _} ->
+        {:noreply,
+         socket
+         |> put_flash(:success, "Finished importing badges.")
+         |> push_navigate(to: ~p"/dashboard/badges")}
+
+      {:error, reason} ->
+        {:noreply, assign(socket, status: :error, error_reason: reason)}
     end
   end
 
@@ -181,11 +189,9 @@ defmodule SafiraWeb.Backoffice.BadgeLive.ImportComponent do
       badges_csv_path
       |> File.stream!()
       |> CSV.parse_stream()
-      |> Enum.reduce(categories, fn [_, _, _, _, _, category_name, _, _, _] = row,
-                                    acc_categories ->
-        {updated_categories, category} = find_or_create_category(category_name, acc_categories)
+      |> Enum.each(fn [_, _, _, _, _, category_name, _, _, _] = row ->
+        {_, category} = find_or_create_category(category_name, categories)
         import_badge(row, category, dest)
-        updated_categories
       end)
 
       {:ok, "badges imported"}
