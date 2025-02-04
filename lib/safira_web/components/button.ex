@@ -21,7 +21,7 @@ defmodule SafiraWeb.Components.Button do
   def action_button(assigns) do
     ~H"""
     <button
-      class={"m-auto block select-none rounded-full hover:opacity-75 disabled:cursor-not-allowed disabled:bg-gray-400 disabled:opacity-75 h-20 w-full border-2 border-white text-white transition-colors hover:border-accent hover:bg-accent/10 hover:text-accent #{@class}"}
+      class={"m-auto block select-none rounded-full hover:opacity-75 disabled:hover:border-white disabled:hover:text-white disabled:cursor-not-allowed disabled:bg-gray-400 disabled:opacity-75 h-20 w-full border-2 border-white text-white transition-colors hover:border-accent hover:bg-accent/10 hover:text-accent #{@class}"}
       disabled={@disabled}
       {@rest}
     >
