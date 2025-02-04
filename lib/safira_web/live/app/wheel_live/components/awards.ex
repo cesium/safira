@@ -9,18 +9,18 @@ defmodule SafiraWeb.App.WheelLive.Components.Awards do
   def awards(assigns) do
     ~H"""
     <table class="w-full">
-      <tr class="border-b-2">
-        <th class="px-4 text-lg text-left">Name</th>
-        <th class="px-4 text-lg text-center">Stock</th>
-        <th class="px-4 text-lg text-center">Max. / Attendee</th>
-        <th class="px-4 text-lg text-right">Probability</th>
+      <tr class="border-b-2 text-md sm:text-lg">
+        <th class="pr-2 text-left">Name</th>
+        <th class="px-4 sm:block hidden text-center">Stock</th>
+        <th class="px-4 text-center">Max. / Attendee</th>
+        <th class="pl-2 text-right">Probability</th>
       </tr>
       <%= for entry <- @entries do %>
-        <tr>
-          <td class="px-4 py-2 font-bold text-left"><%= entry_name(entry) %></td>
-          <td class="px-4 py-2 font-bold text-center"><%= entry_stock(entry) %></td>
+        <tr class="text-sm sm:text-md">
+          <td class="pr-2 py-2 font-bold text-left"><%= entry_name(entry) %></td>
+          <td class="px-4 sm:block hidden py-2 font-bold text-center"><%= entry_stock(entry) %></td>
           <td class="px-4 py-2 text-center"><%= entry.max_per_attendee %></td>
-          <td class="px-4 py-2 text-accent font-bold text-right">
+          <td class="pl-2 py-2 text-accent font-bold text-right">
             <%= format_probability(entry.probability) %>
           </td>
         </tr>
