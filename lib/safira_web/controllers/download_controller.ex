@@ -56,10 +56,9 @@ defmodule SafiraWeb.DownloadController do
       conn =
         conn
         |> put_resp_content_type("text/csv")
-        |> put_resp_header("content-disposition", "attachment; filename=\"large_data.csv\"")
+        |> put_resp_header("content-disposition", "attachment; filename=\"final_draw.csv\"")
         |> send_chunked(200)
 
-      # Stream the data
       Accounts.list_attendees()
       |> Stream.flat_map(&final_draw_lines/1)
       |> Stream.map(&CSV.dump_to_iodata(&1))
@@ -138,9 +137,13 @@ defmodule SafiraWeb.DownloadController do
     |> to_string()
   end
 
-  defp final_draw_lines(attendee) do
-    for _ <- 1..attendee.attendee.entries do
-      [[attendee.id, attendee.name, attendee.handle]]
+  defp final_draw_lines(user) do
+    if user.attendee.entries < 10 do
+      []
+    else
+      for _ <- 1..user.attendee.entries do
+        [[user.id, user.name, user.handle]]
+      end
     end
   end
 
