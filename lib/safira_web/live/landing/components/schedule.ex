@@ -43,7 +43,6 @@ defmodule SafiraWeb.Landing.Components.Schedule do
         <.schedule_table
           date={fetch_current_date_from_params(assigns.params) || assigns.event_start_date}
           filters={fetch_filters_from_params(assigns.params)}
-          descriptions_enabled={assigns.descriptions_enabled}
           user_role={get_user_role(assigns.current_user)}
           enrolments={assigns.enrolments}
           myself={assigns.myself}
@@ -93,7 +92,6 @@ defmodule SafiraWeb.Landing.Components.Schedule do
             <% else %>
               <.schedule_activity
                 activity={activity}
-                descriptions_enabled={@descriptions_enabled}
                 user_role={@user_role}
                 enrolments={@enrolments}
                 myself={@myself}
@@ -184,10 +182,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
             </div>
             <!-- Expand -->
             <button
-              :if={
-                @descriptions_enabled and not is_nil(@activity.description) and
-                  @activity.description != ""
-              }
+              :if={not is_nil(@activity.description) and @activity.description != ""}
               class="font-terminal uppercase w-16 select-none rounded-full px-2 text-xl text-white border border-white hover:bg-white/20 transition-colors"
               phx-click={
                 JS.toggle(

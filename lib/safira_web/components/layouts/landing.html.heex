@@ -11,8 +11,8 @@
   </main>
   <.footer>
     <:tip :if={
-      Safira.Event.get_feature_flag!("challenges_enabled") and
-        Map.get(assigns, :current_page, nil) != :challenges
+      Map.get(assigns, :current_page, nil) in [:home, :schedule, :speakers, :faqs] and
+        Safira.Event.get_feature_flag("challenges_enabled")
     }>
       Have you checked out the
       <.link class="underline" navigate={~p"/challenges"}>challenges</.link>
