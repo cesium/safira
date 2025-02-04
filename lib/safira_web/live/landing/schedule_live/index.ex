@@ -1,7 +1,6 @@
 defmodule SafiraWeb.Landing.ScheduleLive.Index do
   use SafiraWeb, :landing_view
 
-  alias Safira.Activities
   alias Safira.Event
 
   on_mount {SafiraWeb.VerifyFeatureFlag, "schedule_enabled"}
