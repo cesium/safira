@@ -4,7 +4,6 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.Simulator.Index do
 
   import SafiraWeb.App.WheelLive.Components.Wheel
   import SafiraWeb.App.WheelLive.Components.ResultModal
-  import SafiraWeb.Components.Button
 
   alias Safira.Minigames
 
@@ -19,12 +18,16 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.Simulator.Index do
         <div class="py-8 flex flex-col gap-12 items-center">
           <.wheel />
 
-          <.action_button
-            title={gettext("Simulate Spin")}
+          <.button
             phx-click="spin-wheel"
             disabled={@in_spin?}
             phx-target={@myself}
-          />
+
+          >
+          <p class="uppercase font-terminal text-xl px-4">
+          <%= gettext("Spin the wheel") %>
+          </p>
+          </.button>
         </div>
       </.page>
 
