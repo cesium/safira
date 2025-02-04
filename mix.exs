@@ -65,6 +65,7 @@ defmodule Safira.MixProject do
       {:qrcode_ex, "~> 0.1.1"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:faker, "~> 0.18.0"},
+      {:earmark, "~> 1.4"},
 
       # frontend
       {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},

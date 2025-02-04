@@ -23,7 +23,7 @@ defmodule SafiraWeb.Components.EnsurePermissions do
     scope_key = Map.keys(permissions) |> List.first()
     scope_value = Map.get(permissions, scope_key, [])
 
-    values = Map.get(user_permissions, scope_key)
+    values = Map.get(user_permissions, scope_key, [])
 
     Enum.all?(scope_value, fn x -> Enum.member?(values, x) end)
   end

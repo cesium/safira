@@ -28,7 +28,12 @@ defmodule SafiraWeb.ChallengeLive.FormComponent do
           <.field field={@form[:type]} type="select" options={type_options()} label="Type" required />
           <.field field={@form[:date]} type="date" label="Date" />
         </div>
-        <.field field={@form[:description]} type="textarea" label="Description" required />
+        <.field
+          field={@form[:description]}
+          type="textarea"
+          label="Description (supports markdown)"
+          required
+        />
 
         <h3 class="font-semibold leading-8"><%= gettext("Prizes") %></h3>
 

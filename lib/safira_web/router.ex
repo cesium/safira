@@ -191,6 +191,7 @@ defmodule SafiraWeb.Router do
             live "/", Index, :index
             live "/new", Index, :new
             live "/:id/edit", Index, :edit
+            live "/:id/enrolments", Index, :enrolments
 
             scope "/speakers" do
               live "/", Index, :speakers
