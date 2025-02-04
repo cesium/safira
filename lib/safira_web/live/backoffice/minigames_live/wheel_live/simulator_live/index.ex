@@ -18,15 +18,10 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.Simulator.Index do
         <div class="py-8 flex flex-col gap-12 items-center">
           <.wheel />
 
-          <.button
-            phx-click="spin-wheel"
-            disabled={@in_spin?}
-            phx-target={@myself}
-
-          >
-          <p class="uppercase font-terminal text-xl px-4">
-          <%= gettext("Spin the wheel") %>
-          </p>
+          <.button phx-click="spin-wheel" disabled={@in_spin?} phx-target={@myself}>
+            <p class="uppercase font-terminal text-xl px-4">
+              <%= gettext("Spin the wheel") %>
+            </p>
           </.button>
         </div>
       </.page>
