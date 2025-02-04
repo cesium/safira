@@ -11,7 +11,7 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.FormComponent do
       <.page title={@title}>
         <.simple_form for={@form} id="team-form" phx-target={@myself} phx-submit="save">
           <div class="w-full space-y-2">
-            <.field field={@form[:name]} name="team[name]" type="text" label="Team Name" required />
+            <.field field={@form[:name]} name="team[name]" type="text" required />
           </div>
           <:actions>
             <.button phx-disable-with="Saving...">Save Team</.button>
@@ -23,8 +23,13 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.FormComponent do
   end
 
   @impl true
-  def update(assigns, socket) do
-    {:ok, assign(socket, assigns)}
+  def update(%{team: team} = assigns, socket) do
+    {:ok,
+     socket
+     |> assign(assigns)
+     |> assign_new(:form, fn ->
+       to_form(Teams.change_team(team))
+     end)}
   end
 
   @impl true

@@ -53,10 +53,13 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.Edit do
   end
 
   @impl true
-  def update(assigns, socket) do
+  def update(%{team: team} = assigns, socket) do
     {:ok,
      socket
      |> assign(assigns)
+     |> assign_new(:form, fn ->
+       to_form(Teams.change_team(team))
+     end)
      |> stream(
        :members,
        case Teams.list_team_members(assigns.team.id) do

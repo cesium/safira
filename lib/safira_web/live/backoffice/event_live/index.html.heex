@@ -61,7 +61,6 @@
     id={:teams}
     title={@page_title}
     action={@live_action}
-    form={@form}
     current_user={@current_user}
   />
 </.modal>
@@ -77,7 +76,6 @@
     id={:teams_new}
     title={@page_title}
     action={@live_action}
-    form={@form}
     patch={~p"/dashboard/event/teams"}
   />
 </.modal>
@@ -94,7 +92,6 @@
     title={@page_title}
     team={@team}
     action={@live_action}
-    form={@form}
     patch={~p"/dashboard/event/teams"}
   />
 </.modal>
@@ -111,7 +108,6 @@
     title={@page_title}
     team={@team}
     action={@live_action}
-    form={@form}
     member={@member}
     patch={~p"/dashboard/event/teams/"}
   />

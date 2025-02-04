@@ -20,10 +20,10 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MemberLive.Index do
           phx-change="validate"
         >
           <div class="w-full space-y-2">
-            <.field field={@form[:name]} name="member[name]" type="text" label="Member Name" required />
+            <.field field={@form[:name]} name="member[name]" type="text" required />
           </div>
           <div class="w-full pb-6">
-            <.field_label>Image</.field_label>
+            <.field_label>Photo</.field_label>
             <.image_uploader
               class="h-full"
               upload={@uploads.image}
