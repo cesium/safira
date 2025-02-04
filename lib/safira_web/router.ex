@@ -218,6 +218,7 @@ defmodule SafiraWeb.Router do
         scope "/badges", BadgeLive do
           live "/", Index, :index
           live "/new", Index, :new
+          live "/import", Index, :import
 
           scope "/:id" do
             live "/edit", Index, :edit

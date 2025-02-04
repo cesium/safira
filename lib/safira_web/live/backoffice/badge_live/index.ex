@@ -15,7 +15,8 @@ defmodule SafiraWeb.Backoffice.BadgeLive.Index do
             conditions_new: %{"badges" => ["edit"]},
             conditions_edit: %{"badges" => ["edit"]},
             new: %{"products" => ["edit"]},
-            edit: %{"products" => ["edit"]}}
+            edit: %{"products" => ["edit"]},
+            import: %{"badges" => ["edit"]}}
 
   @impl true
   def mount(_params, _session, socket) do
@@ -95,6 +96,11 @@ defmodule SafiraWeb.Backoffice.BadgeLive.Index do
     socket
     |> assign(:page_title, "Listing #{badge.name} Conditions")
     |> assign(:badge, badge)
+  end
+
+  defp apply_action(socket, :import, _params) do
+    socket
+    |> assign(:page_title, "Import Badges")
   end
 
   @impl true

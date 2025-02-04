@@ -12,6 +12,11 @@
         <.link patch={~p"/dashboard/badges/new"}>
           <.button>New Badge</.button>
         </.link>
+        <.link patch={~p"/dashboard/badges/import"}>
+          <.button>
+            <.icon name="hero-arrow-up-tray" class="w-5 h-5" />
+          </.button>
+        </.link>
       </.ensure_permissions>
 
       <.ensure_permissions user={@current_user} permissions={%{"badges" => ["show"]}}>
@@ -122,5 +127,21 @@
     badge_condition={@badge_condition}
     patch={~p"/dashboard/badges/#{@badge.id}/conditions"}
     badge={@badge}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:import]}
+  id="import-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/badges")}
+>
+  <.live_component
+    module={SafiraWeb.Backoffice.BadgeLive.ImportComponent}
+    id="import"
+    title={@page_title}
+    current_user={@current_user}
+    action={@live_action}
+    patch={~p"/dashboard/badges"}
   />
 </.modal>
