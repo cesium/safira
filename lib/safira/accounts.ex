@@ -109,7 +109,7 @@ defmodule Safira.Accounts do
       user.type,
       case user.type do
         :attendee -> get_user_attendee(user.id)
-        :company -> get_user_company(user.id)
+        :company -> get_user_company(user.id, preloads: [:tier])
         :staff -> get_user_staff(user.id, preloads: [:role])
       end
     )

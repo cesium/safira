@@ -21,6 +21,7 @@ defmodule SafiraWeb.Backoffice.CompanyLive.TierLive.FormComponent do
         >
           <div class="w-full space-y-2">
             <.field field={@form[:name]} type="text" label="Name" required />
+            <.field field={@form[:full_cv_access]} type="switch" label="Full CV Access" />
           </div>
           <:actions>
             <.button phx-disable-with="Saving...">Save Tier</.button>

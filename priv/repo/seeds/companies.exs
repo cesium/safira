@@ -57,14 +57,17 @@ defmodule Safira.Repo.Seeds.Companies do
       [
         %Tier{
           name: "Gold",
+          full_cv_access: true,
           priority: 0
         },
         %Tier{
           name: "Silver",
+          full_cv_access: false,
           priority: 1
         },
         %Tier{
           name: "Bronze",
+          full_cv_access: false,
           priority: 2
         }
       ] |> Enum.map(&Repo.insert(&1))

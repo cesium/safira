@@ -74,6 +74,6 @@ defmodule SafiraWeb.Sponsor.HomeLive.Index do
   end
 
   defp has_all_access?(company) do
-    true
+    company.tier.full_cv_access
   end
 end

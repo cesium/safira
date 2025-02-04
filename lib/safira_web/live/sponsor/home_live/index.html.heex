@@ -7,7 +7,7 @@
       path={~p"/sponsor/"}
       placeholder={gettext("Search by name")}
     />
-    <.simple_form for={@form} phx-change="validate">
+    <.simple_form :if={@all_enabled} for={@form} phx-change="validate">
       <.field field={@form[:all]} type="switch" label="Include non visitors" />
     </.simple_form>
   </div>
