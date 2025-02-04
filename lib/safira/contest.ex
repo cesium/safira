@@ -479,6 +479,18 @@ defmodule Safira.Contest do
   end
 
   @doc """
+  Gets the attendee token balance.
+
+  ## Examples
+
+      iex> get_attendee_tokens(attendee)
+      100
+  """
+  def get_attendee_tokens(attendee) do
+    Repo.one(from a in Attendee, where: a.id == ^attendee.id, select: a.tokens)
+  end
+
+  @doc """
   Transaction for updating the attendee token balance and the daily tokens.
   """
   def change_attendee_tokens_transaction(
@@ -605,7 +617,7 @@ defmodule Safira.Contest do
   end
 
   @doc """
-  Redeems a badge for an attendee.
+  Redeems a badge for an attendee and broadcasts the action.
 
   ## Examples
 
@@ -613,27 +625,9 @@ defmodule Safira.Contest do
       {:ok, %Attendee{}}
 
   """
-  def redeem_badge(badge, attendee, staff) do
+  def redeem_badge(badge, attendee, staff \\ nil) do
     result =
-      Multi.new()
-      # Insert the badge redeem
-      |> Multi.insert(
-        :redeem,
-        BadgeRedeem.changeset(%BadgeRedeem{}, %{
-          badge_id: badge.id,
-          attendee_id: attendee.id,
-          redeemed_by_id: staff.id
-        })
-      )
-      # Update the attendee token balance (including daily tokens)
-      |> Multi.merge(fn %{redeem: _redeem} ->
-        change_attendee_tokens_transaction(attendee, attendee.tokens + badge.tokens)
-      end)
-      # Update final draw entries
-      |> Multi.update(
-        :attendee_update_entries,
-        Attendee.changeset(attendee, %{entries: attendee.entries + badge.entries})
-      )
+      redeem_badge_transaction(badge, attendee, staff)
       # Run the transaction
       |> Repo.transaction()
 
@@ -645,6 +639,43 @@ defmodule Safira.Contest do
       {:error, _} ->
         {:error, "failed to redeem badge"}
     end
+  end
+
+  @doc """
+  Transaction for a badge redeem.
+
+  ## Examples
+
+      iex> redeem_badge_transaction(badge, attendee, staff)
+      %Ecto.Multi{}
+
+  """
+  def redeem_badge_transaction(badge, attendee, staff \\ nil) do
+    Multi.new()
+    # Insert the badge redeem
+    |> Multi.insert(
+      :redeem,
+      BadgeRedeem.changeset(%BadgeRedeem{}, %{
+        badge_id: badge.id,
+        attendee_id: attendee.id,
+        redeemed_by_id: if(staff, do: staff.id, else: nil)
+      })
+    )
+    # Update the attendee token balance (including daily tokens)
+    |> Multi.merge(fn %{redeem: _redeem} ->
+      change_attendee_tokens_transaction(
+        attendee,
+        attendee.tokens + badge.tokens,
+        :redeem_attendee_update_tokens,
+        :redeem_daily_tokens_fetch,
+        :redeem_daily_tokens_update
+      )
+    end)
+    # Update final draw entries
+    |> Multi.update(
+      :attendee_update_entries,
+      Attendee.changeset(attendee, %{entries: attendee.entries + badge.entries})
+    )
   end
 
   @doc """

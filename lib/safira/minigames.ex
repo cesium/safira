@@ -335,6 +335,14 @@ defmodule Safira.Minigames do
           %WheelDrop{}
         end
 
+      :badge ->
+        if Contest.attendee_owns_badge?(attendee.id, drop.badge_id) do
+          # If the attendee already has the badge, they win nothing
+          %WheelDrop{}
+        else
+          drop
+        end
+
       _ ->
         drop
     end
@@ -402,8 +410,7 @@ defmodule Safira.Minigames do
         )
 
       :badge ->
-        # TODO: REDEEM BADGE
-        Multi.new()
+        Contest.redeem_badge_transaction(drop.badge, attendee)
 
       :tokens ->
         Contest.change_attendee_tokens_transaction(
