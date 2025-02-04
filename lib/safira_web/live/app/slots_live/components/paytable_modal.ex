@@ -63,7 +63,7 @@ defmodule SafiraWeb.App.SlotsLive.Components.PaytableModal do
               </h2>
 
               <div class="space-y-6" id="paytable-content" phx-hook="PaytableModal">
-                <%= for {paytable, paylines} <- @paylines_by_multiplier do %>
+                <%= for {paytable, paylines_filtered} <- @paylines_by_multiplier do %>
                   <div class="flex justify-between border-b border-white/20 pb-4 last:border-0">
                     <div class="flex flex-col gap-1">
                       <h3 class="text-xl font-terminal font-semibold uppercase">
@@ -77,7 +77,7 @@ defmodule SafiraWeb.App.SlotsLive.Components.PaytableModal do
                     </div>
 
                     <div class="payline-group">
-                      <%= for {payline, idx} <- Enum.with_index(paylines) do %>
+                      <%= for {payline, idx} <- Enum.with_index(paylines_filtered) do %>
                         <div class={"flex items-center justify-center gap-2 payline-item #{if idx != 0, do: "hidden", else: ""}"}>
                           <%= for {position, reel_idx} <- Enum.with_index([payline.position_0, payline.position_1, payline.position_2]) do %>
                             <div class="size-14 sm:size-16 bg-primary rounded-lg overflow-hidden flex items-center justify-center">
