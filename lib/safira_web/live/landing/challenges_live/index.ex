@@ -11,7 +11,7 @@ defmodule SafiraWeb.Landing.ChallengesLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, socket}
+    {:ok, assign(socket, :current_page, :challenges)}
   end
 
   @impl true

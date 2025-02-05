@@ -1,11 +1,11 @@
-<body class="bg-primary text-light font-iregular relative min-h-screen">
+<div class="text-light font-iregular relative min-h-screen">
   <.sparkles />
   <.navbar
     pages={SafiraWeb.Config.landing_pages()}
     registrations_open?={Safira.Event.registrations_open?()}
   />
   <main>
-    <body class="bg-primary text-light font-iregular relative min-h-screen">
+    <body>
       <.sparkles />
       <div class="flex w-full justify-center items-center flex-col py-48 font-terminal uppercase xl:px-[15rem] md:px-[8rem] px-[2.5rem]">
         <h5 class="z-0 w-full text-accent text-9xl">404</h5>
@@ -15,5 +15,9 @@
       </div>
     </body>
   </main>
-  <.footer />
-</body>
+  <.footer>
+    <:tip>
+      Okay, let's get you back on track. <.link class="underline" navigate={~p"/"}>Go home</.link>?
+    </:tip>
+  </.footer>
+</div>
