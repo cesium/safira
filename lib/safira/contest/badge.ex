@@ -4,6 +4,8 @@ defmodule Safira.Contest.Badge do
   """
   use Safira.Schema
 
+  alias Safira.Companies
+
   @required_fields ~w(name description begin end tokens entries category_id)a
   @optional_fields ~w(image counts_for_day)a
 
@@ -23,6 +25,7 @@ defmodule Safira.Contest.Badge do
     field :counts_for_day, :boolean, default: true
 
     belongs_to :category, Safira.Contest.BadgeCategory
+    has_one :company, Companies.Company
 
     timestamps(type: :utc_datetime)
   end

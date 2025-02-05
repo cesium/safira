@@ -6,6 +6,7 @@ defmodule Safira.Contest do
 
   alias Ecto.Multi
   alias Safira.Accounts.Attendee
+  alias Safira.{Companies, Spotlights}
   alias Safira.Contest.{Badge, BadgeCategory, BadgeCondition, BadgeRedeem, DailyTokens}
 
   @pubsub Safira.PubSub
@@ -281,6 +282,22 @@ defmodule Safira.Contest do
   """
   def delete_badge(%Badge{} = badge) do
     Repo.delete(badge)
+  end
+
+  @doc """
+  Gets the company associated with a badge.
+
+  ## Examples
+
+      iex> get_badge_company(badge)
+      %Company{}
+
+  """
+  def get_badge_company(badge) do
+    Companies.Company
+    |> where([c], c.badge_id == ^badge.id)
+    |> preload(:tier)
+    |> Repo.one()
   end
 
   @doc """
@@ -661,11 +678,20 @@ defmodule Safira.Contest do
         redeemed_by_id: if(staff, do: staff.id, else: nil)
       })
     )
+    # Verify if badge is associated with a company and it is on spotlight (if true multiply tokens).
+    |> Multi.run(:badge_tokens, fn _repo, _changes ->
+      company = get_badge_company(badge)
+      if company && Spotlights.company_on_spotlight?(company.id) do
+        {:ok, floor(badge.tokens * company.tier.spotlight_multiplier)}
+      else
+        {:ok, badge.tokens}
+      end
+    end)
     # Update the attendee token balance (including daily tokens)
-    |> Multi.merge(fn %{redeem: _redeem} ->
+    |> Multi.merge(fn %{redeem: _redeem, badge_tokens: tokens} ->
       change_attendee_tokens_transaction(
         attendee,
-        attendee.tokens + badge.tokens,
+        attendee.tokens + tokens,
         :redeem_attendee_update_tokens,
         :redeem_daily_tokens_fetch,
         :redeem_daily_tokens_update

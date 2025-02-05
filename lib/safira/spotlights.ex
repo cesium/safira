@@ -96,6 +96,30 @@ defmodule Safira.Spotlights do
   end
 
   @doc """
+  Checks if the company is on spotlight.
+
+  ## Examples
+
+      iex> company_on_spotlight?(1)
+      true
+
+      iex> company_on_spotlight?(2)
+      false
+  """
+  def company_on_spotlight?(company_id) do
+    now = DateTime.utc_now()
+
+    Spotlight
+    |> where([s], s.end > ^now)
+    |> where([s], s.company_id == ^company_id)
+    |> order_by([s], asc: s.end)
+    |> limit(1)
+    |> Repo.one()
+    |> is_nil()
+    |> Kernel.not()
+  end
+
+  @doc """
   Changes the spotlight duration.
 
   ## Examples

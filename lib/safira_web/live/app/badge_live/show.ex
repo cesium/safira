@@ -21,7 +21,10 @@ defmodule SafiraWeb.App.BadgeLive.Show do
        Contest.attendee_owns_badge?(socket.assigns.current_user.attendee.id, badge.id)
      )
      |> assign(:owners_count, Contest.count_badge_redeems(badge.id))
-     |> stream(:owners, Contest.list_badge_redeems(badge.id, order_by: :inserted_at, limit: 5))}
+     |> stream(
+       :owners,
+       Contest.list_badge_redeems(badge.id, order_by: [desc: :inserted_at], limit: 5)
+     )}
   end
 
   @impl true
