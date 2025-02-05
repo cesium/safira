@@ -12,8 +12,15 @@ defmodule Safira.Minigames do
   alias Safira.Constants
   alias Safira.Contest
   alias Safira.Inventory.Item
-  alias Safira.Minigames.{CoinFlipRoom, Prize, WheelDrop}
-  alias Safira.Minigames.{Prize, WheelDrop}
+
+  alias Safira.Minigames.{
+    CoinFlipRoom,
+    Prize,
+    SlotsPayline,
+    SlotsPaytable,
+    SlotsReelIcon,
+    WheelDrop
+  }
 
   @pubsub Safira.PubSub
 
@@ -969,5 +976,640 @@ defmodule Safira.Minigames do
 
   defp broadcast_coin_flip_rooms_update(action, value) do
     Phoenix.PubSub.broadcast(@pubsub, coin_flip_rooms_topic(), {action, value})
+  end
+
+  @doc """
+  Returns the list of slots_reel_icons.
+
+  ## Examples
+
+      iex> list_slots_reel_icons()
+      [%SlotsReelIcon{}, ...]
+
+  """
+  def list_slots_reel_icons do
+    Repo.all(SlotsReelIcon)
+  end
+
+  @doc """
+  Gets a single slots_reel_icon.
+
+  Raises `Ecto.NoResultsError` if the Slots reel does not exist.
+
+  ## Examples
+
+      iex> get_slots_reel_icon!(123)
+      %SlotsReelIcon{}
+
+      iex> get_slots_reel_icon!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_slots_reel_icon!(id), do: Repo.get!(SlotsReelIcon, id)
+
+  @doc """
+  Creates a slots_reel_icon.
+
+  ## Examples
+
+      iex> create_slots_reel_icon(%{field: value})
+      {:ok, %SlotsReelIcon{}}
+
+      iex> create_slots_reel_icon(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_slots_reel_icon(attrs \\ %{}) do
+    %SlotsReelIcon{}
+    |> SlotsReelIcon.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a slots_reel_icon.
+
+  ## Examples
+
+      iex> update_slots_reel_icon(slots_reel_icon, %{field: new_value})
+      {:ok, %SlotsReelIcon{}}
+
+      iex> update_slots_reel_icon(slots_reel_icon, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_slots_reel_icon(%SlotsReelIcon{} = slots_reel_icon, attrs) do
+    slots_reel_icon
+    |> SlotsReelIcon.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a slots_reel_icon.
+
+  ## Examples
+
+      iex> delete_slots_reel_icon(slots_reel_icon)
+      {:ok, %SlotsReelIcon{}}
+
+      iex> delete_slots_reel_icon(slots_reel_icon)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_slots_reel_icon(%SlotsReelIcon{} = slots_reel_icon) do
+    Repo.delete(slots_reel_icon)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking slots_reel_icon changes.
+
+  ## Examples
+
+      iex> change_slots_reel_icon(slots_reel_icon)
+      %Ecto.Changeset{data: %SlotsReelIcon{}}
+
+  """
+  def change_slots_reel_icon(%SlotsReelIcon{} = slots_reel_icon, attrs \\ %{}) do
+    SlotsReelIcon.changeset(slots_reel_icon, attrs)
+  end
+
+  @doc """
+  Updates a slots reel image.
+
+  ## Examples
+
+      iex> update_slots_reel_icon_image(slots_reel_icon, %{image: image})
+      {:ok, %SlotsReelIcon{}}
+
+      iex> update_slots_reel_icon_image(slots_reel_icon, %{image: bad_image})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_slots_reel_icon_image(%SlotsReelIcon{} = slots_reel_icon, attrs) do
+    slots_reel_icon
+    |> SlotsReelIcon.image_changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Returns the list of slots_paytables.
+
+  ## Examples
+
+      iex> list_slots_paytables()
+      [%SlotsPaytable{}, ...]
+
+  """
+  def list_slots_paytables do
+    Repo.all(SlotsPaytable)
+  end
+
+  @doc """
+  Gets a single slots_paytable.
+
+  Raises `Ecto.NoResultsError` if the Slots paytable does not exist.
+
+  ## Examples
+
+      iex> get_slots_paytable!(123)
+      %SlotsPaytable{}
+
+      iex> get_slots_paytable!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_slots_paytable!(id), do: Repo.get!(SlotsPaytable, id)
+
+  @doc """
+  Creates a slots_paytable.
+
+  ## Examples
+
+      iex> create_slots_paytable(%{field: value})
+      {:ok, %SlotsPaytable{}}
+
+      iex> create_slots_paytable(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_slots_paytable(attrs \\ %{}) do
+    %SlotsPaytable{}
+    |> SlotsPaytable.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a slots_paytable.
+
+  ## Examples
+
+      iex> update_slots_paytable(slots_paytable, %{field: new_value})
+      {:ok, %SlotsPaytable{}}
+
+      iex> update_slots_paytable(slots_paytable, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_slots_paytable(%SlotsPaytable{} = slots_paytable, attrs) do
+    slots_paytable
+    |> SlotsPaytable.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a slots_paytable.
+
+  ## Examples
+
+      iex> delete_slots_paytable(slots_paytable)
+      {:ok, %SlotsPaytable{}}
+
+      iex> delete_slots_paytable(slots_paytable)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_slots_paytable(%SlotsPaytable{} = slots_paytable) do
+    Repo.delete(slots_paytable)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking slots_paytable changes.
+
+  ## Examples
+
+      iex> change_slots_paytable(slots_paytable)
+      %Ecto.Changeset{data: %SlotsPaytable{}}
+
+  """
+  def change_slots_paytable(%SlotsPaytable{} = slots_paytable, attrs \\ %{}) do
+    SlotsPaytable.changeset(slots_paytable, attrs)
+  end
+
+  @doc """
+  Changes the slots active status.
+
+  ## Examples
+
+      iex> change_slots_active(true)
+      :ok
+  """
+  def change_slots_active(active) do
+    Constants.set("slots_active_status", active)
+    broadcast_slots_config_update("is_active", active)
+  end
+
+  @doc """
+  Gets the slots active status.
+
+  ## Examples
+
+      iex> slots_active?()
+      true
+  """
+  def slots_active? do
+    case Constants.get("slots_active_status") do
+      {:ok, active} ->
+        active
+
+      {:error, _} ->
+        # If the active status is not set, set it to true by default
+        change_slots_active(true)
+        true
+    end
+  end
+
+  @doc """
+  Subscribes the caller to the slots' configuration updates.
+
+  ## Examples
+
+      iex> subscribe_to_slots_config_update()
+      :ok
+  """
+  def subscribe_to_slots_config_update(config) do
+    Phoenix.PubSub.subscribe(@pubsub, slots_config_topic(config))
+  end
+
+  defp slots_config_topic(config), do: "slots:#{config}"
+
+  defp broadcast_slots_config_update(config, value) do
+    Phoenix.PubSub.broadcast(@pubsub, slots_config_topic(config), {config, value})
+  end
+
+  @doc """
+  Returns the list of slots_paylines.
+
+  ## Examples
+
+      iex> list_slots_paylines()
+      [%SlotsPayline{}, ...]
+
+  """
+  def list_slots_paylines do
+    Repo.all(SlotsPayline)
+  end
+
+  @doc """
+  Gets a single slots_payline.
+
+  Raises `Ecto.NoResultsError` if the Slots payline does not exist.
+
+  ## Examples
+
+      iex> get_slots_payline!(123)
+      %SlotsPayline{}
+
+      iex> get_slots_payline!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_slots_payline!(id), do: Repo.get!(SlotsPayline, id)
+
+  @doc """
+  Creates a slots_payline.
+
+  ## Examples
+
+      iex> create_slots_payline(%{field: value})
+      {:ok, %SlotsPayline{}}
+
+      iex> create_slots_payline(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_slots_payline(attrs \\ %{}) do
+    %SlotsPayline{}
+    |> SlotsPayline.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a slots_payline.
+
+  ## Examples
+
+      iex> update_slots_payline(slots_payline, %{field: new_value})
+      {:ok, %SlotsPayline{}}
+
+      iex> update_slots_payline(slots_payline, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_slots_payline(%SlotsPayline{} = slots_payline, attrs) do
+    slots_payline
+    |> SlotsPayline.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a slots_payline.
+
+  ## Examples
+
+      iex> delete_slots_payline(slots_payline)
+      {:ok, %SlotsPayline{}}
+
+      iex> delete_slots_payline(slots_payline)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_slots_payline(%SlotsPayline{} = slots_payline) do
+    Repo.delete(slots_payline)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking slots_payline changes.
+
+  ## Examples
+
+      iex> change_slots_payline(slots_payline)
+      %Ecto.Changeset{data: %SlotsPayline{}}
+
+  """
+  def change_slots_payline(%SlotsPayline{} = slots_payline, attrs \\ %{}) do
+    SlotsPayline.changeset(slots_payline, attrs)
+  end
+
+  @doc """
+  Spins the slots for an attendee.
+
+  ## Examples
+
+      iex> spin_slots(%Attendee{}, 20)
+      {:ok, %Attendee{}, 2, 100, 40}
+  """
+  def spin_slots(attendee, bet) do
+    attendee = Accounts.get_attendee!(attendee.id)
+
+    if slots_active?() do
+      case spin_slots_transaction(attendee, bet) do
+        {:ok, result} ->
+          {:ok, result.target, result.paytable_entry.multiplier,
+           result.attendee_state_tokens.tokens, result.winnings}
+
+        {:error, _} ->
+          {:error, "An error occurred while spinning the slots."}
+      end
+    else
+      {:error, "The slots are not active."}
+    end
+  end
+
+  defp spin_slots_transaction(attendee, bet) do
+    Multi.new()
+    # Remove the bet from attendee's balance
+    |> Multi.merge(fn _changes ->
+      Contest.change_attendee_tokens_transaction(attendee, attendee.tokens - bet, :attendee)
+    end)
+    |> Multi.put(:paylines, list_slots_paylines())
+    |> Multi.put(:slots_reel_icons_count, count_visible_slots_reel_icons(list_slots_reel_icons()))
+    # Get random multiplier from paytable based on probabilities
+    |> Multi.run(:paytable_entry, fn _repo, %{paylines: paylines} ->
+      {:ok, generate_slots_multiplier(paylines)}
+    end)
+    # Get random payline for the selected multiplier
+    |> Multi.run(:target, fn _repo,
+                             %{
+                               paylines: paylines,
+                               slots_reel_icons_count: slots_reel_icons_count,
+                               paytable_entry: multiplier
+                             } ->
+      {:ok, generate_slots_target(paylines, slots_reel_icons_count, multiplier)}
+    end)
+    |> Multi.run(:winnings, fn _repo, %{paytable_entry: paytable_entry} ->
+      winnings = bet * paytable_entry.multiplier
+      {:ok, winnings}
+    end)
+    # Award tokens based on multiplier
+    |> Multi.merge(fn %{attendee: attendee, winnings: winnings} ->
+      Contest.change_attendee_tokens_transaction(
+        attendee,
+        attendee.tokens + winnings,
+        :attendee_state_tokens,
+        :previous_daily_tokens,
+        :new_daily_tokens
+      )
+    end)
+    |> Repo.transaction()
+  end
+
+  defp generate_slots_multiplier(paylines) do
+    random = strong_randomizer() |> Float.round(12)
+    multipliers = list_slots_paytables()
+
+    cumulative_probabilities =
+      multipliers
+      |> Enum.sort_by(& &1.probability)
+      |> Enum.map_reduce(0, fn multiplier, acc ->
+        {Float.round(acc + multiplier.probability, 12), acc + multiplier.probability}
+      end)
+
+    total_prob = elem(cumulative_probabilities, 1)
+
+    if random > total_prob do
+      # Return losing multiplier for remaining probability
+      %SlotsPaytable{multiplier: 0, probability: 1 - total_prob}
+    else
+      prob =
+        cumulative_probabilities
+        |> elem(0)
+        |> Enum.filter(fn x -> x >= random end)
+        |> Enum.at(0)
+
+      paytable_entry =
+        Enum.sort_by(multipliers, & &1.probability)
+        |> Enum.at(cumulative_probabilities |> elem(0) |> Enum.find_index(fn x -> x == prob end))
+
+      filtered_paylines = paylines |> Enum.filter(&(&1.paytable_id == paytable_entry.id))
+
+      if Enum.empty?(filtered_paylines) do
+        # Generate random multiplier if no payline exists
+        %SlotsPaytable{multiplier: 0, probability: 1 - total_prob}
+      else
+        paytable_entry
+      end
+    end
+  end
+
+  defp generate_slots_target(paylines, slots_reel_icons_count, multiplier) do
+    if multiplier.multiplier == 0 do
+      # For losing case, generate target that doesn't match any payline
+      all_paylines = list_slots_paylines()
+      generate_non_matching_target(all_paylines, slots_reel_icons_count)
+    else
+      paylines = paylines |> Enum.filter(&(&1.paytable_id == multiplier.id))
+      payline = Enum.random(paylines)
+      # if the position is nil than it should be random
+      position_0 =
+        if payline.position_0 == nil,
+          do: Enum.random(0..(slots_reel_icons_count[0] - 1)),
+          else: payline.position_0
+
+      position_1 =
+        if payline.position_1 == nil,
+          do: Enum.random(0..(slots_reel_icons_count[1] - 1)),
+          else: payline.position_1
+
+      position_2 =
+        if payline.position_2 == nil,
+          do: Enum.random(0..(slots_reel_icons_count[2] - 1)),
+          else: payline.position_2
+
+      [position_0, position_1, position_2]
+    end
+  end
+
+  defp generate_non_matching_target(paylines, slots_reel_icons_count) do
+    target = [
+      Enum.random(0..(slots_reel_icons_count[0] - 1)),
+      Enum.random(0..(slots_reel_icons_count[1] - 1)),
+      Enum.random(0..(slots_reel_icons_count[2] - 1))
+    ]
+
+    if Enum.any?(paylines, &match_payline?(&1, target)) do
+      generate_non_matching_target(paylines, slots_reel_icons_count)
+    else
+      target
+    end
+  end
+
+  defp match_payline?(payline, [t0, t1, t2]) do
+    [
+      is_nil(payline.position_0) || payline.position_0 == t0,
+      is_nil(payline.position_1) || payline.position_1 == t1,
+      is_nil(payline.position_2) || payline.position_2 == t2
+    ]
+    |> Enum.all?(& &1)
+  end
+
+  @doc """
+  Counts the number of visible slots reel icons in each reel.
+
+  ## Examples
+
+      iex> count_visible_slots_reel_icons(slots_icons)
+      %{0 => 3, 1 => 3, 2 => 3}
+  """
+  def count_visible_slots_reel_icons(slots_icons) do
+    slots_icons
+    |> Enum.reduce(%{}, fn icon, acc ->
+      visible_in_reel_0 = icon.reel_0_index != -1
+      visible_in_reel_1 = icon.reel_1_index != -1
+      visible_in_reel_2 = icon.reel_2_index != -1
+
+      Map.merge(acc, %{
+        0 => if(visible_in_reel_0, do: Map.get(acc, 0, 0) + 1, else: Map.get(acc, 0, 0)),
+        1 => if(visible_in_reel_1, do: Map.get(acc, 1, 0) + 1, else: Map.get(acc, 1, 0)),
+        2 => if(visible_in_reel_2, do: Map.get(acc, 2, 0) + 1, else: Map.get(acc, 2, 0))
+      })
+    end)
+  end
+
+  def save_reel_order(reel_order, visibility) do
+    Ecto.Multi.new()
+    |> update_reel_order(reel_order["reel-0"], visibility[0], :reel_0_index)
+    |> update_reel_order(reel_order["reel-1"], visibility[1], :reel_1_index)
+    |> update_reel_order(reel_order["reel-2"], visibility[2], :reel_2_index)
+    |> Safira.Repo.transaction()
+    |> handle_transaction_result()
+  end
+
+  defp update_reel_order(multi, reel_order, visibility, reel_index_field) do
+    visible_reel_order = Enum.filter(reel_order, fn {id, _index} -> visibility[id] end)
+    hidden_reel_order = Enum.filter(reel_order, fn {id, _index} -> not visibility[id] end)
+
+    recalculated_reel_order =
+      visible_reel_order
+      |> Enum.sort_by(fn {_id, index} -> index end)
+      |> Enum.with_index()
+      |> Enum.reduce(%{}, fn {{id, _}, index}, acc -> Map.put(acc, id, index) end)
+
+    final_reel_order =
+      Enum.reduce(hidden_reel_order, recalculated_reel_order, fn {id, _}, acc ->
+        Map.put(acc, id, -1)
+      end)
+
+    Enum.reduce(final_reel_order, multi, fn {id, index}, multi ->
+      case get_slots_reel_icon!(id) do
+        nil ->
+          multi
+
+        reel ->
+          Ecto.Multi.update(
+            multi,
+            {:update_reel, reel_index_field, id},
+            change_slots_reel_icon(reel, %{reel_index_field => index})
+          )
+      end
+    end)
+  end
+
+  defp handle_transaction_result(transaction_result) do
+    case transaction_result do
+      {:ok, results} ->
+        {:ok, results}
+
+      {:error, _failed_operation, error, _changes} ->
+        {:error, "Failed to update reels: #{inspect(error)}"}
+    end
+  end
+
+  def update_slots_reel_icons(entries, socket) do
+    existing_reels = list_slots_reel_icons()
+
+    Ecto.Multi.new()
+    |> delete_existing_reels(existing_reels)
+    |> create_new_reels(entries, socket)
+    |> Repo.transaction()
+    |> handle_transaction_result()
+  end
+
+  defp delete_existing_reels(multi, reels) do
+    Enum.reduce(reels, multi, fn reel, multi ->
+      Ecto.Multi.delete(multi, {:delete_reel, reel.id}, reel)
+    end)
+  end
+
+  defp create_new_reels(multi, entries, socket) do
+    Ecto.Multi.run(multi, :create_reels, fn _repo, _changes ->
+      results =
+        entries
+        |> Enum.with_index()
+        |> Enum.map(fn {entry, index} ->
+          create_reel_with_image(socket, entry, index)
+        end)
+        |> Enum.map(fn
+          {:ok, result} -> result
+          error -> error
+        end)
+
+      if Enum.all?(results, &is_struct(&1, SlotsReelIcon)) do
+        {:ok, results}
+      else
+        {:error, "Failed to create some reels"}
+      end
+    end)
+  end
+
+  defp create_reel_with_image(socket, entry, index) do
+    Phoenix.LiveView.consume_uploaded_entry(socket, entry, fn %{path: path} ->
+      create_slots_reel_icon(%{
+        "reel_0_index" => index,
+        "reel_1_index" => index,
+        "reel_2_index" => index
+      })
+      |> case do
+        {:ok, reel} ->
+          update_slots_reel_icon_image(reel, %{
+            "image" => %Plug.Upload{
+              content_type: entry.client_type,
+              filename: entry.client_name,
+              path: path
+            }
+          })
+
+        error ->
+          error
+      end
+    end)
   end
 end

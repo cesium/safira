@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="79"
+   height="79"
+   viewBox="0 0 20.902083 20.902083"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="layer1"
+     transform="translate(-132.02714,-106.89168)">
+    <g
+       id="Camada_3"
+       data-name="Camada 3"
+       transform="matrix(0.26984455,0,0,0.26984455,131.81932,64.032192)">
+      <polygon
+         class="cls-2"
+         points="39.57,187.86 30.2,182.47 22.49,186.9 39.48,196.72 65.96,181.48 39.52,166.27 31.75,170.7 50.35,181.43 "
+         id="polygon20"
+         style="fill:none;stroke:#ffffff;stroke-miterlimit:10" />
+      <polygon
+         class="cls-2"
+         points="30.17,171.61 13.2,181.49 20.91,185.96 30.17,180.62 39.57,185.96 47.23,181.49 "
+         id="polygon21"
+         style="fill:none;stroke:#ffffff;stroke-miterlimit:10" />
+      <polygon
+         class="cls-2"
+         points="40.31,207.04 66.68,191.83 66.68,182.87 40.31,198.08 "
+         id="polygon22"
+         style="fill:none;stroke:#ffffff;stroke-miterlimit:10" />
+      <polygon
+         class="cls-2"
+         points="58.86,198.96 58.86,207.04 65.96,203 "
+         id="polygon23"
+         style="fill:none;stroke:#ffffff;stroke-miterlimit:10" />
+      <polygon
+         class="cls-2"
+         points="49.66,223.19 66.68,213.31 66.68,204.48 49.66,214.25 "
+         id="polygon24"
+         style="fill:none;stroke:#ffffff;stroke-miterlimit:10" />
+      <polygon
+         class="cls-2"
+         points="40.31,208.91 40.31,228.55 48.08,224.04 48.08,213.31 57.42,207.9 57.42,198.96 "
+         id="polygon25"
+         style="fill:none;stroke:#ffffff;stroke-miterlimit:10" />
+      <path
+         class="cls-2"
+         d="m 30.95,204.4 c 0,0 0.19,10.89 0,10.73 C 30.76,214.97 12.32,204.4 12.32,204.4 v 8.89 l 26.42,15.27 v -19.67 l -7.8,-4.48 z"
+         id="path25"
+         style="fill:none;stroke:#ffffff;stroke-miterlimit:10" />
+      <polygon
+         class="cls-2"
+         points="20.06,198.13 20.06,187.32 12.32,182.87 12.32,202.56 29.4,212.35 29.5,203.57 "
+         id="polygon26"
+         style="fill:none;stroke:#ffffff;stroke-miterlimit:10" />
+      <polygon
+         class="cls-2"
+         points="38.74,207.04 38.74,198.13 21.63,188.23 21.63,197.22 "
+         id="polygon27"
+         style="fill:none;stroke:#ffffff;stroke-miterlimit:10" />
+    </g>
+  </g>
+</svg>
