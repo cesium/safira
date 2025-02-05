@@ -61,7 +61,8 @@ defmodule SafiraWeb.Backoffice.ScannerLive.BadgeLive.Index do
     {:ok,
      socket
      |> assign(:current_page, :scanner)
-     |> assign(:modal_data, nil)}
+     |> assign(:modal_data, nil)
+     |> assign(:given_list, [])}
   end
 
   @impl true
@@ -72,28 +73,8 @@ defmodule SafiraWeb.Backoffice.ScannerLive.BadgeLive.Index do
   @impl true
   def handle_event("scan", data, socket) do
     case safely_extract_id_from_url(data) do
-      {:ok, id} ->
-        if Accounts.credential_exists?(id) do
-          case Accounts.get_attendee_from_credential(id) do
-            nil ->
-              {:noreply, socket |> assign(:modal_data, :not_linked)}
-
-            attendee ->
-              handle_redeem_badge(
-                %{
-                  badge_id: socket.assigns.badge.id,
-                  attendee: attendee,
-                  staff: socket.assigns.current_user.staff
-                },
-                socket
-              )
-          end
-        else
-          {:noreply, socket |> assign(:modal_data, :not_found)}
-        end
-
-      {:error, _} ->
-        {:noreply, socket |> assign(:modal_data, :invalid)}
+      {:ok, id} -> process_scan(id, socket)
+      {:error, _} -> {:noreply, assign(socket, :modal_data, :invalid)}
     end
   end
 
@@ -102,23 +83,72 @@ defmodule SafiraWeb.Backoffice.ScannerLive.BadgeLive.Index do
     {:noreply, socket |> assign(:modal_data, nil)}
   end
 
-  def handle_redeem_badge(%{badge_id: badge_id, attendee: attendee, staff: staff}, socket) do
+  defp process_scan(id, socket) do
+    if id in socket.assigns.given_list do
+      {:noreply, socket}
+    else
+      check_credential(id, socket)
+    end
+  end
+
+  defp check_credential(id, socket) do
+    if Accounts.credential_exists?(id) do
+      handle_attendee_lookup(id, socket)
+    else
+      {:noreply, assign(socket, :modal_data, :not_found)}
+    end
+  end
+
+  defp handle_attendee_lookup(id, socket) do
+    case Accounts.get_attendee_from_credential(id) do
+      nil ->
+        {:noreply, assign(socket, :modal_data, :not_linked)}
+
+      attendee ->
+        handle_redeem_badge(
+          %{
+            badge_id: socket.assigns.badge.id,
+            attendee: attendee,
+            staff: socket.assigns.current_user.staff,
+            credential_id: id
+          },
+          socket
+        )
+    end
+  end
+
+  defp handle_redeem_badge(
+         %{badge_id: badge_id, attendee: attendee, staff: staff, credential_id: credential_id},
+         socket
+       ) do
     badge = Contest.get_badge!(badge_id)
 
     case Contest.redeem_badge(badge, attendee, staff) do
       {:ok, _} ->
-        {:noreply, socket |> assign(:modal_data, nil)}
+        {:noreply,
+         socket
+         |> assign(:modal_data, nil)
+         |> assign(:given_list, [credential_id | socket.assigns.given_list])}
+
+      {:error, "attendee already has this badge"} ->
+        {:noreply,
+         socket
+         |> assign(:modal_data, :already_redeemed)
+         |> assign(:given_list, [credential_id | socket.assigns.given_list])}
 
       {:error, _} ->
         {:noreply, socket |> assign(:modal_data, :not_linked)}
     end
   end
 
-  def error_message(:not_found),
+  defp error_message(:already_redeemed),
+    do: gettext("Attendee already has this badge! (400)")
+
+  defp error_message(:not_found),
     do: gettext("This credential is not registered in the event's system! (404)")
 
-  def error_message(:not_linked),
+  defp error_message(:not_linked),
     do: gettext("This credential is not linked to any attendee! (400)")
 
-  def error_message(:invalid), do: gettext("Not a valid credential! (400)")
+  defp error_message(:invalid), do: gettext("Not a valid credential! (400)")
 end

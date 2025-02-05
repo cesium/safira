@@ -653,8 +653,11 @@ defmodule Safira.Contest do
         broadcast_attendee_redeems_update(redeem.id)
         {:ok, redeem}
 
-      {:error, _} ->
-        {:error, "failed to redeem badge"}
+      {:error, :redeem, _, _} ->
+        {:error, "attendee already has this badge"}
+
+      {:error, _, _, _} ->
+        {:error, "could not redeem badge"}
     end
   end
 
@@ -681,6 +684,7 @@ defmodule Safira.Contest do
     # Verify if badge is associated with a company and it is on spotlight (if true multiply tokens).
     |> Multi.run(:badge_tokens, fn _repo, _changes ->
       company = get_badge_company(badge)
+
       if company && Spotlights.company_on_spotlight?(company.id) do
         {:ok, floor(badge.tokens * company.tier.spotlight_multiplier)}
       else

@@ -4,6 +4,7 @@ defmodule Safira.Contest.BadgeRedeem do
   """
   use Safira.Schema
 
+  alias Safira.Contest.Badge
   alias Safira.Accounts.{Attendee, Staff}
 
   @required_fields ~w(badge_id attendee_id)a
@@ -23,6 +24,9 @@ defmodule Safira.Contest.BadgeRedeem do
     badge_redeem
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> validate_required(@required_fields)
-    |> unique_constraint([:attendee_id, :badge_id])
+    |> unique_constraint([:attendee_id, :badge_id],
+      message: "attendee already has this badge",
+      error_key: :redeem
+    )
   end
 end
