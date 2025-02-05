@@ -9,6 +9,11 @@
           path={~p"/sponsor/"}
           placeholder={gettext("Search by name")}
         />
+        <.link href={~p"/downloads/cvs"} target="_blank">
+          <.button>
+            <%= gettext("Download CVs") %>
+          </.button>
+        </.link>
       </div>
       <.simple_form :if={@all_enabled} for={@form} phx-change="validate">
         <.field field={@form[:all]} type="switch" label="All" wrapper_class="pb-2" />
@@ -17,7 +22,7 @@
   </:actions>
 
   <ul id="visitors-list" class="grid grid-cols-2 md:grid-cols-4" phx-update="stream">
-    <.attendee :for={{id, user} <- @streams.users} id={id} user={user} />
+    <.attendee :for={{id, user} <- @streams.users} id={id} name={user.name} handle={user.handle} cv={user.cv} image={user.image} />
   </ul>
 
   <.pagination meta={@meta} params={@params} />

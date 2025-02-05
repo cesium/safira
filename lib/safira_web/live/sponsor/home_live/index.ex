@@ -65,7 +65,7 @@ defmodule SafiraWeb.Sponsor.HomeLive.Index do
   defp list_users(false, badge_id, params) do
     case Contest.list_badge_redeems_meta(badge_id, Map.put(params, "page_size", @limit)) do
       {:ok, {redeems, meta}} ->
-        {:ok, {Enum.map(redeems, & &1.attendee.user), meta}}
+        {:ok, {Enum.map(redeems, &redeem_data/1), meta}}
 
       {:error, reason} ->
         {:error, reason}
@@ -73,10 +73,36 @@ defmodule SafiraWeb.Sponsor.HomeLive.Index do
   end
 
   defp list_users(true, _, params) do
-    Accounts.list_attendees(Map.put(params, "page_size", @limit))
+    case Accounts.list_attendees(Map.put(params, "page_size", @limit)) do
+      {:ok, {users, meta}} ->
+        {:ok, {Enum.map(users, &user_data/1), meta}}
+
+      {:error, reason} ->
+        {:error, reason}
+    end
   end
 
   defp has_all_access?(company) do
     company.tier.full_cv_access
+  end
+
+  defp redeem_data(redeem) do
+    %{
+      id: redeem.id,
+      name: redeem.attendee.user.name,
+      handle: redeem.attendee.user.handle,
+      image: nil,
+      cv: Uploaders.CV.url({redeem.attendee.cv, redeem.attendee}, :original, signed: true)
+    }
+  end
+
+  defp user_data(user) do
+    %{
+      id: user.id,
+      name: user.name,
+      handle: user.handle,
+      image: nil,
+      cv: Uploaders.CV.url({user.attendee.cv, user.attendee}, :original, signed: true)
+    }
   end
 end
