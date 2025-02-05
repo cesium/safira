@@ -67,14 +67,27 @@ defmodule SafiraWeb.Backoffice.ScannerLive.BadgeLive.Index do
 
   @impl true
   def handle_params(%{"id" => id}, _url, socket) do
-    {:noreply, socket |> assign(:badge, Contest.get_badge!(id))}
+    badge = Contest.get_badge!(id)
+
+    if can_redeem_badge?(socket |> assign(:badge, badge)) do
+      {:noreply, socket |> assign(:badge, badge)}
+    else
+      {:noreply,
+       socket
+       |> put_flash(:error, "This badge is not currently available for redemption.")
+       |> push_navigate(to: ~p"/dashboard/scanner")}
+    end
   end
 
   @impl true
   def handle_event("scan", data, socket) do
-    case safely_extract_id_from_url(data) do
-      {:ok, id} -> process_scan(id, socket)
-      {:error, _} -> {:noreply, assign(socket, :modal_data, :invalid)}
+    if can_redeem_badge?(socket) do
+      case safely_extract_id_from_url(data) do
+        {:ok, id} -> process_scan(id, socket)
+        {:error, _} -> {:noreply, assign(socket, :modal_data, :invalid)}
+      end
+    else
+      {:noreply, assign(socket, :modal_data, :out_of_time)}
     end
   end
 
@@ -151,4 +164,22 @@ defmodule SafiraWeb.Backoffice.ScannerLive.BadgeLive.Index do
     do: gettext("This credential is not linked to any attendee! (400)")
 
   defp error_message(:invalid), do: gettext("Not a valid credential! (400)")
+
+  defp error_message(:out_of_time),
+    do: gettext("This badge is not currently available for redemption! (400)")
+
+  defp can_redeem_badge?(socket) do
+    now = DateTime.utc_now()
+
+    user_can_bypass_badge_restrictions?(socket) or
+      (DateTime.compare(now, socket.assigns.badge.begin) == :gt and
+         DateTime.compare(now, socket.assigns.badge.end) == :lt)
+  end
+
+  defp user_can_bypass_badge_restrictions?(socket) do
+    permissions = socket.assigns.current_user.staff.role.permissions
+
+    Map.has_key?(permissions, "badges") and
+      Map.get(permissions, "badges") |> Enum.member?("give_without_restrictions")
+  end
 end
