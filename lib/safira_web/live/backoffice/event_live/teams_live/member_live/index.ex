@@ -11,7 +11,7 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MemberLive.Index do
   def render(assigns) do
     ~H"""
     <div>
-      <.page title={@title} >
+      <.page title={@title}>
         <.simple_form
           for={@form}
           id="member-form"

@@ -29,16 +29,16 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.Index do
               <p><%= team.name %></p>
             </div>
             <div>
-            <.link navigate={~p"/dashboard/event/teams/#{team.id}/edit/"}>
-              <.icon name="hero-pencil" class="w-5 h-5" />
-            </.link>
-            <.link
-              phx-click={JS.push("delete", value: %{id: team.id})}
-              data-confirm="Are you sure?"
-              phx-target={@myself}
-            >
-              <.icon name="hero-trash" class="w-5 h-5" />
-            </.link>
+              <.link navigate={~p"/dashboard/event/teams/#{team.id}/edit/"}>
+                <.icon name="hero-pencil" class="w-5 h-5" />
+              </.link>
+              <.link
+                phx-click={JS.push("delete", value: %{id: team.id})}
+                data-confirm="Are you sure?"
+                phx-target={@myself}
+              >
+                <.icon name="hero-trash" class="w-5 h-5" />
+              </.link>
             </div>
           </li>
         </ul>

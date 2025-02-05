@@ -10,7 +10,10 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.Edit do
     <div>
       <.page title={@title}>
         <:actions>
-          <.link :if={@action != :teams_new} navigate={~p"/dashboard/event/teams/#{@team.id}/edit/members"}>
+          <.link
+            :if={@action != :teams_new}
+            navigate={~p"/dashboard/event/teams/#{@team.id}/edit/members"}
+          >
             <.button>
               <.icon name="hero-users" />
             </.button>
@@ -19,10 +22,15 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.Edit do
         <.simple_form for={@form} id="edit-team-form" phx-target={@myself} phx-submit="save">
           <div class="flex flex-col md:flex-row w-full gap-4">
             <div class="w-full space-y-2">
-              <.field field={@form[:name]} name="team[name]" type="text"/>
+              <.field field={@form[:name]} name="team[name]" type="text" />
             </div>
           </div>
-          <ul id="members" :if={@action != :teams_new} class="h-96 mt-8 pb-8 flex flex-col space-y-2 overflow-y-auto" phx-update="stream">
+          <ul
+            :if={@action != :teams_new}
+            id="members"
+            class="h-96 mt-8 pb-8 flex flex-col space-y-2 overflow-y-auto"
+            phx-update="stream"
+          >
             <li
               :for={{id, member} <- @streams.members}
               id={id}
@@ -30,17 +38,17 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.Edit do
             >
               <p><%= member.name %></p>
               <div>
-              <.link navigate={~p"/dashboard/event/teams/#{@team.id}/edit/members/#{member.id}"}>
-                <.icon name="hero-pencil" class="w-5 h-5" />
-              </.link>
-              <.link
-              phx-click={JS.push("delete", value: %{id: member.id})}
-              data-confirm="Are you sure?"
-              phx-target={@myself}
-            >
-              <.icon name="hero-trash" class="w-5 h-5" />
-            </.link>
-            </div>
+                <.link navigate={~p"/dashboard/event/teams/#{@team.id}/edit/members/#{member.id}"}>
+                  <.icon name="hero-pencil" class="w-5 h-5" />
+                </.link>
+                <.link
+                  phx-click={JS.push("delete", value: %{id: member.id})}
+                  data-confirm="Are you sure?"
+                  phx-target={@myself}
+                >
+                  <.icon name="hero-trash" class="w-5 h-5" />
+                </.link>
+              </div>
             </li>
             <div class="hidden only:flex flex-col gap-4 items-center w-full justify-center h-full">
               <.icon name="hero-user" class="w-12 h-12" />
