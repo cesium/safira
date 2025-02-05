@@ -1,6 +1,6 @@
 defmodule SafiraWeb.App.SlotsLive.Components.ResultModal do
   @moduledoc """
-  Lucky wheel drop result modal component.
+  Slots result modal component.
   """
   use SafiraWeb, :component
 
@@ -12,7 +12,6 @@ defmodule SafiraWeb.App.SlotsLive.Components.ResultModal do
   attr :wrapper_class, :string, default: ""
   attr :on_cancel, JS, default: %JS{}
   attr :content_class, :string, default: "bg-primary"
-  attr :show_vault_link, :boolean, default: true
 
   def result_modal(assigns) do
     ~H"""

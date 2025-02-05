@@ -16,7 +16,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPaytable.FormComponent do
         <div class="pt-8">
           <div class="flex flex-row justify-between items-center">
             <h2 class="font-semibold"><%= gettext("Entries") %></h2>
-            <.button phx-click={JS.push("add-entry", target: @myself)}>
+            <.button phx-click="add-entry" phx-target={@myself}>
               <.icon name="hero-plus" class="w-5 h-5" />
             </.button>
           </div>
@@ -35,7 +35,8 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPaytable.FormComponent do
                     <.field field={form[:multiplier]} type="number" wrapper_class="col-span-2" />
                     <.field field={form[:probability]} type="number" wrapper_class="col-span-2" />
                     <.link
-                      phx-click={JS.push("delete-entry", value: %{id: id})}
+                      phx-click="delete-entry"
+                      phx-value-id={id}
                       data-confirm="Are you sure?"
                       phx-target={@myself}
                       class="content-center px-3"
@@ -147,27 +148,45 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPaytable.FormComponent do
   def handle_event("save", _params, socket) do
     entries = socket.assigns.entries
 
-    # Find if all the changesets are valid
     valid_entries =
       forms_valid?(Enum.map(entries, fn {_, _, form} -> form end)) and
         calculate_nothing_probability(entries) >= 0
 
     if valid_entries do
-      # For each entry, update or create it
-      Enum.each(entries, fn {_, entry, form} ->
-        if entry.id != nil do
-          Minigames.update_slots_paytable(entry, form.params)
-        else
-          Minigames.create_slots_paytable(form.params)
-        end
-      end)
+      results =
+        Enum.reduce_while(entries, [], fn {id, entry, form}, acc ->
+          result =
+            if entry.id != nil do
+              Minigames.update_slots_paytable(entry, form.params)
+            else
+              Minigames.create_slots_paytable(form.params)
+            end
 
+          case result do
+            {:ok, paytable} -> {:cont, [{:ok, paytable} | acc]}
+            {:error, changeset} -> {:halt, {:error, id, changeset}}
+          end
+        end)
+
+      case results do
+        {:error, id, changeset} ->
+          updated_entries = update_entry_form(socket.assigns.entries, id, to_form(changeset))
+
+          {:noreply,
+           socket
+           |> put_flash(:error, "Error saving slots paytable")
+           |> assign(entries: updated_entries)}
+
+        _ ->
+          {:noreply,
+           socket
+           |> put_flash(:info, "Slots paytable changed successfully")
+           |> push_patch(to: socket.assigns.patch)}
+      end
+    else
       {:noreply,
        socket
-       |> put_flash(:info, "Slots paytable changed successfully")
-       |> push_patch(to: socket.assigns.patch)}
-    else
-      {:noreply, socket}
+       |> put_flash(:error, "Please fix the errors before saving")}
     end
   end
 

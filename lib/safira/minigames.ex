@@ -12,7 +12,15 @@ defmodule Safira.Minigames do
   alias Safira.Constants
   alias Safira.Contest
   alias Safira.Inventory.Item
-  alias Safira.Minigames.{CoinFlipRoom, Prize, SlotsPaytable, SlotsReelIcon, WheelDrop}
+
+  alias Safira.Minigames.{
+    CoinFlipRoom,
+    Prize,
+    SlotsPayline,
+    SlotsPaytable,
+    SlotsReelIcon,
+    WheelDrop
+  }
 
   @pubsub Safira.PubSub
 
@@ -1203,7 +1211,7 @@ defmodule Safira.Minigames do
         active
 
       {:error, _} ->
-        # If the active status is not set, set it to false by default
+        # If the active status is not set, set it to true by default
         change_slots_active(true)
         true
     end
@@ -1226,8 +1234,6 @@ defmodule Safira.Minigames do
   defp broadcast_slots_config_update(config, value) do
     Phoenix.PubSub.broadcast(@pubsub, slots_config_topic(config), {config, value})
   end
-
-  alias Safira.Minigames.SlotsPayline
 
   @doc """
   Returns the list of slots_paylines.
@@ -1324,18 +1330,12 @@ defmodule Safira.Minigames do
   end
 
   @doc """
-  Spins the wheel for the given attendee.
+  Spins the slots for an attendee.
 
   ## Examples
 
-      iex> spin_wheel(attendee)
-      {:ok, :prize, %WheelDrop{}}
-
-      iex> spin_wheel(attendee)
-      {:ok, :tokens, %WheelDrop{}}
-
-      iex> spin_wheel(attendee)
-      {:ok, nil, %WheelDrop{}}
+      iex> spin_slots(%Attendee{}, 20)
+      {:ok, %Attendee{}, 2, 100, 40}
   """
   def spin_slots(attendee, bet) do
     attendee = Accounts.get_attendee!(attendee.id)
@@ -1465,13 +1465,20 @@ defmodule Safira.Minigames do
       Enum.random(0..(slots_reel_icons_count[2] - 1))
     ]
 
-    if Enum.any?(paylines, fn p ->
-         [p.position_0, p.position_1, p.position_2] == target
-       end) do
+    if Enum.any?(paylines, &match_payline?(&1, target)) do
       generate_non_matching_target(paylines, slots_reel_icons_count)
     else
       target
     end
+  end
+
+  defp match_payline?(payline, [t0, t1, t2]) do
+    [
+      is_nil(payline.position_0) || payline.position_0 == t0,
+      is_nil(payline.position_1) || payline.position_1 == t1,
+      is_nil(payline.position_2) || payline.position_2 == t2
+    ]
+    |> Enum.all?(& &1)
   end
 
   @doc """
@@ -1495,5 +1502,54 @@ defmodule Safira.Minigames do
         2 => if(visible_in_reel_2, do: Map.get(acc, 2, 0) + 1, else: Map.get(acc, 2, 0))
       })
     end)
+  end
+
+  def save_reel_order(reel_order, visibility) do
+    Ecto.Multi.new()
+    |> update_reel_order(reel_order["reel-0"], visibility[0], :reel_0_index)
+    |> update_reel_order(reel_order["reel-1"], visibility[1], :reel_1_index)
+    |> update_reel_order(reel_order["reel-2"], visibility[2], :reel_2_index)
+    |> Safira.Repo.transaction()
+    |> handle_transaction_result()
+  end
+
+  defp update_reel_order(multi, reel_order, visibility, reel_index_field) do
+    visible_reel_order = Enum.filter(reel_order, fn {id, _index} -> visibility[id] end)
+    hidden_reel_order = Enum.filter(reel_order, fn {id, _index} -> not visibility[id] end)
+
+    recalculated_reel_order =
+      visible_reel_order
+      |> Enum.sort_by(fn {_id, index} -> index end)
+      |> Enum.with_index()
+      |> Enum.reduce(%{}, fn {{id, _}, index}, acc -> Map.put(acc, id, index) end)
+
+    final_reel_order =
+      Enum.reduce(hidden_reel_order, recalculated_reel_order, fn {id, _}, acc ->
+        Map.put(acc, id, -1)
+      end)
+
+    Enum.reduce(final_reel_order, multi, fn {id, index}, multi ->
+      case get_slots_reel_icon!(id) do
+        nil ->
+          multi
+
+        reel ->
+          Ecto.Multi.update(
+            multi,
+            {:update_reel, reel_index_field, id},
+            change_slots_reel_icon(reel, %{reel_index_field => index})
+          )
+      end
+    end)
+  end
+
+  defp handle_transaction_result(transaction_result) do
+    case transaction_result do
+      {:ok, results} ->
+        {:ok, results}
+
+      {:error, _failed_operation, error, _changes} ->
+        {:error, "Failed to update reels: #{inspect(error)}"}
+    end
   end
 end

@@ -15,11 +15,11 @@ defmodule Safira.Uploaders.SlotsReelIcon do
   end
 
   def storage_dir(_, {_file, %SlotsReelIcon{} = slots_reel_icon}) do
-    "uploads/slots_reel_icons/#{slots_reel_icon.id}"
+    "uploads/minigames/slots/reel_icons/#{slots_reel_icon.id}"
   end
 
   def storage_dir(_, {_file, nil}) do
-    "uploads/slots_reel_icons/"
+    "uploads/minigames/slots/reel_icons/"
   end
 
   def filename(version, _) do

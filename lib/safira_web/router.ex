@@ -253,18 +253,23 @@ defmodule SafiraWeb.Router do
             end
           end
 
+          scope "/wheel" do
+            live "/", MinigamesLive.Index, :edit_wheel
+            live "/drops", MinigamesLive.Index, :edit_wheel_drops
+            live "/simulator", MinigamesLive.Index, :simulate_wheel
+          end
+
+          scope "/slots" do
+            live "/", MinigamesLive.Index, :edit_slots
+            live "/reels_icons", MinigamesLive.Index, :edit_slots_reel_icons_icons
+            live "/reels_position", MinigamesLive.Index, :edit_slots_reel_icons_position
+            live "/paytable", MinigamesLive.Index, :edit_slots_paytable
+            live "/payline", MinigamesLive.Index, :edit_slots_payline
+          end
+
           live "/", MinigamesLive.Index, :index
-          live "/wheel/drops", MinigamesLive.Index, :edit_wheel_drops
-          live "/wheel/simulator", MinigamesLive.Index, :simulate_wheel
-          live "/wheel", MinigamesLive.Index, :edit_wheel
 
           live "/coin_flip", MinigamesLive.Index, :edit_coin_flip
-
-          live "/slots", MinigamesLive.Index, :edit_slots
-          live "/slots/reels_icons", MinigamesLive.Index, :edit_slots_reel_icons_icons
-          live "/slots/reels_position", MinigamesLive.Index, :edit_slots_reel_icons_position
-          live "/slots/paytable", MinigamesLive.Index, :edit_slots_paytable
-          live "/slots/payline", MinigamesLive.Index, :edit_slots_payline
         end
 
         live "/scanner", ScannerLive.Index, :index

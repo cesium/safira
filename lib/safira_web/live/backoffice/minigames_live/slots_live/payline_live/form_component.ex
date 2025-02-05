@@ -15,7 +15,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPayline.FormComponent do
         <div class="pt-8">
           <div class="flex flex-row justify-between items-center">
             <h2 class="font-semibold"><%= gettext("Entries") %></h2>
-            <.button phx-click={JS.push("add-entry", target: @myself)}>
+            <.button phx-click="add-entry" phx-target={@myself}>
               <.icon name="hero-plus" class="w-5 h-5" />
             </.button>
           </div>
@@ -56,7 +56,8 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPayline.FormComponent do
                       options={generate_options_multiplier(@paytables)}
                     />
                     <.link
-                      phx-click={JS.push("delete-entry", value: %{id: id})}
+                      phx-click="delete-entry"
+                      phx-value-id={id}
                       data-confirm="Are you sure?"
                       phx-target={@myself}
                       class="content-center px-3"

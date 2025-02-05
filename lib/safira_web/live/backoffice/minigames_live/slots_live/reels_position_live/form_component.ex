@@ -154,7 +154,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.ReelsPosition.FormComponent do
 
   @impl true
   def handle_event("save", _params, socket) do
-    case save_reel_order(socket) do
+    case Minigames.save_reel_order(socket.assigns.reel_order, socket.assigns.visibility) do
       {:ok, _results} ->
         {:noreply,
          socket
@@ -179,58 +179,6 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.ReelsPosition.FormComponent do
       end)
 
     {:noreply, socket |> assign(:visibility, visibility)}
-  end
-
-  defp save_reel_order(socket) do
-    reel_order = socket.assigns.reel_order
-    visibility = socket.assigns.visibility
-
-    Ecto.Multi.new()
-    |> update_reel_order(reel_order["reel-0"], visibility[0], :reel_0_index)
-    |> update_reel_order(reel_order["reel-1"], visibility[1], :reel_1_index)
-    |> update_reel_order(reel_order["reel-2"], visibility[2], :reel_2_index)
-    |> Safira.Repo.transaction()
-    |> handle_transaction_result()
-  end
-
-  defp update_reel_order(multi, reel_order, visibility, reel_index_field) do
-    visible_reel_order = Enum.filter(reel_order, fn {id, _index} -> visibility[id] end)
-    hidden_reel_order = Enum.filter(reel_order, fn {id, _index} -> not visibility[id] end)
-
-    recalculated_reel_order =
-      visible_reel_order
-      |> Enum.sort_by(fn {_id, index} -> index end)
-      |> Enum.with_index()
-      |> Enum.reduce(%{}, fn {{id, _}, index}, acc -> Map.put(acc, id, index) end)
-
-    final_reel_order =
-      Enum.reduce(hidden_reel_order, recalculated_reel_order, fn {id, _}, acc ->
-        Map.put(acc, id, -1)
-      end)
-
-    Enum.reduce(final_reel_order, multi, fn {id, index}, multi ->
-      case Minigames.get_slots_reel_icon!(id) do
-        nil ->
-          multi
-
-        reel ->
-          Ecto.Multi.update(
-            multi,
-            {:update_reel, reel_index_field, id},
-            Minigames.change_slots_reel_icon(reel, %{reel_index_field => index})
-          )
-      end
-    end)
-  end
-
-  defp handle_transaction_result(transaction_result) do
-    case transaction_result do
-      {:ok, results} ->
-        {:ok, results}
-
-      {:error, _failed_operation, error, _changes} ->
-        {:error, "Failed to update reels: #{inspect(error)}"}
-    end
   end
 
   defp sort_reels_for_column(reels) do

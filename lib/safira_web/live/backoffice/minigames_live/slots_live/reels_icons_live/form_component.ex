@@ -109,7 +109,6 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.ReelIcons.FormComponent do
     {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
   end
 
-  # Update save handler to use new consume_image_data
   def handle_event("save", _params, socket) do
     case consume_image_data(socket) do
       {:ok, _results} ->

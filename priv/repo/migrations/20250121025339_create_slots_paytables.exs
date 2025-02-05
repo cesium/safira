@@ -9,5 +9,7 @@ defmodule Safira.Repo.Migrations.CreateSlotsPaytables do
 
       timestamps(type: :utc_datetime)
     end
+
+    create unique_index(:slots_paytables, [:multiplier])
   end
 end
