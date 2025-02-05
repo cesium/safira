@@ -72,7 +72,9 @@ defmodule SafiraWeb.App.SlotsLive.Components.PaytableModal do
                           else: "#{paytable.multiplier}x Multiplier" %>
                       </h3>
                       <p class="mb-3 text-sm text-slate-300">
-                        Probability: <%= :erlang.float_to_binary(paytable.probability, decimals: 5) %>
+                        <%= gettext("Probability: %{probability}%",
+                          probability: Float.round(paytable.probability * 100, 4)
+                        ) %>
                       </p>
                     </div>
 

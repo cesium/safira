@@ -1552,4 +1552,64 @@ defmodule Safira.Minigames do
         {:error, "Failed to update reels: #{inspect(error)}"}
     end
   end
+
+  def update_slots_reel_icons(entries, socket) do
+    existing_reels = list_slots_reel_icons()
+
+    Ecto.Multi.new()
+    |> delete_existing_reels(existing_reels)
+    |> create_new_reels(entries, socket)
+    |> Repo.transaction()
+    |> handle_transaction_result()
+  end
+
+  defp delete_existing_reels(multi, reels) do
+    Enum.reduce(reels, multi, fn reel, multi ->
+      Ecto.Multi.delete(multi, {:delete_reel, reel.id}, reel)
+    end)
+  end
+
+  defp create_new_reels(multi, entries, socket) do
+    Ecto.Multi.run(multi, :create_reels, fn _repo, _changes ->
+      results =
+        entries
+        |> Enum.with_index()
+        |> Enum.map(fn {entry, index} ->
+          create_reel_with_image(socket, entry, index)
+        end)
+        |> Enum.map(fn
+          {:ok, result} -> result
+          error -> error
+        end)
+
+      if Enum.all?(results, &is_struct(&1, SlotsReelIcon)) do
+        {:ok, results}
+      else
+        {:error, "Failed to create some reels"}
+      end
+    end)
+  end
+
+  defp create_reel_with_image(socket, entry, index) do
+    Phoenix.LiveView.consume_uploaded_entry(socket, entry, fn %{path: path} ->
+      create_slots_reel_icon(%{
+        "reel_0_index" => index,
+        "reel_1_index" => index,
+        "reel_2_index" => index
+      })
+      |> case do
+        {:ok, reel} ->
+          update_slots_reel_icon_image(reel, %{
+            "image" => %Plug.Upload{
+              content_type: entry.client_type,
+              filename: entry.client_name,
+              path: path
+            }
+          })
+
+        error ->
+          error
+      end
+    end)
+  end
 end

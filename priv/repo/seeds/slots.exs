@@ -125,8 +125,7 @@ defmodule Safira.Repo.Seeds.Slots do
           # Immediately update the image using the dedicated update function.
           case Minigames.update_slots_reel_icon_image(icon, %{image: plug_upload}) do
             {:ok, _updated_icon} ->
-              Mix.shell().info("Created and updated reel icon #{file}")
-
+              :ok
             {:error, changeset} ->
               Mix.shell().error("Failed to update reel icon image for #{file}: #{inspect(changeset.errors)}")
           end

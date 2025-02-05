@@ -129,73 +129,9 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.ReelIcons.FormComponent do
   end
 
   defp consume_image_data(socket) do
-    existing_reels = Minigames.list_slots_reel_icons()
-
-    Ecto.Multi.new()
-    |> delete_existing_reels(existing_reels)
-    |> create_new_reels(socket)
-    |> Safira.Repo.transaction()
-    |> handle_transaction_result()
-  end
-
-  defp delete_existing_reels(multi, reels) do
-    Enum.reduce(reels, multi, fn reel, multi ->
-      Ecto.Multi.delete(multi, {:delete_reel, reel.id}, reel)
-    end)
-  end
-
-  defp create_new_reels(multi, socket) do
-    Ecto.Multi.run(multi, :create_reels, fn _repo, _changes ->
-      results =
-        socket.assigns.uploads.images.entries
-        |> Enum.with_index()
-        |> Enum.map(fn {entry, index} ->
-          create_reel_with_image(socket, entry, index)
-        end)
-        |> Enum.map(fn
-          # Extract successful results
-          {:ok, result} -> result
-          error -> error
-        end)
-
-      if Enum.all?(results, &is_struct(&1, Safira.Minigames.SlotsReelIcon)) do
-        {:ok, results}
-      else
-        {:error, "Failed to create some reels"}
-      end
-    end)
-  end
-
-  defp create_reel_with_image(socket, entry, index) do
-    consume_uploaded_entry(socket, entry, fn %{path: path} ->
-      Minigames.create_slots_reel_icon(%{
-        "reel_0_index" => index,
-        "reel_1_index" => index,
-        "reel_2_index" => index
-      })
-      |> case do
-        {:ok, reel} ->
-          Minigames.update_slots_reel_icon_image(reel, %{
-            "image" => %Plug.Upload{
-              content_type: entry.client_type,
-              filename: entry.client_name,
-              path: path
-            }
-          })
-
-        error ->
-          error
-      end
-    end)
-  end
-
-  defp handle_transaction_result(transaction_result) do
-    case transaction_result do
-      {:ok, %{create_reels: results}} ->
-        {:ok, results}
-
-      {:error, _failed_operation, error, _changes} ->
-        {:error, "Failed to update reels: #{inspect(error)}"}
-    end
+    Minigames.update_slots_reel_icons(
+      socket.assigns.uploads.images.entries,
+      socket
+    )
   end
 end

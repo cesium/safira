@@ -14,6 +14,28 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.Slots.FormComponent do
         title={gettext("Slots Configuration")}
         subtitle={gettext("Configures slots minigame's internal settings.")}
       >
+        <:actions>
+          <.link navigate={~p"/dashboard/minigames/slots/reels_icons"}>
+            <.button>
+              <.icon name="hero-star" class="w-5" />
+            </.button>
+          </.link>
+          <.link navigate={~p"/dashboard/minigames/slots/reels_position"}>
+            <.button>
+              <.icon name="hero-view-columns" class="w-5" />
+            </.button>
+          </.link>
+          <.link navigate={~p"/dashboard/minigames/slots/paytable"}>
+            <.button>
+              <.icon name="hero-circle-stack" class="w-5" />
+            </.button>
+          </.link>
+          <.link navigate={~p"/dashboard/minigames/slots/payline"}>
+            <.button>
+              <.icon name="hero-rectangle-stack" class="w-5" />
+            </.button>
+          </.link>
+        </:actions>
         <div class="my-8">
           <.form
             id="slots-config-form"
@@ -36,35 +58,6 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.Slots.FormComponent do
               <.button phx-disable-with="Saving..."><%= gettext("Save Configuration") %></.button>
             </div>
           </.form>
-          <div class="flex gap-10 mt-4 text-center">
-            <.link
-              patch={~p"/dashboard/minigames/slots/reels_icons"}
-              class="flex flex-col items-center justify-center w-full text-2xl gap-4 font-semibold py-8 rounded-2xl dark:bg-darkShade/10 dark:hover:bg-darkShade/20 bg-lightShade/30 hover:bg-lightShade/40 transition-colors"
-            >
-              <%= gettext("Edit reels icons") %>
-            </.link>
-
-            <.link
-              patch={~p"/dashboard/minigames/slots/reels_position"}
-              class="flex flex-col items-center justify-center w-full text-2xl gap-4 font-semibold py-8 rounded-2xl dark:bg-darkShade/10 dark:hover:bg-darkShade/20 bg-lightShade/30 hover:bg-lightShade/40 transition-colors"
-            >
-              <%= gettext("Edit reels position") %>
-            </.link>
-
-            <.link
-              patch={~p"/dashboard/minigames/slots/paytable"}
-              class="flex flex-col items-center justify-center w-full text-2xl gap-4 font-semibold py-8 rounded-2xl dark:bg-darkShade/10 dark:hover:bg-darkShade/20 bg-lightShade/30 hover:bg-lightShade/40 transition-colors"
-            >
-              <%= gettext("Edit paytable") %>
-            </.link>
-
-            <.link
-              patch={~p"/dashboard/minigames/slots/payline"}
-              class="flex flex-col items-center justify-center w-full text-2xl gap-4 font-semibold py-8 rounded-2xl dark:bg-darkShade/10 dark:hover:bg-darkShade/20 bg-lightShade/30 hover:bg-lightShade/40 transition-colors"
-            >
-              <%= gettext("Edit payline") %>
-            </.link>
-          </div>
         </div>
       </.page>
     </div>

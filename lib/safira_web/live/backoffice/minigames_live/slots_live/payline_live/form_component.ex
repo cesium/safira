@@ -69,18 +69,6 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPayline.FormComponent do
               </li>
             <% end %>
           </ul>
-          <!-- Probability of nothing -->
-          <div class="w-full flex flex-row-reverse pt-8">
-            <.field
-              class="col-span-2"
-              type="number"
-              name="probability"
-              label="Remaining probability"
-              value={@nothing_probability}
-              readonly
-              disabled
-            />
-          </div>
         </div>
         <div class="w-full flex flex-row-reverse">
           <.button phx-click="save" phx-target={@myself} phx-disable-with="Saving...">
@@ -106,7 +94,6 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPayline.FormComponent do
     {:ok,
      socket
      |> assign(entries: entries)
-     |> assign(nothing_probability: 0)
      |> assign(paytables: Minigames.list_slots_paytables())
      |> assign(slots_reel_icons: slots_reel_icons)}
   end
