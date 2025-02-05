@@ -5,7 +5,7 @@ export const Confetti = {
         const jsConfetti = new JSConfetti();
         if(this.el.dataset.is_win != undefined) {
             jsConfetti.addConfetti({
-                confettiColors: ["#ff800d", "#fc993f"],
+                confettiColors: ["#ffdb0d", "#fee243"],
                 confettiRadius: 6
             });
         }

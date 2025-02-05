@@ -5,8 +5,10 @@
         <.icon name="hero-lifebuoy" class="w-5 h-5" />
       </.button>
     </.link>
-    <.link patch={~p"/dashboard/event/edit"}>
-      <.button><%= gettext("Edit Settings") %></.button>
+    <.link patch={~p"/dashboard/event/credentials"}>
+      <.button>
+        <.icon name="hero-qr-code" class="w-5 h-5" />
+      </.button>
     </.link>
   </:actions>
 
@@ -73,6 +75,20 @@
     title={@page_title}
     action={@live_action}
     current_user={@current_user}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:credentials]}
+  id="credentials-modal"
+  show
+  on_cancel={JS.navigate(~p"/dashboard/event")}
+>
+  <.live_component
+    module={SafiraWeb.Backoffice.EventLive.GenerateCredentialsLive.FormComponent}
+    id={:credentials}
+    title={@page_title}
+    patch={~p"/dashboard/event/"}
   />
 </.modal>
 

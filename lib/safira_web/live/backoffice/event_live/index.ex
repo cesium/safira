@@ -58,4 +58,9 @@ defmodule SafiraWeb.Backoffice.EventLive.Index do
     |> assign(:page_title, "New FAQ")
     |> assign(:faq, %Faq{})
   end
+
+  defp apply_action(socket, :credentials, _params) do
+    socket
+    |> assign(:page_title, "Generate Credentials")
+  end
 end
