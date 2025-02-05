@@ -102,6 +102,9 @@ defmodule Safira.MixProject do
       {:bandit, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
 
+      # jobs
+      {:oban, "~> 2.19"},
+
       # testing
       {:floki, ">= 0.30.0", only: :test}
     ]

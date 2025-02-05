@@ -508,6 +508,34 @@ defmodule Safira.Contest do
   end
 
   @doc """
+  Gets the count of redeemed badges for an attendee.
+
+  ## Examples
+
+      iex> get_attendee_redeemed_badges_count(attendee, category)
+      5
+  """
+  def get_attendee_redeemed_badges_count(attendee, nil) do
+    Repo.aggregate(BadgeRedeem, :count, :id, where: [attendee_id: attendee.id])
+  end
+
+  def get_attendee_redeemed_badges_count(attendee, category) do
+    Repo.aggregate(BadgeRedeem, :count, :id, where: [attendee_id: attendee.id, category_id: category.id])
+  end
+
+  @doc """
+  Gets the count of badges for a category.
+
+  ## Examples
+
+      iex> get_category_badges_count(category)
+      5
+  """
+  def get_category_badges_count(category) do
+    Repo.aggregate(Badge, :count, :id, where: [category_id: category.id])
+  end
+
+  @doc """
   Transaction for updating the attendee token balance and the daily tokens.
   """
   def change_attendee_tokens_transaction(
@@ -730,5 +758,20 @@ defmodule Safira.Contest do
       topic(redeem.attendee_id),
       Map.put(redeem, :badge, get_badge!(redeem.badge_id))
     )
+  end
+
+  @doc """
+  Lists all currently valid badge conditions for a category.
+
+  ## Examples
+
+      iex> list_valid_badge_conditions(category)
+      [%BadgeCondition{}, %BadgeCondition{}]
+  """
+  def list_valid_badge_conditions(category) do
+    BadgeCondition
+    |> where([c], c.category_id == ^category.id or is_nil(c.category_id))
+    |> where([c], c.begin <= ^DateTime.utc_now() and c.end >= ^DateTime.utc_now())
+    |> Repo.all()
   end
 end
