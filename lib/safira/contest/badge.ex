@@ -7,7 +7,7 @@ defmodule Safira.Contest.Badge do
   alias Safira.Companies
 
   @required_fields ~w(name description begin end tokens entries category_id)a
-  @optional_fields ~w(image counts_for_day)a
+  @optional_fields ~w(image counts_for_day givable)a
 
   @derive {
     Flop.Schema,
@@ -23,6 +23,7 @@ defmodule Safira.Contest.Badge do
     field :begin, :utc_datetime
     field :end, :utc_datetime
     field :counts_for_day, :boolean, default: true
+    field :givable, :boolean, default: true
 
     belongs_to :category, Safira.Contest.BadgeCategory
     has_one :company, Companies.Company

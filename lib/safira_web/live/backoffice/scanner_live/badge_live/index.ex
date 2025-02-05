@@ -173,7 +173,7 @@ defmodule SafiraWeb.Backoffice.ScannerLive.BadgeLive.Index do
 
     user_can_bypass_badge_restrictions?(socket) or
       (DateTime.compare(now, socket.assigns.badge.begin) == :gt and
-         DateTime.compare(now, socket.assigns.badge.end) == :lt)
+         DateTime.compare(now, socket.assigns.badge.end) == :lt and socket.assigns.badge.givable)
   end
 
   defp user_can_bypass_badge_restrictions?(socket) do

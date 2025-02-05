@@ -49,6 +49,17 @@ defmodule SafiraWeb.Backoffice.BadgeLive.FormComponent do
               <.field field={@form[:begin]} type="datetime-local" label="Begin" required />
               <.field field={@form[:end]} type="datetime-local" label="End" required />
               <.field
+                field={@form[:givable]}
+                wrapper_class="pt-4"
+                type="switch"
+                label="Givable by staff"
+                help_text={
+                  gettext(
+                    "Controls whether staffs can give this badge to attendees when the current time is between begin and end."
+                  )
+                }
+              />
+              <.field
                 field={@form[:counts_for_day]}
                 wrapper_class="pt-4"
                 type="switch"

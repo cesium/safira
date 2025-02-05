@@ -164,26 +164,26 @@ defmodule Safira.Contest do
   """
   def list_available_badges do
     Badge
-    |> where([b], b.begin <= ^DateTime.utc_now() and b.end >= ^DateTime.utc_now())
+    |> where([b], b.begin <= ^DateTime.utc_now() and b.end >= ^DateTime.utc_now() and b.givable)
     |> Repo.all()
   end
 
   def list_available_badges(opts) when is_list(opts) do
     Badge
-    |> where([b], b.begin <= ^DateTime.utc_now() and b.end >= ^DateTime.utc_now())
+    |> where([b], b.begin <= ^DateTime.utc_now() and b.end >= ^DateTime.utc_now() and b.givable)
     |> Repo.all()
   end
 
   def list_available_badges(params) do
     Badge
-    |> where([b], b.begin <= ^DateTime.utc_now() and b.end >= ^DateTime.utc_now())
+    |> where([b], b.begin <= ^DateTime.utc_now() and b.end >= ^DateTime.utc_now() and b.givable)
     |> Flop.validate_and_run(params, for: Badge)
   end
 
   def list_available_badges(%{} = params, opts) when is_list(opts) do
     Badge
     |> apply_filters(opts)
-    |> where([b], b.begin <= ^DateTime.utc_now() and b.end >= ^DateTime.utc_now())
+    |> where([b], b.begin <= ^DateTime.utc_now() and b.end >= ^DateTime.utc_now() and b.givable)
     |> Flop.validate_and_run(params, for: Badge)
   end
 
