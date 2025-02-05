@@ -76,17 +76,28 @@ defmodule SafiraWeb.Backoffice.BadgeLive.ConditionLive.Index do
 
   def condition_description(condition) do
     if condition.category_id do
-      gettext(
-        "Attendee has redeemed %{amount_needed} %{badge_cardinality} of type %{category_name}.",
-        amount_needed: condition.amount_needed,
-        category_name: condition.category.name,
-        badge_cardinality: ngettext("badge", "badges", condition.amount_needed)
-      )
+      if is_nil(condition.amount_needed) do
+        gettext(
+          "Attendee has redeemed all badges of type %{category_name}.",
+          category_name: condition.category.name
+        )
+      else
+        gettext(
+          "Attendee has redeemed %{amount_needed} %{badge_cardinality} of type %{category_name}.",
+          amount_needed: condition.amount_needed,
+          category_name: condition.category.name,
+          badge_cardinality: ngettext("badge", "badges", condition.amount_needed)
+        )
+      end
     else
-      gettext("Attendee has redeemed %{amount_needed} %{badge_cardinality} of any type.",
-        amount_needed: condition.amount_needed,
-        badge_cardinality: ngettext("badge", "badges", condition.amount_needed)
-      )
+      if is_nil(condition.amount_needed) do
+        gettext("Attendee has redeemed all badges in the platform.")
+      else
+        gettext("Attendee has redeemed %{amount_needed} %{badge_cardinality} of any type.",
+          amount_needed: condition.amount_needed,
+          badge_cardinality: ngettext("badge", "badges", condition.amount_needed)
+        )
+      end
     end <>
       if condition.begin && condition.end do
         gettext(" (from %{begin} to %{end})",

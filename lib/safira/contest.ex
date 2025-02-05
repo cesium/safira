@@ -6,7 +6,7 @@ defmodule Safira.Contest do
 
   alias Ecto.Multi
   alias Safira.Accounts.Attendee
-  alias Safira.{Companies, Spotlights}
+  alias Safira.{Companies, Spotlights, Workers}
   alias Safira.Contest.{Badge, BadgeCategory, BadgeCondition, BadgeRedeem, DailyTokens}
 
   @pubsub Safira.PubSub
@@ -516,11 +516,17 @@ defmodule Safira.Contest do
       5
   """
   def get_attendee_redeemed_badges_count(attendee, nil) do
-    Repo.aggregate(BadgeRedeem, :count, :id, where: [attendee_id: attendee.id])
+    BadgeRedeem
+    |> where([br], br.attendee_id == ^attendee.id)
+    |> Repo.aggregate(:count, :id)
   end
 
   def get_attendee_redeemed_badges_count(attendee, category) do
-    Repo.aggregate(BadgeRedeem, :count, :id, where: [attendee_id: attendee.id, category_id: category.id])
+    BadgeRedeem
+    |> where([br], br.attendee_id == ^attendee.id)
+    |> join(:inner, [br], b in Badge, on: br.badge_id == b.id)
+    |> where([br, b], b.category_id == ^category.id)
+    |> Repo.aggregate(:count, :id)
   end
 
   @doc """
@@ -531,8 +537,14 @@ defmodule Safira.Contest do
       iex> get_category_badges_count(category)
       5
   """
+  def get_category_badges_count(nil) do
+    Repo.aggregate(Badge, :count, :id)
+  end
+
   def get_category_badges_count(category) do
-    Repo.aggregate(Badge, :count, :id, where: [category_id: category.id])
+    Badge
+    |> where([b], b.category_id == ^category.id)
+    |> Repo.aggregate(:count, :id)
   end
 
   @doc """
@@ -679,6 +691,12 @@ defmodule Safira.Contest do
     case result do
       {:ok, %{redeem: redeem}} ->
         broadcast_attendee_redeems_update(redeem.id)
+
+        # Enqueue job to check conditions
+        Oban.insert(
+          Workers.CheckBadgeConditions.new(%{attendee_id: attendee.id, badge_id: badge.id})
+        )
+
         {:ok, redeem}
 
       {:error, :redeem, _, _} ->
@@ -772,6 +790,7 @@ defmodule Safira.Contest do
     BadgeCondition
     |> where([c], c.category_id == ^category.id or is_nil(c.category_id))
     |> where([c], c.begin <= ^DateTime.utc_now() and c.end >= ^DateTime.utc_now())
+    |> preload([:category, :badge])
     |> Repo.all()
   end
 end

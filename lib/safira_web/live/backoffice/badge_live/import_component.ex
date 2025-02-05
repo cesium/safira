@@ -188,13 +188,16 @@ defmodule SafiraWeb.Backoffice.BadgeLive.ImportComponent do
     badges_csv_path = Path.join(dest, "badges.csv")
 
     if File.exists?(badges_csv_path) do
-      badges_csv_path
-      |> File.stream!()
-      |> CSV.parse_stream()
-      |> Enum.each(fn [_, _, _, _, _, category_name, _, _, _, _] = row ->
-        {_, category} = find_or_create_category(category_name, categories)
-        import_badge(row, category, dest)
-      end)
+      {_, _} =
+        badges_csv_path
+        |> File.stream!()
+        |> CSV.parse_stream()
+        |> Enum.reduce({categories, []}, fn [_, _, _, _, _, category_name, _, _, _, _] = row,
+                                            {categories_acc, _} ->
+          {updated_categories, category} = find_or_create_category(category_name, categories_acc)
+          import_badge(row, category, dest)
+          {updated_categories, nil}
+        end)
 
       {:ok, "badges imported"}
     else
