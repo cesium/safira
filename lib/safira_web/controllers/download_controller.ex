@@ -1,7 +1,8 @@
-defmodule SafiraWeb.CSVController do
+defmodule SafiraWeb.DownloadController do
   use SafiraWeb, :controller
 
   alias Safira.Accounts
+  alias Safira.Companies
 
   def generate_credentials(conn, %{"count" => count}) do
     {count_int, ""} = Integer.parse(count)
@@ -45,6 +46,38 @@ defmodule SafiraWeb.CSVController do
       |> put_status(403)
       |> redirect(to: ~p"/")
       |> halt()
+    end
+  end
+
+  def cvs(conn, _params) do
+    company = conn.assigns.current_user.company
+
+    if is_nil(company.badge_id) do
+      conn
+      |> put_flash(:error, "You do not have permission to view this resource")
+      |> redirect(to: ~p"/sponsor")
+    else
+      conn =
+        conn
+        |> put_resp_content_type("application/zip")
+        |> put_resp_header("content-disposition", "attachment; filename=sei_cvs.zip")
+        |> send_chunked(200)
+
+      Companies.get_cvs(company)
+      |> Enum.map(fn {handle, cv} ->
+        IO.inspect({handle, cv})
+        Zstream.entry(
+          handle <> ".pdf",
+          [HTTPoison.get!(cv, [], follow_redirect: true).body]
+        )
+      end)
+      |> Zstream.zip()
+      |> Enum.reduce(conn, fn chunk, conn ->
+        case chunk(conn, chunk) do
+          {:ok, conn} -> conn
+          {:error, _reason} -> conn
+        end
+      end)
     end
   end
 

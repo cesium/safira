@@ -69,14 +69,14 @@ defmodule SafiraWeb.App.HomeLive.FormComponent do
   end
 
   def handle_event("save", %{"attendee" => attendee_params}, socket) do
-    save_attendee(socket, socket.assigns.action, attendee_params)
+    save_attendee(socket, attendee_params)
   end
 
   def handle_event("save", %{}, socket) do
-    save_attendee(socket, socket.assigns.action, %{})
+    save_attendee(socket, %{})
   end
 
-  defp save_attendee(socket, :edit, attendee_params) do
+  defp save_attendee(socket, attendee_params) do
     case Accounts.update_attendee(socket.assigns.attendee, attendee_params) do
       {:ok, attendee} ->
         case consume_image_data(attendee, socket) do
@@ -84,22 +84,6 @@ defmodule SafiraWeb.App.HomeLive.FormComponent do
             {:noreply,
              socket
              |> put_flash(:info, "Profile updated successfully")
-             |> push_patch(to: socket.assigns.patch)}
-        end
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, form: to_form(changeset))}
-    end
-  end
-
-  defp save_attendee(socket, :new, attendee_params) do
-    case Accounts.create_attendee(attendee_params) do
-      {:ok, attendee} ->
-        case consume_image_data(attendee, socket) do
-          {:ok, _attendee} ->
-            {:noreply,
-             socket
-             |> put_flash(:info, "Profile created successfully")
              |> push_patch(to: socket.assigns.patch)}
         end
 
