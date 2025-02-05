@@ -2,19 +2,23 @@ defmodule SafiraWeb.Landing.Components.Schedule do
   @moduledoc """
   Schedule component.
   """
-  use SafiraWeb, :component
+  use SafiraWeb, :live_component
 
   alias Plug.Conn.Query
   alias Safira.Activities
 
-  attr :event_start_date, Date, required: true
-  attr :event_end_date, Date, required: true
-  attr :url, :string, required: true
-  attr :params, :map, required: true
-  attr :has_filters?, :boolean, default: false
-  attr :descriptions_enabled, :boolean, default: false
+  @impl true
+  def mount(socket) do
+    {:ok, socket}
+  end
 
-  def schedule(assigns) do
+  @impl true
+  def update(assigns, socket) do
+    {:ok, socket |> assign(assigns) |> assign(enrolments: get_enrolments(assigns.current_user))}
+  end
+
+  @impl true
+  def render(assigns) do
     ~H"""
     <div class="xl:grid 2xl:grid-cols-2 gap-8 relative select-none">
       <div class="mb-20 2xl:mb-0">
@@ -39,7 +43,9 @@ defmodule SafiraWeb.Landing.Components.Schedule do
         <.schedule_table
           date={fetch_current_date_from_params(assigns.params) || assigns.event_start_date}
           filters={fetch_filters_from_params(assigns.params)}
-          descriptions_enabled={assigns.descriptions_enabled}
+          user_role={get_user_role(assigns.current_user)}
+          enrolments={assigns.enrolments}
+          myself={assigns.myself}
         />
       </div>
     </div>
@@ -62,7 +68,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
                                 ",
                 else: "text-md m-1 items-center rounded-full border-2 px-12 py-2 text-center font-bold
                                   text-white shadow-sm
-                                hover:border-accent hover:text-accent px-8
+                                hover:bg-white/20 px-8 transition-colors
                                 "
             }
             patch={filter_url(@url, @current_day, @filters, category.id)}
@@ -84,7 +90,12 @@ defmodule SafiraWeb.Landing.Components.Schedule do
             <%= if activity.category && activity.category.name == "Break" do %>
               <.schedule_break activity={activity} />
             <% else %>
-              <.schedule_activity activity={activity} descriptions_enabled={@descriptions_enabled} />
+              <.schedule_activity
+                activity={activity}
+                user_role={@user_role}
+                enrolments={@enrolments}
+                myself={@myself}
+              />
             <% end %>
           <% end %>
         </div>
@@ -95,10 +106,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
 
   defp schedule_activity(assigns) do
     ~H"""
-    <div
-      id={@activity.id}
-      class="mx-2 sm:w-full border-t border-white p-[10px] ml-[10px] relative hover:bg-white/10 transition-colors"
-    >
+    <div id={@activity.id} class="mx-2 sm:w-full border-t border-white p-[10px] ml-[10px] relative">
       <div class="relative h-full">
         <!-- Times -->
         <p class="text-lg font-iregular font-bold text-white xs:text-xl">
@@ -114,23 +122,27 @@ defmodule SafiraWeb.Landing.Components.Schedule do
           </span>
         </p>
         <!-- Speakers -->
-        <ul class="my-[0.4em] flex font-iregular text-sm text-gray-400 z-10 gap-2 sm:gap-0">
+        <ul class="my-[0.4em] flex font-iregular text-sm text-gray-400 z-10 gap-2 xl:gap-0">
           <li
             :for={{speaker, index} <- Enum.with_index(@activity.speakers, fn el, i -> {el, i} end)}
-            class="list-none sm:float-left"
+            class="list-none xl:float-left"
           >
             <%= if index == length(@activity.speakers) - 1 and length(@activity.speakers) != 1 do %>
-              <bdi class="ml-[5px] hidden sm:inline">
+              <bdi class="ml-[5px] hidden xl:inline">
                 <%= gettext("and") %>
               </bdi>
             <% else %>
-              <span class="hidden sm:inline">
+              <span class="hidden xl:inline">
                 <%= if index != 0, do: "," %>
               </span>
             <% end %>
-            <.link navigate={~p"/"} class="my-[0.4em] hover:underline">
+            <!-- Must be an <a> tag as to force page to reload completely so the #id rerouting works -->
+            <a
+              href={"/speakers?date=#{@activity.date}&speaker_id=#{speaker.id}#sp-#{speaker.id}-#{@activity.id}"}
+              class="my-[0.4em] hover:underline"
+            >
               <%= speaker.name %>
-            </.link>
+            </a>
           </li>
         </ul>
 
@@ -148,19 +160,30 @@ defmodule SafiraWeb.Landing.Components.Schedule do
                 <%= @activity.location %>
               </p>
             </div>
-            <!-- Enroll -->
+            <!-- Enrol -->
             <div class="float-right mr-5 flex flex-1 items-center justify-end">
               <p
-                :if={@activity.has_enrolments}
+                :if={enrolments_enabled(@activity, @user_role, @enrolments)}
                 class="relative hover:underline cursor-pointer -mr-3 font-iregular text-lg text-accent sm:mr-1"
+                phx-click="enrol"
+                phx-target={@myself}
+                data-confirm={"#{gettext("You are enrolling for")} #{@activity.title}. #{gettext("This action cannot be undone. Are you sure?")}"}
+                phx-value-activity_id={@activity.id}
               >
-                <%= gettext("Enroll") %>
+                <%= gettext("Enrol") %>
+              </p>
+              <p
+                :if={already_enrolled(@activity, @enrolments)}
+                class="relative -mr-3 font-iregular text-lg text-accent sm:mr-1"
+                phx-value-activity_id={@activity.id}
+              >
+                <%= gettext("Enrolled") %>
               </p>
             </div>
             <!-- Expand -->
             <button
               :if={not is_nil(@activity.description) and @activity.description != ""}
-              class="font-terminal uppercase w-16 select-none rounded-full bg-accent px-2 text-xl text-white hover:scale-110"
+              class="font-terminal uppercase w-16 select-none rounded-full px-2 text-xl text-white border border-white hover:bg-white/20 transition-colors"
               phx-click={
                 JS.toggle(
                   to: "#schedule-#{@activity.id}",
@@ -183,10 +206,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
 
   defp schedule_break(assigns) do
     ~H"""
-    <div
-      id={@activity.id}
-      class="mx-2 sm:w-full border-t border-white p-[10px] ml-[10px] relative hover:bg-white/10 transition-colors"
-    >
+    <div id={@activity.id} class="mx-2 sm:w-full border-t border-white p-[10px] ml-[10px] relative">
       <div class="relative h-full flex flex-row justify-between items-center">
         <p class="font-iregular text-xl text-white font-bold">
           <%= @activity.title %>
@@ -206,7 +226,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
   defp schedule_day(assigns) do
     ~H"""
     <div class="flex sm:w-full select-none justify-center">
-      <div class="flex sm:w-full justify-between text-4xl xs:text-5xl sm:text-7xl lg:text-8xl xl:mx-20 xl:text-7xl">
+      <div class="flex w-full justify-between text-4xl xs:text-5xl sm:text-7xl lg:text-8xl xl:mx-20 xl:text-7xl">
         <div class="right relative flex items-center justify-center mt-[0.15em]">
           <.link
             :if={Date.compare(@date, @event_start_date) in [:gt]}
@@ -324,6 +344,58 @@ defmodule SafiraWeb.Landing.Components.Schedule do
     """
   end
 
+  @impl true
+  def handle_event("enrol", %{"activity_id" => activity_id}, socket) do
+    if is_nil(socket.assigns.current_user) do
+      {:noreply,
+       socket
+       |> put_flash(:error, gettext("You must be logged in to enrol in activities"))
+       |> redirect(to: ~p"/users/log_in?action=enrol&action_id=#{activity_id}&return_to=/")}
+    else
+      if socket.assigns.current_user.type == :attendee do
+        actual_enrol(activity_id, socket)
+      else
+        {:noreply,
+         socket
+         |> put_flash(:error, gettext("Only attendees can enrol in activities"))}
+      end
+    end
+  end
+
+  defp actual_enrol(activity_id, socket) do
+    case Activities.enrol(socket.assigns.current_user.attendee.id, activity_id) do
+      {:ok, _} ->
+        send(self(), {:update_flash, {:info, gettext("Successfully enrolled")}})
+
+        {:noreply,
+         socket
+         |> assign(
+           :enrolments,
+           Activities.get_attendee_enrolments(socket.assigns.current_user.attendee.id)
+         )}
+
+      {:error, _} ->
+        send(self(), {:update_flash, {:info, gettext("Unable to enrol")}})
+        {:noreply, socket}
+    end
+  end
+
+  defp get_enrolments(user) do
+    if is_nil(user) or user.type != :attendee do
+      []
+    else
+      Activities.get_attendee_enrolments(user.attendee.id)
+    end
+  end
+
+  defp get_user_role(user) do
+    if is_nil(user) do
+      :attendee
+    else
+      user.type
+    end
+  end
+
   defp fetch_current_date_from_params(params) do
     case Map.get(params, "date") do
       nil ->
@@ -365,11 +437,45 @@ defmodule SafiraWeb.Landing.Components.Schedule do
   defp fetch_daily_activities(day, filters) do
     Activities.list_daily_activities(day)
     |> Enum.filter(fn at -> filters == [] or at.category_id in filters end)
-    |> Enum.group_by(& &1.time_start)
-    |> Enum.map(&elem(&1, 1))
+    |> group_activities()
   end
 
   defp fetch_categories do
     Activities.list_activity_categories()
+  end
+
+  defp group_activities(activities) do
+    Enum.reduce(activities, [], fn activity, acc ->
+      case acc do
+        [] ->
+          [[activity]]
+
+        [[head | tail] | rest] = grouped ->
+          if activity.time_start == head.time_start do
+            [[activity, head | tail] | rest]
+          else
+            [[activity] | grouped]
+          end
+      end
+    end)
+    |> Enum.reverse()
+  end
+
+  defp already_enrolled(activity, enrolments) do
+    Enum.member?(Enum.map(enrolments, & &1.activity_id), activity.id)
+  end
+
+  defp enrolments_enabled(activity, user_role, enrolments) do
+    not_full = activity.max_enrolments > activity.enrolment_count
+    is_staff = user_role == :staff
+
+    enrolled_at_same_time =
+      Enum.any?(enrolments, fn e ->
+        Time.compare(e.activity.time_start, activity.time_end) == :lt and
+          Time.compare(e.activity.time_end, activity.time_start) == :gt and
+          e.activity.date == activity.date
+      end)
+
+    not_full and activity.has_enrolments and not enrolled_at_same_time and not is_staff
   end
 end

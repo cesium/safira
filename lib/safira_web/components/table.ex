@@ -14,6 +14,7 @@ defmodule SafiraWeb.Components.Table do
   attr :row_id, :any, default: nil
   attr :params, :map, required: true
   attr :row_click, JS, default: nil
+  attr :sortable, :boolean, default: false
 
   slot :col do
     attr :label, :string, required: false
@@ -51,6 +52,11 @@ defmodule SafiraWeb.Components.Table do
           <tbody
             id={@id <> "-tbody"}
             phx-update={match?(%Phoenix.LiveView.LiveStream{}, @items) && "stream"}
+            phx-hook={
+              if @sortable do
+                "Sorting"
+              end
+            }
           >
             <tr
               :for={item <- @items}

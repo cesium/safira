@@ -185,12 +185,24 @@ defmodule SafiraWeb.UserAuth do
   end
 
   defp mount_current_user(socket, session) do
-    Phoenix.Component.assign_new(socket, :current_user, fn ->
-      if user_token = session["user_token"] do
-        Accounts.get_user_by_session_token(user_token)
-        |> merge_attendee_data_if_applicable()
-      end
-    end)
+    socket =
+      Phoenix.Component.assign_new(socket, :current_user, fn ->
+        if user_token = session["user_token"] do
+          Accounts.get_user_by_session_token(user_token)
+          |> merge_attendee_data_if_applicable()
+        end
+      end)
+
+    maybe_track_user_presence(socket)
+    socket
+  end
+
+  defp maybe_track_user_presence(socket) do
+    current_user = socket.assigns.current_user
+
+    if current_user && current_user.type == :staff do
+      SafiraWeb.Presence.add_presence(self(), current_user.id, current_user)
+    end
   end
 
   @doc """

@@ -14,6 +14,8 @@ defmodule Safira.Accounts.Attendee do
     belongs_to :course, Safira.Accounts.Course
     belongs_to :user, Safira.Accounts.User
 
+    has_many :enrolments, Safira.Activities.Enrolment
+
     timestamps(type: :utc_datetime)
   end
 

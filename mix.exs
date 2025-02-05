@@ -53,6 +53,7 @@ defmodule Safira.MixProject do
       {:ex_aws_s3, "~> 2.0"},
       {:hackney, "~> 1.9"},
       {:sweet_xml, "~> 0.6"},
+      {:zstream, "~> 0.6"},
 
       # mailer
       {:swoosh, "~> 1.17.6"},
@@ -65,6 +66,7 @@ defmodule Safira.MixProject do
       {:qrcode_ex, "~> 0.1.1"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:faker, "~> 0.18.0"},
+      {:earmark, "~> 1.4"},
 
       # frontend
       {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},

@@ -9,6 +9,7 @@ defmodule SafiraWeb.Components.ImageUploader do
   attr :image_class, :string, default: ""
   attr :image, :string, default: nil
   attr :icon, :string, default: "hero-photo"
+  attr :preview_disabled, :boolean, default: false
 
   def image_uploader(assigns) do
     ~H"""
@@ -32,15 +33,17 @@ defmodule SafiraWeb.Components.ImageUploader do
           </figure>
         </article>
       <% end %>
-      <%= for entry <- @upload.entries do %>
-        <article class="h-full">
-          <figure class="h-full flex items-center justify-center">
-            <.live_img_preview class={"p-4 #{@image_class}"} entry={entry} />
-          </figure>
-          <%= for err <- upload_errors(@upload, entry) do %>
-            <p class="alert alert-danger"><%= Phoenix.Naming.humanize(err) %></p>
-          <% end %>
-        </article>
+      <%= if !@preview_disabled do %>
+        <%= for entry <- @upload.entries do %>
+          <article class="h-full">
+            <figure class="h-full flex items-center justify-center">
+              <.live_img_preview class={"p-4 #{@image_class}"} entry={entry} />
+            </figure>
+            <%= for err <- upload_errors(@upload, entry) do %>
+              <p class="alert alert-danger"><%= Phoenix.Naming.humanize(err) %></p>
+            <% end %>
+          </article>
+        <% end %>
       <% end %>
       <%= for err <- upload_errors(@upload) do %>
         <p class="alert alert-danger"><%= Phoenix.Naming.humanize(err) %></p>

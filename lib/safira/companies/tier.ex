@@ -11,6 +11,8 @@ defmodule Safira.Companies.Tier do
   schema "tiers" do
     field :name, :string
     field :priority, :integer
+    field :spotlight_multiplier, :float, default: 0.0
+    field :max_spotlights, :integer, default: 1
 
     has_many :companies, Safira.Companies.Company, foreign_key: :tier_id
 
@@ -22,5 +24,11 @@ defmodule Safira.Companies.Tier do
     tier
     |> cast(attrs, @required_fields)
     |> validate_required(@required_fields)
+  end
+
+  def changeset_multiplier(tier, attrs) do
+    tier
+    |> cast(attrs, [:spotlight_multiplier, :max_spotlights])
+    |> validate_required([:spotlight_multiplier, :max_spotlights])
   end
 end

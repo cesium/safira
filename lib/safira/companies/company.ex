@@ -31,6 +31,7 @@ defmodule Safira.Companies.Company do
     belongs_to :tier, Safira.Companies.Tier
 
     timestamps(type: :utc_datetime)
+    has_many :spotlights, Safira.Spotlights.Spotlight
   end
 
   @doc false

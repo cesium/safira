@@ -15,9 +15,9 @@ defmodule Safira.Application do
       {Phoenix.PubSub, name: Safira.PubSub},
       # Start the Finch HTTP client for sending emails
       {Finch, name: Safira.Finch},
-      # Start a worker by calling: Safira.Worker.start_link(arg)
-      # {Safira.Worker, arg},
-      # Start to serve requests, typically the last entry
+      # Start the Presence system
+      SafiraWeb.Presence,
+      # Start Safira web server
       SafiraWeb.Endpoint
     ]
 

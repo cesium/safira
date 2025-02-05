@@ -27,6 +27,8 @@ defmodule SafiraWeb.Router do
       live "/", HomeLive.Index, :index
       live "/faqs", FAQLive.Index, :index
       live "/schedule", ScheduleLive.Index, :index
+      live "/challenges", ChallengesLive.Index, :index
+      live "/speakers", SpeakersLive.Index, :index
     end
   end
 
@@ -74,7 +76,10 @@ defmodule SafiraWeb.Router do
     pipe_through [:browser, :require_authenticated_user]
 
     live_session :require_authenticated_user,
-      on_mount: [{SafiraWeb.UserAuth, :ensure_authenticated}] do
+      on_mount: [
+        {SafiraWeb.UserAuth, :ensure_authenticated},
+        {SafiraWeb.Spotlight, :fetch_current_spotlight}
+      ] do
       live "/users/confirmation_pending", ConfirmationPendingLive, :index
 
       live "/users/settings/confirm_email/:token", UserUpdateEmailConfirmation
@@ -104,6 +109,11 @@ defmodule SafiraWeb.Router do
 
         live "/coin_flip", CoinFlipLive.Index, :index
 
+        scope "/slots", SlotsLive do
+          live "/", Index, :index
+          live "/paytable", Index, :show_paytable
+        end
+
         scope "/store", StoreLive do
           live "/", Index, :index
           live "/product/:id", Show, :show
@@ -117,10 +127,23 @@ defmodule SafiraWeb.Router do
       scope "/downloads" do
         pipe_through [:require_staff_user]
         get "/attendees", CSVController, :attendees_data
+        post "/qr_codes", CSVController, :generate_credentials
       end
 
       scope "/dashboard", Backoffice do
         pipe_through [:require_staff_user]
+
+        scope "/spotlights", SpotlightLive do
+          live "/", Index, :index
+          live "/new", Index, :new
+          live "/new/:id", Index, :confirm
+          live "/config", Index, :config
+
+          scope "/config" do
+            live "/tiers", Index, :tiers
+            live "/tiers/:id/edit", Index, :tiers_edit
+          end
+        end
 
         scope "/attendees", AttendeeLive do
           live "/", Index, :index
@@ -131,6 +154,7 @@ defmodule SafiraWeb.Router do
         scope "/event", EventLive do
           live "/", Index, :index
           live "/edit", Index, :edit
+          live "/credentials", Index, :credentials
 
           scope "/faqs" do
             live "/", Index, :faqs
@@ -170,6 +194,7 @@ defmodule SafiraWeb.Router do
             live "/", Index, :index
             live "/new", Index, :new
             live "/:id/edit", Index, :edit
+            live "/:id/enrolments", Index, :enrolments
 
             scope "/speakers" do
               live "/", Index, :speakers
@@ -223,10 +248,30 @@ defmodule SafiraWeb.Router do
             end
           end
 
+          scope "/challenges", ChallengeLive do
+            live "/", Index, :index
+            live "/new", Index, :new
+
+            scope "/:id" do
+              live "/edit", Index, :edit
+            end
+          end
+
+          scope "/wheel" do
+            live "/", MinigamesLive.Index, :edit_wheel
+            live "/drops", MinigamesLive.Index, :edit_wheel_drops
+            live "/simulator", MinigamesLive.Index, :simulate_wheel
+          end
+
+          scope "/slots" do
+            live "/", MinigamesLive.Index, :edit_slots
+            live "/reels_icons", MinigamesLive.Index, :edit_slots_reel_icons_icons
+            live "/reels_position", MinigamesLive.Index, :edit_slots_reel_icons_position
+            live "/paytable", MinigamesLive.Index, :edit_slots_paytable
+            live "/payline", MinigamesLive.Index, :edit_slots_payline
+          end
+
           live "/", MinigamesLive.Index, :index
-          live "/wheel/drops", MinigamesLive.Index, :edit_wheel_drops
-          live "/wheel/simulator", MinigamesLive.Index, :simulate_wheel
-          live "/wheel", MinigamesLive.Index, :edit_wheel
 
           live "/coin_flip", MinigamesLive.Index, :edit_coin_flip
         end
