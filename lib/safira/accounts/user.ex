@@ -6,6 +6,7 @@ defmodule Safira.Accounts.User do
 
   alias Safira.Accounts.Attendee
   alias Safira.Accounts.Staff
+  alias Safira.Companies.Company
 
   @required_fields ~w(name email handle password type)a
   @optional_fields ~w(confirmed_at allows_marketing)a

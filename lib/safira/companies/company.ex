@@ -41,12 +41,11 @@ defmodule Safira.Companies.Company do
   def changeset(company, attrs) do
     company
     |> cast(attrs, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
     |> unique_constraint(:badge_id)
     |> unique_constraint(:user_id)
-    |> cast_assoc(:user, with: &User.profile_changeset/2)
     |> cast_assoc(:badge)
     |> cast_assoc(:tier)
-    |> validate_required(@required_fields)
     |> validate_url(:url)
     |> unsafe_validate_unique(:badge_id, Safira.Repo)
   end
