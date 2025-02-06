@@ -75,7 +75,10 @@ config :phoenix, :json_library, Jason
 config :safira, Oban,
   engine: Oban.Engines.Basic,
   repo: Safira.Repo,
-  queues: [badge_conditions: 20]
+  queues: [
+    badge_conditions: 10,
+    badge_triggers: 10
+  ]
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

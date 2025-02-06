@@ -6,6 +6,7 @@ defmodule Safira.Accounts do
   use Safira.Context
 
   alias Safira.Accounts.{Attendee, Course, Credential, Staff, User, UserNotifier, UserToken}
+  alias Safira.Contest
 
   ## Database getters
 
@@ -630,6 +631,15 @@ defmodule Safira.Accounts do
     credential
     |> Credential.changeset(%{attendee_id: attendee.id})
     |> Repo.update()
+    |> case do
+      {:ok, _} = result ->
+        # If the credential is successfully linked to the attendee, trigger the badge event
+        Contest.enqueue_badge_trigger_execution_job(attendee, :link_credential_event)
+        result
+
+      {:error, _} = result ->
+        result
+    end
   end
 
   @doc """

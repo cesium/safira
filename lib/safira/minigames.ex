@@ -7,10 +7,8 @@ defmodule Safira.Minigames do
 
   alias Ecto.Multi
 
-  alias Safira.Accounts
+  alias Safira.{Accounts, Constants, Contest}
   alias Safira.Accounts.Attendee
-  alias Safira.Constants
-  alias Safira.Contest
   alias Safira.Inventory.Item
 
   alias Safira.Minigames.{
@@ -299,6 +297,8 @@ defmodule Safira.Minigames do
     if wheel_active?() do
       case spin_wheel_transaction(attendee) do
         {:ok, result} ->
+          # If the wheel spins successfully, trigger the badge event
+          Contest.enqueue_badge_trigger_execution_job(attendee, :play_wheel_event)
           {:ok, get_wheel_drop_type(result.drop), result.drop}
 
         {:error, _} ->
@@ -928,6 +928,11 @@ defmodule Safira.Minigames do
                   |> Map.put(:player2, attendee)
                   |> Repo.preload(player2: :user)
 
+                # If the join is successful, it means the game has started, so,
+                # trigger the badge event (for both attendees)
+                Contest.enqueue_badge_trigger_execution_job(attendee, :play_coin_flip_event)
+                Contest.enqueue_badge_trigger_execution_job(room.player1, :play_coin_flip_event)
+
                 broadcast_coin_flip_rooms_update("update", coin_flip_room)
                 {:ok, coin_flip_room}
 
@@ -1350,6 +1355,9 @@ defmodule Safira.Minigames do
     if slots_active?() do
       case spin_slots_transaction(attendee, bet) do
         {:ok, result} ->
+          # If the slots spin successfully, trigger the badge event
+          Contest.enqueue_badge_trigger_execution_job(attendee, :play_slots_event)
+
           {:ok, result.target, result.paytable_entry.multiplier,
            result.attendee_state_tokens.tokens, result.winnings}
 

@@ -7,7 +7,15 @@ defmodule Safira.Contest do
   alias Ecto.Multi
   alias Safira.Accounts.Attendee
   alias Safira.{Companies, Spotlights, Workers}
-  alias Safira.Contest.{Badge, BadgeCategory, BadgeCondition, BadgeRedeem, BadgeTrigger, DailyTokens}
+
+  alias Safira.Contest.{
+    Badge,
+    BadgeCategory,
+    BadgeCondition,
+    BadgeRedeem,
+    BadgeTrigger,
+    DailyTokens
+  }
 
   @pubsub Safira.PubSub
 
@@ -693,9 +701,7 @@ defmodule Safira.Contest do
         broadcast_attendee_redeems_update(redeem.id)
 
         # Enqueue job to check conditions
-        Oban.insert(
-          Workers.CheckBadgeConditions.new(%{attendee_id: attendee.id, badge_id: badge.id})
-        )
+        enqueue_badge_conditions_validation_job(attendee, badge)
 
         {:ok, redeem}
 
@@ -732,6 +738,8 @@ defmodule Safira.Contest do
       company = get_badge_company(badge)
 
       if company && Spotlights.company_on_spotlight?(company.id) do
+        # If the the badge being redeemed is on spotlight, trigger the spotlight badge redem event
+        enqueue_badge_trigger_execution_job(attendee, :redeem_spotlighted_badge_event)
         {:ok, floor(badge.tokens * company.tier.spotlight_multiplier)}
       else
         {:ok, badge.tokens}
@@ -776,6 +784,11 @@ defmodule Safira.Contest do
       topic(redeem.attendee_id),
       Map.put(redeem, :badge, get_badge!(redeem.badge_id))
     )
+  end
+
+  defp enqueue_badge_conditions_validation_job(attendee, badge) do
+    # Enqueue job to check conditions
+    Oban.insert(Workers.CheckBadgeConditions.new(%{attendee_id: attendee.id, badge_id: badge.id}))
   end
 
   @doc """
@@ -901,5 +914,33 @@ defmodule Safira.Contest do
     BadgeTrigger
     |> where([bt], bt.badge_id == ^badge_id)
     |> Repo.all()
+  end
+
+  @doc """
+  Lists all triggers belonging to an event.
+
+  ## Examples
+
+      iex> list_event_badge_triggers(:upload_cv_event)
+      [%BadgeTrigger{}, %BadgeTrigger{}]
+
+  """
+  def list_event_badge_triggers(event) do
+    BadgeTrigger
+    |> where([bt], bt.event == ^event)
+    |> preload(:badge)
+    |> Repo.all()
+  end
+
+  @doc """
+  Enqueues a job to execute the badge triggers for an attendee and a specific event.
+
+  ## Examples
+
+      iex> enqueue_badge_trigger_execution_job(attendee, :upload_cv_event)
+      :ok
+  """
+  def enqueue_badge_trigger_execution_job(attendee, event) do
+    Oban.insert(Workers.RunBadgeTriggers.new(%{attendee_id: attendee.id, event: event}))
   end
 end
