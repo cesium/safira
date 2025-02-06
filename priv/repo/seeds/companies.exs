@@ -1,8 +1,9 @@
 defmodule Safira.Repo.Seeds.Companies do
   alias NimbleCSV.RFC4180, as: CSV
 
+  alias Safira.Accounts.User
   alias Safira.{Companies, Repo}
-  alias Safira.Companies.Tier
+  alias Safira.Companies.{Company, Tier}
 
   def run do
     case Companies.list_tiers() do
@@ -42,7 +43,7 @@ defmodule Safira.Repo.Seeds.Companies do
         "tier_id" => actual_tier.id
       }
 
-      case Companies.create_company_and_user(company_seed) do
+      case Companies.upsert_company_and_user(%Company{user: %User{}}, company_seed) do
         {:ok, _} -> :ok
         {:error, changeset} ->
           Mix.shell().error("Failed to insert company: #{company_seed.name}")

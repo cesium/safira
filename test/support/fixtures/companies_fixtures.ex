@@ -4,11 +4,15 @@ defmodule Safira.CompaniesFixtures do
   entities via the `Safira.Companies` context.
   """
 
+  alias Safira.Accounts.User
+  alias Safira.Companies.Company
+
   @doc """
   Generate a company.
   """
   def company_fixture(attrs \\ %{}) do
     {:ok, %{user: _, company: company}} =
+      attrs =
       attrs
       |> Enum.into(%{
         "user" => %{
@@ -20,7 +24,7 @@ defmodule Safira.CompaniesFixtures do
         "name" => "some name",
         "tier_id" => tier_fixture().id
       })
-      |> Safira.Companies.create_company_and_user()
+      |> Safira.Companies.upsert_company_and_user(%Company{user: %User{}}, attrs)
 
     company
   end

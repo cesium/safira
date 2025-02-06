@@ -156,7 +156,7 @@ defmodule SafiraWeb.Backoffice.CompanyLive.FormComponent do
   end
 
   defp put_user(company) do
-    if is_nil(company.user) do
+    if is_nil(company.user_id) do
       Map.put(company, :user, %User{})
     else
       company

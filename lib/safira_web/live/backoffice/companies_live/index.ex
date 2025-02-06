@@ -3,8 +3,6 @@ defmodule SafiraWeb.Backoffice.CompanyLive.Index do
 
   import SafiraWeb.Components.{Table, TableSearch}
 
-  alias Safira.Accounts.User
-
   alias Safira.{Companies, Contest}
   alias Safira.Companies.{Company, Tier}
 
