@@ -174,6 +174,24 @@ defmodule SafiraWeb.Helpers do
     end
   end
 
+  def place_suffix(n) do
+    cond do
+      rem(n, 100) in 11..13 -> "th"
+      rem(n, 10) == 1 -> "st"
+      rem(n, 10) == 2 -> "nd"
+      rem(n, 10) == 3 -> "rd"
+      true -> "th"
+    end
+  end
+
+  def trim_string(str, length) do
+    if String.length(str) > length do
+      "#{String.slice(str, 0..(length - 1))}..."
+    else
+      str
+    end
+  end
+
   @doc """
   Returns the base url path for the user type.
   ## Examples
