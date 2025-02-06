@@ -4,11 +4,12 @@ defmodule SafiraWeb.Sponsor.HomeLive.Components.Attendee do
   """
   use SafiraWeb, :component
 
+  alias Safira.Accounts.User
+
   import SafiraWeb.Components.Avatar
 
   attr :id, :string, required: true
-  attr :name, :string, required: true
-  attr :image, :string, required: true
+  attr :user, User, required: true
 
   def attendee(assigns) do
     ~H"""
@@ -18,7 +19,7 @@ defmodule SafiraWeb.Sponsor.HomeLive.Components.Attendee do
           <div class="m-auto w-fit">
             <.avatar size={:lg} handle={@user.handle} />
           </div>
-          <p class="font-terminal text-center uppercase text-xl">
+          <p class="text-center text-lg mt-2">
             <%= @user.name %>
           </p>
         </div>
