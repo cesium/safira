@@ -9,3 +9,4 @@ export { Redirect } from "./redirect.js";
 export { CredentialScene } from "./credential-scene.js";
 export { ReelAnimation } from "./reel_animation.js";
 export { PaytableModal } from "./paytable_modal.js";
+export { ZipUpload } from "./zip_upload.js";

@@ -95,12 +95,15 @@ defmodule Safira.MixProject do
       #  utilities
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
-      {:lua, "~> 0.0.14"},
       {:timex, "~> 3.7.11"},
+      {:nimble_csv, "~>1.1"},
 
       # server
       {:bandit, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
+
+      # jobs
+      {:oban, "~> 2.19"},
 
       # testing
       {:floki, ">= 0.30.0", only: :test}

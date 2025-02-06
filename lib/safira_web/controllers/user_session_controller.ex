@@ -76,7 +76,7 @@ defmodule SafiraWeb.UserSessionController do
     case Safira.Activities.enrol(attendee.id, id) do
       {:ok, _} ->
         put_flash(conn, :info, "Successfully enrolled")
-        |> redirect(to: return_to)
+        |> put_session(:user_return_to, return_to)
 
       {:error, _, _, _} ->
         put_flash(conn, :error, gettext("Unable to enrol"))

@@ -109,6 +109,11 @@ defmodule SafiraWeb.Router do
 
         live "/coin_flip", CoinFlipLive.Index, :index
 
+        scope "/badges", BadgeLive do
+          live "/", Index, :index
+          live "/:id", Show, :show
+        end
+
         scope "/slots", SlotsLive do
           live "/", Index, :index
           live "/paytable", Index, :show_paytable
@@ -222,13 +227,22 @@ defmodule SafiraWeb.Router do
         scope "/badges", BadgeLive do
           live "/", Index, :index
           live "/new", Index, :new
+          live "/import", Index, :import
 
           scope "/:id" do
             live "/edit", Index, :edit
 
-            live "/conditions", Index, :conditions
-            live "/conditions/new", Index, :conditions_new
-            live "/conditions/:condition_id/edit", Index, :conditions_edit
+            scope "/conditions" do
+              live "/", Index, :conditions
+              live "/new", Index, :conditions_new
+              live "/:condition_id/edit", Index, :conditions_edit
+            end
+
+            scope "/triggers" do
+              live "/", Index, :triggers
+              live "/new", Index, :triggers_new
+              live "/:trigger_id/edit", Index, :triggers_edit
+            end
           end
 
           scope "/categories" do
@@ -276,9 +290,15 @@ defmodule SafiraWeb.Router do
           live "/coin_flip", MinigamesLive.Index, :edit_coin_flip
         end
 
-        live "/scanner", ScannerLive.Index, :index
+          scope "/scanner", ScannerLive do
+            live "/", Index, :index
 
-        live "/profile_settings", ProfileSettingsLive, :edit
+            scope "/badge", BadgeLive do
+              live "/:id/give", Index, :edit
+            end
+          end
+
+          live "/profile_settings", ProfileSettingsLive, :edit
       end
     end
   end

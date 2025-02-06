@@ -17,6 +17,8 @@ defmodule Safira.Application do
       {Finch, name: Safira.Finch},
       # Start the Presence system
       SafiraWeb.Presence,
+      # Start the Oban queue
+      {Oban, Application.fetch_env!(:safira, Oban)},
       # Start Safira web server
       SafiraWeb.Endpoint
     ]

@@ -48,12 +48,23 @@ defmodule SafiraWeb.Components.TableSearchLiveComponent do
           type="search"
           name="search[query]"
           spellcheck="false"
+          value={@search_value}
           placeholder={@placeholder}
           class={"block w-full sm:w-80 p-2 ps-10 text-sm text-dark border border-lightShade rounded-md placeholder:text-darkMuted focus:outline-2 focus:border-lightShade ring-0 focus:outline-dark focus:outline-offset-2 dark:outline-darkShade dark:bg-dark dark:text-light dark:placeholder-lightMuted dark:focus:border-darkShade dark:focus:border-darkShade dark:border-darkShade focus:ring-0 dark:focus:outline-light #{@class}"}
         />
       </form>
     </div>
     """
+  end
+
+  @impl true
+  def update(assigns, socket) do
+    search_value = assigns.params["filters"]["1"]["value"] || ""
+
+    {:ok,
+     socket
+     |> assign(:search_value, search_value)
+     |> assign(assigns)}
   end
 
   @impl true

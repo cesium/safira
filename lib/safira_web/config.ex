@@ -47,10 +47,10 @@ defmodule SafiraWeb.Config do
     if Event.event_started?() do
       [
         %{
-          key: :badgedex,
+          key: :badges,
           title: "Badgedex",
           icon: "hero-check-badge",
-          url: "/app/badgedex"
+          url: "/app/badges"
         },
         %{
           key: :wheel,

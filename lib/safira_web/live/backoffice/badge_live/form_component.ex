@@ -20,9 +20,14 @@ defmodule SafiraWeb.Backoffice.BadgeLive.FormComponent do
         }
       >
         <:actions>
-          <.link :if={@badge.id} patch={~p"/dashboard/badges/#{@badge.id}/conditions"}>
+          <.link :if={@badge.id} patch={~p"/dashboard/badges/#{@badge.id}/triggers"}>
             <.button>
               <.icon name="hero-bolt" />
+            </.button>
+          </.link>
+          <.link :if={@badge.id} patch={~p"/dashboard/badges/#{@badge.id}/conditions"}>
+            <.button>
+              <.icon name="hero-check-circle" />
             </.button>
           </.link>
         </:actions>
@@ -38,6 +43,7 @@ defmodule SafiraWeb.Backoffice.BadgeLive.FormComponent do
               <.field field={@form[:name]} type="text" label="Name" required />
               <.field field={@form[:description]} type="textarea" label="Description" required />
               <.field field={@form[:tokens]} type="number" label="Tokens" required />
+              <.field field={@form[:entries]} type="number" label="Entries" required />
               <.field
                 field={@form[:category_id]}
                 options={categories_options(@categories)}
@@ -47,6 +53,17 @@ defmodule SafiraWeb.Backoffice.BadgeLive.FormComponent do
               />
               <.field field={@form[:begin]} type="datetime-local" label="Begin" required />
               <.field field={@form[:end]} type="datetime-local" label="End" required />
+              <.field
+                field={@form[:givable]}
+                wrapper_class="pt-4"
+                type="switch"
+                label="Givable by staff"
+                help_text={
+                  gettext(
+                    "Controls whether staffs can give this badge to attendees when the current time is between begin and end."
+                  )
+                }
+              />
               <.field
                 field={@form[:counts_for_day]}
                 wrapper_class="pt-4"

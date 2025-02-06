@@ -1,0 +1,26 @@
+<.page title={gettext("Give Badge")}>
+  <:actions>
+    <div class="flex flex-row gap-4 justify-center items-center">
+      <.table_search
+        id="badge-table-name-search"
+        params={@params}
+        field={:name}
+        path={~p"/dashboard/scanner"}
+        placeholder={gettext("Search for badges")}
+      />
+    </div>
+  </:actions>
+  <div class="flex w-full items-center justify-center flex-col mt-6">
+    <div
+      id="badges-grid"
+      phx-update="stream"
+      class="grid grid-cols-1 gap-x-10 gap-y-5 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6"
+    >
+      <%= for {id, badge} <- @streams.badges do %>
+        <.link id={id} patch={~p"/dashboard/scanner/badge/#{badge.id}/give"}>
+          <.badge id={badge.id} badge={badge} hover_zoom />
+        </.link>
+      <% end %>
+    </div>
+  </div>
+</.page>
