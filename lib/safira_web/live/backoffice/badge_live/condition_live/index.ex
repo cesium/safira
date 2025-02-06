@@ -17,7 +17,11 @@ defmodule SafiraWeb.Backoffice.BadgeLive.ConditionLive.Index do
           </.link>
         </:actions>
 
-        <ul class="h-96 mt-8 pb-8 flex flex-col space-y-2 overflow-y-auto">
+        <ul
+          id="conditions"
+          phx-update="stream"
+          class="h-96 mt-8 pb-8 flex flex-col space-y-2 overflow-y-auto"
+        >
           <li
             :for={{id, condition} <- @streams.conditions}
             id={id}
@@ -33,6 +37,7 @@ defmodule SafiraWeb.Backoffice.BadgeLive.ConditionLive.Index do
               <.link
                 phx-click={JS.push("delete", value: %{id: condition.id}) |> hide("##{id}")}
                 data-confirm="Are you sure?"
+                phx-target={@myself}
               >
                 <.icon name="hero-trash" class="w-5 h-5" />
               </.link>
@@ -74,7 +79,7 @@ defmodule SafiraWeb.Backoffice.BadgeLive.ConditionLive.Index do
     {:noreply, stream_delete(socket, :conditions, condition)}
   end
 
-  def condition_description(condition) do
+  defp condition_description(condition) do
     if condition.category_id do
       if is_nil(condition.amount_needed) do
         gettext(

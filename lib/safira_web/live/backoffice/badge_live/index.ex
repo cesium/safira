@@ -4,7 +4,7 @@ defmodule SafiraWeb.Backoffice.BadgeLive.Index do
   import SafiraWeb.Components.{Badge, TableSearch}
 
   alias Safira.Contest
-  alias Safira.Contest.{Badge, BadgeCategory, BadgeCondition}
+  alias Safira.Contest.{Badge, BadgeCategory, BadgeCondition, BadgeTrigger}
 
   on_mount {SafiraWeb.StaffRoles,
             index: %{"badges" => ["show"]},
@@ -14,6 +14,9 @@ defmodule SafiraWeb.Backoffice.BadgeLive.Index do
             conditions: %{"badges" => ["edit"]},
             conditions_new: %{"badges" => ["edit"]},
             conditions_edit: %{"badges" => ["edit"]},
+            triggers: %{"badges" => ["edit"]},
+            triggers_new: %{"badges" => ["edit"]},
+            triggers_edit: %{"badges" => ["edit"]},
             new: %{"products" => ["edit"]},
             edit: %{"products" => ["edit"]},
             import: %{"badges" => ["edit"]}}
@@ -96,6 +99,28 @@ defmodule SafiraWeb.Backoffice.BadgeLive.Index do
     socket
     |> assign(:page_title, "Listing #{badge.name} Conditions")
     |> assign(:badge, badge)
+  end
+
+  defp apply_action(socket, :triggers, %{"id" => id}) do
+    badge = Contest.get_badge!(id)
+
+    socket
+    |> assign(:page_title, "Listing #{badge.name} Triggers")
+    |> assign(:badge, badge)
+  end
+
+  defp apply_action(socket, :triggers_edit, %{"id" => badge_id, "trigger_id" => trigger_id}) do
+    socket
+    |> assign(:page_title, "Edit Trigger")
+    |> assign(:badge, Contest.get_badge!(badge_id))
+    |> assign(:badge_trigger, Contest.get_badge_trigger!(trigger_id))
+  end
+
+  defp apply_action(socket, :triggers_new, %{"id" => id}) do
+    socket
+    |> assign(:page_title, "New Trigger")
+    |> assign(:badge, Contest.get_badge!(id))
+    |> assign(:badge_trigger, %BadgeTrigger{})
   end
 
   defp apply_action(socket, :import, _params) do

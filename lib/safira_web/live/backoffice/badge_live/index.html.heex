@@ -129,6 +129,41 @@
 </.modal>
 
 <.modal
+  :if={@live_action in [:triggers]}
+  id="triggers-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/badges/#{@badge.id}/edit")}
+>
+  <.live_component
+    module={SafiraWeb.Backoffice.BadgeLive.TriggerLive.Index}
+    id="list-triggers"
+    title={@page_title}
+    current_user={@current_user}
+    action={@live_action}
+    patch={~p"/dashboard/badges/#{@badge.id}/edit"}
+    badge={@badge}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:triggers_edit, :triggers_new]}
+  id="triggers-modal"
+  show
+  on_cancel={JS.navigate(~p"/dashboard/badges/#{@badge.id}/triggers")}
+>
+  <.live_component
+    module={SafiraWeb.Backoffice.BadgeLive.TriggerLive.FormComponent}
+    id={@badge_trigger.id || :new}
+    title={@page_title}
+    current_user={@current_user}
+    action={@live_action}
+    badge_trigger={@badge_trigger}
+    patch={~p"/dashboard/badges/#{@badge.id}/triggers"}
+    badge={@badge}
+  />
+</.modal>
+
+<.modal
   :if={@live_action in [:import]}
   id="import-modal"
   show

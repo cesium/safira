@@ -20,6 +20,11 @@ defmodule SafiraWeb.Backoffice.BadgeLive.FormComponent do
         }
       >
         <:actions>
+          <.link :if={@badge.id} patch={~p"/dashboard/badges/#{@badge.id}/triggers"}>
+            <.button>
+              <.icon name="hero-bolt" />
+            </.button>
+          </.link>
           <.link :if={@badge.id} patch={~p"/dashboard/badges/#{@badge.id}/conditions"}>
             <.button>
               <.icon name="hero-check-circle" />

@@ -231,9 +231,17 @@ defmodule SafiraWeb.Router do
           scope "/:id" do
             live "/edit", Index, :edit
 
-            live "/conditions", Index, :conditions
-            live "/conditions/new", Index, :conditions_new
-            live "/conditions/:condition_id/edit", Index, :conditions_edit
+            scope "/conditions" do
+              live "/", Index, :conditions
+              live "/new", Index, :conditions_new
+              live "/:condition_id/edit", Index, :conditions_edit
+            end
+
+            scope "/triggers" do
+              live "/", Index, :triggers
+              live "/new", Index, :triggers_new
+              live "/:trigger_id/edit", Index, :triggers_edit
+            end
           end
 
           scope "/categories" do

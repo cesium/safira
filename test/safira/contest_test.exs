@@ -69,4 +69,63 @@ defmodule Safira.ContestTest do
       assert %Ecto.Changeset{} = Contest.change_badge_redeem(badge_redeem)
     end
   end
+
+  describe "badge_triggers" do
+    alias Safira.Contest.BadgeTrigger
+
+    import Safira.ContestFixtures
+
+    @invalid_attrs %{event: nil}
+
+    test "list_badge_triggers/0 returns all badge_triggers" do
+      badge_trigger = badge_trigger_fixture()
+      assert Contest.list_badge_triggers() == [badge_trigger]
+    end
+
+    test "get_badge_trigger!/1 returns the badge_trigger with given id" do
+      badge_trigger = badge_trigger_fixture()
+      assert Contest.get_badge_trigger!(badge_trigger.id) == badge_trigger
+    end
+
+    test "create_badge_trigger/1 with valid data creates a badge_trigger" do
+      valid_attrs = %{event: "upload_cv_event", badge_id: badge_fixture().id}
+
+      assert {:ok, %BadgeTrigger{} = badge_trigger} = Contest.create_badge_trigger(valid_attrs)
+      assert badge_trigger.event == :upload_cv_event
+    end
+
+    test "create_badge_trigger/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Contest.create_badge_trigger(@invalid_attrs)
+    end
+
+    test "update_badge_trigger/2 with valid data updates the badge_trigger" do
+      badge_trigger = badge_trigger_fixture()
+      update_attrs = %{event: "upload_cv_event"}
+
+      assert {:ok, %BadgeTrigger{} = badge_trigger} =
+               Contest.update_badge_trigger(badge_trigger, update_attrs)
+
+      assert badge_trigger.event == :upload_cv_event
+    end
+
+    test "update_badge_trigger/2 with invalid data returns error changeset" do
+      badge_trigger = badge_trigger_fixture()
+
+      assert {:error, %Ecto.Changeset{}} =
+               Contest.update_badge_trigger(badge_trigger, @invalid_attrs)
+
+      assert badge_trigger == Contest.get_badge_trigger!(badge_trigger.id)
+    end
+
+    test "delete_badge_trigger/1 deletes the badge_trigger" do
+      badge_trigger = badge_trigger_fixture()
+      assert {:ok, %BadgeTrigger{}} = Contest.delete_badge_trigger(badge_trigger)
+      assert_raise Ecto.NoResultsError, fn -> Contest.get_badge_trigger!(badge_trigger.id) end
+    end
+
+    test "change_badge_trigger/1 returns a badge_trigger changeset" do
+      badge_trigger = badge_trigger_fixture()
+      assert %Ecto.Changeset{} = Contest.change_badge_trigger(badge_trigger)
+    end
+  end
 end

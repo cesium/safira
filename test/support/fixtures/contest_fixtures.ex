@@ -5,6 +5,7 @@ defmodule Safira.ContestFixtures do
   """
 
   alias Safira.AccountsFixtures
+  alias Safira.Contest
 
   @doc """
   Generate a badge.
@@ -55,5 +56,20 @@ defmodule Safira.ContestFixtures do
       |> Safira.Contest.create_badge_category()
 
     badge_category
+  end
+
+  @doc """
+  Generate a badge_trigger.
+  """
+  def badge_trigger_fixture(attrs \\ %{}) do
+    {:ok, badge_trigger} =
+      attrs
+      |> Enum.into(%{
+        badge_id: badge_fixture().id,
+        event: Contest.BadgeTrigger.events() |> Enum.random()
+      })
+      |> Safira.Contest.create_badge_trigger()
+
+    badge_trigger
   end
 end

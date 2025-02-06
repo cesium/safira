@@ -7,7 +7,7 @@ defmodule Safira.Contest do
   alias Ecto.Multi
   alias Safira.Accounts.Attendee
   alias Safira.{Companies, Spotlights, Workers}
-  alias Safira.Contest.{Badge, BadgeCategory, BadgeCondition, BadgeRedeem, DailyTokens}
+  alias Safira.Contest.{Badge, BadgeCategory, BadgeCondition, BadgeRedeem, BadgeTrigger, DailyTokens}
 
   @pubsub Safira.PubSub
 
@@ -791,6 +791,115 @@ defmodule Safira.Contest do
     |> where([c], c.category_id == ^category.id or is_nil(c.category_id))
     |> where([c], c.begin <= ^DateTime.utc_now() and c.end >= ^DateTime.utc_now())
     |> preload([:category, :badge])
+    |> Repo.all()
+  end
+
+  @doc """
+  Returns the list of badge_triggers.
+
+  ## Examples
+
+      iex> list_badge_triggers()
+      [%BadgeTrigger{}, ...]
+
+  """
+  def list_badge_triggers do
+    Repo.all(BadgeTrigger)
+  end
+
+  @doc """
+  Gets a single badge_trigger.
+
+  Raises `Ecto.NoResultsError` if the Badge trigger does not exist.
+
+  ## Examples
+
+      iex> get_badge_trigger!(123)
+      %BadgeTrigger{}
+
+      iex> get_badge_trigger!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_badge_trigger!(id), do: Repo.get!(BadgeTrigger, id)
+
+  @doc """
+  Creates a badge_trigger.
+
+  ## Examples
+
+      iex> create_badge_trigger(%{field: value})
+      {:ok, %BadgeTrigger{}}
+
+      iex> create_badge_trigger(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_badge_trigger(attrs \\ %{}) do
+    %BadgeTrigger{}
+    |> BadgeTrigger.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a badge_trigger.
+
+  ## Examples
+
+      iex> update_badge_trigger(badge_trigger, %{field: new_value})
+      {:ok, %BadgeTrigger{}}
+
+      iex> update_badge_trigger(badge_trigger, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_badge_trigger(%BadgeTrigger{} = badge_trigger, attrs) do
+    badge_trigger
+    |> BadgeTrigger.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a badge_trigger.
+
+  ## Examples
+
+      iex> delete_badge_trigger(badge_trigger)
+      {:ok, %BadgeTrigger{}}
+
+      iex> delete_badge_trigger(badge_trigger)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_badge_trigger(%BadgeTrigger{} = badge_trigger) do
+    Repo.delete(badge_trigger)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking badge_trigger changes.
+
+  ## Examples
+
+      iex> change_badge_trigger(badge_trigger)
+      %Ecto.Changeset{data: %BadgeTrigger{}}
+
+  """
+  def change_badge_trigger(%BadgeTrigger{} = badge_trigger, attrs \\ %{}) do
+    BadgeTrigger.changeset(badge_trigger, attrs)
+  end
+
+  @doc """
+  Lists all triggers belonging to a badge.
+
+  ## Examples
+
+      iex> list_badge_triggers(123)
+      [%BadgeTrigger{}, %BadgeTrigger{}]
+
+  """
+  def list_badge_triggers(badge_id) do
+    BadgeTrigger
+    |> where([bt], bt.badge_id == ^badge_id)
     |> Repo.all()
   end
 end
