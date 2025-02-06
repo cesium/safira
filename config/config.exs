@@ -9,7 +9,8 @@ import Config
 
 config :safira,
   ecto_repos: [Safira.Repo],
-  generators: [timestamp_type: :utc_datetime]
+  generators: [timestamp_type: :utc_datetime],
+  build_env: Mix.env()
 
 # Flop configuration
 config :flop,
