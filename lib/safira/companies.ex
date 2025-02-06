@@ -6,6 +6,7 @@ defmodule Safira.Companies do
   use Safira.Context
 
   alias Safira.Accounts
+  alias Safira.Accounts.User
   alias Safira.Companies.{Company, Tier}
   alias Safira.Spotlights.Spotlight
 
@@ -96,12 +97,15 @@ defmodule Safira.Companies do
     |> Repo.insert()
   end
 
-  def create_company_and_user(attrs \\ %{}) do
+  def upsert_company_and_user(company \\ %Company{}, attrs \\ %{}) do
     attrs_user = Map.put(attrs["user"], "confirmed_at", DateTime.utc_now())
 
     case Ecto.Multi.new()
-         |> Accounts.register_company_user(attrs_user)
-         |> Ecto.Multi.insert(:company, fn %{user: user} ->
+         |> Ecto.Multi.insert_or_update(
+           :user,
+           User.registration_changeset(company.user, Map.put(attrs["user"], "type", "company"))
+         )
+         |> Ecto.Multi.insert_or_update(:company, fn %{user: user} ->
            Company.changeset(%Company{}, Map.put(Map.delete(attrs, "user"), "user_id", user.id))
          end)
          |> Repo.transaction() do

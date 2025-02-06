@@ -264,22 +264,6 @@ defmodule Safira.Accounts do
   end
 
   @doc """
-  Adds the operations to register a company user to a transaction.
-
-  ## Examples
-
-    iex> register_company_user(multi, %{field: value})
-    %Ecto.Multi{}
-  """
-  def register_company_user(multi, attrs) do
-    multi
-    |> Ecto.Multi.insert(
-      :user,
-      User.registration_changeset(%User{}, Map.put(attrs, "type", "company"))
-    )
-  end
-
-  @doc """
   Creates an attendee.
   """
   def create_attendee(attrs \\ %{}) do

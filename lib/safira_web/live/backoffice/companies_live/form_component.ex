@@ -1,6 +1,7 @@
 defmodule SafiraWeb.Backoffice.CompanyLive.FormComponent do
   use SafiraWeb, :live_component
 
+  alias Safira.Accounts.User
   alias Safira.Companies
   alias Safira.Uploaders.Company
 
@@ -93,11 +94,14 @@ defmodule SafiraWeb.Backoffice.CompanyLive.FormComponent do
 
   @impl true
   def update(%{company: company} = assigns, socket) do
+    new_company = put_user(company)
+
     {:ok,
      socket
      |> assign(assigns)
+     |> assign(:company, new_company)
      |> assign_new(:form, fn ->
-       to_form(Companies.change_company(company))
+       to_form(Companies.change_company(new_company))
      end)}
   end
 
@@ -108,11 +112,11 @@ defmodule SafiraWeb.Backoffice.CompanyLive.FormComponent do
   end
 
   def handle_event("save", %{"company" => company_params}, socket) do
-    save_company(socket, socket.assigns.action, company_params)
+    save_company(socket, company_params)
   end
 
-  defp save_company(socket, :edit, company_params) do
-    case Companies.update_company(socket.assigns.company, company_params) do
+  defp save_company(socket, company_params) do
+    case Companies.upsert_company_and_user(socket.assigns.company, company_params) do
       {:ok, company} ->
         case consume_image_data(company, socket) do
           {:ok, _company} ->
@@ -123,22 +127,6 @@ defmodule SafiraWeb.Backoffice.CompanyLive.FormComponent do
         end
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, form: to_form(changeset))}
-    end
-  end
-
-  defp save_company(socket, :new, company_params) do
-    case Companies.create_company_and_user(company_params) do
-      {:ok, company} ->
-        case consume_image_data(company, socket) do
-          {:ok, _company} ->
-            {:noreply,
-             socket
-             |> put_flash(:info, "Company created successfully")
-             |> push_patch(to: socket.assigns.patch)}
-        end
-
-      {:error, _, %Ecto.Changeset{} = changeset, _} ->
         {:noreply, assign(socket, form: to_form(changeset))}
     end
   end
@@ -165,5 +153,13 @@ defmodule SafiraWeb.Backoffice.CompanyLive.FormComponent do
   defp options(tiers) do
     [{gettext("None"), nil}] ++
       Enum.map(tiers, &{&1.name, &1.id})
+  end
+
+  defp put_user(company) do
+    if is_nil(company.user) do
+      Map.put(company, :user, %User{})
+    else
+      company
+    end
   end
 end

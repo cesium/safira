@@ -43,7 +43,7 @@ defmodule SafiraWeb.Backoffice.CompanyLive.Index do
   defp apply_action(socket, :new, _params) do
     socket
     |> assign(:page_title, "New Company")
-    |> assign(:company, %Company{user: %User{}})
+    |> assign(:company, %Company{})
     |> assign(:tiers, Companies.list_tiers())
     |> assign(:badges, Contest.list_badges())
   end
