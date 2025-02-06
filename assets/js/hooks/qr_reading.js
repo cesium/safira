@@ -2,7 +2,7 @@ import { Html5Qrcode, Html5QrcodeSupportedFormats } from "../../vendor/html5-qrc
 
 export const QrScanner = {
   mounted() {
-    const config = { fps: 4, qrbox: (width, height) => {return { width: width * 0.8, height: height * 0.9 }}};
+    const config = {  fps: 2, qrbox: (width, height) => {return { width: width * 0.8, height: height * 0.9 }}};
     this.scanner = new Html5Qrcode(this.el.id, { formatsToSupport: [ Html5QrcodeSupportedFormats.QR_CODE ] });
 
     const onScanSuccess = (decodedText, decodedResult) => {

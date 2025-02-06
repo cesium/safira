@@ -19,7 +19,8 @@ defmodule Safira.Accounts.Roles.Permissions do
       "spotlights" => ["edit"],
       "schedule" => ["edit"],
       "statistics" => ["show"],
-      "mailer" => ["send"]
+      "mailer" => ["send"],
+      "scanner" => ["show"]
     }
   end
 

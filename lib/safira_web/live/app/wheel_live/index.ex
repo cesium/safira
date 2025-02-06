@@ -4,7 +4,7 @@ defmodule SafiraWeb.App.WheelLive.Index do
   import SafiraWeb.App.WheelLive.Components.ResultModal
   import SafiraWeb.App.WheelLive.Components.Wheel
 
-  alias Safira.Minigames
+  alias Safira.{Contest, Minigames}
 
   @impl true
   def mount(_params, _session, socket) do
@@ -42,10 +42,15 @@ defmodule SafiraWeb.App.WheelLive.Index do
          |> assign(:result, %{type: type, drop: drop})
          |> assign(
            :attendee_tokens,
-           if type == :tokens do
-             socket.assigns.attendee_tokens + drop.tokens
-           else
-             socket.assigns.attendee_tokens
+           case type do
+             :tokens ->
+               socket.assigns.attendee_tokens + drop.tokens
+
+             :badge ->
+               Contest.get_attendee_tokens(socket.assigns.current_user.attendee)
+
+             _ ->
+               socket.assigns.attendee_tokens
            end
          )
          # Reset wheel

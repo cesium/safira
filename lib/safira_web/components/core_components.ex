@@ -471,7 +471,7 @@ defmodule SafiraWeb.CoreComponents do
     ~H"""
     <header class={[
       @actions != [] &&
-        "flex items-left sm:items-center justify-between gap-2 sm:gap-6 flex-col sm:flex-row",
+        "flex items-left sm:items-center justify-between gap-2 sm:gap-6 flex-row",
       @class
     ]}>
       <div class="flex flex-col justify-center">

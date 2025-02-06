@@ -1,5 +1,4 @@
 defmodule SafiraWeb.Backoffice.BadgeLive.ConditionLive.FormComponent do
-  alias Safira.Moon
   use SafiraWeb, :live_component
 
   alias Safira.Contest
@@ -13,7 +12,10 @@ defmodule SafiraWeb.Backoffice.BadgeLive.ConditionLive.FormComponent do
       <.page
         title={@title}
         subtitle={
-          gettext("When this logic gets executed as truthy, the badge is awarded to the attendee.")
+          gettext(
+            "If the following statement is true, for any attendee, the %{badge_name} badge is automatically awarded to them.",
+            badge_name: @badge.name
+          )
         }
       >
         <.simple_form
@@ -24,27 +26,51 @@ defmodule SafiraWeb.Backoffice.BadgeLive.ConditionLive.FormComponent do
           phx-submit="save"
         >
           <div class="w-full space-y-2 text-dark dark:text-light">
-            <div class="flex flex-row gap-2 items-center">
+            <div class="flex flex-row gap-2 items-center flex-wrap">
               <p>
-                <%= gettext("When an attendee receives a badge of type") %>
+                <%= gettext("An attendee has") %>
+              </p>
+              <.field
+                name="amount_type"
+                label=""
+                value={@amount_type}
+                label_class="hidden"
+                wrapper_class="!mb-0 w-28"
+                type="select"
+                options={required_amount_options()}
+              />
+              <.field
+                :if={@amount_type == "number"}
+                field={@form[:amount_needed]}
+                label_class="hidden"
+                wrapper_class="!mb-0 w-24 relative"
+                type="number"
+              />
+              <p>
+                <%= gettext("badges of") %>
               </p>
               <.field
                 field={@form[:category_id]}
                 label_class="hidden"
-                wrapper_class="!mb-0 w-40"
+                wrapper_class="!mb-0 w-38"
                 type="select"
                 options={categories_options(@categories)}
               />
               <p>
-                <%= gettext("and:") %>
+                <%= gettext("category.") %>
               </p>
             </div>
-            <div>
-              <.field field={@form[:logic]} label_class="hidden" wrapper_class="!mb-0" type="lua" />
+            <div class="flex flex-row items-center gap-2">
+              <p>
+                <%= gettext("Check condition from") %>
+              </p>
+              <.field field={@form[:begin]} label="" wrapper_class="!mb-0 w-48" type="datetime-local" />
+              <p>
+                <%= gettext("to") %>
+              </p>
+              <.field field={@form[:end]} label="" wrapper_class="!mb-0 w-48" type="datetime-local" />
+              .
             </div>
-            <p>
-              <%= gettext("award them %{badge_name}.", badge_name: @badge.name) %>
-            </p>
           </div>
           <:actions>
             <.button phx-disable-with="Saving...">Save Condition</.button>
@@ -67,49 +93,45 @@ defmodule SafiraWeb.Backoffice.BadgeLive.ConditionLive.FormComponent do
     {:ok,
      socket
      |> assign(assigns)
+     |> assign(
+       :amount_type,
+       if assigns.badge_condition.amount_needed do
+         "number"
+       else
+         "all"
+       end
+     )
      |> assign_new(:form, fn ->
        to_form(Contest.change_badge_condition(condition))
      end)}
   end
 
   @impl true
-  def handle_event("validate", %{"badge_condition" => badge_condition_params}, socket) do
+  def handle_event(
+        "validate",
+        %{"badge_condition" => badge_condition_params, "amount_type" => amount_type},
+        socket
+      ) do
     changeset =
       Contest.change_badge_condition(socket.assigns.badge_condition, badge_condition_params)
 
-    {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
+    {:noreply,
+     assign(socket, form: to_form(changeset, action: :validate), amount_type: amount_type)}
   end
 
   def handle_event("save", %{"badge_condition" => badge_condition_params}, socket) do
-    if Map.get(badge_condition_params, "logic", nil) &&
-         badge_condition_params["logic"] |> String.trim() != "" do
-      case Moon.eval(badge_condition_params["logic"], attendee: %{badges: []}) do
-        {:ok, result} ->
-          if result in [true, false] do
-            save_condition(
-              socket,
-              socket.assigns.action,
-              badge_condition_params |> Map.put("badge_id", socket.assigns.badge.id)
-            )
-          else
-            {:noreply,
-             socket
-             |> put_flash(
-               :error,
-               "The logic must return a boolean value (got #{inspect(result)})"
-             )}
-          end
-
-        {:error, message} ->
-          {:noreply, socket |> put_flash(:error, message)}
+    params =
+      if socket.assigns.amount_type == "all" do
+        Map.put(badge_condition_params, "amount_needed", nil)
+      else
+        badge_condition_params
       end
-    else
-      save_condition(
-        socket,
-        socket.assigns.action,
-        badge_condition_params |> Map.put("badge_id", socket.assigns.badge.id)
-      )
-    end
+
+    save_condition(
+      socket,
+      socket.assigns.action,
+      Map.put(params, "badge_id", socket.assigns.badge.id)
+    )
   end
 
   defp save_condition(socket, :conditions_edit, badge_condition_params) do
@@ -140,5 +162,9 @@ defmodule SafiraWeb.Backoffice.BadgeLive.ConditionLive.FormComponent do
 
   defp categories_options(categories) do
     Enum.map([%{name: "Any", id: nil}] ++ categories, &{&1.name, &1.id})
+  end
+
+  defp required_amount_options do
+    [{"all", :all}, {"at least", :number}]
   end
 end
