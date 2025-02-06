@@ -14,6 +14,7 @@ defmodule Safira.Contest do
     BadgeCondition,
     BadgeRedeem,
     BadgeTrigger,
+    DailyPrize,
     DailyTokens
   }
 
