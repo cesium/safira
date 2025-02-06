@@ -1,20 +1,15 @@
 <.page title="Products">
   <:actions>
     <.table_search
-        id="items-table-name-search"
-        params={@params}
-        field={:name}
-        path={~p"/dashboard/store/products"}
-        placeholder={gettext("Search for items")}
-      />
+      id="items-table-name-search"
+      params={@params}
+      field={:name}
+      path={~p"/dashboard/store/products"}
+      placeholder={gettext("Search for items")}
+    />
   </:actions>
   <div class="py-4">
-    <.table
-      id="items-table"
-      items={@streams.items}
-      meta={@meta}
-      params={@params}
-    >
+    <.table id="items-table" items={@streams.items} meta={@meta} params={@params}>
       <:col :let={{_id, item}} label="Attendee Name" field={:attendee_name}>
         <%= item.attendee.user.name %>
       </:col>
@@ -23,7 +18,7 @@
       </:col>
       <:col :let={{_id, item}} sortable label="Item Date" field={:redeemed_at}>
         <%= item.redeemed_at %>
-        </:col>
+      </:col>
       <:col :let={{_id, item}} label="Redeemed">
         <%= if item.redeemed_at, do: "Yes", else: "No" %>
       </:col>
@@ -33,12 +28,12 @@
         </div>
       </:action>
       <:action :let={{id, item}}>
-          <.link
-            phx-click={JS.push("delete", value: %{id: item.product.id}) |> hide("##{id}")}
-            data-confirm="Are you sure?"
-          >
-            <.icon name="hero-trash" class="w-5 h-5" />
-          </.link>
+        <.link
+          phx-click={JS.push("delete", value: %{id: item.product.id}) |> hide("##{id}")}
+          data-confirm="Are you sure?"
+        >
+          <.icon name="hero-trash" class="w-5 h-5" />
+        </.link>
       </:action>
     </.table>
   </div>

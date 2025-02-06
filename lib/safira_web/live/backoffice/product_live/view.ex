@@ -16,14 +16,14 @@ defmodule SafiraWeb.Backoffice.ProductLive.View do
     case Store.list_purchases(params) do
       {:ok, {items, meta}} ->
         {:noreply,
-          socket
-          |> assign(:current_page, :view)
-          |> assign(:params, params)
-          |> assign(:meta, meta)
-          |> stream(:items, items, reset: true)}
+         socket
+         |> assign(:current_page, :view)
+         |> assign(:params, params)
+         |> assign(:meta, meta)
+         |> stream(:items, items, reset: true)}
+
       {:error, _} ->
         {:noreply, socket}
     end
   end
-
 end
