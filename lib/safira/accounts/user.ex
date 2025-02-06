@@ -82,11 +82,24 @@ defmodule Safira.Accounts.User do
     |> cast_assoc(:attendee, with: &Attendee.changeset/2)
   end
 
-  def changeset(user, attrs, opts \\ []) do
+  @doc """
+  A user changeset for changing the profile (name, handle, password and email).
+  """
+  def profile_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, @required_fields ++ @optional_fields)
-    |> validate_email(opts)
+    |> cast(attrs, [:name, :handle, :email])
     |> validate_handle()
+    |> if_changed_password_changeset(attrs, opts)
+  end
+
+  defp if_changed_password_changeset(changeset, attrs, opts) do
+    password = Map.get(attrs, "password")
+    password_exists? = password != nil && String.trim(password) != ""
+
+    case password_exists? do
+      true -> password_changeset(changeset, attrs, opts)
+      false -> changeset
+    end
   end
 
   defp validate_email(changeset, opts) do

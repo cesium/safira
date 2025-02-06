@@ -43,7 +43,7 @@ defmodule Safira.Companies.Company do
     |> cast(attrs, @required_fields ++ @optional_fields)
     |> unique_constraint(:badge_id)
     |> unique_constraint(:user_id)
-    |> cast_assoc(:user, with: &User.changeset/2)
+    |> cast_assoc(:user, with: &User.profile_changeset/2)
     |> cast_assoc(:badge)
     |> cast_assoc(:tier)
     |> validate_required(@required_fields)
