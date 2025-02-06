@@ -2,6 +2,7 @@ defmodule Safira.Inventory do
   @moduledoc """
   The Inventory context.
   """
+  use Safira.Context
 
   import Ecto.Query, warn: false
   alias Safira.Repo
@@ -19,6 +20,12 @@ defmodule Safira.Inventory do
   """
   def list_items do
     Repo.all(Item)
+  end
+
+  def list_items(opts) when is_list(opts) do
+    Item
+    |> apply_filters(opts)
+    |> Repo.all()
   end
 
   @doc """

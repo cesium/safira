@@ -38,6 +38,19 @@ defmodule Safira.Store do
     |> Flop.validate_and_run(params, for: Product)
   end
 
+  def list_purchases(params) do
+    Item
+    |> preload([attendee: [:user], product: [] ])
+    |> Flop.validate_and_run(params, for: Item)
+  end
+
+  def list_purchases(%{} = params, opts) when is_list(opts) do
+    Item
+    |> apply_filters(opts)
+    |> preload([attendee: [:user], product: [] ])
+    |> Flop.validate_and_run(params, for: Item)
+  end
+
   @doc """
   Gets a single product.
 

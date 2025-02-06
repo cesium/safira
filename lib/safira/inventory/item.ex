@@ -4,6 +4,13 @@ defmodule Safira.Inventory.Item do
   """
   use Safira.Schema
 
+  @derive {
+    Flop.Schema,
+    filterable: [],
+    sortable: [:redeemed_at],
+    default_limit: 11
+  }
+
   @required_fields ~w(type attendee_id)a
   @optional_fields ~w(redeemed_at product_id prize_id staff_id)a
 

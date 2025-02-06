@@ -1,4 +1,45 @@
 <.page title="Products">
-
-    <h1>Boas</h1>
+  <:actions>
+    <.table_search
+        id="items-table-name-search"
+        params={@params}
+        field={:name}
+        path={~p"/dashboard/store/products"}
+        placeholder={gettext("Search for items")}
+      />
+  </:actions>
+  <div class="py-4">
+    <.table
+      id="items-table"
+      items={@streams.items}
+      meta={@meta}
+      params={@params}
+    >
+      <:col :let={{_id, item}} label="Attendee Name" field={:attendee_name}>
+        <%= item.attendee.user.name %>
+      </:col>
+      <:col :let={{_id, item}} label="Item Name" field={:name}>
+        <%= item.product.name %>
+      </:col>
+      <:col :let={{_id, item}} sortable label="Item Date" field={:redeemed_at}>
+        <%= item.redeemed_at %>
+        </:col>
+      <:col :let={{_id, item}} label="Redeemed">
+        <%= if item.redeemed_at, do: "Yes", else: "No" %>
+      </:col>
+      <:action :let={{_id, item}}>
+        <div class="sr-only">
+          <.link navigate={~p"/dashboard/store/products/#{item}"}>Show</.link>
+        </div>
+      </:action>
+      <:action :let={{id, item}}>
+          <.link
+            phx-click={JS.push("delete", value: %{id: item.product.id}) |> hide("##{id}")}
+            data-confirm="Are you sure?"
+          >
+            <.icon name="hero-trash" class="w-5 h-5" />
+          </.link>
+      </:action>
+    </.table>
+  </div>
 </.page>
