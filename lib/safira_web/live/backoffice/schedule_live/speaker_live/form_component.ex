@@ -31,7 +31,7 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.SpeakerLive.FormComponent do
               <.field field={@form[:title]} type="text" label="Title" wrapper_class="w-full" required />
             </div>
             <.field field={@form[:biography]} type="textarea" label="Biography" />
-            <div class="flex grid grid-cols-3 gap-8">
+            <div class="grid grid-cols-3 gap-8">
               <div class="grid grid-cols-2 gap-2 col-span-2">
                 <.inputs_for :let={socials_form} field={@form[:socials]}>
                   <.field

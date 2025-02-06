@@ -279,7 +279,9 @@ defmodule Safira.Accounts do
 
   """
   def change_user_profile(user, attrs \\ %{}) do
-    User.profile_changeset(user, attrs, validate_email: false)
+    user
+    |> User.profile_changeset(attrs, validate_email: false)
+    |> User.picture_changeset(attrs)
   end
 
   @doc """
@@ -289,10 +291,13 @@ defmodule Safira.Accounts do
   actually changing it in the database.
   """
   def update_user_profile(%User{} = user, current_password, attrs) do
+    password_changed? =
+      attrs["password"] != nil && String.trim(attrs["password"]) != ""
+
     changeset =
       user
       |> User.profile_changeset(attrs, validate_email: true)
-      |> User.validate_current_password(current_password)
+      |> maybe_validate_current_password(password_changed?, current_password)
 
     # Just simulate a complete update, to check if everything is valid
     applied_user = Ecto.Changeset.apply_action(changeset, :update)
@@ -301,9 +306,6 @@ defmodule Safira.Accounts do
       {:ok, _} ->
         # Removing the email from the changeset, since the mail just will be updated over mail confirmation
         changeset_without_mail_update = Ecto.Changeset.change(changeset, email: user.email)
-
-        password_changed? =
-          attrs["password"] != nil && String.trim(attrs["password"]) != ""
 
         tokens_to_delete = if password_changed?, do: :all, else: ["false"]
 
@@ -324,6 +326,20 @@ defmodule Safira.Accounts do
       otherwise ->
         otherwise
     end
+  end
+
+  defp maybe_validate_current_password(changeset, password_changed?, current_password) do
+    if password_changed? do
+      User.validate_current_password(changeset, current_password)
+    else
+      changeset
+    end
+  end
+
+  def update_user_picture(%User{} = user, attrs) do
+    user
+    |> User.picture_changeset(attrs)
+    |> Repo.update()
   end
 
   @doc """

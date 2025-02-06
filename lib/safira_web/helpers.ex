@@ -173,4 +173,20 @@ defmodule SafiraWeb.Helpers do
       _ -> false
     end
   end
+
+  @doc """
+  Returns the base url path for the user type.
+  ## Examples
+      iex> get_base_path_bu_user_type(%User{type: :attendee})
+      "app"
+      iex> get_base_path_bu_user_type(%User{type: :admin})
+      "dashboard"
+  """
+  def get_base_path_by_user_type(user) do
+    if user.type == :attendee do
+      "app"
+    else
+      "dashboard"
+    end
+  end
 end

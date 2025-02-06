@@ -9,6 +9,7 @@ defmodule Safira.Repo.Migrations.CreateUsersAuth do
       add :name, :string, null: false
       add :email, :citext, null: false
       add :handle, :string, null: false
+      add :picture, :string
       add :type, :string, default: "attendee"
       add :hashed_password, :string, null: false
       add :confirmed_at, :utc_datetime

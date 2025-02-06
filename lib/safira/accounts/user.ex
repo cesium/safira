@@ -35,6 +35,7 @@ defmodule Safira.Accounts.User do
     field :name, :string
     field :email, :string
     field :handle, :string
+    field :picture, Safira.Uploaders.UserPicture.Type
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :current_password, :string, virtual: true, redact: true
@@ -245,5 +246,11 @@ defmodule Safira.Accounts.User do
     else
       add_error(changeset, :current_password, "password not correct")
     end
+  end
+
+  @doc false
+  def picture_changeset(user, attrs) do
+    user
+    |> cast_attachments(attrs, [:picture])
   end
 end

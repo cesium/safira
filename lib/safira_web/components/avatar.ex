@@ -24,7 +24,7 @@ defmodule SafiraWeb.Components.Avatar do
     ~H"""
     <span class={generate_avatar_classes(assigns)}>
       <%= if @src do %>
-        <img src={@src} class={"safira-avatar--#{@type} h-full w-full"} />
+        <img src={@src} class={"safira-avatar--#{@type} h-full w-full rounded-full"} />
       <% else %>
         <.void_avatar color={generate_avatar_color(@handle)} />
       <% end %>

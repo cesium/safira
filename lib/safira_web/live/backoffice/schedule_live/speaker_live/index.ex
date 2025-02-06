@@ -30,14 +30,10 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.SpeakerLive.Index do
           <.table id="speakers-table" items={@streams.speakers} meta={@meta} params={@params}>
             <:col :let={{_id, speaker}} sortable field={:name} label="Name">
               <div class="flex gap-4 flex-center items-center">
-                <%= if speaker.picture do %>
-                  <img
-                    class="rounded-full h-10"
-                    src={Uploaders.Speaker.url({speaker.picture, speaker}, :original, signed: true)}
-                  />
-                <% else %>
-                  <.avatar handle={speaker.name} />
-                <% end %>
+                <.avatar
+                  src={Uploaders.Speaker.url({speaker.picture, speaker}, :original, signed: true)}
+                  handle={speaker.name}
+                />
                 <div class="self-center">
                   <p class="text-base font-semibold"><%= speaker.name %></p>
                   <p class="font-normal truncate max-w-[12rem]"><%= speaker.title %></p>

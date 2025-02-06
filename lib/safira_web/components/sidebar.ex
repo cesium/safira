@@ -198,7 +198,11 @@ defmodule SafiraWeb.Components.Sidebar do
           <span class={"flex w-full justify-between items-center #{@icon_color}"}>
             <span class="flex min-w-0 items-center justify-between space-x-3">
               <%= for _img <- @img do %>
-                <.avatar size={:sm} handle={@user.handle} />
+                <.avatar
+                  size={:sm}
+                  handle={@user.handle}
+                  src={Uploaders.UserPicture.url({@user.picture, @user}, :original, signed: true)}
+                />
               <% end %>
               <span class="flex-1 flex flex-col min-w-0">
                 <span class={"#{@title |> Enum.at(0) |> Map.get(:color)}  text-sm font-medium truncate"}>
