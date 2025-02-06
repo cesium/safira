@@ -730,16 +730,13 @@ defmodule Safira.Accounts do
   @doc """
   Gets a single attendee associated to the given credential.
 
-  Raises `Ecto.NoResultsError` if the attendee does not exist.
-
   ## Examples
 
-      iex> get_attendee_from_credential!(123)
+      iex> get_attendee_from_credential(123)
       %Attendee{}
 
-      iex> get_attendee_from_credential!(456)
-      ** (Ecto.NoResultsError)
-
+      iex> get_attendee_from_credential(456)
+      nil
   """
   def get_attendee_from_credential(credential_id) do
     Credential

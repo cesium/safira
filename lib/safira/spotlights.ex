@@ -112,11 +112,7 @@ defmodule Safira.Spotlights do
     Spotlight
     |> where([s], s.end > ^now)
     |> where([s], s.company_id == ^company_id)
-    |> order_by([s], asc: s.end)
-    |> limit(1)
-    |> Repo.one()
-    |> is_nil()
-    |> Kernel.not()
+    |> Repo.exists?()
   end
 
   @doc """

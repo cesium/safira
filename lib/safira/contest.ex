@@ -207,9 +207,7 @@ defmodule Safira.Contest do
   def attendee_owns_badge?(attendee_id, badge_id) do
     BadgeRedeem
     |> where([br], br.attendee_id == ^attendee_id and br.badge_id == ^badge_id)
-    |> Repo.one()
-    |> is_nil()
-    |> Kernel.not()
+    |> Repo.exists?()
   end
 
   @doc """
