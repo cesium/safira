@@ -1,4 +1,4 @@
-<.page title="Give Badge">
+<.page title={gettext("Give Badge")}>
   <:actions>
     <div class="flex flex-row gap-4 justify-center items-center">
       <.table_search
@@ -10,21 +10,17 @@
       />
     </div>
   </:actions>
-  <div id="badges-grid" class="pt-8 flex flex-wrap" phx-update="stream">
-    <%= for {id, badge} <- @streams.badges do %>
-      <.link
-        id={id}
-        class="w-64 text-center"
-        patch={~p"/dashboard/scanner/badge/#{badge.id}/give"}
-      >
-        <img
-          :if={badge.image}
-          class="p-2 w-64 h-64"
-          src={Uploaders.Badge.url({badge.image, badge}, :original, signed: true)}
-        />
-        <img :if={!badge.image} class="p-2 w-64 h-64" src="/images/badges/404-fallback.svg" />
-        <p class="pt-1"><%= badge.name %></p>
-      </.link>
-    <% end %>
+  <div class="flex w-full items-center justify-center flex-col mt-6">
+    <div
+      id="badges-grid"
+      phx-update="stream"
+      class="grid grid-cols-1 gap-x-10 gap-y-5 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6"
+    >
+      <%= for {id, badge} <- @streams.badges do %>
+        <.link id={id} patch={~p"/dashboard/scanner/badge/#{badge.id}/give"}>
+          <.badge id={badge.id} badge={badge} hover_zoom />
+        </.link>
+      <% end %>
+    </div>
   </div>
 </.page>

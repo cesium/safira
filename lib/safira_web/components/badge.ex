@@ -9,6 +9,7 @@ defmodule SafiraWeb.Components.Badge do
   attr :disabled, :boolean, default: false
   attr :hover_zoom, :boolean, default: false
   attr :width, :string, default: "w-64"
+  attr :show_tokens, :boolean, default: false
 
   def badge(assigns) do
     ~H"""
@@ -38,7 +39,7 @@ defmodule SafiraWeb.Components.Badge do
       <span class="text-sm font-semibold text-center">
         <%= @badge.name %>
       </span>
-      <span class="text-sm font-semibold">
+      <span :if={@show_tokens} class="text-sm font-semibold">
         💰 <%= @badge.tokens %>
       </span>
     </div>

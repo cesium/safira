@@ -1,7 +1,7 @@
 defmodule SafiraWeb.Backoffice.BadgeLive.Index do
   use SafiraWeb, :backoffice_view
 
-  import SafiraWeb.Components.TableSearch
+  import SafiraWeb.Components.{Badge, TableSearch}
 
   alias Safira.Contest
   alias Safira.Contest.{Badge, BadgeCategory, BadgeCondition}
