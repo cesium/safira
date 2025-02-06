@@ -642,8 +642,7 @@ defmodule Safira.Contest do
     start_time = Timex.beginning_of_day(day_time)
     end_time = Timex.end_of_day(day_time)
 
-    # TODO: Replace with actual redeems model
-    Safira.Inventory.Item
+    BadgeRedeem
     |> where([rd], rd.inserted_at >= ^start_time and rd.inserted_at <= ^end_time)
     |> group_by([rd], rd.attendee_id)
     |> select([rd], %{redeem_count: count(rd.id), attendee_id: rd.attendee_id})
