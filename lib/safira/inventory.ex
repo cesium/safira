@@ -42,7 +42,11 @@ defmodule Safira.Inventory do
       ** (Ecto.NoResultsError)
 
   """
-  def get_item!(id), do: Repo.get!(Item, id)
+  def get_item!(id) do
+    Item
+    |> preload([:product, :attendee])
+    |> Repo.get!(id)
+  end
 
   @doc """
   Creates a item.

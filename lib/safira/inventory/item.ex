@@ -6,7 +6,7 @@ defmodule Safira.Inventory.Item do
 
   @derive {
     Flop.Schema,
-    filterable: [], sortable: [:redeemed_at], default_limit: 11
+    filterable: [:attendee_id, :product_id], sortable: [:redeemed_at], default_limit: 11
   }
 
   @required_fields ~w(type attendee_id)a
