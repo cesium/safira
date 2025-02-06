@@ -11,7 +11,7 @@ defmodule SafiraWeb.Backoffice.ProductLive.Index do
             index: %{"products" => ["show"]},
             new: %{"products" => ["edit"]},
             edit: %{"products" => ["edit"]},
-            view: %{"products" => ["view"]}}
+            show: %{"products" => ["view"]}}
 
   @impl true
   def mount(_params, _session, socket) do
@@ -50,11 +50,6 @@ defmodule SafiraWeb.Backoffice.ProductLive.Index do
   defp apply_action(socket, :index, _params) do
     socket
     |> assign(:page_title, "Listing Products")
-  end
-
-  defp apply_action(socket, :view, _params) do
-    socket
-    |> assign(:page_title, "Products Purchase History")
   end
 
   @impl true

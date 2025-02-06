@@ -1,4 +1,4 @@
-defmodule SafiraWeb.Backoffice.ProductLive.View do
+defmodule SafiraWeb.Backoffice.ProductLive.PurchaseLive.Index do
   use SafiraWeb, :backoffice_view
 
   alias Safira.Contest
@@ -10,7 +10,7 @@ defmodule SafiraWeb.Backoffice.ProductLive.View do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, socket |> assign(:current_page, :view)}
+    {:ok, socket}
   end
 
   @impl true
@@ -19,7 +19,7 @@ defmodule SafiraWeb.Backoffice.ProductLive.View do
       {:ok, {items, meta}} ->
         {:noreply,
          socket
-         |> assign(:current_page, :view)
+         |> assign(:current_page, :store)
          |> assign(:params, params)
          |> assign(:meta, meta)
          |> stream(:items, items, reset: true)}

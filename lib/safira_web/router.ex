@@ -206,7 +206,10 @@ defmodule SafiraWeb.Router do
           live "/", Index, :index
           live "/new", Index, :new
           live "/:id/edit", Index, :edit
-          live "/view", View, :view
+
+          scope "/purchases", PurchaseLive do
+            live "/", Index, :show
+          end
 
           live "/:id", Show, :show
           live "/:id/show/edit", Show, :edit
