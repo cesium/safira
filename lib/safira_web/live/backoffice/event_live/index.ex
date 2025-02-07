@@ -98,6 +98,7 @@ defmodule SafiraWeb.Backoffice.EventLive.Index do
         |> assign(:team, member.team)
         |> assign(:member, member)
     end
+  end
 
   defp apply_action(socket, :credentials, _params) do
     socket
