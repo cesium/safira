@@ -5,7 +5,7 @@ defmodule Safira.Repo.Migrations.CreateTeamMembers do
     create table(:team_members, primary_key: false) do
       add :id, :binary_id, primary_key: true
       add :name, :string
-      add :team_id, references(:teams, on_delete: :nothing, type: :binary_id)
+      add :team_id, references(:teams, on_delete: :delete_all, type: :binary_id)
       add :url, :string
       add :image, :string
 

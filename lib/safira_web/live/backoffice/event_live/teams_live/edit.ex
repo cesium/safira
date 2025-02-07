@@ -107,12 +107,12 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.Edit do
     end
   end
 
-  defp save_team(socket, :teams_update, team_params) do
+  defp save_team(socket, :teams_edit, team_params) do
     case Teams.update_team(socket.assigns.team, team_params) do
       {:ok, _team} ->
         {:noreply,
          socket
-         |> put_flash(:info, "Team created successfully")
+         |> put_flash(:info, "Team updated successfully")
          |> push_patch(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
