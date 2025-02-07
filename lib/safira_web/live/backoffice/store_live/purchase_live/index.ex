@@ -34,12 +34,6 @@ defmodule SafiraWeb.Backoffice.ProductLive.PurchaseLive.Index do
     |> assign(:page_title, "Purchases")
   end
 
-  def apply_action(socket, :redeem, %{"id" => id}) do
-    socket
-    |> assign(:page_title, "Redeem Purchase")
-    |> assign(:item, Inventory.get_item!(id))
-  end
-
   def apply_action(socket, :redeemed, %{"id" => id}) do
     socket
     |> assign(:page_title, "Redeemed Purchase")
