@@ -114,7 +114,7 @@ defmodule SafiraWeb.Backoffice.CompanyLive.FormComponent do
 
   defp save_company(socket, company_params) do
     case Companies.upsert_company_and_user(socket.assigns.company, company_params) do
-      {:ok, company} ->
+      {:ok, %{company: company}} ->
         case consume_image_data(company, socket) do
           {:ok, _company} ->
             {:noreply,
