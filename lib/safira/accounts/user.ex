@@ -89,6 +89,7 @@ defmodule Safira.Accounts.User do
   def profile_changeset(user, attrs, opts \\ []) do
     user
     |> cast(attrs, [:name, :handle, :email])
+    |> unique_constraint(:email)
     |> validate_handle()
     |> if_changed_password_changeset(attrs, opts)
   end
