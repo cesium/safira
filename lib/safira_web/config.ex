@@ -107,6 +107,12 @@ defmodule SafiraWeb.Config do
         title: "Visitors",
         icon: "hero-user",
         url: "/sponsor"
+      },
+      %{
+        key: :scanner,
+        title: "Scanner",
+        icon: "hero-qr-code",
+        url: "/sponsor/scanner"
       }
     ]
   end
