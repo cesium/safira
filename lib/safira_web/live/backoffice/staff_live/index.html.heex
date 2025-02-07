@@ -66,7 +66,6 @@
   </div>
 </.page>
 
-
 <.modal
   :if={@live_action in [:new, :edit]}
   id="staff-modal"
@@ -84,7 +83,6 @@
     roles={@roles}
   />
 </.modal>
-
 
 <.modal
   :if={@live_action in [:roles]}
@@ -115,4 +113,3 @@
     patch={~p"/dashboard/staffs"}
   />
 </.modal>
-
