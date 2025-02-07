@@ -1,25 +1,34 @@
 <.page title={gettext("Visitors")}>
   <:actions>
-    <div class="flex flex-row items-center gap-4">
-      <div class="">
-        <.table_search
-          id="visitor-table-name-search"
-          params={@params}
-          field={:name}
-          path={~p"/sponsor/"}
-          placeholder={gettext("Search by name")}
-        />
-        <.link href={~p"/downloads/cvs"} target="_blank">
-          <.button>
-            <%= gettext("Download CVs") %>
-          </.button>
-        </.link>
-      </div>
-      <.simple_form :if={@all_enabled} for={@form} phx-change="validate">
+    <div class="flex flex-wrap flex-row items-center gap-4">
+      <.table_search
+        id="visitor-table-name-search"
+        params={@params}
+        field={:name}
+        path={~p"/sponsor/"}
+        placeholder={gettext("Search by name")}
+      />
+      <.link href={~p"/downloads/cvs"} target="_blank" class="sm:flex hidden">
+        <.button>
+          <%= gettext("Download CVs") %>
+        </.button>
+      </.link>
+      <.simple_form :if={@all_enabled} for={@form} phx-change="validate" class="sm:flex hidden">
         <.field field={@form[:all]} type="switch" label="All" wrapper_class="pb-2" />
       </.simple_form>
     </div>
   </:actions>
+
+  <div class="sm:hidden flex gap-x-2 items-center justify-center">
+    <.simple_form :if={@all_enabled} for={@form} phx-change="validate" wrapper_class="">
+      <.field field={@form[:all]} type="switch" label="All" wrapper_class="pb-2" />
+    </.simple_form>
+    <.link href={~p"/downloads/cvs"} target="_blank" class="justify-end">
+      <.button>
+        <%= gettext("Download CVs") %>
+      </.button>
+    </.link>
+  </div>
 
   <ul id="visitors-list" class="grid grid-cols-2 md:grid-cols-4" phx-update="stream">
     <.attendee

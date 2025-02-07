@@ -4,8 +4,6 @@ defmodule SafiraWeb.Sponsor.HomeLive.Components.Attendee do
   """
   use SafiraWeb, :component
 
-  alias Safira.Accounts.User
-
   import SafiraWeb.Components.Avatar
 
   attr :id, :string, required: true
@@ -22,7 +20,7 @@ defmodule SafiraWeb.Sponsor.HomeLive.Components.Attendee do
           <div class="m-auto w-fit">
             <.avatar size={:lg} handle={@handle} />
           </div>
-          <p class="font-terminal text-center uppercase text-xl">
+          <p class="text-center text-sm mt-2">
             <%= @name %>
           </p>
         </div>

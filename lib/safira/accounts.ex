@@ -196,13 +196,6 @@ defmodule Safira.Accounts do
   end
 
   @doc """
-  Changes an attendee.
-  """
-  def change_attendee(%Attendee{} = attendee, attrs) do
-    Attendee.changeset(attendee, attrs)
-  end
-
-  @doc """
   Gets a user by email.
 
   ## Examples
