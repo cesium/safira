@@ -15,11 +15,7 @@ defmodule SafiraWeb.Backoffice.ProductLive.PurchaseLive.FormComponent do
               Cancel
             </.button>
             <.button phx-click="confirm-redemed" class="w-full" phx-target={@myself} type="button">
-              <% if @title == "Redeem Purchase" do %>
                 Redeem
-              <% else %>
-                Delete
-              <% end %>
             </.button>
           </div>
         </div>
