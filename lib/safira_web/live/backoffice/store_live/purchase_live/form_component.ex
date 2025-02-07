@@ -28,7 +28,7 @@ defmodule SafiraWeb.Backoffice.ProductLive.PurchaseLive.FormComponent do
 
   @impl true
   def handle_event("confirm-redemed", _params, socket) do
-    case Inventory.update_item(%{redeemed_at: DateTime.utc_now()}) do
+    case Inventory.update_item(socket.assigns.item, %{redeemed_at: DateTime.utc_now()}) do
       {:ok, _item} ->
         {:noreply, socket |> push_patch(to: ~p"/dashboard/store/products/purchases")}
       {:error, _reason} ->

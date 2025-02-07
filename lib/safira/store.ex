@@ -11,6 +11,9 @@ defmodule Safira.Store do
   alias Safira.Contest
   alias Safira.Inventory.Item
   alias Safira.Store.Product
+  alias Safira.Inventory
+  alias Safira.Store
+
 
   @pubsub Safira.PubSub
 
@@ -84,6 +87,32 @@ defmodule Safira.Store do
     |> Product.changeset(attrs)
     |> Repo.insert()
   end
+
+  def create_purchase_transaction(item_id) do
+    Multi.new()
+    |> Multi.run(:get_item, fn _repo, _changes ->
+      item = Inventory.get_item!(item_id)
+      {:ok, item}
+    end)
+    |> Multi.run(:update_product, fn _repo, %{get_item: item} ->
+      product_changeset =
+        item.product
+        |> Store.Product.changeset(%{stock: item.product.stock + 1})
+
+      case Repo.update(product_changeset) do
+        {:ok, product} -> {:ok, product}
+        {:error, changeset} -> {:error, changeset}
+      end
+    end)
+    |> Multi.run(:delete_item, fn _repo, %{get_item: item} ->
+      Inventory.delete_item(item)
+    end)
+    |> Multi.run(:update_attendee_tokens, fn _repo, %{get_item: item} ->
+      Contest.change_attendee_tokens(item.attendee, item.attendee.tokens + item.product.price)
+    end)
+    |> Repo.transaction()
+  end
+
 
   @doc """
   Updates a product and broadcasts the product change to all subscribed clients.
