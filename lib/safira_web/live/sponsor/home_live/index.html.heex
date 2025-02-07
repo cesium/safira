@@ -20,7 +20,7 @@
   </:actions>
 
   <div class="sm:hidden flex gap-x-2 items-center justify-center">
-    <.simple_form :if={@all_enabled} for={@form} phx-change="validate" wrapper_class="">
+    <.simple_form :if={@all_enabled} for={@form} phx-change="validate">
       <.field field={@form[:all]} type="switch" label="All" wrapper_class="pb-2" />
     </.simple_form>
     <.link href={~p"/downloads/cvs"} target="_blank" class="justify-end">
