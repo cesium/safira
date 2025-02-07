@@ -111,12 +111,11 @@ defmodule SafiraWeb.DownloadController do
 
   defp write_cv_challenge_csv do
     Accounts.list_attendees_with_cv()
-    |> Enum.map(fn user ->
+    |> Enum.map_join("\n", fn user ->
       [
         "#{user.id},#{user.name},#{user.handle}"
       ]
     end)
-    |> Enum.join("\n")
     |> to_string()
   end
 

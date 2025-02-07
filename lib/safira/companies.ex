@@ -370,7 +370,7 @@ defmodule Safira.Companies do
   Gets the URL's for the CV's the company has access to
   """
   def get_cvs(company) when not is_nil(company.badge_id) do
-    if(company.tier.full_cv_access) do
+    if company.tier.full_cv_access do
       Accounts.list_attendees()
       |> Enum.filter(fn u -> not is_nil(u.attendee.cv) end)
       |> Enum.map(fn u ->
