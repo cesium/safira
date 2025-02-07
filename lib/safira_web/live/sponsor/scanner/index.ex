@@ -66,7 +66,7 @@ defmodule SafiraWeb.Sponsor.ScannerLive.Index do
   end
 
   @impl true
-  def handle_params(params, _url, socket) do
+  def handle_params(_params, _url, socket) do
     badge_id = socket.assigns.current_user.company.badge_id
 
     if is_nil(badge_id) do
