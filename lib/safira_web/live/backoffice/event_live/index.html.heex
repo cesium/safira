@@ -1,5 +1,10 @@
 <.page title="Event Settings">
   <:actions>
+    <.link patch={~p"/dashboard/event/teams"}>
+      <.button>
+        <.icon name="hero-user-group" class="w-5 h-5" />
+      </.button>
+    </.link>
     <.link patch={~p"/dashboard/event/faqs"}>
       <.button>
         <.icon name="hero-lifebuoy" class="w-5 h-5" />
@@ -49,6 +54,54 @@
     </p>
   </div>
 </.page>
+
+<.modal
+  :if={@live_action in [:teams]}
+  id="teams-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/event")}
+>
+  <.live_component
+    module={SafiraWeb.Live.Backoffice.EventLive.TeamsLive.Index}
+    id={:teams}
+    title={@page_title}
+    action={@live_action}
+    current_user={@current_user}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:teams_new, :teams_edit]}
+  id="teams-edit-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/event/teams/")}
+>
+  <.live_component
+    module={SafiraWeb.Live.Backoffice.EventLive.TeamsLive.FormComponent}
+    id="teams-edit"
+    title={@page_title}
+    team={@team}
+    action={@live_action}
+    patch={~p"/dashboard/event/teams"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:teams_members, :teams_members_edit]}
+  id="event-modal-teams-members-edit"
+  show
+  on_cancel={JS.patch(~p"/dashboard/event/teams/")}
+>
+  <.live_component
+    module={SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MemberLive.FormComponent}
+    id="team-{@team.id}"
+    title={@page_title}
+    team={@team}
+    action={@live_action}
+    member={@member}
+    patch={~p"/dashboard/event/teams/"}
+  />
+</.modal>
 
 <.modal
   :if={@live_action in [:edit]}

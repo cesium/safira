@@ -26,6 +26,7 @@ defmodule SafiraWeb.Router do
     live_session :default, on_mount: [{SafiraWeb.UserAuth, :mount_current_user}] do
       live "/", HomeLive.Index, :index
       live "/faqs", FAQLive.Index, :index
+      live "/team", TeamLive.Index, :index
       live "/schedule", ScheduleLive.Index, :index
       live "/challenges", ChallengesLive.Index, :index
       live "/speakers", SpeakersLive.Index, :index
@@ -161,6 +162,17 @@ defmodule SafiraWeb.Router do
             live "/", Index, :faqs
             live "/new", Index, :faqs_new
             live "/:id/edit", Index, :faqs_edit
+          end
+
+          scope "/teams" do
+            live "/", Index, :teams
+            live "/new", Index, :teams_new
+
+            scope "/:team_id/edit" do
+              live "/", Index, :teams_edit
+              live "/members", Index, :teams_members
+              live "/members/:id", Index, :teams_members_edit
+            end
           end
         end
 
