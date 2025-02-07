@@ -22,16 +22,10 @@ defmodule SafiraWeb.Backoffice.StaffLive.FormComponent do
             <div class="w-full space-y-2">
               <.field field={@form[:name]} type="text" label="Name" required />
               <.field field={@form[:email]} type="email" label="Email" required />
-              <.field
-                field={@form[:password]}
-                type="password"
-                label="Password"
-                value={@generated_password}
-                required
-              />
+              <.field field={@form[:password]} type="password" label="Password" required />
               <.field field={@form[:handle]} type="text" label="Handle" required />
-              <.inputs_for :let={att} field={@form[:staff]}>
-                <.field field={att[:role_id]} type="select" label="Role" options={@roles} required />
+              <.inputs_for :let={u} field={@form[:staff]}>
+                <.field field={u[:role_id]} type="select" label="Role" options={@roles} required />
               </.inputs_for>
             </div>
           </div>
@@ -54,23 +48,17 @@ defmodule SafiraWeb.Backoffice.StaffLive.FormComponent do
     user = user |> Repo.preload(:staff)
     user_changeset = Accounts.change_user_registration(user)
 
-    password =
-      :crypto.strong_rand_bytes(12)
-      |> Base.encode64()
-      |> binary_part(0, 12)
-
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(:generated_password, password)
+     |> assign(:user, user)
      |> assign(:form, to_form(user_changeset))}
   end
 
   @impl true
   def handle_event("validate", %{"user" => user_params}, socket) do
-
     changeset =
-      Accounts.change_user_registration(%User{}, user_params) |> IO.inspect()
+      Accounts.change_user_registration(%User{}, user_params)
 
     {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
   end
@@ -88,8 +76,6 @@ defmodule SafiraWeb.Backoffice.StaffLive.FormComponent do
          |> push_patch(to: socket.assigns.patch)}
 
       {:error, _, %Ecto.Changeset{} = changeset, _} ->
-        IO.inspect(changeset)
-
         {:noreply,
          socket
          |> put_flash(:error, gettext("Something went wrong while creating the staff."))
@@ -98,12 +84,7 @@ defmodule SafiraWeb.Backoffice.StaffLive.FormComponent do
   end
 
   defp save_staff(socket, :edit, user_params) do
-    user = socket.assigns.user |> Repo.preload(:staff)
-    user_params = user_params |> Map.delete("password")
-    IO.inspect(user, label: "user")
-    IO.inspect(user_params)
-
-    case Accounts.update_user(user, user_params) do
+    case Accounts.update_user(socket.assigns.user, user_params) do
       {:ok, _staff} ->
         {:noreply,
          socket

@@ -43,7 +43,7 @@ defmodule Safira.Accounts.User do
     field :allows_marketing, :boolean, default: false
 
     has_one :attendee, Attendee, on_delete: :delete_all
-    has_one :staff, Staff, on_delete: :delete_all
+    has_one :staff, Staff, on_delete: :delete_all, on_replace: :update
 
     timestamps(type: :utc_datetime)
   end
@@ -74,7 +74,6 @@ defmodule Safira.Accounts.User do
   def registration_changeset(user, attrs, opts \\ []) do
     user
     |> cast(attrs, @required_fields ++ @optional_fields)
-    |> IO.inspect(label: "tou aqui")
     |> validate_required(@required_fields |> Enum.reject(&(&1 in [:email, :password, :handle])))
     |> validate_email(opts)
     |> validate_handle()

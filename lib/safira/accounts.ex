@@ -134,8 +134,7 @@ defmodule Safira.Accounts do
 
   def update_user(%User{} = user, attrs) do
     user
-    |> User.registration_changeset(attrs |> IO.inspect(label: "attrs do staff q chegaram ao update"))
-    |> IO.inspect(label: "changeset")
+    |> User.registration_changeset(attrs)
     |> Repo.update()
   end
 
@@ -248,18 +247,17 @@ defmodule Safira.Accounts do
 
   """
   def register_staff_user(attrs) do
-    attrs = attrs |> Map.put("type", :staff) |> IO.inspect(label: "attrs")
+    attrs = attrs |> Map.put("type", :staff)
 
     Ecto.Multi.new()
     |> Ecto.Multi.insert(
       :user,
       User.registration_changeset(
         %User{},
-        Map.delete(attrs, "staff") |> IO.inspect(label: "apagou"),
+        Map.delete(attrs, "staff"),
         hash_password: true,
         validate_email: true
       )
-      |> IO.inspect(label: "changeset")
     )
     |> Ecto.Multi.insert(
       :staff,
@@ -268,10 +266,13 @@ defmodule Safira.Accounts do
           attrs
           |> Map.get("staff")
           |> Map.put("user_id", user.id)
-          |> IO.inspect(label: "staff_attrs")
 
         Staff.changeset(%Staff{}, staff_attrs)
       end
+    )
+    |> Ecto.Multi.update(
+      :new_user,
+      fn %{user: user} -> User.confirm_changeset(user) end
     )
     |> Repo.transaction()
   end
@@ -292,6 +293,33 @@ defmodule Safira.Accounts do
     %Staff{}
     |> Staff.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def update_staff(user, attrs \\ %{}) do
+    attrs = attrs |> Map.put("type", :staff)
+
+    Ecto.Multi.new()
+    |> Ecto.Multi.update(
+      :user,
+      User.registration_changeset(
+        user,
+        Map.delete(attrs, "staff"),
+        hash_password: true,
+        validate_email: true
+      )
+    )
+    |> Ecto.Multi.update(
+      :staff,
+      fn %{user: user} ->
+        staff_attrs =
+          attrs
+          |> Map.get("staff")
+          |> Map.put("user_id", user.id)
+
+        Staff.changeset(user.staff, staff_attrs)
+      end
+    )
+    |> Repo.transaction()
   end
 
   @doc """

@@ -8,8 +8,8 @@ defmodule SafiraWeb.Backoffice.StaffLive.Index do
   import SafiraWeb.Components.{Table, TableSearch}
 
   alias Safira.Accounts.{Staff, User}
-  alias Safira.Roles
   alias Safira.Repo
+  alias Safira.Roles
 
   on_mount {SafiraWeb.StaffRoles,
             index: %{"staffs" => ["show"]},
@@ -37,7 +37,7 @@ defmodule SafiraWeb.Backoffice.StaffLive.Index do
          |> assign(:meta, meta)
          |> assign(:params, params)
          |> assign(:current_page, :staffs)
-         |> stream(:staffs, staffs, reset: true)
+         |> assign(:staffs, staffs)
          |> apply_action(socket.assigns.live_action, params)}
 
       {:error, _} ->
