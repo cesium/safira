@@ -22,7 +22,14 @@
   </:actions>
 
   <ul id="visitors-list" class="grid grid-cols-2 md:grid-cols-4" phx-update="stream">
-    <.attendee :for={{id, user} <- @streams.users} id={id} name={user.name} handle={user.handle} cv={user.cv} image={user.image} />
+    <.attendee
+      :for={{id, user} <- @streams.users}
+      id={id}
+      name={user.name}
+      handle={user.handle}
+      cv={user.cv}
+      image={user.image}
+    />
   </ul>
 
   <.pagination meta={@meta} params={@params} />

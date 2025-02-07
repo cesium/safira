@@ -27,8 +27,13 @@ defmodule SafiraWeb.Sponsor.HomeLive.Components.Attendee do
           </p>
         </div>
       </.link>
-      <.link :if={not is_nil(@cv)} href={@cv} target="_blank" class="hover:text-accent underline text-sm">
-          <%= gettext("CV") %>
+      <.link
+        :if={not is_nil(@cv)}
+        href={@cv}
+        target="_blank"
+        class="hover:text-accent underline text-sm"
+      >
+        <%= gettext("CV") %>
       </.link>
     </li>
     """

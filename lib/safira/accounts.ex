@@ -47,6 +47,17 @@ defmodule Safira.Accounts do
   end
 
   @doc """
+  Lists all attendees with CV.
+  """
+  def list_attendees_with_cv do
+    Attendee
+    |> where([at], not is_nil(at.cv))
+    |> join(:inner, [at], u in User, on: at.user_id == u.id)
+    |> select([at, u], u)
+    |> Repo.all()
+  end
+
+  @doc """
   Gets a single attendee by user id.
   """
   def get_user_attendee(user_id) do

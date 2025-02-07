@@ -33,12 +33,29 @@ defmodule SafiraWeb.DownloadController do
   end
 
   def attendees_data(conn, _params) do
-    if user_authorized?(conn.assigns.current_user, "attendees", "show") do
+    if user_authorized?(conn.assigns.current_user, "event", "show") do
       data = write_attendees_csv()
 
       conn
       |> put_resp_content_type("text/csv")
       |> put_resp_header("content-disposition", "attachment; filename=\"attendees.csv\"")
+      |> send_resp(200, data)
+    else
+      conn
+      |> put_flash(:error, "You do not have permission to view this resource")
+      |> put_status(403)
+      |> redirect(to: ~p"/")
+      |> halt()
+    end
+  end
+
+  def cv_challenge(conn, _params) do
+    if user_authorized?(conn.assigns.current_user, "attendees", "show") do
+      data = write_cv_challenge_csv()
+
+      conn
+      |> put_resp_content_type("text/csv")
+      |> put_resp_header("content-disposition", "attachment; filename=\"cv_challenge.csv\"")
       |> send_resp(200, data)
     else
       conn
@@ -65,7 +82,6 @@ defmodule SafiraWeb.DownloadController do
 
       Companies.get_cvs(company)
       |> Enum.map(fn {handle, cv} ->
-        IO.inspect({handle, cv})
         Zstream.entry(
           handle <> ".pdf",
           [HTTPoison.get!(cv, [], follow_redirect: true).body]
@@ -89,6 +105,17 @@ defmodule SafiraWeb.DownloadController do
       ]
     end)
     |> Kernel.then(fn l -> ["Name,Email,Username,Registered at,Tokens,Entries"] ++ l end)
+    |> Enum.join("\n")
+    |> to_string()
+  end
+
+  defp write_cv_challenge_csv do
+    Accounts.list_attendees_with_cv()
+    |> Enum.map(fn user ->
+      [
+        "#{user.id},#{user.name},#{user.handle}"
+      ]
+    end)
     |> Enum.join("\n")
     |> to_string()
   end

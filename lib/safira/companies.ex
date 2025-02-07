@@ -380,7 +380,8 @@ defmodule Safira.Companies do
       Contest.list_badge_redeems(company.badge_id)
       |> Enum.filter(fn r -> not is_nil(r.attendee.cv) end)
       |> Enum.map(fn r ->
-        {r.attendee.user.handle, Uploaders.CV.url({r.attendee.cv, r.attendee}, :original, signed: true)}
+        {r.attendee.user.handle,
+         Uploaders.CV.url({r.attendee.cv, r.attendee}, :original, signed: true)}
       end)
     end
   end
