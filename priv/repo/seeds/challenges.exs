@@ -1,7 +1,6 @@
 defmodule Safira.Repo.Seeds.Challenges do
   alias Safira.Challenges
   alias Safira.Minigames
-  alias Safira.Repo
 
   @challenges File.read!("priv/fake/challenges.txt") |> String.split("\n")
 

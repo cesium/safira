@@ -15,7 +15,7 @@ defmodule SafiraWeb.UserSessionController do
 
         conn
         |> UserAuth.log_in_user(user, user_params)
-        |> put_flash(:success, "Account created successfully")
+        |> put_flash(:success, "Registered successfully")
         |> redirect(to: ~p"/app")
 
       {:error, _, %Ecto.Changeset{} = _changeset, _} ->
@@ -35,7 +35,7 @@ defmodule SafiraWeb.UserSessionController do
   end
 
   def create(conn, params) do
-    create(conn, params, "Welcome back!")
+    create(conn, params, nil)
   end
 
   defp create(
@@ -66,7 +66,6 @@ defmodule SafiraWeb.UserSessionController do
 
   def delete(conn, _params) do
     conn
-    |> put_flash(:info, "Logged out successfully.")
     |> UserAuth.log_out_user()
   end
 
@@ -82,6 +81,8 @@ defmodule SafiraWeb.UserSessionController do
         put_flash(conn, :error, gettext("Unable to enrol"))
     end
   end
+
+  defp process_action(conn, _action, _id, _user, _return_to, nil), do: conn
 
   defp process_action(conn, _action, _id, _user, _return_to, info),
     do: put_flash(conn, :info, info)

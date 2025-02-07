@@ -14,11 +14,11 @@ defmodule SafiraWeb.Config do
         url: "/schedule",
         feature_flag: "schedule_enabled"
       },
-      # %{
-      #  title: "Team",
-      #  url: "/team",
-      #  feature_flag: "team_enabled"
-      # },
+      %{
+        title: "Team",
+        url: "/team",
+        feature_flag: "team_enabled"
+      },
       %{
         title: "Challenges",
         url: "/challenges",
@@ -98,6 +98,17 @@ defmodule SafiraWeb.Config do
     else
       []
     end
+  end
+
+  def sponsor_pages do
+    [
+      %{
+        key: :visitors,
+        title: "Visitors",
+        icon: "hero-user",
+        url: "/sponsor"
+      }
+    ]
   end
 
   def backoffice_pages(user) do

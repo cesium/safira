@@ -4,7 +4,6 @@ defmodule SafiraWeb.Backoffice.EventLive.FormComponent do
   import SafiraWeb.Components.Forms
 
   alias Safira.Event
-
   alias SafiraWeb.Helpers
 
   @impl true

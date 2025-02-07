@@ -67,6 +67,12 @@ defmodule SafiraWeb.Landing.Components.Navbar do
                         label="App"
                       />
                       <.dropdown_menu_item
+                        :if={user_type?(@current_user, :company)}
+                        link_type="a"
+                        to="/sponsor"
+                        label="Visitors"
+                      />
+                      <.dropdown_menu_item
                         link_type="a"
                         method="delete"
                         to="/users/log_out"
@@ -123,6 +129,14 @@ defmodule SafiraWeb.Landing.Components.Navbar do
             class="font-terminal uppercase text-3xl text-white transition-colors duration-75 ease-in hover:text-accent"
           >
             App
+          </.link>
+          <.link
+            :if={user_type?(@current_user, :company)}
+            patch={~p"/sponsor"}
+            phx-click={hide_mobile_navbar()}
+            class="font-terminal uppercase text-3xl text-white transition-colors duration-75 ease-in hover:text-accent"
+          >
+            Visitors
           </.link>
           <.link
             :if={@current_user}

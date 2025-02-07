@@ -26,7 +26,7 @@ defmodule SafiraWeb.Components.Avatar do
       <%= if @src do %>
         <img src={@src} class={"safira-avatar--#{@type} h-full w-full rounded-full"} />
       <% else %>
-        <.void_avatar color={generate_avatar_color(@handle)} />
+        <.void_avatar color={generate_avatar_color(@handle)} size={@size} />
       <% end %>
     </span>
     """
@@ -61,8 +61,10 @@ defmodule SafiraWeb.Components.Avatar do
       xmlns:xlink="http://www.w3.org/1999/xlink"
       x="0px"
       y="0px"
-      viewBox="0 0 1499.3 1499.3"
-      style="enable-background:new 0 0 1499.3 1499.3;"
+      width={svg_size(@size)}
+      height={svg_size(@size)}
+      viewBox="0 0 1500 1500"
+      style="enable-background:new 0 0 1500 1500;"
       xml:space="preserve"
       class="rounded-full"
     >
@@ -583,5 +585,15 @@ defmodule SafiraWeb.Components.Avatar do
       </g>
     </svg>
     """
+  end
+
+  defp svg_size(size) do
+    case size do
+      :xs -> "30"
+      :sm -> "48"
+      :md -> "65"
+      :lg -> "80"
+      :xl -> "96"
+    end
   end
 end

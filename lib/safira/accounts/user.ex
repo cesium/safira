@@ -6,6 +6,7 @@ defmodule Safira.Accounts.User do
 
   alias Safira.Accounts.Attendee
   alias Safira.Accounts.Staff
+  alias Safira.Companies.Company
 
   @required_fields ~w(name email handle password type)a
   @optional_fields ~w(confirmed_at allows_marketing)a
@@ -40,11 +41,12 @@ defmodule Safira.Accounts.User do
     field :hashed_password, :string, redact: true
     field :current_password, :string, virtual: true, redact: true
     field :confirmed_at, :utc_datetime
-    field :type, Ecto.Enum, values: [:attendee, :staff], default: :attendee
+    field :type, Ecto.Enum, values: [:attendee, :staff, :company], default: :attendee
     field :allows_marketing, :boolean, default: false
 
     has_one :attendee, Attendee, on_delete: :delete_all
     has_one :staff, Staff, on_delete: :delete_all
+    has_one :company, Company, on_delete: :delete_all
 
     timestamps(type: :utc_datetime)
   end
@@ -87,7 +89,8 @@ defmodule Safira.Accounts.User do
   """
   def profile_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:name, :handle, :email])
+    |> cast(attrs, [:name, :handle, :email, :confirmed_at, :type])
+    |> unique_constraint(:email)
     |> validate_handle()
     |> email_changeset(attrs, opts |> Keyword.put(:check_email_changed, false))
     |> if_changed_password_changeset(attrs, opts)
@@ -97,9 +100,10 @@ defmodule Safira.Accounts.User do
     password = Map.get(attrs, "password")
     password_exists? = password != nil && String.trim(password) != ""
 
-    case password_exists? do
-      true -> password_changeset(changeset, attrs, opts)
-      false -> changeset
+    if password_exists? do
+      password_changeset(changeset, attrs, opts)
+    else
+      changeset
     end
   end
 

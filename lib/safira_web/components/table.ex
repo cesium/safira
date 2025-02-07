@@ -158,7 +158,7 @@ defmodule SafiraWeb.Components.Table do
   attr :meta, Flop.Meta, required: true
   attr :params, :map, required: true
 
-  defp pagination(assigns) do
+  def pagination(assigns) do
     ~H"""
     <nav
       class="flex items-center flex-column flex-wrap md:flex-row justify-between py-4"

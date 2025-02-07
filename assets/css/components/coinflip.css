@@ -4,6 +4,10 @@
   width: 80px;
   height: 80px;
   perspective: 1000px; /* Add perspective to the parent element */
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  transition: -webkit-transform 1s ease-in;
+  transition: transform 1s ease-in;
 }
 
 .coin div {
@@ -13,7 +17,8 @@
   box-shadow: inset 0 0 45px rgba(255, 255, 255, 0.3), 0 12px 20px -10px rgba(0, 0, 0, 0.4);
   background-size: contain;
   position: absolute;
-  backface-visibility: hidden; /* Ensure backface is hidden */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .side-a {
@@ -43,33 +48,63 @@
   animation: flipTails 3s ease-out forwards;
 }
 
-@keyframes flipHeads {
+@-webkit-keyframes flipHeads {
   0% {
-    transform: rotateY(0);
-    scale: 1;
+    -webkit-transform: rotateY(0) scale(1);
+            transform: rotateY(0) scale(1);
   }
   50% {
-    transform: rotateY(900deg); /* 2.5 full rotations */
-    scale: 1.2;
+    -webkit-transform: rotateY(900deg) scale(1.2);
+            transform: rotateY(900deg) scale(1.2);
   }
   100% {
-    transform: rotateY(1800deg); /* 5 full rotations */
-    scale: 1;
+    -webkit-transform: rotateY(1800deg) scale(1);
+            transform: rotateY(1800deg) scale(1);
+  }
+}
+
+@keyframes flipHeads {
+  0% {
+    -webkit-transform: rotateY(0) scale(1);
+            transform: rotateY(0) scale(1);
+  }
+  50% {
+    -webkit-transform: rotateY(900deg) scale(1.2);
+            transform: rotateY(900deg) scale(1.2);
+  }
+  100% {
+    -webkit-transform: rotateY(1800deg) scale(1);
+            transform: rotateY(1800deg) scale(1);
+  }
+}
+
+@-webkit-keyframes flipTails {
+  0% {
+    -webkit-transform: rotateY(0) scale(1);
+            transform: rotateY(0) scale(1);
+  }
+  50% {
+    -webkit-transform: rotateY(900deg) scale(1.2);
+            transform: rotateY(900deg) scale(1.2);
+  }
+  100% {
+    -webkit-transform: rotateY(1980deg) scale(1);
+            transform: rotateY(1980deg) scale(1);
   }
 }
 
 @keyframes flipTails {
   0% {
-    transform: rotateY(0);
-    scale: 1;
+    -webkit-transform: rotateY(0) scale(1);
+            transform: rotateY(0) scale(1);
   }
   50% {
-    transform: rotateY(900deg); /* 2.5 full rotations */
-    scale: 1.2;
+    -webkit-transform: rotateY(900deg) scale(1.2);
+            transform: rotateY(900deg) scale(1.2);
   }
   100% {
-    transform: rotateY(1980deg); /* 5.5 full rotations */
-    scale: 1;
+    -webkit-transform: rotateY(1980deg) scale(1);
+            transform: rotateY(1980deg) scale(1);
   }
 }
 
