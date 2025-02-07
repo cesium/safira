@@ -4,7 +4,6 @@ defmodule Safira.CompaniesFixtures do
   entities via the `Safira.Companies` context.
   """
 
-  alias Safira.Accounts.User
   alias Safira.Companies.Company
 
   @doc """
@@ -24,7 +23,9 @@ defmodule Safira.CompaniesFixtures do
         "tier_id" => tier_fixture().id
       })
 
-    {:ok, %{user: _, company: company}} = Safira.Companies.upsert_company_and_user(%Company{user: %User{}}, attrs)
+    {:ok, %{user: _, company: company}} =
+      Safira.Companies.upsert_company_and_user(%Company{}, attrs)
+
     company
   end
 

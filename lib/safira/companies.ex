@@ -98,11 +98,12 @@ defmodule Safira.Companies do
 
   def upsert_company_and_user(company \\ %Company{}, attrs \\ %{}) do
     attrs_user = Map.put(attrs["user"], "confirmed_at", DateTime.utc_now())
+    company_user = if is_nil(company.user_id), do: %User{}, else: company.user
 
     case Ecto.Multi.new()
          |> Ecto.Multi.insert_or_update(
            :user,
-           User.profile_changeset(company.user, Map.put(attrs_user, "type", "company"))
+           User.profile_changeset(company_user, Map.put(attrs_user, "type", "company"))
          )
          |> Ecto.Multi.insert_or_update(:company, fn %{user: user} ->
            Company.changeset(company, Map.put(Map.delete(attrs, "user"), "user_id", user.id))

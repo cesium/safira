@@ -1,7 +1,6 @@
 defmodule SafiraWeb.Backoffice.CompanyLive.FormComponent do
   use SafiraWeb, :live_component
 
-  alias Safira.Accounts.User
   alias Safira.Companies
   alias Safira.Uploaders.Company
 
@@ -94,14 +93,12 @@ defmodule SafiraWeb.Backoffice.CompanyLive.FormComponent do
 
   @impl true
   def update(%{company: company} = assigns, socket) do
-    new_company = put_user(company)
-
     {:ok,
      socket
      |> assign(assigns)
-     |> assign(:company, new_company)
+     |> assign(:company, company)
      |> assign_new(:form, fn ->
-       to_form(Companies.change_company(new_company))
+       to_form(Companies.change_company(company))
      end)}
   end
 
@@ -153,13 +150,5 @@ defmodule SafiraWeb.Backoffice.CompanyLive.FormComponent do
   defp options(tiers) do
     [{gettext("None"), nil}] ++
       Enum.map(tiers, &{&1.name, &1.id})
-  end
-
-  defp put_user(company) do
-    if is_nil(company.user_id) do
-      Map.put(company, :user, %User{})
-    else
-      company
-    end
   end
 end
