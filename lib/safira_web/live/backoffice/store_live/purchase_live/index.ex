@@ -40,6 +40,12 @@ defmodule SafiraWeb.Backoffice.ProductLive.PurchaseLive.Index do
     |> assign(:item, Inventory.get_item!(id))
   end
 
+  def apply_action(socket, :delete, %{"id" => id}) do
+    socket
+    |> assign(:page_title, "Delete Purchase")
+    |> assign(:item, Inventory.get_item!(id))
+  end
+
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
     item = Inventory.get_item!(id)

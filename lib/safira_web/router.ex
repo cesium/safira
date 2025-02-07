@@ -210,6 +210,7 @@ defmodule SafiraWeb.Router do
           scope "/purchases", PurchaseLive do
             live "/", Index, :show
             live "/:id/redeemed", Index, :redeemed
+            live "/:id/delete", Index, :delete
           end
 
           live "/:id", Show, :show
