@@ -1,7 +1,6 @@
 defmodule SafiraWeb.Backoffice.ProductLive.PurchaseLive.Index do
   use SafiraWeb, :backoffice_view
 
-  alias Safira.Contest
   alias Safira.Inventory
   alias Safira.Store
 
@@ -22,21 +21,34 @@ defmodule SafiraWeb.Backoffice.ProductLive.PurchaseLive.Index do
          |> assign(:current_page, :store)
          |> assign(:params, params)
          |> assign(:meta, meta)
-         |> stream(:items, items, reset: true)}
+         |> stream(:items, items, reset: true)
+         |> apply_action(socket.assigns.live_action, params)}
 
       {:error, _} ->
         {:noreply, socket}
     end
   end
 
+  def apply_action(socket, :show, _params) do
+    socket
+    |> assign(:page_title, "Purchases")
+  end
+
+  def apply_action(socket, :redeem, %{"id" => id}) do
+    socket
+    |> assign(:page_title, "Redeem Purchase")
+    |> assign(:item , Inventory.get_item!(id))
+  end
+
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
     item = Inventory.get_item!(id)
-    Store.update_product(item.product, %{stock: item.product.stock + 1})
-    {:ok, _} = Inventory.delete_item(item)
+    case Store.create_purchase_transaction(id) do
+      {:ok, _} ->
+        {:noreply, stream_delete(socket, :items, item)}
 
-    Contest.change_attendee_tokens(item.attendee, item.attendee.tokens + item.product.price)
-
-    {:noreply, stream_delete(socket, :items, item)}
+      {:error, _} ->
+        {:noreply, socket}
+    end
   end
 end

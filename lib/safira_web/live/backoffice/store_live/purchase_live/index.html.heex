@@ -1,5 +1,6 @@
 <.page title="Products">
   <:actions>
+    <div class="flex flex-row gap-4 justify-center items-center">
     <.table_search
       id="items-table-name-search"
       params={@params}
@@ -7,6 +8,10 @@
       path={~p"/dashboard/store/products"}
       placeholder={gettext("Search for items")}
     />
+    <.link patch={~p"/dashboard/store/products"}>
+      <.button>Return</.button>
+    </.link>
+    </div>
   </:actions>
   <div class="py-4">
     <.table id="items-table" items={@streams.items} meta={@meta} params={@params}>
@@ -28,6 +33,9 @@
         </div>
       </:action>
       <:action :let={{id, item}}>
+        <.link patch={~p"/dashboard/store/products/purchases/#{item}/redeemed"}>
+          <.icon name="hero-check" class="w-5 h-5" />
+        </.link>
         <.link
           phx-click={JS.push("delete", value: %{id: item.id}) |> hide("##{id}")}
           data-confirm="Are you sure?"
@@ -38,3 +46,19 @@
     </.table>
   </div>
 </.page>
+
+<.modal
+  :if={@live_action in [:redeem]}
+  id="redeem-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/store/products/purchases")}
+>
+  <.live_component
+    module={SafiraWeb.Backoffice.ProductLive.PurchaseLive.FormComponent}
+    id={:redeem}
+    title={@page_title}
+    action={@live_action}
+    item={@item}
+    patch={~p"/dashboard/store/products/purchases"}
+  />
+</.modal>
