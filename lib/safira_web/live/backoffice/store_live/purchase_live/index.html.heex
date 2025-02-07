@@ -1,16 +1,16 @@
 <.page title="Products">
   <:actions>
     <div class="flex flex-row gap-4 justify-center items-center">
-    <.table_search
-      id="items-table-name-search"
-      params={@params}
-      field={:name}
-      path={~p"/dashboard/store/products"}
-      placeholder={gettext("Search for items")}
-    />
-    <.link patch={~p"/dashboard/store/products"}>
-      <.button>Return</.button>
-    </.link>
+      <.table_search
+        id="items-table-name-search"
+        params={@params}
+        field={:name}
+        path={~p"/dashboard/store/products"}
+        placeholder={gettext("Search for items")}
+      />
+      <.link patch={~p"/dashboard/store/products"}>
+        <.button>Return</.button>
+      </.link>
     </div>
   </:actions>
   <div class="py-4">

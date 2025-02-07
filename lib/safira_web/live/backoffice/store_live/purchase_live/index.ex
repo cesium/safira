@@ -43,6 +43,7 @@ defmodule SafiraWeb.Backoffice.ProductLive.PurchaseLive.Index do
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
     item = Inventory.get_item!(id)
+
     case Store.create_purchase_transaction(id) do
       {:ok, _} ->
         {:noreply, stream_delete(socket, :items, item)}

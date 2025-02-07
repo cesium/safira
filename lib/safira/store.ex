@@ -9,11 +9,10 @@ defmodule Safira.Store do
 
   alias Safira.Accounts.Attendee
   alias Safira.Contest
-  alias Safira.Inventory.Item
-  alias Safira.Store.Product
   alias Safira.Inventory
+  alias Safira.Inventory.Item
   alias Safira.Store
-
+  alias Safira.Store.Product
 
   @pubsub Safira.PubSub
 
@@ -112,7 +111,6 @@ defmodule Safira.Store do
     end)
     |> Repo.transaction()
   end
-
 
   @doc """
   Updates a product and broadcasts the product change to all subscribed clients.

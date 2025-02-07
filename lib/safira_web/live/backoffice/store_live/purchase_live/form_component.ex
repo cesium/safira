@@ -7,10 +7,8 @@ defmodule SafiraWeb.Backoffice.ProductLive.PurchaseLive.FormComponent do
   def render(assigns) do
     ~H"""
     <div>
-      <.page
-        title={@title}
-      >
-      <div class="flex flex-col">
+      <.page title={@title}>
+        <div class="flex flex-col">
           <p class="text-center text-2xl mb-4 ml-12">Are you sure?</p>
           <div class="flex justify-center space-x-8">
             <.button phx-click="cancel-redemed" class="w-full" phx-target={@myself} type="button">
@@ -31,6 +29,7 @@ defmodule SafiraWeb.Backoffice.ProductLive.PurchaseLive.FormComponent do
     case Inventory.update_item(socket.assigns.item, %{redeemed_at: DateTime.utc_now()}) do
       {:ok, _item} ->
         {:noreply, socket |> push_patch(to: ~p"/dashboard/store/products/purchases")}
+
       {:error, _reason} ->
         {:noreply, socket}
     end
