@@ -4,7 +4,6 @@ defmodule SafiraWeb.Backoffice.EventLive.FormComponent do
   import SafiraWeb.Components.Forms
 
   alias Safira.Event
-  alias Safira.Teams
   alias SafiraWeb.Helpers
 
   @impl true
@@ -70,6 +69,7 @@ defmodule SafiraWeb.Backoffice.EventLive.FormComponent do
     {:ok, socket}
   end
 
+  @impl true
   def update(assigns, socket) do
     {:ok, assign(socket, assigns)}
   end
