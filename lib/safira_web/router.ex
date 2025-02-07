@@ -85,9 +85,6 @@ defmodule SafiraWeb.Router do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
 
-      pipe_through [:require_confirmed_user]
-      live "/scanner", ScannerLive.Index, :index
-
       scope "/app", App do
         pipe_through [:require_attendee_user]
 
