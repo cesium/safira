@@ -7,7 +7,7 @@ defmodule SafiraWeb.Backoffice.StaffLive.Index do
 
   import SafiraWeb.Components.{Table, TableSearch}
 
-  alias Safira.Accounts.{Staff, User}
+  alias Safira.Accounts.User
   alias Safira.Repo
   alias Safira.Roles
 

@@ -134,7 +134,7 @@ defmodule Safira.Accounts do
 
   def update_user(%User{} = user, attrs) do
     user
-    |> User.registration_changeset(attrs)
+    |> User.changeset(attrs)
     |> Repo.update()
   end
 
@@ -293,33 +293,6 @@ defmodule Safira.Accounts do
     %Staff{}
     |> Staff.changeset(attrs)
     |> Repo.insert()
-  end
-
-  def update_staff(user, attrs \\ %{}) do
-    attrs = attrs |> Map.put("type", :staff)
-
-    Ecto.Multi.new()
-    |> Ecto.Multi.update(
-      :user,
-      User.registration_changeset(
-        user,
-        Map.delete(attrs, "staff"),
-        hash_password: true,
-        validate_email: true
-      )
-    )
-    |> Ecto.Multi.update(
-      :staff,
-      fn %{user: user} ->
-        staff_attrs =
-          attrs
-          |> Map.get("staff")
-          |> Map.put("user_id", user.id)
-
-        Staff.changeset(user.staff, staff_attrs)
-      end
-    )
-    |> Repo.transaction()
   end
 
   @doc """

@@ -19,7 +19,6 @@ defmodule Safira.Accounts.Staff do
   def changeset(staff, attrs) do
     staff
     |> cast(attrs, @required_fields ++ @optional_fields)
-    # |> cast_assoc(:user, with: &User.registration_changeset/2)
     |> validate_required(@required_fields)
   end
 end

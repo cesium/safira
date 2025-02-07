@@ -22,7 +22,12 @@ defmodule SafiraWeb.Backoffice.StaffLive.FormComponent do
             <div class="w-full space-y-2">
               <.field field={@form[:name]} type="text" label="Name" required />
               <.field field={@form[:email]} type="email" label="Email" required />
-              <.field field={@form[:password]} type="password" label="Password" required />
+              <.field
+                field={@form[:password]}
+                type="password"
+                label="Password"
+                required={@action == :new}
+              />
               <.field field={@form[:handle]} type="text" label="Handle" required />
               <.inputs_for :let={u} field={@form[:staff]}>
                 <.field field={u[:role_id]} type="select" label="Role" options={@roles} required />

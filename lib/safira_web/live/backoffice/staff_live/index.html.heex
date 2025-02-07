@@ -1,4 +1,4 @@
-<.page title="Staffs">
+<.page title={gettext("Staffs")}>
   <:actions>
     <div class="flex flex-row gap-x-4">
       <.table_search
@@ -66,6 +66,7 @@
   </div>
 </.page>
 
+
 <.modal
   :if={@live_action in [:new, :edit]}
   id="staff-modal"
@@ -78,13 +79,12 @@
     title="Edit Staff"
     action={@live_action}
     patch={~p"/dashboard/staffs"}
-    title={@page_title}
     current_user={@current_user}
-    action={@live_action}
     user={@user}
     roles={@roles}
   />
 </.modal>
+
 
 <.modal
   :if={@live_action in [:roles]}
@@ -115,3 +115,4 @@
     patch={~p"/dashboard/staffs"}
   />
 </.modal>
+
