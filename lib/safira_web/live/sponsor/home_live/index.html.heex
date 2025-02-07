@@ -1,16 +1,20 @@
 <.page title={gettext("Visitors")}>
-  <div>
-    <.table_search
-      id="visitor-table-name-search"
-      params={@params}
-      field={:name}
-      path={~p"/sponsor/"}
-      placeholder={gettext("Search by name")}
-    />
-    <.simple_form :if={@all_enabled} for={@form} phx-change="validate">
-      <.field field={@form[:all]} type="switch" label="Include non visitors" />
-    </.simple_form>
-  </div>
+  <:actions>
+    <div class="flex flex-row items-center gap-4">
+      <div class="">
+        <.table_search
+          id="visitor-table-name-search"
+          params={@params}
+          field={:name}
+          path={~p"/sponsor/"}
+          placeholder={gettext("Search by name")}
+        />
+      </div>
+      <.simple_form :if={@all_enabled} for={@form} phx-change="validate">
+        <.field field={@form[:all]} type="switch" label="All" wrapper_class="pb-2" />
+      </.simple_form>
+    </div>
+  </:actions>
   <ul id="visitors-list" class="grid grid-cols-2 md:grid-cols-4" phx-update="stream">
     <.attendee :for={{id, user} <- @streams.users} id={id} user={user} />
   </ul>

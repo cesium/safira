@@ -43,7 +43,7 @@ defmodule Safira.Repo.Seeds.Companies do
         "tier_id" => actual_tier.id
       }
 
-      case Companies.upsert_company_and_user(%Company{user: %User{}}, company_seed) do
+      case Companies.upsert_company_and_user(%Company{}, company_seed) do
         {:ok, _} -> :ok
         {:error, changeset} ->
           Mix.shell().error("Failed to insert company: #{company_seed.name}")

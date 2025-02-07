@@ -21,8 +21,8 @@ defmodule Safira.Companies.Company do
     ]
   }
 
-  @required_fields ~w(name tier_id user_id)a
-  @optional_fields ~w(badge_id url)a
+  @required_fields ~w(name tier_id)a
+  @optional_fields ~w(badge_id user_id url)a
 
   schema "companies" do
     field :name, :string

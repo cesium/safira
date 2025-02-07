@@ -88,7 +88,7 @@ defmodule Safira.Accounts.User do
   """
   def profile_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:name, :handle, :email])
+    |> cast(attrs, [:name, :handle, :email, :confirmed_at, :type])
     |> unique_constraint(:email)
     |> validate_handle()
     |> if_changed_password_changeset(attrs, opts)
@@ -98,9 +98,10 @@ defmodule Safira.Accounts.User do
     password = Map.get(attrs, "password")
     password_exists? = password != nil && String.trim(password) != ""
 
-    case password_exists? do
-      true -> password_changeset(changeset, attrs, opts)
-      false -> changeset
+    if password_exists? do
+      password_changeset(changeset, attrs, opts)
+    else
+      changeset
     end
   end
 
