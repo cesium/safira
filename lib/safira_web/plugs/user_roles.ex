@@ -70,6 +70,10 @@ defmodule SafiraWeb.UserRoles do
     require_user_type(conn, :staff)
   end
 
+  def require_company_user(conn, _opts) do
+    require_user_type(conn, :company)
+  end
+
   defp require_user_type(conn, type) do
     if conn.assigns[:current_user].type == type do
       conn

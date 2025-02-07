@@ -29,6 +29,19 @@ defmodule SafiraWeb.Backoffice.CompanyLive.FormComponent do
           <div class="grid grid-cols-2">
             <.field field={@form[:name]} type="text" label="Name" wrapper_class="pr-2" required />
             <.field field={@form[:url]} type="text" label="URL" wrapper_class="" />
+            <.inputs_for :let={user} field={@form[:user]}>
+              <.field field={user[:email]} type="email" label="Email" wrapper_class="pr-2" required />
+              <.field
+                field={user[:password]}
+                type="password"
+                label="Password"
+                wrapper_class=""
+                required={@action == :new}
+              />
+              <.field field={user[:handle]} type="text" label="Handle" wrapper_class="pr-2" required />
+              <.field field={user[:name]} type="text" label="User name" wrapper_class="" required />
+            </.inputs_for>
+
             <.field
               field={@form[:tier_id]}
               type="select"
@@ -83,6 +96,7 @@ defmodule SafiraWeb.Backoffice.CompanyLive.FormComponent do
     {:ok,
      socket
      |> assign(assigns)
+     |> assign(:company, company)
      |> assign_new(:form, fn ->
        to_form(Companies.change_company(company))
      end)}
@@ -95,33 +109,17 @@ defmodule SafiraWeb.Backoffice.CompanyLive.FormComponent do
   end
 
   def handle_event("save", %{"company" => company_params}, socket) do
-    save_company(socket, socket.assigns.action, company_params)
+    save_company(socket, company_params)
   end
 
-  defp save_company(socket, :edit, company_params) do
-    case Companies.update_company(socket.assigns.company, company_params) do
-      {:ok, company} ->
+  defp save_company(socket, company_params) do
+    case Companies.upsert_company_and_user(socket.assigns.company, company_params) do
+      {:ok, %{company: company}} ->
         case consume_image_data(company, socket) do
           {:ok, _company} ->
             {:noreply,
              socket
              |> put_flash(:info, "Company updated successfully")
-             |> push_patch(to: socket.assigns.patch)}
-        end
-
-      {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, form: to_form(changeset))}
-    end
-  end
-
-  defp save_company(socket, :new, company_params) do
-    case Companies.create_company(company_params) do
-      {:ok, company} ->
-        case consume_image_data(company, socket) do
-          {:ok, _company} ->
-            {:noreply,
-             socket
-             |> put_flash(:info, "Company created successfully")
              |> push_patch(to: socket.assigns.patch)}
         end
 
