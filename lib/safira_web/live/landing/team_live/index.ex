@@ -15,6 +15,9 @@ defmodule SafiraWeb.Landing.TeamLive.Index do
         %{team | team_members: Enum.sort_by(team.team_members, & &1.name)}
       end)
 
-    {:ok, assign(socket, teams: sorted_teams)}
+    {:ok,
+     socket
+     |> assign(teams: sorted_teams)
+     |> assign(:current_page, :team)}
   end
 end
