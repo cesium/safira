@@ -31,7 +31,6 @@ defmodule SafiraWeb.Components.Forms do
     time
     url
     week
-    lua
   )
 
   @doc """
@@ -176,33 +175,6 @@ defmodule SafiraWeb.Components.Forms do
         id={@id}
         name={@name}
         class={["safira-text-input", @class]}
-        rows={@rows}
-        required={@required}
-        {@rest}
-      ><%= Phoenix.HTML.Form.normalize_value("textarea", @value) %></textarea>
-
-      <.field_error :for={msg <- @errors}><%= msg %></.field_error>
-      <.field_help_text help_text={@help_text} />
-    </.field_wrapper>
-    """
-  end
-
-  def field(%{type: "lua"} = assigns) do
-    ~H"""
-    <.field_wrapper errors={@errors} name={@name} class={@wrapper_class}>
-      <.field_label required={@required} for={@id} class={@label_class}>
-        <%= @label %>
-      </.field_label>
-
-      <textarea
-        id={@id}
-        spellCheck={false}
-        autoComplete="off"
-        autoCorrect="off"
-        autoCapitalize="none"
-        spellcheck="false"
-        name={@name}
-        class={["safira-text-input safira-text-code", @class]}
         rows={@rows}
         required={@required}
         {@rest}
@@ -508,6 +480,8 @@ defmodule SafiraWeb.Components.Forms do
   attr :field, HTML.FormField,
     doc: "A form field struct retrieved from the form, for example: `@form[:email]`."
 
+  attr :mode, :atom, default: :single, doc: "The mode of the multi select."
+
   attr :rest, :global,
     include: ~w(value_mapper placeholder),
     doc: "Any other attribute to be added to the input."
@@ -525,7 +499,7 @@ defmodule SafiraWeb.Components.Forms do
 
       <.live_select
         id={assigns.id || @field.id}
-        mode={:tags}
+        mode={@mode}
         field={@field}
         phx-target={@target}
         container_class={"#{@wrapper_class}"}

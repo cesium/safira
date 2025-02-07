@@ -5,7 +5,7 @@ defmodule Safira.Activities do
 
   use Safira.Context
 
-  alias Safira.Activities.{Activity, ActivityCategory, Speaker}
+  alias Safira.Activities.{Activity, ActivityCategory, Enrolment, Speaker}
 
   @doc """
   Returns the list of activities.
@@ -68,7 +68,7 @@ defmodule Safira.Activities do
   def list_daily_activities(day) do
     Activity
     |> where([a], a.date == ^day)
-    |> order_by([a], a.time_start)
+    |> order_by([a], asc: a.time_start)
     |> preload([:speakers, :category])
     |> Repo.all()
   end
@@ -89,7 +89,7 @@ defmodule Safira.Activities do
   """
   def get_activity!(id) do
     Activity
-    |> preload(:speakers)
+    |> preload([:speakers, enrolments: [attendee: [:user]]])
     |> Repo.get!(id)
   end
 
@@ -308,6 +308,23 @@ defmodule Safira.Activities do
   end
 
   @doc """
+  Returns the list of daily speakers.
+
+  ## Examples
+    iex> list_daily_speakers(~D[2022-01-01])
+      [%Speaker{}, ...]
+  """
+  def list_daily_speakers(day) do
+    Activity
+    |> where([a], a.date == ^day)
+    |> order_by([a], asc: a.time_start)
+    |> join(:inner, [a], as in "activities_speakers", on: a.id == as.activity_id)
+    |> join(:inner, [a, as], s in Speaker, on: as.speaker_id == s.id)
+    |> select([a, as, s], %{speaker: s, activity: a})
+    |> Repo.all()
+  end
+
+  @doc """
   Gets a single speaker.
 
   Raises `Ecto.NoResultsError` if the Speaker does not exist.
@@ -420,5 +437,95 @@ defmodule Safira.Activities do
     |> apply_filters(opts)
     |> where([s], s.highlighted)
     |> Repo.all()
+    |> Repo.preload(:activities)
+  end
+
+  @doc """
+  Returns the list of enrolments of an attendee.
+
+  ## Examples
+
+      iex> get_attendee_enrolments(attendee_id)
+      [%Enrolment{}, ...]
+
+  """
+  def get_attendee_enrolments(attendee_id) do
+    Enrolment
+    |> where([e], e.attendee_id == ^attendee_id)
+    |> preload(:activity)
+    |> Repo.all()
+  end
+
+  @doc """
+  Enrols an attendee in an activity
+
+  ## Examples
+
+      iex> enrol(attendee_id, activity_id)
+      {:ok, %{enrolment: %Enrolment{}, activity: %Activity{}, new_activity: %Activity{}}}
+
+      iex> enrol(attendee_id, activity_id)
+      {:error, :struct, %Ecto.Changeset{}, %{}}
+  """
+  def enrol(attendee_id, activity_id) do
+    Ecto.Multi.new()
+    # We need to read the activity before updating the enrolment count to avoid
+    # a race condition where the enrolment count changes after the activity was last
+    # read from the database, and before this transaction began
+    |> Ecto.Multi.one(:activity, Activity |> where([a], a.id == ^activity_id))
+    |> Ecto.Multi.insert(
+      :enrolment,
+      Enrolment.changeset(
+        %Enrolment{},
+        %{
+          attendee_id: attendee_id,
+          activity_id: activity_id
+        }
+      )
+    )
+    |> Ecto.Multi.update(:new_activity, fn %{activity: act} ->
+      Activity.changeset(act, %{enrolment_count: act.enrolment_count + 1})
+    end)
+    |> Repo.transaction()
+  end
+
+  @doc """
+  Deletes an enrolment
+
+  ## Examples
+
+      iex> unenrol(attendee_id, activity_id)
+      {:ok, %{enrolment: %Enrolment{}, activity: %Activity{}, new_activity: %Activity{}}}
+
+      iex> unenrol(attendee_id, activity_id)
+      {:error, :struct, %Ecto.Changeset{}, %{}}
+  """
+  def unenrol(enrolment) do
+    Ecto.Multi.new()
+    # We need to read the activity before updating the enrolment count to avoid
+    # a race condition where the enrolment count changes after the activity was last
+    # read from the database, and before this transaction began
+    |> Ecto.Multi.one(:activity, Activity |> where([a], a.id == ^enrolment.activity_id))
+    |> Ecto.Multi.delete(
+      :enrolment,
+      enrolment
+    )
+    |> Ecto.Multi.update(:new_activity, fn %{activity: act} ->
+      Activity.changeset(act, %{enrolment_count: act.enrolment_count - 1})
+    end)
+    |> Repo.transaction()
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking enrolment changes.
+
+  ## Examples
+
+      iex> change_enrolment(enrolment)
+      %Ecto.Changeset{data: %Enrolment{}}
+
+  """
+  def change_enrolment(%Enrolment{} = enrolment, attrs \\ %{}) do
+    Enrolment.changeset(enrolment, attrs)
   end
 end

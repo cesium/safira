@@ -2,6 +2,7 @@ defmodule SafiraWeb.Landing.ChallengesLive.Index do
   @moduledoc false
 
   use SafiraWeb, :landing_view
+  import SafiraWeb.Components.Markdown
 
   on_mount {SafiraWeb.VerifyFeatureFlag, "challenges_enabled"}
 
@@ -10,7 +11,7 @@ defmodule SafiraWeb.Landing.ChallengesLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, socket}
+    {:ok, assign(socket, :current_page, :challenges)}
   end
 
   @impl true

@@ -10,7 +10,10 @@ defmodule SafiraWeb.Landing.Components.Speaker do
 
   def speaker(assigns) do
     ~H"""
-    <div class="text-white grayscale filter transition-all hover:text-accent hover:filter-none">
+    <a
+      href={speaker_link(@speaker)}
+      class="text-white grayscale filter transition-all hover:text-accent hover:filter-none"
+    >
       <img
         src={
           if @speaker.picture do
@@ -27,7 +30,17 @@ defmodule SafiraWeb.Landing.Components.Speaker do
       <p class="text-md font-terminal uppercase"><%= @speaker.name %></p>
       <p class="text-md max-w-[210px] font-iregular"><%= @speaker.title %></p>
       <p class="text-md max-w-[210px] font-iregular"><%= @speaker.company %></p>
-    </div>
+    </a>
     """
+  end
+
+  defp speaker_link(speaker) do
+    case Enum.at(speaker.activities, 0) do
+      nil ->
+        "/speakers"
+
+      activity ->
+        "/speakers?date=#{activity.date}&speaker_id=#{speaker.id}#sp-#{speaker.id}-#{activity.id}"
+    end
   end
 end

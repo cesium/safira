@@ -6,6 +6,7 @@ defmodule Safira.Accounts do
   use Safira.Context
 
   alias Safira.Accounts.{Attendee, Course, Credential, Staff, User, UserNotifier, UserToken}
+  alias Safira.Contest
 
   ## Database getters
 
@@ -630,6 +631,15 @@ defmodule Safira.Accounts do
     credential
     |> Credential.changeset(%{attendee_id: attendee.id})
     |> Repo.update()
+    |> case do
+      {:ok, _} = result ->
+        # If the credential is successfully linked to the attendee, trigger the badge event
+        Contest.enqueue_badge_trigger_execution_job(attendee, :link_credential_event)
+        result
+
+      {:error, _} = result ->
+        result
+    end
   end
 
   @doc """
@@ -715,6 +725,25 @@ defmodule Safira.Accounts do
     Credential
     |> where([c], c.attendee_id == ^attendee.id)
     |> Repo.one!()
+  end
+
+  @doc """
+  Gets a single attendee associated to the given credential.
+
+  ## Examples
+
+      iex> get_attendee_from_credential(123)
+      %Attendee{}
+
+      iex> get_attendee_from_credential(456)
+      nil
+  """
+  def get_attendee_from_credential(credential_id) do
+    Credential
+    |> where([c], c.id == ^credential_id)
+    |> join(:inner, [c], a in assoc(c, :attendee))
+    |> select([c, a], a)
+    |> Repo.one()
   end
 
   @doc """
@@ -827,5 +856,25 @@ defmodule Safira.Accounts do
     Credential
     |> where([c], c.attendee_id == ^attendee.id)
     |> Repo.one()
+  end
+
+  def generate_credentials(count) do
+    for _ <- 1..count do
+      {:ok, credential} = create_credential(%{})
+
+      phx_host =
+        if System.get_env("PHX_HOST") != nil do
+          "https://" <> System.get_env("PHX_HOST")
+        else
+          ""
+        end
+
+      png =
+        "#{phx_host}/attendee/#{credential.id}"
+        |> QRCodeEx.encode()
+        |> QRCodeEx.png()
+
+      {credential.id, [png]}
+    end
   end
 end

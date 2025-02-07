@@ -67,6 +67,7 @@ defmodule SafiraWeb.Backoffice.BadgeLive.CategoryLive.FormComponent do
     {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
   end
 
+  @impl true
   def handle_event("save", %{"badge_category" => category_params}, socket) do
     save_category(socket, socket.assigns.action, category_params)
   end

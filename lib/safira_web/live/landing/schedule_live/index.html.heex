@@ -13,13 +13,15 @@
     </h1>
   </div>
   <div class="mt-40">
-    <.schedule
+    <.live_component
+      id={:schedule}
+      module={SafiraWeb.Landing.Components.Schedule}
       event_start_date={@event_start_date}
       event_end_date={@event_end_date}
       url={~p"/schedule"}
-      params={@params}
       has_filters?={true}
-      descriptions_enabled={true}
+      params={@params}
+      current_user={@current_user}
     />
   </div>
 </div>

@@ -91,6 +91,12 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.Index do
     |> assign(:page_title, "Event Calendar Configuration")
   end
 
+  defp apply_action(socket, :enrolments, params) do
+    socket
+    |> assign(:page_title, "Enrolments")
+    |> assign(:activity, Activities.get_activity!(params["id"]))
+  end
+
   defp apply_action(socket, :speakers, params) do
     case Activities.list_speakers(params) do
       {:ok, {speakers, meta}} ->

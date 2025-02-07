@@ -18,6 +18,15 @@
       link_inactive_class="hover:bg-primary-500/10 text-light"
     />
     <div class="flex flex-col flex-1 overflow-hidden">
+      <.banner
+        :if={@current_spotlight}
+        text={
+          gettext("%{company_name} is on spotlight!",
+            company_name: @current_spotlight.company.name
+          )
+        }
+        end_time={@current_spotlight.end}
+      />
       <div
         :if={Map.get(assigns, :event_started, true)}
         class="flex justify-end lg:hidden px-4 sm:px-6 py-2"

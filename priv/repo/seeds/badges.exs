@@ -1,5 +1,6 @@
 defmodule Safira.Repo.Seeds.Badges do
   alias Safira.Contest
+  alias Safira.Accounts.{Attendee, Staff}
   alias Safira.Contest.{Badge, BadgeCategory}
   alias Safira.Repo
 
@@ -46,6 +47,8 @@ defmodule Safira.Repo.Seeds.Badges do
     category = Repo.one(BadgeCategory, name: "General")
     {:ok, begin_time} = DateTime.from_unix(:erlang.system_time(:second))
     {:ok, end_time} = DateTime.from_unix(:erlang.system_time(:second) + 400_000)
+    attendees = Repo.all(Attendee)
+    staffs = Repo.all(Staff)
 
     for {badge, i} <- Enum.with_index(@badges) do
       {name, description} = {Enum.at(badge, 0), Enum.at(badge, 1)}
@@ -54,6 +57,7 @@ defmodule Safira.Repo.Seeds.Badges do
         name: name,
         description: description,
         tokens: :rand.uniform(999),
+        entries: 0,
         begin: begin_time,
         end: end_time,
         category_id: category.id
@@ -62,7 +66,16 @@ defmodule Safira.Repo.Seeds.Badges do
       changeset = Badge.changeset(%Badge{}, badge_seed)
 
       case Repo.insert(changeset) do
-        {:ok, _} -> :ok
+        {:ok, badge} ->
+          for _ <- 1..10 do
+            Contest.create_badge_redeem(%{
+              badge_id: badge.id,
+              attendee_id: Enum.random(attendees).id,
+              redeemed_by_id: Enum.random(staffs).id
+            })
+          end
+
+          :ok
         {:error, changeset} ->
           Mix.shell().error("Failed to insert badge: #{name}")
           Mix.shell().error(Kernel.inspect(changeset.errors))

@@ -6,7 +6,18 @@ defmodule Safira.Contest do
 
   alias Ecto.Multi
   alias Safira.Accounts.Attendee
-  alias Safira.Contest.{Badge, BadgeCategory, BadgeCondition, DailyTokens}
+  alias Safira.{Companies, Spotlights, Workers}
+
+  alias Safira.Contest.{
+    Badge,
+    BadgeCategory,
+    BadgeCondition,
+    BadgeRedeem,
+    BadgeTrigger,
+    DailyTokens
+  }
+
+  @pubsub Safira.PubSub
 
   @doc """
   Gets a single badge.
@@ -22,7 +33,11 @@ defmodule Safira.Contest do
       ** (Ecto.NoResultsError)
 
   """
-  def get_badge!(id), do: Repo.get!(Badge, id)
+  def get_badge!(id) do
+    Badge
+    |> preload(:category)
+    |> Repo.get!(id)
+  end
 
   @doc """
   Lists all badges.
@@ -53,6 +68,146 @@ defmodule Safira.Contest do
     Badge
     |> apply_filters(opts)
     |> Flop.validate_and_run(params, for: Badge)
+  end
+
+  @doc """
+  Lists all badges belonging to an attendee.
+
+  ## Examples
+
+      iex> list_attendee_badges(123)
+      [%Badge{}, %Badge{}]
+
+  """
+  def list_attendee_badges(attendee_id) do
+    Badge
+    |> join(:inner, [b], br in BadgeRedeem, on: b.id == br.badge_id)
+    |> where([b, br], br.attendee_id == ^attendee_id)
+    |> select([b], b)
+    |> Repo.all()
+  end
+
+  @doc """
+  Lists all badge redeems belonging to an attendee.
+
+  ## Examples
+
+      iex> list_attendee_redeems(123)
+      [%BadgeRedeem{}, %BadgeRedeem{}]
+
+  """
+  def list_attendee_redeems(attendee_id) do
+    BadgeRedeem
+    |> where([br], br.attendee_id == ^attendee_id)
+    |> preload([:badge])
+    |> Repo.all()
+  end
+
+  @doc """
+  Lists all badge redeems belonging to a badge.
+
+  ## Examples
+
+      iex> list_badge_redeems(123)
+      [%BadgeRedeem{}, %BadgeRedeem{}]
+
+  """
+  def list_badge_redeems(badge_id, opts \\ []) do
+    BadgeRedeem
+    |> where([br], br.badge_id == ^badge_id)
+    |> preload(attendee: [:user])
+    |> apply_filters(opts)
+    |> Repo.all()
+  end
+
+  @doc """
+  Counts the number of badge redeems for a badge.
+
+  ## Examples
+
+      iex> count_badge_redeems(123)
+      5
+  """
+  def count_badge_redeems(badge_id) do
+    BadgeRedeem
+    |> where([br], br.badge_id == ^badge_id)
+    |> Repo.aggregate(:count, :id)
+  end
+
+  @doc """
+  Lists all badges with their respective redeem status associated with an attendee odered by redeemed date.
+
+  ## Examples
+
+      iex> list_attendee_all_badges_redeem_status(123)
+      [%Badge{}, %Badge{}]
+  """
+  def list_attendee_all_badges_redeem_status(attendee_id, only_owned \\ false) do
+    all_badges = Repo.all(from b in Badge, preload: [:category])
+
+    redeems =
+      BadgeRedeem
+      |> where([br], br.attendee_id == ^attendee_id)
+      |> select([br], {br.badge_id, br.inserted_at})
+      |> Repo.all()
+      |> Map.new()
+
+    Enum.map(all_badges, fn badge ->
+      Map.put(badge, :redeemed_at, Map.get(redeems, badge.id, nil))
+    end)
+    |> Enum.sort(&(&1.redeemed_at > &2.redeemed_at))
+    |> Enum.filter(fn badge ->
+      !only_owned or badge.redeemed_at != nil
+    end)
+  end
+
+  @doc """
+  Lists all badges that can currently be redeemed.
+
+  ## Examples
+
+      iex> list_available_badges()
+      [%Badge{}, %Badge{}]
+
+  """
+  def list_available_badges do
+    Badge
+    |> where([b], b.begin <= ^DateTime.utc_now() and b.end >= ^DateTime.utc_now() and b.givable)
+    |> Repo.all()
+  end
+
+  def list_available_badges(opts) when is_list(opts) do
+    Badge
+    |> where([b], b.begin <= ^DateTime.utc_now() and b.end >= ^DateTime.utc_now() and b.givable)
+    |> Repo.all()
+  end
+
+  def list_available_badges(params) do
+    Badge
+    |> where([b], b.begin <= ^DateTime.utc_now() and b.end >= ^DateTime.utc_now() and b.givable)
+    |> Flop.validate_and_run(params, for: Badge)
+  end
+
+  def list_available_badges(%{} = params, opts) when is_list(opts) do
+    Badge
+    |> apply_filters(opts)
+    |> where([b], b.begin <= ^DateTime.utc_now() and b.end >= ^DateTime.utc_now() and b.givable)
+    |> Flop.validate_and_run(params, for: Badge)
+  end
+
+  @doc """
+  Checks if an attendee owns a badge.
+
+  ## Examples
+
+      iex> attendee_owns_badge?(123, 456)
+      true
+
+  """
+  def attendee_owns_badge?(attendee_id, badge_id) do
+    BadgeRedeem
+    |> where([br], br.attendee_id == ^attendee_id and br.badge_id == ^badge_id)
+    |> Repo.exists?()
   end
 
   @doc """
@@ -133,6 +288,22 @@ defmodule Safira.Contest do
   """
   def delete_badge(%Badge{} = badge) do
     Repo.delete(badge)
+  end
+
+  @doc """
+  Gets the company associated with a badge.
+
+  ## Examples
+
+      iex> get_badge_company(badge)
+      %Company{}
+
+  """
+  def get_badge_company(badge) do
+    Companies.Company
+    |> where([c], c.badge_id == ^badge.id)
+    |> preload(:tier)
+    |> Repo.one()
   end
 
   @doc """
@@ -310,11 +481,76 @@ defmodule Safira.Contest do
   end
 
   @doc """
+  Deletes a badge condition.
+
+  ## Examples
+
+      iex> delete_condition(condition)
+      {:ok, %BadgeCondition{}}
+
+  """
+  def delete_condition(%BadgeCondition{} = condition) do
+    Repo.delete(condition)
+  end
+
+  @doc """
   Changes the attendee token balance and updates the daily tokens.
   """
   def change_attendee_tokens(attendee, tokens) do
     change_attendee_tokens_transaction(attendee, tokens)
     |> Repo.transaction()
+  end
+
+  @doc """
+  Gets the attendee token balance.
+
+  ## Examples
+
+      iex> get_attendee_tokens(attendee)
+      100
+  """
+  def get_attendee_tokens(attendee) do
+    Repo.one(from a in Attendee, where: a.id == ^attendee.id, select: a.tokens)
+  end
+
+  @doc """
+  Gets the count of redeemed badges for an attendee.
+
+  ## Examples
+
+      iex> get_attendee_redeemed_badges_count(attendee, category)
+      5
+  """
+  def get_attendee_redeemed_badges_count(attendee, nil) do
+    BadgeRedeem
+    |> where([br], br.attendee_id == ^attendee.id)
+    |> Repo.aggregate(:count, :id)
+  end
+
+  def get_attendee_redeemed_badges_count(attendee, category) do
+    BadgeRedeem
+    |> where([br], br.attendee_id == ^attendee.id)
+    |> join(:inner, [br], b in Badge, on: br.badge_id == b.id)
+    |> where([br, b], b.category_id == ^category.id)
+    |> Repo.aggregate(:count, :id)
+  end
+
+  @doc """
+  Gets the count of badges for a category.
+
+  ## Examples
+
+      iex> get_category_badges_count(category)
+      5
+  """
+  def get_category_badges_count(nil) do
+    Repo.aggregate(Badge, :count, :id)
+  end
+
+  def get_category_badges_count(category) do
+    Badge
+    |> where([b], b.category_id == ^category.id)
+    |> Repo.aggregate(:count, :id)
   end
 
   @doc """
@@ -343,5 +579,366 @@ defmodule Safira.Contest do
     |> Multi.insert_or_update(daily_tokens_update_operation_name, fn changes ->
       DailyTokens.changeset(Map.get(changes, daily_tokens_fetch_operation_name), %{tokens: tokens})
     end)
+  end
+
+  @doc """
+  Returns the list of badge_redeems.
+
+  ## Examples
+
+      iex> list_badge_redeems()
+      [%BadgeRedeem{}, ...]
+
+  """
+  def list_badge_redeems do
+    Repo.all(BadgeRedeem)
+  end
+
+  @doc """
+  Gets a single badge_redeem.
+
+  Raises `Ecto.NoResultsError` if the Badge redeem does not exist.
+
+  ## Examples
+
+      iex> get_badge_redeem!(123)
+      %BadgeRedeem{}
+
+      iex> get_badge_redeem!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_badge_redeem!(id, opts \\ []) do
+    BadgeRedeem
+    |> apply_filters(opts)
+    |> Repo.get!(id)
+  end
+
+  @doc """
+  Creates a badge_redeem.
+
+  ## Examples
+
+      iex> create_badge_redeem(%{field: value})
+      {:ok, %BadgeRedeem{}}
+
+      iex> create_badge_redeem(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_badge_redeem(attrs \\ %{}) do
+    %BadgeRedeem{}
+    |> BadgeRedeem.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a badge_redeem.
+
+  ## Examples
+
+      iex> update_badge_redeem(badge_redeem, %{field: new_value})
+      {:ok, %BadgeRedeem{}}
+
+      iex> update_badge_redeem(badge_redeem, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_badge_redeem(%BadgeRedeem{} = badge_redeem, attrs) do
+    badge_redeem
+    |> BadgeRedeem.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a badge_redeem.
+
+  ## Examples
+
+      iex> delete_badge_redeem(badge_redeem)
+      {:ok, %BadgeRedeem{}}
+
+      iex> delete_badge_redeem(badge_redeem)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_badge_redeem(%BadgeRedeem{} = badge_redeem) do
+    Repo.delete(badge_redeem)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking badge_redeem changes.
+
+  ## Examples
+
+      iex> change_badge_redeem(badge_redeem)
+      %Ecto.Changeset{data: %BadgeRedeem{}}
+
+  """
+  def change_badge_redeem(%BadgeRedeem{} = badge_redeem, attrs \\ %{}) do
+    BadgeRedeem.changeset(badge_redeem, attrs)
+  end
+
+  @doc """
+  Redeems a badge for an attendee and broadcasts the action.
+
+  ## Examples
+
+      iex> redeem_badge(badge, attendee, staff)
+      {:ok, %Attendee{}}
+
+  """
+  def redeem_badge(badge, attendee, staff \\ nil) do
+    result =
+      redeem_badge_transaction(badge, attendee, staff)
+      # Run the transaction
+      |> Repo.transaction()
+
+    case result do
+      {:ok, %{redeem: redeem}} ->
+        broadcast_attendee_redeems_update(redeem.id)
+
+        # Enqueue job to check conditions
+        enqueue_badge_conditions_validation_job(attendee, badge)
+
+        {:ok, redeem}
+
+      {:error, :redeem, _, _} ->
+        {:error, "attendee already has this badge"}
+
+      {:error, _, _, _} ->
+        {:error, "could not redeem badge"}
+    end
+  end
+
+  @doc """
+  Transaction for a badge redeem.
+
+  ## Examples
+
+      iex> redeem_badge_transaction(badge, attendee, staff)
+      %Ecto.Multi{}
+
+  """
+  def redeem_badge_transaction(badge, attendee, staff \\ nil) do
+    Multi.new()
+    # Insert the badge redeem
+    |> Multi.insert(
+      :redeem,
+      BadgeRedeem.changeset(%BadgeRedeem{}, %{
+        badge_id: badge.id,
+        attendee_id: attendee.id,
+        redeemed_by_id: if(staff, do: staff.id, else: nil)
+      })
+    )
+    # Verify if badge is associated with a company and it is on spotlight (if true multiply tokens).
+    |> Multi.run(:badge_tokens, fn _repo, _changes ->
+      company = get_badge_company(badge)
+
+      if company && Spotlights.company_on_spotlight?(company.id) do
+        # If the the badge being redeemed is on spotlight, trigger the spotlight badge redem event
+        enqueue_badge_trigger_execution_job(attendee, :redeem_spotlighted_badge_event)
+        {:ok, floor(badge.tokens * company.tier.spotlight_multiplier)}
+      else
+        {:ok, badge.tokens}
+      end
+    end)
+    # Update the attendee token balance (including daily tokens)
+    |> Multi.merge(fn %{redeem: _redeem, badge_tokens: tokens} ->
+      change_attendee_tokens_transaction(
+        attendee,
+        attendee.tokens + tokens,
+        :redeem_attendee_update_tokens,
+        :redeem_daily_tokens_fetch,
+        :redeem_daily_tokens_update
+      )
+    end)
+    # Update final draw entries
+    |> Multi.update(
+      :attendee_update_entries,
+      Attendee.changeset(attendee, %{entries: attendee.entries + badge.entries})
+    )
+  end
+
+  @doc """
+  Subscribes the caller to the specific attendee's badge redeems updates.
+
+  ## Examples
+
+      iex> subscribe_to_attendee_redeems_update(attendee_id)
+      :ok
+  """
+  def subscribe_to_attendee_redeems_update(attendee_id) do
+    Phoenix.PubSub.subscribe(@pubsub, topic(attendee_id))
+  end
+
+  defp topic(attendee_id), do: "attendee:redeems:#{attendee_id}"
+
+  defp broadcast_attendee_redeems_update(redeem_id) do
+    redeem = get_badge_redeem!(redeem_id)
+
+    Phoenix.PubSub.broadcast(
+      @pubsub,
+      topic(redeem.attendee_id),
+      Map.put(redeem, :badge, get_badge!(redeem.badge_id))
+    )
+  end
+
+  defp enqueue_badge_conditions_validation_job(attendee, badge) do
+    # Enqueue job to check conditions
+    Oban.insert(Workers.CheckBadgeConditions.new(%{attendee_id: attendee.id, badge_id: badge.id}))
+  end
+
+  @doc """
+  Lists all currently valid badge conditions for a category.
+
+  ## Examples
+
+      iex> list_valid_badge_conditions(category)
+      [%BadgeCondition{}, %BadgeCondition{}]
+  """
+  def list_valid_badge_conditions(category) do
+    BadgeCondition
+    |> where([c], c.category_id == ^category.id or is_nil(c.category_id))
+    |> where([c], c.begin <= ^DateTime.utc_now() and c.end >= ^DateTime.utc_now())
+    |> preload([:category, :badge])
+    |> Repo.all()
+  end
+
+  @doc """
+  Returns the list of badge_triggers.
+
+  ## Examples
+
+      iex> list_badge_triggers()
+      [%BadgeTrigger{}, ...]
+
+  """
+  def list_badge_triggers do
+    Repo.all(BadgeTrigger)
+  end
+
+  @doc """
+  Gets a single badge_trigger.
+
+  Raises `Ecto.NoResultsError` if the Badge trigger does not exist.
+
+  ## Examples
+
+      iex> get_badge_trigger!(123)
+      %BadgeTrigger{}
+
+      iex> get_badge_trigger!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_badge_trigger!(id), do: Repo.get!(BadgeTrigger, id)
+
+  @doc """
+  Creates a badge_trigger.
+
+  ## Examples
+
+      iex> create_badge_trigger(%{field: value})
+      {:ok, %BadgeTrigger{}}
+
+      iex> create_badge_trigger(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_badge_trigger(attrs \\ %{}) do
+    %BadgeTrigger{}
+    |> BadgeTrigger.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a badge_trigger.
+
+  ## Examples
+
+      iex> update_badge_trigger(badge_trigger, %{field: new_value})
+      {:ok, %BadgeTrigger{}}
+
+      iex> update_badge_trigger(badge_trigger, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_badge_trigger(%BadgeTrigger{} = badge_trigger, attrs) do
+    badge_trigger
+    |> BadgeTrigger.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a badge_trigger.
+
+  ## Examples
+
+      iex> delete_badge_trigger(badge_trigger)
+      {:ok, %BadgeTrigger{}}
+
+      iex> delete_badge_trigger(badge_trigger)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_badge_trigger(%BadgeTrigger{} = badge_trigger) do
+    Repo.delete(badge_trigger)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking badge_trigger changes.
+
+  ## Examples
+
+      iex> change_badge_trigger(badge_trigger)
+      %Ecto.Changeset{data: %BadgeTrigger{}}
+
+  """
+  def change_badge_trigger(%BadgeTrigger{} = badge_trigger, attrs \\ %{}) do
+    BadgeTrigger.changeset(badge_trigger, attrs)
+  end
+
+  @doc """
+  Lists all triggers belonging to a badge.
+
+  ## Examples
+
+      iex> list_badge_triggers(123)
+      [%BadgeTrigger{}, %BadgeTrigger{}]
+
+  """
+  def list_badge_triggers(badge_id) do
+    BadgeTrigger
+    |> where([bt], bt.badge_id == ^badge_id)
+    |> Repo.all()
+  end
+
+  @doc """
+  Lists all triggers belonging to an event.
+
+  ## Examples
+
+      iex> list_event_badge_triggers(:upload_cv_event)
+      [%BadgeTrigger{}, %BadgeTrigger{}]
+
+  """
+  def list_event_badge_triggers(event) do
+    BadgeTrigger
+    |> where([bt], bt.event == ^event)
+    |> preload(:badge)
+    |> Repo.all()
+  end
+
+  @doc """
+  Enqueues a job to execute the badge triggers for an attendee and a specific event.
+
+  ## Examples
+
+      iex> enqueue_badge_trigger_execution_job(attendee, :upload_cv_event)
+      :ok
+  """
+  def enqueue_badge_trigger_execution_job(attendee, event) do
+    Oban.insert(Workers.RunBadgeTriggers.new(%{attendee_id: attendee.id, event: event}))
   end
 end

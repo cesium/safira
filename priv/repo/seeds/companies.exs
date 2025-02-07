@@ -18,15 +18,18 @@ defmodule Safira.Repo.Seeds.Companies do
       [
         %Tier{
           name: "Gold",
-          priority: 0
+          priority: 0,
+          spotlight_multiplier: 1.8
         },
         %Tier{
           name: "Silver",
-          priority: 1
+          priority: 1,
+          spotlight_multiplier: 1.5
         },
         %Tier{
           name: "Bronze",
-          priority: 2
+          priority: 2,
+          spotlight_multiplier: 1.0
         }
       ] |> Enum.map(&Repo.insert(&1))
 

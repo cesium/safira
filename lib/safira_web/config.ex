@@ -24,11 +24,11 @@ defmodule SafiraWeb.Config do
         url: "/challenges",
         feature_flag: "challenges_enabled"
       },
-      # %{
-      #  title: "Speakers",
-      #  url: "/speakers",
-      #  feature_flag: "speakers_enabled"
-      # },
+      %{
+        title: "Speakers",
+        url: "/speakers",
+        feature_flag: "speakers_enabled"
+      },
       %{
         title: "FAQs",
         url: "/faqs",
@@ -47,10 +47,10 @@ defmodule SafiraWeb.Config do
     if Event.event_started?() do
       [
         %{
-          key: :badgedex,
+          key: :badges,
           title: "Badgedex",
           icon: "hero-check-badge",
-          url: "/app/badgedex"
+          url: "/app/badges"
         },
         %{
           key: :wheel,
@@ -63,6 +63,12 @@ defmodule SafiraWeb.Config do
           title: "Coin Flip",
           icon: "hero-circle-stack",
           url: "/app/coin_flip"
+        },
+        %{
+          key: :slots,
+          title: "Slots",
+          icon: "hero-circle-stack",
+          url: "/app/slots"
         },
         %{
           key: :leaderboard,

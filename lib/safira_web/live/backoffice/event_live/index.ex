@@ -98,5 +98,9 @@ defmodule SafiraWeb.Backoffice.EventLive.Index do
         |> assign(:team, member.team)
         |> assign(:member, member)
     end
+
+  defp apply_action(socket, :credentials, _params) do
+    socket
+    |> assign(:page_title, "Generate Credentials")
   end
 end

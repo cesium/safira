@@ -59,8 +59,8 @@
         <% end %>
       </:col>
       <:action :let={{id, activity}}>
-        <.ensure_permissions user={@current_user} permissions={%{"schedule" => ["edit"]}}>
-          <div class="flex flex-row gap-2">
+        <div class="flex flex-row gap-2">
+          <.ensure_permissions user={@current_user} permissions={%{"schedule" => ["edit"]}}>
             <.link patch={~p"/dashboard/schedule/activities/#{activity.id}/edit"}>
               <.icon name="hero-pencil" class="w-5 h-5" />
             </.link>
@@ -70,8 +70,16 @@
             >
               <.icon name="hero-trash" class="w-5 h-5" />
             </.link>
-          </div>
-        </.ensure_permissions>
+          </.ensure_permissions>
+          <.ensure_permissions user={@current_user} permissions={%{"enrolments" => ["show"]}}>
+            <.link
+              :if={activity.has_enrolments}
+              patch={~p"/dashboard/schedule/activities/#{activity.id}/enrolments"}
+            >
+              <.icon name="hero-clipboard" class="w-5 h-5" />
+            </.link>
+          </.ensure_permissions>
+        </div>
       </:action>
     </.table>
   </div>
@@ -91,6 +99,23 @@
     action={@live_action}
     activity={@activity}
     categories={@categories}
+    patch={~p"/dashboard/schedule/activities"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:enrolments]}
+  id="enrolments-modal"
+  show
+  on_cancel={JS.navigate(~p"/dashboard/schedule/activities")}
+>
+  <.live_component
+    module={SafiraWeb.Backoffice.ScheduleLive.EnrolmentLive.FormComponent}
+    id={"enrolments-#{@activity.id}"}
+    title={@page_title}
+    current_user={@current_user}
+    action={@live_action}
+    activity={@activity}
     patch={~p"/dashboard/schedule/activities"}
   />
 </.modal>

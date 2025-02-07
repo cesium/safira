@@ -48,7 +48,7 @@ defmodule SafiraWeb.App.WaitingLive.Index do
       {:ok,
        socket
        |> assign(:event_started, false)
-       |> push_event("highlight", %{start_time: Event.get_event_start_time!()})}
+       |> push_event("start-countdown", %{end_time: Event.get_event_start_time!()})}
     end
   end
 
@@ -56,6 +56,6 @@ defmodule SafiraWeb.App.WaitingLive.Index do
   def handle_info({"start_time", value}, socket) do
     {:noreply,
      socket
-     |> push_event("highlight", %{start_time: value})}
+     |> push_event("start-countdown", %{end_time: value})}
   end
 end
