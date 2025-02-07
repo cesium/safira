@@ -17,6 +17,7 @@ defmodule Safira.Teams do
   """
   def list_teams(opts \\ []) when is_list(opts) do
     Team
+    |> order_by(:priority)
     |> apply_filters(opts)
     |> Repo.all()
   end
@@ -124,7 +125,10 @@ defmodule Safira.Teams do
 
   """
   def list_team_members(team_id \\ nil) do
-    members = Repo.all(TeamMember)
+    members =
+      TeamMember
+      |> order_by(:name)
+      |> Repo.all()
 
     case team_id do
       nil ->

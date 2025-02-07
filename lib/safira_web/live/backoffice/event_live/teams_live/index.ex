@@ -54,14 +54,16 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.Index do
 
   @impl true
   def mount(socket) do
-    {:ok, socket |> stream(:teams, Teams.list_teams(preloads: [:team_members]))}
+    {:ok,
+     socket
+     |> stream(:teams, Teams.list_teams(preloads: [:team_members]))}
   end
 
   @impl true
   def handle_event("update-sorting", %{"ids" => ids}, socket) do
     ids
     |> Enum.with_index(0)
-    |> Enum.each(fn {id, index} ->
+    |> Enum.each(fn {"teams-" <> id, index} ->
       id
       |> Teams.get_team!()
       |> Teams.update_team(%{priority: index})

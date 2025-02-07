@@ -8,6 +8,13 @@ defmodule SafiraWeb.Landing.TeamLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, teams: Teams.list_teams(preloads: [:team_members]))}
+    teams = Teams.list_teams(preloads: [:team_members])
+
+    sorted_teams =
+      Enum.map(teams, fn team ->
+        %{team | team_members: Enum.sort_by(team.team_members, & &1.name)}
+      end)
+
+    {:ok, assign(socket, teams: sorted_teams)}
   end
 end
