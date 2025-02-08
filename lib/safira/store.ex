@@ -43,11 +43,6 @@ defmodule Safira.Store do
   @doc """
   Lists purchases with optional filters.
 
-  ## Parameters
-
-    - `params`: A map containing the parameters for listing purchases.
-    - `opts`: (Optional) A list of filters to apply to the query.
-
   ## Examples
 
       iex> list_purchases(%{"page" => 1, "page_size" => 10})
