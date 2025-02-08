@@ -145,6 +145,7 @@ defmodule SafiraWeb.Router do
         pipe_through :require_company_user
 
         live "/", HomeLive.Index, :index
+        live "/scanner", ScannerLive.Index, :index
       end
 
       scope "/dashboard", Backoffice do

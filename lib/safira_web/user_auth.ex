@@ -20,7 +20,7 @@ defmodule SafiraWeb.UserAuth do
   @redirect_after_login_paths %{
     attendee: "/app/",
     staff: "/dashboard/attendees",
-    company: "/sponsor"
+    company: "/sponsor/scanner"
   }
 
   @doc """
