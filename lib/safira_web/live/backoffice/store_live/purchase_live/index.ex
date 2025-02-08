@@ -8,6 +8,11 @@ defmodule SafiraWeb.Backoffice.ProductLive.PurchaseLive.Index do
   import SafiraWeb.Components.Table
   import SafiraWeb.Components.TableSearch
 
+  on_mount {SafiraWeb.StaffRoles,
+            show: %{"purchases" => ["show"]},
+            redeem: %{"purchases" => ["redeem"]},
+            refund: %{"purchases" => ["refund"]}}
+
   @impl true
   def mount(_params, _session, socket) do
     {:ok, socket}
@@ -35,15 +40,15 @@ defmodule SafiraWeb.Backoffice.ProductLive.PurchaseLive.Index do
     |> assign(:page_title, "Purchases")
   end
 
-  def apply_action(socket, :redeemed, %{"id" => id}) do
+  def apply_action(socket, :redeem, %{"id" => id}) do
     socket
-    |> assign(:page_title, "Redeemed Purchase")
+    |> assign(:page_title, "Redeem Purchase")
     |> assign(:item, Inventory.get_item!(id))
   end
 
-  def apply_action(socket, :return, %{"id" => id}) do
+  def apply_action(socket, :refund, %{"id" => id}) do
     socket
-    |> assign(:page_title, "Return Purchase")
+    |> assign(:page_title, "Refund Purchase")
     |> assign(:item, Inventory.get_item!(id))
   end
 end

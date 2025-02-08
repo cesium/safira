@@ -11,7 +11,7 @@ defmodule SafiraWeb.Backoffice.ProductLive.Index do
             index: %{"products" => ["show"]},
             new: %{"products" => ["edit"]},
             edit: %{"products" => ["edit"]},
-            show: %{"products" => ["view"]}}
+            show: %{"products" => ["show"]}}
 
   @impl true
   def mount(_params, _session, socket) do

@@ -89,26 +89,19 @@ defmodule Safira.Store do
     |> Repo.insert()
   end
 
-  def create_refund_transaction(item_id) do
+  def refund_transaction(item_id) do
     Multi.new()
     |> Multi.run(:get_item, fn _repo, _changes ->
       item = Inventory.get_item!(item_id)
       {:ok, item}
     end)
-    |> Multi.run(:update_product, fn _repo, %{get_item: item} ->
-      product_changeset =
-        item.product
-        |> Store.Product.changeset(%{stock: item.product.stock + 1})
-
-      case Repo.update(product_changeset) do
-        {:ok, product} -> {:ok, product}
-        {:error, changeset} -> {:error, changeset}
-      end
+    |> Multi.update(:update_product, fn %{get_item: item} ->
+      Store.Product.changeset(item.product, %{stock: item.product.stock + 1})
     end)
-    |> Multi.run(:delete_item, fn _repo, %{get_item: item} ->
-      Inventory.delete_item(item)
+    |> Multi.delete(:delete_item, fn %{get_item: item} ->
+      item
     end)
-    |> Multi.run(:update_attendee_tokens, fn _repo, %{get_item: item} ->
+    |> Multi.update(:update_attendee_tokens, fn _repo, %{get_item: item} ->
       Contest.change_attendee_tokens(item.attendee, item.attendee.tokens + item.product.price)
     end)
     |> Repo.transaction()

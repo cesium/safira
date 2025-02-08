@@ -10,15 +10,15 @@ defmodule SafiraWeb.Backoffice.ProductLive.PurchaseLive.FormComponent do
     <div>
       <.page title={@title}>
         <div class="flex flex-col">
-          <p class="text-center text-2xl mb-4 ml-12">Are you sure?</p>
+          <p class="text-center text-2xl mb-4">Are you sure?</p>
           <p class="text-center pb-6">
             <%= gettext(
               "Are you sure you want to %{title} this purchase?",
               title:
-                if @title == "Redeemed Purchase" do
+                if @title == "Redeem Purchase" do
                   "redeem"
                 else
-                  "return"
+                  "refund"
                 end
             ) %>
           </p>
@@ -26,13 +26,13 @@ defmodule SafiraWeb.Backoffice.ProductLive.PurchaseLive.FormComponent do
             <.button phx-click="cancel" class="w-full" phx-target={@myself} type="button">
               Cancel
             </.button>
-            <%= if @title == "Redeemed Purchase" do %>
+            <%= if @title == "Redeem Purchase" do %>
               <.button phx-click="confirm-redemed" class="w-full" phx-target={@myself} type="button">
                 Redeem
               </.button>
             <% else %>
-              <.button phx-click="confirm-return" class="w-full" phx-target={@myself} type="button">
-                Return
+              <.button phx-click="confirm-refund" class="w-full" phx-target={@myself} type="button">
+                Refund
               </.button>
             <% end %>
           </div>
@@ -53,12 +53,15 @@ defmodule SafiraWeb.Backoffice.ProductLive.PurchaseLive.FormComponent do
     end
   end
 
-  def handle_event("confirm-return", _params, socket) do
+  def handle_event("confirm-refund", _params, socket) do
     id = socket.assigns.item.id
 
-    case Store.create_refund_transaction(id) do
+    case Store.refund_transaction(id) do
       {:ok, _} ->
-        {:noreply, socket |> push_patch(to: socket.assigns.patch)}
+        {:noreply,
+         socket
+         |> put_flash(:info, "This purchase was successfully refunded.")
+         |> push_patch(to: ~p"/dashboard/store/products/purchases")}
 
       {:error, _} ->
         {:noreply, socket}
