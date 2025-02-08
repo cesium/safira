@@ -41,19 +41,13 @@ defmodule Safira.Release do
       end
 
     # Create user
-    case Safira.Accounts.register_staff_user(%{
-           name: name,
-           email: email,
-           password: password,
-           handle: handle
-         }) do
-      {:ok, user} ->
-        # Assign role to user
-        Safira.Accounts.create_staff(%{user_id: user.id, role_id: role.id})
-
-      {:error, changeset} ->
-        {:error, changeset}
-    end
+    Safira.Accounts.register_staff_user(%{
+      name: name,
+      email: email,
+      password: password,
+      handle: handle,
+      role_id: role.id
+    })
   end
 
   defp repos do
