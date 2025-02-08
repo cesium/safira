@@ -58,25 +58,22 @@ defmodule SafiraWeb.Sponsor.ScannerLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok,
-     socket
-     |> assign(:current_page, :scanner)
-     |> assign(:modal_data, nil)
-     |> assign(:given_list, [])}
-  end
-
-  @impl true
-  def handle_params(_params, _url, socket) do
     badge_id = socket.assigns.current_user.company.badge_id
 
     if is_nil(badge_id) do
-      {:noreply,
+      {:ok,
        socket
        |> put_flash(:error, "Company does not have badge")
        |> push_navigate(to: ~p"/sponsor")}
     else
       badge = Contest.get_badge!(badge_id)
-      {:noreply, socket |> assign(:badge, badge)}
+
+      {:ok,
+       socket
+       |> assign(:current_page, :scanner)
+       |> assign(:modal_data, nil)
+       |> assign(:badge, badge)
+       |> assign(:given_list, [])}
     end
   end
 
@@ -160,7 +157,4 @@ defmodule SafiraWeb.Sponsor.ScannerLive.Index do
     do: gettext("This credential is not linked to any attendee! (400)")
 
   defp error_message(:invalid), do: gettext("Not a valid credential! (400)")
-
-  defp error_message(:out_of_time),
-    do: gettext("This badge is not currently available for redemption! (400)")
 end
