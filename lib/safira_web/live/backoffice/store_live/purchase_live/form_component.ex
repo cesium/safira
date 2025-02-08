@@ -16,7 +16,7 @@ defmodule SafiraWeb.Backoffice.ProductLive.PurchaseLive.FormComponent do
               "Are you sure you want to %{title} this purchase?",
               title:
                 if @title == "Redeem Purchase" do
-                  "redeem"
+                  "deliver"
                 else
                   "refund"
                 end

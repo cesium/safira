@@ -40,6 +40,24 @@ defmodule Safira.Store do
     |> Flop.validate_and_run(params, for: Product)
   end
 
+  @doc """
+  Lists purchases with optional filters.
+
+  ## Parameters
+
+    - `params`: A map containing the parameters for listing purchases.
+    - `opts`: (Optional) A list of filters to apply to the query.
+
+  ## Examples
+
+      iex> list_purchases(%{"page" => 1, "page_size" => 10})
+      {:ok, [%Item{}, ...], %Flop.Meta{}}
+
+      iex> list_purchases(%{"page" => 1, "page_size" => 10}, [filter: %{field: :name, op: :==, value: "example"}])
+      {:ok, [%Item{}, ...], %Flop.Meta{}}
+
+  """
+
   def list_purchases(params) do
     Item
     |> join(:left, [i], p in assoc(i, :product), as: :product)
@@ -88,6 +106,19 @@ defmodule Safira.Store do
     |> Product.changeset(attrs)
     |> Repo.insert()
   end
+
+  @doc """
+  Refunds a transaction by updating the product stock, deleting the item, and updating the attendee's tokens.
+
+  ## Examples
+
+      iex> refund_transaction(item_id)
+      {:ok, %{get_item: %Item{}, update_product: %Product{}, delete_item: %Item{}, change_attendee_tokens_transaction: %Attendee{}}}
+
+      iex> refund_transaction(invalid_item_id)
+      {:error, reason}
+
+  """
 
   def refund_transaction(item_id) do
     Multi.new()
