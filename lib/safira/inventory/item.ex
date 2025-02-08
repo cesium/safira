@@ -7,7 +7,7 @@ defmodule Safira.Inventory.Item do
   @derive {
     Flop.Schema,
     filterable: [:product_name],
-    sortable: [:redeemed_at],
+    sortable: [:redeemed_at, :inserted_at],
     default_limit: 11,
     join_fields: [
       product_name: [

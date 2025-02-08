@@ -18,7 +18,7 @@
       <:col :let={{_id, item}} label="Product" field={:name}>
         <%= item.product.name %>
       </:col>
-      <:col :let={{_id, item}} sortable label="Purchased at" field={:purchased_at}>
+      <:col :let={{_id, item}} sortable label="Purchased at" field={:inserted_at}>
         <%= relative_datetime(item.inserted_at) %>
       </:col>
       <:col :let={{_id, item}} sortable label="Redeemed at" field={:redeemed_at}>
