@@ -6,7 +6,7 @@ defmodule Safira.Companies do
   use Safira.Context
 
   alias Safira.Accounts
-  alias Safira.Accounts.{Attendee, User}
+  alias Safira.Accounts.User
   alias Safira.Contest
   alias Safira.Companies.{Company, Tier}
   alias Safira.Spotlights.Spotlight
