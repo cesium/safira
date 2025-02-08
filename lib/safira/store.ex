@@ -89,7 +89,7 @@ defmodule Safira.Store do
     |> Repo.insert()
   end
 
-  def create_purchase_transaction(item_id) do
+  def create_refund_transaction(item_id) do
     Multi.new()
     |> Multi.run(:get_item, fn _repo, _changes ->
       item = Inventory.get_item!(item_id)

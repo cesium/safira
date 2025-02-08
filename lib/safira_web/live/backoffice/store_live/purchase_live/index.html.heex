@@ -19,10 +19,10 @@
         <%= item.product.name %>
       </:col>
       <:col :let={{_id, item}} sortable label="Purchased at" field={:purchased_at}>
-        <%= item.inserted_at %>
+        <%= relative_datetime(item.inserted_at) %>
       </:col>
       <:col :let={{_id, item}} sortable label="Redeemed at" field={:redeemed_at}>
-        <%= item.redeemed_at %>
+        <%= relative_datetime(item.redeemed_at) %>
       </:col>
       <:col :let={{_id, item}} label="Status">
         <%= if item.redeemed_at do %>
@@ -40,14 +40,11 @@
           <.link navigate={~p"/dashboard/store/products/#{item}"}>Show</.link>
         </div>
       </:action>
-      <:action :let={{id, item}}>
+      <:action :let={{_id, item}}>
         <.link patch={~p"/dashboard/store/products/purchases/#{item}/redeemed"}>
           <.icon name="hero-check-circle" class="w-5 h-5" />
         </.link>
-        <.link
-          phx-click={JS.push("delete", value: %{id: item.id}) |> hide("##{id}")}
-          data-confirm="Are you sure?"
-        >
+        <.link patch={~p"/dashboard/store/products/purchases/#{item}/return"}>
           <.icon name="hero-arrow-path" class="w-5 h-5" />
         </.link>
       </:action>
@@ -56,7 +53,7 @@
 </.page>
 
 <.modal
-  :if={@live_action in [:redeemed, :delete]}
+  :if={@live_action in [:redeemed, :return]}
   id="redeem-modal"
   show
   on_cancel={JS.patch(~p"/dashboard/store/products/purchases")}

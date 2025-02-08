@@ -4,6 +4,7 @@ defmodule SafiraWeb.Backoffice.ProductLive.PurchaseLive.Index do
   alias Safira.Inventory
   alias Safira.Store
 
+  import SafiraWeb.Helpers
   import SafiraWeb.Components.Table
   import SafiraWeb.Components.TableSearch
 
@@ -40,22 +41,9 @@ defmodule SafiraWeb.Backoffice.ProductLive.PurchaseLive.Index do
     |> assign(:item, Inventory.get_item!(id))
   end
 
-  def apply_action(socket, :delete, %{"id" => id}) do
+  def apply_action(socket, :return, %{"id" => id}) do
     socket
-    |> assign(:page_title, "Delete Purchase")
+    |> assign(:page_title, "Return Purchase")
     |> assign(:item, Inventory.get_item!(id))
-  end
-
-  @impl true
-  def handle_event("delete", %{"id" => id}, socket) do
-    item = Inventory.get_item!(id)
-
-    case Store.create_purchase_transaction(id) do
-      {:ok, _} ->
-        {:noreply, stream_delete(socket, :items, item)}
-
-      {:error, _} ->
-        {:noreply, socket}
-    end
   end
 end
