@@ -102,7 +102,10 @@ defmodule Safira.Store do
       item
     end)
     |> Multi.merge(fn %{get_item: item} ->
-      Contest.change_attendee_tokens_transaction(item.attendee, item.attendee.tokens + item.product.price)
+      Contest.change_attendee_tokens_transaction(
+        item.attendee,
+        item.attendee.tokens + item.product.price
+      )
     end)
     |> Repo.transaction()
   end
