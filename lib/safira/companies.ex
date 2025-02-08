@@ -5,8 +5,12 @@ defmodule Safira.Companies do
 
   use Safira.Context
 
+  alias Safira.Accounts
+  alias Safira.Accounts.User
+  alias Safira.Contest
   alias Safira.Companies.{Company, Tier}
   alias Safira.Spotlights.Spotlight
+  alias Safira.Uploaders
 
   @doc """
   Returns the list of companies.
@@ -71,7 +75,11 @@ defmodule Safira.Companies do
       ** (Ecto.NoResultsError)
 
   """
-  def get_company!(id), do: Repo.get!(Company, id)
+  def get_company!(id) do
+    Company
+    |> Repo.get_by!(id: id)
+    |> Repo.preload([:user])
+  end
 
   @doc """
   Creates a company.
@@ -89,6 +97,27 @@ defmodule Safira.Companies do
     %Company{}
     |> Company.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def upsert_company_and_user(company \\ %Company{}, attrs \\ %{}) do
+    attrs_user = Map.put(attrs["user"], "confirmed_at", DateTime.utc_now())
+    company_user = if is_nil(company.user_id), do: %User{}, else: company.user
+
+    case Ecto.Multi.new()
+         |> Ecto.Multi.insert_or_update(
+           :user,
+           User.profile_changeset(company_user, Map.put(attrs_user, "type", "company"))
+         )
+         |> Ecto.Multi.insert_or_update(:company, fn %{user: user} ->
+           Company.changeset(company, Map.put(Map.delete(attrs, "user"), "user_id", user.id))
+         end)
+         |> Repo.transaction() do
+      {:ok, %{user: user, company: company}} ->
+        {:ok, %{user: user, company: company}}
+
+      {:error, failed_operation, failed_value, changes_so_far} ->
+        {:error, failed_operation, failed_value, changes_so_far}
+    end
   end
 
   @doc """
@@ -335,5 +364,22 @@ defmodule Safira.Companies do
     |> order_by(:priority)
     |> preload(:companies)
     |> Repo.all()
+  end
+
+  @doc """
+  Gets the URL's for the CV's the company has access to
+  """
+  def get_cvs(company) when not is_nil(company.badge_id) do
+    if company.tier.full_cv_access do
+      Accounts.list_attendees_with_cv()
+      |> Enum.map(fn at ->
+        {at.user.handle, Uploaders.CV.url({at.cv, at}, :original, signed: true)}
+      end)
+    else
+      Contest.list_attendees_with_badge_and_cv(company.badge_id)
+      |> Enum.map(fn at ->
+        {at.user.handle, Uploaders.CV.url({at.cv, at}, :original, signed: true)}
+      end)
+    end
   end
 end

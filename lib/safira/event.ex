@@ -123,6 +123,7 @@ defmodule Safira.Event do
       "survival_guide_enabled",
       "faqs_enabled",
       "general_regulation_enabled",
+      "team_enabled",
       "call_for_staff_enabled"
     ]
   end

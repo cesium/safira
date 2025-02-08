@@ -1,10 +1,17 @@
 defmodule Safira.Repo.Seeds.Companies do
+  alias NimbleCSV.RFC4180, as: CSV
+
+  alias Safira.Accounts.User
   alias Safira.{Companies, Repo}
   alias Safira.Companies.{Company, Tier}
 
-  @companies File.read!("priv/fake/companies.txt") |> String.split("\n") |> Enum.map(&String.split(&1, ";"))
-
   def run do
+    case Companies.list_tiers() do
+      [] ->
+        seed_tiers()
+      _ ->
+        Mix.shell().error("Found tiers, aborting seeding tiers.")
+    end
     case Companies.list_companies() do
       [] ->
         seed_companies()
@@ -13,46 +20,58 @@ defmodule Safira.Repo.Seeds.Companies do
     end
   end
 
-  def seed_companies do
-    tiers =
-      [
-        %Tier{
-          name: "Gold",
-          priority: 0,
-          spotlight_multiplier: 1.8
-        },
-        %Tier{
-          name: "Silver",
-          priority: 1,
-          spotlight_multiplier: 1.5
-        },
-        %Tier{
-          name: "Bronze",
-          priority: 2,
-          spotlight_multiplier: 1.0
-        }
-      ] |> Enum.map(&Repo.insert(&1))
-
-    for company <- @companies do
-      {name, url, tier} = {Enum.at(company, 0), Enum.at(company, 1), Enum.random(tiers) |> elem(1)}
+  defp seed_companies do
+    tiers = Companies.list_tiers()
+    File.stream!("priv/fake/companies.csv")
+    |> CSV.parse_stream()
+    |> Stream.map(fn [name, email, handle, url, tier] ->
+      actual_tier = case tier do
+        "gold" -> Enum.at(tiers, 0)
+        "silver" -> Enum.at(tiers, 1)
+        "bronze" -> Enum.at(tiers, 2)
+      end
 
       company_seed = %{
-        name: name,
-        url: url,
-        tier_id: tier.id
+        "user" => %{
+          "email" => email,
+          "handle" => handle,
+          "password" => "password1234",
+          "name" => name
+        },
+        "name" => name,
+        "url" => url,
+        "tier_id" => actual_tier.id
       }
 
-      changeset = Companies.change_company(%Company{}, company_seed)
-
-      case Repo.insert(changeset) do
-        {:ok, company} ->
-            Company.image_changeset(company, %{logo: %Plug.Upload{path: "priv/static/images/companies/placeholder-company.svg", content_type: "image/svg", filename: "placeholder-company.svg"}})
-            |> Repo.update()
+      case Companies.upsert_company_and_user(%Company{}, company_seed) do
+        {:ok, _} -> :ok
         {:error, changeset} ->
           Mix.shell().error("Failed to insert company: #{company_seed.name}")
           Mix.shell().error(Kernel.inspect(changeset.errors))
       end
-    end
+    end)
+    |> Stream.run()
+  end
+
+  defp seed_tiers do
+    tiers =
+      [
+        %Tier{
+          name: "Gold",
+          full_cv_access: true,
+          priority: 0
+        },
+        %Tier{
+          name: "Silver",
+          full_cv_access: false,
+          priority: 1
+        },
+        %Tier{
+          name: "Bronze",
+          full_cv_access: false,
+          priority: 2
+        }
+      ] |> Enum.map(&Repo.insert(&1))
   end
 end
 

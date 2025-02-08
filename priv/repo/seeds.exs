@@ -8,6 +8,7 @@ defmodule Safira.Repo.Seeds do
 
   def run do
     [
+      "teams.exs",
       "roles.exs",
       "constants.exs",
       "courses.exs",

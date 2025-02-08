@@ -1,7 +1,8 @@
-defmodule SafiraWeb.CSVController do
+defmodule SafiraWeb.DownloadController do
   use SafiraWeb, :controller
 
   alias Safira.Accounts
+  alias Safira.Companies
 
   def generate_credentials(conn, %{"count" => count}) do
     {count_int, ""} = Integer.parse(count)
@@ -32,7 +33,7 @@ defmodule SafiraWeb.CSVController do
   end
 
   def attendees_data(conn, _params) do
-    if user_authorized?(conn.assigns.current_user, "attendees", "show") do
+    if user_authorized?(conn.assigns.current_user, "event", "show") do
       data = write_attendees_csv()
 
       conn
@@ -48,6 +49,54 @@ defmodule SafiraWeb.CSVController do
     end
   end
 
+  def cv_challenge(conn, _params) do
+    if user_authorized?(conn.assigns.current_user, "attendees", "show") do
+      data = write_cv_challenge_csv()
+
+      conn
+      |> put_resp_content_type("text/csv")
+      |> put_resp_header("content-disposition", "attachment; filename=\"cv_challenge.csv\"")
+      |> send_resp(200, data)
+    else
+      conn
+      |> put_flash(:error, "You do not have permission to view this resource")
+      |> put_status(403)
+      |> redirect(to: ~p"/")
+      |> halt()
+    end
+  end
+
+  def cvs(conn, _params) do
+    company = conn.assigns.current_user.company
+
+    if is_nil(company.badge_id) do
+      conn
+      |> put_flash(:error, "You do not have permission to view this resource")
+      |> redirect(to: ~p"/sponsor")
+    else
+      conn =
+        conn
+        |> put_resp_content_type("application/zip")
+        |> put_resp_header("content-disposition", "attachment; filename=sei_cvs.zip")
+        |> send_chunked(200)
+
+      Companies.get_cvs(company)
+      |> Enum.map(fn {handle, cv} ->
+        Zstream.entry(
+          handle <> ".pdf",
+          [HTTPoison.get!(cv, [], follow_redirect: true).body]
+        )
+      end)
+      |> Zstream.zip()
+      |> Enum.reduce(conn, fn chunk, conn ->
+        case chunk(conn, chunk) do
+          {:ok, conn} -> conn
+          {:error, _reason} -> conn
+        end
+      end)
+    end
+  end
+
   defp write_attendees_csv do
     Accounts.list_attendees(order_by: :inserted_at)
     |> Enum.map(fn user ->
@@ -57,6 +106,16 @@ defmodule SafiraWeb.CSVController do
     end)
     |> Kernel.then(fn l -> ["Name,Email,Username,Registered at,Tokens,Entries"] ++ l end)
     |> Enum.join("\n")
+    |> to_string()
+  end
+
+  defp write_cv_challenge_csv do
+    Accounts.list_attendees_with_cv()
+    |> Enum.map_join("\n", fn att ->
+      [
+        "#{att.user.id},#{att.user.name},#{att.user.handle}"
+      ]
+    end)
     |> to_string()
   end
 

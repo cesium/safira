@@ -18,7 +18,8 @@ defmodule SafiraWeb.Helpers do
 
     case URI.parse(url) do
       %URI{host: host, path: path} ->
-        if (host == app_host or Mix.env() == :dev) and not is_nil(path) do
+        if (host == app_host or Application.get_env(:safira, :build_env) == :dev) and
+             not is_nil(path) do
           case extract_id_from_url_path(path) do
             :error -> {:error, "not a valid id"}
             result -> result
@@ -146,7 +147,7 @@ defmodule SafiraWeb.Helpers do
   end
 
   defp build_url do
-    if Mix.env() == :dev do
+    if Application.get_env(:safira, :build_env) == :dev do
       "http://localhost:4000"
     else
       "https://#{Application.fetch_env!(:safira, SafiraWeb.Endpoint)[:url][:host]}"
@@ -154,7 +155,7 @@ defmodule SafiraWeb.Helpers do
   end
 
   def draw_qr_code(qr_code) do
-    internal_route = "/app/attendees/#{qr_code.id}"
+    internal_route = "/attendee/#{qr_code.id}"
     url = build_url() <> internal_route
 
     url

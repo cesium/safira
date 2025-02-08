@@ -121,6 +121,43 @@ defmodule Safira.Contest do
   end
 
   @doc """
+  Lists all badge redeems belonging to a badge, where the attendee has uploaded their CV.
+
+  ## Examples
+
+      iex> list_attendees_with_badge_and_cv(123)
+      [%BadgeRedeem{}, %BadgeRedeem{}]
+
+  """
+  def list_attendees_with_badge_and_cv(badge_id) do
+    Attendee
+    |> join(:inner, [at], br in BadgeRedeem, on: at.id == br.attendee_id)
+    |> where([at, br], br.badge_id == ^badge_id and not is_nil(at.cv))
+    |> preload(:user)
+    |> select([at, br], at)
+    |> Repo.all()
+  end
+
+  @doc """
+  Lists all badge redeems belonging to a badge.
+
+  ## Examples
+
+      iex> list_badge_redeems(123)
+      {:ok, {[%BadgeRedeem{}, %BadgeRedeem{}], meta}}
+
+  """
+  def list_badge_redeems_meta(badge_id, params \\ %{}, opts \\ []) do
+    BadgeRedeem
+    |> where([br], br.badge_id == ^badge_id)
+    |> join(:inner, [br], a in assoc(br, :attendee), as: :attendee)
+    |> join(:inner, [br, a], u in assoc(a, :user), as: :user)
+    |> preload(attendee: [:user])
+    |> apply_filters(opts)
+    |> Flop.validate_and_run(params, for: BadgeRedeem)
+  end
+
+  @doc """
   Counts the number of badge redeems for a badge.
 
   ## Examples

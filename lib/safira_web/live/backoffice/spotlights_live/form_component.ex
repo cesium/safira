@@ -24,7 +24,7 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.FormComponent do
         <div class="w-full space-y-2">
           <.simple_form for={@form} id="spotlight-form" phx-submit="save" phx-target={@myself}>
             <div>
-              <.field field={@form[:duration]} type="number" label="Duration" required />
+              <.field field={@form[:duration]} type="number" label="Duration (in minutes)" required />
             </div>
             <.button phx-disable-with="Saving...">Save Configuration</.button>
           </.simple_form>
