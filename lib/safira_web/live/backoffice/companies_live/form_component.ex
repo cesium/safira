@@ -24,22 +24,45 @@ defmodule SafiraWeb.Backoffice.CompanyLive.FormComponent do
         phx-target={@myself}
         phx-change="validate"
         phx-submit="save"
+        autocomplete="off"
       >
         <div>
           <div class="grid grid-cols-2">
             <.field field={@form[:name]} type="text" label="Name" wrapper_class="pr-2" required />
             <.field field={@form[:url]} type="text" label="URL" wrapper_class="" />
             <.inputs_for :let={user} field={@form[:user]}>
-              <.field field={user[:email]} type="email" label="Email" wrapper_class="pr-2" required />
+              <.field
+                field={user[:email]}
+                type="email"
+                label="Email"
+                wrapper_class="pr-2"
+                autocomplete="new-email"
+                required
+              />
               <.field
                 field={user[:password]}
                 type="password"
                 label="Password"
                 wrapper_class=""
                 required={@action == :new}
+                autocomplete="new-password"
               />
-              <.field field={user[:handle]} type="text" label="Handle" wrapper_class="pr-2" required />
-              <.field field={user[:name]} type="text" label="User name" wrapper_class="" required />
+              <.field
+                field={user[:handle]}
+                type="text"
+                label="Handle"
+                wrapper_class="pr-2"
+                autocomplete="off"
+                required
+              />
+              <.field
+                field={user[:name]}
+                type="text"
+                label="User name"
+                wrapper_class=""
+                autocomplete="off"
+                required
+              />
             </.inputs_for>
 
             <.field

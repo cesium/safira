@@ -45,14 +45,14 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Index do
 
   defp apply_action(socket, :tiers, _params) do
     socket
-    |> assign(:page_title, "Edit Spotlights bonus multiplier")
+    |> assign(:page_title, "Edit spotlight settings per tier")
   end
 
   defp apply_action(socket, :tiers_edit, %{"id" => id}) do
     tier = Companies.get_tier!(id)
 
     socket
-    |> assign(:page_title, "Edit Spotlights bonus multiplier for #{tier.name}")
+    |> assign(:page_title, "Edit spotlight settings for #{tier.name} tier")
     |> assign(:tier, tier)
   end
 
