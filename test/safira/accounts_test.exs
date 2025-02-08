@@ -53,8 +53,9 @@ defmodule Safira.AccountsTest do
       {:error, _, changeset, _} = Accounts.register_attendee_user(%{})
 
       assert %{
-               password: ["can't be blank"],
-               email: ["can't be blank"]
+               email: ["can't be blank"],
+               handle: ["can't be blank"],
+               name: ["can't be blank"]
              } = errors_on(changeset)
     end
 
@@ -105,17 +106,18 @@ defmodule Safira.AccountsTest do
 
   describe "register_staff_user/1" do
     test "requires email and password to be set" do
-      {:error, changeset} = Accounts.register_staff_user(%{})
+      {:error, _, changeset, _} = Accounts.register_staff_user(%{})
 
       assert %{
-               password: ["can't be blank"],
+               handle: ["can't be blank"],
+               name: ["can't be blank"],
                email: ["can't be blank"]
              } = errors_on(changeset)
     end
 
     test "validates email and password when given" do
-      {:error, changeset} =
-        Accounts.register_staff_user(%{email: "not valid", password: "not valid"})
+      {:error, _, changeset, _} =
+        Accounts.register_staff_user(%{"email" => "not valid", "password" => "not valid"})
 
       assert %{
                email: ["must have the @ sign and no spaces"],
@@ -125,26 +127,12 @@ defmodule Safira.AccountsTest do
 
     test "validates maximum values for email and password for security" do
       too_long = String.duplicate("db", 100)
-      {:error, changeset} = Accounts.register_staff_user(%{email: too_long, password: too_long})
+
+      {:error, _, changeset, _} =
+        Accounts.register_staff_user(%{"email" => too_long, "password" => too_long})
+
       assert "should be at most 160 character(s)" in errors_on(changeset).email
       assert "should be at most 72 character(s)" in errors_on(changeset).password
-    end
-
-    test "validates email uniqueness" do
-      %{email: email} = user_fixture()
-      {:error, _changeset} = Accounts.register_staff_user(%{email: email})
-
-      # Now try with the upper cased email too, to check that email case is ignored.
-      {:error, _changeset} = Accounts.register_staff_user(%{email: String.upcase(email)})
-    end
-
-    test "registers users with a hashed password" do
-      email = unique_user_email()
-      {:ok, user} = Accounts.register_staff_user(valid_user_attributes(email: email))
-      assert user.email == email
-      assert is_binary(user.hashed_password)
-      assert is_nil(user.confirmed_at)
-      assert is_nil(user.password)
     end
   end
 

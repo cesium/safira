@@ -70,5 +70,14 @@
         <% end %>
       </ol>
     </div>
-  </div>
+  </div>=
+  <.live_component
+    module={SafiraWeb.App.HomeLive.FormComponent}
+    id={@current_user.attendee.id || :new}
+    title={@page_title}
+    current_user={@current_user}
+    action={@live_action}
+    attendee={@current_user.attendee}
+    patch={~p"/app"}
+  />
 </.page>
