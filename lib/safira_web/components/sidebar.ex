@@ -31,11 +31,15 @@ defmodule SafiraWeb.Components.Sidebar do
       aria-modal="true"
       style="display: none;"
     >
-      <div class="fixed inset-0 bg-gray-600 bg-opacity-75" phx-click={hide_mobile_sidebar()}></div>
-
+      <div
+        id="sidebar-overlay"
+        class="fixed inset-0 bg-gray-800 bg-opacity-55 backdrop-blur-sm h-full min-h-screen"
+        phx-click={hide_mobile_sidebar()}
+      >
+      </div>
       <div
         id="mobile-sidebar"
-        class={"relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 #{@background} hidden min-h-screen h-full"}
+        class={"relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 #{@background} rounded-r-lg h-dvh"}
       >
         <div class="flex-1 flex flex-col py-4 overflow-y-auto scrollbar-hide">
           <.link navigate={@logo_url} class={"flex items-center flex-shrink-0 #{@logo_padding}"}>
@@ -107,6 +111,205 @@ defmodule SafiraWeb.Components.Sidebar do
     """
   end
 
+  attr :pages, :list, default: []
+  attr :current_user, :map, required: false
+  attr :current_page, :atom, default: nil
+  attr :border, :string, default: ""
+  attr :logo_url, :string, default: "/"
+  attr :logo_images, :map, required: true
+  attr :user_dropdown_name_color, :string, default: ""
+  attr :user_dropdown_handle_color, :string, default: ""
+  attr :user_dropdown_icon_color, :string, default: ""
+  attr :link_active_class, :string, default: ""
+  attr :link_inactive_class, :string, default: ""
+
+  def app_sidebar(assigns) do
+    ~H"""
+    <div
+      id="mobile-sidebar-container"
+      class="fixed inset-0 z-40 lg:hidden overflow-hidden"
+      aria-modal="true"
+      style="display: none;"
+    >
+      <div
+        id="sidebar-overlay"
+        class="fixed inset-0 bg-gray-800 bg-opacity-55 backdrop-blur-sm h-full min-h-screen"
+        phx-click={hide_mobile_sidebar()}
+      >
+      </div>
+      <div
+        id="mobile-sidebar"
+        class="relative flex-1 flex-col max-w-xs w-full pt-5 pb-4 rounded-r-3xl bg-primary hidden h-dvh"
+      >
+        <div class="flex-1 flex flex-col py-4 overflow-y-auto scrollbar-hide">
+          <.link navigate={@logo_url} class="flex items-center flex-shrink-0 px-16 py-3 sm:pt-8">
+            <img class="w-full h-full hidden dark:block" src={@logo_images.light} />
+            <img class="w-full h-20 dark:hidden" src={@logo_images.dark} />
+          </.link>
+          <div class="mt-8 flex flex-col justify-between h-full">
+            <nav class="px-4">
+              <%= if @current_user do %>
+                <.sidebar_nav_links
+                  user={@current_user}
+                  pages={@pages}
+                  current_page={@current_page}
+                  link_class="px-3 group flex items-center py-2 font-semibold rounded-md transition-colors"
+                  link_active_class={@link_active_class}
+                  link_inactive_class={@link_inactive_class}
+                />
+              <% end %>
+            </nav>
+            <%= if @current_user do %>
+              <.app_sidebar_account_dropdown
+                id="mobile-account-dropdown"
+                user={@current_user}
+                border={@border}
+                title_color={@user_dropdown_name_color}
+                subtitle_color={@user_dropdown_handle_color}
+                icon_color={@user_dropdown_icon_color}
+              />
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Static sidebar for desktop -->
+    <div class="hidden lg:flex lg:flex-shrink-0">
+      <div class={"flex flex-col w-64 border-r #{@border} bg-primary pt-5"}>
+        <.link navigate={@logo_url} class="flex items-center flex-shrink-0 px-16 pt-4 pb-4">
+          <img class="w-full h-full hidden dark:block" src={@logo_images.light} />
+          <img class="w-full h-full dark:hidden" src={@logo_images.dark} />
+        </.link>
+        <!-- Sidebar component, swap this element with another sidebar if you like -->
+        <div class="h-0 flex-1 flex flex-col justify-between pb-4 overflow-y-auto scrollbar-hide">
+          <!-- Navigation -->
+          <nav class="px-4 mt-6">
+            <%= if @current_user do %>
+              <.sidebar_nav_links
+                user={@current_user}
+                pages={@pages}
+                current_page={@current_page}
+                link_class="px-3 group flex items-center py-2 font-medium rounded-md transition-colors"
+                link_active_class={@link_active_class}
+                link_inactive_class={@link_inactive_class}
+              />
+            <% end %>
+          </nav>
+          <%= if @current_user do %>
+            <.app_sidebar_account_dropdown
+              id="account-dropdown"
+              user={@current_user}
+              border={@border}
+              title_color={@user_dropdown_name_color}
+              subtitle_color={@user_dropdown_handle_color}
+              icon_color={@user_dropdown_icon_color}
+            />
+          <% end %>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
+  attr :id, :string
+  attr :user, :any
+  attr :border, :string, default: ""
+  attr :title_color, :string, default: ""
+  attr :subtitle_color, :string, default: ""
+  attr :icon_color, :string, default: ""
+
+  def app_sidebar_account_dropdown(assigns) do
+    user = assigns.user
+
+    assigns = assigns |> Map.put(:base_path, get_base_path_by_user_type(user))
+
+    ~H"""
+    <.app_user_dropdown id={@id} border={@border} icon_color={@icon_color} user={@user}>
+      <:title color={@title_color}><%= @user.name %></:title>
+      <:subtitle color={@subtitle_color}>@<%= @user.handle %></:subtitle>
+      <:link navigate={"/#{@base_path}/profile_settings"}>Profile Settings</:link>
+      <:link href="/users/log_out" method={:delete}>Sign out</:link>
+    </.app_user_dropdown>
+    """
+  end
+
+  attr :id, :string, required: true
+  attr :border, :string, default: ""
+  attr :icon_color, :string, default: ""
+
+  slot :title do
+    attr :color, :string
+  end
+
+  slot :subtitle do
+    attr :color, :string
+  end
+
+  slot :link do
+    attr :navigate, :string
+    attr :href, :string
+    attr :method, :any
+  end
+
+  attr :user, :map, required: true
+
+  defp app_user_dropdown(assigns) do
+    ~H"""
+    <!-- User account dropdown -->
+    <div class="px-3 mt-6 relative inline-block text-left">
+      <div>
+        <button
+          id={@id}
+          type="button"
+          class={"group w-full rounded-md #{@border} border px-3.5 py-4 text-sm text-left font-medium text-gray-700 transition-all duration-200 focus:outline-0 focus:ring-2 focus:ring-offset-2 focus:ring-dark"}
+          phx-click={show_user_dropdown("##{@id}-dropdown")}
+          data-active-class=""
+          aria-haspopup="true"
+        >
+          <span class={"flex w-full justify-between items-center #{@icon_color}"}>
+            <span class="flex min-w-0 items-center justify-between space-x-3">
+              <.avatar
+                size={:sm}
+                handle={@user.handle}
+                src={Uploaders.UserPicture.url({@user.picture, @user}, :original, signed: true)}
+              />
+              <span class="flex-1 flex flex-col min-w-0">
+                <span class={"#{@title |> Enum.at(0) |> Map.get(:color)}  text-sm font-medium truncate"}>
+                  <%= render_slot(@title) %>
+                </span>
+                <span class={"#{@subtitle |> Enum.at(0) |> Map.get(:color)} text-sm truncate"}>
+                  <%= render_slot(@subtitle) %>
+                </span>
+              </span>
+            </span>
+            <.icon name="hero-chevron-up-down" />
+          </span>
+        </button>
+      </div>
+      <div
+        id={"#{@id}-dropdown"}
+        phx-click-away={hide_user_dropdown("##{@id}-dropdown")}
+        class="hidden z-10 mx-3 origin-bottom bottom-full absolute right-0 left-0 mb-2 rounded-md shadow-lg bg-primary ring-2 ring-white divide-y divide-lightShade overflow-hidden"
+        role="menu"
+        aria-labelledby={@id}
+      >
+        <div role="none">
+          <%= for link <- @link do %>
+            <.link
+              tabindex="-1"
+              role="menuitem"
+              class="block px-4 py-2 bg-primary text-light hover:bg-blue-900/35"
+              {link}
+            >
+              <%= render_slot(link) %>
+            </.link>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
   attr :id, :string
   attr :user, :any
   attr :active_tab, :atom
@@ -128,7 +331,16 @@ defmodule SafiraWeb.Components.Sidebar do
             @current_page == page.key && @link_active_class
           ]}
         >
-          <.icon name={page.icon} class="mr-3 flex-shrink-0 h-6 w-6" /> <%= page.title %>
+          <%= if Map.get(page, :icon) do %>
+            <.icon name={page.icon} class="mr-3 flex-shrink-0 size-8" />
+          <% end %>
+          <%= if Map.get(page, :image) do %>
+            <img
+              src={page.image}
+              class={["mr-3 flex-shrink-0 size-8", @current_page != page.key && "invert"]}
+            />
+          <% end %>
+          <%= page.title %>
         </.link>
       <% end %>
     </div>
@@ -149,7 +361,6 @@ defmodule SafiraWeb.Components.Sidebar do
 
     ~H"""
     <.user_dropdown id={@id} border={@border} icon_color={@icon_color} user={@user}>
-      <:img src={"https://github.com/identicons/#{@user.handle |> String.slice(0..2)}.png"} />
       <:title color={@title_color}><%= @user.name %></:title>
       <:subtitle color={@subtitle_color}>@<%= @user.handle %></:subtitle>
       <:link navigate={"/#{@base_path}/profile_settings"}>Profile Settings</:link>
@@ -197,13 +408,11 @@ defmodule SafiraWeb.Components.Sidebar do
         >
           <span class={"flex w-full justify-between items-center #{@icon_color}"}>
             <span class="flex min-w-0 items-center justify-between space-x-3">
-              <%= for _img <- @img do %>
-                <.avatar
-                  size={:sm}
-                  handle={@user.handle}
-                  src={Uploaders.UserPicture.url({@user.picture, @user}, :original, signed: true)}
-                />
-              <% end %>
+              <.avatar
+                size={:sm}
+                handle={@user.handle}
+                src={Uploaders.UserPicture.url({@user.picture, @user}, :original, signed: true)}
+              />
               <span class="flex-1 flex flex-col min-w-0">
                 <span class={"#{@title |> Enum.at(0) |> Map.get(:color)}  text-sm font-medium truncate"}>
                   <%= render_slot(@title) %>
@@ -243,7 +452,11 @@ defmodule SafiraWeb.Components.Sidebar do
 
   def show_mobile_sidebar(js \\ %JS{}) do
     js
-    |> JS.show(to: "#mobile-sidebar-container", transition: "fade-in")
+    |> JS.add_class("overflow-hidden", to: "body")
+    |> JS.show(
+      to: "#mobile-sidebar-container",
+      transition: {"transition fade-in duration-200", "opacity-0", "opacity-100"}
+    )
     |> JS.show(
       to: "#mobile-sidebar",
       display: "flex",
@@ -257,7 +470,11 @@ defmodule SafiraWeb.Components.Sidebar do
 
   def hide_mobile_sidebar(js \\ %JS{}) do
     js
-    |> JS.hide(to: "#mobile-sidebar-container", transition: "fade-out")
+    |> JS.remove_class("overflow-hidden", to: "body")
+    |> JS.hide(
+      to: "#mobile-sidebar-container",
+      transition: {"transition fade-out duration-200", "opacity-100", "opacity-0"}
+    )
     |> JS.hide(
       to: "#mobile-sidebar",
       time: 300,
@@ -272,7 +489,7 @@ defmodule SafiraWeb.Components.Sidebar do
     JS.show(
       to: to,
       transition:
-        {"transition ease-out duration-120", "transform opacity-0 scale-95",
+        {"transition ease-out duration-100", "transform opacity-0 scale-95",
          "transform opacity-100 scale-100"}
     )
     |> JS.set_attribute({"aria-expanded", "true"}, to: to)
@@ -282,7 +499,7 @@ defmodule SafiraWeb.Components.Sidebar do
     JS.hide(
       to: to,
       transition:
-        {"transition ease-in duration-120", "transform opacity-100 scale-100",
+        {"transition ease-in duration-100", "transform opacity-100 scale-100",
          "transform opacity-0 scale-95"}
     )
     |> JS.remove_attribute("aria-expanded", to: to)

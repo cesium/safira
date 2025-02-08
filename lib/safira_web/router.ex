@@ -305,15 +305,15 @@ defmodule SafiraWeb.Router do
           live "/coin_flip", MinigamesLive.Index, :edit_coin_flip
         end
 
-          scope "/scanner", ScannerLive do
-            live "/", Index, :index
+        scope "/scanner", ScannerLive do
+          live "/", Index, :index
 
-            scope "/badge", BadgeLive do
-              live "/:id/give", Index, :edit
-            end
+          scope "/badge", BadgeLive do
+            live "/:id/give", Index, :edit
           end
+        end
 
-          live "/profile_settings", ProfileSettingsLive, :edit
+        live "/profile_settings", ProfileSettingsLive, :edit
       end
     end
   end

@@ -46,6 +46,13 @@ defmodule SafiraWeb.Landing.Components.Navbar do
                       <:trigger_element>
                         <.avatar
                           handle={@current_user.handle}
+                          src={
+                            Uploaders.UserPicture.url(
+                              {@current_user.picture, @current_user},
+                              :original,
+                              signed: true
+                            )
+                          }
                           size={:sm}
                           class="ring-2 rounded-full ring-white"
                         />

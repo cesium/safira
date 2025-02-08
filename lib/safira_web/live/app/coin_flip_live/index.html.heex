@@ -52,14 +52,15 @@
       phx-click="create-room"
     />
   </div>
-  <div class="flex flex-row justify-center w-full pt-16"></div>
-  <h2 class="text-3xl font-semibold font-terminal pl-2"><%= gettext("CURRENT GAMES:") %></h2>
+  <h2 class="text-3xl font-semibold font-terminal mt-10 pl-2">
+    <%= gettext("CURRENT GAMES:") %>
+  </h2>
   <p :if={@room_list_count == 0} class="text-2xl  w-full text-center my-16 sm:my-24">
     <%= gettext("No games in progress.") %>
   </p>
   <div
     id="room-list-current"
-    class="flex flex-col w-full md:flex-row flex-wrap items-center h-auto gap-4 my-5"
+    class="flex flex-col w-full md:flex-row flex-wrap items-center h-auto gap-5 my-2 sm:my-5"
     phx-update="stream"
   >
     <.room
@@ -71,13 +72,15 @@
       coin_flip_fee={@coin_flip_fee}
     />
   </div>
-  <h2 class="text-3xl font-semibold font-terminal pl-2"><%= gettext("PREVIOUS GAMES:") %></h2>
+  <h2 class="text-3xl font-semibold font-terminal mt-6 pl-2">
+    <%= gettext("PREVIOUS GAMES:") %>
+  </h2>
   <p :if={@previous_room_list_count == 0} class="text-2xl w-full text-center my-16 sm:my-24">
     <%= gettext("No previous games yet.") %>
   </p>
   <div
     id="room-list-previous"
-    class="flex flex-col w-full md:flex-row flex-wrap items-center h-auto gap-4 my-5"
+    class="flex flex-col w-full md:flex-row flex-wrap items-center h-auto gap-5 my-2 sm:my-5"
     phx-update="stream"
   >
     <.room

@@ -15,7 +15,16 @@
             class="flex flex-row w-full lg:gap-4 py-4 lg:px-4 items-center justify-between border-t first:border-0 border-white"
           >
             <div class="flex gap-4 flex-center items-center">
-              <.avatar handle={redeem.attendee.user.handle} />
+              <.avatar
+                handle={redeem.attendee.user.handle}
+                src={
+                  Uploaders.UserPicture.url(
+                    {redeem.attendee.user.picture, redeem.attendee.user},
+                    :original,
+                    signed: true
+                  )
+                }
+              />
               <div class="self-center">
                 <p class="text-sm lg:text-base font-semibold"><%= redeem.attendee.user.name %></p>
                 <p class="text-sm lg:text-base font-normal">

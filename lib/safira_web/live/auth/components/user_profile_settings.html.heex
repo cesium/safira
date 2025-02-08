@@ -31,6 +31,7 @@
               type="text"
               label="Name"
               required
+              class={if @in_app?, do: "bg-blue-900/10 text-white border-white", else: ""}
               label_class={if @in_app?, do: "text-white", else: ""}
             />
 
@@ -39,6 +40,7 @@
               type="text"
               label="Username"
               required
+              class={if @in_app?, do: "bg-blue-900/10 text-white border-white", else: ""}
               label_class={if @in_app?, do: "text-white", else: ""}
             />
 
@@ -47,6 +49,7 @@
               type="text"
               label="Email"
               required
+              class={if @in_app?, do: "bg-blue-900/10 text-white border-white", else: ""}
               label_class={if @in_app?, do: "text-white", else: ""}
             />
           </div>
@@ -56,6 +59,7 @@
               field={@profile_form[:password]}
               type="password"
               label="New password"
+              class={if @in_app?, do: "bg-blue-900/10 text-white border-white", else: ""}
               label_class={if @in_app?, do: "text-white", else: ""}
             />
 
@@ -63,6 +67,7 @@
               field={@profile_form[:password_confirmation]}
               type="password"
               label="Repeat New Password"
+              class={if @in_app?, do: "bg-blue-900/10 text-white border-white", else: ""}
               label_class={if @in_app?, do: "text-white", else: ""}
             />
 
@@ -72,6 +77,7 @@
               type="password"
               label="Current Password"
               required={@profile_form[:password].value not in [nil, ""]}
+              class={if @in_app?, do: "bg-blue-900/10 text-white border-white", else: ""}
               label_class={if @in_app?, do: "text-white", else: ""}
             />
           </div>

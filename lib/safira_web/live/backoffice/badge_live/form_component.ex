@@ -75,6 +75,13 @@ defmodule SafiraWeb.Backoffice.BadgeLive.FormComponent do
                   )
                 }
               />
+              <.field
+                field={@form[:is_checkpoint]}
+                wrapper_class="pt-4"
+                type="switch"
+                label="Is checkpoint"
+                help_text={gettext("Controls whether the badge should be a checkpoint.")}
+              />
             </div>
             <div class="w-full pb-6">
               <.field_label>Image</.field_label>

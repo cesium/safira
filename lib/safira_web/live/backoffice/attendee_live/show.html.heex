@@ -14,7 +14,15 @@
     </div>
   </:actions>
   <div class="flex flex-col items-center gap-4 w-full sm:w-fit py-8">
-    <.avatar size={:xl} handle={@attendee.user.handle} />
+    <.avatar
+      size={:xl}
+      handle={@attendee.user.handle}
+      src={
+        Uploaders.UserPicture.url({@attendee.user.picture, @attendee.user}, :original,
+          signed: true
+        )
+      }
+    />
     <div>
       <h1 class="text-xl font-semibold"><%= @attendee.user.name %></h1>
       <p class="text-sm">@<%= @attendee.user.handle %></p>
