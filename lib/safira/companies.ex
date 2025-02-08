@@ -6,7 +6,7 @@ defmodule Safira.Companies do
   use Safira.Context
 
   alias Safira.Accounts
-  alias Safira.Accounts.User
+  alias Safira.Accounts.{Attendee, User}
   alias Safira.Contest
   alias Safira.Companies.{Company, Tier}
   alias Safira.Spotlights.Spotlight
@@ -371,17 +371,14 @@ defmodule Safira.Companies do
   """
   def get_cvs(company) when not is_nil(company.badge_id) do
     if company.tier.full_cv_access do
-      Accounts.list_attendees()
-      |> Enum.filter(fn u -> not is_nil(u.attendee.cv) end)
-      |> Enum.map(fn u ->
-        {u.handle, Uploaders.CV.url({u.attendee.cv, u.attendee}, :original, signed: true)}
+      Accounts.list_attendees_with_cv()
+      |> Enum.map(fn at ->
+        {at.user.handle, Uploaders.CV.url({at.cv, at}, :original, signed: true)}
       end)
     else
-      Contest.list_badge_redeems(company.badge_id)
-      |> Enum.filter(fn r -> not is_nil(r.attendee.cv) end)
-      |> Enum.map(fn r ->
-        {r.attendee.user.handle,
-         Uploaders.CV.url({r.attendee.cv, r.attendee}, :original, signed: true)}
+      Contest.list_attendees_with_badge_and_cv(company.badge_id)
+      |> Enum.map(fn at ->
+        {at.user.handle, Uploaders.CV.url({at.cv, at}, :original, signed: true)}
       end)
     end
   end

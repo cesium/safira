@@ -79,7 +79,7 @@ defmodule SafiraWeb.App.HomeLive.FormComponent do
   defp save_attendee(socket, attendee_params) do
     case Accounts.update_attendee(socket.assigns.attendee, attendee_params) do
       {:ok, attendee} ->
-        case consume_image_data(attendee, socket) do
+        case consume_pdf_data(attendee, socket) do
           {:ok, _attendee} ->
             {:noreply,
              socket
@@ -92,7 +92,7 @@ defmodule SafiraWeb.App.HomeLive.FormComponent do
     end
   end
 
-  defp consume_image_data(attendee, socket) do
+  defp consume_pdf_data(attendee, socket) do
     consume_uploaded_entries(socket, :cv, fn %{path: path}, entry ->
       Accounts.update_attendee_cv(attendee, %{
         "cv" => %Plug.Upload{

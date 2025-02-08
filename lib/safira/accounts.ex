@@ -52,8 +52,7 @@ defmodule Safira.Accounts do
   def list_attendees_with_cv do
     Attendee
     |> where([at], not is_nil(at.cv))
-    |> join(:inner, [at], u in User, on: at.user_id == u.id)
-    |> select([at, u], u)
+    |> preload(:user)
     |> Repo.all()
   end
 

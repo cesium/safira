@@ -121,6 +121,24 @@ defmodule Safira.Contest do
   end
 
   @doc """
+  Lists all badge redeems belonging to a badge, where the attendee has uploaded their CV.
+
+  ## Examples
+
+      iex> list_attendees_with_badge_and_cv(123)
+      [%BadgeRedeem{}, %BadgeRedeem{}]
+
+  """
+  def list_attendees_with_badge_and_cv(badge_id, opts \\ []) do
+    Attendee
+    |> join(:inner, [at], br in BadgeRedeem, on: at.id == br.attendee_id)
+    |> where([at, br], br.badge_id == ^badge_id and not is_nil(at.cv))
+    |> preload(:user)
+    |> select([at, br], at)
+    |> Repo.all()
+  end
+
+  @doc """
   Lists all badge redeems belonging to a badge.
 
   ## Examples
