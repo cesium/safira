@@ -1,19 +1,20 @@
 <.page
   title={gettext("Hello, %{current_user_name} 👋", current_user_name: @current_user.name)}
   size={:xl}
+  title_class="font-terminal uppercase"
 >
   <div class="flex flex-col md:flex-row md:gap-x-8">
     <div class="flex flex-col gap-y-8">
       <div class="flex flex-row justify-between items-center mt-10 pb-2 h-12 border-b-[1px] border-lightMuted">
-        <h1 class="font-extrabold">Achievements</h1>
+        <h1 class="font-semibold font-terminal uppercase px-2">Achievements</h1>
       </div>
 
-      <div class="grid grid-cols-2 gap-4 px-4 min-w-72 md:grid-cols-1">
+      <div class="grid grid-cols-2 gap-4 min-w-72 md:grid-cols-1">
         <p>
           💰 <%= "#{@current_user.attendee.tokens} tokens" %>
         </p>
         <p>
-          🏅 56 Badges (⚠️)
+          🏅 <%= gettext("%{badge_count} Badges", badge_count: @attendee_badge_count) %>
         </p>
         <p>
           🎫 <%= "#{@current_user.attendee.entries} entries" %>
@@ -26,62 +27,48 @@
 
     <div class="flex flex-col gap-y-8">
       <div class="flex flex-row justify-between items-center mt-10 pb-2 h-12 border-b-[1px] border-lightMuted">
-        <h1 class="font-extrabold">Checkpoint</h1>
+        <h1 class="font-semibold font-terminal uppercase px-2">Checkpoint</h1>
       </div>
 
-      <div class="flex flex-col gap-2">
-        <p>
-          <strong class="font-black">Level 1</strong> 5 companies -> +10 entries
-        </p>
-        <p>
-          <strong class="font-black">Level 2</strong> 10 companies -> +20 entries
-        </p>
-        <p>
-          <strong class="font-black">Level 3</strong> 15 companies -> +40 entries
-        </p>
-        <p>
-          <strong class="font-black">Level 4</strong> 20 companies -> +100 entries
-        </p>
-      </div>
-
-      <div class="flex flex-row items-center h-16 max-w-96 px-2 overflow-hidden">
-        <%= for i <- 0..(@max_level - 1) do %>
-          <%= if i <= (@user_level - 1) do %>
-            <div class="h-1/2 aspect-square rounded-full bg-accent"></div>
-            <%= if i != @max_level - 1 do %>
-              <div class="w-full h-2 bg-accent -mx-0.5 -z-10"></div>
-            <% end %>
-          <% end %>
-
-          <%= if i == @user_level do %>
-            <div class="h-1/2 aspect-square rounded-full bg-lightMuted outline outline-8 outline-accent">
+      <ol class="flex flex-col gap-y-10">
+        <%= for {badge, index} <- Enum.with_index(@checkpoint_badges) do %>
+          <li class={[
+            "relative h-10 flex items-center font-medium w-full",
+            index != @max_level - 1 &&
+              "after:content-[''] after:w-0.5 after:h-full after:bg-gray-200 after:inline-block after:absolute after:top-10 after:left-[1.170rem]",
+            index < @user_level && "after:bg-accent"
+          ]}>
+            <!-- Circle Icon -->
+            <span class={[
+              "size-10 rounded-full flex justify-center items-center mr-3 text-sm font-terminal font-semibold ",
+              index < @user_level && "bg-accent text-primary",
+              index > @user_level && "border-2 border-white text-white",
+              index == @user_level && "border-2 bg-accent/10 border-accent text-accent"
+            ]}>
+              <%= if index < @user_level do %>
+                <.icon name="hero-check" class="size-5 stroke-2" />
+              <% else %>
+                <%= index + 1 %>
+              <% end %>
+            </span>
+            <!-- Level Description -->
+            <div class="block">
+              <h4 class={[
+                "text-lg font-terminal uppercase",
+                index <= @user_level && "text-accent",
+                index > @user_level && "text-white"
+              ]}>
+                <%= gettext("Level %{level}", level: index + 1) %>
+              </h4>
+              <span class="text-sm">
+                <%= badge.name %> -> <%= gettext("+%{badge_entries} entries",
+                  badge_entries: badge.entries
+                ) %>
+              </span>
             </div>
-            <%= if i != @max_level - 1 do %>
-              <div class="w-full h-2 bg-lightMuted -mx-0.5 -z-10"></div>
-            <% end %>
-          <% end %>
-
-          <%= if i > @user_level do %>
-            <div class="h-1/2 aspect-square rounded-full bg-lightMuted"></div>
-            <%= if i != @max_level - 1 do %>
-              <div class="w-full h-2 bg-lightMuted -mx-0.5 -z-10"></div>
-            <% end %>
-          <% end %>
+          </li>
         <% end %>
-      </div>
-
-      <p>
-        <%= if @user_level == @max_level do %>
-          You have reached the maximum level! 🎉
-        <% else %>
-          You just need <%= @companies_to_next_level %> more <%= if @companies_to_next_level != 1 do
-            "badges"
-          else
-            "badge"
-          end %> to go to Level <%= @user_level + 1 %> (and win <%= @next_prize %>+ entries to the final draw). Hurry!
-        <% end %>
-        <br /><br />(⚠️⚠️⚠️⚠️⚠️ everything with this emoji is hardcoded, because badgedex isn't ready. Also the checkpoint level is calculated with hard coded values - see comment at index.ex)
-      </p>
+      </ol>
     </div>
   </div>
 </.page>

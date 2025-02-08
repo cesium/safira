@@ -335,9 +335,10 @@ defmodule SafiraWeb.Components.Sidebar do
             <.icon name={page.icon} class="mr-3 flex-shrink-0 size-8" />
           <% end %>
           <%= if Map.get(page, :image) do %>
-            <img
+            <div
               src={page.image}
-              class={["mr-3 flex-shrink-0 size-8", @current_page != page.key && "invert"]}
+              class={["mr-3 flex-shrink-0 size-8 bg-primary", @current_page != page.key && "bg-white"]}
+              style={"mask: url(#{page.image}) no-repeat center / contain; -webkit-mask: url(#{page.image}) no-repeat center / contain;"}
             />
           <% end %>
           <%= page.title %>

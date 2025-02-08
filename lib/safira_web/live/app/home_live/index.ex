@@ -1,12 +1,26 @@
 defmodule SafiraWeb.App.HomeLive.Index do
   use SafiraWeb, :app_view
 
+  alias Safira.Contest
+
   @impl true
   def mount(_params, _session, socket) do
+    # if connected?(socket) do
+    #   Contest.subscribe_to_attendee_redeems_update(socket.assigns.current_user.attendee.id)
+    # end
+
     # TODO: When the badgedex is ready, set the companies_visited based on the current_user info
-    companies_visited = 14
-    max_level = 4
-    user_level = min(div(companies_visited, 5), max_level)
+    checkpoint_badges =
+      Contest.list_badges(where: [is_checkpoint: true], order_by: [asc: :entries])
+
+    attendee_badges = Contest.list_attendee_badges(socket.assigns.current_user.attendee.id)
+    attendee_checkpoints = attendee_badges |> Enum.filter(& &1.is_checkpoint)
+
+    companies_visited = 5
+    max_level = length(checkpoint_badges)
+    # max_level = 4
+    # user_level = min(div(companies_visited, 5), max_level)
+    user_level = min(length(attendee_checkpoints), max_level)
 
     companies_to_next_level =
       if user_level == max_level, do: 0, else: 5 - rem(companies_visited, 5)
@@ -16,9 +30,10 @@ defmodule SafiraWeb.App.HomeLive.Index do
 
     {:ok,
      assign(socket,
-       companies_visited: companies_visited,
+       checkpoint_badges: checkpoint_badges,
        user_level: user_level,
        companies_to_next_level: companies_to_next_level,
+       attendee_badge_count: length(attendee_badges),
        next_prize: next_prize,
        max_level: max_level
      )}

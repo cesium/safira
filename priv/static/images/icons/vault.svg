@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="24"
+   height="24"
+   viewBox="0 0 24 24"
+   fill="none"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="vault.svg"
+   inkscape:version="1.4 (e7c3feb100, 2024-10-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="30.958333"
+     inkscape:cx="12"
+     inkscape:cy="12"
+     inkscape:window-width="1854"
+     inkscape:window-height="1011"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg1" />
+  <g
+     id="vault">
+    <path
+       id="Vector"
+       d="M20.2811 3.71892C19.8208 3.2586 19.1964 3 18.5455 3H5.45455C4.80356 3 4.17924 3.2586 3.71892 3.71892C3.2586 4.17924 3 4.80356 3 5.45455V18.5455C3 19.1964 3.2586 19.8208 3.71892 20.2811C4.17924 20.7414 4.80356 21 5.45455 21H18.5455C19.1964 21 19.8208 20.7414 20.2811 20.2811C20.7414 19.8208 21 19.1964 21 18.5455V5.45455C21 4.80356 20.7414 4.17924 20.2811 3.71892Z"
+       stroke="black"
+       stroke-width="1.5"
+       stroke-linecap="round"
+       stroke-linejoin="round" />
+    <path
+       id="Vector_2"
+       d="M19 15L19 16"
+       stroke="black"
+       stroke-width="1.5"
+       stroke-linecap="round"
+       stroke-linejoin="round" />
+    <path
+       id="Vector_3"
+       d="M19 8L19 9"
+       stroke="black"
+       stroke-width="1.5"
+       stroke-linecap="round"
+       stroke-linejoin="round" />
+    <circle
+       id="Ellipse 1"
+       cx="8"
+       cy="12"
+       r="2.25"
+       stroke="black"
+       stroke-width="1.5" />
+    <path
+       id="Subtract"
+       fill-rule="evenodd"
+       clip-rule="evenodd"
+       d="M6.85219 6.84692C7.0276 6.67315 7.26699 6.57427 7.51807 6.57427H16.5216C16.7727 6.57427 17.0121 6.67315 17.1875 6.84692C17.3627 7.02047 17.4598 7.25434 17.4598 7.4967V16.4163C17.4598 16.6587 17.3627 16.8926 17.1875 17.0661C17.0121 17.2399 16.7727 17.3388 16.5216 17.3388H7.51807C7.26699 17.3388 7.0276 17.2399 6.85219 17.0661C6.67701 16.8926 6.5799 16.6587 6.5799 16.4163V15.7406C6.00466 15.5221 5.49291 15.1747 5.0799 14.7337V16.4163C5.0799 17.0611 5.3385 17.678 5.79651 18.1317C6.25428 18.5852 6.87368 18.8388 7.51807 18.8388H16.5216C17.166 18.8388 17.7854 18.5852 18.2432 18.1317C18.7012 17.678 18.9598 17.0611 18.9598 16.4163V7.4967C18.9598 6.85196 18.7012 6.23505 18.2432 5.78131C17.7854 5.3278 17.166 5.07427 16.5216 5.07427H7.51807C6.87368 5.07427 6.25428 5.3278 5.79651 5.78131C5.3385 6.23505 5.0799 6.85196 5.0799 7.4967V9.2663C5.49291 8.82531 6.00466 8.47792 6.5799 8.25942V7.4967C6.5799 7.25434 6.67701 7.02047 6.85219 6.84692Z"
+       fill="black" />
+    <path
+       id="Vector 1"
+       d="M8 12H12"
+       stroke="black"
+       stroke-width="1.5"
+       stroke-linecap="round" />
+  </g>
+</svg>
