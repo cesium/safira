@@ -101,8 +101,8 @@ defmodule Safira.Store do
     |> Multi.delete(:delete_item, fn %{get_item: item} ->
       item
     end)
-    |> Multi.update(:update_attendee_tokens, fn _repo, %{get_item: item} ->
-      Contest.change_attendee_tokens(item.attendee, item.attendee.tokens + item.product.price)
+    |> Multi.merge(fn %{get_item: item} ->
+      Contest.change_attendee_tokens_transaction(item.attendee, item.attendee.tokens + item.product.price)
     end)
     |> Repo.transaction()
   end
