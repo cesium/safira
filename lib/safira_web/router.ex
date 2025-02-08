@@ -101,6 +101,7 @@ defmodule SafiraWeb.Router do
         pipe_through [:require_credential]
 
         live "/", HomeLive.Index, :index
+        live "/edit", HomeLive.Index, :edit
 
         live "/credential", CredentialLive.Index, :index
 
@@ -127,9 +128,17 @@ defmodule SafiraWeb.Router do
       end
 
       scope "/downloads" do
-        pipe_through [:require_staff_user]
-        get "/attendees", CSVController, :attendees_data
-        post "/qr_codes", CSVController, :generate_credentials
+        scope "/" do
+          pipe_through [:require_staff_user]
+          get "/attendees", DownloadController, :attendees_data
+          post "/qr_codes", DownloadController, :generate_credentials
+          get "/cv_challenge", DownloadController, :cv_challenge
+        end
+
+        scope "/" do
+          pipe_through [:require_company_user]
+          get "/cvs", DownloadController, :cvs
+        end
       end
 
       scope "/sponsor", Sponsor do
