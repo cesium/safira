@@ -5,7 +5,7 @@
         id="items-table-name-search"
         params={@params}
         field={:product_name}
-        path={~p"/dashboard/store/products/purchases"}
+        path={~p"/dashboard/store/purchases"}
         placeholder={gettext("Search for product")}
       />
     </div>
@@ -41,12 +41,14 @@
         </div>
       </:action>
       <:action :let={{_id, item}}>
-        <.link patch={~p"/dashboard/store/products/purchases/#{item}/redeemed"}>
-          <.icon name="hero-check-circle" class="w-5 h-5" />
-        </.link>
-        <.link patch={~p"/dashboard/store/products/purchases/#{item}/refund"}>
-          <.icon name="hero-arrow-path" class="w-5 h-5" />
-        </.link>
+        <div class="flex flex-row gap-3">
+          <.link patch={~p"/dashboard/store/purchases/#{item}/redeemed"}>
+            <.icon name="hero-check-circle" class="w-5 h-5" />
+          </.link>
+          <.link patch={~p"/dashboard/store/purchases/#{item}/refund"}>
+            <.icon name="hero-arrow-path" class="w-5 h-5" />
+          </.link>
+        </div>
       </:action>
     </.table>
   </div>
@@ -56,14 +58,14 @@
   :if={@live_action in [:redeem, :refund]}
   id="redeem-modal"
   show
-  on_cancel={JS.patch(~p"/dashboard/store/products/purchases")}
+  on_cancel={JS.patch(~p"/dashboard/store/purchases")}
 >
   <.live_component
-    module={SafiraWeb.Backoffice.ProductLive.PurchaseLive.FormComponent}
+    module={SafiraWeb.Backoffice.PurchaseLive.FormComponent}
     id={:redeem}
     title={@page_title}
     action={@live_action}
     item={@item}
-    patch={~p"/dashboard/store/products/purchases"}
+    patch={~p"/dashboard/store/purchases"}
   />
 </.modal>
