@@ -9,6 +9,8 @@ defmodule Safira.Repo.Seeds.Constants do
     for k <- Event.feature_flag_keys() do
       Constants.set(k, "true")
     end
+
+    Constants.set("call_for_staff_enabled", "false")
   end
 end
 

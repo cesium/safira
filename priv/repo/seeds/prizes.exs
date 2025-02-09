@@ -1,7 +1,5 @@
 defmodule Safira.Repo.Seeds.Prizes do
-  alias Safira.Contest
-  alias Safira.Minigames
-  alias Safira.Repo
+  alias Safira.{Contest, Event, Minigames, Repo}
 
   @prizes File.read!("priv/fake/prizes.txt") |> String.split("\n")
 
@@ -42,8 +40,10 @@ defmodule Safira.Repo.Seeds.Prizes do
     def seed_daily_prizes do
       prizes = Repo.all(Minigames.Prize)
 
+      start_date = Timex.DateTime.new!(Event.get_event_start_date(), Timex.Time.new!(9, 0, 0))
+
       days = 0..3
-           |> Enum.map(fn offset -> DateTime.utc_now() |> DateTime.add(offset, :day) |> DateTime.to_date() end)
+           |> Enum.map(fn offset -> start_date |> DateTime.add(offset, :day) |> DateTime.to_date() end)
 
       for d <- [nil | days] do
         for p <- 1..3 do

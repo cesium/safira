@@ -1,24 +1,17 @@
 defmodule SafiraWeb.App.LeaderboardLive.Index do
   use SafiraWeb, :app_view
 
-  alias Safira.Contest
+  alias Safira.{Contest, Event}
 
-  import SafiraWeb.App.LeaderboardLive.Components.Leaderboard
-  import SafiraWeb.App.LeaderboardLive.Components.DaySelector
-  import SafiraWeb.App.LeaderboardLive.Components.Prizes
+  import SafiraWeb.App.LeaderboardLive.Components.{Leaderboard, DaySelector, Prizes}
 
-  @limit 5
+  @limit 10
 
   @impl true
   def mount(_params, _session, socket) do
     daily_prizes = Contest.list_daily_prizes()
 
-    days =
-      daily_prizes
-      |> Enum.map(fn dp ->
-        dp.date
-      end)
-      |> Enum.dedup()
+    days = Event.list_event_dates()
 
     start_day_idx = get_start_day_idx(days)
     leaderboard = Contest.leaderboard(Enum.at(days, start_day_idx), @limit)

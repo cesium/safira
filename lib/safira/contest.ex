@@ -643,7 +643,9 @@ defmodule Safira.Contest do
     end_time = Timex.end_of_day(day_time)
 
     BadgeRedeem
+    |> join(:inner, [rd], b in Badge, on: rd.badge_id == b.id)
     |> where([rd], rd.inserted_at >= ^start_time and rd.inserted_at <= ^end_time)
+    |> where([rd, b], b.counts_for_day)
     |> group_by([rd], rd.attendee_id)
     |> select([rd], %{redeem_count: count(rd.id), attendee_id: rd.attendee_id})
   end
@@ -670,6 +672,7 @@ defmodule Safira.Contest do
       position:
         fragment("row_number() OVER (ORDER BY ? DESC, ? DESC)", rd.redeem_count, dt.tokens),
       name: u.name,
+      handle: u.handle,
       badges: rd.redeem_count,
       tokens: dt.tokens
     })

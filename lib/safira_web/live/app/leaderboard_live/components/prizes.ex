@@ -10,7 +10,6 @@ defmodule SafiraWeb.App.LeaderboardLive.Components.Prizes do
   def prizes(assigns) do
     ~H"""
     <div class="mt-8 ">
-      <h2 class="font-bold font-terminal uppercase text-xl"><%= gettext("Awards") %></h2>
       <ol class="mt-8">
         <%= for prize <- @prizes do %>
           <li class="py-1">

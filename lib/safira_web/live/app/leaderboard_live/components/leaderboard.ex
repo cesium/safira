@@ -5,63 +5,104 @@ defmodule SafiraWeb.App.LeaderboardLive.Components.Leaderboard do
 
   use SafiraWeb, :component
 
+  import SafiraWeb.Components.Avatar
+
   attr :entries, :list, required: true
   attr :user_position, :any, required: true
 
   def leaderboard(assigns) do
     ~H"""
-    <table class="w-full">
-      <tr>
-        <th class="font-bold text-lg text-left pb-2"><%= gettext("Position") %></th>
-        <th class="font-bold text-lg text-center pb-2"><%= gettext("Attendee") %></th>
-        <th class="font-bold text-lg text-center pb-2"><%= gettext("Badge Count") %></th>
-        <th class="font-bold text-lg text-right pb-2"><%= gettext("Token Count") %></th>
-      </tr>
-      <%= for entry <- @entries do %>
-        <tr>
-          <td class={color_class(entry.position, @user_position.position) <> " text-left py-1"}>
-            <%= entry.position %>
-          </td>
-          <td class={color_class(entry.position, @user_position.position) <> " text-center py-1"}>
-            <%= entry.name %>
-          </td>
-          <td class={color_class(entry.position, @user_position.position) <> " text-center py-1"}>
-            <%= entry.badges %>
-          </td>
-          <td class={color_class(entry.position, @user_position.position) <> " text-right py-1"}>
-            <%= entry.tokens %>
-          </td>
-        </tr>
-      <% end %>
-      <%= if not is_nil(@user_position) and not Enum.member?(Enum.map(@entries, fn e -> e.position end), @user_position.position) do %>
-        <tr>
-          <td class="text-accent font-bold text-left pt-4 pb-1"><%= @user_position.position %></td>
-          <td class="text-accent font-bold text-center pt-4 pb-1"><%= @user_position.name %></td>
-          <td class="text-accent font-bold text-center pt-4 pb-1"><%= @user_position.badges %></td>
-          <td class="text-accent font-bold text-right pt-4 pb-1"><%= @user_position.tokens %></td>
-        </tr>
-      <% end %>
-    </table>
+    <div class="w-full">
+      <.leaderboard_top_3 entries={Enum.take(@entries, 3)} />
+      <ul class="flex flex-col gap-4 mt-6">
+        <.leaderboard_entry
+          :for={entry <- Enum.drop(@entries, 3)}
+          entry={entry}
+          self={@user_position && entry.position == @user_position.position}
+        />
+        <.leaderboard_entry
+          :if={
+            not is_nil(@user_position) and
+              not Enum.member?(Enum.map(@entries, fn e -> e.position end), @user_position.position)
+          }
+          entry={@user_position}
+          self={true}
+        />
+      </ul>
+    </div>
     """
   end
 
-  defp color_class(pos, user_pos) do
-    case pos do
-      1 ->
-        "text-amber-400 font-bold"
+  defp leaderboard_top_3(assigns) do
+    ~H"""
+    <div class="flex flex-row justify-between w-full">
+      <.leaderboard_top_person entry={Enum.at(@entries, 1)} pos={2} />
+      <.leaderboard_top_person entry={Enum.at(@entries, 0)} winner={true} pos={1} />
+      <.leaderboard_top_person entry={Enum.at(@entries, 2)} pos={3} />
+    </div>
+    """
+  end
 
-      2 ->
-        "text-neutral-400 font-bold"
+  attr :entry, :map, required: true
+  attr :winner, :boolean, default: false
+  attr :pos, :integer, required: true
 
-      3 ->
-        "text-orange-400 font-bold"
+  defp leaderboard_top_person(assigns) do
+    ~H"""
+    <%= if @entry do %>
+      <div class={["flex flex-col w-full items-center mt-8 mb-4", @winner && "-translate-y-20"]}>
+        <.icon
+          :if={@winner}
+          name="fa-crown fa-crown-solid"
+          class="w-10 h-10 translate-y-6 text-accent"
+        />
+        <.avatar
+          handle={@entry.handle}
+          size={:xl}
+          class="bg-light/5 border-2 border-accent bg-accent rounded-full"
+        />
+        <span class="bg-accent rounded-full px-2 -translate-y-3 select-none text-primary/80 font-semibold border-primary border-2">
+          <%= @pos %>
+        </span>
+        <p class="font-semibold truncate max-w-28 sm:max-w-full"><%= @entry.name %></p>
+        <p class="font-semibold">
+          <%= gettext("%{badges_count} badges", badges_count: @entry.badges) %>
+        </p>
+      </div>
+    <% end %>
+    """
+  end
 
-      _ ->
-        if pos == user_pos do
-          "font-bold"
-        else
-          ""
-        end
-    end
+  attr :entry, :map, required: true
+  attr :self, :boolean, default: false
+
+  defp leaderboard_entry(assigns) do
+    ~H"""
+    <li class={"flex flex-row py-3 px-4 rounded-lg justify-between items-center #{if @self do "bg-accent text-primary/80" else "bg-light/5 text-white" end}"}>
+      <div class="flex flex-row gap-4 items-center">
+        <p class="font-bold text-xl">
+          <%= @entry.position %>
+        </p>
+        <p>
+          <.avatar
+            handle={@entry.handle}
+            size={:sm}
+            class={"#{if @self do "bg-primary/10 border-2 border-primary/10" else "bg-light/5 border-2 border-light/5" end} rounded-full"}
+          />
+        </p>
+        <p class="font-semibold truncate max-w-40">
+          <%= @entry.name %>
+        </p>
+      </div>
+      <div>
+        <p class="font-semibold">
+          <%= @entry.badges %>
+          <span class="hidden lg:inline">
+            <%= gettext(" badges") %>
+          </span>
+        </p>
+      </div>
+    </li>
+    """
   end
 end

@@ -8,6 +8,11 @@
         path={~p"/dashboard/minigames/prizes"}
         placeholder={gettext("Search for prizes")}
       />
+      <.link navigate={~p"/dashboard/minigames/prizes/daily"}>
+        <.button>
+          <.icon name="hero-calendar-days" class="w-5" />
+        </.button>
+      </.link>
       <.ensure_permissions user={@current_user} permissions={%{"minigames" => ["edit"]}}>
         <.link patch={~p"/dashboard/minigames/prizes/new"}>
           <.button>New Prize</.button>
