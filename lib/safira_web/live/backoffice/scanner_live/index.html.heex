@@ -33,13 +33,16 @@
       <div
         id="badges-grid"
         phx-update="stream"
-        class="grid grid-cols-1 gap-x-10 gap-y-5 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6"
+        class="grid grid-cols-1 gap-x-10 gap-y-5 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 mb-6"
       >
         <%= for {id, badge} <- @streams.badges do %>
           <.link id={id} patch={~p"/dashboard/scanner/badge/#{badge.id}/give"}>
             <.badge id={badge.id} badge={badge} hover_zoom />
           </.link>
         <% end %>
+      </div>
+      <div class="w-full">
+        <.pagination :if={@meta.total_pages > 1} meta={@meta} params={@params} />
       </div>
     </div>
   </.page>
