@@ -10,6 +10,13 @@ defmodule SafiraWeb.Backoffice.ProfileSettingsLive do
         id="attendee-user-profile-settings"
         user={@current_user}
       />
+      <.live_component
+        module={SafiraWeb.Components.CVUpload}
+        id={@current_user.id || :new}
+        current_user={@current_user}
+        action={@live_action}
+        patch={~p"/dashboard/profile_settings"}
+      />
     </.page>
     """
   end
@@ -22,5 +29,10 @@ defmodule SafiraWeb.Backoffice.ProfileSettingsLive do
   @impl true
   def handle_info({:update_current_user, new_user}, socket) do
     {:noreply, assign(socket, current_user: new_user)}
+  end
+
+  @impl true
+  def handle_params(_params, _, socket) do
+    {:noreply, socket}
   end
 end

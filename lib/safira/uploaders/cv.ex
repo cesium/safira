@@ -5,7 +5,7 @@ defmodule Safira.Uploaders.CV do
 
   use Safira.Uploader
 
-  alias Safira.Accounts.Attendee
+  alias Safira.Accounts.User
 
   @versions [:original]
   @extension_whitelist ~w(.pdf)
@@ -15,8 +15,8 @@ defmodule Safira.Uploaders.CV do
     Enum.member?(extension_whitelist(), file_extension)
   end
 
-  def storage_dir(_, {_file, %Attendee{} = attendee}) do
-    "uploads/cvs/attendee/#{attendee.id}"
+  def storage_dir(_, {_file, %User{} = user}) do
+    "uploads/user/cv/#{user.id}"
   end
 
   def filename(version, _) do

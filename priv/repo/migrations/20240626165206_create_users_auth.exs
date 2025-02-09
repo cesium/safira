@@ -14,6 +14,7 @@ defmodule Safira.Repo.Migrations.CreateUsersAuth do
       add :hashed_password, :string, null: false
       add :confirmed_at, :utc_datetime
       add :allows_marketing, :boolean, default: false
+      add :cv, :string, null: true
 
       timestamps(type: :utc_datetime)
     end

@@ -3,81 +3,121 @@
   size={:xl}
   title_class="font-terminal uppercase"
 >
-  <div class="flex flex-col md:flex-row md:gap-x-8">
-    <div class="flex flex-col gap-y-8">
-      <div class="flex flex-row justify-between items-center mt-10 pb-2 h-12 border-b-[1px] border-lightMuted">
-        <h1 class="font-semibold font-terminal uppercase px-2">Achievements</h1>
-      </div>
-
-      <div class="grid grid-cols-2 gap-4 min-w-72 md:grid-cols-1">
-        <p>
-          💰 <%= "#{@current_user.attendee.tokens} tokens" %>
-        </p>
-        <p>
-          🏅 <%= gettext("%{badge_count} Badges", badge_count: @attendee_badge_count) %>
-        </p>
-        <p>
-          🎫 <%= "#{@current_user.attendee.entries} entries" %>
-        </p>
-        <p>
-          🏁 Level <%= @user_level %> Checkpoint
-        </p>
+  <div class="flex flex-col md:flex-row  md:gap-x-8 w-full">
+    <div class="flex flex-row justify-between items-center border-t-2 mt-10 border-white">
+      <div class="flex mt-7 gap-x-10">
+        <div class="flex flex-col items-center py-2 gap-4 my-auto">
+          <.avatar
+            size={:xl}
+            handle={@current_user.handle}
+            src={
+              Uploaders.UserPicture.url({@current_user.picture, @current_user}, :original,
+                signed: true
+              )
+            }
+          />
+          <div class="flex flex-col gap-y-2">
+            <p class="text-sm font-normal">@<%= @current_user.handle %></p>
+          </div>
+        </div>
+        <div class="flex flex-col flex-shrink-0 flex-wrap my-auto">
+          <div class="grid sm:grid-cols-2 gap-4 md:grid-cols-1">
+            <p>
+              💰 <%= "#{@current_user.attendee.tokens} tokens" %>
+            </p>
+            <p>
+              🏅 <%= gettext("%{badge_count} Badges", badge_count: @attendee_badge_count) %>
+            </p>
+            <p>
+              🎫 <%= "#{@current_user.attendee.entries} entries" %>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
 
     <div class="flex flex-col gap-y-8">
-      <div class="flex flex-row justify-between items-center mt-10 pb-2 h-12 border-b-[1px] border-lightMuted">
+      <div class="flex flex-row justify-between items-center mt-10 pb-2 h-12 border-b-2 border-white">
         <h1 class="font-semibold font-terminal uppercase px-2">Checkpoint</h1>
       </div>
 
-      <ol class="flex flex-col gap-y-10">
-        <%= for {badge, index} <- Enum.with_index(@checkpoint_badges) do %>
-          <li class={[
-            "relative h-10 flex items-center font-medium w-full",
+      <ol class="flex flex-col gap-y-9 sm:gap-y-10">
+        <li
+          :for={{badge, index} <- Enum.with_index(@checkpoint_badges)}
+          class={[
+            "relative h-9 sm:h-10 flex items-center font-medium w-full",
             index != @max_level - 1 &&
-              "after:content-[''] after:w-0.5 after:h-full after:bg-gray-200 after:inline-block after:absolute after:top-10 after:left-[1.170rem]",
-            index < @user_level && "after:bg-accent"
+              "after:content-[''] after:w-0.5 after:h-full after:inline-block after:absolute after:top-9 sm:after:top-10 after:left-[1.05rem] sm:after:left-[1.170rem]",
+            index < @user_level && "after:bg-accent",
+            index >= @user_level && "after:bg-white"
+          ]}
+        >
+          <!-- Circle Icon -->
+          <span class={[
+            "size-9 sm:size-10 rounded-full flex justify-center items-center mr-3 text-sm font-terminal font-semibold ",
+            index < @user_level && "bg-accent text-primary",
+            index > @user_level && "border-2 border-white text-white",
+            index == @user_level && "border-2 bg-accent/10 border-accent text-accent"
           ]}>
-            <!-- Circle Icon -->
-            <span class={[
-              "size-10 rounded-full flex justify-center items-center mr-3 text-sm font-terminal font-semibold ",
-              index < @user_level && "bg-accent text-primary",
-              index > @user_level && "border-2 border-white text-white",
-              index == @user_level && "border-2 bg-accent/10 border-accent text-accent"
+            <%= if index < @user_level do %>
+              <.icon name="hero-check" class="size-4 sm:size-5 stroke-2" />
+            <% else %>
+              <%= index + 1 %>
+            <% end %>
+          </span>
+          <!-- Level Description -->
+          <div class="flex flex-col sm:gap-y-0.5">
+            <h4 class={[
+              "sm:text-lg font-terminal uppercase",
+              index <= @user_level && "text-accent",
+              index > @user_level && "text-white"
             ]}>
-              <%= if index < @user_level do %>
-                <.icon name="hero-check" class="size-5 stroke-2" />
-              <% else %>
-                <%= index + 1 %>
-              <% end %>
+              <%= gettext("Level %{level}", level: index + 1) %>
+            </h4>
+            <span class="text-xs sm:text-sm">
+              <%= badge.name %> -> <%= gettext("+%{badge_entries} entries",
+                badge_entries: badge.entries
+              ) %>
             </span>
-            <!-- Level Description -->
-            <div class="block">
-              <h4 class={[
-                "text-lg font-terminal uppercase",
-                index <= @user_level && "text-accent",
-                index > @user_level && "text-white"
-              ]}>
-                <%= gettext("Level %{level}", level: index + 1) %>
-              </h4>
-              <span class="text-sm">
-                <%= badge.name %> -> <%= gettext("+%{badge_entries} entries",
-                  badge_entries: badge.entries
-                ) %>
-              </span>
-            </div>
-          </li>
-        <% end %>
+          </div>
+        </li>
       </ol>
     </div>
-  </div>=
-  <.live_component
-    module={SafiraWeb.App.HomeLive.FormComponent}
-    id={@current_user.attendee.id || :new}
-    title={@page_title}
-    current_user={@current_user}
-    action={@live_action}
-    attendee={@current_user.attendee}
-    patch={~p"/app"}
-  />
+    <div class="flex flex-col gap-y-8">
+      <div class="flex flex-row justify-between items-center mt-10 pb-2 h-12 border-b-2 border-white">
+        <h1 class="font-semibold font-terminal uppercase px-2">Last badge redeems</h1>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4 min-w-72">
+        <.badge
+          :for={badge <- @attendee_badge_redeems}
+          id={badge.id}
+          badge={badge}
+          width="max-w-48"
+          show_tokens
+        />
+        <.link
+          navigate={~p"/app/badges"}
+          class="text-accent font-semibold font-terminal uppercase m-auto"
+        >
+          <%= gettext("+ View all") %>
+        </.link>
+      </div>
+    </div>
+    <div class="gap-y-8">
+      <div class="flex flex-row justify-between items-center mt-10 pb-2 h-12 border-b-2 border-white">
+        <h1 class="font-semibold font-terminal uppercase px-2">CV Upload</h1>
+      </div>
+      <.live_component
+        module={SafiraWeb.Components.CVUpload}
+        id={@current_user.attendee.id || :new}
+        title={@page_title}
+        current_user={@current_user}
+        in_app={true}
+        action={@live_action}
+        class="min-w-72"
+        patch={~p"/app"}
+      />
+    </div>
+  </div>
 </.page>

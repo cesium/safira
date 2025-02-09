@@ -43,6 +43,7 @@ defmodule Safira.Accounts.User do
     field :confirmed_at, :utc_datetime
     field :type, Ecto.Enum, values: [:attendee, :staff, :company], default: :attendee
     field :allows_marketing, :boolean, default: false
+    field :cv, Uploaders.CV.Type
 
     has_one :attendee, Attendee, on_delete: :delete_all
     has_one :staff, Staff, on_delete: :delete_all, on_replace: :update
@@ -268,5 +269,11 @@ defmodule Safira.Accounts.User do
   def picture_changeset(user, attrs) do
     user
     |> cast_attachments(attrs, [:picture])
+  end
+
+  @doc false
+  def cv_changeset(attendee, attrs) do
+    attendee
+    |> cast_attachments(attrs, [:cv])
   end
 end

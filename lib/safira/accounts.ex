@@ -47,12 +47,11 @@ defmodule Safira.Accounts do
   end
 
   @doc """
-  Lists all attendees with CV.
+  Lists all users with CV.
   """
-  def list_attendees_with_cv do
-    Attendee
-    |> where([at], not is_nil(at.cv))
-    |> preload(:user)
+  def list_users_with_cv do
+    User
+    |> where([user], not is_nil(user.cv))
     |> Repo.all()
   end
 
@@ -78,24 +77,6 @@ defmodule Safira.Accounts do
   def update_attendee(%Attendee{} = attendee, attrs) do
     attendee
     |> Attendee.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Updates an attendee's CV.
-
-  ## Examples
-
-      iex> update_atttendee_cv(badge, %{cv: cv})
-      {:ok, %Badge{}}
-
-      iex> update_attendee_cv(badge, %{cv: bad_cv})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_attendee_cv(%Attendee{} = attendee, attrs) do
-    attendee
-    |> Attendee.cv_changeset(attrs)
     |> Repo.update()
   end
 
@@ -409,6 +390,24 @@ defmodule Safira.Accounts do
   def update_user_picture(%User{} = user, attrs) do
     user
     |> User.picture_changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Updates a user's CV.
+
+  ## Examples
+
+      iex> update_user_cv(user, %{cv: cv})
+      {:ok, %User{}}
+
+      iex> update_user_cv(user, %{cv: bad_cv})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_user_cv(%User{} = user, attrs) do
+    user
+    |> User.cv_changeset(attrs)
     |> Repo.update()
   end
 

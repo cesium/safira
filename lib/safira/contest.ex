@@ -5,7 +5,7 @@ defmodule Safira.Contest do
   use Safira.Context
 
   alias Ecto.Multi
-  alias Safira.Accounts.Attendee
+  alias Safira.Accounts.{Attendee, User}
   alias Safira.{Companies, Spotlights, Workers}
 
   alias Safira.Contest.{
@@ -121,20 +121,35 @@ defmodule Safira.Contest do
   end
 
   @doc """
-  Lists all badge redeems belonging to a badge, where the attendee has uploaded their CV.
+  Lists all users (both attendees and staffs) that have the specified badge and have uploaded their CV.
 
   ## Examples
 
-      iex> list_attendees_with_badge_and_cv(123)
-      [%BadgeRedeem{}, %BadgeRedeem{}]
-
+      iex> list_users_with_badge_and_cv(123)
+      [%User{}, ...]
   """
-  def list_attendees_with_badge_and_cv(badge_id) do
-    Attendee
-    |> join(:inner, [at], br in BadgeRedeem, on: at.id == br.attendee_id)
-    |> where([at, br], br.badge_id == ^badge_id and not is_nil(at.cv))
-    |> preload(:user)
-    |> select([at, br], at)
+  def list_users_with_badge_and_cv(badge_id) do
+    # First query for attendees with badge and CV
+    attendees_query =
+      from u in User,
+        join: at in Attendee,
+        on: at.user_id == u.id,
+        join: br in BadgeRedeem,
+        on: br.attendee_id == at.id,
+        where: br.badge_id == ^badge_id and not is_nil(u.cv),
+        where: u.type == :attendee,
+        select: u.id
+
+    # Then query for staff with badge and CV
+    staff_query =
+      from u in User,
+        where: u.type == :staff and not is_nil(u.cv),
+        select: u.id
+
+    # Combine queries and preload associations after
+    User
+    |> where([u], u.id in subquery(attendees_query |> union(^staff_query)))
+    |> preload([:attendee, :staff])
     |> Repo.all()
   end
 

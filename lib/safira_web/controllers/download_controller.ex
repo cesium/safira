@@ -66,6 +66,27 @@ defmodule SafiraWeb.DownloadController do
     end
   end
 
+  defp read_cv_content(cv_path) do
+    if String.starts_with?(cv_path, "/") do
+      full_path = Path.join(:code.priv_dir(:safira), cv_path)
+
+      if File.exists?(full_path) do
+        {:ok, File.read!(full_path)}
+      else
+        require Logger
+        Logger.error("CV file does not exist at path: #{full_path}")
+        {:error, nil}
+      end
+    else
+      {:ok, HTTPoison.get!(cv_path, [], follow_redirect: true).body}
+    end
+  rescue
+    e ->
+      require Logger
+      Logger.error("Failed to read CV at #{cv_path}: #{inspect(e)}")
+      {:error, nil}
+  end
+
   def cvs(conn, _params) do
     company = conn.assigns.current_user.company
 
@@ -74,27 +95,38 @@ defmodule SafiraWeb.DownloadController do
       |> put_flash(:error, "You do not have permission to view this resource")
       |> redirect(to: ~p"/sponsor")
     else
-      conn =
-        conn
-        |> put_resp_content_type("application/zip")
-        |> put_resp_header("content-disposition", "attachment; filename=sei_cvs.zip")
-        |> send_chunked(200)
+      case Companies.get_cvs(company) do
+        [] ->
+          conn
+          |> put_flash(:error, "No CVs found")
+          |> redirect(to: ~p"/sponsor")
 
-      Companies.get_cvs(company)
-      |> Enum.map(fn {handle, cv} ->
-        Zstream.entry(
-          handle <> ".pdf",
-          [HTTPoison.get!(cv, [], follow_redirect: true).body]
-        )
-      end)
-      |> Zstream.zip()
-      |> Enum.reduce(conn, fn chunk, conn ->
-        case chunk(conn, chunk) do
-          {:ok, conn} -> conn
-          {:error, _reason} -> conn
-        end
-      end)
+        files ->
+          conn
+          |> put_resp_content_type("application/zip")
+          |> put_resp_header("content-disposition", "attachment; filename=sei_cvs.zip")
+          |> send_chunked(200)
+          |> stream_cvs_zip(files)
+      end
     end
+  end
+
+  defp stream_cvs_zip(conn, files) do
+    files
+    |> Stream.map(fn {handle, cv_path} ->
+      case read_cv_content(cv_path) do
+        {:ok, content} -> Zstream.entry("#{handle}.pdf", [content])
+        {:error, _} -> nil
+      end
+    end)
+    |> Stream.reject(&is_nil/1)
+    |> Zstream.zip()
+    |> Enum.reduce(conn, fn chunk, conn ->
+      case chunk(conn, chunk) do
+        {:ok, conn} -> conn
+        {:error, _reason} -> conn
+      end
+    end)
   end
 
   defp write_attendees_csv do
@@ -110,10 +142,10 @@ defmodule SafiraWeb.DownloadController do
   end
 
   defp write_cv_challenge_csv do
-    Accounts.list_attendees_with_cv()
-    |> Enum.map_join("\n", fn att ->
+    Accounts.list_users_with_cv()
+    |> Enum.map_join("\n", fn user ->
       [
-        "#{att.user.id},#{att.user.name},#{att.user.handle}"
+        "#{user.id},#{user.name},#{user.handle}"
       ]
     end)
     |> to_string()

@@ -3,6 +3,8 @@ defmodule SafiraWeb.App.HomeLive.Index do
 
   alias Safira.Contest
 
+  import SafiraWeb.Components.Badge
+
   @impl true
   def mount(_params, _session, socket) do
     # if connected?(socket) do
@@ -28,12 +30,19 @@ defmodule SafiraWeb.App.HomeLive.Index do
     prizes_by_next_level = [10, 20, 40, 100]
     next_prize = Enum.at(prizes_by_next_level, user_level)
 
+    attendee_badge_reddeems =
+      Contest.list_attendee_all_badges_redeem_status(
+        socket.assigns.current_user.attendee.id,
+        true
+      )
+
     {:ok,
      assign(socket,
        checkpoint_badges: checkpoint_badges,
        user_level: user_level,
        companies_to_next_level: companies_to_next_level,
        attendee_badge_count: length(attendee_badges),
+       attendee_badge_redeems: attendee_badge_reddeems |> Enum.take(3),
        next_prize: next_prize,
        max_level: max_level
      )}
