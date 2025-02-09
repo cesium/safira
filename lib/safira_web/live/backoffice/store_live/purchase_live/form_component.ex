@@ -44,9 +44,14 @@ defmodule SafiraWeb.Backoffice.PurchaseLive.FormComponent do
     handle_action(socket.assigns.action, socket)
   end
 
+  @impl true
+  def handle_event("cancel", _params, socket) do
+    {:noreply, socket |> push_patch(to: ~p"/dashboard/store/purchases")}
+  end
+
   defp handle_action(:redeem, socket) do
     case Inventory.update_item(socket.assigns.item, %{redeemed_at: DateTime.utc_now()}) do
-      {:ok, item} ->
+      {:ok, _item} ->
         {:noreply,
          socket
          |> put_flash(:info, "This purchase was successfully marked as delivered.")
@@ -70,11 +75,6 @@ defmodule SafiraWeb.Backoffice.PurchaseLive.FormComponent do
       {:error, _} ->
         {:noreply, socket}
     end
-  end
-
-  @impl true
-  def handle_event("cancel", _params, socket) do
-    {:noreply, socket |> push_patch(to: ~p"/dashboard/store/purchases")}
   end
 
   defp confirmation_title(:redeem, name),

@@ -248,6 +248,8 @@ defmodule SafiraWeb.Router do
             live "/", Index, :index
             live "/new", Index, :new
             live "/:id/edit", Index, :edit
+            live "/:id", Show, :show
+            live "/:id/show/edit", Show, :edit
           end
 
           scope "/purchases", PurchaseLive do
@@ -255,9 +257,6 @@ defmodule SafiraWeb.Router do
             live "/:id/redeemed", Index, :redeem
             live "/:id/refund", Index, :refund
           end
-
-          live "/:id", ProductLive.Show, :show
-          live "/:id/show/edit", ProductLive.Show, :edit
         end
 
         scope "/badges", BadgeLive do
