@@ -8,6 +8,11 @@
         path={~p"/dashboard/minigames/prizes"}
         placeholder={gettext("Search for prizes")}
       />
+      <.link navigate={~p"/dashboard/minigames/prizes/daily"}>
+        <.button>
+          <.icon name="hero-calendar-days" class="w-5" />
+        </.button>
+      </.link>
       <.ensure_permissions user={@current_user} permissions={%{"minigames" => ["edit"]}}>
         <.link patch={~p"/dashboard/minigames/prizes/new"}>
           <.button>New Prize</.button>
@@ -57,6 +62,22 @@
   <.live_component
     module={SafiraWeb.PrizeLive.FormComponent}
     id={@prize.id || :new}
+    title={@page_title}
+    action={@live_action}
+    prize={@prize}
+    patch={~p"/dashboard/minigames/prizes"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action == :daily}
+  id="prize-daily-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/minigames/prizes")}
+>
+  <.live_component
+    module={SafiraWeb.PrizeLive.Daily.FormComponent}
+    id={:daily_new}
     title={@page_title}
     action={@live_action}
     prize={@prize}

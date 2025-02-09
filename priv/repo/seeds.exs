@@ -8,7 +8,7 @@ defmodule Safira.Repo.Seeds do
 
   def run do
     [
-      "teams.exs",
+      "event.exs",
       "roles.exs",
       "constants.exs",
       "courses.exs",
@@ -20,8 +20,8 @@ defmodule Safira.Repo.Seeds do
       "challenges.exs",
       "companies.exs",
       "activities.exs",
-      "event.exs",
-      "slots.exs"
+      "slots.exs",
+      "teams.exs"
     ]
     |> Enum.each(fn file ->
       Code.require_file("#{@seeds_dir}/#{file}")

@@ -14,6 +14,7 @@ defmodule Safira.Contest do
     BadgeCondition,
     BadgeRedeem,
     BadgeTrigger,
+    DailyPrize,
     DailyTokens
   }
 
@@ -328,6 +329,100 @@ defmodule Safira.Contest do
   end
 
   @doc """
+  Lists all daily prizes
+
+  ## Examples
+
+    iex> list_prizes()
+      [%DailyPrize{}, %DailyPrize{}]
+  """
+  def list_daily_prizes do
+    DailyPrize
+    |> order_by([dp], asc: fragment("? NULLS FIRST", dp.date), asc: dp.place)
+    |> Repo.all()
+    |> Repo.preload([:prize])
+  end
+
+  @doc """
+  Gets a single daily prize.
+
+  Raises `Ecto.NoResultsError` if the daily prize does not exist.
+
+  ## Examples
+
+      iex> get_daily_prize!(123)
+      %Badge{}
+
+      iex> get_daily_prize!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_daily_prize!(id) do
+    Repo.get!(DailyPrize, id)
+  end
+
+  @doc """
+  Creates a daily prize.
+
+  ## Examples
+
+      iex> create_daily_prize(%{field: value})
+      {:ok, %DailyPrize{}}
+
+      iex> create_daily_prize(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_daily_prize(attrs \\ %{}) do
+    %DailyPrize{}
+    |> DailyPrize.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a daily_prize.
+
+  ## Examples
+
+      iex> update_daily_prize(daily_prize, %{field: new_value})
+      {:ok, %DailyPrize{}}
+
+      iex> update_daily_prize(daily_prize, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_daily_prize(%DailyPrize{} = daily_prize, attrs \\ %{}) do
+    daily_prize
+    |> DailyPrize.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking daily prize changes.
+
+  ## Examples
+
+      iex> change_daily_prize()
+      %Ecto.Changeset{data: %Badge{}}
+
+  """
+  def change_daily_prize(%DailyPrize{} = daily_prize, attrs \\ %{}) do
+    DailyPrize.changeset(daily_prize, attrs)
+  end
+
+  @doc """
+  Deletes a daily prize.
+
+  ## Examples
+
+      iex> delete_daily_prize(daily_prize)
+      {:ok, %DailyPrize{}}
+  """
+  def delete_daily_prize(%DailyPrize{} = daily_prize) do
+    Repo.delete(daily_prize)
+  end
+
+  @doc """
   Gets the company associated with a badge.
 
   ## Examples
@@ -536,6 +631,88 @@ defmodule Safira.Contest do
   def change_attendee_tokens(attendee, tokens) do
     change_attendee_tokens_transaction(attendee, tokens)
     |> Repo.transaction()
+  end
+
+  @doc """
+  Gets the top ranking attendees in a given day
+
+  ## Examples
+
+  iex> leaderboard(~D[2025-02-10], 10)
+  [%{attendee_id: id, position: 1, name: John Doe, tokens: 10, badges: 20}, ...]
+
+  """
+  def leaderboard(day, limit \\ 10) do
+    daily_leaderboard_query(day)
+    |> limit(^limit)
+    |> presentation_query()
+    |> Repo.all()
+  end
+
+  @doc """
+  Gets the position of the given attendee on the daily leaderboard
+
+  ## Examples
+
+  iex> leaderboard_position(~D[2025-02-10], id)
+  %{attendee_id: id, position: 1, name: John Doe, tokens: 10, badges: 20}
+
+  """
+  def leaderboard_position(day, attendee_id) do
+    daily_leaderboard_query(day)
+    |> presentation_query()
+    |> subquery()
+    |> where([u], u.attendee_id == ^attendee_id)
+    |> Repo.one()
+  end
+
+  defp daily_leaderboard_query(day) do
+    daily_leaderboard_tokens_query(day)
+    |> join(:inner, [dt], rd in subquery(daily_leaderboard_redeem_query(day)),
+      on: dt.attendee_id == rd.attendee_id
+    )
+    |> sort_query()
+  end
+
+  defp daily_leaderboard_redeem_query(day) do
+    day_time = DateTime.new!(day, ~T[00:00:00], "Etc/UTC")
+    start_time = Timex.beginning_of_day(day_time)
+    end_time = Timex.end_of_day(day_time)
+
+    BadgeRedeem
+    |> join(:inner, [rd], b in Badge, on: rd.badge_id == b.id)
+    |> where([rd], rd.inserted_at >= ^start_time and rd.inserted_at <= ^end_time)
+    |> where([rd, b], b.counts_for_day)
+    |> group_by([rd], rd.attendee_id)
+    |> select([rd], %{redeem_count: count(rd.id), attendee_id: rd.attendee_id})
+  end
+
+  defp daily_leaderboard_tokens_query(day) do
+    start_time = Timex.beginning_of_day(day)
+    end_time = Timex.end_of_day(day)
+
+    DailyTokens
+    |> where([dt], dt.date >= ^start_time and dt.date <= ^end_time)
+  end
+
+  defp sort_query(query) do
+    query
+    |> order_by([dt, rd], desc: rd.redeem_count, desc: dt.tokens)
+  end
+
+  defp presentation_query(query) do
+    query
+    |> join(:inner, [dt, rd], at in Safira.Accounts.Attendee, on: at.id == rd.attendee_id)
+    |> join(:inner, [dt, rd, at], u in Safira.Accounts.User, on: u.id == at.user_id)
+    |> select([dt, rd, at, u], %{
+      attendee_id: at.id,
+      position:
+        fragment("row_number() OVER (ORDER BY ? DESC, ? DESC)", rd.redeem_count, dt.tokens),
+      name: u.name,
+      handle: u.handle,
+      badges: rd.redeem_count,
+      tokens: dt.tokens
+    })
   end
 
   @doc """

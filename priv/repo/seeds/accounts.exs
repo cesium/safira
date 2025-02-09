@@ -3,6 +3,8 @@ defmodule Safira.Repo.Seeds.Accounts do
   alias Safira.Repo
   alias Safira.Roles
   alias Safira.Accounts.{Attendee, User}
+  alias Safira.Contest.DailyTokens
+  alias Safira.Event
 
   @names File.read!("priv/fake/names.txt") |> String.split("\n")
 
@@ -56,8 +58,12 @@ defmodule Safira.Repo.Seeds.Accounts do
       case User.registration_changeset(%User{}, Map.delete(attrs, "attendee")) |> Repo.insert() do
         {:ok, user} ->
           case Attendee.changeset(%Attendee{}, Map.put(Map.get(attrs, "attendee"), "user_id", user.id)) |> Repo.insert() do
-            {:ok, _attendee} ->
+            {:ok, attendee} ->
               Repo.update!(Accounts.User.confirm_changeset(user))
+              # Create daily tokens
+              for date <- Event.list_event_dates() do
+                Repo.insert(%DailyTokens{attendee_id: attendee.id, tokens: attendee.tokens, date: date})
+              end
             {:error, changeset} ->
               Mix.shell().error(Kernel.inspect(changeset.errors))
           end
