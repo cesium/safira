@@ -53,7 +53,7 @@ defmodule SafiraWeb.Backoffice.ScannerLive.InventoryLive.Show do
               <div :if={!item.redeemed_at} class="flex justify-center items-center">
                 <span
                   phx-click="deliver"
-                  class="rounded-full border px-2 py-1 border-dark dark:border-light cursor-pointer hover:bg-dark/10 dark:hover:bg-light"
+                  class="w-8 h-8 flex items-center justify-center rounded-full border border-dark dark:border-light cursor-pointer hover:bg-dark/10 dark:hover:bg-light"
                   phx-value-id={item.id}
                 >
                   <.icon name="hero-check" class="w-5 h-5" />
