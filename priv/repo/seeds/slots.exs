@@ -9,7 +9,7 @@ defmodule Safira.Repo.Seeds.Slots do
         seed_slots_reel_icons()
 
       _ ->
-        Mix.shell().info("Slots seeds already exist, aborting seeding slots.")
+        Mix.shell().error("Slots seeds already exist, aborting seeding slots.")
     end
   end
 

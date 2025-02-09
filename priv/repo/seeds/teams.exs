@@ -50,8 +50,7 @@ defmodule Safira.Repo.Seeds.Teams do
 
     case Teams.create_team_member(attrs) do
       {:ok, _member} ->
-        Mix.shell().info("Inserted team member: #{member}")
-
+        nil
       {:error, _changeset} ->
         Mix.shell().error("Failed to insert team member: #{member}")
     end
