@@ -8,43 +8,44 @@ defmodule SafiraWeb.Backoffice.ScannerLive.InventoryLive.Index do
   @impl true
   def render(assigns) do
     ~H"""
-    <div class="-translate-y-4 sm:translate-y-0">
-      <.tabs class="sm:hidden mb-4">
-        <.link patch={~p"/dashboard/scanner"} class="w-full">
-          <.tab class="gap-2">
-            <.icon name="hero-check-badge" />
-            <%= gettext("Badges") %>
+    <div>
+      <div class="-translate-y-4 sm:translate-y-0">
+        <.tabs class="sm:hidden mb-4">
+          <.link patch={~p"/dashboard/scanner"} class="w-full">
+            <.tab class="gap-2">
+              <.icon name="hero-check-badge" />
+              <%= gettext("Badges") %>
+            </.tab>
+          </.link>
+          <.tab active class="gap-2">
+            <.icon name="hero-gift" />
+            <%= gettext("Redeems") %>
           </.tab>
-        </.link>
-        <.tab active class="gap-2">
-          <.icon name="hero-gift" />
-          <%= gettext("Redeems") %>
-        </.tab>
-      </.tabs>
-      <.page title={gettext("Attendee Redeems")}>
-        <div
-          id="qr-scanner"
-          phx-hook="QrScanner"
-          data-ask_perm="permission-button"
-          data-open_on_mount
-          data-on_start="document.getElementById('scan-info').style.display = 'none'"
-          data-on_success="scan"
-          class="relative"
-        >
-        </div>
-        <div id="scan-info" class="flex flex-col items-center gap-8 text-center py-40">
-          <p id="loadingMessage">
-            <%= gettext("Unable to access camera.") %>
-            <%= gettext(
-              "Make sure you allow the use of your camera on this browser and that it isn't being used elsewhere."
-            ) %>
-          </p>
-          <.button id="permission-button" type="button">
-            <%= gettext("Request Permission") %>
-          </.button>
-        </div>
-      </.page>
-
+        </.tabs>
+        <.page title={gettext("Attendee Redeems")}>
+          <div
+            id="qr-scanner"
+            phx-hook="QrScanner"
+            data-ask_perm="permission-button"
+            data-open_on_mount
+            data-on_start="document.getElementById('scan-info').style.display = 'none'"
+            data-on_success="scan"
+            class="relative"
+          >
+          </div>
+          <div id="scan-info" class="flex flex-col items-center gap-8 text-center py-40">
+            <p id="loadingMessage">
+              <%= gettext("Unable to access camera.") %>
+              <%= gettext(
+                "Make sure you allow the use of your camera on this browser and that it isn't being used elsewhere."
+              ) %>
+            </p>
+            <.button id="permission-button" type="button">
+              <%= gettext("Request Permission") %>
+            </.button>
+          </div>
+        </.page>
+      </div>
       <.modal
         :if={@modal_data != nil}
         id="modal-scan-error"
