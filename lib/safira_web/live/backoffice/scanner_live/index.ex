@@ -3,7 +3,7 @@ defmodule SafiraWeb.Backoffice.ScannerLive.Index do
 
   alias Safira.Contest
 
-  import SafiraWeb.Components.{Badge, TableSearch}
+  import SafiraWeb.Components.{Badge, TableSearch, Tabs}
 
   @impl true
   def mount(_params, _session, socket) do

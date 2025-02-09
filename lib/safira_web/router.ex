@@ -331,6 +331,11 @@ defmodule SafiraWeb.Router do
           scope "/badge", BadgeLive do
             live "/:id/give", Index, :edit
           end
+
+          scope "/redeems", InventoryLive do
+            live "/", Index, :index
+            live "/:id", Show, :show
+          end
         end
       end
     end
