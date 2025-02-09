@@ -1,4 +1,4 @@
-defmodule SafiraWeb.Backoffice.ProductLive.PurchaseLive.FormComponent do
+defmodule SafiraWeb.Backoffice.PurchaseLive.FormComponent do
   use SafiraWeb, :live_component
 
   alias Safira.Inventory
@@ -7,53 +7,62 @@ defmodule SafiraWeb.Backoffice.ProductLive.PurchaseLive.FormComponent do
   @impl true
   def render(assigns) do
     ~H"""
-    <div>
-      <.page title={@title}>
-        <div class="flex flex-col">
-          <p class="text-center text-2xl mb-4">Are you sure?</p>
-          <p class="text-center pb-6">
-            <%= gettext(
-              "Are you sure you want to %{title} this purchase?",
-              title:
-                if @title == "Redeem Purchase" do
-                  "deliver"
-                else
-                  "refund"
-                end
-            ) %>
-          </p>
-          <div class="flex justify-center space-x-8">
-            <.button phx-click="cancel" class="w-full" phx-target={@myself} type="button">
-              Cancel
-            </.button>
-            <%= if @title == "Redeem Purchase" do %>
-              <.button phx-click="confirm-redemed" class="w-full" phx-target={@myself} type="button">
-                Redeem
-              </.button>
-            <% else %>
-              <.button phx-click="confirm-refund" class="w-full" phx-target={@myself} type="button">
-                Refund
-              </.button>
-            <% end %>
-          </div>
+    <div class="flex flex-col gap-4 w-full">
+      <h1 class="font-semibold text-xl">
+        <%= confirmation_title(@action, @item.product.name) %>
+      </h1>
+      <div class="flex gap-6 flex-col">
+        <p>
+          <%= confimation_message(@action) %>
+        </p>
+
+        <div class="flex flex-row w-full gap-2">
+          <.button
+            phx-click="cancel"
+            phx-target={@myself}
+            class="w-full flex flex-row items-center justify-center"
+          >
+            <.icon name="hero-x-circle" class="w-5 h-5 mr-2" />
+            <%= gettext("Cancel") %>
+          </.button>
+          <.button
+            phx-click="confirm-action"
+            phx-target={@myself}
+            class="w-full flex flex-row items-center justify-center"
+          >
+            <.icon name="hero-check-circle" class="w-5 h-5 mr-2" />
+            <%= confirmation_button(@action) %>
+          </.button>
         </div>
-      </.page>
+      </div>
     </div>
     """
   end
 
   @impl true
-  def handle_event("confirm-redemed", _params, socket) do
+  def handle_event("confirm-action", _params, socket) do
+    handle_action(socket.assigns.action, socket)
+  end
+
+  @impl true
+  def handle_event("cancel", _params, socket) do
+    {:noreply, socket |> push_patch(to: ~p"/dashboard/store/purchases")}
+  end
+
+  defp handle_action(:redeem, socket) do
     case Inventory.update_item(socket.assigns.item, %{redeemed_at: DateTime.utc_now()}) do
       {:ok, _item} ->
-        {:noreply, socket |> push_patch(to: ~p"/dashboard/store/products/purchases")}
+        {:noreply,
+         socket
+         |> put_flash(:info, "This purchase was successfully marked as delivered.")
+         |> push_navigate(to: ~p"/dashboard/store/purchases")}
 
       {:error, _reason} ->
         {:noreply, socket}
     end
   end
 
-  def handle_event("confirm-refund", _params, socket) do
+  defp handle_action(:refund, socket) do
     id = socket.assigns.item.id
 
     case Store.refund_transaction(id) do
@@ -61,15 +70,29 @@ defmodule SafiraWeb.Backoffice.ProductLive.PurchaseLive.FormComponent do
         {:noreply,
          socket
          |> put_flash(:info, "This purchase was successfully refunded.")
-         |> push_patch(to: ~p"/dashboard/store/products/purchases")}
+         |> push_navigate(to: ~p"/dashboard/store/purchases")}
 
       {:error, _} ->
         {:noreply, socket}
     end
   end
 
-  @impl true
-  def handle_event("cancel", _params, socket) do
-    {:noreply, socket |> push_patch(to: ~p"/dashboard/store/products/purchases")}
-  end
+  defp confirmation_title(:redeem, name),
+    do: gettext("Deliver %{product_name}", product_name: name)
+
+  defp confirmation_title(:refund, name),
+    do: gettext("Refund %{product_name}", product_name: name)
+
+  defp confimation_message(:redeem),
+    do:
+      gettext(
+        "Are you sure you want to mark this item as delivered? This action is not reversible."
+      )
+
+  defp confimation_message(:refund),
+    do: gettext("Are you sure you want to refund this purchase? This action is not reversible.")
+
+  defp confirmation_button(:redeem), do: gettext("Deliver")
+
+  defp confirmation_button(:refund), do: gettext("Refund")
 end

@@ -13,8 +13,10 @@
           <.button>New Product</.button>
         </.link>
       </.ensure_permissions>
-      <.link patch={~p"/dashboard/store/products/purchases"}>
-        <.button><%= gettext("View Purchases") %></.button>
+      <.link patch={~p"/dashboard/store/purchases"}>
+        <.button class="flex flex-row items-center gap-2">
+          <.icon name="hero-shopping-cart" /><%= gettext("Purchases") %>
+        </.button>
       </.link>
     </div>
   </:actions>

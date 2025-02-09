@@ -1,4 +1,4 @@
-defmodule SafiraWeb.Backoffice.ProductLive.PurchaseLive.Index do
+defmodule SafiraWeb.Backoffice.PurchaseLive.Index do
   use SafiraWeb, :backoffice_view
 
   alias Safira.Inventory
@@ -41,14 +41,30 @@ defmodule SafiraWeb.Backoffice.ProductLive.PurchaseLive.Index do
   end
 
   def apply_action(socket, :redeem, %{"id" => id}) do
-    socket
-    |> assign(:page_title, "Redeem Purchase")
-    |> assign(:item, Inventory.get_item!(id))
+    item = Inventory.get_item!(id)
+
+    if item.redeemed_at do
+      socket
+      |> put_flash(:error, "This purchase has already been redeemed.")
+      |> push_navigate(to: ~p"/dashboard/store/purchases")
+    else
+      socket
+      |> assign(:page_title, "Redeem Purchase")
+      |> assign(:item, item)
+    end
   end
 
   def apply_action(socket, :refund, %{"id" => id}) do
-    socket
-    |> assign(:page_title, "Refund Purchase")
-    |> assign(:item, Inventory.get_item!(id))
+    item = Inventory.get_item!(id)
+
+    if item.redeemed_at || item.type != :product do
+      socket
+      |> put_flash(:error, "This purchase can't be refunded.")
+      |> push_navigate(to: ~p"/dashboard/store/purchases")
+    else
+      socket
+      |> assign(:page_title, "Redeem Purchase")
+      |> assign(:item, item)
+    end
   end
 end
