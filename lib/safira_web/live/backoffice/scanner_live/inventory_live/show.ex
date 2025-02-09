@@ -67,7 +67,7 @@ defmodule SafiraWeb.Backoffice.ScannerLive.InventoryLive.Show do
         :if={@selected_item != nil}
         id="deliver-item-modal"
         show
-        wrapper_class="px-4"
+        wrapper_class="px-2"
         on_cancel={JS.push("cancel-deliver")}
       >
         <h1 class="font-semibold text-xl">
@@ -81,11 +81,17 @@ defmodule SafiraWeb.Backoffice.ScannerLive.InventoryLive.Show do
           </p>
 
           <div class="flex flex-row w-full gap-2">
-            <.button phx-click="cancel-deliver" class="w-full">
+            <.button
+              phx-click="cancel-deliver"
+              class="w-full flex flex-row items-center justify-center"
+            >
               <.icon name="hero-x-circle" class="w-5 h-5 mr-2" />
               <%= gettext("Cancel") %>
             </.button>
-            <.button phx-click="confirm-deliver" class="w-full">
+            <.button
+              phx-click="confirm-deliver"
+              class="w-full flex flex-row items-center justify-center"
+            >
               <.icon name="hero-check-circle" class="w-5 h-5 mr-2" />
               <%= gettext("Deliver") %>
             </.button>
@@ -112,7 +118,13 @@ defmodule SafiraWeb.Backoffice.ScannerLive.InventoryLive.Show do
 
   @impl true
   def handle_event("deliver", %{"id" => id}, socket) do
-    {:noreply, assign(socket, :selected_item, Inventory.get_item!(id))}
+    item = Inventory.get_item!(id)
+
+    if item.redeemed_at || item.attendee_id != socket.assigns.attendee.id do
+      {:noreply, socket}
+    else
+      {:noreply, assign(socket, :selected_item, item)}
+    end
   end
 
   @impl true
