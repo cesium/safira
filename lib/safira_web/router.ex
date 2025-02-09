@@ -246,6 +246,12 @@ defmodule SafiraWeb.Router do
           live "/new", Index, :new
           live "/:id/edit", Index, :edit
 
+          scope "/purchases", PurchaseLive do
+            live "/", Index, :show
+            live "/:id/redeemed", Index, :redeem
+            live "/:id/refund", Index, :refund
+          end
+
           live "/:id", Show, :show
           live "/:id/show/edit", Show, :edit
         end

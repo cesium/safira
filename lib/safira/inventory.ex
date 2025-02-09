@@ -2,6 +2,7 @@ defmodule Safira.Inventory do
   @moduledoc """
   The Inventory context.
   """
+  use Safira.Context
 
   import Ecto.Query, warn: false
   alias Safira.Repo
@@ -21,6 +22,12 @@ defmodule Safira.Inventory do
     Repo.all(Item)
   end
 
+  def list_items(opts) when is_list(opts) do
+    Item
+    |> apply_filters(opts)
+    |> Repo.all()
+  end
+
   @doc """
   Gets a single item.
 
@@ -35,7 +42,11 @@ defmodule Safira.Inventory do
       ** (Ecto.NoResultsError)
 
   """
-  def get_item!(id), do: Repo.get!(Item, id)
+  def get_item!(id) do
+    Item
+    |> preload([:product, :attendee])
+    |> Repo.get!(id)
+  end
 
   @doc """
   Creates a item.
