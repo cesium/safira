@@ -33,6 +33,11 @@ defmodule SafiraWeb.Landing.HomeLive.Components.Partners do
         name: "IPDJ",
         url: "https://ipdj.gov.pt",
         logo: "ipdj.svg"
+      },
+      %{
+        name: "wUMrm",
+        url: "https://wumrm.github.io/",
+        logo: "wumrm.svg"
       }
     ]
   end

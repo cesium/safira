@@ -17,7 +17,11 @@ defmodule SafiraWeb.UserAuth do
   @remember_me_options [sign: true, max_age: @max_age, same_site: "Lax"]
 
   # Redirect paths after login based on user type.
-  @redirect_after_login_paths %{attendee: "/app/", staff: "/dashboard/attendees"}
+  @redirect_after_login_paths %{
+    attendee: "/app/",
+    staff: "/dashboard/attendees",
+    company: "/sponsor/scanner"
+  }
 
   @doc """
   Logs the user in.

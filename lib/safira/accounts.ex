@@ -6,6 +6,7 @@ defmodule Safira.Accounts do
   use Safira.Context
 
   alias Safira.Accounts.{Attendee, Course, Credential, Staff, User, UserNotifier, UserToken}
+  alias Safira.Companies.Company
   alias Safira.Contest
 
   ## Database getters
@@ -46,6 +47,16 @@ defmodule Safira.Accounts do
   end
 
   @doc """
+  Lists all attendees with CV.
+  """
+  def list_attendees_with_cv do
+    Attendee
+    |> where([at], not is_nil(at.cv))
+    |> preload(:user)
+    |> Repo.all()
+  end
+
+  @doc """
   Gets a single attendee by user id.
   """
   def get_user_attendee(user_id) do
@@ -62,6 +73,34 @@ defmodule Safira.Accounts do
     |> where(id: ^id)
     |> apply_filters(opts)
     |> Repo.one!()
+  end
+
+  def update_attendee(%Attendee{} = attendee, attrs) do
+    attendee
+    |> Attendee.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Updates an attendee's CV.
+
+  ## Examples
+
+      iex> update_atttendee_cv(badge, %{cv: cv})
+      {:ok, %Badge{}}
+
+      iex> update_attendee_cv(badge, %{cv: bad_cv})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_attendee_cv(%Attendee{} = attendee, attrs) do
+    attendee
+    |> Attendee.cv_changeset(attrs)
+    |> Repo.update()
+  end
+
+  def change_attendee(%Attendee{} = attendee, attrs \\ %{}) do
+    Attendee.changeset(attendee, attrs)
   end
 
   @doc """
@@ -84,6 +123,16 @@ defmodule Safira.Accounts do
   end
 
   @doc """
+  Gets a single company by user id.
+  """
+  def get_user_company(user_id, opts \\ []) do
+    Company
+    |> where(user_id: ^user_id)
+    |> apply_filters(opts)
+    |> Repo.one()
+  end
+
+  @doc """
   Gets a single staff.
   """
   def get_staff!(id) do
@@ -98,6 +147,7 @@ defmodule Safira.Accounts do
       user.type,
       case user.type do
         :attendee -> get_user_attendee(user.id)
+        :company -> get_user_company(user.id, preloads: [:tier])
         :staff -> get_user_staff(user.id, preloads: [:role])
       end
     )
@@ -132,23 +182,17 @@ defmodule Safira.Accounts do
     |> Flop.validate_and_run(params, for: User)
   end
 
-  def update_staff(%Staff{} = staff, attrs) do
-    Staff.changeset(staff, attrs)
+  def update_user(%User{} = user, attrs) do
+    user
+    |> User.changeset(attrs)
     |> Repo.update()
   end
 
   @doc """
   Changes a staff
   """
-  def change_staff(%Staff{} = staff, attrs) do
+  def change_staff(%Staff{} = staff, attrs \\ %{}) do
     Staff.changeset(staff, attrs)
-  end
-
-  @doc """
-  Changes an attendee.
-  """
-  def change_attendee(%Attendee{} = attendee, attrs) do
-    Attendee.changeset(attendee, attrs)
   end
 
   @doc """
@@ -246,9 +290,34 @@ defmodule Safira.Accounts do
 
   """
   def register_staff_user(attrs) do
-    %User{}
-    |> User.registration_changeset(attrs |> Map.put(:type, :staff))
-    |> Repo.insert()
+    attrs = attrs |> Map.put("type", :staff)
+
+    Ecto.Multi.new()
+    |> Ecto.Multi.insert(
+      :user,
+      User.registration_changeset(
+        %User{},
+        Map.delete(attrs, "staff"),
+        hash_password: true,
+        validate_email: true
+      )
+    )
+    |> Ecto.Multi.insert(
+      :staff,
+      fn %{user: user} ->
+        staff_attrs =
+          attrs
+          |> Map.get("staff")
+          |> Map.put("user_id", user.id)
+
+        Staff.changeset(%Staff{}, staff_attrs)
+      end
+    )
+    |> Ecto.Multi.update(
+      :new_user,
+      fn %{user: user} -> User.confirm_changeset(user) end
+    )
+    |> Repo.transaction()
   end
 
   @doc """

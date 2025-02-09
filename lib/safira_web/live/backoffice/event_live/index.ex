@@ -3,6 +3,7 @@ defmodule SafiraWeb.Backoffice.EventLive.Index do
 
   alias Safira.Event
   alias Safira.Event.Faq
+  alias Safira.Teams
 
   on_mount {SafiraWeb.StaffRoles,
             show: %{"event" => ["show"]},
@@ -57,6 +58,46 @@ defmodule SafiraWeb.Backoffice.EventLive.Index do
     socket
     |> assign(:page_title, "New FAQ")
     |> assign(:faq, %Faq{})
+  end
+
+  defp apply_action(socket, :teams, _params) do
+    socket
+    |> assign(:page_title, "Teams")
+  end
+
+  defp apply_action(socket, :teams_new, _params) do
+    socket
+    |> assign(:page_title, "New Team")
+    |> assign(:team, %Teams.Team{})
+  end
+
+  defp apply_action(socket, :teams_edit, %{"team_id" => team_id}) do
+    socket
+    |> assign(:page_title, "Edit Team")
+    |> assign(:team, Teams.get_team!(team_id))
+  end
+
+  defp apply_action(socket, :teams_members, %{"team_id" => team_id}) do
+    socket
+    |> assign(:page_title, "New Team Member")
+    |> assign(:team, Teams.get_team!(team_id))
+    |> assign(:members, Teams.list_team_members(team_id))
+    |> assign(:member, %Teams.TeamMember{})
+  end
+
+  defp apply_action(socket, :teams_members_edit, %{"id" => member_id}) do
+    case Teams.get_team_member!(member_id) do
+      nil ->
+        socket
+        |> put_flash(:error, "Team member not found")
+        |> push_patch(to: socket.assigns.patch)
+
+      member ->
+        socket
+        |> assign(:page_title, "Edit Team Member")
+        |> assign(:team, member.team)
+        |> assign(:member, member)
+    end
   end
 
   defp apply_action(socket, :credentials, _params) do

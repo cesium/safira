@@ -26,6 +26,7 @@ defmodule SafiraWeb.Router do
     live_session :default, on_mount: [{SafiraWeb.UserAuth, :mount_current_user}] do
       live "/", HomeLive.Index, :index
       live "/faqs", FAQLive.Index, :index
+      live "/team", TeamLive.Index, :index
       live "/schedule", ScheduleLive.Index, :index
       live "/challenges", ChallengesLive.Index, :index
       live "/speakers", SpeakersLive.Index, :index
@@ -85,9 +86,6 @@ defmodule SafiraWeb.Router do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
 
-      pipe_through [:require_confirmed_user]
-      live "/scanner", ScannerLive.Index, :index
-
       scope "/app", App do
         pipe_through [:require_attendee_user]
 
@@ -103,6 +101,7 @@ defmodule SafiraWeb.Router do
         pipe_through [:require_credential]
 
         live "/", HomeLive.Index, :index
+        live "/edit", HomeLive.Index, :edit
 
         live "/leaderboard", LeaderboardLive.Index, :index
 
@@ -131,9 +130,24 @@ defmodule SafiraWeb.Router do
       end
 
       scope "/downloads" do
-        pipe_through [:require_staff_user]
-        get "/attendees", CSVController, :attendees_data
-        post "/qr_codes", CSVController, :generate_credentials
+        scope "/" do
+          pipe_through [:require_staff_user]
+          get "/attendees", DownloadController, :attendees_data
+          post "/qr_codes", DownloadController, :generate_credentials
+          get "/cv_challenge", DownloadController, :cv_challenge
+        end
+
+        scope "/" do
+          pipe_through [:require_company_user]
+          get "/cvs", DownloadController, :cvs
+        end
+      end
+
+      scope "/sponsor", Sponsor do
+        pipe_through :require_company_user
+
+        live "/", HomeLive.Index, :index
+        live "/scanner", ScannerLive.Index, :index
       end
 
       scope "/dashboard", Backoffice do
@@ -167,10 +181,23 @@ defmodule SafiraWeb.Router do
             live "/new", Index, :faqs_new
             live "/:id/edit", Index, :faqs_edit
           end
+
+          scope "/teams" do
+            live "/", Index, :teams
+            live "/new", Index, :teams_new
+
+            scope "/:team_id/edit" do
+              live "/", Index, :teams_edit
+              live "/members", Index, :teams_members
+              live "/members/:id", Index, :teams_members_edit
+            end
+          end
         end
 
         scope "/staffs", StaffLive do
           live "/", Index, :index
+          live "/new", Index, :new
+
           live "/:id/edit", Index, :edit
 
           scope "/roles" do
@@ -220,6 +247,12 @@ defmodule SafiraWeb.Router do
           live "/", Index, :index
           live "/new", Index, :new
           live "/:id/edit", Index, :edit
+
+          scope "/purchases", PurchaseLive do
+            live "/", Index, :show
+            live "/:id/redeemed", Index, :redeem
+            live "/:id/refund", Index, :refund
+          end
 
           live "/:id", Show, :show
           live "/:id/show/edit", Show, :edit

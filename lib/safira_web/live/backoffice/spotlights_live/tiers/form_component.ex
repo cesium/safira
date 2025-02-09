@@ -14,7 +14,13 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Tiers.FormComponent do
       <.page title={@title}>
         <.simple_form for={@form} id="tier-form" phx-target={@myself} phx-submit="save">
           <div class="w-full space-y-2">
-            <.field field={@form[:spotlight_multiplier]} type="number" label="Multiplier" required />
+            <.field
+              field={@form[:spotlight_multiplier]}
+              type="number"
+              step="0.1"
+              label="Multiplier"
+              required
+            />
           </div>
           <div>
             <.field field={@form[:max_spotlights]} type="number" label="Max Spotlights" required />

@@ -81,17 +81,16 @@ defmodule Safira.Repo.Seeds.Accounts do
       handle = name |> String.downcase() |> String.replace(~r/\s/, "_")
 
       user = %{
-        name: name,
-        handle: handle,
-        email: email,
-        password: "password1234"
+        "name" => name,
+        "handle" => handle,
+        "email" => email,
+        "password" => "password1234",
+        "staff" => %{
+          "role_id" => Enum.at(roles, 0).id
+        }
       }
 
-      case Accounts.register_staff_user(user) do
-        {:ok, changeset} ->
-          user = Repo.update!(Accounts.User.confirm_changeset(changeset))
-          Accounts.create_staff(%{user_id: user.id, role_id: Enum.random(roles).id})
-          {:error, changeset} ->
+      with {:error, changeset} <- Accounts.register_staff_user(user) do
             Mix.shell().error(Kernel.inspect(changeset.errors))
       end
     end

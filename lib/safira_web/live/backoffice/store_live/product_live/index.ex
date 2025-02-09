@@ -10,7 +10,8 @@ defmodule SafiraWeb.Backoffice.ProductLive.Index do
   on_mount {SafiraWeb.StaffRoles,
             index: %{"products" => ["show"]},
             new: %{"products" => ["edit"]},
-            edit: %{"products" => ["edit"]}}
+            edit: %{"products" => ["edit"]},
+            show: %{"products" => ["show"]}}
 
   @impl true
   def mount(_params, _session, socket) do
