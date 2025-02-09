@@ -122,12 +122,13 @@ defmodule SafiraWeb.Backoffice.ScannerLive.InventoryLive.Show do
 
   @impl true
   def handle_event("confirm-deliver", _params, socket) do
-    case Inventory.update_item(socket.selected_item, %{redeemed_at: DateTime.utc_now()}) do
-      {:ok, _item} ->
+    case Inventory.update_item(socket.assigns.selected_item, %{redeemed_at: DateTime.utc_now()}) do
+      {:ok, item} ->
         {:noreply,
          socket
          |> assign(:selected_item, nil)
-         |> put_flash(:info, "Item has been successfully delivered.")}
+         |> put_flash(:info, "Item has been successfully delivered.")
+         |> stream_insert(:items, item)}
 
       {:error, _reason} ->
         {:noreply,
