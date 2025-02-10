@@ -909,14 +909,6 @@ defmodule Safira.Accounts do
       iex> get_attendee_from_credential(456)
       nil
   """
-  def get_attendee_from_credential(credential_id) do
-    Credential
-    |> where([c], c.id == ^credential_id)
-    |> join(:inner, [c], a in assoc(c, :attendee))
-    |> select([c, a], a)
-    |> Repo.one()
-  end
-
   def get_attendee_from_credential(credential_id, preloads \\ []) do
     Credential
     |> where([c], c.id == ^credential_id)
