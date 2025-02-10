@@ -69,17 +69,8 @@ defmodule SafiraWeb.Components.CVUpload do
   end
 
   @impl true
-  def handle_event("validate", %{"current_user" => user_params}, socket) do
-    changeset = Accounts.change_user_profile(socket.assigns.attendee, user_params)
-    {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
-  end
-
   def handle_event("validate", _params, socket) do
     {:noreply, socket}
-  end
-
-  def handle_event("save", %{"current_user" => user_params}, socket) do
-    save_user(socket, user_params)
   end
 
   def handle_event("save", %{}, socket) do
