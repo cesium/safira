@@ -20,7 +20,23 @@ defmodule SafiraWeb.Components.Avatar do
 
   attr :handle, :string, doc: "The handle of the user."
 
+  attr :link, :string, default: nil, doc: "The URL to link to when the avatar is clicked."
+
+  def avatar(%{link: nil} = assigns) do
+    ~H"""
+    <%= inner_avatar(assigns) %>
+    """
+  end
+
   def avatar(assigns) do
+    ~H"""
+    <.link navigate={@link}>
+      <%= inner_avatar(assigns) %>
+    </.link>
+    """
+  end
+
+  defp inner_avatar(assigns) do
     ~H"""
     <span class={generate_avatar_classes(assigns)}>
       <%= if @src do %>

@@ -193,6 +193,24 @@ defmodule Safira.Accounts do
   end
 
   @doc """
+  Gets a user by handle.
+
+  ## Examples
+
+      iex> get_user_by_handle("lisasimpson")
+      %User{}
+
+      iex> get_user_by_handle("lisasimpson")
+      nil
+
+  """
+  def get_user_by_handle!(handle) when is_binary(handle) do
+    User
+    |> preload([:attendee])
+    |> Repo.get_by!(handle: handle)
+  end
+
+  @doc """
   Gets a user by email and password.
 
   ## Examples
@@ -409,6 +427,17 @@ defmodule Safira.Accounts do
     user
     |> User.cv_changeset(attrs)
     |> Repo.update()
+    |> case do
+      {:ok, user} ->
+        if user.type == :attendee do
+          Contest.enqueue_badge_trigger_execution_job(user.attendee, :upload_cv_event)
+        end
+
+        {:ok, user}
+
+      {:error, changeset} ->
+        {:error, changeset}
+    end
   end
 
   @doc """
@@ -886,6 +915,15 @@ defmodule Safira.Accounts do
     |> join(:inner, [c], a in assoc(c, :attendee))
     |> select([c, a], a)
     |> Repo.one()
+  end
+
+  def get_attendee_from_credential(credential_id, preloads \\ []) do
+    Credential
+    |> where([c], c.id == ^credential_id)
+    |> join(:inner, [c], a in assoc(c, :attendee))
+    |> select([c, a], a)
+    |> Repo.one()
+    |> Repo.preload(preloads)
   end
 
   @doc """

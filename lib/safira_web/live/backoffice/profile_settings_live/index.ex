@@ -5,18 +5,20 @@ defmodule SafiraWeb.Backoffice.ProfileSettingsLive do
   def render(assigns) do
     ~H"""
     <.page title="Profile Settings" subtitle="Manage your profile settings" size={:xl}>
-      <.live_component
-        module={SafiraWeb.UserAuth.Components.UserProfileSettings}
-        id="attendee-user-profile-settings"
-        user={@current_user}
-      />
-      <.live_component
-        module={SafiraWeb.Components.CVUpload}
-        id={@current_user.id || :new}
-        current_user={@current_user}
-        action={@live_action}
-        patch={~p"/dashboard/profile_settings"}
-      />
+      <div class="flex flex-col sm:w-fit sm:mx-auto">
+        <.live_component
+          module={SafiraWeb.UserAuth.Components.UserProfileSettings}
+          id="attendee-user-profile-settings"
+          user={@current_user}
+        />
+        <.live_component
+          module={SafiraWeb.Components.CVUpload}
+          id={@current_user.id || :new}
+          current_user={@current_user}
+          action={@live_action}
+          patch={~p"/dashboard/profile_settings"}
+        />
+      </div>
     </.page>
     """
   end

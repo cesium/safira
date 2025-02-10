@@ -15,16 +15,14 @@ defmodule SafiraWeb.Sponsor.HomeLive.Components.Attendee do
   def attendee(assigns) do
     ~H"""
     <li id={@id} class="block p-4 text-center">
-      <.link href={"/user/#{@handle}"} class="w-full h-full">
-        <div class="px-4">
-          <div class="m-auto w-fit">
-            <.avatar size={:lg} handle={@handle} />
-          </div>
-          <p class="text-center text-sm mt-2">
-            <%= @name %>
-          </p>
+      <div class="px-4">
+        <div class="m-auto w-fit">
+          <.avatar size={:lg} handle={@handle} src={@image} />
         </div>
-      </.link>
+        <p class="text-center text-sm mt-2">
+          <%= @name %>
+        </p>
+      </div>
       <.link
         :if={not is_nil(@cv)}
         href={@cv}

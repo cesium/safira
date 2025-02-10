@@ -85,6 +85,8 @@ defmodule SafiraWeb.Router do
 
       live "/users/settings/confirm_email/:token", UserUpdateEmailConfirmation
 
+      live "/attendee/:credential_id", AttendeeLive.Index, :index
+
       scope "/app", App do
         pipe_through [:require_attendee_user]
 
@@ -100,7 +102,8 @@ defmodule SafiraWeb.Router do
         pipe_through [:require_credential]
 
         live "/", HomeLive.Index, :index
-        live "/edit", HomeLive.Index, :edit
+
+        live "/user/:handle", UserLive.Show, :show
 
         live "/credential", CredentialLive.Index, :index
 

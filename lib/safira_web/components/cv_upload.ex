@@ -95,6 +95,10 @@ defmodule SafiraWeb.Components.CVUpload do
              socket
              |> put_flash(:info, "CV uploaded successfully.")
              |> push_patch(to: socket.assigns.patch)}
+
+          {:error, reason} ->
+            {:noreply,
+             socket |> put_flash(:error, reason) |> push_patch(to: socket.assigns.patch)}
         end
 
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -113,6 +117,9 @@ defmodule SafiraWeb.Components.CVUpload do
       })
     end)
     |> case do
+      [] ->
+        {:error, "Select a file to upload."}
+
       [{:ok, user}] ->
         {:ok, user}
 
