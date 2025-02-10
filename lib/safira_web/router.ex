@@ -170,6 +170,7 @@ defmodule SafiraWeb.Router do
           live "/", Index, :index
           live "/:id", Show, :show
           live "/:id/edit/tokens", Show, :tokens_edit
+          live "/:id/edit/eligibility", Show, :eligibility_edit
         end
 
         scope "/event", EventLive do
