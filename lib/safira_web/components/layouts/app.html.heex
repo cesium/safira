@@ -3,7 +3,7 @@
     <.sidebar
       :if={Map.get(assigns, :event_started, true)}
       current_user={@current_user}
-      pages={SafiraWeb.Config.app_pages()}
+      pages={SafiraWeb.Config.app_pages(!@current_user.attendee.ineligible)}
       current_page={Map.get(assigns, :current_page, nil)}
       background="bg-primary"
       border="border-darkShade"
