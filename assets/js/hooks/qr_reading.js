@@ -4,6 +4,7 @@ export const QrScanner = {
   mounted() {
     const config = {  fps: 2, qrbox: (width, height) => {return { width: width * 0.8, height: height * 0.9 }}};
     this.scanner = new Html5Qrcode(this.el.id, { formatsToSupport: [ Html5QrcodeSupportedFormats.QR_CODE ] });
+    this.isScanning = false;
 
     const onScanSuccess = (decodedText, decodedResult) => {
         if (this.el.dataset.on_success) {
@@ -14,9 +15,11 @@ export const QrScanner = {
     const startScanner = () => {
       this.scanner.start({ facingMode: "environment" }, config, onScanSuccess)
       .then((_) => {
+        this.isScanning = true;
         if (this.el.dataset.on_start)
           Function("hook", this.el.dataset.on_start)(this);
       }, (e) => {
+        this.isScanning = false;
         if (this.el.dataset.on_error)
           Function("hook", this.el.dataset.on_error)(this);
       });
@@ -31,9 +34,11 @@ export const QrScanner = {
   },
 
   destroyed() {
-    this.scanner.stop().then((_) => {
-      if (this.el.dataset.on_stop)
-        Function("hook", this.el.dataset.on_stop)(this);
-    });
+    if (this.isScanning) {
+      this.scanner.stop().then((_) => {
+        if (this.el.dataset.on_stop)
+          Function("hook", this.el.dataset.on_stop)(this);
+      });
+    }
   }
 }
