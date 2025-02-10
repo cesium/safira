@@ -28,12 +28,29 @@
       </div>
       <div class="flex flex-row gap-2 py-1 text-sm items-center">
         <.icon name="hero-circle-stack" class="w-5 h-5" />
-        <p><%= "#{@attendee.tokens} tokens" %></p>
+        <div class="flex flex-row">
+          <p><%= "#{@attendee.tokens} tokens" %></p>
+          <span :if={@attendee.ineligible} class="text-red-700">*</span>
+        </div>
       </div>
       <div class="flex flex-row gap-2 py-1 text-sm items-center">
-        <.icon name="hero-qr-code" class="w-5 h-5" />
-        <p><%= "#{@attendee.entries} entries" %></p>
+        <.icon name="hero-ticket" class="w-5 h-5" />
+        <div class="flex flex-row">
+          <p><%= "#{@attendee.entries} entries" %></p>
+          <span :if={@attendee.ineligible} class="text-red-700">*</span>
+        </div>
       </div>
+    </div>
+    <div
+      :if={@attendee.ineligible}
+      class="flex flex-row items-center gap-2 max-w-96 bg-red-500/20 px-4 rounded-lg py-2 text-red-700"
+    >
+      <.icon name="hero-information-circle" class="w-6 h-6 flex-shrink-0" />
+      <p>
+        <%= gettext(
+          "*This attendee is not eligible to win daily prizes, play minigames that involve other attendees, or participate in the final draw."
+        ) %>
+      </p>
     </div>
   </div>
 </.page>
