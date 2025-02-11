@@ -88,7 +88,7 @@ defmodule SafiraWeb.Router do
       live "/attendee/:credential_id", AttendeeLive.Index, :index
 
       scope "/app", App do
-        pipe_through [:require_attendee_user]
+        pipe_through [:require_confirmed_user, :require_attendee_user]
 
         live "/waiting", WaitingLive.Index, :index
 
@@ -149,14 +149,14 @@ defmodule SafiraWeb.Router do
       end
 
       scope "/sponsor", Sponsor do
-        pipe_through :require_company_user
+        pipe_through [:require_confirmed_user, :require_company_user]
 
         live "/", HomeLive.Index, :index
         live "/scanner", ScannerLive.Index, :index
       end
 
       scope "/dashboard", Backoffice do
-        pipe_through [:require_staff_user]
+        pipe_through [:require_confirmed_user, :require_staff_user]
 
         scope "/spotlights", SpotlightLive do
           live "/", Index, :index

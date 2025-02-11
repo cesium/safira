@@ -33,12 +33,6 @@
           class="flex flex-col gap-1 sm:min-w-52"
         >
           <.badge id={"#{id}-#{badge.id}"} badge={badge} width="max-w-44" show_tokens />
-          <%!-- <p class="text-sm font-normal">
-            <span class="font-bold">Description: </span><%= badge.description %>
-          </p>
-          <p class="text-sm font-normal">
-            <span class="font-bold">Category: </span><%= badge.category.name %>
-          </p> --%>
           <p class="text-sm font-terminal uppercase mx-auto">
             <%= relative_datetime(badge.redeemed_at) %>
           </p>
