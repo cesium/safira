@@ -23,7 +23,6 @@ defmodule SafiraWeb.App.UserLive.Show do
       Contest.subscribe_to_attendee_redeems_update(attendee_id)
     end
 
-    # attendee = Accounts.get_attendee!(attendee_id, preloads: [:user])
     attendee = user.attendee
 
     attendee_badge_reddeems =
