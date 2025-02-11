@@ -68,7 +68,9 @@ defmodule SafiraWeb.Backoffice.StaffLive.Index do
   end
 
   defp maybe_update_staff_presence(staff, diff, value) do
-    case Enum.find(diff, fn {_, %{metas: [data]}} -> data.id == staff.id end) do
+    case Enum.find(diff, fn {_, %{metas: metas}} ->
+           Enum.any?(metas, fn meta -> meta.id == staff.id end)
+         end) do
       nil -> staff
       _ -> Map.put(staff, :is_online, value)
     end
