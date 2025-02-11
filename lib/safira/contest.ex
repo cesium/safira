@@ -403,6 +403,10 @@ defmodule Safira.Contest do
     |> Repo.transaction()
   end
 
+  def remove_badge_from_attendee(badge_id, attendee_id) do
+    remove_badge_redeem_transaction(badge_id, attendee_id)
+  end
+
   @doc """
   Creates a daily prize.
 
