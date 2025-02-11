@@ -83,8 +83,9 @@ defmodule SafiraWeb.Router do
       ] do
       live "/users/confirmation_pending", ConfirmationPendingLive, :index
 
-      live "/users/settings", UserSettingsLive, :edit
-      live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
+      live "/users/settings/confirm_email/:token", UserUpdateEmailConfirmation
+
+      live "/attendee/:credential_id", AttendeeLive.Index, :index
 
       scope "/app", App do
         pipe_through [:require_attendee_user]
@@ -101,7 +102,8 @@ defmodule SafiraWeb.Router do
         pipe_through [:require_credential]
 
         live "/", HomeLive.Index, :index
-        live "/edit", HomeLive.Index, :edit
+
+        live "/user/:handle", UserLive.Show, :show
 
         live "/leaderboard", LeaderboardLive.Index, :index
 
@@ -127,6 +129,8 @@ defmodule SafiraWeb.Router do
         end
 
         live "/vault", VaultLive.Index, :index
+
+        live "/profile_settings", ProfileSettingsLive, :edit
       end
 
       scope "/downloads" do
@@ -340,6 +344,8 @@ defmodule SafiraWeb.Router do
             live "/:id", Show, :show
           end
         end
+
+        live "/profile_settings", ProfileSettingsLive, :edit
       end
     end
   end

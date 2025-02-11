@@ -49,56 +49,56 @@ defmodule SafiraWeb.Config do
         %{
           key: :badges,
           title: "Badgedex",
-          icon: "hero-check-badge",
+          image: "/images/icons/badgedex.svg",
           url: "/app/badges",
           enabled: true
         },
         %{
           key: :wheel,
           title: "Wheel",
-          icon: "hero-circle-stack",
+          image: "/images/icons/wheel.svg",
           url: "/app/wheel",
           enabled: attendee_eligible?
         },
         %{
           key: :coin_flip,
           title: "Coin Flip",
-          icon: "hero-circle-stack",
+          image: "/images/icons/coin-flip.svg",
           url: "/app/coin_flip",
           enabled: attendee_eligible?
         },
         %{
           key: :slots,
           title: "Slots",
-          icon: "hero-circle-stack",
+          image: "/images/icons/slots.svg",
           url: "/app/slots",
           enabled: true
         },
         %{
           key: :leaderboard,
           title: "Leaderboard",
-          icon: "hero-trophy",
+          image: "/images/icons/leaderboard.svg",
           url: "/app/leaderboard",
           enabled: true
         },
         %{
           key: :store,
           title: "Store",
-          icon: "hero-shopping-bag",
+          image: "/images/icons/store.svg",
           url: "/app/store",
           enabled: true
         },
         %{
           key: :vault,
           title: "Vault",
-          icon: "hero-archive-box",
+          image: "/images/icons/vault.svg",
           url: "/app/vault",
           enabled: true
         },
         %{
           key: :credential,
           title: "Credential",
-          icon: "hero-qr-code",
+          image: "/images/icons/scanner.svg",
           url: "/app/credential",
           enabled: true
         }

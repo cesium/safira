@@ -29,7 +29,10 @@
     <.table id="staffs-table" items={@staffs} meta={@meta} params={@params}>
       <:col :let={user} sortable field={:name} label="Name">
         <div class="flex gap-4 flex-center items-center">
-          <.avatar handle={user.handle} />
+          <.avatar
+            handle={user.handle}
+            src={Uploaders.UserPicture.url({user.picture, user}, :original, signed: true)}
+          />
           <div class="self-center">
             <p class="text-base font-semibold"><%= user.name %></p>
             <p class="font-normal">@<%= user.handle %></p>

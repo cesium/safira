@@ -13,6 +13,7 @@ defmodule Safira.Repo.Migrations.CreateBadges do
       add :entries, :integer
       add :counts_for_day, :boolean
       add :givable, :boolean
+      add :is_checkpoint, :boolean
       add :category_id, references(:badge_categories, on_delete: :delete_all, type: :binary_id)
 
       timestamps(type: :utc_datetime)

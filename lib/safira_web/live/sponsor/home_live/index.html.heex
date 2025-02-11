@@ -37,7 +37,13 @@
       name={user.name}
       handle={user.handle}
       cv={user.cv}
-      image={user.image}
+      image={
+        Uploaders.UserPicture.url(
+          {@current_user.picture, @current_user},
+          :original,
+          signed: true
+        )
+      }
     />
   </ul>
 

@@ -25,7 +25,14 @@ defmodule SafiraWeb.App.CoinFlipLive.Components.Room do
       data-player1-id={@room.player1_id}
       data-player2-id={@room.player2_id}
       data-fee={@coin_flip_fee}
-      class="relative flex flex-row items-center justify-between border border-darkShade bg-primary rounded-md overflow-hidden w-full max-w-96 h-52 p-3 sm:p-4"
+      class={[
+        "relative flex flex-row items-center justify-between bg-primary rounded-md w-full max-w-96 h-52 p-3 sm:p-4",
+        @current_user.attendee.id in [@room.player1_id, @room.player2_id] && not @room.finished &&
+          "ring-1 ring-accent shadow-[0px_0px_16px_1px]
+    shadow-accent",
+        (@current_user.attendee.id not in [@room.player1_id, @room.player2_id] || @room.finished) &&
+          "ring-1 ring-darkShade"
+      ]}
     >
       <.player_card
         stream_id={@id}
@@ -75,7 +82,13 @@ defmodule SafiraWeb.App.CoinFlipLive.Components.Room do
     >
       <%= if @player_id do %>
         <div class="h-full flex items-center">
-          <.avatar handle={@player.user.handle} size={:lg} />
+          <.avatar
+            handle={@player.user.handle}
+            src={
+              Uploaders.UserPicture.url({@player.user.picture, @player.user}, :original, signed: true)
+            }
+            size={:lg}
+          />
         </div>
         <span class="text-center flex flex-col truncate pb-3 text-xs">
           <%= @player.user.handle %>

@@ -1,19 +1,16 @@
 <div class="font-iregular">
-  <div class="relative h-screen flex overflow-hidden">
-    <.sidebar
+  <div class="relative h-dvh flex overflow-hidden">
+    <.app_sidebar
       :if={Map.get(assigns, :event_started, true)}
       current_user={@current_user}
       pages={SafiraWeb.Config.app_pages(!@current_user.attendee.ineligible)}
       current_page={Map.get(assigns, :current_page, nil)}
-      background="bg-primary"
-      border="border-darkShade"
-      logo_padding="px-16 pt-8 pb-4"
+      border="border-light/10"
       logo_images={%{light: "/images/sei-logo.svg", dark: "/images/sei-logo.svg"}}
       logo_url={~p"/app/"}
       user_dropdown_name_color="text-light"
-      user_dropdown_handle_color="text-lightMuted"
+      user_dropdown_handle_color="text-light/60"
       user_dropdown_icon_color="text-lightShade"
-      link_class="px-3 group flex items-center py-2 text-sm font-medium rounded-md transition-colors"
       link_active_class="bg-light text-primary"
       link_inactive_class="hover:bg-primary-500/10 text-light"
     />

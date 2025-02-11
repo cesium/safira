@@ -47,12 +47,11 @@ defmodule Safira.Accounts do
   end
 
   @doc """
-  Lists all attendees with CV.
+  Lists all users with CV.
   """
-  def list_attendees_with_cv do
-    Attendee
-    |> where([at], not is_nil(at.cv))
-    |> preload(:user)
+  def list_users_with_cv do
+    User
+    |> where([user], not is_nil(user.cv))
     |> Repo.all()
   end
 
@@ -78,24 +77,6 @@ defmodule Safira.Accounts do
   def update_attendee(%Attendee{} = attendee, attrs) do
     attendee
     |> Attendee.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Updates an attendee's CV.
-
-  ## Examples
-
-      iex> update_atttendee_cv(badge, %{cv: cv})
-      {:ok, %Badge{}}
-
-      iex> update_attendee_cv(badge, %{cv: bad_cv})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_attendee_cv(%Attendee{} = attendee, attrs) do
-    attendee
-    |> Attendee.cv_changeset(attrs)
     |> Repo.update()
   end
 
@@ -209,6 +190,24 @@ defmodule Safira.Accounts do
   """
   def get_user_by_email(email) when is_binary(email) do
     Repo.get_by(User, email: email)
+  end
+
+  @doc """
+  Gets a user by handle.
+
+  ## Examples
+
+      iex> get_user_by_handle("lisasimpson")
+      %User{}
+
+      iex> get_user_by_handle("lisasimpson")
+      nil
+
+  """
+  def get_user_by_handle!(handle) when is_binary(handle) do
+    User
+    |> preload([:attendee])
+    |> Repo.get_by!(handle: handle)
   end
 
   @doc """
@@ -336,6 +335,109 @@ defmodule Safira.Accounts do
     %Staff{}
     |> Staff.changeset(attrs)
     |> Repo.insert()
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for changing the user profile (name, handle, password and email).
+  Doesn't validate the uniqueness of the email.
+
+  ## Examples
+
+      iex> change_user_profile(user)
+      %Ecto.Changeset{data: %User{}}
+
+  """
+  def change_user_profile(user, attrs \\ %{}) do
+    user
+    |> User.profile_changeset(attrs, validate_email: false)
+    |> User.picture_changeset(attrs)
+  end
+
+  @doc """
+  Updates the user profile (name, handle, password).
+
+  If everything succeed, emulates that the email was change without
+  actually changing it in the database.
+  """
+  def update_user_profile(%User{} = user, current_password, attrs) do
+    password_changed? =
+      attrs["password"] != nil && String.trim(attrs["password"]) != ""
+
+    changeset =
+      user
+      |> User.profile_changeset(attrs, validate_email: true)
+      |> maybe_validate_current_password(password_changed?, current_password)
+
+    # Just simulate a complete update, to check if everything is valid
+    applied_user = Ecto.Changeset.apply_action(changeset, :update)
+
+    case applied_user do
+      {:ok, _} ->
+        # Removing the email from the changeset, since the mail just will be updated over mail confirmation
+        changeset_without_mail_update = Ecto.Changeset.change(changeset, email: user.email)
+
+        tokens_to_delete = if password_changed?, do: :all, else: ["false"]
+
+        Ecto.Multi.new()
+        |> Ecto.Multi.update(:user, changeset_without_mail_update)
+        # The tokens will just be deleted if the password was changed
+        |> Ecto.Multi.delete_all(
+          :tokens,
+          UserToken.by_user_and_contexts_query(user, tokens_to_delete)
+        )
+        |> Repo.transaction()
+        |> case do
+          # Return the user with ALL the changes
+          {:ok, _} -> applied_user
+          {:error, :user, changeset, _} -> {:error, changeset}
+        end
+
+      otherwise ->
+        otherwise
+    end
+  end
+
+  defp maybe_validate_current_password(changeset, password_changed?, current_password) do
+    if password_changed? do
+      User.validate_current_password(changeset, current_password)
+    else
+      changeset
+    end
+  end
+
+  def update_user_picture(%User{} = user, attrs) do
+    user
+    |> User.picture_changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Updates a user's CV.
+
+  ## Examples
+
+      iex> update_user_cv(user, %{cv: cv})
+      {:ok, %User{}}
+
+      iex> update_user_cv(user, %{cv: bad_cv})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_user_cv(%User{} = user, attrs) do
+    user
+    |> User.cv_changeset(attrs)
+    |> Repo.update()
+    |> case do
+      {:ok, user} ->
+        if user.type == :attendee do
+          Contest.enqueue_badge_trigger_execution_job(user.attendee, :upload_cv_event)
+        end
+
+        {:ok, user}
+
+      {:error, changeset} ->
+        {:error, changeset}
+    end
   end
 
   @doc """
@@ -807,12 +909,13 @@ defmodule Safira.Accounts do
       iex> get_attendee_from_credential(456)
       nil
   """
-  def get_attendee_from_credential(credential_id) do
+  def get_attendee_from_credential(credential_id, preloads \\ []) do
     Credential
     |> where([c], c.id == ^credential_id)
     |> join(:inner, [c], a in assoc(c, :attendee))
     |> select([c, a], a)
     |> Repo.one()
+    |> Repo.preload(preloads)
   end
 
   @doc """

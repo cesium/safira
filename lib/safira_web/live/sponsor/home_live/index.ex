@@ -17,7 +17,7 @@ defmodule SafiraWeb.Sponsor.HomeLive.Index do
      socket
      |> assign(:all_enabled, has_all_access?(socket.assigns.current_user.company))
      |> assign(:all, false)
-     |> assign(:form, to_form(%{all: false}))}
+     |> assign(:form, to_form(%{"all" => false}))}
   end
 
   @impl true
@@ -60,8 +60,6 @@ defmodule SafiraWeb.Sponsor.HomeLive.Index do
     end
   end
 
-  defp list_users(_, nil, _), do: {:ok, {[], %Flop.Meta{current_offset: 0, current_page: 0}}}
-
   defp list_users(false, badge_id, params) do
     case Contest.list_badge_redeems_meta(badge_id, Map.put(params, "page_size", @limit)) do
       {:ok, {redeems, meta}} ->
@@ -82,6 +80,8 @@ defmodule SafiraWeb.Sponsor.HomeLive.Index do
     end
   end
 
+  defp list_users(_, nil, _), do: {:ok, {[], %Flop.Meta{current_offset: 0, current_page: 0}}}
+
   defp has_all_access?(company) do
     company.tier.full_cv_access
   end
@@ -92,7 +92,8 @@ defmodule SafiraWeb.Sponsor.HomeLive.Index do
       name: redeem.attendee.user.name,
       handle: redeem.attendee.user.handle,
       image: nil,
-      cv: Uploaders.CV.url({redeem.attendee.cv, redeem.attendee}, :original, signed: true)
+      cv:
+        Uploaders.CV.url({redeem.attendee.user.cv, redeem.attendee.user}, :original, signed: true)
     }
   end
 
@@ -102,7 +103,7 @@ defmodule SafiraWeb.Sponsor.HomeLive.Index do
       name: user.name,
       handle: user.handle,
       image: nil,
-      cv: Uploaders.CV.url({user.attendee.cv, user.attendee}, :original, signed: true)
+      cv: Uploaders.CV.url({user.cv, user}, :original, signed: true)
     }
   end
 end

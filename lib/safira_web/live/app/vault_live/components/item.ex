@@ -13,7 +13,7 @@ defmodule SafiraWeb.App.VaultLive.Components.Item do
   def item(assigns) do
     ~H"""
     <li id={@id} class={"flex flex-row #{if @redeemed do "opacity-50" end}"}>
-      <figure class="w-32 h-32 bg-light/5 rounded-xl">
+      <figure class="w-32 h-32 bg-light/5 rounded-xl flex-shrink-0">
         <%= if @image do %>
           <img class="w-full p-4" src={@image} />
         <% end %>

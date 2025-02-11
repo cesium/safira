@@ -37,6 +37,13 @@ defmodule SafiraWeb.Landing.Components.Navbar do
                         <%= page.title %>
                       </.link>
                     <% end %>
+                    <.link
+                      :if={!@current_user}
+                      navigate={~p"/users/log_in"}
+                      class="text-sm text-white transition-colors duration-75 ease-in hover:text-accent text-nowrap"
+                    >
+                      Log in
+                    </.link>
                   </div>
                   <div :if={@registrations_open? && !@current_user} class="flex pl-20">
                     <.join_us />
@@ -46,6 +53,13 @@ defmodule SafiraWeb.Landing.Components.Navbar do
                       <:trigger_element>
                         <.avatar
                           handle={@current_user.handle}
+                          src={
+                            Uploaders.UserPicture.url(
+                              {@current_user.picture, @current_user},
+                              :original,
+                              signed: true
+                            )
+                          }
                           size={:sm}
                           class="ring-2 rounded-full ring-white"
                         />
@@ -93,7 +107,7 @@ defmodule SafiraWeb.Landing.Components.Navbar do
       </nav>
       <div
         id="mobile-navbar"
-        class="bg-primary w-full h-screen absolute top-0 left-0 bottom-0 z-40 flex flex-col"
+        class="bg-primary w-full h-dvh overflow-y-auto absolute top-0 left-0 bottom-0 z-40 flex flex-col"
         style="display: none;"
       >
         <div class="w-full flex flex-col items-end px-10 py-12">
@@ -101,7 +115,7 @@ defmodule SafiraWeb.Landing.Components.Navbar do
             <.icon name="hero-x-mark" />
           </span>
         </div>
-        <div class="flex flex-col w-full items-center gap-16">
+        <div class="flex flex-col w-full items-center gap-16 mb-16">
           <%= for page <- @pages do %>
             <.link
               navigate={page.url}
@@ -111,6 +125,14 @@ defmodule SafiraWeb.Landing.Components.Navbar do
               <%= page.title %>
             </.link>
           <% end %>
+          <.link
+            :if={!@current_user}
+            navigate={~p"/users/log_in"}
+            phx-click={hide_mobile_navbar()}
+            class="font-terminal uppercase text-3xl text-white transition-colors duration-75 ease-in hover:text-accent"
+          >
+            Log in
+          </.link>
           <div :if={@registrations_open? && !@current_user} class="flex">
             <.join_us />
           </div>
@@ -155,6 +177,7 @@ defmodule SafiraWeb.Landing.Components.Navbar do
 
   def show_mobile_navbar(js \\ %JS{}) do
     js
+    |> JS.add_class("overflow-hidden", to: "body")
     |> JS.show(to: "#mobile-navbar-container", transition: "fade-in")
     |> JS.show(
       to: "#mobile-navbar",
@@ -170,6 +193,7 @@ defmodule SafiraWeb.Landing.Components.Navbar do
 
   def hide_mobile_navbar(js \\ %JS{}) do
     js
+    |> JS.remove_class("overflow-hidden", to: "body")
     |> JS.hide(to: "#mobile-navbar-container", transition: "fade-out")
     |> JS.hide(
       to: "#mobile-navbar",

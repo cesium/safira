@@ -1,5 +1,5 @@
 <div>
-  <div class="relative h-screen flex overflow-hidden">
+  <div class="relative h-dvh flex overflow-hidden">
     <.sidebar
       current_user={@current_user}
       pages={SafiraWeb.Config.backoffice_pages(@current_user)}
@@ -15,7 +15,7 @@
       link_active_class="bg-dark text-light hover:bg-darkShade dark:bg-darkShade"
       link_inactive_class="text-dark hover:bg-lightShade/40 dark:text-light"
     />
-    <div class="flex flex-col flex-1 overflow-hidden">
+    <div class="flex flex-col flex-1 overflow-hidden bg-white dark:bg-dark">
       <div class="bg-light dark:bg-dark flex justify-end lg:hidden px-4 sm:px-6 py-2">
         <button
           class="sidebar-toggle flex items-center justify-center w-16 dark:text-light text-dark"

@@ -36,12 +36,14 @@ defmodule Safira.Accounts.User do
     field :name, :string
     field :email, :string
     field :handle, :string
+    field :picture, Safira.Uploaders.UserPicture.Type
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :current_password, :string, virtual: true, redact: true
     field :confirmed_at, :utc_datetime
     field :type, Ecto.Enum, values: [:attendee, :staff, :company], default: :attendee
     field :allows_marketing, :boolean, default: false
+    field :cv, Uploaders.CV.Type
 
     has_one :attendee, Attendee, on_delete: :delete_all
     has_one :staff, Staff, on_delete: :delete_all, on_replace: :update
@@ -103,6 +105,7 @@ defmodule Safira.Accounts.User do
     |> cast(attrs, [:name, :handle, :email, :confirmed_at, :type])
     |> unique_constraint(:email)
     |> validate_handle()
+    |> email_changeset(attrs, opts |> Keyword.put(:check_email_changed, false))
     |> if_changed_password_changeset(attrs, opts)
   end
 
@@ -177,15 +180,26 @@ defmodule Safira.Accounts.User do
   @doc """
   A user changeset for changing the email.
 
-  It requires the email to change otherwise an error is added.
+  ## Options
+
+   * `:check_email_changed` - If true, it requires the email to change, otherwise an error is added.
+      Defaults to `true`.
   """
   def email_changeset(user, attrs, opts \\ []) do
     user
     |> cast(attrs, [:email])
     |> validate_email(opts)
-    |> case do
-      %{changes: %{email: _}} = changeset -> changeset
-      %{} = changeset -> add_error(changeset, :email, "did not change")
+    |> maybe_validate_email_changed(opts)
+  end
+
+  defp maybe_validate_email_changed(%{changes: %{email: _}} = changeset, _opts), do: changeset
+
+  defp maybe_validate_email_changed(changeset, opts) do
+    check_email_changed? = Keyword.get(opts, :check_email_changed, true)
+
+    case check_email_changed? do
+      true -> changeset |> add_error(:email, "did not change")
+      false -> changeset
     end
   end
 
@@ -247,7 +261,19 @@ defmodule Safira.Accounts.User do
     if valid_password?(changeset.data, password) do
       changeset
     else
-      add_error(changeset, :current_password, "is not valid")
+      add_error(changeset, :current_password, "password not correct")
     end
+  end
+
+  @doc false
+  def picture_changeset(user, attrs) do
+    user
+    |> cast_attachments(attrs, [:picture])
+  end
+
+  @doc false
+  def cv_changeset(attendee, attrs) do
+    attendee
+    |> cast_attachments(attrs, [:cv])
   end
 end

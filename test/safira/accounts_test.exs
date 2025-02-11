@@ -205,7 +205,7 @@ defmodule Safira.AccountsTest do
       {:error, changeset} =
         Accounts.apply_user_email(user, "invalid", %{email: unique_user_email()})
 
-      assert %{current_password: ["is not valid"]} = errors_on(changeset)
+      assert %{current_password: ["password not correct"]} = errors_on(changeset)
     end
 
     test "applies the email without persisting it", %{user: user} do
@@ -327,7 +327,7 @@ defmodule Safira.AccountsTest do
       {:error, changeset} =
         Accounts.update_user_password(user, "invalid", %{password: valid_user_password()})
 
-      assert %{current_password: ["is not valid"]} = errors_on(changeset)
+      assert %{current_password: ["password not correct"]} = errors_on(changeset)
     end
 
     test "updates the password", %{user: user} do

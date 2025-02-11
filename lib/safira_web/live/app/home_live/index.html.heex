@@ -1,11 +1,134 @@
-<.page title={gettext("Hello, %{attendee_name} 👋", attendee_name: @current_user.name)} size={:xl}>
-  <.live_component
-    module={SafiraWeb.App.HomeLive.FormComponent}
-    id={@current_user.attendee.id || :new}
-    title={@page_title}
-    current_user={@current_user}
-    action={@live_action}
-    attendee={@current_user.attendee}
-    patch={~p"/app"}
-  />
+<.page
+  title={gettext("Hello, %{current_user_name} 👋", current_user_name: @current_user.name)}
+  size={:xl}
+  title_class="font-terminal uppercase"
+>
+  <div class="flex flex-col md:flex-row flex-wrap md:gap-x-8 w-full">
+    <div class="flex flex-row justify-between items-center border-t-2 mt-10 border-white sm:border-none">
+      <div class="flex sm:flex-col mt-7 gap-x-10 sm:gap-y-6 mx-auto">
+        <div class="flex flex-col items-center py-2 gap-4 my-auto sm:min-w-72">
+          <.avatar
+            size={:xl}
+            handle={@current_user.handle}
+            src={
+              Uploaders.UserPicture.url({@current_user.picture, @current_user}, :original,
+                signed: true
+              )
+            }
+          />
+          <div class="flex flex-col gap-y-2">
+            <p class="text-sm font-normal">@<%= @current_user.handle %></p>
+          </div>
+        </div>
+        <div class="flex flex-col flex-shrink-0 flex-wrap my-auto">
+          <div class="grid gap-4 sm:justify-center sm:gap-3">
+            <p>
+              💰 <%= gettext("%{attendee_tokens} tokens", attendee_tokens: @attendee_tokens) %>
+            </p>
+            <p>
+              🏅 <%= gettext("%{badge_count} Badges", badge_count: @attendee_badge_count) %>
+            </p>
+            <p>
+              🎫 <%= gettext("%{attendee_entries} entries", attendee_entries: @attendee_entries) %>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-y-8">
+      <div class="flex flex-row justify-between items-center mt-10 pb-2 h-12 border-b-2 border-white">
+        <h1 class="font-semibold font-terminal uppercase px-2">Checkpoint</h1>
+      </div>
+
+      <ol class="flex flex-col gap-y-9 sm:gap-y-10 min-w-72">
+        <li
+          :for={{badge, index} <- Enum.with_index(@checkpoint_badges)}
+          class={[
+            "relative h-9 sm:h-10 flex items-center font-medium w-full",
+            index != @max_level - 1 &&
+              "after:content-[''] after:w-0.5 after:h-full after:inline-block after:absolute after:top-9 sm:after:top-10 after:left-[1.05rem] sm:after:left-[1.170rem]",
+            index < @user_level && "after:bg-accent",
+            index >= @user_level && "after:bg-white"
+          ]}
+        >
+          <span class={[
+            "size-9 sm:size-10 rounded-full flex justify-center items-center mr-3 text-sm font-terminal font-semibold relative",
+            index < @user_level && "bg-accent text-primary",
+            index > @user_level && "border-2 border-white text-white",
+            index == @user_level && "border-2 bg-accent/10 border-accent text-accent"
+          ]}>
+            <%= if index == @user_level do %>
+              <span class="absolute inset-0 rounded-full shadow-[0px_0px_20px_2px] shadow-accent animate-pulse">
+              </span>
+            <% end %>
+            <%= if index < @user_level do %>
+              <.icon name="hero-check" class="size-4 sm:size-5 stroke-2" />
+            <% else %>
+              <%= index + 1 %>
+            <% end %>
+          </span>
+          <!-- Level Description -->
+          <div class="flex flex-col sm:gap-y-0.5">
+            <h4 class={[
+              "sm:text-lg font-terminal uppercase",
+              index <= @user_level && "text-accent",
+              index > @user_level && "text-white"
+            ]}>
+              <%= gettext("Level %{level}", level: index + 1) %>
+            </h4>
+            <span class="text-xs sm:text-sm">
+              <%= badge.name %> -> <%= gettext("+%{badge_entries} entries",
+                badge_entries: badge.entries
+              ) %>
+            </span>
+          </div>
+        </li>
+      </ol>
+    </div>
+    <div class="flex flex-col items-center gap-y-8">
+      <div class="flex flex-row justify-between items-center mt-10 pb-2 h-12 w-full border-b-2 border-white">
+        <h1 class="font-semibold font-terminal uppercase px-2">Last badge redeems</h1>
+      </div>
+      <div class="grid grid-cols-2 gap-4 min-w-72">
+        <div id="badges" phx-update="stream" class="contents">
+          <.badge
+            :for={{id, badge} <- @streams.attendee_badge_redeems}
+            id={id}
+            badge={badge}
+            width="max-w-48"
+            show_tokens
+          />
+        </div>
+
+        <div class="flex items-center justify-center">
+          <.link
+            :if={@attendee_badge_count > 3}
+            navigate={~p"/app/badges"}
+            class="text-accent font-semibold font-terminal uppercase"
+          >
+            <%= gettext("+ View all") %>
+          </.link>
+        </div>
+      </div>
+      <p
+        :if={@attendee_badge_count == 0}
+        class="justify-center font-semibold font-terminal uppercase"
+      >
+        <%= gettext("No badges redeemed yet!") %>
+      </p>
+    </div>
+    <div class="gap-y-8">
+      <div class="flex flex-row justify-between items-center mt-10 pb-2 h-12 border-b-2 border-white min-w-72">
+        <h1 class="font-semibold font-terminal uppercase px-2">CV Upload</h1>
+      </div>
+      <.live_component
+        module={SafiraWeb.Components.CVUpload}
+        id={@current_user.attendee.id || :new}
+        current_user={@current_user}
+        in_app={true}
+        patch={~p"/app"}
+      />
+    </div>
+  </div>
 </.page>

@@ -10,7 +10,6 @@ defmodule Safira.Accounts.Attendee do
   schema "attendees" do
     field :tokens, :integer, default: 0
     field :entries, :integer, default: 0
-    field :cv, Uploaders.CV.Type
     field :ineligible, :boolean, default: false
 
     belongs_to :course, Safira.Accounts.Course
@@ -27,11 +26,6 @@ defmodule Safira.Accounts.Attendee do
     |> cast_assoc(:user)
     |> cast_assoc(:course)
     |> validate_required(@required_fields)
-  end
-
-  def cv_changeset(attendee, attrs) do
-    attendee
-    |> cast_attachments(attrs, [:cv])
   end
 
   def update_tokens_changeset(attendee, attrs) do

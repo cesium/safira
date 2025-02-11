@@ -371,14 +371,14 @@ defmodule Safira.Companies do
   """
   def get_cvs(company) when not is_nil(company.badge_id) do
     if company.tier.full_cv_access do
-      Accounts.list_attendees_with_cv()
-      |> Enum.map(fn at ->
-        {at.user.handle, Uploaders.CV.url({at.cv, at}, :original, signed: true)}
+      Accounts.list_users_with_cv()
+      |> Enum.map(fn user ->
+        {user.handle, Uploaders.CV.url({user.cv, user}, :original, signed: true)}
       end)
     else
-      Contest.list_attendees_with_badge_and_cv(company.badge_id)
-      |> Enum.map(fn at ->
-        {at.user.handle, Uploaders.CV.url({at.cv, at}, :original, signed: true)}
+      Contest.list_users_with_badge_and_cv(company.badge_id)
+      |> Enum.map(fn user ->
+        {user.handle, Uploaders.CV.url({user.cv, user}, :original, signed: true)}
       end)
     end
   end

@@ -1,0 +1,122 @@
+<div class="flex justify-center">
+  <.flash_group flash={@flash} />
+
+  <div class="flex flex-col gap-y-16 my-8 w-full max-w-md">
+    <.simple_form
+      for={@profile_form}
+      id="edit-profile-form"
+      phx-change="validate_profile"
+      phx-submit="update_profile"
+      phx-target={@myself}
+    >
+      <div class="flex justify-center w-full">
+        <.image_uploader
+          class="w-32 aspect-square"
+          rounded
+          upload={@uploads.picture}
+          icon="hero-user"
+          image={Uploaders.UserPicture.url({@user.picture, @user}, :original, signed: true)}
+        >
+          <:placeholder>
+            <.avatar size={:xl} handle={@user.handle} />
+          </:placeholder>
+        </.image_uploader>
+      </div>
+      <div class="flex flex-col w-full mt-[0px]">
+        <div class="flex flex-col md:flex-row md:gap-x-8">
+          <div>
+            <.field
+              field={@profile_form[:name]}
+              type="text"
+              label="Name"
+              required
+              class={if @in_app?, do: "bg-blue-900/10 text-white border-white", else: ""}
+              label_class={if @in_app?, do: "text-white", else: ""}
+            />
+
+            <.field
+              field={@profile_form[:handle]}
+              type="text"
+              label="Username"
+              required
+              class={if @in_app?, do: "bg-blue-900/10 text-white border-white", else: ""}
+              label_class={if @in_app?, do: "text-white", else: ""}
+            />
+
+            <.field
+              field={@profile_form[:email]}
+              type="text"
+              label="Email"
+              required
+              class={if @in_app?, do: "bg-blue-900/10 text-white border-white", else: ""}
+              label_class={if @in_app?, do: "text-white", else: ""}
+            />
+          </div>
+
+          <div>
+            <.field
+              field={@profile_form[:password]}
+              type="password"
+              label="New password"
+              class={if @in_app?, do: "bg-blue-900/10 text-white border-white", else: ""}
+              label_class={if @in_app?, do: "text-white", else: ""}
+            />
+
+            <.field
+              field={@profile_form[:password_confirmation]}
+              type="password"
+              label="Repeat New Password"
+              class={if @in_app?, do: "bg-blue-900/10 text-white border-white", else: ""}
+              label_class={if @in_app?, do: "text-white", else: ""}
+            />
+
+            <.field
+              field={@profile_form[:current_password]}
+              value={@current_password}
+              type="password"
+              label="Current Password"
+              required={@profile_form[:password].value not in [nil, ""]}
+              class={if @in_app?, do: "bg-blue-900/10 text-white border-white", else: ""}
+              label_class={if @in_app?, do: "text-white", else: ""}
+            />
+          </div>
+        </div>
+
+        <div class="w-full flex justify-center">
+          <%= if @in_app? do %>
+            <.action_button title="Save Profile" class="w-full" />
+          <% else %>
+            <.button class="w-full">
+              Save Profile
+            </.button>
+          <% end %>
+        </div>
+      </div>
+    </.simple_form>
+
+    <.simple_form
+      for={@new_user_session_form}
+      id="new-user-session-form"
+      action={"/users/log_in?_action=password_updated&_redirect_url=/#{@base_path}/profile_settings&_notification_text=#{@notification_text}"}
+      method="post"
+      phx-trigger-action={@trigger_form_action}
+      phx-target={@myself}
+      hidden
+    >
+      <.field
+        field={@new_user_session_form[:email]}
+        type="text"
+        label="Email"
+        required
+        label_class={if @in_app?, do: "text-white", else: ""}
+      />
+
+      <.field
+        field={@new_user_session_form[:password]}
+        type="password"
+        label="New password"
+        label_class={if @in_app?, do: "text-white", else: ""}
+      />
+    </.simple_form>
+  </div>
+</div>
