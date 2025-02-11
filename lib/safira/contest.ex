@@ -376,32 +376,6 @@ defmodule Safira.Contest do
     Repo.get!(DailyPrize, id)
   end
 
-  def remove_badgeredeem_from_attendee(badge_id, attendee_id) do
-    from(br in BadgeRedeem, where: br.badge_id == ^badge_id and br.attendee_id == ^attendee_id)
-    |> Repo.delete_all()
-  end
-
-  def remove_badgeredeem_transaction(badge_id, attendee_id) do
-    Multi.new()
-    |> Multi.run(:get_badge, fn _repo, _changes ->
-      get_badge!(badge_id)
-    end)
-    |> Multi.run(:get_attendee, fn _repo, _changes ->
-      Accounts.get_attendee!(attendee_id)
-    end)
-    |> Multi.update(
-      :remove_badge_from_attendee,
-      remove_badgeredeem_from_attendee(badge_id, attendee_id)
-    )
-    |> Multi.merge(fn %{get_badge: badge, get_attendee: attendee} ->
-      Contest.change_attendee_tokens_transaction(
-        attendee,
-        attendee.tokens - badge.tokens
-      )
-    end)
-    |> Repo.transaction()
-  end
-
   @doc """
   Creates a daily prize.
 
