@@ -62,14 +62,10 @@ defmodule SafiraWeb.Landing.Components.Schedule do
           <.link
             class={
               if Enum.member?(@filters, category.id),
-                do: "text-md m-1 items-center rounded-full border-2 px-12 py-2 text-center font-bold
-                                  text-accent border-accent shadow-sm
-                                hover:opacity-60
-                                ",
-                else: "text-md m-1 items-center rounded-full border-2 px-12 py-2 text-center font-bold
-                                  text-white shadow-sm
-                                hover:bg-white/20 px-8 transition-colors
-                                "
+                do:
+                  "text-md m-1 items-center rounded-full border-2 px-12 py-2 text-center font-bold text-accent border-accent shadow-sm hover:opacity-60",
+                else:
+                  "text-md m-1 items-center rounded-full border-2 py-2 text-center font-bold text-white shadow-sm hover:bg-white/20 px-8 transition-colors"
             }
             patch={filter_url(@url, @current_day, @filters, category.id)}
           >

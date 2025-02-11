@@ -17,16 +17,24 @@ defmodule SafiraWeb.Backoffice.StaffLive.FormComponent do
           phx-target={@myself}
           phx-change="validate"
           phx-submit="save"
+          autocomplete="off"
         >
           <div class="flex flex-col md:flex-row w-full gap-4">
             <div class="w-full space-y-2">
               <.field field={@form[:name]} type="text" label="Name" required />
-              <.field field={@form[:email]} type="email" label="Email" required />
+              <.field
+                field={@form[:email]}
+                type="email"
+                label="Email"
+                autocomplete="new-email"
+                required
+              />
               <.field
                 field={@form[:password]}
                 type="password"
                 label="Password"
                 required={@action == :new}
+                autocomplete="new-password"
               />
               <.field field={@form[:handle]} type="text" label="Handle" required />
               <.inputs_for :let={u} field={@form[:staff]}>

@@ -18,8 +18,12 @@
     <.link patch={~p"/dashboard/event/edit"}>
       <.button><%= gettext("Edit Settings") %></.button>
     </.link>
+
     <.link href={~p"/downloads/cv_challenge"} target="_blank">
       <.button><%= gettext("CV Challenge") %></.button>
+    </.link>
+    <.link patch={~p"/downloads/final_draw"} target="_blank">
+      <.button><%= gettext("Export Final Draw CSV") %></.button>
     </.link>
   </:actions>
 

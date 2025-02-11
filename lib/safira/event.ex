@@ -244,6 +244,21 @@ defmodule Safira.Event do
   end
 
   @doc """
+  Returns the list of dates between the event's start and end dates.
+
+  ## Examples
+
+      iex> list_event_dates()
+      [~D[2025-02-11], ~D[2025-02-12], ~D[2025-02-13], ~D[2025-02-14]]
+  """
+  def list_event_dates do
+    start_date = get_event_start_date()
+    end_date = get_event_end_date()
+
+    Date.range(start_date, end_date) |> Enum.to_list()
+  end
+
+  @doc """
   Changes the event's start date.
 
   ## Examples

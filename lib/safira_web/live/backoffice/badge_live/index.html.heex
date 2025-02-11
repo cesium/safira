@@ -31,7 +31,7 @@
 
   <div
     id="badges-grid"
-    class="grid grid-cols-1 gap-x-10 gap-y-5 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6"
+    class="grid grid-cols-1 gap-x-10 gap-y-5 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 mb-6"
     phx-update="stream"
   >
     <%= for {id, badge} <- @streams.badges do %>
@@ -40,6 +40,7 @@
       </.link>
     <% end %>
   </div>
+  <.pagination :if={@meta.total_pages > 1} meta={@meta} params={@params} />
 </.page>
 
 <.modal

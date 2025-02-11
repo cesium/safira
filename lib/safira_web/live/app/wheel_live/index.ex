@@ -1,26 +1,41 @@
 defmodule SafiraWeb.App.WheelLive.Index do
   use SafiraWeb, :app_view
 
+  import SafiraWeb.App.WheelLive.Components.LatestWins
+  import SafiraWeb.App.WheelLive.Components.Awards
   import SafiraWeb.App.WheelLive.Components.ResultModal
   import SafiraWeb.App.WheelLive.Components.Wheel
 
   alias Safira.{Contest, Minigames}
 
+  @max_wins 6
+
   @impl true
   def mount(_params, _session, socket) do
-    if connected?(socket) do
-      Minigames.subscribe_to_wheel_config_update("price")
-      Minigames.subscribe_to_wheel_config_update("is_active")
-    end
+    if socket.assigns.current_user.attendee.ineligible do
+      {:ok,
+       socket
+       |> put_flash(:error, "Can't play the wheel minigame with this account.")
+       |> push_navigate(to: ~p"/app")}
+    else
+      if connected?(socket) do
+        Minigames.subscribe_to_wheel_config_update("price")
+        Minigames.subscribe_to_wheel_config_update("is_active")
+        Minigames.subscribe_to_wheel_config_update("drops")
+        Minigames.subscribe_to_wheel_wins()
+      end
 
-    {:ok,
-     socket
-     |> assign(:current_page, :wheel)
-     |> assign(:in_spin?, false)
-     |> assign(:attendee_tokens, socket.assigns.current_user.attendee.tokens)
-     |> assign(:wheel_price, Minigames.get_wheel_price())
-     |> assign(:result, nil)
-     |> assign(:wheel_active?, Minigames.wheel_active?())}
+      {:ok,
+       socket
+       |> assign(:current_page, :wheel)
+       |> assign(:in_spin?, false)
+       |> assign(:attendee_tokens, socket.assigns.current_user.attendee.tokens)
+       |> assign(:wheel_price, Minigames.get_wheel_price())
+       |> assign(:result, nil)
+       |> assign(:wheel_active?, Minigames.wheel_active?())
+       |> assign(:latest_wins, Minigames.wheel_latest_wins(@max_wins))
+       |> assign(:drops, Minigames.list_wheel_drops())}
+    end
   end
 
   @impl true
@@ -85,6 +100,23 @@ defmodule SafiraWeb.App.WheelLive.Index do
   @impl true
   def handle_info({"is_active", value}, socket) do
     {:noreply, socket |> assign(:wheel_active?, value)}
+  end
+
+  @impl true
+  def handle_info({"drops", value}, socket) do
+    {:noreply, socket |> assign(:drops, value)}
+  end
+
+  @impl true
+  def handle_info({"win", value}, socket) do
+    {:noreply,
+     socket
+     |> assign(:latest_wins, merge_wins(socket.assigns.latest_wins, value))}
+  end
+
+  defp merge_wins(latest_wins, new_win) do
+    ([new_win] ++ latest_wins)
+    |> Enum.take(@max_wins)
   end
 
   defp can_spin?(wheel_active?, tokens, price, in_spin?) do

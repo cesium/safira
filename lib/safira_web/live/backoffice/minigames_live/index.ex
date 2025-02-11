@@ -3,9 +3,14 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.Index do
 
   on_mount {SafiraWeb.StaffRoles,
             index: %{"minigames" => ["show"]},
-            simulate: %{"minigames" => ["simulate"]},
+            simulate_wheel: %{"minigames" => ["simulate"]},
             edit_wheel_drops: %{"minigames" => ["edit"]},
-            edit_wheel: %{"minigames" => ["edit"]}}
+            edit_wheel: %{"minigames" => ["edit"]},
+            edit_slots: %{"minigames" => ["edit"]},
+            edit_slots_reel_icons_icons: %{"minigames" => ["edit"]},
+            edit_slots_paytable: %{"minigames" => ["edit"]},
+            edit_slots_payline: %{"minigames" => ["edit"]},
+            edit_coin_flip: %{"minigames" => ["edit"]}}
 
   def mount(_params, _session, socket) do
     {:ok, socket |> assign(:current_page, :minigames)}

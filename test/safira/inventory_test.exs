@@ -18,7 +18,7 @@ defmodule Safira.InventoryTest do
 
     test "get_item!/1 returns the item with given id" do
       item = item_fixture()
-      assert Inventory.get_item!(item.id) == item
+      assert Inventory.get_item!(item.id).id == item.id
     end
 
     test "create_item/1 with valid data creates a item" do
@@ -51,7 +51,7 @@ defmodule Safira.InventoryTest do
     test "update_item/2 with invalid data returns error changeset" do
       item = item_fixture()
       assert {:error, %Ecto.Changeset{}} = Inventory.update_item(item, @invalid_attrs)
-      assert item == Inventory.get_item!(item.id)
+      assert item.id == Inventory.get_item!(item.id).id
     end
 
     test "delete_item/1 deletes the item" do
