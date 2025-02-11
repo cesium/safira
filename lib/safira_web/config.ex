@@ -47,6 +47,13 @@ defmodule SafiraWeb.Config do
     if Event.event_started?() do
       [
         %{
+          key: :home,
+          title: "Home",
+          image: "/images/icons/home.svg",
+          url: "/app/",
+          enabled: true
+        },
+        %{
           key: :badges,
           title: "Badgedex",
           image: "/images/icons/badgedex.svg",
