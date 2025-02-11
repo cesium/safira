@@ -704,6 +704,7 @@ defmodule Safira.Contest do
     query
     |> join(:inner, [dt, rd], at in Safira.Accounts.Attendee, on: at.id == rd.attendee_id)
     |> join(:inner, [dt, rd, at], u in Safira.Accounts.User, on: u.id == at.user_id)
+    |> where([dt, rd, at, u], not at.ineligible)
     |> select([dt, rd, at, u], %{
       attendee_id: at.id,
       position:

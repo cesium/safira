@@ -7,28 +7,35 @@ defmodule SafiraWeb.App.CoinFlipLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    if connected?(socket) do
-      Minigames.subscribe_to_coin_flip_config_update("fee")
-      Minigames.subscribe_to_coin_flip_config_update("is_active")
-      Minigames.subscribe_to_coin_flip_rooms_update()
+    if socket.assigns.current_user.attendee.ineligible do
+      {:ok,
+       socket
+       |> put_flash(:error, "Can't play the coin flip minigame with this account.")
+       |> push_navigate(to: ~p"/app")}
+    else
+      if connected?(socket) do
+        Minigames.subscribe_to_coin_flip_config_update("fee")
+        Minigames.subscribe_to_coin_flip_config_update("is_active")
+        Minigames.subscribe_to_coin_flip_rooms_update()
+      end
+
+      room_list = Minigames.list_current_coin_flip_rooms()
+
+      previous_room_list = Minigames.list_previous_coin_flip_rooms(4)
+
+      {:ok,
+       socket
+       |> assign(:current_page, :coin_flip)
+       |> assign(:attendee_tokens, socket.assigns.current_user.attendee.tokens)
+       |> assign(:coin_flip_fee, Minigames.get_coin_flip_fee())
+       |> assign(:result, nil)
+       |> assign(:coin_flip_active?, Minigames.coin_flip_active?())
+       |> assign(:bet, 10)
+       |> stream(:room_list, room_list)
+       |> assign(:room_list_count, room_list |> Enum.count())
+       |> stream(:previous_room_list, previous_room_list)
+       |> assign(:previous_room_list_count, previous_room_list |> Enum.count())}
     end
-
-    room_list = Minigames.list_current_coin_flip_rooms()
-
-    previous_room_list = Minigames.list_previous_coin_flip_rooms(4)
-
-    {:ok,
-     socket
-     |> assign(:current_page, :coin_flip)
-     |> assign(:attendee_tokens, socket.assigns.current_user.attendee.tokens)
-     |> assign(:coin_flip_fee, Minigames.get_coin_flip_fee())
-     |> assign(:result, nil)
-     |> assign(:coin_flip_active?, Minigames.coin_flip_active?())
-     |> assign(:bet, 10)
-     |> stream(:room_list, room_list)
-     |> assign(:room_list_count, room_list |> Enum.count())
-     |> stream(:previous_room_list, previous_room_list)
-     |> assign(:previous_room_list_count, previous_room_list |> Enum.count())}
   end
 
   def handle_event("create-room", _params, socket) do
