@@ -11,7 +11,6 @@ defmodule SafiraWeb.App.HomeLive.Index do
       Contest.subscribe_to_attendee_redeems_update(socket.assigns.current_user.attendee.id)
     end
 
-    # TODO: When the badgedex is ready, set the companies_visited based on the current_user info
     checkpoint_badges =
       Contest.list_badges(where: [is_checkpoint: true], order_by: [asc: :entries])
 
