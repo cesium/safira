@@ -43,58 +43,67 @@ defmodule SafiraWeb.Config do
     |> Enum.filter(fn x -> Enum.member?(enabled_flags, x.feature_flag) end)
   end
 
-  def app_pages do
+  def app_pages(attendee_eligible?) do
     if Event.event_started?() do
       [
         %{
           key: :badges,
           title: "Badgedex",
           icon: "hero-check-badge",
-          url: "/app/badges"
+          url: "/app/badges",
+          enabled: true
         },
         %{
           key: :wheel,
           title: "Wheel",
           icon: "hero-circle-stack",
-          url: "/app/wheel"
+          url: "/app/wheel",
+          enabled: attendee_eligible?
         },
         %{
           key: :coin_flip,
           title: "Coin Flip",
           icon: "hero-circle-stack",
-          url: "/app/coin_flip"
+          url: "/app/coin_flip",
+          enabled: attendee_eligible?
         },
         %{
           key: :slots,
           title: "Slots",
           icon: "hero-circle-stack",
-          url: "/app/slots"
+          url: "/app/slots",
+          enabled: true
         },
         %{
           key: :leaderboard,
           title: "Leaderboard",
           icon: "hero-trophy",
-          url: "/app/leaderboard"
+          url: "/app/leaderboard",
+          enabled: true
         },
         %{
           key: :store,
           title: "Store",
           icon: "hero-shopping-bag",
-          url: "/app/store"
+          url: "/app/store",
+          enabled: true
         },
         %{
           key: :vault,
           title: "Vault",
           icon: "hero-archive-box",
-          url: "/app/vault"
+          url: "/app/vault",
+          enabled: true
         },
         %{
           key: :credential,
           title: "Credential",
           icon: "hero-qr-code",
-          url: "/app/credential"
+          url: "/app/credential",
+          enabled: true
         }
       ]
+      |> Enum.filter(& &1.enabled)
     else
       []
     end
@@ -107,6 +116,12 @@ defmodule SafiraWeb.Config do
         title: "Visitors",
         icon: "hero-user",
         url: "/sponsor"
+      },
+      %{
+        key: :scanner,
+        title: "Scanner",
+        icon: "hero-qr-code",
+        url: "/sponsor/scanner"
       }
     ]
   end

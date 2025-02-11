@@ -9,7 +9,9 @@ defmodule Safira.Store do
 
   alias Safira.Accounts.Attendee
   alias Safira.Contest
+  alias Safira.Inventory
   alias Safira.Inventory.Item
+  alias Safira.Store
   alias Safira.Store.Product
 
   @pubsub Safira.PubSub
@@ -36,6 +38,34 @@ defmodule Safira.Store do
     Product
     |> apply_filters(opts)
     |> Flop.validate_and_run(params, for: Product)
+  end
+
+  @doc """
+  Lists purchases with optional filters.
+
+  ## Examples
+
+      iex> list_purchases(%{"page" => 1, "page_size" => 10})
+      {:ok, [%Item{}, ...], %Flop.Meta{}}
+
+      iex> list_purchases(%{"page" => 1, "page_size" => 10}, [filter: %{field: :name, op: :==, value: "example"}])
+      {:ok, [%Item{}, ...], %Flop.Meta{}}
+
+  """
+
+  def list_purchases(params) do
+    Item
+    |> join(:left, [i], p in assoc(i, :product), as: :product)
+    |> preload(attendee: [:user], product: [])
+    |> Flop.validate_and_run(params, for: Item)
+  end
+
+  def list_purchases(%{} = params, opts) when is_list(opts) do
+    Item
+    |> join(:left, [i], p in assoc(i, :product), as: :product)
+    |> apply_filters(opts)
+    |> preload(attendee: [:user], product: [])
+    |> Flop.validate_and_run(params, for: Item)
   end
 
   @doc """
@@ -70,6 +100,40 @@ defmodule Safira.Store do
     %Product{}
     |> Product.changeset(attrs)
     |> Repo.insert()
+  end
+
+  @doc """
+  Refunds a transaction by updating the product stock, deleting the item, and updating the attendee's tokens.
+
+  ## Examples
+
+      iex> refund_transaction(item_id)
+      {:ok, %{get_item: %Item{}, update_product: %Product{}, delete_item: %Item{}, change_attendee_tokens_transaction: %Attendee{}}}
+
+      iex> refund_transaction(invalid_item_id)
+      {:error, reason}
+
+  """
+
+  def refund_transaction(item_id) do
+    Multi.new()
+    |> Multi.run(:get_item, fn _repo, _changes ->
+      item = Inventory.get_item!(item_id)
+      {:ok, item}
+    end)
+    |> Multi.update(:update_product, fn %{get_item: item} ->
+      Store.Product.changeset(item.product, %{stock: item.product.stock + 1})
+    end)
+    |> Multi.delete(:delete_item, fn %{get_item: item} ->
+      item
+    end)
+    |> Multi.merge(fn %{get_item: item} ->
+      Contest.change_attendee_tokens_transaction(
+        item.attendee,
+        item.attendee.tokens + item.product.price
+      )
+    end)
+    |> Repo.transaction()
   end
 
   @doc """

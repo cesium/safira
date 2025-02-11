@@ -12,23 +12,30 @@ defmodule SafiraWeb.App.WheelLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    if connected?(socket) do
-      Minigames.subscribe_to_wheel_config_update("price")
-      Minigames.subscribe_to_wheel_config_update("is_active")
-      Minigames.subscribe_to_wheel_config_update("drops")
-      Minigames.subscribe_to_wheel_wins()
-    end
+    if socket.assigns.current_user.attendee.ineligible do
+      {:ok,
+       socket
+       |> put_flash(:error, "Can't play the wheel minigame with this account.")
+       |> push_navigate(to: ~p"/app")}
+    else
+      if connected?(socket) do
+        Minigames.subscribe_to_wheel_config_update("price")
+        Minigames.subscribe_to_wheel_config_update("is_active")
+        Minigames.subscribe_to_wheel_config_update("drops")
+        Minigames.subscribe_to_wheel_wins()
+      end
 
-    {:ok,
-     socket
-     |> assign(:current_page, :wheel)
-     |> assign(:in_spin?, false)
-     |> assign(:attendee_tokens, socket.assigns.current_user.attendee.tokens)
-     |> assign(:wheel_price, Minigames.get_wheel_price())
-     |> assign(:result, nil)
-     |> assign(:wheel_active?, Minigames.wheel_active?())
-     |> assign(:latest_wins, Minigames.wheel_latest_wins(@max_wins))
-     |> assign(:drops, Minigames.list_wheel_drops())}
+      {:ok,
+       socket
+       |> assign(:current_page, :wheel)
+       |> assign(:in_spin?, false)
+       |> assign(:attendee_tokens, socket.assigns.current_user.attendee.tokens)
+       |> assign(:wheel_price, Minigames.get_wheel_price())
+       |> assign(:result, nil)
+       |> assign(:wheel_active?, Minigames.wheel_active?())}
+       |> assign(:latest_wins, Minigames.wheel_latest_wins(@max_wins))
+       |> assign(:drops, Minigames.list_wheel_drops())}
+    end
   end
 
   @impl true

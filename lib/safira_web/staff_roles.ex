@@ -26,7 +26,7 @@ defmodule SafiraWeb.StaffRoles do
           {:halt,
            socket
            |> Phoenix.LiveView.put_flash(:error, "You are not authorized to access this page.")
-           |> Phoenix.LiveView.redirect(to: "/dashboard")}
+           |> Phoenix.LiveView.redirect(to: "/dashboard/scanner")}
         end
     end
   end

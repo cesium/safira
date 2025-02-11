@@ -53,7 +53,7 @@ defmodule SafiraWeb.Landing.Components.Navbar do
                       <.dropdown_menu_item
                         :if={user_type?(@current_user, :staff)}
                         link_type="a"
-                        to="/dashboard/attendees"
+                        to="/dashboard/scanner"
                         label="Dashboard"
                       />
                       <.dropdown_menu_item
@@ -69,8 +69,8 @@ defmodule SafiraWeb.Landing.Components.Navbar do
                       <.dropdown_menu_item
                         :if={user_type?(@current_user, :company)}
                         link_type="a"
-                        to="/sponsor"
-                        label="Visitors"
+                        to="/sponsor/scanner"
+                        label="Scanner"
                       />
                       <.dropdown_menu_item
                         link_type="a"
@@ -116,7 +116,7 @@ defmodule SafiraWeb.Landing.Components.Navbar do
           </div>
           <.link
             :if={user_type?(@current_user, :staff)}
-            patch={~p"/dashboard/attendees"}
+            patch={~p"/dashboard/scanner"}
             phx-click={hide_mobile_navbar()}
             class="font-terminal uppercase text-3xl text-white transition-colors duration-75 ease-in hover:text-accent"
           >
@@ -132,11 +132,11 @@ defmodule SafiraWeb.Landing.Components.Navbar do
           </.link>
           <.link
             :if={user_type?(@current_user, :company)}
-            patch={~p"/sponsor"}
+            patch={~p"/sponsor/scanner"}
             phx-click={hide_mobile_navbar()}
             class="font-terminal uppercase text-3xl text-white transition-colors duration-75 ease-in hover:text-accent"
           >
-            Visitors
+            Scanner
           </.link>
           <.link
             :if={@current_user}

@@ -1,8 +1,7 @@
 defmodule Safira.Repo.Seeds.Badges do
-  alias Safira.Contest
   alias Safira.Accounts.{Attendee, Staff}
-  alias Safira.Contest.{Badge, BadgeCategory}
-  alias Safira.Repo
+  alias Safira.{Contest, Event, Repo}
+  alias Safira.Contest.{Badge, BadgeCategory, BadgeRedeem}
 
   @badges File.read!("priv/fake/badges.txt") |> String.split("\n") |> Enum.map(&String.split(&1, ";"))
 
@@ -49,6 +48,7 @@ defmodule Safira.Repo.Seeds.Badges do
     {:ok, end_time} = DateTime.from_unix(:erlang.system_time(:second) + 400_000)
     attendees = Repo.all(Attendee)
     staffs = Repo.all(Staff)
+    dates = Event.list_event_dates()
 
     for {badge, i} <- Enum.with_index(@badges) do
       {name, description} = {Enum.at(badge, 0), Enum.at(badge, 1)}
@@ -67,12 +67,18 @@ defmodule Safira.Repo.Seeds.Badges do
 
       case Repo.insert(changeset) do
         {:ok, badge} ->
-          for _ <- 1..10 do
-            Contest.create_badge_redeem(%{
-              badge_id: badge.id,
-              attendee_id: Enum.random(attendees).id,
-              redeemed_by_id: Enum.random(staffs).id
-            })
+          for _ <- 1..20 do
+            try do
+              Repo.insert(%BadgeRedeem{
+                inserted_at:  Timex.DateTime.new!(Enum.random(dates), Timex.Time.new!(Enum.random(9..17), Enum.random(0..59), Enum.random(0..59))),
+                badge_id: badge.id,
+                attendee_id: Enum.random(attendees).id,
+                redeemed_by_id: Enum.random(staffs).id
+              })
+            rescue
+              _ ->
+                Mix.shell().error("Attendee has already redeemed badge.")
+              end
           end
 
           :ok

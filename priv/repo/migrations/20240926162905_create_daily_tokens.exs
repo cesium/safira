@@ -4,7 +4,7 @@ defmodule Safira.Repo.Migrations.CreateDailyTokens do
   def change do
     create table(:daily_tokens, primary_key: false) do
       add :id, :binary_id, primary_key: true
-      add :date, :date
+      add :date, :date, null: false
       add :tokens, :integer
 
       add :attendee_id, references(:attendees, type: :binary_id, on_delete: :delete_all),

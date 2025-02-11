@@ -1,0 +1,71 @@
+<.page title="Purchases">
+  <:actions>
+    <div class="flex flex-row gap-4 justify-center items-center">
+      <.table_search
+        id="items-table-name-search"
+        params={@params}
+        field={:product_name}
+        path={~p"/dashboard/store/purchases"}
+        placeholder={gettext("Search for product")}
+      />
+    </div>
+  </:actions>
+  <div class="py-4">
+    <.table id="items-table" items={@streams.items} meta={@meta} params={@params}>
+      <:col :let={{_id, item}} label="Attendee" field={:attendee_name}>
+        <%= item.attendee.user.name %>
+      </:col>
+      <:col :let={{_id, item}} label="Product" field={:name}>
+        <%= item.product.name %>
+      </:col>
+      <:col :let={{_id, item}} sortable label="Purchased at" field={:inserted_at}>
+        <%= relative_datetime(item.inserted_at) %>
+      </:col>
+      <:col :let={{_id, item}} sortable label="Redeemed at" field={:redeemed_at}>
+        <%= relative_datetime(item.redeemed_at) %>
+      </:col>
+      <:col :let={{_id, item}} label="Status">
+        <%= if item.redeemed_at do %>
+          <p class="text-green-500 border-2 select-none border-green-500 bg-green-500/10 rounded-2xl font-medium text-center px-1 py-1">
+            <%= gettext("Delivered") %>
+          </p>
+        <% else %>
+          <p class="text-gray-500 border-2 select-none border-gray-500 bg-gray-500/10 rounded-2xl font-medium text-center px-1 py-1">
+            <%= gettext("Waiting") %>
+          </p>
+        <% end %>
+      </:col>
+      <:action :let={{_id, item}}>
+        <div class="sr-only">
+          <.link navigate={~p"/dashboard/store/products/#{item}"}>Show</.link>
+        </div>
+      </:action>
+      <:action :let={{_id, item}}>
+        <div class="flex flex-row gap-3">
+          <.link patch={~p"/dashboard/store/purchases/#{item}/redeemed"}>
+            <.icon name="hero-check-circle" class="w-5 h-5" />
+          </.link>
+          <.link patch={~p"/dashboard/store/purchases/#{item}/refund"}>
+            <.icon name="hero-arrow-path" class="w-5 h-5" />
+          </.link>
+        </div>
+      </:action>
+    </.table>
+  </div>
+</.page>
+
+<.modal
+  :if={@live_action in [:redeem, :refund]}
+  id="redeem-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/store/purchases")}
+>
+  <.live_component
+    module={SafiraWeb.Backoffice.PurchaseLive.FormComponent}
+    id={:redeem}
+    title={@page_title}
+    action={@live_action}
+    item={@item}
+    patch={~p"/dashboard/store/purchases"}
+  />
+</.modal>

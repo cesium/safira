@@ -19,8 +19,8 @@ defmodule SafiraWeb.UserAuth do
   # Redirect paths after login based on user type.
   @redirect_after_login_paths %{
     attendee: "/app/",
-    staff: "/dashboard/attendees",
-    company: "/sponsor"
+    staff: "/dashboard/scanner",
+    company: "/sponsor/scanner"
   }
 
   @doc """

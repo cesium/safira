@@ -44,7 +44,7 @@ defmodule Safira.Accounts.User do
     field :allows_marketing, :boolean, default: false
 
     has_one :attendee, Attendee, on_delete: :delete_all
-    has_one :staff, Staff, on_delete: :delete_all
+    has_one :staff, Staff, on_delete: :delete_all, on_replace: :update
     has_one :company, Company, on_delete: :delete_all
 
     timestamps(type: :utc_datetime)
@@ -81,6 +81,18 @@ defmodule Safira.Accounts.User do
     |> validate_handle()
     |> validate_password(opts)
     |> cast_assoc(:attendee, with: &Attendee.changeset/2)
+    |> cast_assoc(:staff, with: &Staff.changeset/2)
+  end
+
+  def changeset(user, attrs, opts \\ []) do
+    user
+    |> cast(attrs, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields |> Enum.reject(&(&1 in [:email, :password, :handle])))
+    |> validate_email(opts)
+    |> validate_handle()
+    |> validate_length(:password, min: 12, max: 72)
+    |> cast_assoc(:attendee, with: &Attendee.changeset/2)
+    |> cast_assoc(:staff, with: &Staff.changeset/2)
   end
 
   @doc """

@@ -5,9 +5,12 @@ defmodule Safira.Companies do
 
   use Safira.Context
 
+  alias Safira.Accounts
   alias Safira.Accounts.User
+  alias Safira.Contest
   alias Safira.Companies.{Company, Tier}
   alias Safira.Spotlights.Spotlight
+  alias Safira.Uploaders
 
   @doc """
   Returns the list of companies.
@@ -361,5 +364,22 @@ defmodule Safira.Companies do
     |> order_by(:priority)
     |> preload(:companies)
     |> Repo.all()
+  end
+
+  @doc """
+  Gets the URL's for the CV's the company has access to
+  """
+  def get_cvs(company) when not is_nil(company.badge_id) do
+    if company.tier.full_cv_access do
+      Accounts.list_attendees_with_cv()
+      |> Enum.map(fn at ->
+        {at.user.handle, Uploaders.CV.url({at.cv, at}, :original, signed: true)}
+      end)
+    else
+      Contest.list_attendees_with_badge_and_cv(company.badge_id)
+      |> Enum.map(fn at ->
+        {at.user.handle, Uploaders.CV.url({at.cv, at}, :original, signed: true)}
+      end)
+    end
   end
 end
