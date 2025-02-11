@@ -98,7 +98,7 @@ defmodule SafiraWeb.Config do
         %{
           key: :credential,
           title: "Credential",
-          icon: "hero-qr-code",
+          image: "/images/icons/scanner.svg",
           url: "/app/credential",
           enabled: true
         }

@@ -60,6 +60,7 @@ defmodule SafiraWeb.App.LeaderboardLive.Components.Leaderboard do
           handle={@entry.handle}
           size={:xl}
           class="bg-light/5 border-2 border-accent bg-accent rounded-full"
+          link={~p"/app/user/#{@entry.handle}"}
         />
         <span class="bg-accent rounded-full px-2 -translate-y-3 select-none text-primary/80 font-semibold border-primary border-2">
           <%= @pos %>
@@ -88,6 +89,7 @@ defmodule SafiraWeb.App.LeaderboardLive.Components.Leaderboard do
             handle={@entry.handle}
             size={:sm}
             class={"#{if @self do "bg-primary/10 border-2 border-primary/10" else "bg-light/5 border-2 border-light/5" end} rounded-full"}
+            link={~p"/app/user/#{@entry.handle}"}
           />
         </p>
         <p class="font-semibold truncate max-w-40">

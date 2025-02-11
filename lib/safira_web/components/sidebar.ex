@@ -289,16 +289,16 @@ defmodule SafiraWeb.Components.Sidebar do
       <div
         id={"#{@id}-dropdown"}
         phx-click-away={hide_user_dropdown("##{@id}-dropdown")}
-        class="hidden z-10 mx-3 origin-bottom bottom-full absolute right-0 left-0 mb-2 rounded-md shadow-lg bg-primary ring-2 ring-white divide-y divide-lightShade overflow-hidden"
+        class="hidden z-10 mx-3 origin-bottom bottom-full absolute right-0 left-0 mb-2 rounded-md shadow-lg bg-light text-primary overflow-hidden"
         role="menu"
         aria-labelledby={@id}
       >
-        <div role="none">
+        <div role="none" class="divide-y divide-primary/10">
           <%= for link <- @link do %>
             <.link
               tabindex="-1"
               role="menuitem"
-              class="block px-4 py-2 bg-primary text-light hover:bg-blue-900/35"
+              class="block px-4 py-3 bg-light text-primary font-medium hover:bg-lightShade transition-colors"
               {link}
             >
               <%= render_slot(link) %>
@@ -332,7 +332,7 @@ defmodule SafiraWeb.Components.Sidebar do
           ]}
         >
           <%= if Map.get(page, :icon) do %>
-            <.icon name={page.icon} class="mr-3 flex-shrink-0 size-8" />
+            <.icon name={page.icon} class="mr-3 flex-shrink-0 size-6" />
           <% end %>
           <%= if Map.get(page, :image) do %>
             <div
