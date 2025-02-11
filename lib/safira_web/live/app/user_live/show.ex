@@ -27,7 +27,7 @@ defmodule SafiraWeb.App.UserLive.Show do
 
     attendee_badge_reddeems =
       Contest.list_attendee_all_badges_redeem_status(
-        socket.assigns.current_user.attendee.id,
+        attendee_id,
         true
       )
 
