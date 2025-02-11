@@ -3,7 +3,13 @@
     <.app_sidebar
       :if={Map.get(assigns, :event_started, true)}
       current_user={@current_user}
-      pages={SafiraWeb.Config.app_pages(!@current_user.attendee.ineligible)}
+      pages={
+        if Safira.Accounts.attendee_has_credential?(@current_user.attendee.id) do
+          SafiraWeb.Config.app_pages(!@current_user.attendee.ineligible)
+        else
+          []
+        end
+      }
       current_page={Map.get(assigns, :current_page, nil)}
       border="border-light/10"
       logo_images={%{light: "/images/sei-logo.svg", dark: "/images/sei-logo.svg"}}
