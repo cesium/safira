@@ -201,20 +201,6 @@ defmodule SafiraWeb.Config do
         scope: %{"schedule" => ["edit"]}
       },
       %{
-        key: :statistics,
-        title: "Statistics",
-        icon: "hero-chart-bar",
-        url: "/dashboard/statistics",
-        scope: %{"statistics" => ["show"]}
-      },
-      %{
-        key: :mailer,
-        title: "Mailer",
-        icon: "hero-envelope",
-        url: "/dashboard/mailer",
-        scope: %{"mailer" => ["send"]}
-      },
-      %{
         key: :scanner,
         title: "Scanner",
         icon: "hero-qr-code",
