@@ -376,6 +376,23 @@ defmodule Safira.Contest do
     Repo.get!(DailyPrize, id)
   end
 
+
+  #def remove_badge_from_user(badge_id , id_user) do
+
+  #end
+
+  def remove_badge_trasection(id) do
+    Multi.new()
+    |> Multi.update(:remove_badge_from_user, remove_badge_from_user(id))
+    |> M
+
+    |> Multi.merge()
+    Contest.change_attendee_tokens_transaction(
+      item.attendee,
+      item.attendee.tokens + item.product.price
+    )
+    Repo.transaction()
+  end
   @doc """
   Creates a daily prize.
 
