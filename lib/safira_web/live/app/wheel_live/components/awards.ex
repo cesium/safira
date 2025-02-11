@@ -37,10 +37,6 @@ defmodule SafiraWeb.App.WheelLive.Components.Awards do
     end
   end
 
-  defp format_probability(probability) do
-    "#{probability * 100} %"
-  end
-
   defp entry_name(drop) do
     cond do
       not is_nil(drop.prize) ->
