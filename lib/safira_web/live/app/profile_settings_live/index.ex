@@ -5,7 +5,7 @@ defmodule SafiraWeb.App.ProfileSettingsLive do
   def render(assigns) do
     ~H"""
     <.page
-      title="Profile Settings"
+      title="Settings"
       subtitle="Manage your profile settings"
       size={:xl}
       title_class="font-terminal uppercase"
