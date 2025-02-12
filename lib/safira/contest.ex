@@ -405,7 +405,7 @@ defmodule Safira.Contest do
   end
 
   def revoke_badge_redeem_from_attendee(badge_id, attendee_id) do
-    revoke_badge_redeem_transaction(badge_id, attendee_id)
+    delete_badge_redeem_from_attendee(badge_id, attendee_id)
   end
 
   @doc """
