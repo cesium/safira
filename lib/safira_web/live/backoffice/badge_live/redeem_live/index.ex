@@ -21,11 +21,18 @@ defmodule SafiraWeb.Backoffice.BadgeLive.RedeemLive.Index do
             <%!-- <p class="text-dark dark:text-light flex flex-row justify-between"> --%>
             <%!-- <%= trigger_description(redeem) %> --%>
             <%!-- </p> --%>
+            <.avatar
+              src={Safira.Uploaders.UserPicture.url({redeem.attendee.user.picture, redeem.attendee.user}, :original, signed: true)}
+              handle={redeem.attendee.user.handle}
+              class="w-8 h-8"
+            />
             <p>
-              <%= redeem.attendee.tokens %>
+              <%= redeem.redeemed_by.user.handle %>
+            </p>
+            <p>
               <%= redeem.attendee.user.handle %>
             </p>
-            <div class="flex flex-row gap-2">
+            <div class="flex flex-row gap-2 justify-between">
               <.link
                 phx-click={JS.push("delete", value: %{id: redeem.id}) |> hide("##{id}")}
                 phx-target={@myself}

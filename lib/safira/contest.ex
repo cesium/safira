@@ -117,7 +117,7 @@ defmodule Safira.Contest do
   def list_badge_redeems(badge_id, opts \\ []) do
     BadgeRedeem
     |> where([br], br.badge_id == ^badge_id)
-    |> preload(attendee: [:user])
+    |> preload(attendee: [:user], redeemed_by: [:user])
     |> apply_filters(opts)
     |> Repo.all()
   end
@@ -383,12 +383,11 @@ defmodule Safira.Contest do
 
   defp revoke_badge_redeem_transaction(badge_redeem_id) do
     Multi.new()
-    |> Multi.one(
-      :badge_redeem,
+    |> Multi.run(:badge_redeem, fn _repo, _changes ->
       {:ok, get_badge_redeem!(badge_redeem_id, preloads: [:badge, :attendee])}
-    )
+    end)
     |> Multi.delete(:remove_badge_from_attendee, fn %{badge_redeem: badge_redeem} ->
-      badge_redeem.id
+      badge_redeem
     end)
     |> Multi.update(:attendee_update_entries, fn %{badge_redeem: badge_redeem} ->
       Attendee.changeset(badge_redeem.attendee, %{
