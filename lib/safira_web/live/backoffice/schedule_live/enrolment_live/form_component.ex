@@ -20,12 +20,7 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.EnrolmentLive.FormComponent do
             phx-validate="validate"
             phx-submit="save"
           >
-            <.field
-              field={@form[:activity_id]}
-              type="hidden"
-              value={@activity.id}
-              required
-            />
+            <.field field={@form[:activity_id]} type="hidden" value={@activity.id} required />
             <.field_multiselect
               mode={:single}
               id="attendee"
