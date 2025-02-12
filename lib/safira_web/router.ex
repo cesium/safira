@@ -331,8 +331,6 @@ defmodule SafiraWeb.Router do
             live "/payline", Index, :edit_slots_payline
           end
 
-          live "/", Index, :index
-
           live "/coin_flip", Index, :edit_coin_flip
         end
 
