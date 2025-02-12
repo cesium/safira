@@ -344,6 +344,8 @@ defmodule SafiraWeb.Router do
             live "/", Index, :index
             live "/:id", Show, :show
           end
+
+          live "/enrolments/:id", EnrolmentLive.Index, :index
         end
 
         live "/profile_settings", ProfileSettingsLive, :edit

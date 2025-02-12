@@ -469,6 +469,20 @@ defmodule Safira.Activities do
   end
 
   @doc """
+  Checks if an attendee is enrolled for an activity.
+
+  ## Examples
+
+      iex> is_attendee_enrolled(activity_id, attendee_id)
+      true
+  """
+  def attendee_enrolled?(activity_id, attendee_id) do
+    Enrolment
+    |> where([e], e.attendee_id == ^attendee_id and e.activity_id == ^activity_id)
+    |> Repo.exists?()
+  end
+
+  @doc """
   Enrols an attendee in an activity
 
   ## Examples
