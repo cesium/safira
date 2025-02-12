@@ -179,3 +179,21 @@
     patch={~p"/dashboard/badges"}
   />
 </.modal>
+
+<.modal
+  :if={@live_action in [:redeem]}
+  id="import-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/badges")}
+>
+  <.live_component
+    module={SafiraWeb.Backoffice.BadgeLive.RedeemLive.Index}
+    id="import"
+    title={@page_title}
+    current_user={@current_user}
+    params={@redeem_params}
+    action={@live_action}
+    patch={~p"/dashboard/badges"}
+    badge={@badge}
+  />
+</.modal>

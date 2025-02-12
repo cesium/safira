@@ -216,7 +216,7 @@ defmodule SafiraWeb.Components.Table do
       ~H"""
       <li>
         <p class={[
-          "hover:cursor-default select-none flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 border border-gray-300 bg-gray-100 border-lightShade dark:border-darkShade dark:text-gray-400 dark:bg-dark",
+          "hover:cursor-default select-none flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 border border-lightShade dark:border-darkShade dark:text-gray-400 dark:bg-dark",
           @right_corner && "rounded-e-lg",
           @left_corner && "rounded-s-lg"
         ]}>
