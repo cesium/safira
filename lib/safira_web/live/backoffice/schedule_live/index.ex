@@ -5,9 +5,9 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.Index do
   import SafiraWeb.Components.{Table, TableSearch}
 
   alias Safira.Activities
-  alias Safira.Activities.{Activity, ActivityCategory, Speaker}
+  alias Safira.Activities.{Activity, ActivityCategory, Enrolment, Speaker}
 
-  on_mount {SafiraWeb.StaffRoles, index: %{"schedule" => ["edit"]}}
+  on_mount {SafiraWeb.StaffRoles, index: %{"schedule" => ["show"]}}
 
   @impl true
   def mount(_params, _session, socket) do
@@ -92,8 +92,23 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.Index do
   end
 
   defp apply_action(socket, :enrolments, params) do
+    case Activities.list_enrolled_attendees(params["id"], params) do
+      {:ok, {attendees, meta}} ->
+        socket
+        |> assign(:page_title, "Enrolments")
+        |> assign(:params, params)
+        |> assign(:enrolments_meta, meta)
+        |> assign(:activity_id, params["id"])
+        |> stream(:enrolled_attendees, attendees, reset: true)
+
+      {:error, _} ->
+        socket
+    end
+  end
+
+  defp apply_action(socket, :enrolments_new, params) do
     socket
-    |> assign(:page_title, "Enrolments")
+    |> assign(:page_title, "New Enrolment")
     |> assign(:activity, Activities.get_activity!(params["id"]))
   end
 
@@ -107,7 +122,7 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.Index do
         |> stream(:speakers, speakers, reset: true)
 
       {:error, _} ->
-        {:ok, socket}
+        socket
     end
   end
 

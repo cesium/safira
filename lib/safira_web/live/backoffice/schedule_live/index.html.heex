@@ -110,13 +110,34 @@
   on_cancel={JS.navigate(~p"/dashboard/schedule/activities")}
 >
   <.live_component
+    module={SafiraWeb.Backoffice.ScheduleLive.EnrolmentLive.Index}
+    id="enrolments-component"
+    title={@page_title}
+    current_user={@current_user}
+    action={@live_action}
+    params={@params}
+    meta={@enrolments_meta}
+    streams={@streams}
+    activity_id={@activity_id}
+    patch={~p"/dashboard/schedule/activities"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:enrolments_new]}
+  id="enrolments-modal"
+  show
+  on_cancel={JS.navigate(~p"/dashboard/schedule/activities/#{@activity.id}/enrolments")}
+>
+  <.live_component
     module={SafiraWeb.Backoffice.ScheduleLive.EnrolmentLive.FormComponent}
-    id={"enrolments-#{@activity.id}"}
+    id="enrolments-new"
     title={@page_title}
     current_user={@current_user}
     action={@live_action}
     activity={@activity}
-    patch={~p"/dashboard/schedule/activities"}
+    enrolment={%Enrolment{}}
+    patch={~p"/dashboard/schedule/activities/#{@activity.id}/enrolments"}
   />
 </.modal>
 
