@@ -7,7 +7,7 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.Index do
   alias Safira.Activities
   alias Safira.Activities.{Activity, ActivityCategory, Speaker}
 
-  on_mount {SafiraWeb.StaffRoles, index: %{"schedule" => ["edit"]}}
+  on_mount {SafiraWeb.StaffRoles, index: %{"schedule" => ["show"]}}
 
   @impl true
   def mount(_params, _session, socket) do
