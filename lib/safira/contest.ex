@@ -404,7 +404,7 @@ defmodule Safira.Contest do
     |> Repo.transaction()
   end
 
-  def revoke_badge_from_attendee(badge_id, attendee_id) do
+  def revoke_badge_redeem_from_attendee(badge_id, attendee_id) do
     revoke_badge_redeem_transaction(badge_id, attendee_id)
   end
 
