@@ -171,6 +171,7 @@ defmodule SafiraWeb.Router do
         end
 
         scope "/attendees", AttendeeLive do
+          live "/leaderboard", LeaderboardLive.Index, :index
           live "/", Index, :index
           live "/:id", Show, :show
           live "/:id/edit/tokens", Show, :tokens_edit
