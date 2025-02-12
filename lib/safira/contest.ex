@@ -5,7 +5,6 @@ defmodule Safira.Contest do
   use Safira.Context
 
   alias Ecto.Multi
-  alias Safira.Accounts
   alias Safira.Accounts.{Attendee, User}
   alias Safira.{Companies, Spotlights, Workers}
 
@@ -105,6 +104,13 @@ defmodule Safira.Contest do
     |> Repo.all()
   end
 
+  def list_attendee_redeems_meta(attendee_id, params) do
+    BadgeRedeem
+    |> where([br], br.attendee_id == ^attendee_id)
+    |> preload([:badge, attendee: [:user], redeemed_by: [:user]])
+    |> Flop.validate_and_run(params, for: BadgeRedeem)
+  end
+
   @doc """
   Lists all badge redeems belonging to a badge.
 
@@ -117,7 +123,7 @@ defmodule Safira.Contest do
   def list_badge_redeems(badge_id, opts \\ []) do
     BadgeRedeem
     |> where([br], br.badge_id == ^badge_id)
-    |> preload(attendee: [:user], redeemed_by: [:user])
+    |> preload(attendee: [:user])
     |> apply_filters(opts)
     |> Repo.all()
   end
@@ -169,7 +175,7 @@ defmodule Safira.Contest do
     |> where([br], br.badge_id == ^badge_id)
     |> join(:inner, [br], a in assoc(br, :attendee), as: :attendee)
     |> join(:inner, [br, a], u in assoc(a, :user), as: :user)
-    |> preload(attendee: [:user])
+    |> preload(attendee: [:user], redeemed_by: [:user])
     |> apply_filters(opts)
     |> Flop.validate_and_run(params, for: BadgeRedeem)
   end

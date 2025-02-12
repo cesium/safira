@@ -28,7 +28,9 @@ defmodule SafiraWeb.Backoffice.BadgeLive.Index do
 
   @impl true
   def handle_params(params, _url, socket) do
-    case Contest.list_badges(params) do
+    badge_params = if socket.assigns.live_action == :index, do: params, else: %{}
+
+    case Contest.list_badges(badge_params) do
       {:ok, {badges, meta}} ->
         {:noreply,
          socket
@@ -128,11 +130,13 @@ defmodule SafiraWeb.Backoffice.BadgeLive.Index do
     |> assign(:page_title, "Import Badges")
   end
 
-  defp apply_action(socket, :redeem, %{"id" => id}) do
+  defp apply_action(socket, :redeem, %{"id" => id} = params) do
     badge = Contest.get_badge!(id)
 
     socket
     |> assign(:page_title, "Redeem Badge")
+    |> assign(:redeem_params, params)
+    |> assign(:params, %{})
     |> assign(:badge, badge)
   end
 

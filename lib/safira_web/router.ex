@@ -175,6 +175,7 @@ defmodule SafiraWeb.Router do
           live "/:id", Show, :show
           live "/:id/edit/tokens", Show, :tokens_edit
           live "/:id/edit/eligibility", Show, :eligibility_edit
+          live "/:id/redeem", Show, :redeem
         end
 
         scope "/event", EventLive do
