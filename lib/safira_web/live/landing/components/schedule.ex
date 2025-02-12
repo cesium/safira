@@ -19,19 +19,18 @@ defmodule SafiraWeb.Landing.Components.Schedule do
 
   @impl true
   def render(assigns) do
-    current_day =
-      get_day(
-        fetch_current_date_from_params(assigns.params),
-        assigns.event_start_date,
-        assigns.event_end_date
-      )
-
     ~H"""
     <div class="xl:grid 2xl:grid-cols-2 gap-8 relative select-none">
       <div class="mb-20 2xl:mb-0">
         <div class="sticky top-12">
           <.schedule_day
-            date={current_day}
+            date={
+              get_day(
+                fetch_current_date_from_params(assigns.params),
+                assigns.event_start_date,
+                assigns.event_end_date
+              )
+            }
             url={@url}
             params={@params}
             filters={fetch_filters_from_params(assigns.params)}
@@ -41,7 +40,13 @@ defmodule SafiraWeb.Landing.Components.Schedule do
           <.filters
             :if={@has_filters?}
             url={@url}
-            current_day={current_day}
+            current_day={
+              get_day(
+                fetch_current_date_from_params(assigns.params),
+                assigns.event_start_date,
+                assigns.event_end_date
+              )
+            }
             filters={fetch_filters_from_params(assigns.params)}
           />
         </div>
