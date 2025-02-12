@@ -1,8 +1,6 @@
 defmodule SafiraWeb.Backoffice.MinigamesLive.Show do
   use SafiraWeb, :backoffice_view
 
-  alias Safira.Accounts
-  alias Safira.Inventory
   alias Safira.Store
 
   import SafiraWeb.Helpers
