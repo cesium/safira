@@ -6,7 +6,7 @@ defmodule Safira.Accounts.Roles.Permissions do
 
   def all do
     %{
-      "attendees" => ["show", "edit"],
+      "attendees" => ["show", "edit", "show_leaderboard"],
       "staffs" => ["show", "edit", "roles_edit"],
       "challenges" => ["show", "edit", "delete"],
       "companies" => ["edit"],
