@@ -53,7 +53,13 @@ defmodule SafiraWeb.Landing.Components.Schedule do
       </div>
       <div>
         <.schedule_table
-          date={fetch_current_date_from_params(assigns.params) || assigns.event_start_date}
+          date={
+            get_day(
+              fetch_current_date_from_params(assigns.params),
+              assigns.event_start_date,
+              assigns.event_end_date
+            )
+          }
           filters={fetch_filters_from_params(assigns.params)}
           user_role={get_user_role(assigns.current_user)}
           enrolments={assigns.enrolments}
