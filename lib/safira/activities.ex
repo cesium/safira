@@ -5,6 +5,7 @@ defmodule Safira.Activities do
 
   use Safira.Context
 
+  alias Safira.Accounts.{Attendee, User}
   alias Safira.Activities.{Activity, ActivityCategory, Enrolment, Speaker}
 
   @doc """
@@ -40,6 +41,17 @@ defmodule Safira.Activities do
     |> preload(:speakers)
     |> apply_filters(opts)
     |> Flop.validate_and_run(params, for: Activity)
+  end
+
+  def list_enrolled_attendees(activity_id, params \\ %{}, opts \\ []) do
+    User
+    |> join(:inner, [u], at in Attendee, on: u.id == at.user_id)
+    |> join(:inner, [u, at], e in Enrolment, on: e.attendee_id == at.id)
+    |> where([u, at, e], e.activity_id == ^activity_id)
+    |> select([u, at, e], u)
+    |> preload(:attendee)
+    |> apply_filters(opts)
+    |> Flop.validate_and_run(params, for: User)
   end
 
   @doc """
@@ -500,15 +512,21 @@ defmodule Safira.Activities do
       iex> unenrol(attendee_id, activity_id)
       {:error, :struct, %Ecto.Changeset{}, %{}}
   """
-  def unenrol(enrolment) do
+  def unenrol(activity_id, attendee_id) do
     Ecto.Multi.new()
     # We need to read the activity before updating the enrolment count to avoid
     # a race condition where the enrolment count changes after the activity was last
     # read from the database, and before this transaction began
-    |> Ecto.Multi.one(:activity, Activity |> where([a], a.id == ^enrolment.activity_id))
-    |> Ecto.Multi.delete(
+    |> Ecto.Multi.one(
       :enrolment,
-      enrolment
+      Enrolment |> where([e], e.activity_id == ^activity_id and e.attendee_id == ^attendee_id)
+    )
+    |> Ecto.Multi.one(:activity, Activity |> where([a], a.id == ^activity_id))
+    |> Ecto.Multi.delete(
+      :deleted_enrolment,
+      fn %{enrolment: enrolment} ->
+        enrolment
+      end
     )
     |> Ecto.Multi.update(:new_activity, fn %{activity: act} ->
       Activity.changeset(act, %{enrolment_count: act.enrolment_count - 1})
