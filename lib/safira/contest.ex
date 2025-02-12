@@ -5,6 +5,7 @@ defmodule Safira.Contest do
   use Safira.Context
 
   alias Ecto.Multi
+  alias Safira.Accounts
   alias Safira.Accounts.{Attendee, User}
   alias Safira.{Companies, Spotlights, Workers}
 
@@ -376,35 +377,35 @@ defmodule Safira.Contest do
     Repo.get!(DailyPrize, id)
   end
 
-  defp remove_badge_redeem_from_attendee(badge_id, attendee_id) do
+  defp revoke_badge_redeem_from_attendee(badge_id, attendee_id) do
     from(br in BadgeRedeem, where: br.badge_id == ^badge_id and br.attendee_id == ^attendee_id)
     |> Repo.delete_all()
   end
 
-  defp remove_badge_redeem_transaction(badge_id, attendee_id) do
+  defp revoke_badge_redeem_transaction(badge_id, attendee_id) do
     Multi.new()
-    |> Multi.one(:badge ,get_badge!(badge_id))
-    |> Multi.one(:attendee ,Accounts.get_attendee!(attendee_id))
+    |> Multi.one(:badge, get_badge!(badge_id))
+    |> Multi.one(:attendee, Accounts.get_attendee!(attendee_id))
     |> Multi.update(
       :remove_badge_from_attendee,
-      remove_badgeredeem_from_attendee(badge_id, attendee_id)
+      revoke_badge_redeem_from_attendee(badge_id, attendee_id)
     )
-    |> Multi.merge(
-      fn %{badge: badge, attendee: attendee} ->
-        Attendee.update_entries_changeset(attendee, %{entries: max(attendee.entries - badge.entries, 0)})
-      end
-    )
+    |> Multi.merge(fn %{badge: badge, attendee: attendee} ->
+      Attendee.update_entries_changeset(attendee, %{
+        entries: max(attendee.entries - badge.entries, 0)
+      })
+    end)
     |> Multi.merge(fn %{get_badge: badge, get_attendee: attendee} ->
       Contest.change_attendee_tokens_transaction(
         attendee,
-        max(attendee.tokens - badge.tokens,0)
+        max(attendee.tokens - badge.tokens, 0)
       )
     end)
     |> Repo.transaction()
   end
 
-  def remove_badge_from_attendee(badge_id, attendee_id) do
-    remove_badge_redeem_transaction(badge_id, attendee_id)
+  def revoke_badge_from_attendee(badge_id, attendee_id) do
+    revoke_badge_redeem_transaction(badge_id, attendee_id)
   end
 
   @doc """
