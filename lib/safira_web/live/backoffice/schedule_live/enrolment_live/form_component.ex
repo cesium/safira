@@ -4,7 +4,6 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.EnrolmentLive.FormComponent do
   alias Safira.Accounts
   alias Safira.Accounts.User
   alias Safira.Activities
-  alias Safira.Activities.Enrolment
 
   import SafiraWeb.Components.Forms
 
@@ -23,9 +22,8 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.EnrolmentLive.FormComponent do
           >
             <.field
               field={@form[:activity_id]}
-              type="string"
+              type="hidden"
               value={@activity.id}
-              wrapper_class="hidden"
               required
             />
             <.field_multiselect

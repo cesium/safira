@@ -1,9 +1,7 @@
 defmodule SafiraWeb.Backoffice.ScannerLive.EnrolmentLive.Index do
   use SafiraWeb, :backoffice_view
 
-  alias Safira.{Accounts, Activities, Contest}
-
-  import SafiraWeb.Components.Tabs
+  alias Safira.{Accounts, Activities}
 
   @impl true
   def render(assigns) do

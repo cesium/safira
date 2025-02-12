@@ -2,9 +2,7 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.EnrolmentLive.Index do
   use SafiraWeb, :live_component
 
   alias Safira.Accounts
-  alias Safira.Accounts.User
   alias Safira.Activities
-  alias Safira.Activities.Enrolment
 
   import SafiraWeb.Components.{EnsurePermissions, Table, TableSearch}
 
@@ -32,7 +30,7 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.EnrolmentLive.Index do
             id="enrolment-table-name-search"
             params={@params}
             field={:name}
-            path={~p"/dashboard/schedule/activities/enrolments"}
+            path={~p"/dashboard/schedule/activities/#{@activity_id}/enrolments"}
             placeholder={gettext("Search for enrolments")}
             class="w-full"
           />
@@ -127,20 +125,6 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.EnrolmentLive.Index do
       {:noreply, socket}
     end
   end
-
-  def get_enrolment_data_by_id(enrolments, id) do
-    Enum.find(enrolments, &(elem(&1, 0) == id)) |> elem(2)
-  end
-
-  defp update_enrolment_form(enrolments, id, new_form) do
-    Enum.map(enrolments, fn
-      {^id, new, enrolment, _} -> {id, new, enrolment, new_form}
-      other -> other
-    end)
-  end
-
-  defp attendee_options(%User{} = user), do: {user.name, user.attendee.id}
-  defp attendee_options(id), do: id
 
   defp has_duplicates?(list), do: Enum.uniq(list) != list
 end
