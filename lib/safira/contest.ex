@@ -377,7 +377,7 @@ defmodule Safira.Contest do
     Repo.get!(DailyPrize, id)
   end
 
-  defp revoke_badge_redeem_from_attendee(badge_id, attendee_id) do
+  defp delete_badge_redeem_from_attendee(badge_id, attendee_id) do
     from(br in BadgeRedeem, where: br.badge_id == ^badge_id and br.attendee_id == ^attendee_id)
     |> Repo.delete_all()
   end
@@ -388,7 +388,7 @@ defmodule Safira.Contest do
     |> Multi.one(:attendee, Accounts.get_attendee!(attendee_id))
     |> Multi.update(
       :remove_badge_from_attendee,
-      revoke_badge_redeem_from_attendee(badge_id, attendee_id)
+      delete_badge_redeem_from_attendee(badge_id, attendee_id)
     )
     |> Multi.merge(fn %{badge: badge, attendee: attendee} ->
       Attendee.update_entries_changeset(attendee, %{
