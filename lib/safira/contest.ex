@@ -106,7 +106,8 @@ defmodule Safira.Contest do
 
   def list_attendee_redeems_meta(attendee_id, params) do
     BadgeRedeem
-    |> where([br], br.attendee_id == ^attendee_id)
+    |> join(:inner, [br], b in Badge, on: b.id == br.badge_id)
+    |> where([br, b], br.attendee_id == ^attendee_id)
     |> preload([:badge, attendee: [:user], redeemed_by: [:user]])
     |> Flop.validate_and_run(params, for: BadgeRedeem)
   end

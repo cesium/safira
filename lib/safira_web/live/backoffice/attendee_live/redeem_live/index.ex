@@ -3,17 +3,28 @@ defmodule SafiraWeb.Backoffice.AttendeeLive.RedeemLive.Index do
 
   alias Safira.Contest
 
-  import SafiraWeb.Components.{Badge, Table}
+  import SafiraWeb.Components.{Badge, Table, TableSearch}
 
   on_mount {SafiraWeb.StaffRoles, index: %{"badges" => ["revoke"]}}
 
-  @limit 6
+  @limit 5
 
   @impl true
   def render(assigns) do
     ~H"""
     <div>
       <.page title={@title} subtitle={gettext("Refund badge redeems.")}>
+        <:actions>
+          <div class="flex flex-row w-full gap-4">
+            <.table_search
+              id="attendees-table-name-search"
+              params={@params}
+              field={:name}
+              path={~p"/dashboard/attendees/#{@attendee.id}/redeem"}
+              placeholder={gettext("Search for attendees")}
+            />
+          </div>
+        </:actions>
         <.table id="speakers-table" items={@streams.redeems} meta={@meta} params={@params}>
           <:col :let={{_id, redeem}} field={:name} label="Badge">
             <.badge id={redeem.badge.id} badge={redeem.badge} width="max-w-16" />
