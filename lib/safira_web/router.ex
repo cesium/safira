@@ -284,6 +284,8 @@ defmodule SafiraWeb.Router do
               live "/new", Index, :triggers_new
               live "/:trigger_id/edit", Index, :triggers_edit
             end
+
+            live "/redeems", Index, :redeem
           end
 
           scope "/categories" do

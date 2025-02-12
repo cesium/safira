@@ -128,6 +128,14 @@ defmodule SafiraWeb.Backoffice.BadgeLive.Index do
     |> assign(:page_title, "Import Badges")
   end
 
+  defp apply_action(socket, :redeem, %{"id" => id}) do
+    badge = Contest.get_badge!(id)
+
+    socket
+    |> assign(:page_title, "Redeem Badge")
+    |> assign(:badge, badge)
+  end
+
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
     badge = Contest.get_badge!(id)

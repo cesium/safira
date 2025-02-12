@@ -377,35 +377,31 @@ defmodule Safira.Contest do
     Repo.get!(DailyPrize, id)
   end
 
-  defp delete_badge_redeem_from_attendee(badge_id, attendee_id) do
-    from(br in BadgeRedeem, where: br.badge_id == ^badge_id and br.attendee_id == ^attendee_id)
-    |> Repo.delete_all()
+  def revoke_badge_redeem_from_attendee(badge_redeem_id) do
+    revoke_badge_redeem_transaction(badge_redeem_id)
   end
 
-  defp revoke_badge_redeem_transaction(badge_id, attendee_id) do
+  defp revoke_badge_redeem_transaction(badge_redeem_id) do
     Multi.new()
-    |> Multi.one(:badge, get_badge!(badge_id))
-    |> Multi.one(:attendee, Accounts.get_attendee!(attendee_id))
-    |> Multi.update(
-      :remove_badge_from_attendee,
-      delete_badge_redeem_from_attendee(badge_id, attendee_id)
+    |> Multi.one(
+      :badge_redeem,
+      {:ok, get_badge_redeem!(badge_redeem_id, preloads: [:badge, :attendee])}
     )
-    |> Multi.merge(fn %{badge: badge, attendee: attendee} ->
-      Attendee.update_entries_changeset(attendee, %{
-        entries: max(attendee.entries - badge.entries, 0)
+    |> Multi.delete(:remove_badge_from_attendee, fn %{badge_redeem: badge_redeem} ->
+      badge_redeem.id
+    end)
+    |> Multi.update(:attendee_update_entries, fn %{badge_redeem: badge_redeem} ->
+      Attendee.changeset(badge_redeem.attendee, %{
+        entries: max(badge_redeem.attendee.entries - badge_redeem.badge.entries, 0)
       })
     end)
-    |> Multi.merge(fn %{get_badge: badge, get_attendee: attendee} ->
-      Contest.change_attendee_tokens_transaction(
-        attendee,
-        max(attendee.tokens - badge.tokens, 0)
+    |> Multi.merge(fn %{badge_redeem: badge_redeem} ->
+      change_attendee_tokens_transaction(
+        badge_redeem.attendee,
+        max(badge_redeem.attendee.tokens - badge_redeem.badge.tokens, 0)
       )
     end)
     |> Repo.transaction()
-  end
-
-  def revoke_badge_redeem_from_attendee(badge_id, attendee_id) do
-    delete_badge_redeem_from_attendee(badge_id, attendee_id)
   end
 
   @doc """
