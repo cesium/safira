@@ -1,0 +1,57 @@
+<.page title="Drops">
+  <:actions>
+    <div class="flex flex-row gap-4 justify-center items-center">
+      <.table_search
+        id="items-table-attendee-name-search"
+        params={@params}
+        field={:prize_name}
+        path={~p"/dashboard/minigames/drops"}
+        placeholder={gettext("Search for attendees")}
+      />
+    </div>
+  </:actions>
+  <div class="py-4">
+    <.table id="items-table" items={@streams.items} meta={@meta} params={@params}>
+      <:col :let={{_id, item}} label="Attendee" field={:attendee_name}>
+        <div class="flex gap-4 flex-center items-center">
+          <.avatar
+            handle={item.attendee.user.handle}
+            src={
+              Uploaders.UserPicture.url(
+                {item.attendee.user.picture, item.attendee.user},
+                :original,
+                signed: true
+              )
+            }
+          />
+          <div class="self-center">
+            <p class="text-base font-semibold"><%= item.attendee.user.name %></p>
+            <p class="font-sm">@<%= item.attendee.user.handle %></p>
+          </div>
+        </div>
+      </:col>
+      <:col :let={{_id, item}} label="Item" field={:name}>
+        <%= item.prize.name %>
+      </:col>
+      <:col :let={{_id, item}} sortable label="Gotten at" field={:inserted_at}>
+        <%= relative_datetime(item.inserted_at) %>
+      </:col>
+      <:col :let={{_id, item}} label="Status">
+        <%= if item.redeemed_at do %>
+          <p class="text-green-500 border-2 select-none border-green-500 bg-green-500/10 rounded-2xl font-medium text-center px-1 py-1">
+            <%= gettext("Delivered") %>
+          </p>
+        <% else %>
+          <p class="text-gray-500 border-2 select-none border-gray-500 bg-gray-500/10 rounded-2xl font-medium text-center px-1 py-1">
+            <%= gettext("Waiting") %>
+          </p>
+        <% end %>
+      </:col>
+      <:action :let={{_id, item}}>
+        <div class="sr-only">
+          <.link navigate={~p"/dashboard/store/products/#{item}"}>Show</.link>
+        </div>
+      </:action>
+    </.table>
+  </div>
+</.page>

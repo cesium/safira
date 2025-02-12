@@ -6,14 +6,20 @@ defmodule Safira.Inventory.Item do
 
   @derive {
     Flop.Schema,
-    filterable: [:product_name],
-    sortable: [:redeemed_at, :inserted_at],
+    filterable: [:product_name, :prize_name],
+    sortable: [:redeemed_at, :inserted_at, :product_name],
     default_limit: 11,
     join_fields: [
       product_name: [
         binding: :product,
         field: :name,
         path: [:product, :name],
+        ecto_type: :string
+      ],
+      prize_name: [
+        binding: :prize,
+        field: :name,
+        path: [:prize, :name],
         ecto_type: :string
       ]
     ]
