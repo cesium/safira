@@ -1,0 +1,20 @@
+<.page title="Leaderboard">
+  <div class="flex flex-col gap-10 mt-6 max-w-3xl mx-auto">
+    <div>
+      <.day_selector
+        day={@current_day_str}
+        on_left="on_left"
+        on_right="on_right"
+        left_enabled={@left_enabled}
+        right_enabled={@right_enabled}
+      />
+    </div>
+    <div class="md:mt-0 mt-8">
+      <.leaderboard :if={@leaderboard != []} entries={@leaderboard} />
+      <div :if={@leaderboard == []} class="flex flex-col items-center gap-4 my-20">
+        <img src={~p"/images/dizzy-void.svg"} class="w-32 h-32" />
+        <p><%= gettext("No data to show for this day.") %></p>
+      </div>
+    </div>
+  </div>
+</.page>

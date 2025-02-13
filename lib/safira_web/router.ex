@@ -88,7 +88,7 @@ defmodule SafiraWeb.Router do
       live "/attendee/:credential_id", AttendeeLive.Index, :index
 
       scope "/app", App do
-        pipe_through [:require_attendee_user]
+        pipe_through [:require_confirmed_user, :require_attendee_user]
 
         live "/waiting", WaitingLive.Index, :index
 
@@ -149,14 +149,14 @@ defmodule SafiraWeb.Router do
       end
 
       scope "/sponsor", Sponsor do
-        pipe_through :require_company_user
+        pipe_through [:require_confirmed_user, :require_company_user]
 
         live "/", HomeLive.Index, :index
         live "/scanner", ScannerLive.Index, :index
       end
 
       scope "/dashboard", Backoffice do
-        pipe_through [:require_staff_user]
+        pipe_through [:require_confirmed_user, :require_staff_user]
 
         scope "/spotlights", SpotlightLive do
           live "/", Index, :index
@@ -171,10 +171,12 @@ defmodule SafiraWeb.Router do
         end
 
         scope "/attendees", AttendeeLive do
+          live "/leaderboard", LeaderboardLive.Index, :index
           live "/", Index, :index
           live "/:id", Show, :show
           live "/:id/edit/tokens", Show, :tokens_edit
           live "/:id/edit/eligibility", Show, :eligibility_edit
+          live "/:id/redeem", Show, :redeem
         end
 
         scope "/event", EventLive do
@@ -234,6 +236,7 @@ defmodule SafiraWeb.Router do
             live "/new", Index, :new
             live "/:id/edit", Index, :edit
             live "/:id/enrolments", Index, :enrolments
+            live "/:id/enrolments/new", Index, :enrolments_new
 
             scope "/speakers" do
               live "/", Index, :speakers
@@ -284,6 +287,8 @@ defmodule SafiraWeb.Router do
               live "/new", Index, :triggers_new
               live "/:trigger_id/edit", Index, :triggers_edit
             end
+
+            live "/redeems", Index, :redeem
           end
 
           scope "/categories" do
@@ -343,6 +348,8 @@ defmodule SafiraWeb.Router do
             live "/", Index, :index
             live "/:id", Show, :show
           end
+
+          live "/enrolments/:id", EnrolmentLive.Index, :index
         end
 
         live "/profile_settings", ProfileSettingsLive, :edit

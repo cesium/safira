@@ -104,6 +104,15 @@ defmodule Safira.Contest do
     |> Repo.all()
   end
 
+  def list_attendee_redeems_meta(attendee_id, params) do
+    BadgeRedeem
+    |> join(:inner, [br], b in Badge, on: b.id == br.badge_id, as: :badge)
+    |> where([br, b], br.attendee_id == ^attendee_id)
+    |> preload([:badge, attendee: [:user], redeemed_by: [:user]])
+    |> order_by([br], desc: br.inserted_at)
+    |> Flop.validate_and_run(params, for: BadgeRedeem)
+  end
+
   @doc """
   Lists all badge redeems belonging to a badge.
 
@@ -168,7 +177,7 @@ defmodule Safira.Contest do
     |> where([br], br.badge_id == ^badge_id)
     |> join(:inner, [br], a in assoc(br, :attendee), as: :attendee)
     |> join(:inner, [br, a], u in assoc(a, :user), as: :user)
-    |> preload(attendee: [:user])
+    |> preload(attendee: [:user], redeemed_by: [:user])
     |> apply_filters(opts)
     |> Flop.validate_and_run(params, for: BadgeRedeem)
   end
@@ -374,6 +383,32 @@ defmodule Safira.Contest do
   """
   def get_daily_prize!(id) do
     Repo.get!(DailyPrize, id)
+  end
+
+  def revoke_badge_redeem_from_attendee(badge_redeem_id) do
+    revoke_badge_redeem_transaction(badge_redeem_id)
+  end
+
+  defp revoke_badge_redeem_transaction(badge_redeem_id) do
+    Multi.new()
+    |> Multi.run(:badge_redeem, fn _repo, _changes ->
+      {:ok, get_badge_redeem!(badge_redeem_id, preloads: [:badge, :attendee])}
+    end)
+    |> Multi.delete(:remove_badge_from_attendee, fn %{badge_redeem: badge_redeem} ->
+      badge_redeem
+    end)
+    |> Multi.update(:attendee_update_entries, fn %{badge_redeem: badge_redeem} ->
+      Attendee.changeset(badge_redeem.attendee, %{
+        entries: max(badge_redeem.attendee.entries - badge_redeem.badge.entries, 0)
+      })
+    end)
+    |> Multi.merge(fn %{badge_redeem: badge_redeem} ->
+      change_attendee_tokens_transaction(
+        badge_redeem.attendee,
+        max(badge_redeem.attendee.tokens - badge_redeem.badge.tokens, 0)
+      )
+    end)
+    |> Repo.transaction()
   end
 
   @doc """

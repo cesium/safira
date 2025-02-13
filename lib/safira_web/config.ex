@@ -47,6 +47,13 @@ defmodule SafiraWeb.Config do
     if Event.event_started?() do
       [
         %{
+          key: :home,
+          title: "Home",
+          image: "/images/icons/home.svg",
+          url: "/app/",
+          enabled: true
+        },
+        %{
           key: :badges,
           title: "Badgedex",
           image: "/images/icons/badgedex.svg",
@@ -199,20 +206,6 @@ defmodule SafiraWeb.Config do
         icon: "hero-calendar-days",
         url: "/dashboard/schedule/activities",
         scope: %{"schedule" => ["edit"]}
-      },
-      %{
-        key: :statistics,
-        title: "Statistics",
-        icon: "hero-chart-bar",
-        url: "/dashboard/statistics",
-        scope: %{"statistics" => ["show"]}
-      },
-      %{
-        key: :mailer,
-        title: "Mailer",
-        icon: "hero-envelope",
-        url: "/dashboard/mailer",
-        scope: %{"mailer" => ["send"]}
       },
       %{
         key: :scanner,

@@ -16,8 +16,12 @@ defmodule Safira.Contest.BadgeRedeem do
            default_limit: 10,
            max_limit: 50,
            join_fields: [
-             name: [binding: :user, field: :name]
+             name: [
+               binding: :badge,
+               field: :name
+             ]
            ]}
+
   schema "badge_redeems" do
     belongs_to :badge, Badge
 

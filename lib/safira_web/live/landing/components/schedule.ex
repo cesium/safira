@@ -24,7 +24,13 @@ defmodule SafiraWeb.Landing.Components.Schedule do
       <div class="mb-20 2xl:mb-0">
         <div class="sticky top-12">
           <.schedule_day
-            date={fetch_current_date_from_params(assigns.params) || assigns.event_start_date}
+            date={
+              get_day(
+                fetch_current_date_from_params(assigns.params),
+                assigns.event_start_date,
+                assigns.event_end_date
+              )
+            }
             url={@url}
             params={@params}
             filters={fetch_filters_from_params(assigns.params)}
@@ -34,14 +40,26 @@ defmodule SafiraWeb.Landing.Components.Schedule do
           <.filters
             :if={@has_filters?}
             url={@url}
-            current_day={fetch_current_date_from_params(assigns.params) || assigns.event_start_date}
+            current_day={
+              get_day(
+                fetch_current_date_from_params(assigns.params),
+                assigns.event_start_date,
+                assigns.event_end_date
+              )
+            }
             filters={fetch_filters_from_params(assigns.params)}
           />
         </div>
       </div>
       <div>
         <.schedule_table
-          date={fetch_current_date_from_params(assigns.params) || assigns.event_start_date}
+          date={
+            get_day(
+              fetch_current_date_from_params(assigns.params),
+              assigns.event_start_date,
+              assigns.event_end_date
+            )
+          }
           filters={fetch_filters_from_params(assigns.params)}
           user_role={get_user_role(assigns.current_user)}
           enrolments={assigns.enrolments}
@@ -402,6 +420,24 @@ defmodule SafiraWeb.Landing.Components.Schedule do
           {:ok, date} -> date
           _ -> nil
         end
+    end
+  end
+
+  defp get_day(params_date, start_date, end_date) do
+    now = Date.utc_today()
+
+    cond do
+      not is_nil(params_date) ->
+        params_date
+
+      Date.compare(now, start_date) == :lt ->
+        start_date
+
+      Date.compare(now, end_date) == :gt ->
+        end_date
+
+      true ->
+        now
     end
   end
 

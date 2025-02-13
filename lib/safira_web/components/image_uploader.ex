@@ -49,10 +49,17 @@ defmodule SafiraWeb.Components.ImageUploader do
         <%= for entry <- @upload.entries do %>
           <article class="h-full">
             <figure class="h-full flex items-center justify-center">
-              <.live_img_preview
-                class={[@rounded && "p-0", not @rounded && "p-4", @image_class]}
-                entry={entry}
-              />
+              <%= if image_file?(entry) do %>
+                <.live_img_preview
+                  class={[@rounded && "p-0", not @rounded && "p-4", @image_class]}
+                  entry={entry}
+                />
+              <% else %>
+                <div class="select-none flex flex-col gap-2 items-center text-lightMuted dark:text-darkMuted">
+                  <.icon name="hero-document" class="w-12 h-12" />
+                  <p class="px-4 text-center"><%= entry.client_name %></p>
+                </div>
+              <% end %>
             </figure>
             <%= for err <- upload_errors(@upload, entry) do %>
               <p class="alert alert-danger"><%= Phoenix.Naming.humanize(err) %></p>
@@ -65,5 +72,9 @@ defmodule SafiraWeb.Components.ImageUploader do
       <% end %>
     </section>
     """
+  end
+
+  defp image_file?(entry) do
+    entry.client_type in ["image/jpeg", "image/png", "image/gif"]
   end
 end

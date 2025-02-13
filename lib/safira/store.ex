@@ -56,6 +56,7 @@ defmodule Safira.Store do
   def list_purchases(params) do
     Item
     |> join(:left, [i], p in assoc(i, :product), as: :product)
+    |> where([i], not is_nil(i.product_id))
     |> preload(attendee: [:user], product: [])
     |> Flop.validate_and_run(params, for: Item)
   end
@@ -63,6 +64,7 @@ defmodule Safira.Store do
   def list_purchases(%{} = params, opts) when is_list(opts) do
     Item
     |> join(:left, [i], p in assoc(i, :product), as: :product)
+    |> where([i], not is_nil(i.product_id))
     |> apply_filters(opts)
     |> preload(attendee: [:user], product: [])
     |> Flop.validate_and_run(params, for: Item)

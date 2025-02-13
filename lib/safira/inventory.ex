@@ -44,7 +44,7 @@ defmodule Safira.Inventory do
   """
   def get_item!(id) do
     Item
-    |> preload([:product, :attendee])
+    |> preload([:product, :prize, :attendee])
     |> Repo.get!(id)
   end
 

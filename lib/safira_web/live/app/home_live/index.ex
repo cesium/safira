@@ -29,6 +29,7 @@ defmodule SafiraWeb.App.HomeLive.Index do
     {:ok,
      socket
      |> assign(
+       current_page: :home,
        checkpoint_badges: checkpoint_badges,
        user_level: user_level,
        attendee_badge_count: length(attendee_badges),

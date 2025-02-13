@@ -15,7 +15,7 @@ defmodule SafiraWeb.Backoffice.AttendeeLive.Index do
 
   @impl true
   def handle_params(params, _, socket) do
-    case Accounts.list_attendees(params) do
+    case Accounts.list_attendees(params, order_by: [desc: :inserted_at]) do
       {:ok, {attendees, meta}} ->
         {:noreply,
          socket

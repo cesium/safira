@@ -899,6 +899,24 @@ defmodule Safira.Accounts do
   end
 
   @doc """
+  Checks if an attendee has a credential.
+
+  ## Examples
+
+      iex> attendee_has_credential?(123)
+      true
+
+      iex> attendee_has_credential?(456)
+      false
+
+  """
+  def attendee_has_credential?(attendee_id) do
+    Credential
+    |> where([c], c.attendee_id == ^attendee_id)
+    |> Repo.exists?()
+  end
+
+  @doc """
   Gets a single attendee associated to the given credential.
 
   ## Examples

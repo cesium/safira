@@ -33,6 +33,14 @@ defmodule SafiraWeb.Components.CVUpload do
                 </div>
               </:placeholder>
             </.image_uploader>
+            <div :if={@current_user.cv} class="pt-2">
+              <p class="text-sm text-lightSahde dark:text-darkMuted">
+                <%= gettext("Current CV: ") %><span class="text-lightMuted"><%= @current_user.cv.file_name %></span>
+              </p>
+              <p class="text-sm text-lightMuted dark:text-darkMuted">
+                <%= gettext("You can replace your current CV by uploading again.") %>
+              </p>
+            </div>
           </div>
         </div>
         <:actions>
@@ -81,10 +89,11 @@ defmodule SafiraWeb.Components.CVUpload do
     case Accounts.update_user(socket.assigns.current_user, user_params) do
       {:ok, user} ->
         case consume_pdf_data(user, socket) do
-          {:ok, _user} ->
+          {:ok, user} ->
             {:noreply,
              socket
              |> put_flash(:info, "CV uploaded successfully.")
+             |> assign(current_user: Map.put(socket.assigns.current_user, :cv, user.cv))
              |> push_patch(to: socket.assigns.patch)}
 
           {:error, reason} ->
@@ -106,15 +115,22 @@ defmodule SafiraWeb.Components.CVUpload do
           path: path
         }
       })
+      |> case do
+        {:ok, user} ->
+          {:ok, user}
+
+        {:error, _changeset} ->
+          {:error, "An error occurred while updating the user."}
+      end
     end)
     |> case do
       [] ->
         {:error, "Select a file to upload."}
 
-      [{:ok, user}] ->
-        {:ok, user}
+      [error: _message] ->
+        {:error, "An error occurred while uploading the file."}
 
-      _errors ->
+      [user] ->
         {:ok, user}
     end
   end
