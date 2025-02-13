@@ -10,9 +10,10 @@ defmodule SafiraWeb.Backoffice.AttendeeLive.Show do
     {:ok, socket |> assign(:current_page, :attendees)}
   end
 
-  def handle_params(%{"id" => attendee_id}, _, socket) do
+  def handle_params(%{"id" => attendee_id} = params, _, socket) do
     {:noreply,
      socket
-     |> assign(:attendee, Accounts.get_attendee!(attendee_id, preloads: [:user]))}
+     |> assign(:attendee, Accounts.get_attendee!(attendee_id, preloads: [:user]))
+     |> assign(:params, params)}
   end
 end

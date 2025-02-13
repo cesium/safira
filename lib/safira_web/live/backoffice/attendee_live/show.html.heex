@@ -9,6 +9,11 @@
         </.link>
         <.link patch={~p"/dashboard/attendees/#{@attendee.id}/edit/eligibility"}>
           <.button>
+            <.icon name="hero-shield-exclamation" class="w-5 h-5" />
+          </.button>
+        </.link>
+        <.link patch={~p"/dashboard/attendees/#{@attendee.id}/redeem"}>
+          <.button>
             <.icon name="hero-check-badge" class="w-5 h-5" />
           </.button>
         </.link>
@@ -94,6 +99,24 @@
     module={SafiraWeb.Backoffice.AttendeeLive.IneligibleLive.FormComponent}
     id={@attendee.id}
     current_user={@current_user}
+    action={@live_action}
+    attendee={@attendee}
+    patch={~p"/dashboard/attendees/#{@attendee.id}"}
+  />
+</.modal>
+
+<.modal
+  :if={@live_action in [:redeem]}
+  id="attendee-tokens-modal"
+  show
+  on_cancel={JS.patch(~p"/dashboard/attendees/#{@attendee.id}")}
+>
+  <.live_component
+    module={SafiraWeb.Backoffice.AttendeeLive.RedeemLive.Index}
+    title="Badge redeems"
+    id={@attendee.id}
+    current_user={@current_user}
+    params={@params}
     action={@live_action}
     attendee={@attendee}
     patch={~p"/dashboard/attendees/#{@attendee.id}"}
