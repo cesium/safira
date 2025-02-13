@@ -801,6 +801,20 @@ defmodule Safira.Contest do
     |> Repo.aggregate(:count, :id)
   end
 
+  def list_final_draw do
+    br_query =
+      BadgeRedeem
+      |> group_by([br], br.attendee_id)
+      |> having([br], count(br.id) >= 10)
+      |> select([br, at, u], %{attendee_id: br.attendee_id, count: count(br.id)})
+
+    Attendee
+    |> join(:inner, [at], br in subquery(br_query), on: br.attendee_id == at.id)
+    |> where([at, br], not at.ineligible)
+    |> preload(:user)
+    |> Repo.all()
+  end
+
   @doc """
   Gets the count of badges for a category.
 
