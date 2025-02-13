@@ -170,7 +170,7 @@ defmodule SafiraWeb.DownloadController do
   end
 
   defp final_draw_lines(user) do
-    if user.attendee.entries < 10 and !user.attendee.ineligible do
+    if user.attendee.entries < 10 or user.attendee.ineligible do
       []
     else
       for _ <- 1..user.attendee.entries do
