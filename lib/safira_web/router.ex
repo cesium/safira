@@ -235,6 +235,7 @@ defmodule SafiraWeb.Router do
             live "/new", Index, :new
             live "/:id/edit", Index, :edit
             live "/:id/enrolments", Index, :enrolments
+            live "/:id/enrolments/new", Index, :enrolments_new
 
             scope "/speakers" do
               live "/", Index, :speakers
@@ -344,6 +345,8 @@ defmodule SafiraWeb.Router do
             live "/", Index, :index
             live "/:id", Show, :show
           end
+
+          live "/enrolments/:id", EnrolmentLive.Index, :index
         end
 
         live "/profile_settings", ProfileSettingsLive, :edit

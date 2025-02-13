@@ -17,7 +17,7 @@ defmodule Safira.Accounts.Roles.Permissions do
       "minigames" => ["show", "edit", "simulate"],
       "event" => ["show", "edit", "edit_faqs", "generate_credentials"],
       "spotlights" => ["edit"],
-      "schedule" => ["edit"],
+      "schedule" => ["show", "edit"],
       "statistics" => ["show"],
       "mailer" => ["send"],
       "scanner" => ["show"]
