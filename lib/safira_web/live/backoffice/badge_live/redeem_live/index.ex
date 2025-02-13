@@ -48,13 +48,8 @@ defmodule SafiraWeb.Backoffice.BadgeLive.RedeemLive.Index do
             <%= redeem.redeemed_by.user.name %>
           </:col>
           <:col :let={{_id, redeem}} sortable field={:inserted_at} label="Redeemed at">
-            <%= redeem.inserted_at %>
+            <%= datetime_to_string(redeem.inserted_at) %>
           </:col>
-          <%!-- <:col :let={{_id, speaker}} field={:highlighted} label="Highlighted">
-              <span class="w-full flex justify-center">
-                <.input type="checkbox" disabled={true} checked={speaker.highlighted} name="" />
-              </span>
-            </:col> --%>
           <:action :let={{id, speaker}}>
             <div class="flex flex-row gap-2">
               <.link
@@ -111,5 +106,9 @@ defmodule SafiraWeb.Backoffice.BadgeLive.RedeemLive.Index do
       {:error, _reason} ->
         {:noreply, socket}
     end
+  end
+
+  defp datetime_to_string(datetime) do
+    Timex.format!(datetime, "%D %T", :strftime)
   end
 end
