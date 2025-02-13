@@ -2,11 +2,11 @@
   <:actions>
     <div class="flex flex-row gap-4 justify-center items-center">
       <.table_search
-        id="items-table-attendee-name-search"
+        id="drops-table-attendee-name-search"
         params={@params}
         field={:prize_name}
         path={~p"/dashboard/minigames/drops"}
-        placeholder={gettext("Search for attendees")}
+        placeholder={gettext("Search for Prizes")}
       />
     </div>
   </:actions>
@@ -30,7 +30,7 @@
           </div>
         </div>
       </:col>
-      <:col :let={{_id, item}} label="Item" field={:name}>
+      <:col :let={{_id, item}} label="Prize" field={:name}>
         <%= item.prize.name %>
       </:col>
       <:col :let={{_id, item}} sortable label="Gotten at" field={:inserted_at}>
