@@ -1,4 +1,4 @@
-defmodule SafiraWeb.PrizeLive.Daily.FormComponent do
+defmodule SafiraWeb.PrizeLive.MinigamesLive.Daily.FormComponent do
   @moduledoc false
   use SafiraWeb, :live_component
 

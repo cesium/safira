@@ -1,4 +1,4 @@
-defmodule SafiraWeb.Backoffice.PrizeLive.Index do
+defmodule SafiraWeb.Backoffice.MinigamesLive.PrizeLive.Index do
   use SafiraWeb, :backoffice_view
 
   alias Safira.Minigames

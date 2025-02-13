@@ -1,4 +1,4 @@
-defmodule SafiraWeb.PrizeLive.FormComponent do
+defmodule SafiraWeb.PrizeLive.MinigamesLive.FormComponent do
   use SafiraWeb, :live_component
 
   alias Safira.Minigames
