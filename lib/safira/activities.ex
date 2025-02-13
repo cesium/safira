@@ -473,7 +473,7 @@ defmodule Safira.Activities do
 
   ## Examples
 
-      iex> is_attendee_enrolled(activity_id, attendee_id)
+      iex> attendee_enrolled?(activity_id, attendee_id)
       true
   """
   def attendee_enrolled?(activity_id, attendee_id) do
