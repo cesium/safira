@@ -861,7 +861,7 @@ defmodule Safira.Contest do
     date =
       case date do
         %DateTime{} -> DateTime.to_date(date)
-        %Date{} -> DateTime.to_date(date)
+        %Date{} -> date
       end
 
     Multi.new()
