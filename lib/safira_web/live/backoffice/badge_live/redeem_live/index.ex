@@ -45,16 +45,16 @@ defmodule SafiraWeb.Backoffice.BadgeLive.RedeemLive.Index do
             </div>
           </:col>
           <:col :let={{_id, redeem}} field={:redeemed_by} label="Redeemed by">
-            <%= redeem.redeemed_by.user.name %>
+          <%= if redeem.redeemed_by, do: redeem.redeemed_by.user.name, else: "System / Company" %>
           </:col>
           <:col :let={{_id, redeem}} sortable field={:inserted_at} label="Redeemed at">
             <%= datetime_to_string(redeem.inserted_at) %>
           </:col>
-          <:action :let={{id, speaker}}>
+          <:action :let={{id, redeem}}>
             <div class="flex flex-row gap-2">
               <.link
                 phx-click={
-                  JS.push("delete", value: %{id: speaker.id}, target: @myself) |> hide("##{id}")
+                  JS.push("delete", value: %{id: redeem.id}, target: @myself) |> hide("##{id}")
                 }
                 data-confirm="Are you sure?"
               >
