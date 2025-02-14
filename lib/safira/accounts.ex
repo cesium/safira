@@ -1031,21 +1031,21 @@ defmodule Safira.Accounts do
   end
 
   @doc """
-  Gets a single credential associated to the given attendee.
+  Checks if an attendee has a credential linked to their account.
 
   ## Examples
 
-      iex> get_credential_of_attendee(%Attendee{})
+      iex> attendee_has_credential?(%Attendee{})
       %Credential{}
 
-      iex> get_credential_of_attendee!(%Attendee{})
+      iex> attendee_has_credential?(%Attendee{})
       nil
 
   """
-  def get_credential_of_attendee(%Attendee{} = attendee) do
+  def attendee_has_credential?(%Attendee{} = attendee) do
     Credential
     |> where([c], c.attendee_id == ^attendee.id)
-    |> Repo.one()
+    |> Repo.exists?()
   end
 
   def generate_credentials(count) do
