@@ -403,9 +403,10 @@ defmodule Safira.Contest do
       })
     end)
     |> Multi.merge(fn %{badge_redeem: badge_redeem} ->
-      change_attendee_tokens_transaction(
+      remove_attendee_tokens_by_day_transaction(
         badge_redeem.attendee,
-        max(badge_redeem.attendee.tokens - badge_redeem.badge.tokens, 0)
+        badge_redeem.badge.tokens,
+        badge_redeem.inserted_at
       )
     end)
     |> Repo.transaction()
@@ -800,6 +801,20 @@ defmodule Safira.Contest do
     |> Repo.aggregate(:count, :id)
   end
 
+  def list_final_draw do
+    br_query =
+      BadgeRedeem
+      |> group_by([br], br.attendee_id)
+      |> having([br], count(br.id) >= 10)
+      |> select([br, at, u], %{attendee_id: br.attendee_id, count: count(br.id)})
+
+    Attendee
+    |> join(:inner, [at], br in subquery(br_query), on: br.attendee_id == at.id)
+    |> where([at, br], not at.ineligible)
+    |> preload(:user)
+    |> Repo.all()
+  end
+
   @doc """
   Gets the count of badges for a category.
 
@@ -843,6 +858,43 @@ defmodule Safira.Contest do
     end)
     |> Multi.insert_or_update(daily_tokens_update_operation_name, fn changes ->
       DailyTokens.changeset(Map.get(changes, daily_tokens_fetch_operation_name), %{tokens: tokens})
+    end)
+  end
+
+  @doc """
+  Transaction for removing tokens from the attendee and the daily tokens by day.
+  """
+  def remove_attendee_tokens_by_day_transaction(
+        attendee,
+        tokens,
+        date,
+        attendee_update_tokens_operation_name \\ :attendee_update_tokens,
+        daily_tokens_fetch_operation_name \\ :daily_tokens_fetch,
+        daily_tokens_update_operation_name \\ :daily_tokens_update
+      ) do
+    date =
+      case date do
+        %DateTime{} -> DateTime.to_date(date)
+        %Date{} -> date
+      end
+
+    Multi.new()
+    |> Multi.update(
+      attendee_update_tokens_operation_name,
+      Attendee.changeset(attendee, %{tokens: max(attendee.tokens - tokens, 0)})
+    )
+    |> Multi.run(daily_tokens_fetch_operation_name, fn repo, _changes ->
+      {:ok,
+       repo.one(
+         from dt in DailyTokens, where: dt.attendee_id == ^attendee.id and dt.date == ^date
+       ) || %DailyTokens{date: date, attendee_id: attendee.id}}
+    end)
+    |> Multi.insert_or_update(daily_tokens_update_operation_name, fn changes ->
+      daily_tokens = Map.get(changes, daily_tokens_fetch_operation_name)
+
+      DailyTokens.changeset(daily_tokens, %{
+        tokens: if(daily_tokens.tokens, do: max(daily_tokens.tokens - tokens, 0), else: 0)
+      })
     end)
   end
 
