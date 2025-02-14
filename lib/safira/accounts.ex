@@ -1030,24 +1030,6 @@ defmodule Safira.Accounts do
     Course.changeset(course, attrs)
   end
 
-  @doc """
-  Checks if an attendee has a credential linked to their account.
-
-  ## Examples
-
-      iex> attendee_has_credential?(%Attendee{})
-      %Credential{}
-
-      iex> attendee_has_credential?(%Attendee{})
-      nil
-
-  """
-  def attendee_has_credential?(%Attendee{} = attendee) do
-    Credential
-    |> where([c], c.attendee_id == ^attendee.id)
-    |> Repo.exists?()
-  end
-
   def generate_credentials(count) do
     for _ <- 1..count do
       {:ok, credential} = create_credential(%{})
