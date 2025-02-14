@@ -45,7 +45,7 @@ defmodule SafiraWeb.Backoffice.BadgeLive.RedeemLive.Index do
             </div>
           </:col>
           <:col :let={{_id, redeem}} field={:redeemed_by} label="Redeemed by">
-          <%= if redeem.redeemed_by, do: redeem.redeemed_by.user.name, else: "System / Company" %>
+            <%= if redeem.redeemed_by, do: redeem.redeemed_by.user.name, else: "System / Company" %>
           </:col>
           <:col :let={{_id, redeem}} sortable field={:inserted_at} label="Redeemed at">
             <%= datetime_to_string(redeem.inserted_at) %>
