@@ -5,6 +5,7 @@ defmodule SafiraWeb.DownloadController do
 
   alias Safira.Accounts
   alias Safira.Companies
+  alias Safira.Contest
 
   def generate_credentials(conn, %{"count" => count}) do
     {count_int, ""} = Integer.parse(count)
@@ -59,7 +60,7 @@ defmodule SafiraWeb.DownloadController do
         |> put_resp_header("content-disposition", "attachment; filename=\"final_draw.csv\"")
         |> send_chunked(200)
 
-      Accounts.list_attendees()
+      Contest.list_final_draw()
       |> Stream.flat_map(&final_draw_lines/1)
       |> Stream.map(&CSV.dump_to_iodata(&1))
       |> Enum.reduce(conn, fn chunk, conn ->
@@ -169,13 +170,9 @@ defmodule SafiraWeb.DownloadController do
     |> to_string()
   end
 
-  defp final_draw_lines(user) do
-    if user.attendee.entries < 10 or user.attendee.ineligible do
-      []
-    else
-      for _ <- 1..user.attendee.entries do
-        [[user.id, user.name, user.handle]]
-      end
+  defp final_draw_lines(attendee) do
+    for _ <- 1..attendee.entries do
+      [[attendee.user.id, attendee.user.name, attendee.user.handle]]
     end
   end
 
