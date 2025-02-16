@@ -1030,24 +1030,6 @@ defmodule Safira.Accounts do
     Course.changeset(course, attrs)
   end
 
-  @doc """
-  Gets a single credential associated to the given attendee.
-
-  ## Examples
-
-      iex> get_credential_of_attendee(%Attendee{})
-      %Credential{}
-
-      iex> get_credential_of_attendee!(%Attendee{})
-      nil
-
-  """
-  def get_credential_of_attendee(%Attendee{} = attendee) do
-    Credential
-    |> where([c], c.attendee_id == ^attendee.id)
-    |> Repo.one()
-  end
-
   def generate_credentials(count) do
     for _ <- 1..count do
       {:ok, credential} = create_credential(%{})

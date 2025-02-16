@@ -9,6 +9,6 @@ defmodule Safira.Repo.Migrations.CreateCredentials do
       timestamps(type: :utc_datetime)
     end
 
-    create index(:credentials, [:attendee_id])
+    create unique_index(:credentials, [:attendee_id])
   end
 end
