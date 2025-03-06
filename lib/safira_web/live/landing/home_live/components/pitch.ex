@@ -24,16 +24,6 @@ defmodule SafiraWeb.Landing.HomeLive.Components.Pitch do
             "We gather speakers, attract partners and give our imagination wings, all for this to be your favorite week."
           ) %>
         </h2>
-        <div class="mt-8 flex">
-          <!--
-          <.link patch="/team" class="w-56">
-            <.action_button
-              title={gettext("Meet the team")}
-              title_class="!text-lg !font-iregular font-bold"
-            />
-          </.link>
-        -->
-        </div>
       </div>
     </div>
     """
