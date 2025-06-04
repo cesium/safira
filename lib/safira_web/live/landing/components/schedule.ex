@@ -501,6 +501,12 @@ defmodule SafiraWeb.Landing.Components.Schedule do
     not_full = activity.max_enrolments > activity.enrolment_count
     is_staff = user_role == :staff
 
+    # This assumes the event happens in Portugal
+    already_happened =
+      NaiveDateTime.new!(activity.date, activity.time_end)
+      |> Timex.to_datetime("Europe/Lisbon")
+      |> DateTime.compare(DateTime.utc_now()) == :lt
+
     enrolled_at_same_time =
       Enum.any?(enrolments, fn e ->
         Time.compare(e.activity.time_start, activity.time_end) == :lt and
@@ -508,6 +514,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
           e.activity.date == activity.date
       end)
 
-    not_full and activity.has_enrolments and not enrolled_at_same_time and not is_staff
+    not_full and activity.has_enrolments and not enrolled_at_same_time and not is_staff and
+      not already_happened
   end
 end
