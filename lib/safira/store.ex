@@ -70,6 +70,25 @@ defmodule Safira.Store do
     |> Flop.validate_and_run(params, for: Item)
   end
 
+  def list_items_type_prize(params) do
+    Item
+    |> join(:left, [i], p in assoc(i, :prize), as: :prize)
+    |> where([i], i.type == :prize and not is_nil(i.prize_id))
+    |> where([i], not is_nil(i.product_id))
+    |> preload(attendee: [:user], prize: [])
+    |> Flop.validate_and_run(params, for: Item)
+  end
+
+  def list_items_type_prize(%{} = params, opts) when is_list(opts) do
+    Item
+    |> join(:left, [i], p in assoc(i, :prize), as: :prize)
+    |> where([i], i.type == :prize)
+    |> where([i], not is_nil(i.product_id))
+    |> preload(attendee: [:user], prize: [])
+    |> apply_filters(opts)
+    |> Flop.validate_and_run(params, for: Item)
+  end
+
   @doc """
   Gets a single product.
 

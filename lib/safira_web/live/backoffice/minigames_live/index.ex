@@ -3,6 +3,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.Index do
 
   on_mount {SafiraWeb.StaffRoles,
             index: %{"minigames" => ["show"]},
+            show: %{"minigames" => ["show"]},
             simulate_wheel: %{"minigames" => ["simulate"]},
             edit_wheel_drops: %{"minigames" => ["edit"]},
             edit_wheel: %{"minigames" => ["edit"]},
