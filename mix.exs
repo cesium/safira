@@ -107,7 +107,7 @@ defmodule Safira.MixProject do
       {:oban, "~> 2.20.1"},
 
       # testing
-      {:floki, ">= 0.38.0", only: :test}
+      {:lazy_html, ">= 0.1.0", only: :test}
     ]
   end
 
