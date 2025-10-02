@@ -13,7 +13,7 @@ defmodule SafiraWeb.Components.Table do
   attr :meta, Flop.Meta, required: true
   attr :row_id, :any, default: nil
   attr :params, :map, required: true
-  attr :row_click, JS, default: nil
+  attr :row_click, :fun, default: nil
   attr :sortable, :boolean, default: false
 
   slot :col do
