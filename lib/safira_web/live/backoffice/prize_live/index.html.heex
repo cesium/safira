@@ -28,9 +28,9 @@
       params={@params}
       row_click={&JS.navigate(~p"/dashboard/minigames/prizes/#{elem(&1, 1).id}/edit")}
     >
-      <:col :let={{_id, prize}} label="Name" sortable field={:name}><%= prize.name %></:col>
+      <:col :let={{_id, prize}} label="Name" sortable field={:name}>{prize.name}</:col>
       <:col :let={{_id, prize}} label="Stock" sortable field={:stock}>
-        <%= prize.stock %>
+        {prize.stock}
       </:col>
       <:action :let={{_id, prize}}>
         <.ensure_permissions user={@current_user} permissions={%{"minigames" => ["edit"]}}>

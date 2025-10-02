@@ -33,7 +33,7 @@ defmodule SafiraWeb.Backoffice.AttendeeLive.TokensLive.FormComponent do
           <.field field={assigns.form[:tokens]} type="number" value={0} label="Tokens" required />
           <:actions>
             <.button phx-disable-with="Saving...">
-              <%= gettext("Save Tokens") %>
+              {gettext("Save Tokens")}
             </.button>
           </:actions>
         </.simple_form>
@@ -47,20 +47,20 @@ defmodule SafiraWeb.Backoffice.AttendeeLive.TokensLive.FormComponent do
       >
         <div class="mb-8">
           <h2 class="text-xl font-regular">
-            <%= gettext(
+            {gettext(
               "Do you want to save these changes? This will leave %{name} with %{tokens} tokens.",
               name: @attendee.user.name,
               tokens: @current_tokens
-            ) %>
+            )}
           </h2>
         </div>
         <div class="flex flex-row gap-x-4">
           <.button phx-click="save" phx-target={@myself} class="w-full">
-            <%= gettext("Confirm") %>
+            {gettext("Confirm")}
           </.button>
 
           <.button phx-click="cancel" phx-value="Remove" phx-target={@myself} class="w-full">
-            <%= gettext("Cancel") %>
+            {gettext("Cancel")}
           </.button>
         </div>
       </.modal>

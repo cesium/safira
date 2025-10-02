@@ -13,8 +13,8 @@ defmodule SafiraWeb.Backoffice.BadgeLive.ImportComponent do
       <.page title={@title}>
         <.guide :if={!@status} />
         <form phx-change="files-selected" phx-target={@myself} class="py-4">
-          <p :if={@status} class="text-center"><%= status_message(@status) %></p>
-          <p :if={@status == :error} class="text-red-600"><%= @error_reason %></p>
+          <p :if={@status} class="text-center">{status_message(@status)}</p>
+          <p :if={@status == :error} class="text-red-600">{@error_reason}</p>
           <div class={@status && "hidden"}>
             <.live_file_input upload={@uploads.dir} class="hidden" />
             <label for="dir">
@@ -23,7 +23,7 @@ defmodule SafiraWeb.Backoffice.BadgeLive.ImportComponent do
                   <figure class="h-full flex items-center justify-center">
                     <div class="select-none flex flex-col gap-2 items-center text-lightMuted dark:text-darkMuted">
                       <.icon name="hero-folder" class="w-12 h-12" />
-                      <p class="px-4 text-center"><%= gettext("Upload folder.") %></p>
+                      <p class="px-4 text-center">{gettext("Upload folder.")}</p>
                     </div>
                   </figure>
                 </article>
@@ -47,10 +47,10 @@ defmodule SafiraWeb.Backoffice.BadgeLive.ImportComponent do
     <div>
       <p class="mb-4">
         <.icon name="hero-exclamation-triangle" class="text-warning-600 mr-1" />
-        <%= gettext("This functionality should not be used during the event.") %>
+        {gettext("This functionality should not be used during the event.")}
       </p>
       <p>
-        <%= gettext("Uploaded folder should have this exact structure:") %>
+        {gettext("Uploaded folder should have this exact structure:")}
       </p>
       <!-- Folder structure -->
       <div class="flex flex-col py-4 gap-4">
@@ -81,9 +81,9 @@ defmodule SafiraWeb.Backoffice.BadgeLive.ImportComponent do
         <!-- CSV structure -->
         <div class="w-full flex flex-col gap-2">
           <p>
-            <%= gettext(
+            {gettext(
               "The badges file should be named badges.csv and have the following tabular structure:"
-            ) %>
+            )}
           </p>
           <table class="border border-collapse text-xs">
             <thead>

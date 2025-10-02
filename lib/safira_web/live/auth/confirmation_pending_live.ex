@@ -17,19 +17,19 @@ defmodule SafiraWeb.ConfirmationPendingLive do
         </span>
       </div>
       <h1 class="px-4 font-terminal uppercase text-3xl text-center mt-8 sm:mt-10">
-        <%= gettext("We need to verify your email address!") %>
+        {gettext("We need to verify your email address!")}
       </h1>
       <p class="text-center mt-6 px-4">
-        <%= gettext(
+        {gettext(
           "We have sent an email to %{user_email} containing instructions on how to verify your account.",
           user_email: @current_user.email
-        ) %>
+        )}
       </p>
       <p class="text-center mt-4 px-4">
-        <%= gettext("If you don't see it, you may need to check your spam folder.") %>
+        {gettext("If you don't see it, you may need to check your spam folder.")}
       </p>
       <p class="text-center mt-4 px-4">
-        <%= gettext("Still can't find it?") %>
+        {gettext("Still can't find it?")}
       </p>
       <div class="font-terminal px-4 sm:px-24 text-center text-2xl sm:text-4xl mt-12">
         <.action_button
@@ -40,7 +40,7 @@ defmodule SafiraWeb.ConfirmationPendingLive do
         />
       </div>
       <p class="text-sm sm:text-md text-center mt-8 opacity-80 px-4">
-        <%= gettext("Need help? Contact us at geral@seium.org.") %>
+        {gettext("Need help? Contact us at geral@seium.org.")}
       </p>
     </div>
     """

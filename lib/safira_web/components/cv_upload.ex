@@ -35,10 +35,10 @@ defmodule SafiraWeb.Components.CVUpload do
             </.image_uploader>
             <div :if={@current_user.cv} class="pt-2">
               <p class="text-sm text-lightSahde dark:text-darkMuted">
-                <%= gettext("Current CV: ") %><span class="text-lightMuted"><%= @current_user.cv.file_name %></span>
+                {gettext("Current CV: ")}<span class="text-lightMuted"><%= @current_user.cv.file_name %></span>
               </p>
               <p class="text-sm text-lightMuted dark:text-darkMuted">
-                <%= gettext("You can replace your current CV by uploading again.") %>
+                {gettext("You can replace your current CV by uploading again.")}
               </p>
             </div>
           </div>

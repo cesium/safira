@@ -10,9 +10,9 @@ defmodule SafiraWeb.ChallengeLive.FormComponent do
     ~H"""
     <div>
       <.header>
-        <%= @title %>
+        {@title}
         <:subtitle>
-          <%= gettext("The Challenges attendee participate in order to win prizes.") %>
+          {gettext("The Challenges attendee participate in order to win prizes.")}
         </:subtitle>
       </.header>
 
@@ -35,7 +35,7 @@ defmodule SafiraWeb.ChallengeLive.FormComponent do
           required
         />
 
-        <h3 class="font-semibold leading-8"><%= gettext("Prizes") %></h3>
+        <h3 class="font-semibold leading-8">{gettext("Prizes")}</h3>
 
         <div class="max-h-40 overflow-y-scroll">
           <.inputs_for :let={prizes_form} field={@form[:prizes]}>
@@ -78,7 +78,7 @@ defmodule SafiraWeb.ChallengeLive.FormComponent do
             phx-click={JS.dispatch("change")}
             class="phx-submit-loading:opacity-75 rounded-lg bg-dark text-light dark:bg-light dark:text-dark hover:bg-darkShade dark:hover:bg-lightShade/95 py-2 px-3 text-sm font-semibold leading-6 transition-colors "
           >
-            <%= gettext("New Prize") %>
+            {gettext("New Prize")}
           </button>
 
           <.button phx-disable-with="Saving...">Save Challenge</.button>

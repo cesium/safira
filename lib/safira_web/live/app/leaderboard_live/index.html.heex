@@ -17,7 +17,7 @@
       />
       <div :if={@leaderboard == []} class="flex flex-col items-center gap-4 my-20">
         <img src={~p"/images/dizzy-void.svg"} class="w-32 h-32" />
-        <p><%= gettext("No data to show for this day.") %></p>
+        <p>{gettext("No data to show for this day.")}</p>
       </div>
     </div>
   </div>

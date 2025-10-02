@@ -12,9 +12,9 @@ defmodule SafiraWeb.Backoffice.CompanyLive.FormComponent do
     ~H"""
     <div>
       <.header>
-        <%= @title %>
+        {@title}
         <:subtitle>
-          <%= gettext("Companies sponsor the event.") %>
+          {gettext("Companies sponsor the event.")}
         </:subtitle>
       </.header>
 
@@ -84,7 +84,7 @@ defmodule SafiraWeb.Backoffice.CompanyLive.FormComponent do
           <div class="w-full">
             <.field_label>Logo</.field_label>
             <p class="text-sm mb-4">
-              <%= gettext("For better results, upload a white logo with a transparent background.") %>
+              {gettext("For better results, upload a white logo with a transparent background.")}
             </p>
             <.image_uploader
               class="w-full h-80"

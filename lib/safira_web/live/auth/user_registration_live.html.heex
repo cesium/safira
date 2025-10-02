@@ -8,11 +8,11 @@
   <.header class="text-center px-4">
     <h1 class="text-3xl text-center font-terminal uppercase font-semibold">Event Registration</h1>
     <:subtitle>
-      <%= gettext("Already registered?") %>
+      {gettext("Already registered?")}
       <.link navigate={~p"/users/log_in"} class="font-semibold text-accent hover:underline">
         Log in
       </.link>
-      <%= gettext("to your account now") %>
+      {gettext("to your account now")}
     </:subtitle>
   </.header>
 
@@ -63,13 +63,13 @@
         </div>
 
         <div class="inline">
-          <%= gettext("I have read and agree to the ") %>
+          {gettext("I have read and agree to the ")}
           <.link
             href={~p"/docs/privacy_policy.pdf"}
             target="_blank"
             class="font-semibold text-accent hover:underline"
           >
-            <%= gettext("Privacy Policy.") %>
+            {gettext("Privacy Policy.")}
           </.link>
         </div>
       </div>
@@ -80,7 +80,7 @@
           <.input label="" type="checkbox" field={@form[:allows_marketing]} />
         </div>
         <div class="inline">
-          <%= gettext("I want to receive marketing emails promoting the event.") %>
+          {gettext("I want to receive marketing emails promoting the event.")}
         </div>
       </div>
     </.label>

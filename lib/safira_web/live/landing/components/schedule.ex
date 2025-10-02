@@ -73,7 +73,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
   defp filters(assigns) do
     ~H"""
     <div class="block relative mt-8">
-      <span class="w-full font-iregular text-lg uppercase"><%= gettext("Filter by") %></span>
+      <span class="w-full font-iregular text-lg uppercase">{gettext("Filter by")}</span>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 pt-4">
         <%= for category <- fetch_categories() do %>
@@ -87,7 +87,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
             }
             patch={filter_url(@url, @current_day, @filters, category.id)}
           >
-            <%= category.name %>
+            {category.name}
           </.link>
         <% end %>
       </div>
@@ -124,15 +124,15 @@ defmodule SafiraWeb.Landing.Components.Schedule do
       <div class="relative h-full">
         <!-- Times -->
         <p class="text-lg font-iregular font-bold text-white xs:text-xl">
-          <%= "#{@activity.time_start |> Timex.format!("{h24}:{m}")} - #{@activity.time_end |> Timex.format!("{h24}:{m}")}" %>
+          {"#{@activity.time_start |> Timex.format!("{h24}:{m}")} - #{@activity.time_end |> Timex.format!("{h24}:{m}")}"}
         </p>
         <!-- Title -->
         <p class="font-iregular text-xl text-white">
           <span :if={@activity.category} class="font-iregular font-bold">
-            <%= @activity.category.name %>
+            {@activity.category.name}
           </span>
           <span class={!@activity.category && "font-bold"}>
-            <%= @activity.title %>
+            {@activity.title}
           </span>
         </p>
         <!-- Speakers -->
@@ -143,11 +143,11 @@ defmodule SafiraWeb.Landing.Components.Schedule do
           >
             <%= if index == length(@activity.speakers) - 1 and length(@activity.speakers) != 1 do %>
               <bdi class="ml-[5px] hidden xl:inline">
-                <%= gettext("and") %>
+                {gettext("and")}
               </bdi>
             <% else %>
               <span class="hidden xl:inline">
-                <%= if index != 0, do: "," %>
+                {if index != 0, do: ","}
               </span>
             <% end %>
             <!-- Must be an <a> tag as to force page to reload completely so the #id rerouting works -->
@@ -155,13 +155,13 @@ defmodule SafiraWeb.Landing.Components.Schedule do
               href={"/speakers?date=#{@activity.date}&speaker_id=#{speaker.id}#sp-#{speaker.id}-#{@activity.id}"}
               class="my-[0.4em] hover:underline"
             >
-              <%= speaker.name %>
+              {speaker.name}
             </a>
           </li>
         </ul>
 
         <p id={"schedule-#{@activity.id}"} class="overflow-hidden pb-4" style="display: none;">
-          <%= @activity.description %>
+          {@activity.description}
         </p>
         <!-- Spacing -->
         <div class="h-20 w-2"></div>
@@ -171,7 +171,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
             <!-- Location -->
             <div class="flex w-auto items-center">
               <p class="float-right font-iregular text-sm text-gray-400">
-                <%= @activity.location %>
+                {@activity.location}
               </p>
             </div>
             <!-- Enrol -->
@@ -184,14 +184,14 @@ defmodule SafiraWeb.Landing.Components.Schedule do
                 data-confirm={"#{gettext("You are enrolling for")} #{@activity.title}. #{gettext("This action cannot be undone. Are you sure?")}"}
                 phx-value-activity_id={@activity.id}
               >
-                <%= gettext("Enrol") %>
+                {gettext("Enrol")}
               </p>
               <p
                 :if={already_enrolled(@activity, @enrolments)}
                 class="relative -mr-3 font-iregular text-lg text-accent sm:mr-1"
                 phx-value-activity_id={@activity.id}
               >
-                <%= gettext("Enrolled") %>
+                {gettext("Enrolled")}
               </p>
             </div>
             <!-- Expand -->
@@ -223,7 +223,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
     <div id={@activity.id} class="mx-2 sm:w-full border-t border-white p-[10px] ml-[10px] relative">
       <div class="relative h-full flex flex-row justify-between items-center">
         <p class="font-iregular text-xl text-white font-bold">
-          <%= @activity.title %>
+          {@activity.title}
         </p>
         <div>
           <%= if (@activity.title |> String.downcase() |> String.contains?("lunch")) do %>
@@ -253,10 +253,10 @@ defmodule SafiraWeb.Landing.Components.Schedule do
 
         <div class="-mt-8 md:-mt-10">
           <h5 class="font-terminal uppercase text-2xl text-accent md:text-3xl">
-            <%= @date |> Timex.format!("{D} {Mshort}") %>
+            {@date |> Timex.format!("{D} {Mshort}")}
           </h5>
           <h2 class="font-terminal uppercase">
-            <%= @date |> Timex.format!("{WDfull}") %>
+            {@date |> Timex.format!("{WDfull}")}
           </h2>
         </div>
 

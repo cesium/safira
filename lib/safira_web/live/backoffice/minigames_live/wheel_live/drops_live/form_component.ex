@@ -26,7 +26,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.WheelDrops.FormComponent do
         </:actions>
         <div class="pt-8">
           <div class="flex flex-row justify-between items-center">
-            <h2 class="font-semibold"><%= gettext("Drops") %></h2>
+            <h2 class="font-semibold">{gettext("Drops")}</h2>
             <.button phx-click={JS.push("add-drop", target: @myself)}>
               <.icon name="hero-plus" class="w-5 h-5" />
             </.button>

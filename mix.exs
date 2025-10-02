@@ -33,44 +33,44 @@ defmodule Safira.MixProject do
   defp deps do
     [
       # core
-      {:phoenix, "~> 1.7.12"},
-      {:phoenix_live_view, "~> 0.20.2"},
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
+      {:phoenix, "~> 1.8.1"},
+      {:phoenix_live_view, "~> 1.1.13"},
+      {:phoenix_live_reload, "~> 1.6.1", only: :dev},
 
       # database
       {:ecto_sql, "~> 3.10"},
-      {:phoenix_ecto, "~> 4.4"},
+      {:phoenix_ecto, "~> 4.6.5"},
       {:postgrex, ">= 0.0.0"},
       {:flop, "~> 0.25.0"},
 
       # security
-      {:bcrypt_elixir, "~> 3.0"},
+      {:bcrypt_elixir, "~> 3.3.2"},
 
       # uploads
-      {:waffle_ecto, "~> 0.0"},
+      {:waffle_ecto, "~> 0.0.12"},
       {:waffle, "~> 1.1.9"},
       {:ex_aws, "~> 2.1.2"},
-      {:ex_aws_s3, "~> 2.0"},
-      {:hackney, "~> 1.9"},
-      {:httpoison, "~> 2.2"},
-      {:sweet_xml, "~> 0.6"},
-      {:zstream, "~> 0.6"},
+      {:ex_aws_s3, "~> 2.5.8"},
+      {:hackney, "~> 1.25.0"},
+      {:httpoison, "~> 2.2.3"},
+      {:sweet_xml, "~> 0.7.5"},
+      {:zstream, "~> 0.6.7"},
 
       # mailer
       {:swoosh, "~> 1.17.6"},
       {:phoenix_swoosh, "~> 1.2.1"},
       {:gen_smtp, "~>1.2.0"},
-      {:phoenix_html, "~> 4.0"},
-      {:finch, "~> 0.13"},
+      {:phoenix_html, "~> 4.3.0"},
+      {:finch, "~> 0.20.0"},
 
       # tools
       {:qrcode_ex, "~> 0.1.1"},
-      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
+      {:credo, "~> 1.7.12", only: [:dev, :test], runtime: false},
       {:faker, "~> 0.18.0"},
-      {:earmark, "~> 1.4"},
+      {:earmark, "~> 1.4.48"},
 
       # frontend
-      {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
+      {:tailwind, "~> 0.4.0", runtime: Mix.env() == :dev},
       {:heroicons,
        github: "tailwindlabs/heroicons",
        tag: "v2.1.1",
@@ -85,13 +85,13 @@ defmodule Safira.MixProject do
        app: false,
        compile: false,
        depth: 1},
-      {:esbuild, "~> 0.8", runtime: Mix.env() == :dev},
-      {:live_select, "~> 1.4"},
+      {:esbuild, "~> 0.10.0", runtime: Mix.env() == :dev},
+      {:live_select, "~> 1.7.1"},
 
       # monitoring
-      {:telemetry_metrics, "~> 1.0"},
-      {:telemetry_poller, "~> 1.0"},
-      {:phoenix_live_dashboard, "~> 0.8.3"},
+      {:telemetry_metrics, "~> 1.1.0"},
+      {:telemetry_poller, "~> 1.3.0"},
+      {:phoenix_live_dashboard, "~> 0.8.7"},
 
       #  utilities
       {:gettext, "~> 0.20"},
@@ -100,14 +100,14 @@ defmodule Safira.MixProject do
       {:nimble_csv, "~>1.1.0"},
 
       # server
-      {:bandit, "~> 1.2"},
-      {:dns_cluster, "~> 0.1.1"},
+      {:bandit, "~> 1.8.0"},
+      {:dns_cluster, "~> 0.1.3"},
 
       # jobs
-      {:oban, "~> 2.19"},
+      {:oban, "~> 2.20.1"},
 
       # testing
-      {:floki, ">= 0.30.0", only: :test}
+      {:floki, ">= 0.38.0", only: :test}
     ]
   end
 

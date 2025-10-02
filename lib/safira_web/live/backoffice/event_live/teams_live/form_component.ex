@@ -15,7 +15,7 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.FormComponent do
             navigate={~p"/dashboard/event/teams/#{@team.id}/edit/members"}
           >
             <.button>
-              <%= gettext("New Member") %>
+              {gettext("New Member")}
             </.button>
           </.link>
         </:actions>
@@ -36,7 +36,7 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.FormComponent do
               id={id}
               class="even:bg-lightShade/20 dark:even:bg-darkShade/20 px-4 py-4 flex flex-row w-full justify-between"
             >
-              <p><%= member.name %></p>
+              <p>{member.name}</p>
               <div>
                 <.link navigate={~p"/dashboard/event/teams/#{@team.id}/edit/members/#{member.id}"}>
                   <.icon name="hero-pencil" class="w-5 h-5" />
@@ -52,7 +52,7 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.FormComponent do
             </li>
             <div class="hidden only:flex flex-col gap-4 items-center w-full justify-center h-full">
               <.icon name="hero-user" class="w-12 h-12" />
-              <p><%= gettext("No members found.") %></p>
+              <p>{gettext("No members found.")}</p>
             </div>
           </ul>
           <:actions>

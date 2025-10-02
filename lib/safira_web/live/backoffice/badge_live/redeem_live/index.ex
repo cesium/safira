@@ -39,16 +39,16 @@ defmodule SafiraWeb.Backoffice.BadgeLive.RedeemLive.Index do
                 handle={redeem.attendee.user.handle}
               />
               <div class="self-center">
-                <p class="text-base font-semibold"><%= redeem.attendee.user.name %></p>
-                <p class="font-normal truncate max-w-[12rem]"><%= redeem.attendee.user.handle %></p>
+                <p class="text-base font-semibold">{redeem.attendee.user.name}</p>
+                <p class="font-normal truncate max-w-[12rem]">{redeem.attendee.user.handle}</p>
               </div>
             </div>
           </:col>
           <:col :let={{_id, redeem}} field={:redeemed_by} label="Redeemed by">
-            <%= if redeem.redeemed_by, do: redeem.redeemed_by.user.name, else: "System / Company" %>
+            {if redeem.redeemed_by, do: redeem.redeemed_by.user.name, else: "System / Company"}
           </:col>
           <:col :let={{_id, redeem}} sortable field={:inserted_at} label="Redeemed at">
-            <%= datetime_to_string(redeem.inserted_at) %>
+            {datetime_to_string(redeem.inserted_at)}
           </:col>
           <:action :let={{id, redeem}}>
             <div class="flex flex-row gap-2">

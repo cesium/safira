@@ -10,7 +10,7 @@ defmodule SafiraWeb.Sponsor.ScannerLive.Index do
       <.page>
         <div class="absolute flex justify-center inset-0 z-10 top-20 select-none">
           <span class="bg-dark text-light dark:bg-light dark:text-dark py-4 px-6 rounded-full font-semibold text-xl h-min">
-            <%= gettext("Giving badge %{badge_name}", badge_name: @badge.name) %>
+            {gettext("Giving badge %{badge_name}", badge_name: @badge.name)}
           </span>
         </div>
         <div
@@ -25,13 +25,13 @@ defmodule SafiraWeb.Sponsor.ScannerLive.Index do
         </div>
         <div id="scan-info" class="flex flex-col items-center gap-8 text-center py-40">
           <p id="loadingMessage">
-            <%= gettext("Unable to access camera.") %>
-            <%= gettext(
+            {gettext("Unable to access camera.")}
+            {gettext(
               "Make sure you allow the use of your camera on this browser and that it isn't being used elsewhere."
-            ) %>
+            )}
           </p>
           <.button id="permission-button" type="button">
-            <%= gettext("Request Permission") %>
+            {gettext("Request Permission")}
           </.button>
         </div>
       </.page>
@@ -47,7 +47,7 @@ defmodule SafiraWeb.Sponsor.ScannerLive.Index do
           <.icon name="hero-x-circle" class="text-red-500 w-8" />
           <p>
             <%= if @modal_data do %>
-              <%= error_message(@modal_data) %>
+              {error_message(@modal_data)}
             <% end %>
           </p>
         </div>

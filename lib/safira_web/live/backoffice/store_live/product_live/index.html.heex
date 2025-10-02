@@ -15,7 +15,7 @@
       </.ensure_permissions>
       <.link patch={~p"/dashboard/store/purchases"}>
         <.button class="flex flex-row items-center gap-2">
-          <.icon name="hero-shopping-cart" /><%= gettext("Purchases") %>
+          <.icon name="hero-shopping-cart" />{gettext("Purchases")}
         </.button>
       </.link>
     </div>
@@ -28,14 +28,14 @@
       params={@params}
       row_click={&JS.navigate(~p"/dashboard/store/products/#{elem(&1, 1).id}")}
     >
-      <:col :let={{_id, product}} label="Name" sortable field={:name}><%= product.name %></:col>
+      <:col :let={{_id, product}} label="Name" sortable field={:name}>{product.name}</:col>
       <:col :let={{_id, product}} label="Price" sortable field={:price}>
-        <%= product.price %>
+        {product.price}
       </:col>
       <:col :let={{_id, product}} label="Stock" sortable field={:stock}>
-        <%= product.stock %>
+        {product.stock}
       </:col>
-      <:col :let={{_id, product}} label="Max per user"><%= product.max_per_user %></:col>
+      <:col :let={{_id, product}} label="Max per user">{product.max_per_user}</:col>
       <:action :let={{_id, product}}>
         <div class="sr-only">
           <.link navigate={~p"/dashboard/store/products/#{product}"}>Show</.link>

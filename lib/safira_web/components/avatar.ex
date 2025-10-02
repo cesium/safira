@@ -24,14 +24,14 @@ defmodule SafiraWeb.Components.Avatar do
 
   def avatar(%{link: nil} = assigns) do
     ~H"""
-    <%= inner_avatar(assigns) %>
+    {inner_avatar(assigns)}
     """
   end
 
   def avatar(assigns) do
     ~H"""
     <.link navigate={@link}>
-      <%= inner_avatar(assigns) %>
+      {inner_avatar(assigns)}
     </.link>
     """
   end

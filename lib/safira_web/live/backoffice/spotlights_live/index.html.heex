@@ -16,18 +16,18 @@
     />
     <%= if @current_spotlight do %>
       <p>
-        <%= gettext("%{company_name} is on spotlight!",
+        {gettext("%{company_name} is on spotlight!",
           company_name: @current_spotlight.company.name
-        ) %>
+        )}
       </p>
       <div id="seconds-remaining" phx-hook="Countdown">
         --:--:--
       </div>
     <% else %>
-      <p><%= gettext("There are no companies on spotlight!") %></p>
+      <p>{gettext("There are no companies on spotlight!")}</p>
       <.link patch={~p"/dashboard/spotlights/new"}>
         <.button class="mt-4">
-          <%= gettext("Create Spotlight") %>
+          {gettext("Create Spotlight")}
         </.button>
       </.link>
     <% end %>

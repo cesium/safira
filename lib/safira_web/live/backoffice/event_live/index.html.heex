@@ -16,48 +16,48 @@
       </.button>
     </.link>
     <.link patch={~p"/dashboard/event/edit"}>
-      <.button><%= gettext("Edit Settings") %></.button>
+      <.button>{gettext("Edit Settings")}</.button>
     </.link>
 
     <.link href={~p"/downloads/cv_challenge"} target="_blank">
-      <.button><%= gettext("CV Challenge") %></.button>
+      <.button>{gettext("CV Challenge")}</.button>
     </.link>
     <.link patch={~p"/downloads/final_draw"} target="_blank">
-      <.button><%= gettext("Export Final Draw CSV") %></.button>
+      <.button>{gettext("Export Final Draw CSV")}</.button>
     </.link>
   </:actions>
 
   <div class="py-4">
     <p class="my-1">
-      <b><%= gettext("Registrations Open:") %></b> <%= @form[:registrations_open].value %>
+      <b>{gettext("Registrations Open:")}</b> {@form[:registrations_open].value}
     </p>
-    <p class="my-1"><b><%= gettext("Start Date/Time:") %></b> <%= @form[:start_time].value %></p>
+    <p class="my-1"><b>{gettext("Start Date/Time:")}</b> {@form[:start_time].value}</p>
 
     <h3 class="font-semibold leading-8 text-lg ">Feature Flags</h3>
 
     <p class="my-1">
-      <b><%= gettext("Login Enabled:") %></b> <%= @form[:login_enabled].value %>
+      <b>{gettext("Login Enabled:")}</b> {@form[:login_enabled].value}
     </p>
     <p class="my-1">
-      <b><%= gettext("Schedule Enabled:") %></b> <%= @form[:schedule_enabled].value %>
+      <b>{gettext("Schedule Enabled:")}</b> {@form[:schedule_enabled].value}
     </p>
     <p class="my-1">
-      <b><%= gettext("Challenges Enabled:") %></b> <%= @form[:challenges_enabled].value %>
+      <b>{gettext("Challenges Enabled:")}</b> {@form[:challenges_enabled].value}
     </p>
     <p class="my-1">
-      <b><%= gettext("Speaker Enabled:") %></b> <%= @form[:speakers_enabled].value %>
+      <b>{gettext("Speaker Enabled:")}</b> {@form[:speakers_enabled].value}
     </p>
     <p class="my-1">
-      <b><%= gettext("Team Enabled:") %></b> <%= @form[:team_enabled].value %>
+      <b>{gettext("Team Enabled:")}</b> {@form[:team_enabled].value}
     </p>
     <p class="my-1">
-      <b><%= gettext("Survival Guide Enabled:") %></b> <%= @form[:survival_guide_enabled].value %>
+      <b>{gettext("Survival Guide Enabled:")}</b> {@form[:survival_guide_enabled].value}
     </p>
     <p class="my-1">
-      <b><%= gettext("General Regulation Enabled:") %></b> <%= @form[:general_regulation_enabled].value %>
+      <b>{gettext("General Regulation Enabled:")}</b> {@form[:general_regulation_enabled].value}
     </p>
     <p class="my-1">
-      <b><%= gettext("Call for Staff Enabled:") %></b> <%= @form[:call_for_staff_enabled].value %>
+      <b>{gettext("Call for Staff Enabled:")}</b> {@form[:call_for_staff_enabled].value}
     </p>
   </div>
 </.page>
