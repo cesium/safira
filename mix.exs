@@ -70,7 +70,7 @@ defmodule Safira.MixProject do
       {:earmark, "~> 1.4"},
 
       # frontend
-      {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
+      {:tailwind, "~> 0.4", runtime: Mix.env() == :dev},
       {:heroicons,
        github: "tailwindlabs/heroicons",
        tag: "v2.1.1",
@@ -125,10 +125,10 @@ defmodule Safira.MixProject do
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
-      "assets.build": ["tailwind safira", "esbuild safira"],
+      "assets.build": ["tailwind default", "esbuild default"],
       "assets.deploy": [
-        "tailwind safira --minify",
-        "esbuild safira --minify",
+        "tailwind default --minify",
+        "esbuild default --minify",
         "phx.digest"
       ],
       lint: ["credo --all --strict"]
