@@ -1,32 +1,147 @@
-@import "tailwindcss/base";
-@import "./components.css";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@import 'tailwindcss';
+@plugin "@tailwindcss/forms";
+@import './components.css';
 
-/* For Webkit-based browsers (Chrome, Safari and Opera) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@source "../js";
+@source "../../lib/safira_web.ex";
+@source "../../lib/safira_web";
+
+@theme {
+  --color-primary: #04041c;
+  --color-accent: #ffdb0d;
+  --color-light: #ffffff;
+  --color-light-muted: #a1a1aa;
+  --color-light-shade: #e5e7eb;
+  --color-dark: #09090b;
+  --color-dark-muted: #71717a;
+  --color-dark-shade: #27272a;
+
+  --color-lightMuted: #a1a1aa;
+  --color-lightShade: #e5e7eb;
+  --color-darkMuted: #71717a;
+  --color-darkShade: #27272a;
+
+  --color-secondary-50: #f0f9ff;
+  --color-secondary-100: #e0f2fe;
+  --color-secondary-200: #bae6fd;
+  --color-secondary-300: #7dd3fc;
+  --color-secondary-400: #38bdf8;
+  --color-secondary-500: #0ea5e9;
+  --color-secondary-600: #0284c7;
+  --color-secondary-700: #0369a1;
+  --color-secondary-800: #075985;
+  --color-secondary-900: #0c4a6e;
+  --color-secondary-950: #082f49;
+
+  --color-success-50: #f0fdf4;
+  --color-success-100: #dcfce7;
+  --color-success-200: #bbf7d0;
+  --color-success-300: #86efac;
+  --color-success-400: #4ade80;
+  --color-success-500: #22c55e;
+  --color-success-600: #16a34a;
+  --color-success-700: #15803d;
+  --color-success-800: #166534;
+  --color-success-900: #14532d;
+  --color-success-950: #052e16;
+
+  --color-danger-50: #fef2f2;
+  --color-danger-100: #fee2e2;
+  --color-danger-200: #fecaca;
+  --color-danger-300: #fca5a5;
+  --color-danger-400: #f87171;
+  --color-danger-500: #ef4444;
+  --color-danger-600: #dc2626;
+  --color-danger-700: #b91c1c;
+  --color-danger-800: #991b1b;
+  --color-danger-900: #7f1d1d;
+  --color-danger-950: #450a0a;
+
+  --color-warning-50: #fefce8;
+  --color-warning-100: #fef9c3;
+  --color-warning-200: #fef08a;
+  --color-warning-300: #fde047;
+  --color-warning-400: #facc15;
+  --color-warning-500: #eab308;
+  --color-warning-600: #ca8a04;
+  --color-warning-700: #a16207;
+  --color-warning-800: #854d0e;
+  --color-warning-900: #713f12;
+  --color-warning-950: #422006;
+
+  --color-info-50: #eff6ff;
+  --color-info-100: #dbeafe;
+  --color-info-200: #bfdbfe;
+  --color-info-300: #93c5fd;
+  --color-info-400: #60a5fa;
+  --color-info-500: #3b82f6;
+  --color-info-600: #2563eb;
+  --color-info-700: #1d4ed8;
+  --color-info-800: #1e40af;
+  --color-info-900: #1e3a8a;
+  --color-info-950: #172554;
+
+  --font-family-terminal: 'Terminal', ui-monospace, monospace;
+  --font-family-iregular: 'Inter-Regular', ui-sans-serif, sans-serif;
+
+  --animate-slide-in: slide-in 1.5s ease-in-out;
+  --animate-fade-in: fade-in 0.5s ease-in-out;
+  --animate-fade-in-slow: fade-in 1.5s ease-in-out;
+}
+
+@keyframes slide-in {
+  0% {
+    transform: translateY(20%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@custom-variant phx-no-feedback (&:where(.phx-no-feedback, .phx-no-feedback *));
+@custom-variant phx-click-loading (&:where(.phx-click-loading, .phx-click-loading *));
+@custom-variant phx-submit-loading (&:where(.phx-submit-loading, .phx-submit-loading *));
+@custom-variant phx-change-loading (&:where(.phx-change-loading, .phx-change-loading *));
+
 .scrollbar-hide::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
-/* For IE, Edge and Firefox */
 .scrollbar-hide {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-/* Disable autofill background on inputs */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px white inset !important;
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset;
 }
 
 @font-face {
-  font-family: "Terminal";
-  src: url("/fonts/Terminal/TerminalGrotesque.ttf") format("truetype");
+  font-family: 'Terminal';
+  src: url('/fonts/Terminal/TerminalGrotesque.ttf') format('truetype');
 }
+
 @font-face {
-  font-family: "Inter-Regular";
-  src: url("/fonts/Inter/Inter-Regular.ttf") format("truetype");
+  font-family: 'Inter-Regular';
+  src: url('/fonts/Inter/Inter-Regular.ttf') format('truetype');
 }
