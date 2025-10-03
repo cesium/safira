@@ -25,8 +25,8 @@ config :safira, SafiraWeb.Endpoint,
   debug_errors: true,
   secret_key_base: "OMQPnGb+HW48fr0JEKK1y0z4qalryuRAitzuuTbIn4RbTWQJuBtkhWuHGjFNyCLf",
   watchers: [
-    esbuild: {Esbuild, :install_and_run, [:safira, ~w(--sourcemap=inline --watch)]},
-    tailwind: {Tailwind, :install_and_run, [:safira, ~w(--watch)]}
+    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
+    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
   ]
 
 # ## SSL Support
