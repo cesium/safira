@@ -25,6 +25,7 @@ config :safira, SafiraWeb.Endpoint,
   debug_errors: true,
   secret_key_base: "OMQPnGb+HW48fr0JEKK1y0z4qalryuRAitzuuTbIn4RbTWQJuBtkhWuHGjFNyCLf",
   watchers: [
+    icon_gen: {Mix.Tasks.GenerateIconCss, :run, [[]]},
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
     tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
   ]
