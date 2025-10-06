@@ -1,6 +1,8 @@
 @import 'tailwindcss';
 @plugin "@tailwindcss/forms";
 @import './components.css';
+@import './icons.css';
+@import './icons-utilities.css';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
