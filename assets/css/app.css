@@ -8,6 +8,18 @@
 @source "../../lib/safira_web.ex";
 @source "../../lib/safira_web";
 
+@font-face {
+  font-family: 'Terminal';
+  src: url('/fonts/Terminal/TerminalGrotesque.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter-Regular';
+  src: url('/fonts/Inter/Inter-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+
 @theme {
   --color-primary: #04041c;
   --color-accent: #ffdb0d;
@@ -83,8 +95,8 @@
   --color-info-900: #1e3a8a;
   --color-info-950: #172554;
 
-  --font-family-terminal: 'Terminal', ui-monospace, monospace;
-  --font-family-iregular: 'Inter-Regular', ui-sans-serif, sans-serif;
+  --font-terminal: 'Terminal', ui-monospace, monospace;
+  --font-iregular: 'Inter-Regular', ui-sans-serif, sans-serif;
 
   --animate-slide-in: slide-in 1.5s ease-in-out;
   --animate-fade-in: fade-in 0.5s ease-in-out;
@@ -134,14 +146,4 @@ select:-webkit-autofill,
 select:-webkit-autofill:hover,
 select:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0px 1000px transparent inset;
-}
-
-@font-face {
-  font-family: 'Terminal';
-  src: url('/fonts/Terminal/TerminalGrotesque.ttf') format('truetype');
-}
-
-@font-face {
-  font-family: 'Inter-Regular';
-  src: url('/fonts/Inter/Inter-Regular.ttf') format('truetype');
 }
