@@ -29,6 +29,7 @@ safira-*.tar
 
 # Ignore assets that are produced by build tools.
 /assets/css/icons.css
+/assets/css/icons-utilities.css
 /priv/static/assets/
 
 # Ignore digested assets cache.
