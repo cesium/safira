@@ -45,7 +45,7 @@ config :safira, Safira.Mailer, adapter: Swoosh.Adapters.Local
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.17.11",
-  default: [
+  safira: [
     args:
       ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
     cd: Path.expand("../assets", __DIR__),
@@ -55,7 +55,7 @@ config :esbuild,
 # Configure tailwind (the version is required)
 config :tailwind,
   version: "4.1.12",
-  default: [
+  safira: [
     args: ~w(
       --input=assets/css/app.css
       --output=priv/static/assets/app.css
