@@ -127,7 +127,6 @@ defmodule Safira.MixProject do
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
       "assets.build": ["tailwind safira", "esbuild safira"],
       "assets.deploy": [
-        "generate_icon_css",
         "tailwind safira --minify",
         "esbuild safira --minify",
         "phx.digest"
