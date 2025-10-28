@@ -1,32 +1,157 @@
-@import "tailwindcss/base";
-@import "./components.css";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@import 'tailwindcss';
+@import './components.css';
 
-/* For Webkit-based browsers (Chrome, Safari and Opera) */
+@plugin "@tailwindcss/forms";
+@plugin "../vendor/heroicons.js";
+@plugin "../vendor/fontawesome.js";
+
+@source "../js";
+@source "../../lib/safira_web.ex";
+@source "../../lib/safira_web";
+
+@font-face {
+  font-family: 'Terminal';
+  src: url('/fonts/Terminal/TerminalGrotesque.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter-Regular';
+  src: url('/fonts/Inter/Inter-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+
+@theme {
+  --color-primary: #04041c;
+  --color-accent: #ffdb0d;
+  --color-light: #ffffff;
+  --color-light-muted: #a1a1aa;
+  --color-light-shade: #e5e7eb;
+  --color-dark: #09090b;
+  --color-dark-muted: #71717a;
+  --color-dark-shade: #27272a;
+
+  --color-lightMuted: #a1a1aa;
+  --color-lightShade: #e5e7eb;
+  --color-darkMuted: #71717a;
+  --color-darkShade: #27272a;
+
+  --color-secondary-50: var(--color-sky-50);
+  --color-secondary-100: var(--color-sky-100);
+  --color-secondary-200: var(--color-sky-200);
+  --color-secondary-300: var(--color-sky-300);
+  --color-secondary-400: var(--color-sky-400);
+  --color-secondary-500: var(--color-sky-500);
+  --color-secondary-600: var(--color-sky-600);
+  --color-secondary-700: var(--color-sky-700);
+  --color-secondary-800: var(--color-sky-800);
+  --color-secondary-900: var(--color-sky-900);
+  --color-secondary-950: var(--color-sky-950);
+
+  --color-success-50: var(--color-green-50);
+  --color-success-100: var(--color-green-100);
+  --color-success-200: var(--color-green-200);
+  --color-success-300: var(--color-green-300);
+  --color-success-400: var(--color-green-400);
+  --color-success-500: var(--color-green-500);
+  --color-success-600: var(--color-green-600);
+  --color-success-700: var(--color-green-700);
+  --color-success-800: var(--color-green-800);
+  --color-success-900: var(--color-green-900);
+  --color-success-950: var(--color-green-950);
+
+  --color-danger-50: var(--color-red-50);
+  --color-danger-100: var(--color-red-100);
+  --color-danger-200: var(--color-red-200);
+  --color-danger-300: var(--color-red-300);
+  --color-danger-400: var(--color-red-400);
+  --color-danger-500: var(--color-red-500);
+  --color-danger-600: var(--color-red-600);
+  --color-danger-700: var(--color-red-700);
+  --color-danger-800: var(--color-red-800);
+  --color-danger-900: var(--color-red-900);
+  --color-danger-950: var(--color-red-950);
+
+  --color-warning-50: var(--color-yellow-50);
+  --color-warning-100: var(--color-yellow-100);
+  --color-warning-200: var(--color-yellow-200);
+  --color-warning-300: var(--color-yellow-300);
+  --color-warning-400: var(--color-yellow-400);
+  --color-warning-500: var(--color-yellow-500);
+  --color-warning-600: var(--color-yellow-600);
+  --color-warning-700: var(--color-yellow-700);
+  --color-warning-800: var(--color-yellow-800);
+  --color-warning-900: var(--color-yellow-900);
+  --color-warning-950: var(--color-yellow-950);
+
+  --color-info-50: var(--color-blue-50);
+  --color-info-100: var(--color-blue-100);
+  --color-info-200: var(--color-blue-200);
+  --color-info-300: var(--color-blue-300);
+  --color-info-400: var(--color-blue-400);
+  --color-info-500: var(--color-blue-500);
+  --color-info-600: var(--color-blue-600);
+  --color-info-700: var(--color-blue-700);
+  --color-info-800: var(--color-blue-800);
+  --color-info-900: var(--color-blue-900);
+  --color-info-950: var(--color-blue-950);
+
+  --font-terminal: 'Terminal', ui-monospace, monospace;
+  --font-iregular: 'Inter-Regular', ui-sans-serif, sans-serif;
+
+  --animate-slide-in: slide-in 1.5s ease-in-out;
+  --animate-fade-in: fade-in 0.5s ease-in-out;
+  --animate-fade-in-slow: fade-in 1.5s ease-in-out;
+}
+
+@keyframes slide-in {
+  0% {
+    transform: translateY(20%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Add variants based on LiveView classes */
+@custom-variant phx-no-feedback (.phx-no-feedback&, .phx-no-feedback &);
+@custom-variant phx-click-loading (.phx-click-loading&, .phx-click-loading &);
+@custom-variant phx-submit-loading (.phx-submit-loading&, .phx-submit-loading &);
+@custom-variant phx-change-loading (.phx-change-loading&, .phx-change-loading &);
+
+/* Use the data attribute for dark mode  */
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
 .scrollbar-hide::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
-/* For IE, Edge and Firefox */
 .scrollbar-hide {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-/* Disable autofill background on inputs */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 30px white inset !important;
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset;
 }
 
-@font-face {
-  font-family: "Terminal";
-  src: url("/fonts/Terminal/TerminalGrotesque.ttf") format("truetype");
-}
-@font-face {
-  font-family: "Inter-Regular";
-  src: url("/fonts/Inter/Inter-Regular.ttf") format("truetype");
-}
+/* Make LiveView wrapper divs transparent for layout */
+[data-phx-session], [data-phx-teleported-src] { display: contents }
