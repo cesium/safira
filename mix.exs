@@ -70,7 +70,7 @@ defmodule Safira.MixProject do
       {:earmark, "~> 1.4.48"},
 
       # frontend
-      {:tailwind, "~> 0.4.0", runtime: Mix.env() == :dev},
+      {:tailwind, "~> 0.4", runtime: Mix.env() == :dev},
       {:heroicons,
        github: "tailwindlabs/heroicons",
        tag: "v2.1.1",

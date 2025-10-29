@@ -27,13 +27,13 @@ defmodule SafiraWeb.Components.Sidebar do
     ~H"""
     <div
       id="mobile-sidebar-container"
-      class="fixed inset-0 flex z-40 lg:hidden"
+      class="fixed inset-0 z-40 flex lg:hidden"
       aria-modal="true"
       style="display: none;"
     >
       <div
         id="sidebar-overlay"
-        class="fixed inset-0 bg-gray-800 bg-opacity-55 backdrop-blur-sm h-full min-h-screen"
+        class="fixed inset-0 h-full min-h-screen bg-gray-800 bg-opacity-55 backdrop-blur-sm"
         phx-click={hide_mobile_sidebar()}
       >
       </div>
@@ -41,12 +41,12 @@ defmodule SafiraWeb.Components.Sidebar do
         id="mobile-sidebar"
         class={"relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 #{@background} rounded-r-lg h-dvh"}
       >
-        <div class="flex-1 flex flex-col py-4 overflow-y-auto scrollbar-hide">
+        <div class="flex flex-col flex-1 py-4 overflow-y-auto scrollbar-hide">
           <.link navigate={@logo_url} class={"flex items-center flex-shrink-0 #{@logo_padding}"}>
-            <img class="w-full h-full hidden dark:block" src={@logo_images.light} />
+            <img class="hidden w-full h-full dark:block" src={@logo_images.light} />
             <img class="w-full h-full dark:hidden" src={@logo_images.dark} />
           </.link>
-          <div class="mt-8 flex flex-col justify-between h-full">
+          <div class="flex flex-col justify-between h-full mt-8">
             <nav class="px-4">
               <%= if @current_user do %>
                 <.sidebar_nav_links
@@ -77,11 +77,11 @@ defmodule SafiraWeb.Components.Sidebar do
     <div class="hidden lg:flex lg:flex-shrink-0">
       <div class={"flex flex-col w-64 border-r #{@border} #{@background} pt-5"}>
         <.link navigate={@logo_url} class={"flex items-center flex-shrink-0 #{@logo_padding}"}>
-          <img class="w-full h-full hidden dark:block" src={@logo_images.light} />
+          <img class="hidden w-full h-full dark:block" src={@logo_images.light} />
           <img class="w-full h-full dark:hidden" src={@logo_images.dark} />
         </.link>
         <!-- Sidebar component, swap this element with another sidebar if you like -->
-        <div class="h-0 flex-1 flex flex-col justify-between pb-4 overflow-y-auto scrollbar-hide">
+        <div class="flex flex-col justify-between flex-1 h-0 pb-4 overflow-y-auto scrollbar-hide">
           <!-- Navigation -->
           <nav class="px-4 mt-6">
             <%= if @current_user do %>
@@ -127,26 +127,26 @@ defmodule SafiraWeb.Components.Sidebar do
     ~H"""
     <div
       id="mobile-sidebar-container"
-      class="fixed inset-0 z-40 lg:hidden overflow-hidden"
+      class="fixed inset-0 z-40 overflow-hidden lg:hidden"
       aria-modal="true"
       style="display: none;"
     >
       <div
         id="sidebar-overlay"
-        class="fixed inset-0 bg-gray-800 bg-opacity-55 backdrop-blur-sm h-full min-h-screen"
+        class="fixed inset-0 h-full min-h-screen bg-gray-800 bg-opacity-55 backdrop-blur-sm"
         phx-click={hide_mobile_sidebar()}
       >
       </div>
       <div
         id="mobile-sidebar"
-        class="relative flex-1 flex-col max-w-xs w-full pt-5 pb-4 rounded-r-3xl bg-primary hidden h-dvh"
+        class="relative flex-col flex-1 hidden w-full max-w-xs pt-5 pb-4 rounded-r-3xl bg-primary h-dvh"
       >
-        <div class="flex-1 flex flex-col py-4 overflow-y-auto scrollbar-hide">
+        <div class="flex flex-col flex-1 py-4 overflow-y-auto scrollbar-hide">
           <.link navigate={@logo_url} class="flex items-center flex-shrink-0 px-16 py-3 sm:pt-8">
-            <img class="w-full h-full hidden dark:block" src={@logo_images.light} />
+            <img class="hidden w-full h-full dark:block" src={@logo_images.light} />
             <img class="w-full h-20 dark:hidden" src={@logo_images.dark} />
           </.link>
-          <div class="mt-8 flex flex-col justify-between h-full">
+          <div class="flex flex-col justify-between h-full mt-8">
             <nav class="px-4">
               <%= if @current_user do %>
                 <.sidebar_nav_links
@@ -177,11 +177,11 @@ defmodule SafiraWeb.Components.Sidebar do
     <div class="hidden lg:flex lg:flex-shrink-0">
       <div class={"flex flex-col w-64 border-r #{@border} bg-primary pt-5"}>
         <.link navigate={@logo_url} class="flex items-center flex-shrink-0 px-16 pt-4 pb-4">
-          <img class="w-full h-full hidden dark:block" src={@logo_images.light} />
+          <img class="hidden w-full h-full dark:block" src={@logo_images.light} />
           <img class="w-full h-full dark:hidden" src={@logo_images.dark} />
         </.link>
         <!-- Sidebar component, swap this element with another sidebar if you like -->
-        <div class="h-0 flex-1 flex flex-col justify-between pb-4 overflow-y-auto scrollbar-hide">
+        <div class="flex flex-col justify-between flex-1 h-0 pb-4 overflow-y-auto scrollbar-hide">
           <!-- Navigation -->
           <nav class="px-4 mt-6">
             <%= if @current_user do %>
@@ -257,7 +257,7 @@ defmodule SafiraWeb.Components.Sidebar do
   defp app_user_dropdown(assigns) do
     ~H"""
     <!-- User account dropdown -->
-    <div class="px-3 mt-6 relative inline-block text-left">
+    <div class="relative inline-block px-3 mt-6 text-left">
       <div>
         <button
           id={@id}
@@ -268,13 +268,13 @@ defmodule SafiraWeb.Components.Sidebar do
           aria-haspopup="true"
         >
           <span class={"flex w-full justify-between items-center #{@icon_color}"}>
-            <span class="flex min-w-0 items-center justify-between space-x-3">
+            <span class="flex items-center justify-between min-w-0 space-x-3">
               <.avatar
                 size={:sm}
                 handle={@user.handle}
                 src={Uploaders.UserPicture.url({@user.picture, @user}, :original, signed: true)}
               />
-              <span class="flex-1 flex flex-col min-w-0">
+              <span class="flex flex-col flex-1 min-w-0">
                 <span class={"#{@title |> Enum.at(0) |> Map.get(:color)}  text-sm font-medium truncate"}>
                   {render_slot(@title)}
                 </span>
@@ -290,7 +290,7 @@ defmodule SafiraWeb.Components.Sidebar do
       <div
         id={"#{@id}-dropdown"}
         phx-click-away={hide_user_dropdown("##{@id}-dropdown")}
-        class="hidden z-10 mx-3 origin-bottom bottom-full absolute right-0 left-0 mb-2 rounded-md shadow-lg bg-light text-primary overflow-hidden"
+        class="absolute left-0 right-0 z-10 hidden mx-3 mb-2 overflow-hidden origin-bottom rounded-md shadow-lg bottom-full bg-light text-primary"
         role="menu"
         aria-labelledby={@id}
       >
@@ -299,7 +299,7 @@ defmodule SafiraWeb.Components.Sidebar do
             <.link
               tabindex="-1"
               role="menuitem"
-              class="block px-4 py-3 bg-light text-primary font-medium hover:bg-lightShade transition-colors"
+              class="block px-4 py-3 font-medium transition-colors bg-light text-primary hover:bg-lightShade"
               {link}
             >
               {render_slot(link)}
@@ -333,7 +333,7 @@ defmodule SafiraWeb.Components.Sidebar do
           ]}
         >
           <%= if Map.get(page, :icon) do %>
-            <.icon name={page.icon} class="mr-3 flex-shrink-0 size-6" />
+            <.icon name={page.icon} class="flex-shrink-0 mr-3 size-6" />
           <% end %>
           <%= if Map.get(page, :image) do %>
             <div
@@ -398,7 +398,7 @@ defmodule SafiraWeb.Components.Sidebar do
   defp user_dropdown(assigns) do
     ~H"""
     <!-- User account dropdown -->
-    <div class="px-3 mt-6 relative inline-block text-left">
+    <div class="relative inline-block px-3 mt-6 text-left">
       <div>
         <button
           id={@id}
@@ -409,13 +409,13 @@ defmodule SafiraWeb.Components.Sidebar do
           aria-haspopup="true"
         >
           <span class={"flex w-full justify-between items-center #{@icon_color}"}>
-            <span class="flex min-w-0 items-center justify-between space-x-3">
+            <span class="flex items-center justify-between min-w-0 space-x-3">
               <.avatar
                 size={:sm}
                 handle={@user.handle}
                 src={Uploaders.UserPicture.url({@user.picture, @user}, :original, signed: true)}
               />
-              <span class="flex-1 flex flex-col min-w-0">
+              <span class="flex flex-col flex-1 min-w-0">
                 <span class={"#{@title |> Enum.at(0) |> Map.get(:color)}  text-sm font-medium truncate"}>
                   {render_slot(@title)}
                 </span>
@@ -431,7 +431,7 @@ defmodule SafiraWeb.Components.Sidebar do
       <div
         id={"#{@id}-dropdown"}
         phx-click-away={hide_user_dropdown("##{@id}-dropdown")}
-        class="hidden z-10 mx-3 origin-bottom bottom-full absolute right-0 left-0 mt-1 rounded-md shadow-lg bg-light dark:bg-dark ring-1 ring-black ring-opacity-5 divide-y divide-lightShade dark:divide-darkShade border border-lightShade dark:border-darkShade"
+        class="absolute left-0 right-0 z-10 hidden mx-3 mt-1 origin-bottom border divide-y rounded-md shadow-lg bottom-full bg-light dark:bg-dark ring-1 ring-black/5 divide-lightShade dark:divide-darkShade border-lightShade dark:border-darkShade"
         role="menu"
         aria-labelledby={@id}
       >

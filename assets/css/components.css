@@ -1,5 +1,5 @@
-@import "components/avatar.css";
-@import "components/field.css";
-@import "components/dropdown.css";
-@import "components/coinflip.css";
-@import "components/slots_reel.css"
+@import './components/avatar.css';
+@import './components/field.css';
+@import './components/dropdown.css';
+@import './components/coinflip.css';
+@import './components/slots_reel.css';
