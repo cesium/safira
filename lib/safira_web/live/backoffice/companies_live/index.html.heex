@@ -26,9 +26,9 @@
 
   <div class="py-4">
     <.table id="companies-table" items={@streams.companies} meta={@meta} params={@params}>
-      <:col :let={{_id, company}} sortable field={:name} label="Name"><%= company.name %></:col>
+      <:col :let={{_id, company}} sortable field={:name} label="Name">{company.name}</:col>
       <:col :let={{_id, company}} sortable field={:tier} label="Tier">
-        <%= company.tier.name %>
+        {company.tier.name}
       </:col>
       <:action :let={{id, company}}>
         <.ensure_permissions user={@current_user} permissions={%{"companies" => ["edit"]}}>

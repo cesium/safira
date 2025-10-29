@@ -13,7 +13,7 @@ defmodule SafiraWeb.Components.Table do
   attr :meta, Flop.Meta, required: true
   attr :row_id, :any, default: nil
   attr :params, :map, required: true
-  attr :row_click, JS, default: nil
+  attr :row_click, :fun, default: nil
   attr :sortable, :boolean, default: false
 
   slot :col do
@@ -73,7 +73,7 @@ defmodule SafiraWeb.Components.Table do
                 scope="row"
                 class="px-6 py-4 font-normal text-dark whitespace-nowrap dark:text-light"
               >
-                <%= render_slot(col, item) %>
+                {render_slot(col, item)}
               </td>
               <td
                 scope="row"
@@ -84,7 +84,7 @@ defmodule SafiraWeb.Components.Table do
                     :for={action <- @action}
                     class="dark:hover:text-lightShade/80 hover:text-darkShade/80 transition-colors"
                   >
-                    <%= render_slot(action, item) %>
+                    {render_slot(action, item)}
                   </span>
                 </div>
               </td>
@@ -112,7 +112,7 @@ defmodule SafiraWeb.Components.Table do
       ~H"""
       <th scope="col" class="px-6 py-3">
         <.link patch={next_order_query(@field, @meta.flop, @params)} class="flex items-center gap-x-4">
-          <%= @label %>
+          {@label}
           <.sort_arrow direction={@order_direction} />
         </.link>
       </th>
@@ -120,7 +120,7 @@ defmodule SafiraWeb.Components.Table do
     else
       ~H"""
       <th scope="col" class={"px-6 py-3 #{@class}"}>
-        <%= @label %>
+        {@label}
       </th>
       """
     end
@@ -165,13 +165,13 @@ defmodule SafiraWeb.Components.Table do
       aria-label="Table navigation"
     >
       <span class="text-sm font-normal text-darkMuted dark:text-lightMuted mb-4 md:mb-0 block w-full md:inline md:w-auto">
-        <%= gettext("Showing") %>
+        {gettext("Showing")}
         <span class="font-semibold text-dark dark:text-light">
-          <%= @meta.current_offset + 1 %>-<%= @meta.next_offset || @meta.total_count %>
+          {@meta.current_offset + 1}-{@meta.next_offset || @meta.total_count}
         </span>
-        <%= gettext("of") %>
+        {gettext("of")}
         <span class="font-semibold text-dark dark:text-light">
-          <%= @meta.total_count %>
+          {@meta.total_count}
         </span>
       </span>
       <ul class="inline-flex -space-x-px rtl:space-x-reverse text-sm h-8">
@@ -220,7 +220,7 @@ defmodule SafiraWeb.Components.Table do
           @right_corner && "rounded-e-lg",
           @left_corner && "rounded-s-lg"
         ]}>
-          <%= if @text == "", do: @page, else: @text %>
+          {if @text == "", do: @page, else: @text}
         </p>
       </li>
       """
@@ -238,7 +238,7 @@ defmodule SafiraWeb.Components.Table do
             @is_current && "text-dark bg-gray-100 dark:text-light dark:bg-darkShade/20"
           ]}
         >
-          <%= if @text == "", do: @page, else: @text %>
+          {if @text == "", do: @page, else: @text}
         </.link>
       </li>
       """

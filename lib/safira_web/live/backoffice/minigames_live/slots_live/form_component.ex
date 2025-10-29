@@ -55,7 +55,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.Slots.FormComponent do
               />
             </div>
             <div class="flex flex-row-reverse">
-              <.button phx-disable-with="Saving..."><%= gettext("Save Configuration") %></.button>
+              <.button phx-disable-with="Saving...">{gettext("Save Configuration")}</.button>
             </div>
           </.form>
         </div>

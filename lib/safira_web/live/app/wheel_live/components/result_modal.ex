@@ -44,7 +44,7 @@ defmodule SafiraWeb.App.WheelLive.Components.ResultModal do
               class={"#{@content_class} shadow-zinc-700/10 relative hidden ring-4 ring-white rounded-2xl p-14 shadow-lg transition"}
             >
               <div id={"#{@id}-content"} class="font-terminal uppercase text-3xl md:text-4xl">
-                <p><%= get_drop_result_text(@drop_type, @drop) %></p>
+                <p>{get_drop_result_text(@drop_type, @drop)}</p>
               </div>
               <div
                 :if={@drop_type in [:prize, :badge]}
@@ -69,10 +69,10 @@ defmodule SafiraWeb.App.WheelLive.Components.ResultModal do
               </div>
               <%= if @drop_type == :prize and @show_vault_link do %>
                 <p class="font-md text-center">
-                  <%= gettext("You can redeem this prize at the accreditation by showing your") %>
+                  {gettext("You can redeem this prize at the accreditation by showing your")}
                   <span>
                     <.link navigate={~p"/app/vault"} class="text-accent">
-                      <%= gettext("vault") %>
+                      {gettext("vault")}
                     </.link>
                   </span>
                 </p>

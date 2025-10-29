@@ -14,7 +14,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPayline.FormComponent do
       <.page title={gettext("Slots Paytable")} subtitle={gettext("Configures the slots paytable.")}>
         <div class="pt-8">
           <div class="flex flex-row justify-between items-center">
-            <h2 class="font-semibold"><%= gettext("Entries") %></h2>
+            <h2 class="font-semibold">{gettext("Entries")}</h2>
             <.button phx-click="add-entry" phx-target={@myself}>
               <.icon name="hero-plus" class="w-5 h-5" />
             </.button>

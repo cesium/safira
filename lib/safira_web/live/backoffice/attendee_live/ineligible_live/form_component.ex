@@ -22,7 +22,7 @@ defmodule SafiraWeb.Backoffice.AttendeeLive.IneligibleLive.FormComponent do
           <.field field={@form[:ineligible]} label="Ineligible" type="switch" />
           <:actions>
             <.button phx-disable-with="Saving...">
-              <%= gettext("Save Eligibility") %>
+              {gettext("Save Eligibility")}
             </.button>
           </:actions>
         </.simple_form>

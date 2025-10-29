@@ -37,10 +37,10 @@ defmodule SafiraWeb.Components.Badge do
         src="/images/badges/404-fallback.svg"
       />
       <span class="text-sm font-semibold text-center">
-        <%= @badge.name %>
+        {@badge.name}
       </span>
       <span :if={@show_tokens} class="text-sm font-semibold">
-        💰 <%= @badge.tokens %>
+        💰 {@badge.tokens}
       </span>
     </div>
     """

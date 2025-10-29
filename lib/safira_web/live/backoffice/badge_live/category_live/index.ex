@@ -28,7 +28,7 @@ defmodule SafiraWeb.Backoffice.BadgeLive.CategoryLive.Index do
                   class={"h-6 w-6 block #{get_color_class(category.color)} rounded-full"}
                 >
                 </span>
-                <%= category.name %>
+                {category.name}
               </span>
               <.ensure_permissions user={@current_user} permissions={%{"badges" => ["edit"]}}>
                 <.link navigate={~p"/dashboard/badges/categories/#{category.id}/edit"}>
@@ -39,7 +39,7 @@ defmodule SafiraWeb.Backoffice.BadgeLive.CategoryLive.Index do
           </li>
           <div class="only:flex hidden h-full items-center justify-center">
             <p class="text-center text-lightMuted dark:text-darkMuted mt-8">
-              <%= gettext("No categories found") %>
+              {gettext("No categories found")}
             </p>
           </div>
         </ul>

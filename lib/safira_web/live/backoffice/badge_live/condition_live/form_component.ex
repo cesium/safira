@@ -28,7 +28,7 @@ defmodule SafiraWeb.Backoffice.BadgeLive.ConditionLive.FormComponent do
           <div class="w-full space-y-2 text-dark dark:text-light">
             <div class="flex flex-row gap-2 items-center flex-wrap">
               <p>
-                <%= gettext("An attendee has") %>
+                {gettext("An attendee has")}
               </p>
               <.field
                 name="amount_type"
@@ -47,7 +47,7 @@ defmodule SafiraWeb.Backoffice.BadgeLive.ConditionLive.FormComponent do
                 type="number"
               />
               <p>
-                <%= gettext("badges of") %>
+                {gettext("badges of")}
               </p>
               <.field
                 field={@form[:category_id]}
@@ -57,16 +57,16 @@ defmodule SafiraWeb.Backoffice.BadgeLive.ConditionLive.FormComponent do
                 options={categories_options(@categories)}
               />
               <p>
-                <%= gettext("category.") %>
+                {gettext("category.")}
               </p>
             </div>
             <div class="flex flex-row items-center gap-2">
               <p>
-                <%= gettext("Check condition from") %>
+                {gettext("Check condition from")}
               </p>
               <.field field={@form[:begin]} label="" wrapper_class="!mb-0 w-48" type="datetime-local" />
               <p>
-                <%= gettext("to") %>
+                {gettext("to")}
               </p>
               <.field field={@form[:end]} label="" wrapper_class="!mb-0 w-48" type="datetime-local" />
               .

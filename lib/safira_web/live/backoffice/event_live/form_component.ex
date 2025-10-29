@@ -55,7 +55,7 @@ defmodule SafiraWeb.Backoffice.EventLive.FormComponent do
               data-confirm="Do you want to save these changes? It can break stuff if you are not careful"
               phx-disable-with="Saving..."
             >
-              <%= gettext("Save Settings") %>
+              {gettext("Save Settings")}
             </.button>
           </:actions>
         </.simple_form>

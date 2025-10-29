@@ -15,12 +15,12 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Confirm do
         <div class="flex flex-col">
           <p class="text-center text-2xl mb-4">Are you sure?</p>
           <p class="text-center pb-6">
-            <%= gettext(
+            {gettext(
               "Are you sure you want to start a spotlight for %{company_name} with a duration of %{duration} %{unit}?",
               company_name: @company.name,
               duration: @duration,
               unit: ngettext("minute", "minutes", @duration)
-            ) %>
+            )}
           </p>
           <div class="flex justify-center space-x-8">
             <.button phx-click="cancel-spotlight" class="w-full" phx-target={@myself} type="button">

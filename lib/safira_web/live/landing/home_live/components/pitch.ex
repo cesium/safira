@@ -20,9 +20,9 @@ defmodule SafiraWeb.Landing.HomeLive.Components.Pitch do
       </div>
       <div class="xl:9/12 font-terminal uppercase w-full select-none tracking-wide text-white md:pt-0 pt-16">
         <h2 class="text-4xl">
-          <%= gettext(
+          {gettext(
             "We gather speakers, attract partners and give our imagination wings, all for this to be your favorite week."
-          ) %>
+          )}
         </h2>
       </div>
     </div>

@@ -55,20 +55,18 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.ReelsPosition.FormComponent do
                 count_visible_icons(@visibility[i]) != count_visible_icons(@visibility[0]) &&
                   "text-red-600"
               }>
-                <span class="font-semibold">Reel <%= i %>:</span> <%= count_visible_icons(
-                  @visibility[i]
-                ) %> visible icons
+                <span class="font-semibold">Reel {i}:</span> {count_visible_icons(@visibility[i])} visible icons
               </p>
             <% end %>
             <p class="text-slate-500 mt-4">
-              <.icon name="hero-exclamation-triangle" class="text-warning-500 mr-1" /><%= gettext(
+              <.icon name="hero-exclamation-triangle" class="text-warning-500 mr-1" />{gettext(
                 "For optimal icon placement the number of icons should be 9."
-              ) %>
+              )}
             </p>
             <p class="text-slate-500">
-              <.icon name="hero-information-circle" class="text-blue-500 mr-1" /><%= gettext(
+              <.icon name="hero-information-circle" class="text-blue-500 mr-1" />{gettext(
                 "Drag and drop the icons to change their order."
-              ) %>
+              )}
             </p>
           </div>
           <div class="flex justify-end">
@@ -78,7 +76,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.ReelsPosition.FormComponent do
               phx-disable-with="Saving..."
               disabled={not all_reels_match?(@visibility)}
             >
-              <%= gettext("Save Configuration") %>
+              {gettext("Save Configuration")}
             </.button>
           </div>
         </div>

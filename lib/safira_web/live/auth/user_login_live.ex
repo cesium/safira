@@ -42,7 +42,7 @@ defmodule SafiraWeb.UserLoginLive do
               <.input field={@form[:remember_me]} type="checkbox" />
             </div>
             <div class="inline text-sm">
-              <%= gettext("Keep me logged in.") %>
+              {gettext("Keep me logged in.")}
             </div>
           </div>
           <.link href={~p"/users/reset_password"} class="text-sm font-semibold">

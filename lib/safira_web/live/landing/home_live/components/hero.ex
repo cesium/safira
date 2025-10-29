@@ -19,7 +19,7 @@ defmodule SafiraWeb.Landing.HomeLive.Components.Hero do
           <div class="flex items-center justify-between pb-4">
             <div class="flex flex-row justify-between w-full">
               <div class="flex flex-col gap-4">
-                <h5><%= gettext("Follow us on") %></h5>
+                <h5>{gettext("Follow us on")}</h5>
                 <.socials />
               </div>
               <div :if={@registrations_open?} class="lg:hidden">
@@ -43,7 +43,7 @@ defmodule SafiraWeb.Landing.HomeLive.Components.Hero do
     ~H"""
     <div class="relative z-20 font-bold animate-slide-in">
       <h5 class="font-terminal uppercase m-1 text-2xl text-accent">
-        <%= display_event_dates(@event_start_date, @event_end_date) %>
+        {display_event_dates(@event_start_date, @event_end_date)}
       </h5>
       <h1 class="font-terminal uppercase relative z-20 text-white text-5xl xs:text-5xl sm:text-6xl w-full md:text-7xl lg:text-8xl 2xl:w-5/6 2xl:text-8xl 2xl:leading-[5rem]">
         <span class="relative z-20">
@@ -59,7 +59,7 @@ defmodule SafiraWeb.Landing.HomeLive.Components.Hero do
   defp organization(assigns) do
     ~H"""
     <div class="flex flex-col gap-3">
-      <h5 class="font-imedium text-white"><%= gettext("Organization") %></h5>
+      <h5 class="font-imedium text-white">{gettext("Organization")}</h5>
       <a href="https://cesium.pt">
         <img src="/images/cesium-logo.svg" width="120" height="41" alt="CeSIUM" class="select-none" />
       </a>

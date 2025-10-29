@@ -35,13 +35,13 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.SpeakerLive.Index do
                   handle={speaker.name}
                 />
                 <div class="self-center">
-                  <p class="text-base font-semibold"><%= speaker.name %></p>
-                  <p class="font-normal truncate max-w-[12rem]"><%= speaker.title %></p>
+                  <p class="text-base font-semibold">{speaker.name}</p>
+                  <p class="font-normal truncate max-w-[12rem]">{speaker.title}</p>
                 </div>
               </div>
             </:col>
             <:col :let={{_id, speaker}} sortable field={:company} label="Company">
-              <%= speaker.company %>
+              {speaker.company}
             </:col>
             <:col :let={{_id, speaker}} field={:highlighted} label="Highlighted">
               <span class="w-full flex justify-center">

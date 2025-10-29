@@ -14,13 +14,13 @@ defmodule SafiraWeb.Backoffice.ScannerLive.InventoryLive.Show do
           <.link patch={~p"/dashboard/scanner"} class="w-full">
             <.tab class="gap-2">
               <.icon name="hero-check-badge" />
-              <%= gettext("Badges") %>
+              {gettext("Badges")}
             </.tab>
           </.link>
           <.link patch={~p"/dashboard/scanner/redeems"} class="w-full">
             <.tab active class="gap-2">
               <.icon name="hero-gift" />
-              <%= gettext("Redeems") %>
+              {gettext("Redeems")}
             </.tab>
           </.link>
         </.tabs>
@@ -39,14 +39,14 @@ defmodule SafiraWeb.Backoffice.ScannerLive.InventoryLive.Show do
                 </figure>
                 <div class="py-4 px-4 w-auto">
                   <h1 class="font-semibold text-lg">
-                    <%= get_item_data(item).name %>
+                    {get_item_data(item).name}
                   </h1>
                   <p :if={!item.redeemed_at}>
-                    <%= relative_datetime(item.inserted_at) %>
+                    {relative_datetime(item.inserted_at)}
                   </p>
                   <p :if={item.redeemed_at} class="flex flex-row justify-center items-center">
                     <.icon name="hero-check" class="w-5 h-5 mr-1" />
-                    <%= gettext("This item has been delivered.") %>
+                    {gettext("This item has been delivered.")}
                   </p>
                 </div>
               </div>
@@ -71,13 +71,13 @@ defmodule SafiraWeb.Backoffice.ScannerLive.InventoryLive.Show do
         on_cancel={JS.push("cancel-deliver")}
       >
         <h1 class="font-semibold text-xl">
-          <%= gettext("Deliver %{item_name}", item_name: get_item_data(@selected_item).name) %>
+          {gettext("Deliver %{item_name}", item_name: get_item_data(@selected_item).name)}
         </h1>
         <div class="flex flex-col gap-4 items-center mt-2">
           <p>
-            <%= gettext(
+            {gettext(
               "Are you sure you want to mark this item as delivered? This action is not reversible."
-            ) %>
+            )}
           </p>
 
           <div class="flex flex-row w-full gap-2">
@@ -86,14 +86,14 @@ defmodule SafiraWeb.Backoffice.ScannerLive.InventoryLive.Show do
               class="w-full flex flex-row items-center justify-center"
             >
               <.icon name="hero-x-circle" class="w-5 h-5 mr-2" />
-              <%= gettext("Cancel") %>
+              {gettext("Cancel")}
             </.button>
             <.button
               phx-click="confirm-deliver"
               class="w-full flex flex-row items-center justify-center"
             >
               <.icon name="hero-check-circle" class="w-5 h-5 mr-2" />
-              <%= gettext("Deliver") %>
+              {gettext("Deliver")}
             </.button>
           </div>
         </div>

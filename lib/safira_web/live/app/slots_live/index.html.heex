@@ -1,7 +1,7 @@
 <.page title={gettext("Slots")} size={:xl} title_class="font-terminal uppercase">
   <:actions>
     <span class="text-semibold text-xl border-2 px-4 py-2 rounded-full font-terminal">
-      💰 <%= @attendee_tokens %>
+      💰 {@attendee_tokens}
     </span>
   </:actions>
   <.machine />
@@ -58,7 +58,7 @@
   >
     <.icon name="hero-arrow-top-right-on-square" class="text-accent mr-2" />
     <span class="text-accent font-terminal font-bold uppercase">
-      <%= gettext("View paytable") %>
+      {gettext("View paytable")}
     </span>
   </.link>
 </.page>

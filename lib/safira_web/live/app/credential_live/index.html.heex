@@ -1,13 +1,13 @@
 <.page title="Credential" size={:xl} title_class="font-terminal uppercase">
   <p>
-    <%= gettext(
+    {gettext(
       "The code below is used to identify you in case you are missing your physical credential."
-    ) %>
+    )}
   </p>
   <div class="mt-24 mx-auto w-fit scale-125 sm:scale-150 p-1 bg-white rounded-xl select-none">
-    <%= draw_qr_code(@credential) |> raw %>
+    {draw_qr_code(@credential) |> raw}
     <p class="text-center text-xs text-primary font-semibold pb-1">
-      <%= @current_user.name %>
+      {@current_user.name}
     </p>
   </div>
 </.page>

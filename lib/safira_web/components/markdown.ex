@@ -18,7 +18,7 @@ defmodule SafiraWeb.Components.Markdown do
 
     ~H"""
     <section class={@class}>
-      <%= @html %>
+      {@html}
     </section>
     """
   end

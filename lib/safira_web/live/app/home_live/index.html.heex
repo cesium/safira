@@ -17,19 +17,19 @@
             }
           />
           <div class="flex flex-col gap-y-2">
-            <p class="text-sm font-normal">@<%= @current_user.handle %></p>
+            <p class="text-sm font-normal">@{@current_user.handle}</p>
           </div>
         </div>
         <div class="flex flex-col flex-shrink-0 flex-wrap my-auto">
           <div class="grid gap-4 sm:justify-center sm:gap-3">
             <p>
-              💰 <%= gettext("%{attendee_tokens} tokens", attendee_tokens: @attendee_tokens) %>
+              💰 {gettext("%{attendee_tokens} tokens", attendee_tokens: @attendee_tokens)}
             </p>
             <p>
-              🏅 <%= gettext("%{badge_count} Badges", badge_count: @attendee_badge_count) %>
+              🏅 {gettext("%{badge_count} Badges", badge_count: @attendee_badge_count)}
             </p>
             <p>
-              🎫 <%= gettext("%{attendee_entries} entries", attendee_entries: @attendee_entries) %>
+              🎫 {gettext("%{attendee_entries} entries", attendee_entries: @attendee_entries)}
             </p>
           </div>
         </div>
@@ -65,7 +65,7 @@
             <%= if index < @user_level do %>
               <.icon name="hero-check" class="size-4 sm:size-5 stroke-2" />
             <% else %>
-              <%= index + 1 %>
+              {index + 1}
             <% end %>
           </span>
           <!-- Level Description -->
@@ -75,12 +75,12 @@
               index <= @user_level && "text-accent",
               index > @user_level && "text-white"
             ]}>
-              <%= gettext("Level %{level}", level: index + 1) %>
+              {gettext("Level %{level}", level: index + 1)}
             </h4>
             <span class="text-xs sm:text-sm">
-              <%= badge.name %> -> <%= gettext("+%{badge_entries} entries",
+              {badge.name} -> {gettext("+%{badge_entries} entries",
                 badge_entries: badge.entries
-              ) %>
+              )}
             </span>
           </div>
         </li>
@@ -107,7 +107,7 @@
             navigate={~p"/app/badges"}
             class="text-accent font-semibold font-terminal uppercase"
           >
-            <%= gettext("+ View all") %>
+            {gettext("+ View all")}
           </.link>
         </div>
       </div>
@@ -115,7 +115,7 @@
         :if={@attendee_badge_count == 0}
         class="justify-center font-semibold font-terminal uppercase"
       >
-        <%= gettext("No badges redeemed yet!") %>
+        {gettext("No badges redeemed yet!")}
       </p>
     </div>
     <div class="gap-y-8">

@@ -225,8 +225,8 @@ defmodule SafiraWeb.Components.Sidebar do
 
     ~H"""
     <.app_user_dropdown id={@id} border={@border} icon_color={@icon_color} user={@user}>
-      <:title color={@title_color}><%= @user.name %></:title>
-      <:subtitle color={@subtitle_color}>@<%= @user.handle %></:subtitle>
+      <:title color={@title_color}>{@user.name}</:title>
+      <:subtitle color={@subtitle_color}>@{@user.handle}</:subtitle>
       <:link navigate={"/app/user/#{@user.handle}"}>Profile</:link>
       <:link navigate={"/#{@base_path}/profile_settings"}>Settings</:link>
       <:link href="/users/log_out" method={:delete}>Sign out</:link>
@@ -276,10 +276,10 @@ defmodule SafiraWeb.Components.Sidebar do
               />
               <span class="flex flex-col flex-1 min-w-0">
                 <span class={"#{@title |> Enum.at(0) |> Map.get(:color)}  text-sm font-medium truncate"}>
-                  <%= render_slot(@title) %>
+                  {render_slot(@title)}
                 </span>
                 <span class={"#{@subtitle |> Enum.at(0) |> Map.get(:color)} text-sm truncate"}>
-                  <%= render_slot(@subtitle) %>
+                  {render_slot(@subtitle)}
                 </span>
               </span>
             </span>
@@ -302,7 +302,7 @@ defmodule SafiraWeb.Components.Sidebar do
               class="block px-4 py-3 font-medium transition-colors bg-light text-primary hover:bg-lightShade"
               {link}
             >
-              <%= render_slot(link) %>
+              {render_slot(link)}
             </.link>
           <% end %>
         </div>
@@ -342,7 +342,7 @@ defmodule SafiraWeb.Components.Sidebar do
               style={"mask: url(#{page.image}) no-repeat center / contain; -webkit-mask: url(#{page.image}) no-repeat center / contain;"}
             />
           <% end %>
-          <%= page.title %>
+          {page.title}
         </.link>
       <% end %>
     </div>
@@ -363,8 +363,8 @@ defmodule SafiraWeb.Components.Sidebar do
 
     ~H"""
     <.user_dropdown id={@id} border={@border} icon_color={@icon_color} user={@user}>
-      <:title color={@title_color}><%= @user.name %></:title>
-      <:subtitle color={@subtitle_color}>@<%= @user.handle %></:subtitle>
+      <:title color={@title_color}>{@user.name}</:title>
+      <:subtitle color={@subtitle_color}>@{@user.handle}</:subtitle>
       <:link navigate={"/#{@base_path}/profile_settings"}>Profile Settings</:link>
       <:link href="/users/log_out" method={:delete}>Sign out</:link>
     </.user_dropdown>
@@ -417,10 +417,10 @@ defmodule SafiraWeb.Components.Sidebar do
               />
               <span class="flex flex-col flex-1 min-w-0">
                 <span class={"#{@title |> Enum.at(0) |> Map.get(:color)}  text-sm font-medium truncate"}>
-                  <%= render_slot(@title) %>
+                  {render_slot(@title)}
                 </span>
                 <span class={"#{@subtitle |> Enum.at(0) |> Map.get(:color)} text-sm truncate"}>
-                  <%= render_slot(@subtitle) %>
+                  {render_slot(@subtitle)}
                 </span>
               </span>
             </span>
@@ -443,7 +443,7 @@ defmodule SafiraWeb.Components.Sidebar do
               class="block px-4 py-2 text-sm bg-light dark:bg-dark text-dark dark:text-light hover:bg-lightShade/40 dark:hover:bg-darkShade"
               {link}
             >
-              <%= render_slot(link) %>
+              {render_slot(link)}
             </.link>
           <% end %>
         </div>

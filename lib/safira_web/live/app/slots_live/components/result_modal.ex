@@ -46,10 +46,10 @@ defmodule SafiraWeb.App.SlotsLive.Components.ResultModal do
                 id={"#{@id}-content"}
                 class="font-terminal uppercase text-3xl md:text-4xl text-center"
               >
-                <%= get_spin_result_title(@multiplier) %>
+                {get_spin_result_title(@multiplier)}
               </div>
               <div class="text-center mt-4">
-                <%= get_spin_result_text(@multiplier, @winnings) %>
+                {get_spin_result_text(@multiplier, @winnings)}
               </div>
             </.focus_wrap>
           </div>

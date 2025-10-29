@@ -17,7 +17,7 @@ defmodule SafiraWeb.Backoffice.LeaderboardLive.Components.DaySelector do
       <button disabled={not @left_enabled} class={enabled_class(@left_enabled)} phx-click={@on_left}>
         <.icon name="hero-chevron-left" class="w-8 h-8" />
       </button>
-      <h2 class="mx-8 text-4xl text-dark dark:text-light font-semibold uppercase"><%= @day %></h2>
+      <h2 class="mx-8 text-4xl text-dark dark:text-light font-semibold uppercase">{@day}</h2>
       <button
         disabled={not @right_enabled}
         class={enabled_class(@right_enabled)}

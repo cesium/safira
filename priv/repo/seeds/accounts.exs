@@ -1,10 +1,10 @@
 defmodule Safira.Repo.Seeds.Accounts do
   alias Safira.Accounts
-  alias Safira.Repo
-  alias Safira.Roles
   alias Safira.Accounts.{Attendee, User}
   alias Safira.Contest.DailyTokens
   alias Safira.Event
+  alias Safira.Repo
+  alias Safira.Roles
 
   @names File.read!("priv/fake/names.txt") |> String.split("\n")
 

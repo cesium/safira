@@ -59,7 +59,7 @@ defmodule SafiraWeb.App.SlotsLive.Components.PaytableModal do
               class="bg-primary shadow-zinc-700/10 relative hidden ring-4 ring-white rounded-2xl py-8 px-5 max-h-[500px] overflow-y-scroll scrollbar-hide shadow-lg transition"
             >
               <h2 class="text-3xl font-terminal font-bold text-center mb-6">
-                <%= gettext("PAYTABLE") %>
+                {gettext("PAYTABLE")}
               </h2>
 
               <div class="space-y-6" id="paytable-content" phx-hook="PaytableModal">
@@ -67,14 +67,14 @@ defmodule SafiraWeb.App.SlotsLive.Components.PaytableModal do
                   <div class="flex justify-between border-b border-white/20 pb-4 last:border-0">
                     <div class="flex flex-col gap-1">
                       <h3 class="text-xl font-terminal font-semibold uppercase">
-                        <%= if paytable.multiplier == 1,
+                        {if paytable.multiplier == 1,
                           do: "Refund",
-                          else: "#{paytable.multiplier}x Multiplier" %>
+                          else: "#{paytable.multiplier}x Multiplier"}
                       </h3>
                       <p class="mb-3 text-sm text-slate-300">
-                        <%= gettext("Probability: %{probability}%",
+                        {gettext("Probability: %{probability}%",
                           probability: Float.round(paytable.probability * 100, 4)
-                        ) %>
+                        )}
                       </p>
                     </div>
 

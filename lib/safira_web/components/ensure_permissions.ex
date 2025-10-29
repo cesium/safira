@@ -12,7 +12,7 @@ defmodule SafiraWeb.Components.EnsurePermissions do
   def ensure_permissions(assigns) do
     ~H"""
     <%= if verify_permissions(@user, @permissions) do %>
-      <%= render_slot(@inner_block) %>
+      {render_slot(@inner_block)}
     <% end %>
     """
   end

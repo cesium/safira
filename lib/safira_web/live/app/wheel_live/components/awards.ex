@@ -17,11 +17,11 @@ defmodule SafiraWeb.App.WheelLive.Components.Awards do
       </tr>
       <%= for entry <- @entries do %>
         <tr class="text-sm sm:text-md">
-          <td class="pr-2 py-2 font-bold text-left"><%= entry_name(entry) %></td>
-          <td class="px-4 sm:block hidden py-2 font-bold text-center"><%= entry_stock(entry) %></td>
-          <td class="px-4 py-2 text-center"><%= entry.max_per_attendee %></td>
+          <td class="pr-2 py-2 font-bold text-left">{entry_name(entry)}</td>
+          <td class="px-4 sm:block hidden py-2 font-bold text-center">{entry_stock(entry)}</td>
+          <td class="px-4 py-2 text-center">{entry.max_per_attendee}</td>
           <td class="pl-2 py-2 text-accent font-bold text-right">
-            <%= Float.round(entry.probability * 100, 4) %>
+            {Float.round(entry.probability * 100, 4)}
           </td>
         </tr>
       <% end %>

@@ -25,7 +25,7 @@ defmodule SafiraWeb.Backoffice.BadgeLive.TriggerLive.Index do
             class="even:bg-lightShade/20 dark:even:bg-darkShade/20 py-4 px-4 flex flex-row justify-between items-center"
           >
             <p class="text-dark dark:text-light flex flex-row justify-between">
-              <%= trigger_description(trigger) %>
+              {trigger_description(trigger)}
             </p>
             <div class="flex flex-row gap-2">
               <.link navigate={~p"/dashboard/badges/#{@badge.id}/triggers/#{trigger.id}/edit"}>
@@ -42,7 +42,7 @@ defmodule SafiraWeb.Backoffice.BadgeLive.TriggerLive.Index do
           </li>
           <div class="only:flex hidden h-full items-center justify-center">
             <p class="text-center text-lightMuted dark:text-darkMuted mt-8">
-              <%= gettext("No triggers set for this badge.") %>
+              {gettext("No triggers set for this badge.")}
             </p>
           </div>
         </ul>

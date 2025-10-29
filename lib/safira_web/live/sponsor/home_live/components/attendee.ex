@@ -20,7 +20,7 @@ defmodule SafiraWeb.Sponsor.HomeLive.Components.Attendee do
           <.avatar size={:lg} handle={@handle} src={@image} />
         </div>
         <p class="text-center text-sm mt-2">
-          <%= @name %>
+          {@name}
         </p>
       </div>
       <.link
@@ -29,7 +29,7 @@ defmodule SafiraWeb.Sponsor.HomeLive.Components.Attendee do
         target="_blank"
         class="hover:text-accent underline text-sm"
       >
-        <%= gettext("CV") %>
+        {gettext("CV")}
       </.link>
     </li>
     """

@@ -68,12 +68,10 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.ActivityLive.FormComponent do
               <div class="w-full grid grid-cols-2">
                 <div class="w-full flex flex-col">
                   <.label>
-                    <%= gettext("Enrolments") %>
+                    {gettext("Enrolments")}
                   </.label>
                   <p class="safira-form-help-text">
-                    <%= gettext(
-                      "Enable enrolments to allow participants to sign up for this activity."
-                    ) %>
+                    {gettext("Enable enrolments to allow participants to sign up for this activity.")}
                   </p>
                   <.field
                     field={@form[:has_enrolments]}

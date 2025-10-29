@@ -21,7 +21,7 @@ defmodule SafiraWeb.App.WaitingLive.Index do
       <!-- Timer to the event  -->
       <div class="z-20 mt-8">
         <h1 class="font-terminal text-center text-2xl sm:text-4xl uppercase">
-          <%= gettext("Waiting for the event to start!") %>
+          {gettext("Waiting for the event to start!")}
         </h1>
         <div
           id="seconds-remaining"

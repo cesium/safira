@@ -10,16 +10,16 @@ defmodule SafiraWeb.App.WheelLive.Components.LatestWins do
     ~H"""
     <table class="w-full">
       <tr class="border-b-2 text-md sm:text-lg">
-        <th class="pr-2 text-left"><%= gettext("Attendee") %></th>
-        <th class="px-4 text-center"><%= gettext("Prize") %></th>
-        <th class="pl-2 text-right"><%= gettext("When") %></th>
+        <th class="pr-2 text-left">{gettext("Attendee")}</th>
+        <th class="px-4 text-center">{gettext("Prize")}</th>
+        <th class="pl-2 text-right">{gettext("When")}</th>
       </tr>
       <%= for entry <- @entries do %>
         <tr class="text-sm sm:text-md">
-          <td class="pr-2 py-2 font-bold text-left"><%= entry.attendee.user.name %></td>
-          <td class="px-4 py-2 text-center"><%= entry_name(entry) %></td>
+          <td class="pr-2 py-2 font-bold text-left">{entry.attendee.user.name}</td>
+          <td class="px-4 py-2 text-center">{entry_name(entry)}</td>
           <td class="pl-2 py-2 text-accent font-bold text-right">
-            <%= Timex.from_now(entry.inserted_at) %>
+            {Timex.from_now(entry.inserted_at)}
           </td>
         </tr>
       <% end %>

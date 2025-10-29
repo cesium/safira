@@ -13,25 +13,25 @@
   <div class="py-4">
     <.table id="items-table" items={@streams.items} meta={@meta} params={@params}>
       <:col :let={{_id, item}} label="Attendee" field={:attendee_name}>
-        <%= item.attendee.user.name %>
+        {item.attendee.user.name}
       </:col>
       <:col :let={{_id, item}} label="Product" field={:name}>
-        <%= item.product.name %>
+        {item.product.name}
       </:col>
       <:col :let={{_id, item}} sortable label="Purchased at" field={:inserted_at}>
-        <%= relative_datetime(item.inserted_at) %>
+        {relative_datetime(item.inserted_at)}
       </:col>
       <:col :let={{_id, item}} sortable label="Redeemed at" field={:redeemed_at}>
-        <%= relative_datetime(item.redeemed_at) %>
+        {relative_datetime(item.redeemed_at)}
       </:col>
       <:col :let={{_id, item}} label="Status">
         <%= if item.redeemed_at do %>
           <p class="text-green-500 border-2 select-none border-green-500 bg-green-500/10 rounded-2xl font-medium text-center px-1 py-1">
-            <%= gettext("Delivered") %>
+            {gettext("Delivered")}
           </p>
         <% else %>
           <p class="text-gray-500 border-2 select-none border-gray-500 bg-gray-500/10 rounded-2xl font-medium text-center px-1 py-1">
-            <%= gettext("Waiting") %>
+            {gettext("Waiting")}
           </p>
         <% end %>
       </:col>

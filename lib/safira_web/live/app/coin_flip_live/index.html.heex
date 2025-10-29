@@ -1,7 +1,7 @@
 <.page title={gettext("Coin Flip")} size={:xl} title_class="font-terminal uppercase">
   <:actions>
     <span class="text-semibold text-xl border-2 px-4 py-2 rounded-full font-terminal">
-      💰 <%= @attendee_tokens %>
+      💰 {@attendee_tokens}
     </span>
   </:actions>
   <div class="flex flex-col sm:flex-row justify-between mt-12 w-full gap-6 sm:gap-10 items-center">
@@ -53,10 +53,10 @@
     />
   </div>
   <h2 class="text-3xl font-semibold font-terminal mt-10 pl-2">
-    <%= gettext("CURRENT GAMES:") %>
+    {gettext("CURRENT GAMES:")}
   </h2>
   <p :if={@room_list_count == 0} class="text-2xl  w-full text-center my-16 sm:my-24">
-    <%= gettext("No games in progress.") %>
+    {gettext("No games in progress.")}
   </p>
   <div
     id="room-list-current"
@@ -73,10 +73,10 @@
     />
   </div>
   <h2 class="text-3xl font-semibold font-terminal mt-6 pl-2">
-    <%= gettext("PREVIOUS GAMES:") %>
+    {gettext("PREVIOUS GAMES:")}
   </h2>
   <p :if={@previous_room_list_count == 0} class="text-2xl w-full text-center my-16 sm:my-24">
-    <%= gettext("No previous games yet.") %>
+    {gettext("No previous games yet.")}
   </p>
   <div
     id="room-list-previous"

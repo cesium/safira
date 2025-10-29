@@ -9,11 +9,11 @@ defmodule SafiraWeb.Backoffice.PurchaseLive.FormComponent do
     ~H"""
     <div class="flex flex-col gap-4 w-full">
       <h1 class="font-semibold text-xl">
-        <%= confirmation_title(@action, @item.product.name) %>
+        {confirmation_title(@action, @item.product.name)}
       </h1>
       <div class="flex gap-6 flex-col">
         <p>
-          <%= confimation_message(@action) %>
+          {confimation_message(@action)}
         </p>
 
         <div class="flex flex-row w-full gap-2">
@@ -23,7 +23,7 @@ defmodule SafiraWeb.Backoffice.PurchaseLive.FormComponent do
             class="w-full flex flex-row items-center justify-center"
           >
             <.icon name="hero-x-circle" class="w-5 h-5 mr-2" />
-            <%= gettext("Cancel") %>
+            {gettext("Cancel")}
           </.button>
           <.button
             phx-click="confirm-action"
@@ -31,7 +31,7 @@ defmodule SafiraWeb.Backoffice.PurchaseLive.FormComponent do
             class="w-full flex flex-row items-center justify-center"
           >
             <.icon name="hero-check-circle" class="w-5 h-5 mr-2" />
-            <%= confirmation_button(@action) %>
+            {confirmation_button(@action)}
           </.button>
         </div>
       </div>

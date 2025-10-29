@@ -28,7 +28,7 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.CategoryLive.Index do
             class="even:bg-lightShade/20 dark:even:bg-darkShade/20 py-4 px-4 flex flex-row justify-between"
           >
             <div class="flex flex-row gap-2 items-center">
-              <%= category.name %>
+              {category.name}
             </div>
             <p class="text-dark dark:text-light flex flex-row justify-between gap-2">
               <.ensure_permissions user={@current_user} permissions={%{"companies" => ["edit"]}}>
@@ -50,7 +50,7 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.CategoryLive.Index do
           </li>
           <div class="only:flex hidden h-full items-center justify-center">
             <p class="text-center text-lightMuted dark:text-darkMuted mt-8">
-              <%= gettext("No activity categories found") %>
+              {gettext("No activity categories found")}
             </p>
           </div>
         </ul>

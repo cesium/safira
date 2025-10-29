@@ -34,7 +34,7 @@ defmodule SafiraWeb.Landing.Components.Navbar do
                         navigate={page.url}
                         class="text-sm text-white transition-colors duration-75 ease-in hover:text-accent"
                       >
-                        <%= page.title %>
+                        {page.title}
                       </.link>
                     <% end %>
                     <.link
@@ -122,7 +122,7 @@ defmodule SafiraWeb.Landing.Components.Navbar do
               phx-click={hide_mobile_navbar()}
               class="font-terminal uppercase text-3xl text-white transition-colors duration-75 ease-in hover:text-accent"
             >
-              <%= page.title %>
+              {page.title}
             </.link>
           <% end %>
           <.link

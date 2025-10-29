@@ -15,7 +15,7 @@ defmodule SafiraWeb.PrizeLive.Daily.FormComponent do
       <.page title={gettext("Daily Prizes")} subtitle={gettext("Configures the daily prizes.")}>
         <div class="pt-8">
           <div class="flex flex-row justify-between items-center">
-            <h2 class="font-semibold"><%= gettext("Daily Prizes") %></h2>
+            <h2 class="font-semibold">{gettext("Daily Prizes")}</h2>
             <.button phx-click={JS.push("add-prize", target: @myself)}>
               <.icon name="hero-plus" class="w-5 h-5" />
             </.button>

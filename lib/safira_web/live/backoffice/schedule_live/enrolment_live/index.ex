@@ -49,7 +49,7 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.EnrolmentLive.Index do
                   handle={attendee.name}
                 />
                 <div class="self-center">
-                  <p class="text-base font-semibold"><%= attendee.name %></p>
+                  <p class="text-base font-semibold">{attendee.name}</p>
                 </div>
               </div>
             </:col>

@@ -14,28 +14,28 @@ defmodule SafiraWeb.Components.Page do
   attr :back_to_link, :string, default: nil
   attr :back_to_link_text, :string, default: "Back"
 
-  slot :actions, optional: true, doc: "Slot for actions to be rendered in the page header."
+  slot :actions, required: false, doc: "Slot for actions to be rendered in the page header."
   slot :inner_block, required: true, doc: "Slot for the body content of the page."
 
   def page(assigns) do
     ~H"""
     <div>
       <.header title_class={"#{size_class(@size)} #{@title_class}"}>
-        <%= @title %>
+        {@title}
         <:subtitle>
-          <%= @subtitle %>
+          {@subtitle}
         </:subtitle>
         <%= if @back_to_link do %>
           <.link patch={@back_to_link}>
             <.icon name="hero-arrow-left" />
-            <%= @back_to_link_text %>
+            {@back_to_link_text}
           </.link>
         <% end %>
         <:actions>
-          <%= render_slot(@actions) %>
+          {render_slot(@actions)}
         </:actions>
       </.header>
-      <%= render_slot(@inner_block) %>
+      {render_slot(@inner_block)}
     </div>
     """
   end

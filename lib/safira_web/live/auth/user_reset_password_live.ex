@@ -9,9 +9,9 @@ defmodule SafiraWeb.UserResetPasswordLive do
     ~H"""
     <div class="mx-auto max-w-sm my-32 px-4">
       <.header class="text-center">
-        <%= gettext("Reset Password") %>
+        {gettext("Reset Password")}
         <:subtitle>
-          <%= gettext("Select a new password here.") %>
+          {gettext("Select a new password here.")}
         </:subtitle>
       </.header>
       <.simple_form
