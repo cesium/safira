@@ -5,9 +5,10 @@ defmodule Safira.MixProject do
     [
       app: :safira,
       version: "0.1.0",
-      elixir: "~> 1.14",
+      elixir: "~> 1.19.1",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
+      listeners: [Phoenix.CodeReloader],
       aliases: aliases(),
       deps: deps()
     ]
@@ -41,7 +42,7 @@ defmodule Safira.MixProject do
       {:ecto_sql, "~> 3.10"},
       {:phoenix_ecto, "~> 4.6.5"},
       {:postgrex, ">= 0.0.0"},
-      {:flop, "~> 0.25.0"},
+      {:flop, "~> 0.26.3"},
 
       # security
       {:bcrypt_elixir, "~> 3.3.2"},
@@ -49,7 +50,7 @@ defmodule Safira.MixProject do
       # uploads
       {:waffle_ecto, "~> 0.0.12"},
       {:waffle, "~> 1.1.9"},
-      {:ex_aws, "~> 2.1.2"},
+      {:ex_aws, "~> 2.6.0"},
       {:ex_aws_s3, "~> 2.5.8"},
       {:hackney, "~> 1.25.0"},
       {:httpoison, "~> 2.2.3"},
@@ -57,9 +58,9 @@ defmodule Safira.MixProject do
       {:zstream, "~> 0.6.7"},
 
       # mailer
-      {:swoosh, "~> 1.17.6"},
+      {:swoosh, "~> 1.19.8"},
       {:phoenix_swoosh, "~> 1.2.1"},
-      {:gen_smtp, "~>1.2.0"},
+      {:gen_smtp, "~>1.3.0"},
       {:phoenix_html, "~> 4.3.0"},
       {:finch, "~> 0.20.0"},
 
@@ -97,11 +98,11 @@ defmodule Safira.MixProject do
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
       {:timex, "~> 3.7.11"},
-      {:nimble_csv, "~>1.1.0"},
+      {:nimble_csv, "~>1.3.0"},
 
       # server
       {:bandit, "~> 1.8.0"},
-      {:dns_cluster, "~> 0.1.3"},
+      {:dns_cluster, "~> 0.2.0"},
 
       # jobs
       {:oban, "~> 2.20.1"},
