@@ -146,8 +146,8 @@ defmodule SafiraWeb.Backoffice.CompanyLive.FormComponent do
              |> push_patch(to: socket.assigns.patch)}
         end
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, form: to_form(changeset))}
+      {:error, _, _, _} ->
+        {:noreply, :error}
     end
   end
 

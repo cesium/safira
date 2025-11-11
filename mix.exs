@@ -40,7 +40,7 @@ defmodule Safira.MixProject do
 
       # database
       {:ecto_sql, "~> 3.10"},
-      {:phoenix_ecto, "~> 4.6.5"},
+      {:phoenix_ecto, "~> 4.7.0"},
       {:postgrex, ">= 0.0.0"},
       {:flop, "~> 0.26.3"},
 
