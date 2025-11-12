@@ -22,7 +22,7 @@
           </:placeholder>
         </.image_uploader>
       </div>
-      <div class="flex flex-col w-full mt-[0px]">
+      <div class="flex flex-col w-full">
         <div class="flex flex-col md:flex-row md:gap-x-8">
           <div>
             <.field
@@ -30,8 +30,8 @@
               type="text"
               label="Name"
               required
-              class={if @in_app?, do: "bg-blue-900/10 text-white border-white", else: ""}
-              label_class={if @in_app?, do: "text-white", else: ""}
+              class={if @in_app?, do: "bg-blue-900/10! text-white! border-white!", else: ""}
+              label_class={if @in_app?, do: "text-white!", else: ""}
             />
 
             <.field
@@ -39,8 +39,8 @@
               type="text"
               label="Username"
               required
-              class={if @in_app?, do: "bg-blue-900/10 text-white border-white", else: ""}
-              label_class={if @in_app?, do: "text-white", else: ""}
+              class={if @in_app?, do: "bg-blue-900/10! text-white! border-white!", else: ""}
+              label_class={if @in_app?, do: "text-white!", else: ""}
             />
 
             <.field
@@ -48,8 +48,8 @@
               type="text"
               label="Email"
               required
-              class={if @in_app?, do: "bg-blue-900/10 text-white border-white", else: ""}
-              label_class={if @in_app?, do: "text-white", else: ""}
+              class={if @in_app?, do: "bg-blue-900/10! text-white! border-white!", else: ""}
+              label_class={if @in_app?, do: "text-white!", else: ""}
             />
           </div>
 
@@ -58,16 +58,16 @@
               field={@profile_form[:password]}
               type="password"
               label="New password"
-              class={if @in_app?, do: "bg-blue-900/10 text-white border-white", else: ""}
-              label_class={if @in_app?, do: "text-white", else: ""}
+              class={if @in_app?, do: "bg-blue-900/10! text-white! border-white!", else: ""}
+              label_class={if @in_app?, do: "text-white!", else: ""}
             />
 
             <.field
               field={@profile_form[:password_confirmation]}
               type="password"
               label="Repeat New Password"
-              class={if @in_app?, do: "bg-blue-900/10 text-white border-white", else: ""}
-              label_class={if @in_app?, do: "text-white", else: ""}
+              class={if @in_app?, do: "bg-blue-900/10! text-white! border-white!", else: ""}
+              label_class={if @in_app?, do: "text-white!", else: ""}
             />
 
             <.field
@@ -76,8 +76,8 @@
               type="password"
               label="Current Password"
               required={@profile_form[:password].value not in [nil, ""]}
-              class={if @in_app?, do: "bg-blue-900/10 text-white border-white", else: ""}
-              label_class={if @in_app?, do: "text-white", else: ""}
+              class={if @in_app?, do: "bg-blue-900/10! text-white! border-white!", else: ""}
+              label_class={if @in_app?, do: "text-white!", else: ""}
             />
           </div>
         </div>
@@ -108,14 +108,14 @@
         type="text"
         label="Email"
         required
-        label_class={if @in_app?, do: "text-white", else: ""}
+        label_class={if @in_app?, do: "text-white!", else: ""}
       />
 
       <.field
         field={@new_user_session_form[:password]}
         type="password"
         label="New password"
-        label_class={if @in_app?, do: "text-white", else: ""}
+        label_class={if @in_app?, do: "text-white!", else: ""}
       />
     </.simple_form>
   </div>

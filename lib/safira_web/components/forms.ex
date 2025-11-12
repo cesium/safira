@@ -343,7 +343,7 @@ defmodule SafiraWeb.Components.Forms do
 
   # All other inputs: text, datetime-local, url, password, etc.
   def field(assigns) do
-    assigns = assign(assigns, class: [assigns.class, get_class_for_type(assigns.type)])
+    assigns = assign(assigns, class: [get_class_for_type(assigns.type), assigns.class])
 
     ~H"""
     <.field_wrapper errors={@errors} name={@name} class={@wrapper_class}>
@@ -379,8 +379,8 @@ defmodule SafiraWeb.Components.Forms do
       phx-feedback-for={@name}
       {@rest}
       class={[
-        @class,
         "safira-form-field-wrapper",
+        @class,
         @errors != [] && "safira-form-field-wrapper--error"
       ]}
     >
