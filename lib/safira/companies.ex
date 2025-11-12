@@ -7,8 +7,8 @@ defmodule Safira.Companies do
 
   alias Safira.Accounts
   alias Safira.Accounts.User
-  alias Safira.Contest
   alias Safira.Companies.{Company, Tier}
+  alias Safira.Contest
   alias Safira.Spotlights.Spotlight
   alias Safira.Uploaders
 

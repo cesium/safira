@@ -28,8 +28,8 @@ defmodule SafiraWeb.Components.Button do
       <%= if @icon != "" do %>
         <.icon name={@icon} />
       <% end %>
-      <p class={"uppercase font-terminal text-2xl #{@title_class}"}><%= @title %></p>
-      <p class="font-terminal"><%= @subtitle %></p>
+      <p class={"uppercase font-terminal text-2xl #{@title_class}"}>{@title}</p>
+      <p class="font-terminal">{@subtitle}</p>
     </button>
     """
   end

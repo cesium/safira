@@ -8,14 +8,14 @@
       />
       <div class="flex flex-col gap-2">
         <div>
-          <h1 class="text-xl font-semibold"><%= @user.name %></h1>
-          <p class="">@<%= @user.handle %></p>
+          <h1 class="text-xl font-semibold">{@user.name}</h1>
+          <p class="">@{@user.handle}</p>
         </div>
         <div class="grid gap-0.5">
-          <p>🏅 <%= gettext("%{badge_count} Badges", badge_count: @attendee_badge_count) %></p>
-          <p>💰 <%= gettext("%{attendee_tokens} tokens", attendee_tokens: @attendee_tokens) %></p>
+          <p>🏅 {gettext("%{badge_count} Badges", badge_count: @attendee_badge_count)}</p>
+          <p>💰 {gettext("%{attendee_tokens} tokens", attendee_tokens: @attendee_tokens)}</p>
           <p>
-            🎫 <%= gettext("%{attendee_entries} entries", attendee_entries: @attendee_entries) %>
+            🎫 {gettext("%{attendee_entries} entries", attendee_entries: @attendee_entries)}
           </p>
         </div>
       </div>
@@ -23,7 +23,7 @@
     <div class="flex flex-col gap-4 w-full sm:w-fit">
       <div class="flex flex-row justify-between items-center mt-4 pb-2 h-12 border-b-2 border-white">
         <h1 class="font-semibold font-terminal uppercase px-2">
-          <%= gettext("Last 5 badges redeemed") %>
+          {gettext("Last 5 badges redeemed")}
         </h1>
       </div>
       <div id="badges" phx-update="stream" class="flex flex-col sm:flex-row gap-6">
@@ -34,7 +34,7 @@
         >
           <.badge id={"#{id}-#{badge.id}"} badge={badge} width="max-w-44" show_tokens />
           <p class="text-sm font-terminal uppercase mx-auto">
-            <%= relative_datetime(badge.redeemed_at) %>
+            {relative_datetime(badge.redeemed_at)}
           </p>
         </div>
       </div>

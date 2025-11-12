@@ -91,12 +91,12 @@ defmodule SafiraWeb.App.CoinFlipLive.Components.Room do
           />
         </div>
         <span class="text-center flex flex-col truncate pb-3 text-xs">
-          <%= @player.user.handle %>
+          {@player.user.handle}
         </span>
         <span class="text-nowrap bg-primary/60 py-1 px-2 rounded-md align-middle">
           <.icon name="hero-currency-dollar-solid" class="text-yellow-300" />
           <span id={"#{@stream_id}-#{@player_id}-bet"} class="font-terminal" data-bet={@room.bet}>
-            <%= @room.bet %>
+            {@room.bet}
           </span>
         </span>
         <div class="absolute coin size-10 top-1 right-2">

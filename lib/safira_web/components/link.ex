@@ -22,7 +22,7 @@ defmodule SafiraWeb.Components.Link do
 
     ~H"""
     <button class={@class} disabled={@disabled} {@rest}>
-      <%= if @label, do: @label, else: render_slot(@inner_block) %>
+      {if @label, do: @label, else: render_slot(@inner_block)}
     </button>
     """
   end
@@ -36,7 +36,7 @@ defmodule SafiraWeb.Components.Link do
   def a(%{link_type: "a"} = assigns) do
     ~H"""
     <.link href={@to} class={@class} method={@method} {@rest}>
-      <%= if(@label, do: @label, else: render_slot(@inner_block)) %>
+      {if(@label, do: @label, else: render_slot(@inner_block))}
     </.link>
     """
   end
@@ -44,7 +44,7 @@ defmodule SafiraWeb.Components.Link do
   def a(%{link_type: "live_patch"} = assigns) do
     ~H"""
     <.link patch={@to} class={@class} {@rest}>
-      <%= if(@label, do: @label, else: render_slot(@inner_block)) %>
+      {if(@label, do: @label, else: render_slot(@inner_block))}
     </.link>
     """
   end
@@ -52,7 +52,7 @@ defmodule SafiraWeb.Components.Link do
   def a(%{link_type: "live_redirect"} = assigns) do
     ~H"""
     <.link navigate={@to} class={@class} {@rest}>
-      <%= if(@label, do: @label, else: render_slot(@inner_block)) %>
+      {if(@label, do: @label, else: render_slot(@inner_block))}
     </.link>
     """
   end
@@ -60,7 +60,7 @@ defmodule SafiraWeb.Components.Link do
   def a(%{link_type: "button"} = assigns) do
     ~H"""
     <button class={@class} disabled={@disabled} {@rest}>
-      <%= if @label, do: @label, else: render_slot(@inner_block) %>
+      {if @label, do: @label, else: render_slot(@inner_block)}
     </button>
     """
   end

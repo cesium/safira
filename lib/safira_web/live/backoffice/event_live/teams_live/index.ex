@@ -26,7 +26,7 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.Index do
           >
             <div class="flex flex-row gap-2 items-center">
               <.icon name="hero-bars-3" class="w-5 h-5 handle cursor-pointer ml-4" />
-              <p><%= team.name %></p>
+              <p>{team.name}</p>
             </div>
             <div>
               <.link navigate={~p"/dashboard/event/teams/#{team.id}/edit/"}>

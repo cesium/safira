@@ -69,9 +69,9 @@ defmodule SafiraWeb.Landing.SpeakersLive.Components.Speakers do
         <div class="flex w-full flex-col justify-between">
           <div class="flex justify-between">
             <div>
-              <h2 class="font-terminal uppercase text-xl"><%= @speaker.name %></h2>
-              <p class=""><%= @speaker.title %></p>
-              <p class=""><%= @speaker.company %></p>
+              <h2 class="font-terminal uppercase text-xl">{@speaker.name}</h2>
+              <p class="">{@speaker.title}</p>
+              <p class="">{@speaker.company}</p>
             </div>
             <div class="ml-4 flex gap-2">
               <.social platform="github" profile={@speaker.socials.github} />
@@ -85,11 +85,11 @@ defmodule SafiraWeb.Landing.SpeakersLive.Components.Speakers do
             class="overflow-hidden pb-4 mt-8"
             style={if not @selected, do: "display: none;"}
           >
-            <p><%= @speaker.biography %></p>
+            <p>{@speaker.biography}</p>
           </div>
           <div class="z-50 flex select-none items-center justify-end">
             <p class="w-28 grow text-gray-400">
-              <%= @activity.title %> <%= format_time(@activity.time_start) %>
+              {@activity.title} {format_time(@activity.time_start)}
             </p>
             <button
               :if={@speaker.biography}
@@ -130,7 +130,7 @@ defmodule SafiraWeb.Landing.SpeakersLive.Components.Speakers do
       </div>
       <div>
         <p class="transition-max-height overflow-hidden duration-300 max-h-0">
-          <%= @speaker.biography %>
+          {@speaker.biography}
         </p>
       </div>
     </div>
@@ -166,10 +166,10 @@ defmodule SafiraWeb.Landing.SpeakersLive.Components.Speakers do
 
         <div class="-mt-8 md:-mt-10">
           <h5 class="font-terminal uppercase text-2xl text-accent md:text-3xl">
-            <%= gettext("Happening on") %>
+            {gettext("Happening on")}
           </h5>
           <h2 class="font-terminal uppercase text-center">
-            <%= @date |> Timex.format!("{D} {Mshort}") %>
+            {@date |> Timex.format!("{D} {Mshort}")}
           </h2>
         </div>
 
@@ -186,11 +186,11 @@ defmodule SafiraWeb.Landing.SpeakersLive.Components.Speakers do
 
       <div class="text-left text-md mt-12 max-w-96 m-auto">
         <p>
-          <%= gettext(
+          {gettext(
             "During this week, you have the opportunity to interact with many recognized speakers, national, international and notorious companies!"
-          ) %>
+          )}
         </p>
-        <p class="mt-4"><%= gettext("You can get to know them better here.") %></p>
+        <p class="mt-4">{gettext("You can get to know them better here.")}</p>
       </div>
     </div>
     """

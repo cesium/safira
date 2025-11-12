@@ -50,14 +50,14 @@ defmodule SafiraWeb.Backoffice.LeaderboardLive.Components.Leaderboard do
           link={~p"/dashboard/attendees/#{@entry.attendee_id}"}
         />
         <span class="bg-accent rounded-full px-2 -translate-y-3 select-none text-primary/80 font-semibold border-primary border-2">
-          <%= @pos %>
+          {@pos}
         </span>
-        <p class="font-semibold truncate max-w-28 sm:max-w-full"><%= @entry.name %></p>
+        <p class="font-semibold truncate max-w-28 sm:max-w-full">{@entry.name}</p>
         <p class="font-bold">
-          <%= gettext("%{badges_count} badges", badges_count: @entry.badges) %>
+          {gettext("%{badges_count} badges", badges_count: @entry.badges)}
         </p>
         <p class="font-medium">
-          <%= gettext("%{tokens} tokens", tokens: @entry.tokens) %>
+          {gettext("%{tokens} tokens", tokens: @entry.tokens)}
         </p>
       </div>
     <% end %>
@@ -71,7 +71,7 @@ defmodule SafiraWeb.Backoffice.LeaderboardLive.Components.Leaderboard do
     <li class="flex flex-row py-3 px-4 rounded-lg justify-between items-center bg-darkMuted/5 dark:bg-light/5 text-dark dark:text-light">
       <div class="flex flex-row gap-4 items-center">
         <p class="font-bold text-xl">
-          #<%= @entry.position %>
+          #{@entry.position}
         </p>
         <p>
           <.avatar
@@ -83,22 +83,22 @@ defmodule SafiraWeb.Backoffice.LeaderboardLive.Components.Leaderboard do
         </p>
         <.link patch={~p"/dashboard/attendees/#{@entry.attendee_id}"}>
           <p class="font-semibold truncate max-w-40">
-            <%= @entry.name %>
+            {@entry.name}
           </p>
         </.link>
       </div>
       <div>
         <p class="font-semibold flex sm:flex-row flex-col items-center gap-2">
           <span>
-            <%= @entry.badges %>
+            {@entry.badges}
             <span>
-              <%= gettext(" badges") %>
+              {gettext(" badges")}
             </span>
           </span>
           <span class="font-medium text-sm">
-            <%= @entry.tokens %>
+            {@entry.tokens}
             <span>
-              <%= gettext(" tokens") %>
+              {gettext(" tokens")}
             </span>
           </span>
         </p>

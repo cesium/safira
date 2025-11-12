@@ -9,7 +9,7 @@
           <.button>
             <span class="flex flex-row items-center gap-2">
               <.icon name="hero-trophy" class="w-5 h-5" />
-              <span class="hidden sm:block"><%= gettext("Leaderboard") %></span>
+              <span class="hidden sm:block">{gettext("Leaderboard")}</span>
             </span>
           </.button>
         </.ensure_permissions>
@@ -18,7 +18,7 @@
         <.button>
           <span class="flex flex-row items-center gap-2">
             <.icon name="hero-cloud-arrow-down" class="w-5 h-5" />
-            <span class="hidden sm:block"><%= gettext("Export attendees") %></span>
+            <span class="hidden sm:block">{gettext("Export attendees")}</span>
           </span>
         </.button>
       </.link>
@@ -41,20 +41,20 @@
             src={Uploaders.UserPicture.url({user.picture, user}, :original, signed: true)}
           />
           <div class="self-center">
-            <p class="text-base font-semibold"><%= user.name %></p>
-            <p class="font-normal">@<%= user.handle %></p>
+            <p class="text-base font-semibold">{user.name}</p>
+            <p class="font-normal">@{user.handle}</p>
           </div>
         </div>
       </:col>
-      <:col :let={{_id, user}} label="Email"><%= user.email %></:col>
+      <:col :let={{_id, user}} label="Email">{user.email}</:col>
       <:col :let={{_id, user}} label="Joined">
-        <%= user.inserted_at |> relative_datetime() %>
+        {user.inserted_at |> relative_datetime()}
       </:col>
       <:col :let={{_id, user}} sortable field={:tokens} label="Tokens">
-        <%= user.attendee.tokens %>
+        {user.attendee.tokens}
       </:col>
       <:col :let={{_id, user}} sortable field={:entries} label="Entries">
-        <%= user.attendee.entries %>
+        {user.attendee.entries}
       </:col>
       <:action :let={{_id, user}}>
         <.ensure_permissions user={@current_user} permissions={%{"attendees" => ["edit"]}}>

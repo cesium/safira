@@ -20,14 +20,14 @@ defmodule SafiraWeb.App.VaultLive.Components.Item do
       </figure>
       <div class="py-4 px-4">
         <h1 class="font-terminal uppercase text-2xl">
-          <%= @name %>
+          {@name}
         </h1>
         <p :if={!@redeemed}>
-          <%= gettext("Go to the accreditation to redeem your item!") %>
+          {gettext("Go to the accreditation to redeem your item!")}
         </p>
         <p :if={@redeemed} class="flex flex-row justify-center items-center">
           <.icon name="hero-check" class="w-5 h-5 mr-1" />
-          <%= gettext("You have redeemed this item!") %>
+          {gettext("You have redeemed this item!")}
         </p>
       </div>
     </li>

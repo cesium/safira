@@ -14,9 +14,9 @@ defmodule SafiraWeb.App.LeaderboardLive.Components.Prizes do
         <%= for prize <- @prizes do %>
           <li class="py-1">
             <span class={"mr-2 font-bold #{medal_color(prize.place)}"}>
-              <%= prize.place %><sup><%= get_exponent(prize.place) %></sup> <%= gettext("Place") %>:
+              {prize.place}<sup><%= get_exponent(prize.place) %></sup> {gettext("Place")}:
             </span>
-            <%= prize.prize.name %>
+            {prize.prize.name}
           </li>
         <% end %>
       </ol>

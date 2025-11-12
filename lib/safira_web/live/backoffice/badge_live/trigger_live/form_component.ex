@@ -27,7 +27,7 @@ defmodule SafiraWeb.Backoffice.BadgeLive.TriggerLive.FormComponent do
           <div class="w-full space-y-2 text-dark dark:text-light">
             <div class="flex flex-row gap-2 items-center flex-wrap">
               <p>
-                <%= gettext("Award %{badge_name} when an attendee", badge_name: @badge.name) %>
+                {gettext("Award %{badge_name} when an attendee", badge_name: @badge.name)}
               </p>
               <.field
                 field={@form[:event]}

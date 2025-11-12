@@ -2,12 +2,12 @@
   <.tabs class="sm:hidden mb-4">
     <.tab active class="gap-2">
       <.icon name="hero-check-badge" />
-      <%= gettext("Badges") %>
+      {gettext("Badges")}
     </.tab>
     <.link patch={~p"/dashboard/scanner/redeems"} class="w-full">
       <.tab class="gap-2">
         <.icon name="hero-gift" />
-        <%= gettext("Redeems") %>
+        {gettext("Redeems")}
       </.tab>
     </.link>
   </.tabs>
@@ -17,7 +17,7 @@
         <.link patch={~p"/dashboard/scanner/redeems"} class="hidden sm:block w-full">
           <.button class="flex gap-2">
             <.icon name="hero-gift" />
-            <%= gettext("Redeems") %>
+            {gettext("Redeems")}
           </.button>
         </.link>
         <.table_search

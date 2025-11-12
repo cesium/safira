@@ -28,7 +28,7 @@ defmodule SafiraWeb.Landing.Components.Footer do
               <div :if={idx == 1 and rem(length(footer_links()), 2) == 1} class="hidden lg:block">
               </div>
               <.link href={link.url} class="block w-full hover:underline text-center lg:text-right">
-                <%= link.title %>
+                {link.title}
               </.link>
             <% end %>
           </div>
@@ -45,7 +45,7 @@ defmodule SafiraWeb.Landing.Components.Footer do
       >
         <div class="group flex flex-col items-center justify-center pointer-events-auto">
           <p class="bg-white text-black text-center p-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
-            <%= render_slot(@tip) %>
+            {render_slot(@tip)}
           </p>
           <img
             src={~p"/images/star-struck-void.svg"}

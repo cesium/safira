@@ -47,7 +47,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.ReelIcons.FormComponent do
                       </button>
                     </div>
                     <%= for err <- upload_errors(@uploads.images, entry) do %>
-                      <div class="mt-1 text-red-500 text-sm"><%= err %></div>
+                      <div class="mt-1 text-red-500 text-sm">{err}</div>
                     <% end %>
                   </div>
                 <% end %>
@@ -59,12 +59,12 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.ReelIcons.FormComponent do
               </div>
             </div>
             <p class="text-slate-500">
-              <.icon name="hero-exclamation-triangle" class="text-warning-600 mr-1" /><%= gettext(
+              <.icon name="hero-exclamation-triangle" class="text-warning-600 mr-1" />{gettext(
                 "Each icon should be a square image."
-              ) %>
+              )}
             </p>
             <div class="flex justify-end">
-              <.button phx-disable-with="Saving..."><%= gettext("Save Configuration") %></.button>
+              <.button phx-disable-with="Saving...">{gettext("Save Configuration")}</.button>
             </div>
           </.simple_form>
         </div>

@@ -23,14 +23,14 @@ defmodule SafiraWeb.App.StoreLive.Components.ProductCard do
         <% end %>
       </figure>
       <p class="text-center py-3 font-semibold">
-        <%= @data.name %>
+        {@data.name}
       </p>
       <p class="text-center py-1">
         <span class="rounded-full border-2 border-light px-4 py-2 font-semibold font-terminal uppercase">
           <%= if @data.stock != 0 do %>
-            💰 <%= @data.price %>
+            💰 {@data.price}
           <% else %>
-            🚫 <%= gettext("Out of stock") %>
+            🚫 {gettext("Out of stock")}
           <% end %>
         </span>
       </p>

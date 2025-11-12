@@ -10,7 +10,7 @@
       />
       <.link href={~p"/downloads/cvs"} target="_blank" class="sm:flex hidden">
         <.button>
-          <%= gettext("Download CVs") %>
+          {gettext("Download CVs")}
         </.button>
       </.link>
       <.simple_form :if={@all_enabled} for={@form} phx-change="validate" class="sm:flex hidden">
@@ -25,7 +25,7 @@
     </.simple_form>
     <.link href={~p"/downloads/cvs"} target="_blank" class="justify-end">
       <.button>
-        <%= gettext("Download CVs") %>
+        {gettext("Download CVs")}
       </.button>
     </.link>
   </div>

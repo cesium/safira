@@ -14,12 +14,12 @@ defmodule SafiraWeb.Backoffice.ScannerLive.InventoryLive.Index do
           <.link patch={~p"/dashboard/scanner"} class="w-full">
             <.tab class="gap-2">
               <.icon name="hero-check-badge" />
-              <%= gettext("Badges") %>
+              {gettext("Badges")}
             </.tab>
           </.link>
           <.tab active class="gap-2">
             <.icon name="hero-gift" />
-            <%= gettext("Redeems") %>
+            {gettext("Redeems")}
           </.tab>
         </.tabs>
         <.page title={gettext("Attendee Redeems")}>
@@ -35,13 +35,13 @@ defmodule SafiraWeb.Backoffice.ScannerLive.InventoryLive.Index do
           </div>
           <div id="scan-info" class="flex flex-col items-center gap-8 text-center py-40">
             <p id="loadingMessage">
-              <%= gettext("Unable to access camera.") %>
-              <%= gettext(
+              {gettext("Unable to access camera.")}
+              {gettext(
                 "Make sure you allow the use of your camera on this browser and that it isn't being used elsewhere."
-              ) %>
+              )}
             </p>
             <.button id="permission-button" type="button">
-              <%= gettext("Request Permission") %>
+              {gettext("Request Permission")}
             </.button>
           </div>
         </.page>
@@ -57,7 +57,7 @@ defmodule SafiraWeb.Backoffice.ScannerLive.InventoryLive.Index do
           <.icon name="hero-x-circle" class="text-red-500 w-8" />
           <p>
             <%= if @modal_data do %>
-              <%= error_message(@modal_data) %>
+              {error_message(@modal_data)}
             <% end %>
           </p>
         </div>

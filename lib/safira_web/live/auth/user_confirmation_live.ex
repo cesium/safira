@@ -16,19 +16,19 @@ defmodule SafiraWeb.UserConfirmationLive do
         </span>
       </div>
       <h1 class="px-4 font-terminal uppercase text-3xl text-center mt-8 sm:mt-10">
-        <%= gettext("Email address has been verified!") %>
+        {gettext("Email address has been verified!")}
       </h1>
       <p class="text-center mt-6 px-4">
-        <%= gettext("Your account has been activated successfully.") %>
+        {gettext("Your account has been activated successfully.")}
       </p>
       <p class="text-center mt-4 px-4">
-        <%= gettext("Redirecting you to the app...") %>
+        {gettext("Redirecting you to the app...")}
       </p>
       <.link
         navigate={~p"/app"}
         class="text-sm sm:text-md text-center mt-8 opacity-80 px-4 hover:underline"
       >
-        <%= gettext("Not working? Click here.") %>
+        {gettext("Not working? Click here.")}
       </.link>
     </div>
     """

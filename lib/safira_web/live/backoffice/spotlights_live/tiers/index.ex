@@ -18,7 +18,7 @@ defmodule SafiraWeb.Backoffice.SpotlightLive.Tiers.Index do
             class="even:bg-lightShade/20 dark:even:bg-darkShade/20 py-4 px-4 flex flex-row justify-between"
           >
             <div class="flex flex-row gap-2 items-center">
-              <%= tier.name %>
+              {tier.name}
             </div>
             <p class="text-dark dark:text-light flex flex-row justify-between gap-2">
               <.link navigate={~p"/dashboard/spotlights/config/tiers/#{tier.id}/edit"}>

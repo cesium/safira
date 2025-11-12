@@ -12,7 +12,7 @@ defmodule SafiraWeb.PrizeLive.FormComponent do
     ~H"""
     <div>
       <.header>
-        <%= @title %>
+        {@title}
         <:subtitle>
           Prizes can be awarded to attendees via the app's various minigames.
         </:subtitle>

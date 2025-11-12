@@ -10,10 +10,10 @@ defmodule SafiraWeb.Landing.FAQLive.Components.Faq do
     ~H"""
     <div id={@id} class="border-t-2 border-white py-4 text-white">
       <h2 class="font-terminal uppercase mb-4 select-none text-2xl md:text-4xl">
-        <%= @question %>
+        {@question}
       </h2>
       <div id={"faq-answer-#{@id}"} class="overflow-hidden pb-4" style="display: none;">
-        <p><%= @answer %></p>
+        <p>{@answer}</p>
       </div>
       <div class="flex items-center justify-end">
         <button

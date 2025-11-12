@@ -28,7 +28,7 @@ defmodule SafiraWeb.Backoffice.BadgeLive.ConditionLive.Index do
             class="even:bg-lightShade/20 dark:even:bg-darkShade/20 py-4 px-4 flex flex-row justify-between items-center"
           >
             <p class="text-dark dark:text-light flex flex-row justify-between">
-              <%= condition_description(condition) %>
+              {condition_description(condition)}
             </p>
             <div class="flex flex-row gap-2">
               <.link navigate={~p"/dashboard/badges/#{@badge.id}/conditions/#{condition.id}/edit"}>
@@ -45,7 +45,7 @@ defmodule SafiraWeb.Backoffice.BadgeLive.ConditionLive.Index do
           </li>
           <div class="only:flex hidden h-full items-center justify-center">
             <p class="text-center text-lightMuted dark:text-darkMuted mt-8">
-              <%= gettext("No conditions set for this badge.") %>
+              {gettext("No conditions set for this badge.")}
             </p>
           </div>
         </ul>

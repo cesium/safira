@@ -27,9 +27,9 @@ defmodule SafiraWeb.Landing.Components.Speaker do
         alt={@speaker.name}
         class="select-none"
       />
-      <p class="text-md font-terminal uppercase"><%= @speaker.name %></p>
-      <p class="text-md max-w-[210px] font-iregular"><%= @speaker.title %></p>
-      <p class="text-md max-w-[210px] font-iregular"><%= @speaker.company %></p>
+      <p class="text-md font-terminal uppercase">{@speaker.name}</p>
+      <p class="text-md max-w-[210px] font-iregular">{@speaker.title}</p>
+      <p class="text-md max-w-[210px] font-iregular">{@speaker.company}</p>
     </a>
     """
   end

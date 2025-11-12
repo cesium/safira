@@ -129,11 +129,11 @@ defmodule SafiraWeb.Components.Forms do
           {@rest}
         />
         <div class={[@required && "safira-label--required"]}>
-          <%= @label %>
+          {@label}
         </div>
       </label>
 
-      <.field_error :for={msg <- @errors}><%= msg %></.field_error>
+      <.field_error :for={msg <- @errors}>{msg}</.field_error>
       <.field_help_text help_text={@help_text} />
     </.field_wrapper>
     """
@@ -143,7 +143,7 @@ defmodule SafiraWeb.Components.Forms do
     ~H"""
     <.field_wrapper errors={@errors} name={@name} class={@wrapper_class}>
       <.field_label required={@required} for={@id} class={@label_class}>
-        <%= @label %>
+        {@label}
       </.field_label>
 
       <select
@@ -154,11 +154,11 @@ defmodule SafiraWeb.Components.Forms do
         multiple={@multiple}
         {@rest}
       >
-        <option :if={@prompt} value=""><%= @prompt %></option>
-        <%= HTML.Form.options_for_select(@options, @selected || @value) %>
+        <option :if={@prompt} value="">{@prompt}</option>
+        {HTML.Form.options_for_select(@options, @selected || @value)}
       </select>
 
-      <.field_error :for={msg <- @errors}><%= msg %></.field_error>
+      <.field_error :for={msg <- @errors}>{msg}</.field_error>
       <.field_help_text help_text={@help_text} />
     </.field_wrapper>
     """
@@ -168,7 +168,7 @@ defmodule SafiraWeb.Components.Forms do
     ~H"""
     <.field_wrapper errors={@errors} name={@name} class={@wrapper_class}>
       <.field_label required={@required} for={@id} class={@label_class}>
-        <%= @label %>
+        {@label}
       </.field_label>
 
       <textarea
@@ -180,7 +180,7 @@ defmodule SafiraWeb.Components.Forms do
         {@rest}
       ><%= Phoenix.HTML.Form.normalize_value("textarea", @value) %></textarea>
 
-      <.field_error :for={msg <- @errors}><%= msg %></.field_error>
+      <.field_error :for={msg <- @errors}>{msg}</.field_error>
       <.field_help_text help_text={@help_text} />
     </.field_wrapper>
     """
@@ -209,10 +209,10 @@ defmodule SafiraWeb.Components.Forms do
           <span class="safira-switch__fake-input"></span>
           <span class="safira-switch__fake-input-bg"></span>
         </label>
-        <div><%= @label %></div>
+        <div>{@label}</div>
       </label>
 
-      <.field_error :for={msg <- @errors}><%= msg %></.field_error>
+      <.field_error :for={msg <- @errors}>{msg}</.field_error>
       <.field_help_text help_text={@help_text} />
     </.field_wrapper>
     """
@@ -236,7 +236,7 @@ defmodule SafiraWeb.Components.Forms do
     ~H"""
     <.field_wrapper errors={@errors} name={@name} class={@wrapper_class}>
       <.field_label required={@required} for={@id} class={@label_class}>
-        <%= @label %>
+        {@label}
       </.field_label>
 
       <input type="hidden" name={@name} value="" />
@@ -248,7 +248,7 @@ defmodule SafiraWeb.Components.Forms do
       ]}>
         <%= for {group_label, group_options} <- @options do %>
           <fieldset>
-            <legend class="capitalize"><%= group_label %></legend>
+            <legend class="capitalize">{group_label}</legend>
             <%= for option <- group_options do %>
               <label class="safira-checkbox-label">
                 <input
@@ -261,7 +261,7 @@ defmodule SafiraWeb.Components.Forms do
                   {@rest}
                 />
                 <div>
-                  <%= option |> Enum.at(0) |> String.split("-") |> Enum.at(1) %>
+                  {option |> Enum.at(0) |> String.split("-") |> Enum.at(1)}
                 </div>
               </label>
             <% end %>
@@ -270,12 +270,12 @@ defmodule SafiraWeb.Components.Forms do
 
         <%= if @empty_message && Enum.empty?(@options) do %>
           <div class="safira-checkbox-group--empty-message">
-            <%= @empty_message %>
+            {@empty_message}
           </div>
         <% end %>
       </div>
 
-      <.field_error :for={msg <- @errors}><%= msg %></.field_error>
+      <.field_error :for={msg <- @errors}>{msg}</.field_error>
       <.field_help_text help_text={@help_text} />
     </.field_wrapper>
     """
@@ -287,7 +287,7 @@ defmodule SafiraWeb.Components.Forms do
     ~H"""
     <.field_wrapper errors={@errors} name={@name} class={@wrapper_class}>
       <.field_label required={@required} for={@id} class={@label_class}>
-        <%= @label %>
+        {@label}
       </.field_label>
 
       <div class={[
@@ -310,19 +310,19 @@ defmodule SafiraWeb.Components.Forms do
               {@rest}
             />
             <div>
-              <%= label %>
+              {label}
             </div>
           </label>
         <% end %>
 
         <%= if @empty_message && Enum.empty?(@options) do %>
           <div class="safira-radio-group--empty-message">
-            <%= @empty_message %>
+            {@empty_message}
           </div>
         <% end %>
       </div>
 
-      <.field_error :for={msg <- @errors}><%= msg %></.field_error>
+      <.field_error :for={msg <- @errors}>{msg}</.field_error>
       <.field_help_text help_text={@help_text} />
     </.field_wrapper>
     """
@@ -343,12 +343,12 @@ defmodule SafiraWeb.Components.Forms do
 
   # All other inputs: text, datetime-local, url, password, etc.
   def field(assigns) do
-    assigns = assign(assigns, class: [assigns.class, get_class_for_type(assigns.type)])
+    assigns = assign(assigns, class: [get_class_for_type(assigns.type), assigns.class])
 
     ~H"""
     <.field_wrapper errors={@errors} name={@name} class={@wrapper_class}>
       <.field_label required={@required} for={@id} class={@label_class}>
-        <%= @label %>
+        {@label}
       </.field_label>
 
       <input
@@ -361,7 +361,7 @@ defmodule SafiraWeb.Components.Forms do
         {@rest}
       />
 
-      <.field_error :for={msg <- @errors}><%= msg %></.field_error>
+      <.field_error :for={msg <- @errors}>{msg}</.field_error>
       <.field_help_text help_text={@help_text} />
     </.field_wrapper>
     """
@@ -379,12 +379,12 @@ defmodule SafiraWeb.Components.Forms do
       phx-feedback-for={@name}
       {@rest}
       class={[
-        @class,
         "safira-form-field-wrapper",
+        @class,
         @errors != [] && "safira-form-field-wrapper--error"
       ]}
     >
-      <%= render_slot(@inner_block) %>
+      {render_slot(@inner_block)}
     </div>
     """
   end
@@ -398,7 +398,7 @@ defmodule SafiraWeb.Components.Forms do
   def field_label(assigns) do
     ~H"""
     <label for={@for} class={["safira-label", @class, @required && "safira-label--required"]} {@rest}>
-      <%= render_slot(@inner_block) %>
+      {render_slot(@inner_block)}
     </label>
     """
   end
@@ -408,7 +408,7 @@ defmodule SafiraWeb.Components.Forms do
   defp field_error(assigns) do
     ~H"""
     <p class="safira-form-field-error">
-      <%= render_slot(@inner_block) %>
+      {render_slot(@inner_block)}
     </p>
     """
   end
@@ -425,7 +425,7 @@ defmodule SafiraWeb.Components.Forms do
       class={["safira-form-help-text", @class]}
       {@rest}
     >
-      <%= render_slot(@inner_block) || @help_text %>
+      {render_slot(@inner_block) || @help_text}
     </div>
     """
   end
@@ -494,7 +494,7 @@ defmodule SafiraWeb.Components.Forms do
       class={@wrapper_class}
     >
       <.field_label required={@required} for={@id} class={@label_class}>
-        <%= humanize(@field.field) %>
+        {humanize(@field.field)}
       </.field_label>
 
       <.live_select
@@ -513,7 +513,7 @@ defmodule SafiraWeb.Components.Forms do
         {@rest}
       />
 
-      <.field_error :for={msg <- @errors}><%= msg %></.field_error>
+      <.field_error :for={msg <- @errors}>{msg}</.field_error>
       <.field_help_text help_text={@help_text} />
     </.field_wrapper>
     """

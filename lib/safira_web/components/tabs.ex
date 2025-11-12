@@ -18,7 +18,7 @@ defmodule SafiraWeb.Components.Tabs do
       ]}
       aria-label="Tabs"
     >
-      <%= render_slot(@inner_block) %>
+      {render_slot(@inner_block)}
     </div>
     """
   end
@@ -36,12 +36,12 @@ defmodule SafiraWeb.Components.Tabs do
     ~H"""
     <button class={tab_class(@active, @underline) ++ [@class]} disabled={@disabled} {@rest}>
       <%= if @number do %>
-        <%= render_slot(@inner_block) || @label %>
+        {render_slot(@inner_block) || @label}
         <span class={number_class(@active, @underline)}>
-          <%= @number %>
+          {@number}
         </span>
       <% else %>
-        <%= render_slot(@inner_block) || @label %>
+        {render_slot(@inner_block) || @label}
       <% end %>
     </button>
     """
