@@ -14,6 +14,7 @@ defmodule Safira.Accounts.Credential do
   def changeset(credential, attrs) do
     credential
     |> cast(attrs, [:attendee_id])
+    |> unique_constraint(:attendee_id)
     |> cast_assoc(:attendee)
   end
 end

@@ -53,7 +53,7 @@ defmodule SafiraWeb.UserRoles do
 
   defp has_credential?(conn) do
     is_nil(conn.assigns.current_user.attendee) or
-      not is_nil(Accounts.get_credential_of_attendee(conn.assigns.current_user.attendee))
+      Accounts.attendee_has_credential?(conn.assigns.current_user.attendee.id)
   end
 
   @doc """
