@@ -11,17 +11,17 @@ defmodule Safira.AccountsFixtures do
   def valid_user_attributes(attrs \\ %{}) do
     attrs
     |> Enum.into(%{
-      name: "John Doe",
-      handle: unique_handle(),
-      email: unique_user_email(),
-      password: valid_user_password()
+      "name" => "John Doe",
+      "handle" => unique_handle(),
+      "email" => unique_user_email(),
+      "password" => valid_user_password()
     })
   end
 
   def user_fixture(attrs \\ %{}) do
     {:ok, %{user: user, attendee: _}} =
       attrs
-      |> Enum.into(%{attendee: %{}})
+      |> Enum.into(%{"attendee" => %{}})
       |> valid_user_attributes()
       |> Safira.Accounts.register_attendee_user()
 
