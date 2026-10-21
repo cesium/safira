@@ -124,48 +124,44 @@ defmodule SafiraWeb.Components.Sidebar do
   attr :link_inactive_class, :string, default: ""
 
   def app_sidebar(assigns) do
-    dock_pages = get_app_dock_pages(assigns.pages)
+    dock_items = app_dock_items(assigns.pages, assigns.current_user)
 
     assigns =
       assigns
-      |> assign(:dock_pages, dock_pages)
-      |> assign(:profile_url, app_profile_url(assigns.current_user))
+      |> assign(:dock_items, dock_items)
+      |> assign(:active_index, Enum.find_index(dock_items, &(&1.key == assigns.current_page)))
 
     ~H"""
     <div class="fixed inset-x-0 bottom-0 z-40 px-4 pb-4 lg:hidden">
-      <nav class="mx-auto flex w-full max-w-sm items-center justify-between rounded-full bg-white/5 backdrop-blur-lg border border-white/20 shadow-lg px-4 py-3">
-        <%= for page <- @dock_pages do %>
-          <.link
-            navigate={page.url}
-            class="group flex h-12 w-12 items-center justify-center"
-            aria-label={page.title}
-          >
-            <div
-              class={[
-                "size-7 transition-all",
-                if(@current_page == page.key,
-                  do: "bg-accent size-8",
-                  else: "bg-white"
-                )
-              ]}
-              style={"mask: url(#{page.image}) no-repeat center / contain; -webkit-mask: url(#{page.image}) no-repeat center / contain;"}
-            >
-            </div>
-          </.link>
-        <% end %>
+      <nav class="mx-auto w-full max-w-sm rounded-full bg-white/5 backdrop-blur-lg border border-white/20 shadow-lg p-2">
+        <div
+          id="app-dock"
+          phx-hook="Dock"
+          data-active={@active_index}
+          style={"--dock-active: #{@active_index || 0}; --dock-items: #{length(@dock_items)}"}
+          class="relative grid grid-flow-col auto-cols-fr"
+        >
+          <span
+            :if={@active_index}
+            aria-hidden="true"
+            class="absolute inset-y-0 left-0 w-[calc(100%/var(--dock-items))] translate-x-[calc(var(--dock-active)*100%)] rounded-full bg-white/10 border border-white/15 shadow-[inset_0_1px_0_0_rgb(255_255_255/0.1)] transition-transform duration-500 ease-[cubic-bezier(0.34,1.4,0.64,1)] motion-reduce:transition-none"
+          />
 
-        <%= if @current_user do %>
           <.link
-            navigate={@profile_url}
-            class="flex h-12 w-12 items-center justify-center"
-            aria-label="Profile"
+            :for={{item, index} <- Enum.with_index(@dock_items)}
+            navigate={item.url}
+            aria-label={item.title}
+            aria-current={index == @active_index && "page"}
+            class="relative flex h-14 items-center justify-center"
           >
-            <.icon
-              name="hero-user"
-              class={"size-6.5 transition-all #{if @current_page == :profile, do: "text-accent", else: "text-white"}"}
+            <.icon :if={item[:icon]} name={item.icon} class={dock_icon_class(index == @active_index)} />
+            <div
+              :if={item[:image]}
+              class={["bg-current", dock_icon_class(index == @active_index)]}
+              style={"mask: url(#{item.image}) no-repeat center / contain; -webkit-mask: url(#{item.image}) no-repeat center / contain;"}
             />
           </.link>
-        <% end %>
+        </div>
       </nav>
     </div>
 
@@ -505,13 +501,23 @@ defmodule SafiraWeb.Components.Sidebar do
     |> JS.remove_attribute("aria-expanded", to: to)
   end
 
-  defp get_app_dock_pages(pages) do
-    dock_pages = [:home, :badges, :games, :store]
+  defp app_dock_items(pages, user) do
+    dock_pages =
+      Enum.map([:home, :badges, :games, :store], fn key -> Enum.find(pages, &(&1.key == key)) end)
 
-    dock_pages
-    |> Enum.map(fn key -> Enum.find(pages, &(&1.key == key)) end)
+    if user do
+      dock_pages ++
+        [%{key: :profile, title: "Profile", url: "/app/user/#{user.handle}", icon: "hero-user"}]
+    else
+      dock_pages
+    end
   end
 
-  defp app_profile_url(nil), do: "/app/"
-  defp app_profile_url(user), do: "/app/user/#{user.handle}"
+  # The active icon fades in from the inactive look (`starting:`) when the page renders
+  defp dock_icon_class(true) do
+    "size-7 text-accent scale-110 starting:text-white starting:scale-100 " <>
+      "transition duration-300 motion-reduce:transition-none"
+  end
+
+  defp dock_icon_class(false), do: "size-7 text-white"
 end
