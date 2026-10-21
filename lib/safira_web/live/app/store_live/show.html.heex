@@ -1,7 +1,8 @@
 <.page back_to_link={~p"/app/store"} back_to_link_text="Back to store">
   <:actions>
-    <span class="text-semibold text-xl border-2 px-4 py-2 rounded-full font-terminal">
-      💰 {@current_user.attendee.tokens}
+    <span class="text-semibold text-xl border-2 px-4 py-2 rounded-full font-terminal flex justify-center items-center gap-2">
+      <.icon name="fa-sack-dollar-solid" />
+      {@current_user.attendee.tokens}
     </span>
   </:actions>
   <div class="w-full flex sm:flex-row flex-col sm:gap-16 gap-8 py-8 sm:py-0">
@@ -38,7 +39,8 @@
         <% end %>
         <.action_button
           title={gettext("Purchase")}
-          subtitle={"💰 #{@product.price}"}
+          subtitle={"#{@product.price}"}
+          subtitle_icon="sack-dollar-solid"
           class="w-full"
           disabled={!can_purchase?(@product, @current_user.attendee)}
           phx-click="purchase"

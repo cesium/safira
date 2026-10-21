@@ -62,7 +62,7 @@ defmodule SafiraWeb.Config do
         },
         %{
           key: :games,
-          title: "Games",
+          title: "Minigames",
           image: "/images/icons/play.svg",
           url: "/app/games",
           enabled: attendee_eligible?

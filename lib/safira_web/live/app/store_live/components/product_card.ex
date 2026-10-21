@@ -26,9 +26,10 @@ defmodule SafiraWeb.App.StoreLive.Components.ProductCard do
         {@data.name}
       </p>
       <p class="text-center py-1">
-        <span class="rounded-full border-2 border-light px-4 py-2 font-semibold font-terminal uppercase">
+        <span class="rounded-full border-2 border-light px-4 py-2 font-semibold font-terminal uppercase inline-flex justify-center gap-2 items-center">
           <%= if @data.stock != 0 do %>
-            💰 {@data.price}
+            <.icon name="fa-sack-dollar-solid" class="w-3.5" />
+            {@data.price}
           <% else %>
             🚫 {gettext("Out of stock")}
           <% end %>
