@@ -762,6 +762,8 @@ defmodule Safira.Contest do
         fragment("row_number() OVER (ORDER BY ? DESC, ? DESC)", rd.redeem_count, dt.tokens),
       name: u.name,
       handle: u.handle,
+      user_id: u.id,
+      picture: u.picture,
       badges: rd.redeem_count,
       tokens: dt.tokens
     })
