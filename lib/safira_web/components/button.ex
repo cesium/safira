@@ -8,6 +8,7 @@ defmodule SafiraWeb.Components.Button do
 
   attr :title, :string, default: ""
   attr :subtitle, :string, default: ""
+  attr :subtitle_icon, :string, default: ""
   attr :disabled, :boolean, default: false
   attr :icon, :string, default: ""
   attr :class, :string, default: ""
@@ -29,7 +30,13 @@ defmodule SafiraWeb.Components.Button do
         <.icon name={@icon} />
       <% end %>
       <p class={"uppercase font-terminal text-2xl #{@title_class}"}>{@title}</p>
-      <p class="font-terminal">{@subtitle}</p>
+      <div class={[
+        "flex place-items-center justify-center font-terminal",
+        @subtitle_icon != "" && "gap-2"
+      ]}>
+        <.icon :if={@subtitle_icon != ""} name={"fa-" <> @subtitle_icon} class="w-3.5" />
+        <p>{@subtitle}</p>
+      </div>
     </button>
     """
   end
