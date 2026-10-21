@@ -184,7 +184,7 @@ defmodule SafiraWeb.Config do
         title: "Schedule",
         icon: "hero-calendar-days",
         url: "/dashboard/schedule/activities",
-        scope: %{"schedule" => ["edit"]}
+        scope: %{"schedule" => ["show"]}
       },
       %{
         key: :scanner,
