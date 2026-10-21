@@ -107,22 +107,25 @@ defmodule SafiraWeb.Router do
 
         live "/leaderboard", LeaderboardLive.Index, :index
 
-        live "/games", GamesLive.Index, :index
+        scope "/games", GamesLive do
+          live "/", Index, :index
+          live "/wheel", WheelLive.Index, :index
+          live "/coin_flip", CoinFlipLive.Index, :index
 
-        live "/games/wheel", WheelLive.Index, :index
+          scope "/scratch_card", ScratchCardLive do
+            live "/", Index, :index
+            live "/paytable", Index, :show_paytable
+          end
 
-        live "/games/coin_flip", CoinFlipLive.Index, :index
-
-        live "/games/scratch_card", ScratchCardLive.Index, :index
+          scope "/slots", SlotsLive do
+            live "/", Index, :index
+            live "/paytable", Index, :show_paytable
+          end
+        end
 
         scope "/badges", BadgeLive do
           live "/", Index, :index
           live "/:id", Show, :show
-        end
-
-        scope "/games/slots", SlotsLive do
-          live "/", Index, :index
-          live "/paytable", Index, :show_paytable
         end
 
         scope "/store", StoreLive do
@@ -338,6 +341,12 @@ defmodule SafiraWeb.Router do
           live "/", MinigamesLive.Index, :index
 
           live "/coin_flip", MinigamesLive.Index, :edit_coin_flip
+
+          scope "/scratch_card" do
+            live "/", MinigamesLive.Index, :edit_scratch_card
+            live "/drops", MinigamesLive.Index, :edit_scratch_card_drops
+            live "/symbols", MinigamesLive.Index, :edit_scratch_card_symbols
+          end
         end
 
         scope "/scanner", ScannerLive do

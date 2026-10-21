@@ -110,4 +110,53 @@ defmodule Safira.MinigamesFixtures do
 
     slots_payline
   end
+
+  @doc """
+  Generate a scratch_card.
+  """
+  def scratch_card_fixture(attrs \\ %{}) do
+    attendee =
+      Map.get_lazy(attrs, :attendee, fn -> Safira.AccountsFixtures.attendee_fixture() end)
+
+    {:ok, scratch_card} =
+      attrs
+      |> Enum.into(%{
+        attendee_id: attendee.id
+      })
+      |> Safira.Minigames.create_scratch_card()
+
+    scratch_card
+  end
+
+  @doc """
+  Generate a scratch_card_drop.
+  """
+  def scratch_card_drop_fixture(attrs \\ %{}) do
+    {:ok, scratch_card_drop} =
+      attrs
+      |> Enum.into(%{
+        entries: 42,
+        max_per_attendee: 42,
+        probability: 0.5,
+        tokens: 42
+      })
+      |> Safira.Minigames.create_scratch_card_drop()
+
+    scratch_card_drop
+  end
+
+  @doc """
+  Generate a scratch_card_symbol.
+  """
+  def scratch_card_symbol_fixture(attrs \\ %{}) do
+    {:ok, scratch_card_symbol} =
+      attrs
+      |> Enum.into(%{
+        image: valid_icon_upload(),
+        name: "some name"
+      })
+      |> Safira.Minigames.create_scratch_card_symbol()
+
+    scratch_card_symbol
+  end
 end

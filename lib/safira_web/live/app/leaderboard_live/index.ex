@@ -11,7 +11,9 @@ defmodule SafiraWeb.App.LeaderboardLive.Index do
   def mount(_params, _session, socket) do
     daily_prizes = Contest.list_daily_prizes()
 
-    days = Event.list_event_dates()
+    # This hardcoded drop is used to ignore the first day of the event only
+    # in the leaderboard context due to the events calendar
+    days = Event.list_event_dates() |> Enum.drop(1)
 
     start_day_idx = get_start_day_idx(days)
     leaderboard = Contest.leaderboard(Enum.at(days, start_day_idx), @limit)

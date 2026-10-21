@@ -1,4 +1,4 @@
-defmodule SafiraWeb.App.WheelLive.Components.ResultModal do
+defmodule SafiraWeb.App.GamesLive.WheelLive.Components.ResultModal do
   @moduledoc """
   Lucky wheel drop result modal component.
   """
