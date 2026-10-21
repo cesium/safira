@@ -8,8 +8,10 @@ defmodule SafiraWeb.Components.Markdown do
   attr :class, :string, default: ""
 
   def markdown(assigns) do
+    content = assigns.content || ""
+
     html =
-      assigns.content
+      content
       |> String.trim()
       |> Earmark.as_html!()
       |> raw()
@@ -17,7 +19,7 @@ defmodule SafiraWeb.Components.Markdown do
     assigns = assign(assigns, :html, html)
 
     ~H"""
-    <section class={@class}>
+    <section class={["markdown-body", @class]}>
       {@html}
     </section>
     """
