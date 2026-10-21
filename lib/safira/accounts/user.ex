@@ -14,7 +14,7 @@ defmodule Safira.Accounts.User do
   @derive {
     Flop.Schema,
     filterable: [:name],
-    sortable: [:name, :tokens, :entries],
+    sortable: [:name, :tokens, :entries, :inserted_at],
     default_limit: 8,
     join_fields: [
       tokens: [
