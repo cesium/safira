@@ -155,3 +155,184 @@ select:-webkit-autofill:focus {
 
 /* Make LiveView wrapper divs transparent for layout */
 [data-phx-session], [data-phx-teleported-src] { display: contents }
+
+/* Rendered markdown (in a layer so utility classes passed to <.markdown> win) */
+@layer components {
+  .markdown-body {
+    background-color: transparent !important;
+    color: inherit;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+  }
+
+  .markdown-body > :first-child {
+    margin-top: 0;
+  }
+
+  .markdown-body > :last-child {
+    margin-bottom: 0;
+  }
+
+  .markdown-body h1,
+  .markdown-body h2,
+  .markdown-body h3,
+  .markdown-body h4,
+  .markdown-body h5,
+  .markdown-body h6 {
+    color: inherit;
+    line-height: 1.25;
+    font-weight: 700;
+    margin-top: 1.25em;
+    margin-bottom: 0.45em;
+  }
+
+  .markdown-body h1 {
+    font-size: 2rem;
+  }
+
+  .markdown-body h2 {
+    font-size: 1.5rem;
+  }
+
+  .markdown-body h3 {
+    font-size: 1.25rem;
+  }
+
+  .markdown-body h4 {
+    font-size: 1.1rem;
+  }
+
+  .markdown-body h5,
+  .markdown-body h6 {
+    font-size: 1rem;
+  }
+
+  .markdown-body p,
+  .markdown-body ul,
+  .markdown-body ol,
+  .markdown-body pre,
+  .markdown-body blockquote,
+  .markdown-body table {
+    margin: 0.75rem 0;
+  }
+
+  .markdown-body a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .markdown-body strong {
+    font-weight: 700;
+  }
+
+  .markdown-body em {
+    font-style: italic;
+  }
+
+  .markdown-body del {
+    text-decoration: line-through;
+  }
+
+  .markdown-body hr {
+    border: 0;
+    border-top: 1px solid color-mix(in srgb, currentColor, transparent 80%);
+    margin: 1rem 0;
+  }
+
+  .markdown-body ul,
+  .markdown-body ol {
+    padding-left: 1.25rem;
+  }
+
+  .markdown-body ul {
+    list-style: disc;
+  }
+
+  .markdown-body ol {
+    list-style: decimal;
+  }
+
+  .markdown-body li + li {
+    margin-top: 0.25rem;
+  }
+
+  .markdown-body li > ul,
+  .markdown-body li > ol {
+    margin-top: 0.4rem;
+  }
+
+  .markdown-body blockquote {
+    padding-left: 0.9rem;
+    border-left: 4px solid color-mix(in srgb, currentColor, transparent 80%);
+    color: color-mix(in srgb, currentColor, transparent 25%);
+  }
+
+  .markdown-body code,
+  .markdown-body kbd,
+  .markdown-body samp {
+    font-family: var(--font-terminal);
+    font-size: 0.9em;
+    background: color-mix(in srgb, currentColor, transparent 92%);
+    border-radius: 0.35rem;
+    padding: 0.12rem 0.35rem;
+  }
+
+  .markdown-body pre {
+    overflow-x: auto;
+    border-radius: 0.75rem;
+    padding: 0.85rem 1rem;
+    background: color-mix(in srgb, currentColor, transparent 94%);
+  }
+
+  .markdown-body pre code {
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+  }
+
+  .markdown-body img,
+  .markdown-body video,
+  .markdown-body iframe {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .markdown-body figure {
+    margin: 1rem 0;
+  }
+
+  .markdown-body figcaption {
+    margin-top: 0.45rem;
+    font-size: 0.9em;
+    color: color-mix(in srgb, currentColor, transparent 40%);
+  }
+
+  .markdown-body table {
+    width: 100%;
+    border-collapse: collapse;
+    display: block;
+    overflow-x: auto;
+  }
+
+  .markdown-body th,
+  .markdown-body td {
+    border: 1px solid color-mix(in srgb, currentColor, transparent 85%);
+    padding: 0.5rem 0.65rem;
+    text-align: left;
+  }
+
+  .markdown-body thead th {
+    background: color-mix(in srgb, currentColor, transparent 95%);
+  }
+
+  .markdown-body input[type='checkbox'] {
+    margin-right: 0.45rem;
+    accent-color: var(--color-accent);
+  }
+
+  .markdown-body sup,
+  .markdown-body sub {
+    line-height: 0;
+  }
+}
