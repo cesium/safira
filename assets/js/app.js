@@ -22,7 +22,7 @@ import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import topbar from "../vendor/topbar"
 import live_select from "live_select"
-import { QrScanner, Wheel, Confetti, Countdown, Sorting, CoinFlip, Redirect, CredentialScene , Banner, ReelAnimation, PaytableModal, ZipUpload } from "./hooks";
+import { QrScanner, Wheel, Confetti, Countdown, Sorting, CoinFlip, Redirect, CredentialScene , Banner, ReelAnimation, PaytableModal, ZipUpload, Dock } from "./hooks";
 
 let Hooks = {
   QrScanner: QrScanner,
@@ -37,6 +37,7 @@ let Hooks = {
   ReelAnimation: ReelAnimation,
   PaytableModal: PaytableModal,
   ZipUpload: ZipUpload,
+  Dock: Dock,
   ...live_select
 };
 
