@@ -62,6 +62,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.WheelDrops.FormComponent do
                     <% else %>
                       <%= if type == :prize do %>
                         <.field
+                          id={"prize-#{id}"}
                           field={form[:prize_id]}
                           wrapper_class="col-span-4"
                           type="select"
@@ -70,6 +71,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.WheelDrops.FormComponent do
                       <% end %>
                       <%= if type == :badge do %>
                         <.field
+                          id={"badge-#{id}"}
                           field={form[:badge_id]}
                           wrapper_class="col-span-4"
                           type="select"
@@ -77,14 +79,34 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.WheelDrops.FormComponent do
                         />
                       <% end %>
                       <%= if type == :tokens do %>
-                        <.field field={form[:tokens]} wrapper_class="col-span-4" type="number" />
+                        <.field
+                          field={form[:tokens]}
+                          id={"tokens-#{id}"}
+                          wrapper_class="col-span-4"
+                          type="number"
+                        />
                       <% end %>
                       <%= if type == :entries do %>
-                        <.field field={form[:entries]} wrapper_class="col-span-4" type="number" />
+                        <.field
+                          field={form[:entries]}
+                          id={"entries-#{id}"}
+                          wrapper_class="col-span-4"
+                          type="number"
+                        />
                       <% end %>
                     <% end %>
-                    <.field field={form[:max_per_attendee]} type="number" wrapper_class="col-span-2" />
-                    <.field field={form[:probability]} type="number" wrapper_class="col-span-2" />
+                    <.field
+                      field={form[:max_per_attendee]}
+                      type="number"
+                      id={"max_per_attendee-#{id}"}
+                      wrapper_class="col-span-2"
+                    />
+                    <.field
+                      field={form[:probability]}
+                      type="number"
+                      id={"probability-#{id}"}
+                      wrapper_class="col-span-2"
+                    />
                     <.link
                       phx-click={JS.push("delete-drop", value: %{id: id})}
                       data-confirm="Are you sure?"
@@ -127,7 +149,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.WheelDrops.FormComponent do
     drops =
       Minigames.list_wheel_drops()
       |> Enum.map(fn drop ->
-        {Ecto.UUID.generate(), Minigames.get_wheel_drop_type(drop), drop,
+        {Ecto.UUID.generate(), Minigames.get_drop_type(drop), drop,
          to_form(Minigames.change_wheel_drop(drop))}
       end)
 

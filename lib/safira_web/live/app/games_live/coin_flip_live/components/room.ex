@@ -1,4 +1,4 @@
-defmodule SafiraWeb.App.CoinFlipLive.Components.Room do
+defmodule SafiraWeb.App.GamesLive.CoinFlipLive.Components.Room do
   @moduledoc """
   Coin Flip room component.
   """

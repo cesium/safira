@@ -1,4 +1,4 @@
-defmodule SafiraWeb.App.SlotsLive.Components.PaytableModal do
+defmodule SafiraWeb.App.GamesLive.SlotsLive.Components.PaytableModal do
   @moduledoc """
   Slots paytable modal component that shows winning combinations
   """

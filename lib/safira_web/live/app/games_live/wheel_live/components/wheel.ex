@@ -1,4 +1,4 @@
-defmodule SafiraWeb.App.WheelLive.Components.Wheel do
+defmodule SafiraWeb.App.GamesLive.WheelLive.Components.Wheel do
   @moduledoc """
   Lucky wheel component.
   """
