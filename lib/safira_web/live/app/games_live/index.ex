@@ -7,7 +7,7 @@ defmodule SafiraWeb.App.GamesLive.Index do
   def mount(_params, _session, socket) do
     games = [
       %{
-        name: "Lucky Whell",
+        name: "Lucky Wheel",
         icon: "wheel.svg",
         path: "wheel",
         desc: "Spin the wheel and win exciting prizes"

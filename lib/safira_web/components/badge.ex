@@ -39,8 +39,9 @@ defmodule SafiraWeb.Components.Badge do
       <span class="text-sm font-semibold text-center">
         {@badge.name}
       </span>
-      <span :if={@show_tokens} class="text-sm font-semibold">
-        💰 {@badge.tokens}
+      <span :if={@show_tokens} class="text-sm font-semibold flex place-items-center gap-2">
+        <.icon name="fa-sack-dollar-solid" class="w-3.5" />
+        {@badge.tokens}
       </span>
     </div>
     """

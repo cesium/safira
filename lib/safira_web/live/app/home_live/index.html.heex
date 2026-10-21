@@ -20,16 +20,19 @@
             <p class="text-sm font-normal">@{@current_user.handle}</p>
           </div>
         </div>
-        <div class="flex flex-col flex-shrink-0 flex-wrap my-auto">
+        <div class="flex flex-col shrink-0 flex-wrap my-auto">
           <div class="grid gap-4 sm:justify-center sm:gap-3">
-            <p>
-              💰 {gettext("%{attendee_tokens} tokens", attendee_tokens: @attendee_tokens)}
+            <p class="flex justify-center items-center gap-2">
+              <.icon name="fa-sack-dollar-solid" />
+              {gettext("%{attendee_tokens} tokens", attendee_tokens: @attendee_tokens)}
             </p>
-            <p>
-              🏅 {gettext("%{badge_count} Badges", badge_count: @attendee_badge_count)}
+            <p class="flex justify-center items-center gap-2">
+              <.icon name="fa-medal-solid" />
+              {gettext("%{badge_count} Badges", badge_count: @attendee_badge_count)}
             </p>
-            <p>
-              🎫 {gettext("%{attendee_entries} entries", attendee_entries: @attendee_entries)}
+            <p class="flex justify-center items-center gap-2">
+              <.icon name="fa-ticket-solid" />
+              {gettext("%{attendee_entries} entries", attendee_entries: @attendee_entries)}
             </p>
           </div>
         </div>
