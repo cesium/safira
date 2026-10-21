@@ -1,0 +1,15 @@
+<.page
+  title="Minigames"
+  size={:xl}
+  title_class="font-terminal uppercase"
+>
+  <div class="grid sm:grid-cols-3 py-8 gap-5 sm:gap-10">
+    <.game_card
+      :for={game <- @games}
+      icon={game.icon}
+      path={game.path}
+      name={game.name}
+      desc={game.desc}
+    />
+  </div>
+</.page>

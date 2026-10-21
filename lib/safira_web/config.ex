@@ -61,25 +61,11 @@ defmodule SafiraWeb.Config do
           enabled: true
         },
         %{
-          key: :wheel,
-          title: "Wheel",
-          image: "/images/icons/wheel.svg",
-          url: "/app/wheel",
+          key: :games,
+          title: "Games",
+          image: "/images/icons/play.svg",
+          url: "/app/games",
           enabled: attendee_eligible?
-        },
-        %{
-          key: :coin_flip,
-          title: "Coin Flip",
-          image: "/images/icons/coin-flip.svg",
-          url: "/app/coin_flip",
-          enabled: attendee_eligible?
-        },
-        %{
-          key: :slots,
-          title: "Slots",
-          image: "/images/icons/slots.svg",
-          url: "/app/slots",
-          enabled: true
         },
         %{
           key: :leaderboard,

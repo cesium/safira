@@ -109,16 +109,20 @@ defmodule SafiraWeb.Router do
 
         live "/credential", CredentialLive.Index, :index
 
-        live "/wheel", WheelLive.Index, :index
+        live "/games", GamesLive.Index, :index
 
-        live "/coin_flip", CoinFlipLive.Index, :index
+        live "/games/wheel", WheelLive.Index, :index
+
+        live "/games/coin_flip", CoinFlipLive.Index, :index
+
+        live "/games/scratch_card", ScratchCardLive.Index, :index
 
         scope "/badges", BadgeLive do
           live "/", Index, :index
           live "/:id", Show, :show
         end
 
-        scope "/slots", SlotsLive do
+        scope "/games/slots", SlotsLive do
           live "/", Index, :index
           live "/paytable", Index, :show_paytable
         end
