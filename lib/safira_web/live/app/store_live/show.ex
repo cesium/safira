@@ -3,6 +3,8 @@ defmodule SafiraWeb.App.StoreLive.Show do
 
   alias Safira.{Accounts, Store}
 
+  import SafiraWeb.App.StoreLive.Components.PurchaseModal
+
   @impl true
   def mount(%{"id" => id}, _session, socket) do
     if connected?(socket) do
@@ -17,7 +19,8 @@ defmodule SafiraWeb.App.StoreLive.Show do
     {:noreply,
      socket
      |> assign(:current_page, :store)
-     |> assign(:product, Store.get_product!(id))}
+     |> assign(:product, Store.get_product!(id))
+     |> assign(:purchase, nil)}
   end
 
   @impl true
@@ -42,7 +45,14 @@ defmodule SafiraWeb.App.StoreLive.Show do
          :attendee,
          Accounts.get_user_attendee(socket.assigns.current_user.id)
        )
-     )}
+     )
+     |> assign(:purchase, product)}
+  end
+
+  def handle_event("close-modal", _params, socket) do
+    {:noreply,
+     socket
+     |> assign(:purchase, nil)}
   end
 
   def can_purchase?(product, attendee) do

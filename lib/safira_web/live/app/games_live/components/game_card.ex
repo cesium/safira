@@ -13,16 +13,16 @@ defmodule SafiraWeb.App.GamesLive.Components.GameCard do
     ~H"""
     <.link
       navigate={"/app/games/#{@path}"}
-      class="flex flex-col h-full group gap-6 rounded-2xl border border-white/10 bg-black/20 p-8 backdrop-blur-md transition-all duration-500 hover:border-white/20 hover:bg-black/30 hover:shadow-2xl hover:shadow-primary/10"
+      class="flex flex-col h-full group gap-6 border-white/10 border-2 rounded-xl bg-black/20 p-8 backdrop-blur-md hover:-translate-y-1 transition-all duration-300 hover:border-accent/80 hover:shadow-[0_0_20px_2px] hover:shadow-accent/30"
     >
       <img src={~p"/images/icons/#{@icon}"} class="size-16 sm:size-24 invert" />
-      <div class="gap-2">
+      <div class="space-y-2 flex-col flex-1">
         <p class="text-2xl font-bold">{@name}</p>
         <p class="text-white/60">{@desc}</p>
       </div>
       <div class="inline-flex items-center gap-2 group-hover:gap-3 transition-all duration-300">
         <p>Play Now</p>
-        <.icon name="hero-arrow-right" class="size-4" />
+        <.icon name="hero-chevron-right" class="size-4" />
       </div>
     </.link>
     """

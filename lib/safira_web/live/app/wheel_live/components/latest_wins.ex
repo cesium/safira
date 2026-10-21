@@ -3,27 +3,50 @@ defmodule SafiraWeb.App.WheelLive.Components.LatestWins do
   Lucky wheel latest wins component.
   """
   use SafiraWeb, :component
+  import SafiraWeb.Components.Avatar
 
   attr :entries, :list, default: []
 
   def latest_wins(assigns) do
     ~H"""
-    <table class="w-full">
-      <tr class="border-b-2 text-md sm:text-lg">
-        <th class="pr-2 text-left">{gettext("Attendee")}</th>
-        <th class="px-4 text-center">{gettext("Prize")}</th>
-        <th class="pl-2 text-right">{gettext("When")}</th>
-      </tr>
+    <ul class="w-full divide-y divide-light/5 border-t border-light/10">
       <%= for entry <- @entries do %>
-        <tr class="text-sm sm:text-md">
-          <td class="pr-2 py-2 font-bold text-left">{entry.attendee.user.name}</td>
-          <td class="px-4 py-2 text-center">{entry_name(entry)}</td>
-          <td class="pl-2 py-2 text-accent font-bold text-right">
-            {Timex.from_now(entry.inserted_at)}
-          </td>
-        </tr>
+        <li class="flex flex-row w-full lg:gap-4 py-4 lg:px-4 items-center justify-between">
+          <.link
+            navigate={~p"/app/user/#{entry.attendee.user.handle}"}
+            class="flex gap-4 flex-center items-center min-w-0"
+          >
+            <.avatar
+              handle={entry.attendee.user.handle}
+              size={:sm}
+              src={
+                Uploaders.UserPicture.url(
+                  {entry.attendee.user.picture, entry.attendee.user},
+                  :original,
+                  signed: true
+                )
+              }
+            />
+            <div class="self-center min-w-0">
+              <p class="text-sm lg:text-base font-semibold truncate">{entry.attendee.user.name}</p>
+              <p class="text-sm lg:text-base font-normal text-light/50 truncate">
+                @{entry.attendee.user.handle}
+              </p>
+            </div>
+          </.link>
+
+          <div class="text-right">
+            <p class=" text-light">{entry_name(entry)}</p>
+            <p class="text-xs lg:text-sm text-light/50 shrink-0">
+              {relative_datetime(entry.inserted_at)}
+            </p>
+          </div>
+        </li>
       <% end %>
-    </table>
+      <li class="hidden only:flex w-full h-full flex-col items-center justify-center py-16 opacity-80 text-light/70">
+        {gettext("No wins yet. Be the first to win!")}
+      </li>
+    </ul>
     """
   end
 

@@ -8,71 +8,69 @@ defmodule SafiraWeb.App.SlotsLive.Components.ResultModal do
   attr :multiplier, :integer, required: true
   attr :winnings, :integer, required: true
   attr :show, :boolean, default: false
-  attr :text, :string, default: ""
-  attr :wrapper_class, :string, default: ""
   attr :on_cancel, JS, default: %JS{}
-  attr :content_class, :string, default: "bg-primary"
+
+  attr :wrapper_class, :string, default: ""
+
+  attr :content_class, :string,
+    default:
+      "bg-primary w-full max-w-lg mx-auto rounded-2xl border border-light/10 ring-white p-8 pt-9"
+
+  attr :container_class, :string, default: "flex min-h-full items-center justify-center"
 
   def result_modal(assigns) do
     ~H"""
-    <div
+    <.modal
       id={@id}
+      show={@show}
+      on_cancel={@on_cancel}
+      wrapper_class={@wrapper_class}
+      body_class={@content_class}
+      container_class={@container_class}
       phx-hook="Confetti"
-      phx-mounted={@show && show_modal(@id)}
-      phx-remove={hide_modal(@id)}
-      data-cancel={JS.exec(@on_cancel, "phx-remove")}
-      data-is_win={@multiplier > 1}
-      class="relative z-50 hidden"
+      data-is_win={win_result?(@multiplier)}
     >
-      <div id={"#{@id}-bg"} class="bg-dark/90 fixed inset-0 transition-opacity" aria-hidden="true" />
-      <div
-        class={"fixed inset-0 overflow-y-auto #{@wrapper_class}"}
-        aria-labelledby={"#{@id}-title"}
-        aria-describedby={"#{@id}-description"}
-        role="dialog"
-        aria-modal="true"
-        tabindex="0"
-      >
-        <div class="flex min-h-full items-center justify-center">
-          <div class="w-full max-w-4xl">
-            <.focus_wrap
-              id={"#{@id}-container"}
-              phx-window-keydown={JS.exec("data-cancel", to: "##{@id}")}
-              phx-key="escape"
-              phx-click-away={JS.exec("data-cancel", to: "##{@id}")}
-              class={"#{@content_class} shadow-zinc-700/10 relative hidden ring-4 ring-white rounded-2xl py-14 px-5 shadow-lg transition"}
-            >
-              <div
-                id={"#{@id}-content"}
-                class="font-terminal uppercase text-3xl md:text-4xl text-center"
-              >
-                {get_spin_result_title(@multiplier)}
-              </div>
-              <div class="text-center mt-4">
-                {get_spin_result_text(@multiplier, @winnings)}
-              </div>
-            </.focus_wrap>
-          </div>
+      <div class="flex flex-col items-center gap-6">
+        <span class="text-center space-y-2">
+          <h2 class="uppercase text-3xl font-bold">{result_title(@multiplier)}</h2>
+          <p class="text-lg text-light/50">{result_description(@multiplier, @winnings)}</p>
+        </span>
+
+        <div class="flex flex-col items-center gap-3 mt-2 w-full bg-dark-muted/10 p-4 rounded-xl border border-light/5">
+          <p class="uppercase text-xs tracking-wide text-light/50">{gettext("Result")}</p>
+          <p class="font-bold text-2xl text-center text-light">
+            {gettext("%{winnings} tokens", winnings: @winnings)}
+          </p>
+
+          <p class="text-sm text-light/50 text-center">
+            {multiplier_text(@multiplier)}
+          </p>
         </div>
       </div>
-    </div>
+    </.modal>
     """
   end
 
-  defp get_spin_result_title(multiplier) do
+  defp win_result?(multiplier), do: multiplier > 1
+
+  defp result_title(multiplier) do
     cond do
-      multiplier == 1 -> gettext("Bet refunded! 💰")
-      multiplier > 1 -> gettext("You won tokens! 🎉")
+      multiplier == 1 -> gettext("Bet refunded")
+      multiplier > 1 -> gettext("Congratulations!")
     end
   end
 
-  defp get_spin_result_text(multiplier, winnings) do
+  defp result_description(multiplier, winnings) do
     cond do
       multiplier == 1 ->
-        gettext("Phew, your bet was refunded! Will you try your luck with another spin?")
+        gettext("You got back %{winnings} tokens. Want to try again?", winnings: winnings)
 
       multiplier > 1 ->
-        gettext("Congratulations! You won %{winnings} tokens!", winnings: winnings)
+        gettext("You hit a winning combination.")
     end
+  end
+
+  defp multiplier_text(multiplier) do
+    gettext("Multiplier: x%{multiplier}", multiplier: multiplier)
   end
 end

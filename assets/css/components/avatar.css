@@ -25,3 +25,7 @@
 .safira-avatar--xl {
   @apply h-24 w-24 text-4xl;
 }
+
+.safira-avatar--xxl {
+  @apply h-28 w-28 text-4xl;
+}

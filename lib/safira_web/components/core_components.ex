@@ -38,10 +38,25 @@ defmodule SafiraWeb.CoreComponents do
       </.modal>
 
   """
+  attr :rest, :global
   attr :id, :string, required: true
   attr :show, :boolean, default: false
+  attr :backdrop_class, :string, default: "bg-dark/90 transition-opacity"
   attr :wrapper_class, :string, default: ""
+  attr :container_class, :string, default: "flex min-h-full items-center justify-center"
+
+  attr :body_class, :string,
+    default:
+      "border dark:border-darkShade rounded-2xl bg-light dark:bg-dark p-8 sm:p-14 shadow-zinc-700/10 shadow-lg"
+
   attr :on_cancel, JS, default: %JS{}
+  attr :close_button, :boolean, default: true
+  attr :close_button_class, :string, default: "absolute top-6 right-5"
+  attr :close_button_icon_class, :string, default: "h-5 w-5"
+
+  attr :close_button_button_class, :string,
+    default: "-m-3 flex-none p-3 opacity-20 text-dark dark:text-light hover:opacity-40"
+
   slot :inner_block, required: true
 
   def modal(assigns) do
@@ -52,8 +67,9 @@ defmodule SafiraWeb.CoreComponents do
       phx-remove={hide_modal(@id)}
       data-cancel={JS.exec(@on_cancel, "phx-remove")}
       class="relative z-50 hidden"
+      {@rest}
     >
-      <div id={"#{@id}-bg"} class="bg-dark/90 fixed inset-0 transition-opacity" aria-hidden="true" />
+      <div id={"#{@id}-bg"} class={[@backdrop_class, "fixed inset-0"]} aria-hidden="true" />
       <div
         class={"fixed inset-0 overflow-y-auto #{@wrapper_class}"}
         aria-labelledby={"#{@id}-title"}
@@ -62,23 +78,23 @@ defmodule SafiraWeb.CoreComponents do
         aria-modal="true"
         tabindex="0"
       >
-        <div class="flex min-h-full items-center justify-center">
+        <div class={@container_class}>
           <div class="w-full max-w-4xl">
             <.focus_wrap
               id={"#{@id}-container"}
               phx-window-keydown={JS.exec("data-cancel", to: "##{@id}")}
               phx-key="escape"
               phx-click-away={JS.exec("data-cancel", to: "##{@id}")}
-              class="shadow-zinc-700/10 relative hidden border dark:border-darkShade rounded-2xl bg-light dark:bg-dark p-8 sm:p-14 shadow-lg transition"
+              class={"relative hidden transition #{@body_class}"}
             >
-              <div class="absolute top-6 right-5">
+              <div :if={@close_button} class={@close_button_class}>
                 <button
                   phx-click={JS.exec("data-cancel", to: "##{@id}")}
                   type="button"
-                  class="-m-3 flex-none p-3 opacity-20 text-dark dark:text-light hover:opacity-40"
+                  class={@close_button_button_class}
                   aria-label={gettext("close")}
                 >
-                  <.icon name="hero-x-mark-solid" class="h-5 w-5" />
+                  <.icon name="hero-x-mark-solid" class={@close_button_icon_class} />
                 </button>
               </div>
               <div id={"#{@id}-content"}>
@@ -461,6 +477,8 @@ defmodule SafiraWeb.CoreComponents do
   Renders a header with title.
   """
   attr :class, :string, default: nil
+  attr :style, :string, default: nil
+  attr :overlay_class, :string, default: nil
   attr :title_class, :string, default: ""
 
   slot :inner_block, required: true
@@ -469,12 +487,17 @@ defmodule SafiraWeb.CoreComponents do
 
   def header(assigns) do
     ~H"""
-    <header class={[
-      @actions != [] &&
-        "flex items-left sm:items-center justify-between gap-2 sm:gap-6 flex-row",
-      @class
-    ]}>
-      <div class="flex flex-col justify-center">
+    <header
+      class={[
+        @actions != [] &&
+          "flex items-left sm:items-center justify-between gap-2 sm:gap-6 flex-row",
+        @overlay_class && "relative overflow-hidden",
+        @class
+      ]}
+      style={@style}
+    >
+      <div :if={@overlay_class} class={[@overlay_class, "absolute inset-0 pointer-events-none"]} />
+      <div class="relative z-10 flex flex-col justify-center">
         <h1 class={"font-semibold leading-8 #{@title_class}"}>
           {render_slot(@inner_block)}
         </h1>
@@ -482,7 +505,7 @@ defmodule SafiraWeb.CoreComponents do
           {render_slot(@subtitle)}
         </p>
       </div>
-      <div class="flex-none">{render_slot(@actions)}</div>
+      <div class="relative z-10 flex-none">{render_slot(@actions)}</div>
     </header>
     """
   end

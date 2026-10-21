@@ -1,18 +1,37 @@
-<.page title={@badge.name} size={:xl} title_class="font-terminal uppercase">
+<.page
+  title={@badge.name}
+  size={:xl}
+  title_class="uppercase"
+  back_to_link="/app/badges"
+  back_to_link_text="Back to Badgedex"
+  back_to_link_class="text-light/50 hover:text-white mt-2 transition-colors duration-300"
+>
   <div class="flex flex-col lg:flex-row w-full mt-8 gap-12">
-    <div class="w-full flex flex-col text-center gap-10">
-      <.badge id={@badge.id} badge={@badge} disabled={!@owns_badge} width="max-w-96" show_tokens />
-      <p class="lg:px-16">{@badge.description}</p>
+    <div class="w-full flex flex-col text-center gap-6">
+      <.badge
+        id={@badge.id}
+        badge={@badge}
+        disabled={!@owns_badge}
+        width="max-w-96"
+        show_tokens
+        desc_size={:big}
+        class="gap-2"
+      />
+      <p class="lg:px-16 text-light/50">{@badge.description}</p>
     </div>
     <div class="w-full">
-      <h2 class="font-terminal uppercase text-2xl">
-        {gettext("Owners")} ({@owners_count})
+      <h2 class="uppercase text-2xl pb-4 text-light/50">
+        {gettext("With this badge")} ({@owners_count})
       </h2>
-      <ul id="owners" class="py-4" phx-update="stream">
+      <ul
+        id="owners"
+        class="divide-y divide-light/10 border-t border-light/10"
+        phx-update="stream"
+      >
         <%= for {id, redeem} <- @streams.owners do %>
           <li
             id={id}
-            class="flex flex-row w-full lg:gap-4 py-4 lg:px-4 items-center justify-between border-t first:border-0 border-white"
+            class="flex flex-row w-full lg:gap-4 py-4 lg:px-4 items-center justify-between"
           >
             <div class="flex gap-4 flex-center items-center">
               <.avatar
@@ -28,12 +47,12 @@
               />
               <div class="self-center">
                 <p class="text-sm lg:text-base font-semibold">{redeem.attendee.user.name}</p>
-                <p class="text-sm lg:text-base font-normal">
+                <p class="text-sm lg:text-base font-normal text-light/50">
                   @{redeem.attendee.user.handle}
                 </p>
               </div>
             </div>
-            <p class="text-sm lg:text-base">
+            <p class="text-sm lg:text-base text-light/50">
               {relative_datetime(redeem.inserted_at)}
             </p>
           </li>
