@@ -1,5 +1,9 @@
-<.page title="Vault" size={:xl} title_class="font-terminal uppercase">
-  <ul id="items-list" class="space-y-4 py-8" phx-update="stream">
+<.page title="Vault" size={:xl} title_class="uppercase">
+  <ul
+    id="items-list"
+    class="overflow-hidden divide-light/10 divide-y bg-light/5 border-white/5 border rounded-xl px-6"
+    phx-update="stream"
+  >
     <.item
       :for={{id, item} <- @streams.items}
       id={id}

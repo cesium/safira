@@ -1,14 +1,23 @@
-<.page title={gettext("Coin Flip")} size={:xl} title_class="font-terminal uppercase">
+<.page
+  title={gettext("Coin Flip")}
+  size={:xl}
+  title_class="uppercase"
+  back_to_link="/app/games"
+  back_to_link_text="Back to Minigames"
+  back_to_link_class="text-light/50 hover:text-white mt-2 transition-colors duration-300"
+>
   <:actions>
-    <span class="text-semibold text-xl border-2 px-4 py-2 rounded-full font-terminal flex place-items-center gap-2">
+    <span class="text-semibold text-xl flex place-items-center gap-2">
       <.icon name="fa-sack-dollar-solid" />
       {@attendee_tokens}
     </span>
   </:actions>
-  <div class="flex flex-col sm:flex-row justify-between mt-12 w-full gap-6 sm:gap-10 items-center">
-    <div class="flex border-2 divide-x-2 rounded-full w-full sm:px-3 max-w-lg overflow-hidden">
-      <div class="flex items-center py-2 w-full pl-2">
-        <.icon name="hero-currency-dollar-solid" class="text-yellow-300 ml-2" />
+
+  <h3 class="uppercase font-bold text-light/50 pt-4">{gettext("New game")}</h3>
+  <div class="flex flex-col sm:flex-row justify-between w-full gap-4 mt-6 sm:gap-10 items-center">
+    <div class="flex w-full gap-2 max-w-lg">
+      <div class="flex items-center py-2 w-full px-4 rounded-xl border border-light/10 bg-light/5">
+        <.icon name="fa-sack-dollar-solid" class="size-4" />
         <.form for={%{}} phx-change="set-bet" class="w-full">
           <input
             name="bet"
@@ -21,76 +30,94 @@
           />
         </.form>
       </div>
-      <div class="flex items-stretch divide-x-2">
-        <button
-          phx-click="set-bet"
-          phx-value-bet={round(@bet / 2)}
-          class="px-3 py-2 sm:px-4 sm:py-3 active:bg-blue-900/35 transition duration-200 font-terminal font-bold"
-        >
-          1/2
-        </button>
-        <button
-          phx-click="set-bet"
-          phx-value-bet={@bet * 2}
-          class="px-3 py-2 sm:px-5 sm:py-3 active:bg-blue-900/35 transition duration-200 font-terminal font-bold"
-        >
-          x2
-        </button>
-        <button
-          phx-click="set-bet"
-          phx-value-bet={@attendee_tokens}
-          class="pl-3 pr-4 py-2 sm:px-4 sm:py-3 active:bg-blue-900/35 transition duration-200 font-terminal font-bold"
-        >
-          MAX
-        </button>
-      </div>
+
+      <button
+        phx-click="set-bet"
+        phx-value-bet={round(@bet / 2)}
+        class="px-4 py-3 border cursor-pointer tracking-wider hover:border-accent/60 transition-colors duration-300 border-light/10 bg-light/5 active:bg-accent/60 active:text-primary rounded-xl font-bold"
+      >
+        1/2
+      </button>
+      <button
+        phx-click="set-bet"
+        phx-value-bet={@bet * 2}
+        class="px-4 py-3 border cursor-pointer tracking-wider hover:border-accent/60 transition-colors duration-300 border-light/10 bg-light/5 active:bg-accent/60 active:text-primary rounded-xl font-bold"
+      >
+        x2
+      </button>
+      <button
+        phx-click="set-bet"
+        phx-value-bet={@attendee_tokens}
+        class="px-4 py-3 border cursor-pointer tracking-wider hover:border-accent/60 transition-colors duration-300 border-light/10 bg-light/5 active:bg-accent/60 active:text-primary rounded-xl font-bold"
+      >
+        MAX
+      </button>
     </div>
     <.action_button
       title={gettext("Play")}
       subtitle={gettext("CURRENT FEE: %{fee}%", fee: round(@coin_flip_fee * 100))}
-      class="max-w-80 mx-0"
+      class="w-full md:max-w-80 gap-0! mx-0 border! bg-light/5 border-light/10! h-fit! py-2!"
+      subtitle_class="text-xs text-light/50"
+      title_class="text-lg"
       disabled={@bet > @attendee_tokens || not @coin_flip_active?}
       phx-click="create-room"
     />
   </div>
-  <h2 class="text-3xl font-semibold font-terminal mt-10 pl-2">
-    {gettext("CURRENT GAMES:")}
-  </h2>
-  <p :if={@room_list_count == 0} class="text-2xl  w-full text-center my-16 sm:my-24">
-    {gettext("No games in progress.")}
-  </p>
-  <div
-    id="room-list-current"
-    class="flex flex-col w-full md:flex-row flex-wrap items-center h-auto gap-5 my-2 sm:my-5"
-    phx-update="stream"
-  >
-    <.room
-      :for={{id, room} <- @streams.room_list}
-      id={id}
-      room={room}
-      current_user={@current_user}
-      attendee_tokens={@attendee_tokens}
-      coin_flip_fee={@coin_flip_fee}
-    />
+
+  <div class="flex flex-col mt-10">
+    <div class="inline-flex items-center gap-2 pb-2 w-full border-b border-light/10">
+      <.icon name="fa-gamepad-solid" class="size-5 text-accent" />
+      <h2 class="text-lg self-start text-light/50 uppercase font-bold">
+        {gettext("Current games")}
+      </h2>
+    </div>
+
+    <p :if={@room_list_count == 0} class="text-lg text-light/50 w-full text-center my-16 sm:my-24">
+      {gettext("No games in progress.")}
+    </p>
+
+    <div
+      id="room-list-current"
+      class="grid w-full grid-cols-1 lg:grid-cols-2 gap-4 my-2 sm:my-5"
+      phx-update="stream"
+    >
+      <.room
+        :for={{id, room} <- @streams.room_list}
+        id={id}
+        room={room}
+        current_user={@current_user}
+        attendee_tokens={@attendee_tokens}
+        coin_flip_fee={@coin_flip_fee}
+      />
+    </div>
   </div>
-  <h2 class="text-3xl font-semibold font-terminal mt-6 pl-2">
-    {gettext("PREVIOUS GAMES:")}
-  </h2>
-  <p :if={@previous_room_list_count == 0} class="text-2xl w-full text-center my-16 sm:my-24">
-    {gettext("No previous games yet.")}
-  </p>
-  <div
-    id="room-list-previous"
-    class="flex flex-col w-full md:flex-row flex-wrap items-center h-auto gap-5 my-2 sm:my-5"
-    phx-update="stream"
-  >
-    <.room
-      :for={{id, room} <- @streams.previous_room_list}
-      id={id}
-      room={room}
-      current_user={@current_user}
-      attendee_tokens={@attendee_tokens}
-      coin_flip_fee={@coin_flip_fee}
-    />
+
+  <div class="flex flex-col mt-10">
+    <div class="inline-flex items-center gap-2 pb-2 w-full border-b border-light/10">
+      <.icon name="fa-clock-solid" class="size-4 text-accent" />
+      <h2 class="text-lg self-start text-light/50 uppercase font-bold">
+        {gettext("Previous games")}
+      </h2>
+    </div>
+    <p
+      :if={@previous_room_list_count == 0}
+      class="text-lg text-light/50 w-full text-center my-16 sm:my-24"
+    >
+      {gettext("No games have finished yet.")}
+    </p>
+    <div
+      id="room-list-previous"
+      class="grid w-full grid-cols-1 lg:grid-cols-2 gap-4 my-2 sm:my-5"
+      phx-update="stream"
+    >
+      <.room
+        :for={{id, room} <- @streams.previous_room_list}
+        id={id}
+        room={room}
+        current_user={@current_user}
+        attendee_tokens={@attendee_tokens}
+        coin_flip_fee={@coin_flip_fee}
+      />
+    </div>
   </div>
 </.page>

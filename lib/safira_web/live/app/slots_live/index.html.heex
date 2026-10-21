@@ -1,67 +1,80 @@
-<.page title={gettext("Slots")} size={:xl} title_class="font-terminal uppercase">
+<.page
+  title={gettext("Slots")}
+  size={:xl}
+  title_class="uppercase"
+  back_to_link="/app/games"
+  back_to_link_text="Back to Minigames"
+  back_to_link_class="text-light/50 hover:text-white mt-2 transition-colors duration-300"
+>
   <:actions>
-    <span class="text-semibold text-xl border-2 px-4 py-2 rounded-full font-terminal flex place-items-center gap-2">
+    <span class="text-semibold text-xl flex place-items-center gap-2">
       <.icon name="fa-sack-dollar-solid" />
       {@attendee_tokens}
     </span>
   </:actions>
-  <.machine />
-  <div class="flex flex-col md:flex-row gap-6 items-center md:justify-between">
-    <div class="flex border-2 divide-x-2 rounded-full w-full sm:px-3 max-w-lg overflow-hidden">
-      <div class="flex items-center py-2 w-full pl-2">
-        <.icon name="hero-currency-dollar-solid" class="text-yellow-300 ml-2" />
-        <.form for={%{}} phx-change="set-bet" class="w-full">
-          <input
-            name="bet"
-            type="number"
-            min="10"
-            max={@attendee_tokens}
-            value={@bet}
-            phx-debounce="250"
-            class="w-full bg-transparent border-none focus:ring-transparent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none safira-number-input-without-bg"
-          />
-        </.form>
-      </div>
-      <div class="flex items-stretch divide-x-2">
+
+  <section class="w-full flex flex-col items-center justify-center space-y-12">
+    <.machine />
+
+    <div class="flex flex-col gap-4 items-center max-w-xl w-full">
+      <div class="flex w-full gap-2">
+        <div class="flex items-center py-2 w-full px-4 rounded-xl border border-light/10 bg-light/5">
+          <.icon name="fa-sack-dollar-solid" class="size-4" />
+          <.form for={%{}} phx-change="set-bet" class="w-full">
+            <input
+              name="bet"
+              type="number"
+              min="10"
+              max={@attendee_tokens}
+              value={@bet}
+              phx-debounce="250"
+              class="w-full bg-transparent border-none focus:ring-transparent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none safira-number-input-without-bg"
+            />
+          </.form>
+        </div>
+
         <button
           phx-click="set-bet"
           phx-value-bet={round(@bet / 2)}
-          class="px-3 py-2 sm:px-4 sm:py-3 active:bg-blue-900/35 transition duration-200 font-terminal font-bold"
+          class="px-4 py-3 border cursor-pointer tracking-wider hover:border-accent/60 transition-colors duration-300 border-light/10 bg-light/5 active:bg-accent/60 active:text-primary rounded-xl font-bold"
         >
           1/2
         </button>
         <button
           phx-click="set-bet"
           phx-value-bet={@bet * 2}
-          class="px-3 py-2 sm:px-5 sm:py-3 active:bg-blue-900/35 transition duration-200 font-terminal font-bold"
+          class="px-4 py-3 border cursor-pointer tracking-wider hover:border-accent/60 transition-colors duration-300 border-light/10 bg-light/5 active:bg-accent/60 active:text-primary rounded-xl font-bold"
         >
           x2
         </button>
         <button
           phx-click="set-bet"
           phx-value-bet={@attendee_tokens}
-          class="pl-3 pr-4 py-2 sm:px-4 sm:py-3 active:bg-blue-900/35 transition duration-200 font-terminal font-bold"
+          class="px-4 py-3 border cursor-pointer tracking-wider hover:border-accent/60 transition-colors duration-300 border-light/10 bg-light/5 active:bg-accent/60 active:text-primary rounded-xl font-bold"
         >
           MAX
         </button>
       </div>
+
+      <div class="inline-flex justify-between gap-4 w-full">
+        <.action_button
+          title={gettext("Spin")}
+          class="flex-1 mx-0 border! border-light/10! h-fit! py-4 bg-light/5"
+          disabled={@bet > @attendee_tokens || not @slots_active? || @in_spin?}
+          phx-click="spin-slots"
+        />
+
+        <.link
+          patch={~p"/app/games/slots/paytable"}
+          class="px-4 py-3 border cursor-pointer tracking-wider hover:border-accent/70 hover:bg-accent/30 transition-colors duration-300 border-accent/60 bg-light/5 rounded-xl font-bold flex items-center justify-center gap-2"
+        >
+          <span class="text-accent uppercase">
+            {gettext("View paytable")}
+          </span>
+        </.link>
+      </div>
     </div>
-    <.action_button
-      title={gettext("Spin")}
-      class="max-w-80 mx-0"
-      disabled={@bet > @attendee_tokens || not @slots_active? || @in_spin?}
-      phx-click="spin-slots"
-    />
-  </div>
-  <.link
-    patch={~p"/app/games/slots/paytable"}
-    class="flex items-center max-w-80 mx-auto mt-8 md:mt-20 justify-center"
-  >
-    <.icon name="hero-arrow-top-right-on-square" class="text-accent mr-2" />
-    <span class="text-accent font-terminal font-bold uppercase">
-      {gettext("View paytable")}
-    </span>
-  </.link>
+  </section>
 </.page>
 
 <.result_modal
@@ -76,7 +89,7 @@
 
 <.paytable_modal
   :if={@live_action in [:show_paytable]}
-  wrapper_class="px-6"
+  wrapper_class="px-6 pt-8 pb-28 md:pb-0 md:pt-0"
   show
   id="paytable-modal"
   on_cancel={JS.patch(~p"/app/games/slots")}

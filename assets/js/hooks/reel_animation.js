@@ -16,7 +16,7 @@ export const ReelAnimation = {
       }
       
       this.isRolling = true
-      const reelsList = document.querySelectorAll(".slots-container > .reel-slot")
+      const reelsList = this.el.querySelectorAll(".slots-container .reel-slot")
       const promises = []
 
       for (let i = 0; i < reelsList.length; i++) {

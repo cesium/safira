@@ -15,7 +15,7 @@ defmodule SafiraWeb.App.LeaderboardLive.Components.Leaderboard do
     ~H"""
     <div class="w-full">
       <.leaderboard_top_3 entries={Enum.take(@entries, 3)} />
-      <ul class="flex flex-col gap-4 mt-6">
+      <ul class="flex flex-col mt-6 w-full divide-y divide-light/5 bg-light/2 border border-light/5 rounded-xl">
         <.leaderboard_entry
           :for={entry <- Enum.drop(@entries, 3)}
           entry={entry}
@@ -36,7 +36,7 @@ defmodule SafiraWeb.App.LeaderboardLive.Components.Leaderboard do
 
   defp leaderboard_top_3(assigns) do
     ~H"""
-    <div class="flex flex-row justify-between w-full">
+    <div class="flex flex-row justify-between max-w-xl mx-auto">
       <.leaderboard_top_person entry={Enum.at(@entries, 1)} pos={2} />
       <.leaderboard_top_person entry={Enum.at(@entries, 0)} winner={true} pos={1} />
       <.leaderboard_top_person entry={Enum.at(@entries, 2)} pos={3} />
@@ -55,22 +55,24 @@ defmodule SafiraWeb.App.LeaderboardLive.Components.Leaderboard do
         <.icon
           :if={@winner}
           name="fa-crown fa-crown-solid"
-          class="w-10 h-10 translate-y-6 text-accent"
+          class="w-10 h-10 translate-y-4 text-accent"
         />
         <.avatar
           handle={@entry.handle}
           size={:xl}
           src={get_picture_url(@entry)}
-          class="bg-light/5 border-2 border-accent bg-accent rounded-full"
+          class="border-3 border-light shadow-[0_0_20px_2px] shadow-white/25 rounded-full"
           link={~p"/app/user/#{@entry.handle}"}
         />
-        <span class="bg-accent rounded-full px-2 -translate-y-3 select-none text-primary/80 font-semibold border-primary border-2">
+        <span class="bg-light text-dark rounded-full px-2 -translate-y-4 select-none font-semibold border-light border-2">
           {@pos}
         </span>
         <p class="font-semibold truncate max-w-28 sm:max-w-full">{@entry.name}</p>
-        <p class="font-semibold">
-          {gettext("%{badges_count} badges", badges_count: @entry.badges)}
-        </p>
+        <div class="flex items-center gap-1.5 font-bold">
+          <.icon name="fa-medal-solid" class="size-4 text-accent" />
+          <p>{@entry.badges}</p>
+          <p class="uppercase text-sm font-normal text-light/50">badges</p>
+        </div>
       </div>
     <% end %>
     """
@@ -81,29 +83,38 @@ defmodule SafiraWeb.App.LeaderboardLive.Components.Leaderboard do
 
   defp leaderboard_entry(assigns) do
     ~H"""
-    <li class={"flex flex-row py-3 px-4 rounded-lg justify-between items-center #{if @self do "bg-accent text-primary/80" else "bg-light/5 text-white" end}"}>
-      <div class="flex flex-row gap-4 items-center">
-        <p class="font-bold text-xl">
+    <li class={[
+      "flex flex-row py-4 pl-3 pr-4 md:pl-7 md:pr-8 justify-between items-center text-white gap-3",
+      @self && "bg-accent/20 rounded-b-xl"
+    ]}>
+      <div class="flex flex-row gap-4 items-center min-w-0 flex-1">
+        <p class="font-bold text-center tabular-nums min-w-[3ch] shrink-0 leading-none">
           {@entry.position}
         </p>
-        <.avatar
-          handle={@entry.handle}
-          size={:sm}
-          class={"#{if @self do "bg-primary/10 border-2 border-primary/10" else "bg-light/5 border-2 border-light/5" end} rounded-full"}
-          src={get_picture_url(@entry)}
-          link={~p"/app/user/#{@entry.handle}"}
-        />
-        <p class="font-semibold truncate max-w-40">
-          {@entry.name}
-        </p>
+
+        <.link class="flex items-center gap-4 min-w-0 flex-1" navigate={"/app/user/#{@entry.handle}"}>
+          <.avatar
+            handle={@entry.handle}
+            size={:sm}
+            class={"#{if @self do "bg-accent/10 border-2 border-accent/10" else "bg-light/5 border-2 border-light/5" end} rounded-full shrink-0"}
+            src={get_picture_url(@entry)}
+          />
+
+          <div class="min-w-0 flex-1">
+            <p class="font-medium truncate">
+              {@entry.name}
+            </p>
+            <p class="text-light/50 text-sm truncate">
+              @{@entry.handle}
+            </p>
+          </div>
+        </.link>
       </div>
-      <div>
-        <p class="font-semibold">
-          {@entry.badges}
-          <span class="hidden lg:inline">
-            {gettext(" badges")}
-          </span>
-        </p>
+
+      <div class="flex items-center gap-2 font-bold shrink-0">
+        <.icon name="fa-medal-solid" class="size-4 text-accent shrink-0" />
+        <p>{@entry.badges}</p>
+        <p class="uppercase text-sm font-normal hidden sm:block text-light/50">badges</p>
       </div>
     </li>
     """

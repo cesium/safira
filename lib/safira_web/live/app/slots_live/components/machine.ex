@@ -17,17 +17,29 @@ defmodule SafiraWeb.App.SlotsLive.Components.Machine do
       |> assign(:reel_height, calculate_height(reels_by_position))
 
     ~H"""
-    <div id="slots-machine" phx-hook="ReelAnimation">
-      <div class="flex justify-center my-12">
-        <div class="slots-container flex gap-5 rounded-3xl py-6 px-2 items-center justify-center ring-2 ring-white w-full max-w-96">
+    <div id="slots-machine" phx-hook="ReelAnimation" class="w-full max-w-xl">
+      <div class="flex flex-col justify-center border border-light/10 shadow-[0_0_30px_2px] shadow-accent/0 w-full rounded-xl">
+        <div class="inline-flex gap-2 py-3 items-center justify-center rounded-t-xl border-b border-light/10">
+          <h3 class="uppercase tracking-wider font-semibold text-accent">safira slots</h3>
+        </div>
+
+        <div class="slots-container flex gap-2 sm:gap-5 py-4 sm:py-8 px-1 sm:px-2 items-center justify-center bg-light/2">
           <%= for reel_num <- 0..2 do %>
-            <div
-              id={"slots-reel-#{reel_num}"}
-              class="reel-slot rounded-3xl ring-2 ring-white"
-              data-reel={reel_num}
-              style={"width: 79px; height: 237px; background-size: 79px #{@reel_height}px; background-position-y: #{build_background_positions(@reels_by_position[reel_num])}; background-image: #{build_reel_background(@reels_by_position[reel_num])};"}
-            />
+            <div class="border border-light/10 px-2 py-2 sm:px-4 sm:py-4 rounded-xl">
+              <div
+                id={"slots-reel-#{reel_num}"}
+                class="reel-slot"
+                data-reel={reel_num}
+                style={"width: 79px; height: 237px; background-size: 79px #{@reel_height}px; background-position-y: #{build_background_positions(@reels_by_position[reel_num])}; background-image: #{build_reel_background(@reels_by_position[reel_num])};"}
+              />
+            </div>
           <% end %>
+        </div>
+
+        <div class="inline-flex gap-2 py-3 items-center justify-center rounded-b-xl border-t border-light/10">
+          <span class="h-px max-w-12 w-full bg-accent/80" />
+          <p class="uppercase text-light/50 text-xs">{gettext("payline")}</p>
+          <span class="h-px max-w-12 w-full bg-accent/80" />
         </div>
       </div>
     </div>

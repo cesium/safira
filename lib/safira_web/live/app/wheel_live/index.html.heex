@@ -1,16 +1,25 @@
-<.page title={gettext("Wheel")} size={:xl} title_class="font-terminal uppercase">
+<.page
+  title={gettext("Wheel")}
+  size={:xl}
+  full_height
+  child_class="xl:h-full xl:min-h-0 xl:overflow-hidden"
+  title_class="uppercase"
+  back_to_link="/app/games"
+  back_to_link_text="Back to Minigames"
+  back_to_link_class="text-light/50 hover:text-white mt-2 transition-colors duration-300"
+>
   <:actions>
-    <span class="text-semibold text-xl border-2 px-4 py-2 rounded-full font-terminal flex place-items-center gap-2">
+    <span class="text-semibold text-xl flex place-items-center gap-2">
       <.icon name="fa-sack-dollar-solid" />
       {@attendee_tokens}
     </span>
   </:actions>
 
-  <div class="grid grid-cols-1 xl:grid-cols-2 xl:gap-10">
-    <div class="mt-12">
+  <div class="grid grid-cols-1 xl:grid-cols-2 gap-12 py-10 xl:h-full xl:min-h-0 xl:overflow-hidden xl:box-border">
+    <div class="flex flex-col items-center h-fit">
       <div>
-        <h2 class="text-2xl font-terminal uppercase font-bold mb-8">
-          {gettext("Spin To Win!")}
+        <h2 class="text-2xl uppercase font-bold">
+          {gettext("Spin to Win!")}
         </h2>
       </div>
       <.wheel />
@@ -25,15 +34,31 @@
         />
       </div>
     </div>
-    <div class="mt-12">
-      <h2 class="text-2xl font-terminal uppercase font-bold mb-8">
-        {gettext("Latest Wins")}
-      </h2>
-      <.latest_wins entries={@latest_wins} />
-      <h2 class="text-2xl font-terminal uppercase font-bold mt-24 mb-8">
-        {gettext("Awards")}
-      </h2>
-      <.awards entries={@drops} />
+
+    <div class="flex flex-col items-center gap-4 xl:h-full xl:min-h-0">
+      <div class="flex flex-col w-full xl:flex-1 xl:min-h-0">
+        <div class="inline-flex items-center gap-2 pb-2 w-full">
+          <.icon name="fa-award-solid" class="size-5 text-accent" />
+          <h2 class="text-lg self-start text-light/50 uppercase font-bold">
+            {gettext("Latest Wins")}
+          </h2>
+        </div>
+        <div class="w-full xl:min-h-0 xl:overflow-y-auto">
+          <.latest_wins entries={@latest_wins} />
+        </div>
+      </div>
+
+      <div class="flex flex-col w-full xl:flex-1 xl:min-h-0">
+        <div class="inline-flex items-center gap-2 pb-2 w-full">
+          <.icon name="fa-gift-solid" class="size-4 text-accent" />
+          <h2 class="text-lg self-start text-light/50 uppercase font-bold">
+            {gettext("Awards")}
+          </h2>
+        </div>
+        <div class="w-full xl:min-h-0 xl:overflow-y-auto">
+          <.awards entries={@drops} />
+        </div>
+      </div>
     </div>
   </div>
 </.page>

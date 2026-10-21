@@ -17,8 +17,8 @@
       user_dropdown_name_color="text-light"
       user_dropdown_handle_color="text-light/60"
       user_dropdown_icon_color="text-lightShade"
-      link_active_class="bg-light text-primary"
-      link_inactive_class="hover:bg-primary-500/10 text-light"
+      link_active_class="bg-accent/10 text-white border-l-4 pl-3 shadow-[0_0_20px_2px] shadow-accent/10 border-accent"
+      link_inactive_class="hover:bg-light/5 text-white/60"
     />
     <div class="flex flex-col flex-1 overflow-hidden">
       <.banner
@@ -30,20 +30,8 @@
         }
         end_time={@current_spotlight.end}
       />
-      <div
-        :if={Map.get(assigns, :event_started, true)}
-        class="flex justify-end lg:hidden px-4 sm:px-6 py-2"
-      >
-        <button
-          class="sidebar-toggle flex items-center justify-center w-16 text-light"
-          aria-expanded="false"
-          phx-click={show_mobile_sidebar()}
-        >
-          <.icon class="w-8 h-8" name="hero-bars-3" />
-        </button>
-      </div>
-      <main class="text-light flex-1 relative z-0 overflow-y-auto focus:outline-none font-iregular">
-        <div class="px-6 sm:px-6 lg:px-8 py-8">
+      <main class="text-light flex-1 relative z-0 overflow-y-auto focus:outline-none font-iregular bg-primary">
+        <div class="h-full w-full">
           <.flash_group flash={@flash} />
           {@inner_content}
         </div>

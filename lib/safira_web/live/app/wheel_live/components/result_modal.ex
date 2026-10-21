@@ -8,111 +8,129 @@ defmodule SafiraWeb.App.WheelLive.Components.ResultModal do
   attr :drop_type, :atom, required: true
   attr :drop, :map, required: true
   attr :show, :boolean, default: false
-  attr :text, :string, default: ""
-  attr :wrapper_class, :string, default: ""
   attr :on_cancel, JS, default: %JS{}
-  attr :content_class, :string, default: "bg-primary"
+  attr :wrapper_class, :string, default: ""
+
+  attr :content_class, :string,
+    default:
+      "bg-primary w-full max-w-lg mx-auto rounded-2xl border border-light/10 ring-white p-8 pt-9"
+
+  attr :container_class, :string, default: "flex min-h-full items-center justify-center"
   attr :show_vault_link, :boolean, default: true
 
   def result_modal(assigns) do
     ~H"""
-    <div
+    <.modal
       id={@id}
+      show={@show}
+      on_cancel={@on_cancel}
+      wrapper_class={@wrapper_class}
+      body_class={@content_class}
+      container_class={@container_class}
       phx-hook="Confetti"
-      phx-mounted={@show && show_modal(@id)}
-      phx-remove={hide_modal(@id)}
-      data-cancel={JS.exec(@on_cancel, "phx-remove")}
       data-is_win={@drop_type != nil}
-      class="relative z-50 hidden"
     >
-      <div id={"#{@id}-bg"} class="bg-dark/90 fixed inset-0 transition-opacity" aria-hidden="true" />
-      <div
-        class={"fixed inset-0 overflow-y-auto #{@wrapper_class}"}
-        aria-labelledby={"#{@id}-title"}
-        aria-describedby={"#{@id}-description"}
-        role="dialog"
-        aria-modal="true"
-        tabindex="0"
-      >
-        <div class="flex min-h-full items-center justify-center">
-          <div class="w-full max-w-4xl">
-            <.focus_wrap
-              id={"#{@id}-container"}
-              phx-window-keydown={JS.exec("data-cancel", to: "##{@id}")}
-              phx-key="escape"
-              phx-click-away={JS.exec("data-cancel", to: "##{@id}")}
-              class={"#{@content_class} shadow-zinc-700/10 relative hidden ring-4 ring-white rounded-2xl p-14 shadow-lg transition"}
-            >
-              <div id={"#{@id}-content"} class="font-terminal uppercase text-3xl md:text-4xl">
-                <p>{get_drop_result_text(@drop_type, @drop)}</p>
-              </div>
-              <div
-                :if={@drop_type in [:prize, :badge]}
-                class="w-full py-4 px-8 sm:px-32 flex flex-row items-center justify-center"
-              >
-                <figure>
-                  <img
-                    :if={@drop_type == :prize}
-                    src={
-                      Uploaders.Prize.url({@drop.prize.image, @drop.prize}, :original, signed: true)
-                    }
-                    class="max-h-52"
-                  />
-                  <img
-                    :if={@drop_type == :badge}
-                    src={
-                      Uploaders.Badge.url({@drop.badge.image, @drop.badge}, :original, signed: true)
-                    }
-                    class="min-h-52"
-                  />
-                </figure>
-              </div>
-              <%= if @drop_type == :prize and @show_vault_link do %>
-                <p class="font-md text-center">
-                  {gettext("You can redeem this prize at the accreditation by showing your")}
-                  <span>
-                    <.link navigate={~p"/app/vault"} class="text-accent">
-                      {gettext("vault")}
-                    </.link>
-                  </span>
-                </p>
-              <% end %>
-            </.focus_wrap>
+      <div class="flex flex-col items-center gap-6">
+        <span class="text-center space-y-2">
+          <h2 class="uppercase text-3xl font-bold">{result_title(@drop_type)}</h2>
+          <p class="text-lg text-light/50">{result_description(@drop_type, @drop)}</p>
+        </span>
+
+        <div
+          :if={result_reward?(@drop_type)}
+          class="flex flex-col items-center gap-2 mt-2 w-full bg-dark-muted/10 p-4 rounded-xl border border-light/5"
+        >
+          <figure
+            :if={@drop_type in [:prize, :badge]}
+            class="w-full flex items-center justify-center"
+          >
+            <img
+              :if={@drop_type == :prize}
+              src={Uploaders.Prize.url({@drop.prize.image, @drop.prize}, :original, signed: true)}
+              class="max-h-40"
+            />
+            <img
+              :if={@drop_type == :badge}
+              src={Uploaders.Badge.url({@drop.badge.image, @drop.badge}, :original, signed: true)}
+              class="max-h-40"
+            />
+          </figure>
+
+          <p
+            :if={@drop_type in [:prize, :badge]}
+            class="font-bold text-lg text-center"
+          >
+            {result_reward_label(@drop_type, @drop)}
+          </p>
+
+          <div
+            :if={@drop_type in [:tokens, :entries]}
+            class="flex flex-col items-center justify-center py-2"
+          >
+            <p class="text-3xl md:text-4xl font-black leading-none">
+              {result_reward_amount(@drop_type, @drop)}
+            </p>
+            <p class="text-sm text-light/50 uppercase tracking-wide mt-1">
+              {result_reward_unit(@drop_type, @drop)}
+            </p>
           </div>
         </div>
+
+        <.link
+          :if={@drop_type == :prize and @show_vault_link}
+          navigate="/app/vault"
+          class="text-light/50 gap-1 inline-flex items-center hover:text-light group transition-colors duration-300"
+        >
+          <p>{gettext("view vault")}</p>
+          <.icon
+            name="fa-chevron-right-solid"
+            class="size-3 group-hover:translate-x-1 transition-transform duration-300"
+          />
+        </.link>
       </div>
-    </div>
+    </.modal>
     """
   end
 
-  defp get_drop_result_text(drop_type, drop) do
+  defp result_reward?(drop_type), do: drop_type in [:prize, :badge, :tokens, :entries]
+
+  defp result_title(drop_type) when drop_type in [:prize, :badge, :tokens, :entries],
+    do: gettext("Congratulations!")
+
+  defp result_title(_drop_type), do: gettext("Oops... 👀")
+
+  defp result_description(drop_type, _drop) do
     case drop_type do
       :prize ->
-        gettext("Congratulations! You won %{prize_name} ✨", prize_name: drop.prize.name)
+        gettext("You won the prize:")
 
       :badge ->
-        gettext("Congratulations! You won the %{badge_name} badge!", badge_name: drop.badge.name)
+        gettext("You won the badge:")
 
       :tokens ->
-        if drop.tokens == 1 do
-          gettext("Congratulations! You won %{tokens} token 💰!", tokens: drop.tokens)
-        else
-          gettext("Congratulations! You won %{tokens} tokens 💰!", tokens: drop.tokens)
-        end
+        gettext("Token shower!")
 
       :entries ->
-        if drop.entries == 1 do
-          gettext("Congratulations! You won 🎫 %{entries} entry to the final draw!",
-            entries: drop.entries
-          )
-        else
-          gettext("Congratulations! You won 🎫 %{entries} entries to the final draw!",
-            entries: drop.entries
-          )
-        end
+        gettext("Entry shower!")
 
       _ ->
-        gettext("Oops.. You didn't win anything.. Maybe spin again? 👀")
+        gettext("You didn't win anything this time. Maybe try again?")
     end
   end
+
+  defp result_reward_label(:prize, drop), do: drop.prize.name
+  defp result_reward_label(:badge, drop), do: drop.badge.name
+  defp result_reward_label(_drop_type, _drop), do: ""
+
+  defp result_reward_amount(:tokens, drop), do: drop.tokens
+  defp result_reward_amount(:entries, drop), do: drop.entries
+  defp result_reward_amount(_drop_type, _drop), do: nil
+
+  defp result_reward_unit(:tokens, drop) when drop.tokens == 1, do: gettext("token")
+  defp result_reward_unit(:tokens, _drop), do: gettext("tokens")
+
+  defp result_reward_unit(:entries, drop) when drop.entries == 1, do: gettext("entry")
+  defp result_reward_unit(:entries, _drop), do: gettext("entries")
+
+  defp result_reward_unit(_drop_type, _drop), do: ""
 end
