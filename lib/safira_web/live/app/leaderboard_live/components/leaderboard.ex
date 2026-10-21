@@ -6,6 +6,7 @@ defmodule SafiraWeb.App.LeaderboardLive.Components.Leaderboard do
   use SafiraWeb, :component
 
   import SafiraWeb.Components.Avatar
+  alias Safira.Accounts.User
 
   attr :entries, :list, required: true
   attr :user_position, :any, required: true
@@ -59,6 +60,7 @@ defmodule SafiraWeb.App.LeaderboardLive.Components.Leaderboard do
         <.avatar
           handle={@entry.handle}
           size={:xl}
+          src={get_picture_url(@entry)}
           class="bg-light/5 border-2 border-accent bg-accent rounded-full"
           link={~p"/app/user/#{@entry.handle}"}
         />
@@ -84,14 +86,13 @@ defmodule SafiraWeb.App.LeaderboardLive.Components.Leaderboard do
         <p class="font-bold text-xl">
           {@entry.position}
         </p>
-        <p>
-          <.avatar
-            handle={@entry.handle}
-            size={:sm}
-            class={"#{if @self do "bg-primary/10 border-2 border-primary/10" else "bg-light/5 border-2 border-light/5" end} rounded-full"}
-            link={~p"/app/user/#{@entry.handle}"}
-          />
-        </p>
+        <.avatar
+          handle={@entry.handle}
+          size={:sm}
+          class={"#{if @self do "bg-primary/10 border-2 border-primary/10" else "bg-light/5 border-2 border-light/5" end} rounded-full"}
+          src={get_picture_url(@entry)}
+          link={~p"/app/user/#{@entry.handle}"}
+        />
         <p class="font-semibold truncate max-w-40">
           {@entry.name}
         </p>
@@ -107,4 +108,11 @@ defmodule SafiraWeb.App.LeaderboardLive.Components.Leaderboard do
     </li>
     """
   end
+
+  defp get_picture_url(%{picture: picture, user_id: user_id}) when not is_nil(picture) do
+    user = %User{id: user_id, picture: picture}
+    Uploaders.UserPicture.url({picture, user}, :original, signed: true)
+  end
+
+  defp get_picture_url(_entry), do: nil
 end
