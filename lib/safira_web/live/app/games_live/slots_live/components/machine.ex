@@ -1,4 +1,4 @@
-defmodule SafiraWeb.App.SlotsLive.Components.Machine do
+defmodule SafiraWeb.App.GamesLive.SlotsLive.Components.Machine do
   @moduledoc """
   Slots machine component.
   """

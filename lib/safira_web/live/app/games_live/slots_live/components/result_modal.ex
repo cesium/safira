@@ -1,4 +1,4 @@
-defmodule SafiraWeb.App.SlotsLive.Components.ResultModal do
+defmodule SafiraWeb.App.GamesLive.SlotsLive.Components.ResultModal do
   @moduledoc """
   Slots result modal component.
   """

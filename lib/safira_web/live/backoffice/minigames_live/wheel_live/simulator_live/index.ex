@@ -2,8 +2,8 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.Simulator.Index do
   @moduledoc false
   use SafiraWeb, :live_component
 
-  import SafiraWeb.App.WheelLive.Components.Wheel
-  import SafiraWeb.App.WheelLive.Components.ResultModal
+  import SafiraWeb.App.GamesLive.WheelLive.Components.Wheel
+  import SafiraWeb.App.GamesLive.WheelLive.Components.ResultModal
 
   alias Safira.Minigames
 

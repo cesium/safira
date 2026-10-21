@@ -80,11 +80,15 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MemberLive.FormComponent
 
   defp save_member(socket, :teams_members_edit, member_params) do
     case Teams.update_team_member(socket.assigns.member, member_params) do
-      {:ok, _member} ->
-        {:noreply,
-         socket
-         |> put_flash(:info, "Member updated successfully")
-         |> push_patch(to: socket.assigns.patch)}
+      {:ok, member} ->
+        case consume_image_data(member, socket) do
+          {:ok, member} ->
+            {:noreply,
+             socket
+             |> assign(:member, member)
+             |> put_flash(:info, "Member updated successfully")
+             |> push_patch(to: socket.assigns.patch)}
+        end
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, socket |> assign(:form, to_form(changeset))}
@@ -124,8 +128,14 @@ defmodule SafiraWeb.Live.Backoffice.EventLive.TeamsLive.MemberLive.FormComponent
       [{:ok, member}] ->
         {:ok, member}
 
-      _errors ->
+      [member] ->
         {:ok, member}
+
+      [] ->
+        {:ok, member}
+
+      errors ->
+        {:error, errors}
     end
   end
 end

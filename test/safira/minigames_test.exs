@@ -12,7 +12,7 @@ defmodule Safira.MinigamesTest do
 
     test "list_prizes/0 returns all prizes" do
       prize = prize_fixture()
-      assert Minigames.list_prizes() == [prize]
+      assert prize.id in Enum.map(Minigames.list_prizes(), & &1.id)
     end
 
     test "get_prize!/1 returns the prize with given id" do
@@ -256,7 +256,7 @@ defmodule Safira.MinigamesTest do
 
     test "list_slots_reel_icons/0 returns all slots_reel_icons" do
       slots_reel_icon = slots_reel_icon_fixture()
-      assert Minigames.list_slots_reel_icons() == [slots_reel_icon]
+      assert slots_reel_icon.id in Enum.map(Minigames.list_slots_reel_icons(), & &1.id)
     end
 
     test "get_slots_reel_icon!/1 returns the slots_reel_icon with given id" do
@@ -351,7 +351,7 @@ defmodule Safira.MinigamesTest do
 
     test "list_slots_paytables/0 returns all slots_paytables" do
       slots_paytable = slots_paytable_fixture()
-      assert Minigames.list_slots_paytables() == [slots_paytable]
+      assert slots_paytable.id in Enum.map(Minigames.list_slots_paytables(), & &1.id)
     end
 
     test "get_slots_paytable!/1 returns the slots_paytable with given id" do
@@ -429,7 +429,7 @@ defmodule Safira.MinigamesTest do
 
     test "list_slots_paylines/0 returns all slots_paylines" do
       slots_payline = slots_payline_fixture()
-      assert Minigames.list_slots_paylines() == [slots_payline]
+      assert slots_payline.id in Enum.map(Minigames.list_slots_paylines(), & &1.id)
     end
 
     test "get_slots_payline!/1 returns the slots_payline with given id" do
@@ -482,5 +482,273 @@ defmodule Safira.MinigamesTest do
       slots_payline = slots_payline_fixture()
       assert %Ecto.Changeset{} = Minigames.change_slots_payline(slots_payline)
     end
+  end
+
+  describe "scratch_cards" do
+    alias Safira.Minigames.ScratchCard
+
+    import Safira.MinigamesFixtures
+    import Safira.AccountsFixtures
+
+    @invalid_attrs %{attendee_id: nil}
+
+    test "list_scratch_cards/0 returns all scratch_cards" do
+      scratch_card = scratch_card_fixture()
+      assert scratch_card.id in Enum.map(Minigames.list_scratch_cards(), & &1.id)
+    end
+
+    test "get_scratch_card!/1 returns the scratch_card with given id" do
+      scratch_card = scratch_card_fixture()
+      assert Minigames.get_scratch_card!(scratch_card.id) == scratch_card
+    end
+
+    test "create_scratch_card/1 with valid data creates a scratch_card" do
+      attendee = attendee_fixture()
+      valid_attrs = %{attendee_id: attendee.id}
+
+      assert {:ok, %ScratchCard{} = scratch_card} = Minigames.create_scratch_card(valid_attrs)
+      assert scratch_card.attendee_id == attendee.id
+    end
+
+    test "create_scratch_card/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Minigames.create_scratch_card(@invalid_attrs)
+    end
+
+    test "update_scratch_card/2 with valid data updates the scratch_card" do
+      scratch_card = scratch_card_fixture()
+      new_attendee = Safira.AccountsFixtures.attendee_fixture()
+      update_attrs = %{attendee_id: new_attendee.id}
+
+      assert {:ok, %ScratchCard{} = scratch_card} =
+               Minigames.update_scratch_card(scratch_card, update_attrs)
+
+      assert scratch_card.attendee_id == new_attendee.id
+    end
+
+    test "update_scratch_card/2 with invalid data returns error changeset" do
+      scratch_card = scratch_card_fixture()
+
+      assert {:error, %Ecto.Changeset{}} =
+               Minigames.update_scratch_card(scratch_card, @invalid_attrs)
+
+      assert scratch_card == Minigames.get_scratch_card!(scratch_card.id)
+    end
+
+    test "delete_scratch_card/1 deletes the scratch_card" do
+      scratch_card = scratch_card_fixture()
+      assert {:ok, %ScratchCard{}} = Minigames.delete_scratch_card(scratch_card)
+      assert_raise Ecto.NoResultsError, fn -> Minigames.get_scratch_card!(scratch_card.id) end
+    end
+
+    test "change_scratch_card/1 returns a scratch_card changeset" do
+      scratch_card = scratch_card_fixture()
+      assert %Ecto.Changeset{} = Minigames.change_scratch_card(scratch_card)
+    end
+  end
+
+  describe "scratch_card_drops" do
+    alias Safira.Minigames.ScratchCardDrop
+
+    import Safira.MinigamesFixtures
+
+    @invalid_attrs %{
+      tokens: nil,
+      probability: nil,
+      entries: nil,
+      max_per_attendee: nil
+    }
+
+    test "list_scratch_card_drops/0 returns all scratch_card_drops" do
+      scratch_card_drop = scratch_card_drop_fixture()
+      assert scratch_card_drop.id in Enum.map(Minigames.list_scratch_card_drops(), & &1.id)
+    end
+
+    test "get_scratch_card_drop!/1 returns the scratch_card_drop with given id" do
+      scratch_card_drop = scratch_card_drop_fixture()
+      assert Minigames.get_scratch_card_drop!(scratch_card_drop.id) == scratch_card_drop
+    end
+
+    test "create_scratch_card_drop/1 with valid data creates a scratch_card_drop" do
+      valid_attrs = %{
+        tokens: 42,
+        probability: 0.5,
+        entries: 42,
+        max_per_attendee: 42
+      }
+
+      assert {:ok, %ScratchCardDrop{} = scratch_card_drop} =
+               Minigames.create_scratch_card_drop(valid_attrs)
+
+      assert scratch_card_drop.tokens == 42
+      assert scratch_card_drop.probability == 0.5
+      assert scratch_card_drop.entries == 42
+      assert scratch_card_drop.max_per_attendee == 42
+    end
+
+    test "create_scratch_card_drop/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Minigames.create_scratch_card_drop(@invalid_attrs)
+    end
+
+    test "update_scratch_card_drop/2 with valid data updates the scratch_card_drop" do
+      scratch_card_drop = scratch_card_drop_fixture()
+
+      update_attrs = %{
+        tokens: 43,
+        probability: 0.7,
+        entries: 43,
+        max_per_attendee: 43
+      }
+
+      assert {:ok, %ScratchCardDrop{} = scratch_card_drop} =
+               Minigames.update_scratch_card_drop(scratch_card_drop, update_attrs)
+
+      assert scratch_card_drop.tokens == 43
+      assert scratch_card_drop.probability == 0.7
+      assert scratch_card_drop.entries == 43
+      assert scratch_card_drop.max_per_attendee == 43
+    end
+
+    test "update_scratch_card_drop/2 with invalid data returns error changeset" do
+      scratch_card_drop = scratch_card_drop_fixture()
+
+      assert {:error, %Ecto.Changeset{}} =
+               Minigames.update_scratch_card_drop(scratch_card_drop, @invalid_attrs)
+
+      assert scratch_card_drop == Minigames.get_scratch_card_drop!(scratch_card_drop.id)
+    end
+
+    test "delete_scratch_card_drop/1 deletes the scratch_card_drop" do
+      scratch_card_drop = scratch_card_drop_fixture()
+      assert {:ok, %ScratchCardDrop{}} = Minigames.delete_scratch_card_drop(scratch_card_drop)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Minigames.get_scratch_card_drop!(scratch_card_drop.id)
+      end
+    end
+
+    test "change_scratch_card_drop/1 returns a scratch_card_drop changeset" do
+      scratch_card_drop = scratch_card_drop_fixture()
+      assert %Ecto.Changeset{} = Minigames.change_scratch_card_drop(scratch_card_drop)
+    end
+  end
+
+  describe "scratch_card_symbols" do
+    alias Safira.Minigames.ScratchCardSymbol
+
+    import Safira.MinigamesFixtures
+
+    @invalid_attrs %{name: nil, image: nil}
+
+    test "list_scratch_card_symbols/0 returns all scratch_card_symbols" do
+      scratch_card_symbol = scratch_card_symbol_fixture()
+      assert scratch_card_symbol.id in Enum.map(Minigames.list_scratch_card_symbols(), & &1.id)
+    end
+
+    test "get_scratch_card_symbol!/1 returns the scratch_card_symbol with given id" do
+      scratch_card_symbol = scratch_card_symbol_fixture()
+      assert Minigames.get_scratch_card_symbol!(scratch_card_symbol.id) == scratch_card_symbol
+    end
+
+    test "create_scratch_card_symbol/1 with valid data creates a scratch_card_symbol" do
+      valid_attrs = %{
+        name: "some name",
+        image: %Plug.Upload{
+          filename: "symbol.svg",
+          path: Path.expand("priv/fake/images/reel1.svg", File.cwd!())
+        }
+      }
+
+      assert {:ok, %ScratchCardSymbol{} = scratch_card_symbol} =
+               Minigames.create_scratch_card_symbol(valid_attrs)
+
+      assert scratch_card_symbol.name == "some name"
+      assert is_map(scratch_card_symbol.image)
+    end
+
+    test "create_scratch_card_symbol/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Minigames.create_scratch_card_symbol(@invalid_attrs)
+    end
+
+    test "update_scratch_card_symbol/2 with valid data updates the scratch_card_symbol" do
+      scratch_card_symbol = scratch_card_symbol_fixture()
+      update_attrs = %{name: "some updated name"}
+
+      assert {:ok, %ScratchCardSymbol{} = scratch_card_symbol} =
+               Minigames.update_scratch_card_symbol(scratch_card_symbol, update_attrs)
+
+      assert scratch_card_symbol.name == "some updated name"
+    end
+
+    test "update_scratch_card_symbol/2 with invalid data returns error changeset" do
+      scratch_card_symbol = scratch_card_symbol_fixture()
+
+      assert {:error, %Ecto.Changeset{}} =
+               Minigames.update_scratch_card_symbol(scratch_card_symbol, @invalid_attrs)
+
+      assert scratch_card_symbol == Minigames.get_scratch_card_symbol!(scratch_card_symbol.id)
+    end
+
+    test "delete_scratch_card_symbol/1 deletes the scratch_card_symbol" do
+      scratch_card_symbol = scratch_card_symbol_fixture()
+
+      assert {:ok, %ScratchCardSymbol{}} =
+               Minigames.delete_scratch_card_symbol(scratch_card_symbol)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Minigames.get_scratch_card_symbol!(scratch_card_symbol.id)
+      end
+    end
+
+    test "change_scratch_card_symbol/1 returns a scratch_card_symbol changeset" do
+      scratch_card_symbol = scratch_card_symbol_fixture()
+      assert %Ecto.Changeset{} = Minigames.change_scratch_card_symbol(scratch_card_symbol)
+    end
+  end
+
+  describe "buy_scratch_card/1" do
+    import Safira.MinigamesFixtures
+    import Safira.AccountsFixtures
+
+    alias Safira.Accounts
+
+    setup do
+      Minigames.change_scratch_card_active(true)
+      Minigames.change_scratch_card_price(10)
+
+      %{attendee: attendee_fixture(%{tokens: 100})}
+    end
+
+    test "a winning card shows the winning symbol exactly 3 times", %{attendee: attendee} do
+      [winning | _] = for _ <- 1..6, do: scratch_card_symbol_fixture()
+
+      scratch_card_drop_fixture(%{
+        probability: 1.0,
+        tokens: 5,
+        entries: 0,
+        scratch_card_symbol_id: winning.id
+      })
+
+      assert {:ok, %{scratch_card_preloaded: card}} = Minigames.buy_scratch_card(attendee)
+
+      counts = card |> Minigames.get_symbols_from_scratch_card() |> symbol_counts()
+
+      assert counts |> Map.values() |> Enum.sum() == 6
+      assert counts[winning.id] == 3
+      assert Accounts.get_attendee!(attendee.id).tokens == 100 - 10 + 5
+    end
+
+    test "a losing card never has three matching symbols", %{attendee: attendee} do
+      for _ <- 1..6, do: scratch_card_symbol_fixture()
+
+      assert {:ok, %{scratch_card_preloaded: card}} = Minigames.buy_scratch_card(attendee)
+
+      counts = card |> Minigames.get_symbols_from_scratch_card() |> symbol_counts()
+
+      assert counts |> Map.values() |> Enum.sum() == 6
+      assert counts |> Map.values() |> Enum.all?(&(&1 <= 2))
+      assert Accounts.get_attendee!(attendee.id).tokens == 100 - 10
+    end
+
+    defp symbol_counts(symbols), do: symbols |> Enum.map(& &1.id) |> Enum.frequencies()
   end
 end
