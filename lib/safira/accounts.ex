@@ -36,7 +36,10 @@ defmodule Safira.Accounts do
     |> where(type: :attendee)
     |> join(:left, [o], p in assoc(o, :attendee), as: :attendee)
     |> preload(:attendee)
-    |> Flop.validate_and_run(params, for: User)
+    |> Flop.validate_and_run(params,
+      for: User,
+      default_order: %{order_by: [:inserted_at], order_directions: [:desc]}
+    )
   end
 
   def list_attendees(%{} = params, opts) when is_list(opts) do
@@ -45,7 +48,10 @@ defmodule Safira.Accounts do
     |> where(type: :attendee)
     |> join(:left, [o], p in assoc(o, :attendee), as: :attendee)
     |> preload(:attendee)
-    |> Flop.validate_and_run(params, for: User)
+    |> Flop.validate_and_run(params,
+      for: User,
+      default_order: %{order_by: [:inserted_at], order_directions: [:desc]}
+    )
   end
 
   @doc """
