@@ -7,13 +7,13 @@
 # This file is based on these images:
 #
 #   - https://hub.docker.com/r/hexpm/elixir/tags - for the build image
-#   - https://hub.docker.com/_/debian/tags?name=bookworm-20251103-slim - for the release image
+#   - https://hub.docker.com/_/debian/tags?name=trixie-20261005-slim - for the release image
 #   - https://pkgs.org/ - resource for finding needed packages
-#   - Ex: docker.io/hexpm/elixir:1.19.1-erlang-28.1.1-debian-bookworm-20251103-slim
+#   - Ex: docker.io/hexpm/elixir:1.19.6-erlang-28.1.1-debian-trixie-20261005-slim
 #
-ARG ELIXIR_VERSION=1.19.1
+ARG ELIXIR_VERSION=1.19.6
 ARG OTP_VERSION=28.1.1
-ARG DEBIAN_VERSION=bookworm-20251103-slim
+ARG DEBIAN_VERSION=trixie-20261005-slim
 
 ARG BUILDER_IMAGE="docker.io/hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-debian-${DEBIAN_VERSION}"
 ARG RUNNER_IMAGE="docker.io/debian:${DEBIAN_VERSION}"
@@ -71,7 +71,7 @@ RUN mix release
 FROM ${RUNNER_IMAGE} AS final
 
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends libstdc++6 openssl libncurses5 locales ca-certificates \
+  && apt-get install -y --no-install-recommends libstdc++6 openssl libncurses6 locales ca-certificates \
   && rm -rf /var/lib/apt/lists/*
 
 # Set the locale

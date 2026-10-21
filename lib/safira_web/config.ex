@@ -61,25 +61,11 @@ defmodule SafiraWeb.Config do
           enabled: true
         },
         %{
-          key: :wheel,
-          title: "Wheel",
-          image: "/images/icons/wheel.svg",
-          url: "/app/wheel",
+          key: :games,
+          title: "Minigames",
+          image: "/images/icons/games.svg",
+          url: "/app/games",
           enabled: attendee_eligible?
-        },
-        %{
-          key: :coin_flip,
-          title: "Coin Flip",
-          image: "/images/icons/coin-flip.svg",
-          url: "/app/coin_flip",
-          enabled: attendee_eligible?
-        },
-        %{
-          key: :slots,
-          title: "Slots",
-          image: "/images/icons/slots.svg",
-          url: "/app/slots",
-          enabled: true
         },
         %{
           key: :leaderboard,
@@ -100,13 +86,6 @@ defmodule SafiraWeb.Config do
           title: "Vault",
           image: "/images/icons/vault.svg",
           url: "/app/vault",
-          enabled: true
-        },
-        %{
-          key: :credential,
-          title: "Credential",
-          image: "/images/icons/scanner.svg",
-          url: "/app/credential",
           enabled: true
         }
       ]
@@ -205,7 +184,7 @@ defmodule SafiraWeb.Config do
         title: "Schedule",
         icon: "hero-calendar-days",
         url: "/dashboard/schedule/activities",
-        scope: %{"schedule" => ["edit"]}
+        scope: %{"schedule" => ["show"]}
       },
       %{
         key: :scanner,

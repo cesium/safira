@@ -1,15 +1,8 @@
-<.page title={gettext("Badgedex")} size={:xl} title_class="font-terminal uppercase">
-  <:actions>
-    <div class="flex flex-row items-center gap-6">
-      <p class="font-semibold text-2xl uppercase font-terminal">{gettext("Show")}</p>
-      <.action_button
-        class="!w-24 !m-0 !h-12"
-        phx-click="swap-selection"
-        title={next_selection_text(@selection)}
-      />
-    </div>
-  </:actions>
-  <div class="flex w-full items-center justify-center flex-col mt-6">
+<.page title={gettext("Badgedex")} size={:xl} title_class="uppercase">
+  <div class="mx-auto w-fit">
+    <.badge_filter selection={@selection} />
+  </div>
+  <div class="flex w-full items-center justify-center flex-col mt-8">
     <div
       id="badges"
       phx-update="stream"

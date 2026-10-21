@@ -33,7 +33,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.ReelIcons.FormComponent do
               />
               <div class="mt-4 flex gap-4 overflow-x-auto p-2 border rounded-md">
                 <%= for entry <- @uploads.images.entries do %>
-                  <div class="relative group flex-shrink-0 bg-dark rounded-lg">
+                  <div class="relative group shrink-0 bg-dark rounded-lg">
                     <.live_img_preview entry={entry} class="size-32 object-cover rounded-lg" />
                     <div class="absolute inset-0 flex items-center justify-center bg-primary bg-opacity-50 opacity-0 group-hover:opacity-100 rounded-lg">
                       <button

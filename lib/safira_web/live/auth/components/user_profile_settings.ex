@@ -17,6 +17,16 @@ defmodule SafiraWeb.UserAuth.Components.UserProfileSettings do
   alias Safira.Accounts
 
   @impl true
+  def mount(socket) do
+    {:ok,
+     socket
+     |> allow_upload(:picture,
+       accept: UserPicture.extension_whitelist(),
+       max_entries: 1
+     )}
+  end
+
+  @impl true
   def update(assigns, socket) do
     user = assigns.user
 
@@ -42,10 +52,6 @@ defmodule SafiraWeb.UserAuth.Components.UserProfileSettings do
       |> assign(base_path: base_path)
       |> assign(in_app?: in_app?)
       |> assign(notification_text: nil)
-      |> allow_upload(:picture,
-        accept: UserPicture.extension_whitelist(),
-        max_entries: 1
-      )
 
     {:ok, socket}
   end

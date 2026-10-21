@@ -5,6 +5,8 @@ defmodule Safira.Accounts do
 
   use Safira.Context
 
+  alias Ecto.Multi
+
   alias Safira.Accounts.{Attendee, Course, Credential, Staff, User, UserNotifier, UserToken}
   alias Safira.Companies.Company
   alias Safira.Contest
@@ -34,7 +36,10 @@ defmodule Safira.Accounts do
     |> where(type: :attendee)
     |> join(:left, [o], p in assoc(o, :attendee), as: :attendee)
     |> preload(:attendee)
-    |> Flop.validate_and_run(params, for: User)
+    |> Flop.validate_and_run(params,
+      for: User,
+      default_order: %{order_by: [:inserted_at], order_directions: [:desc]}
+    )
   end
 
   def list_attendees(%{} = params, opts) when is_list(opts) do
@@ -43,7 +48,10 @@ defmodule Safira.Accounts do
     |> where(type: :attendee)
     |> join(:left, [o], p in assoc(o, :attendee), as: :attendee)
     |> preload(:attendee)
-    |> Flop.validate_and_run(params, for: User)
+    |> Flop.validate_and_run(params,
+      for: User,
+      default_order: %{order_by: [:inserted_at], order_directions: [:desc]}
+    )
   end
 
   @doc """
@@ -262,7 +270,7 @@ defmodule Safira.Accounts do
     Ecto.Multi.new()
     |> Ecto.Multi.insert(
       :user,
-      User.registration_changeset(%User{}, Map.delete(attrs, :attendee),
+      User.registration_changeset(%User{}, Map.delete(attrs, "attendee"),
         hash_password: true,
         validate_email: true
       )
@@ -289,8 +297,6 @@ defmodule Safira.Accounts do
 
   """
   def register_staff_user(attrs) do
-    attrs = attrs |> Map.put("type", :staff)
-
     Ecto.Multi.new()
     |> Ecto.Multi.insert(
       :user,
@@ -300,6 +306,7 @@ defmodule Safira.Accounts do
         hash_password: true,
         validate_email: true
       )
+      |> Ecto.Changeset.put_change(:type, :staff)
     )
     |> Ecto.Multi.insert(
       :staff,
@@ -811,6 +818,41 @@ defmodule Safira.Accounts do
       {:error, _} = result ->
         result
     end
+  end
+
+  @doc """
+  Relinks a new credential to an attendee.
+
+  ## Examples
+
+      iex> relink_credential(credential_id, attendee_id)
+      {:ok, %{unlink_old: %Credential{} | nil, link_new: %Credential{}}}
+
+      iex> relink_credential(credential_id, attendee_id)
+      {:error, :link_new, %Ecto.Changeset{}, %{}}
+
+  """
+  def relink_credential(credential_id, attendee_id) do
+    attendee = get_attendee!(attendee_id)
+
+    new_credential = get_credential!(credential_id)
+    new_changeset = Ecto.Changeset.change(new_credential, attendee_id: attendee.id)
+
+    Multi.new()
+    |> Multi.run(:unlink_old, fn repo, _changes ->
+      old_credential =
+        Credential
+        |> where([c], c.attendee_id == ^attendee.id)
+        |> repo.one()
+
+      if old_credential do
+        repo.update(Ecto.Changeset.change(old_credential, attendee_id: nil))
+      else
+        {:ok, nil}
+      end
+    end)
+    |> Multi.update(:link_new, new_changeset)
+    |> Repo.transaction()
   end
 
   @doc """

@@ -32,8 +32,18 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.SlotsPaytable.FormComponent do
                 >
                   <.field type="hidden" name="identifier" value={id} />
                   <div class="grid space-x-2 grid-cols-9 pl-1">
-                    <.field field={form[:multiplier]} type="number" wrapper_class="col-span-2" />
-                    <.field field={form[:probability]} type="number" wrapper_class="col-span-2" />
+                    <.field
+                      field={form[:multiplier]}
+                      id={"multiplier-#{id}"}
+                      type="number"
+                      wrapper_class="col-span-2"
+                    />
+                    <.field
+                      field={form[:probability]}
+                      id={"probability-#{id}"}
+                      type="number"
+                      wrapper_class="col-span-2"
+                    />
                     <.link
                       phx-click="delete-entry"
                       phx-value-id={id}

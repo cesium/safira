@@ -1,4 +1,114 @@
-<.page title="Attendee" title_class="font-terminal uppercase" size={:xl}>
+<section class="w-full h-full">
+  <div class="flex flex-col gap-6 p-6 bg-linear-to-b from-light/5 to-transparent">
+    <div class="inline-flex items-center justify-between cursor-pointer">
+      <span class="inline-flex items-center justify-center gap-2 text-light/50 hover:text-light duration-300">
+        <.icon name="fa-arrow-left-solid" class="size-4" />
+        <.link patch="/app">{gettext("Back")}</.link>
+      </span>
+    </div>
+
+    <div class="flex flex-col items-center justify-center gap-6">
+      <.avatar
+        size={:xxl}
+        handle={@user.handle}
+        class="border-4 border-dark-muted/70 shadow-[0_0_30px_2px] shadow-white/25 rounded-full"
+        src={Uploaders.UserPicture.url({@user.picture, @user}, :original, signed: true)}
+      />
+      <div class="text-center space-y-2">
+        <h1 class="text-3xl font-black uppercase tracking-wide">{@user.name}</h1>
+        <p class="text-light/50 font-medium">@{@user.handle}</p>
+      </div>
+      <div class="inline-flex flex-wrap justify-center gap-2">
+        <div class="flex items-center gap-2 px-4 py-2 font-bold rounded-full bg-light/2 border border-light/5">
+          <.icon name="fa-ticket-solid" class="size-4 text-accent -rotate-80" />
+          <p>{@attendee_entries}</p>
+          <p class="uppercase text-sm font-normal text-light/50">entries</p>
+        </div>
+        <div class="flex items-center gap-2 px-4 py-2 font-bold rounded-full bg-light/2 border border-light/5">
+          <.icon name="fa-medal-solid" class="size-4 text-accent" />
+          <p>{@attendee_badge_count}</p>
+          <p class="uppercase text-sm font-normal text-light/50">badges</p>
+        </div>
+        <div class="flex items-center gap-2 px-4 py-2 font-bold rounded-full bg-light/2 border border-light/5">
+          <.icon name="fa-sack-dollar-solid" class="size-4 text-accent" />
+          <p>{@attendee_tokens}</p>
+          <p class="uppercase text-sm font-normal text-light/50">tokens</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-6 space-y-12">
+    <div :if={@user.id == @current_user.id} class="flex flex-col md:flex-row gap-2">
+      <.link
+        navigate="/app/leaderboard"
+        class="flex items-center transition-all duration-300 hover:bg-light/4 hover:border-light/10 cursor-pointer group w-full justify-between gap-2 p-4 rounded-xl bg-light/2 border border-light/5"
+      >
+        <div class="flex gap-2">
+          <div class="size-10 mask bg-accent mask-[url('/images/leaderboard.svg')] mask-contain mask-bottom" />
+          <span>
+            <p class="font-semibold">Leaderboard</p>
+            <p class="uppercase text-light/50 tracking-wider text-xs font-normal">
+              {gettext("View ranking")}
+            </p>
+          </span>
+        </div>
+
+        <.icon
+          name="fa-chevron-right-solid"
+          class="size-4 text-light/50 -translate-x-1 group-hover:translate-x-0 duration-300 transition-transform"
+        />
+      </.link>
+
+      <.link
+        navigate="/app/vault"
+        class="flex items-center transition-all duration-300 hover:bg-light/4 hover:border-light/10 cursor-pointer group w-full justify-between gap-2 p-4 rounded-xl bg-light/2 border border-light/5"
+      >
+        <div class="flex gap-2">
+          <div class="size-10 mask bg-accent mask-[url('/images/vault.svg')] mask-contain mask-bottom" />
+          <span>
+            <p class="font-semibold">Vault</p>
+            <p class="uppercase text-light/50 tracking-wider text-xs font-normal">
+              {gettext("View inventory")}
+            </p>
+          </span>
+        </div>
+
+        <.icon
+          name="fa-chevron-right-solid"
+          class="size-4 text-light/50 -translate-x-1 group-hover:translate-x-0 duration-300 transition-transform"
+        />
+      </.link>
+    </div>
+
+    <div class="flex flex-col gap-4 w-full">
+      <div class="flex flex-row gap-1 items-center pb-4 border-b-2 border-light/10">
+        <.icon name="fa-medal-solid" class="size-4 text-accent" />
+        <h1 class="font-semibold text-light/50 font-terminal uppercase px-2">
+          {gettext("Last 5 badges redeemed")}
+        </h1>
+      </div>
+      <div
+        id="badges"
+        phx-update="stream"
+        class="flex flex-wrap justify-center sm:justify-start -mx-3 gap-y-6"
+      >
+        <div
+          :for={{id, badge} <- @streams.attendee_badge_redeems}
+          id={id}
+          class="flex flex-col gap-1 px-3 basis-1/2 sm:basis-auto sm:min-w-52"
+        >
+          <.badge id={"#{id}-#{badge.id}"} badge={badge} width="max-w-44" show_tokens />
+          <p class="text-sm font-terminal uppercase mx-auto">
+            {relative_datetime(badge.redeemed_at)}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%!-- <.page title="Attendee" title_class="font-grotesk uppercase" size={:xl}>
   <div class="flex flex-col">
     <div class="flex flex-col sm:flex-row items-center gap-4 sm:gap-8 w-full sm:w-fit py-8">
       <.avatar
@@ -12,10 +122,17 @@
           <p class="">@{@user.handle}</p>
         </div>
         <div class="grid gap-0.5">
-          <p>🏅 {gettext("%{badge_count} Badges", badge_count: @attendee_badge_count)}</p>
-          <p>💰 {gettext("%{attendee_tokens} tokens", attendee_tokens: @attendee_tokens)}</p>
-          <p>
-            🎫 {gettext("%{attendee_entries} entries", attendee_entries: @attendee_entries)}
+          <p class="flex justify-center items-center gap-2">
+            <.icon name="hero-currency-dollar-solid" />
+            {gettext("%{badge_count} badges", badge_count: @attendee_badge_count)}
+          </p>
+          <p class="flex justify-center items-center gap-2">
+            <.icon name="fa-sack-dollar-solid" />
+            {gettext("%{attendee_tokens} tokens", attendee_tokens: @attendee_tokens)}
+          </p>
+          <p class="flex justify-center items-center gap-2">
+            <.icon name="fa-ticket-solid" />
+            {gettext("%{attendee_entries} entries", attendee_entries: @attendee_entries)}
           </p>
         </div>
       </div>
@@ -40,4 +157,4 @@
       </div>
     </div>
   </div>
-</.page>
+</.page> --%>

@@ -1,49 +1,96 @@
-<.page back_to_link={~p"/app/store"} back_to_link_text="Back to store">
-  <:actions>
-    <span class="text-semibold text-xl border-2 px-4 py-2 rounded-full font-terminal">
-      💰 {@current_user.attendee.tokens}
-    </span>
-  </:actions>
-  <div class="w-full flex sm:flex-row flex-col sm:gap-16 gap-8 py-8 sm:py-0">
-    <div class="w-full sm:p-16">
-      <figure class="bg-light/5 rounded-xl w-full">
-        <%= if @product.image do %>
-          <img
-            class="w-full p-4 group-hover:scale-105 transition-transform duration-300"
-            src={Uploaders.Product.url({@product.image, @product}, :original, signed: true)}
-          />
-        <% end %>
-      </figure>
-    </div>
-    <div class="w-full sm:p-16 flex flex-col gap-4 justify-between">
-      <div>
-        <h1 class="font-terminal uppercase text-4xl sm:text-6xl text-center sm:text-left">
-          {@product.name}
-        </h1>
-        <div class="py-4">
-          {text_to_html_paragraphs(@product.description)}
-        </div>
-      </div>
-      <div class="w-full uppercase text-center font-semibold flex flex-col gap-4">
-        <%= if @product.stock < 1000 do %>
-          <%= if @product.stock > 1 do %>
-            {gettext("%{quantity_left} items in stock", quantity_left: @product.stock)}
-          <% else %>
-            <%= if @product.stock == 1 do %>
-              ⚠️{gettext("Only one remaining!")}
-            <% else %>
-              ⚠️{gettext("Out of stock")}
-            <% end %>
-          <% end %>
-        <% end %>
-        <.action_button
-          title={gettext("Purchase")}
-          subtitle={"💰 #{@product.price}"}
-          class="w-full"
-          disabled={!can_purchase?(@product, @current_user.attendee)}
-          phx-click="purchase"
+<section class="flex flex-col md:flex-row h-auto md:h-full w-full">
+  <div class={[
+    "w-full md:w-2/3 relative overflow-hidden aspect-5/4 sm:aspect-square md:aspect-auto md:h-full",
+    product_gradient_class(@product.id)
+  ]}>
+    <figure class="w-full h-full filter-none pb-6 md:pb-12">
+      <%= if @product.image do %>
+        <img
+          class="w-full h-full drop-shadow-[0_0_25px_rgba(255,255,255,0.15)] object-contain"
+          src={Uploaders.Product.url({@product.image, @product}, :original, signed: true)}
         />
-      </div>
+      <% end %>
+    </figure>
+
+    <div class="flex flex-col z-20 bg-linear-to-t from-25% from-primary to to-transparent absolute p-6 w-full md:py-12 bottom-0 left-0 gap-2">
+      <p class="text-light/70">SEI {DateTime.utc_now().year}</p>
+      <p class="font-bold text-4xl md:text-7xl text-light/20">{@product.name}</p>
     </div>
   </div>
-</.page>
+  <div class="w-full md:w-1/3 flex-1 md:h-full border-t border-l-0 md:border-0 md:border-l border-light/10 flex flex-col justify-between gap-8 p-6 pb-32 md:p-10 md:pb-10">
+    <div class="inline-flex justify-between items-end">
+      <.link
+        patch="/app/store"
+        class="inline-flex items-center gap-1 group text-light/50 hover:text-light transition-all duration-300"
+      >
+        <.icon
+          name="fa-arrow-left-solid"
+          class="size-4 group-hover:-translate-x-1 transition-transform duration-300"
+        />
+        {gettext("Back to store")}
+      </.link>
+      <span class="text-semibold text-lg md:text-xl flex place-items-center gap-2">
+        <.icon name="fa-sack-dollar-solid" class="size-3" />
+        {@current_user.attendee.tokens}
+      </span>
+    </div>
+
+    <div class="flex flex-col h-full justify-between">
+      <div class="space-y-8 flex-1 mb-8 h-full">
+        <div class="space-y-4">
+          <h2 class="uppercase text-3xl md:text-4xl font-bold text-left">
+            {@product.name}
+          </h2>
+          <p class="text-light/50">
+            {@product.description}
+          </p>
+        </div>
+
+        <div class="space-y-4">
+          <div class="inline-flex items-center justify-between w-full rounded-xl border border-accent/40 bg-accent/5 p-5">
+            <p class="uppercase text-light/70 font-medium text-lg">{gettext("price")}</p>
+
+            <span class="inline-flex items-center justify-center gap-1.5">
+              <p class="text-2xl md:text-3xl font-bold">{@product.price}</p>
+              <.icon name="fa-sack-dollar-solid" class="size-4 md:size-5" />
+            </span>
+          </div>
+
+          <div class="inline-flex items-center w-full justify-left text-light/50 gap-2 border border-light/10 bg-light/5 px-4 py-3 rounded-lg">
+            <%= if @product.stock < 1000 do %>
+              <%= if @product.stock > 1 do %>
+                <.icon name="fa-box-open-solid" class="size-4" />
+                {gettext("%{quantity_left} items em stock", quantity_left: @product.stock)}
+              <% else %>
+                <.icon name="fa-triangle-exclamation-solid" class="size-4" />
+                <%= if @product.stock == 1 do %>
+                  {gettext("Only one remaining!")}
+                <% else %>
+                  {gettext("Out of stock")}
+                <% end %>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <.action_button
+        title={gettext("Purchase")}
+        subtitle={"#{@product.price} tokens"}
+        subtitle_icon="sack-dollar-solid"
+        class="w-full"
+        disabled={!can_purchase?(@product, @current_user.attendee)}
+        phx-click="purchase"
+      />
+    </div>
+  </div>
+</section>
+
+<.purchase_modal
+  :if={@purchase}
+  show
+  id="purchase-modal"
+  purchase={@purchase}
+  tokens={@current_user.attendee.tokens}
+  on_cancel={JS.push("close-modal")}
+/>

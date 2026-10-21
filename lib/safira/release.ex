@@ -42,11 +42,13 @@ defmodule Safira.Release do
 
     # Create user
     Safira.Accounts.register_staff_user(%{
-      name: name,
-      email: email,
-      password: password,
-      handle: handle,
-      role_id: role.id
+      "name" => name,
+      "email" => email,
+      "password" => password,
+      "handle" => handle,
+      "staff" => %{
+        "role_id" => role.id
+      }
     })
   end
 

@@ -10,7 +10,10 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.Index do
             edit_slots_reel_icons_icons: %{"minigames" => ["edit"]},
             edit_slots_paytable: %{"minigames" => ["edit"]},
             edit_slots_payline: %{"minigames" => ["edit"]},
-            edit_coin_flip: %{"minigames" => ["edit"]}}
+            edit_coin_flip: %{"minigames" => ["edit"]},
+            edit_scratch_card: %{"minigames" => ["edit"]},
+            edit_scratch_card_drops: %{"minigames" => ["edit"]},
+            edit_scratch_card_symbols: %{"minigames" => ["edit"]}}
 
   def mount(_params, _session, socket) do
     {:ok, socket |> assign(:current_page, :minigames)}

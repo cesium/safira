@@ -1,0 +1,73 @@
+<.page
+  title={gettext("Wheel")}
+  size={:xl}
+  child_class="xl:h-full xl:min-h-0 xl:overflow-hidden"
+  title_class="uppercase"
+  back_to_link="/app/games"
+  back_to_link_text="Back to Minigames"
+  back_to_link_class="text-light/50 hover:text-white mt-2 transition-colors duration-300"
+>
+  <:actions>
+    <span class="text-semibold text-xl flex place-items-center gap-2">
+      <.icon name="fa-sack-dollar-solid" />
+      {@attendee_tokens}
+    </span>
+  </:actions>
+
+  <div class="grid grid-cols-1 xl:grid-cols-2 gap-12 py-10 xl:h-full xl:min-h-0 xl:overflow-hidden xl:box-border">
+    <div class="flex flex-col items-center h-fit">
+      <div>
+        <h2 class="text-2xl uppercase font-bold">
+          {gettext("Spin to Win!")}
+        </h2>
+      </div>
+      <.wheel />
+      <div class="flex flex-row justify-center w-full pt-16">
+        <.action_button
+          title={gettext("Spin")}
+          subtitle_icon="sack-dollar-solid"
+          subtitle={"#{@wheel_price}"}
+          class="w-64"
+          disabled={!can_spin?(@wheel_active?, @attendee_tokens, @wheel_price, @in_spin?)}
+          phx-click="spin-wheel"
+        />
+      </div>
+    </div>
+
+    <div class="flex flex-col items-center gap-4 xl:h-full xl:min-h-0">
+      <div class="flex flex-col w-full xl:flex-1 xl:min-h-0">
+        <div class="inline-flex items-center gap-2 pb-2 w-full">
+          <.icon name="fa-award-solid" class="size-5 text-accent" />
+          <h2 class="text-lg self-start text-light/50 uppercase font-bold">
+            {gettext("Latest Wins")}
+          </h2>
+        </div>
+        <div class="w-full xl:min-h-0 xl:overflow-y-auto">
+          <.latest_wins entries={@latest_wins} />
+        </div>
+      </div>
+
+      <div class="flex flex-col w-full xl:flex-1 xl:min-h-0">
+        <div class="inline-flex items-center gap-2 pb-2 w-full">
+          <.icon name="fa-gift-solid" class="size-4 text-accent" />
+          <h2 class="text-lg self-start text-light/50 uppercase font-bold">
+            {gettext("Awards")}
+          </h2>
+        </div>
+        <div class="w-full xl:min-h-0 xl:overflow-y-auto">
+          <.awards entries={@drops} />
+        </div>
+      </div>
+    </div>
+  </div>
+</.page>
+
+<.result_modal
+  :if={@result}
+  drop_type={@result.type}
+  drop={@result.drop}
+  wrapper_class="px-6"
+  show
+  id="confirm"
+  on_cancel={JS.push("close-modal")}
+/>

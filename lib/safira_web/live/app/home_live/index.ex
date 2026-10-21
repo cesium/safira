@@ -37,7 +37,7 @@ defmodule SafiraWeb.App.HomeLive.Index do
        attendee_tokens: socket.assigns.current_user.attendee.tokens,
        attendee_entries: socket.assigns.current_user.attendee.entries
      )
-     |> stream(:attendee_badge_redeems, attendee_badge_reddeems |> Enum.take(3))}
+     |> stream(:attendee_badge_redeems, attendee_badge_reddeems |> Enum.take(4))}
   end
 
   @impl true

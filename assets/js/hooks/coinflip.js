@@ -132,15 +132,15 @@ export const CoinFlip = {
     const calculateWinnings = (bet) => Math.floor(bet * 2 * (1 - fee));
 
     if (result === GAME_STATES.HEADS) {
-      elements.player2.card.classList.add("gray-overlay");
-      elements.player1.bet.textContent = calculateWinnings(elements.player1.bet.dataset.bet);
+      elements.player2.card.classList.add("opacity-50");
+      elements.player1.bet.textContent = `+${calculateWinnings(elements.player1.bet.dataset.bet)}`;
       elements.player2.bet.textContent = `-${elements.player2.bet.dataset.bet}`;
       elements.player2.bet.classList.add("text-red-500");
     } else {
-      elements.player1.card.classList.add("gray-overlay");
+      elements.player1.card.classList.add("opacity-50");
       elements.player1.bet.textContent = `-${elements.player1.bet.dataset.bet}`;
       elements.player1.bet.classList.add("text-red-500");
-      elements.player2.bet.textContent = calculateWinnings(elements.player2.bet.dataset.bet);
+      elements.player2.bet.textContent = `+${calculateWinnings(elements.player2.bet.dataset.bet)}`;
     }
   }
 };
