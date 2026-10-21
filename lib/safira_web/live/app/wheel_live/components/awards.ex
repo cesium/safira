@@ -8,30 +8,46 @@ defmodule SafiraWeb.App.WheelLive.Components.Awards do
 
   def awards(assigns) do
     ~H"""
-    <table class="w-full">
-      <tr class="border-b-2 text-md sm:text-lg">
-        <th class="pr-2 text-left">Name</th>
-        <th class="px-4 sm:block hidden text-center">Stock</th>
-        <th class="px-4 text-center">Max. / Attendee</th>
-        <th class="pl-2 text-right">Probability</th>
-      </tr>
+    <ul class="w-full divide-y divide-light/5 border-t border-light/10">
       <%= for entry <- @entries do %>
-        <tr class="text-sm sm:text-md">
-          <td class="pr-2 py-2 font-bold text-left">{entry_name(entry)}</td>
-          <td class="px-4 sm:block hidden py-2 font-bold text-center">{entry_stock(entry)}</td>
-          <td class="px-4 py-2 text-center">{entry.max_per_attendee}</td>
-          <td class="pl-2 py-2 text-accent font-bold text-right">
-            {Float.round(entry.probability * 100, 4)}
-          </td>
-        </tr>
+        <li class="flex flex-row w-full lg:gap-4 py-4 lg:px-4 items-center justify-between">
+          <div class="min-w-0">
+            <p class="text-sm lg:text-base font-semibold truncate">{entry_name(entry)}</p>
+            <p class="text-xs lg:text-sm text-light/50">
+              {gettext("Stock")}:
+              <%= case entry_stock(entry) do %>
+                <% :infinity -> %>
+                  <.icon name="fa-infinity-solid" class="size-4" />
+                <% stock -> %>
+                  {stock}
+              <% end %>
+              <span class="px-2">-</span>
+              {gettext("Max/attendee")}: {entry.max_per_attendee}
+            </p>
+          </div>
+
+          <div class="text-right">
+            <p class="text-light/50 text-xs">Probability:</p>
+            <p class="text-sm lg:text-base text-accent font-bold text-right shrink-0">
+              {entry_probability(entry)}
+            </p>
+          </div>
+        </li>
       <% end %>
-    </table>
+      <li class="hidden only:flex w-full h-full flex-col items-center justify-center py-16 opacity-80 text-light/70">
+        {gettext("No awards have been added yet.")}
+      </li>
+    </ul>
     """
+  end
+
+  defp entry_probability(drop) do
+    "#{Float.round(drop.probability * 100, 2)}%"
   end
 
   defp entry_stock(drop) do
     if is_nil(drop.prize) do
-      "∞"
+      :infinity
     else
       drop.prize.stock
     end

@@ -42,7 +42,7 @@ defmodule SafiraWeb.Components.Sidebar do
         class={"relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 #{@background} rounded-r-lg h-dvh"}
       >
         <div class="flex flex-col flex-1 py-4 overflow-y-auto scrollbar-hide">
-          <.link navigate={@logo_url} class={"flex items-center flex-shrink-0 #{@logo_padding}"}>
+          <.link navigate={@logo_url} class={"flex items-center shrink-0 #{@logo_padding}"}>
             <img class="hidden w-full h-full dark:block" src={@logo_images.light} />
             <img class="w-full h-full dark:hidden" src={@logo_images.dark} />
           </.link>
@@ -74,16 +74,16 @@ defmodule SafiraWeb.Components.Sidebar do
       </div>
     </div>
     <!-- Static sidebar for desktop -->
-    <div class="hidden lg:flex lg:flex-shrink-0">
+    <div class="hidden lg:flex lg:shrink-0">
       <div class={"flex flex-col w-64 border-r #{@border} #{@background} pt-5"}>
-        <.link navigate={@logo_url} class={"flex items-center flex-shrink-0 #{@logo_padding}"}>
+        <.link navigate={@logo_url} class={"flex items-center shrink-0 #{@logo_padding}"}>
           <img class="hidden w-full h-full dark:block" src={@logo_images.light} />
           <img class="w-full h-full dark:hidden" src={@logo_images.dark} />
         </.link>
         <!-- Sidebar component, swap this element with another sidebar if you like -->
         <div class="flex flex-col justify-between flex-1 h-0 pb-4 overflow-y-auto scrollbar-hide">
           <!-- Navigation -->
-          <nav class="px-4 mt-6">
+          <nav class="pr-4 mt-6">
             <%= if @current_user do %>
               <.sidebar_nav_links
                 user={@current_user}
@@ -124,72 +124,67 @@ defmodule SafiraWeb.Components.Sidebar do
   attr :link_inactive_class, :string, default: ""
 
   def app_sidebar(assigns) do
+    dock_pages = get_app_dock_pages(assigns.pages)
+
+    assigns =
+      assigns
+      |> assign(:dock_pages, dock_pages)
+      |> assign(:profile_url, app_profile_url(assigns.current_user))
+
     ~H"""
-    <div
-      id="mobile-sidebar-container"
-      class="fixed inset-0 z-40 overflow-hidden lg:hidden"
-      aria-modal="true"
-      style="display: none;"
-    >
-      <div
-        id="sidebar-overlay"
-        class="fixed inset-0 h-full min-h-screen bg-gray-800 bg-opacity-55 backdrop-blur-sm"
-        phx-click={hide_mobile_sidebar()}
-      >
-      </div>
-      <div
-        id="mobile-sidebar"
-        class="relative flex-col flex-1 hidden w-full max-w-xs pt-5 pb-4 rounded-r-3xl bg-primary h-dvh"
-      >
-        <div class="flex flex-col flex-1 py-4 overflow-y-auto scrollbar-hide">
-          <.link navigate={@logo_url} class="flex items-center flex-shrink-0 px-16 py-3 sm:pt-8">
-            <img class="hidden w-full h-full dark:block" src={@logo_images.light} />
-            <img class="w-full h-20 dark:hidden" src={@logo_images.dark} />
+    <div class="fixed inset-x-0 bottom-0 z-40 px-4 pb-4 lg:hidden">
+      <nav class="mx-auto flex w-full max-w-sm items-center justify-between rounded-full bg-white/5 backdrop-blur-lg border border-white/20 shadow-lg px-4 py-3">
+        <%= for page <- @dock_pages do %>
+          <.link
+            navigate={page.url}
+            class="group flex h-12 w-12 items-center justify-center"
+            aria-label={page.title}
+          >
+            <div
+              class={[
+                "size-7 transition-all",
+                if(@current_page == page.key,
+                  do: "bg-accent size-8",
+                  else: "bg-white"
+                )
+              ]}
+              style={"mask: url(#{page.image}) no-repeat center / contain; -webkit-mask: url(#{page.image}) no-repeat center / contain;"}
+            >
+            </div>
           </.link>
-          <div class="flex flex-col justify-between h-full mt-8">
-            <nav class="px-4">
-              <%= if @current_user do %>
-                <.sidebar_nav_links
-                  user={@current_user}
-                  pages={@pages}
-                  current_page={@current_page}
-                  link_class="px-3 group flex items-center py-2 font-semibold rounded-md transition-colors"
-                  link_active_class={@link_active_class}
-                  link_inactive_class={@link_inactive_class}
-                />
-              <% end %>
-            </nav>
-            <%= if @current_user do %>
-              <.app_sidebar_account_dropdown
-                id="mobile-account-dropdown"
-                user={@current_user}
-                border={@border}
-                title_color={@user_dropdown_name_color}
-                subtitle_color={@user_dropdown_handle_color}
-                icon_color={@user_dropdown_icon_color}
-              />
-            <% end %>
-          </div>
-        </div>
-      </div>
+        <% end %>
+
+        <%= if @current_user do %>
+          <.link
+            navigate={@profile_url}
+            class="flex h-12 w-12 items-center justify-center"
+            aria-label="Profile"
+          >
+            <.icon
+              name="hero-user"
+              class={"size-6.5 transition-all #{if @current_page == :profile, do: "text-accent", else: "text-white"}"}
+            />
+          </.link>
+        <% end %>
+      </nav>
     </div>
+
     <!-- Static sidebar for desktop -->
-    <div class="hidden lg:flex lg:flex-shrink-0">
+    <div class="hidden lg:flex lg:shrink-0">
       <div class={"flex flex-col w-64 border-r #{@border} bg-primary pt-5"}>
-        <.link navigate={@logo_url} class="flex items-center flex-shrink-0 px-16 pt-4 pb-4">
+        <.link navigate={@logo_url} class="flex items-center shrink-0 px-16 pt-4 pb-4">
           <img class="hidden w-full h-full dark:block" src={@logo_images.light} />
           <img class="w-full h-full dark:hidden" src={@logo_images.dark} />
         </.link>
-        <!-- Sidebar component, swap this element with another sidebar if you like -->
-        <div class="flex flex-col justify-between flex-1 h-0 pb-4 overflow-y-auto scrollbar-hide">
-          <!-- Navigation -->
-          <nav class="px-4 mt-6">
+
+        <div class="flex flex-col justify-between flex-1 h-0 overflow-y-auto scrollbar-hide">
+          <nav class="mt-6">
             <%= if @current_user do %>
               <.sidebar_nav_links
                 user={@current_user}
                 pages={@pages}
                 current_page={@current_page}
-                link_class="px-3 group flex items-center py-2 font-medium rounded-md transition-colors"
+                link_class="px-4 group flex items-center py-2 font-medium transition-colors"
                 link_active_class={@link_active_class}
                 link_inactive_class={@link_inactive_class}
               />
@@ -257,12 +252,12 @@ defmodule SafiraWeb.Components.Sidebar do
   defp app_user_dropdown(assigns) do
     ~H"""
     <!-- User account dropdown -->
-    <div class="relative inline-block px-3 mt-6 text-left">
+    <div class="relative inline-block">
       <div>
         <button
           id={@id}
           type="button"
-          class={"group w-full rounded-md #{@border} border px-3.5 py-4 text-sm text-left font-medium text-gray-700 transition-all duration-200 focus:outline-0 focus:ring-2 focus:ring-offset-2 focus:ring-dark"}
+          class={"group w-full #{@border} cursor-pointer hover:bg-light/5 border-t px-3.5 py-6 text-sm text-left font-medium text-gray-700 transition-all duration-200"}
           phx-click={show_user_dropdown("##{@id}-dropdown")}
           data-active-class=""
           aria-haspopup="true"
@@ -290,16 +285,16 @@ defmodule SafiraWeb.Components.Sidebar do
       <div
         id={"#{@id}-dropdown"}
         phx-click-away={hide_user_dropdown("##{@id}-dropdown")}
-        class="absolute left-0 right-0 z-10 hidden mx-3 mb-2 overflow-hidden origin-bottom rounded-md shadow-lg bottom-full bg-light text-primary"
+        class="absolute left-0 right-0 z-10 hidden border-light/10 mb-2 overflow-hidden origin-bottom shadow-lg bottom-full border bg-primary"
         role="menu"
         aria-labelledby={@id}
       >
-        <div role="none" class="divide-y divide-primary/10">
+        <div role="none" class="divide-y divide-light/10">
           <%= for link <- @link do %>
             <.link
               tabindex="-1"
               role="menuitem"
-              class="block px-4 py-3 font-medium transition-colors bg-light text-primary hover:bg-lightShade"
+              class="block px-4 py-3 font-medium transition-colors bg-light/5 text-white hover:bg-accent/20"
               {link}
             >
               {render_slot(link)}
@@ -333,12 +328,15 @@ defmodule SafiraWeb.Components.Sidebar do
           ]}
         >
           <%= if Map.get(page, :icon) do %>
-            <.icon name={page.icon} class="flex-shrink-0 mr-3 size-6" />
+            <.icon name={page.icon} class="shrink-0 mr-3 size-6" />
           <% end %>
           <%= if Map.get(page, :image) do %>
             <div
               src={page.image}
-              class={["mr-3 flex-shrink-0 size-8 bg-primary", @current_page != page.key && "bg-white"]}
+              class={[
+                "mr-3 shrink-0 size-6 bg-white",
+                @current_page != page.key && "bg-white/70"
+              ]}
               style={"mask: url(#{page.image}) no-repeat center / contain; -webkit-mask: url(#{page.image}) no-repeat center / contain;"}
             />
           <% end %>
@@ -506,4 +504,14 @@ defmodule SafiraWeb.Components.Sidebar do
     )
     |> JS.remove_attribute("aria-expanded", to: to)
   end
+
+  defp get_app_dock_pages(pages) do
+    dock_pages = [:home, :badges, :games, :store]
+
+    dock_pages
+    |> Enum.map(fn key -> Enum.find(pages, &(&1.key == key)) end)
+  end
+
+  defp app_profile_url(nil), do: "/app/"
+  defp app_profile_url(user), do: "/app/user/#{user.handle}"
 end

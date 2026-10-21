@@ -26,43 +26,50 @@ defmodule SafiraWeb.App.CoinFlipLive.Components.Room do
       data-player2-id={@room.player2_id}
       data-fee={@coin_flip_fee}
       class={[
-        "relative flex flex-row items-center justify-between bg-primary rounded-md w-full max-w-96 h-52 p-3 sm:p-4",
+        "relative grid grid-cols-3 items-center gap-2 sm:gap-4 bg-light/5 w-full rounded-md p-3 sm:p-4",
         @current_user.attendee.id in [@room.player1_id, @room.player2_id] && not @room.finished &&
-          "ring-1 ring-accent shadow-[0px_0px_16px_1px]
-    shadow-accent",
+          "border-2 border-accent/50 shadow-[0px_0px_20px_2px] shadow-accent/40",
         (@current_user.attendee.id not in [@room.player1_id, @room.player2_id] || @room.finished) &&
-          "ring-1 ring-darkShade"
+          "border border-light/10"
       ]}
     >
-      <.player_card
-        stream_id={@id}
-        player_id={@room.player1_id}
-        player={@room.player1}
-        current_user={@current_user}
-        attendee_tokens={@attendee_tokens}
-        room={@room}
-      />
-      <div class="absolute inset-0 flex flex-col items-center justify-center h-full z-20 pointer-events-none">
-        <h1 id={@id <> "-vs-text"} class="font-terminal font-bold align-middle">VS</h1>
-        <div id={@id <> "-coin"} class="coin hidden">
-          <div class="side-a"></div>
-          <div class="side-b"></div>
+      <div class="min-w-0 flex justify-center">
+        <.player_card
+          stream_id={@id}
+          player_id={@room.player1_id}
+          player={@room.player1}
+          current_user={@current_user}
+          attendee_tokens={@attendee_tokens}
+          room={@room}
+        />
+      </div>
+
+      <div class="relative z-20 pointer-events-none min-w-14 sm:min-w-20 flex items-center justify-center h-full">
+        <h1 id={@id <> "-vs-text"} class="font-bold align-middle">VS</h1>
+        <div class="absolute inset-0 flex items-center justify-center">
+          <div id={@id <> "-coin"} class="coin-main hidden">
+            <div class="side-a"></div>
+            <div class="side-b"></div>
+          </div>
         </div>
         <h1
           id={@id <> "-countdown"}
-          class="absolute text-2xl p-2 rounded-full bg-blue-900/25 font-terminal font-bold size-16 justify-center hidden items-center"
+          class="absolute text-2xl p-2 rounded-full bg-accent/25 font-bold size-16 justify-center hidden items-center"
         >
           3
         </h1>
       </div>
-      <.player_card
-        stream_id={@id}
-        player_id={@room.player2_id}
-        player={@room.player2}
-        current_user={@current_user}
-        attendee_tokens={@attendee_tokens}
-        room={@room}
-      />
+
+      <div class="min-w-0 flex justify-center">
+        <.player_card
+          stream_id={@id}
+          player_id={@room.player2_id}
+          player={@room.player2}
+          current_user={@current_user}
+          attendee_tokens={@attendee_tokens}
+          room={@room}
+        />
+      </div>
     </div>
     """
   end
@@ -78,49 +85,62 @@ defmodule SafiraWeb.App.CoinFlipLive.Components.Room do
     ~H"""
     <div
       id={"#{@stream_id}-#{@player_id}-card"}
-      class="relative flex flex-col flex-shrink-0 items-center space-y-1 border border-darkShade/80 bg-blue-900/25 rounded-md h-full w-32 p-1 select-none"
+      class="flex flex-col gap-2 items-center relative justify-center h-full select-none min-w-0 w-full max-w-34 sm:max-w-40"
     >
       <%= if @player_id do %>
-        <div class="h-full flex items-center">
+        <div class="relative inline-flex">
           <.avatar
             handle={@player.user.handle}
             src={
               Uploaders.UserPicture.url({@player.user.picture, @player.user}, :original, signed: true)
             }
-            size={:lg}
+            size={:md}
+            class="shadow-[0_0_20px_2px] shadow-light/25 rounded-full"
           />
+
+          <div class="absolute coin-mini size-7 sm:size-8 -top-1 -right-1 sm:-top-1.5 sm:-right-1.5">
+            <div :if={@player_id == @room.player1_id} class="side-a"></div>
+            <div :if={@player_id == @room.player2_id} class="side-b-not-rotated"></div>
+          </div>
         </div>
-        <span class="text-center flex flex-col truncate pb-3 text-xs">
-          {@player.user.handle}
+
+        <span class="block w-full max-w-24 sm:max-w-32 mx-auto font-semibold text-light text-xs text-center truncate whitespace-nowrap">
+          @{@player.user.handle}
         </span>
-        <span class="text-nowrap bg-primary/60 py-1 px-2 rounded-md align-middle">
-          <.icon name="hero-currency-dollar-solid" class="text-yellow-300" />
-          <span id={"#{@stream_id}-#{@player_id}-bet"} class="font-terminal" data-bet={@room.bet}>
+
+        <span class="inline-flex items-center gap-1">
+          <.icon name="fa-sack-dollar-solid" class="size-3.5 text-accent" />
+          <span
+            id={"#{@stream_id}-#{@player_id}-bet"}
+            class="text-sm font-semibold"
+            data-bet={@room.bet}
+          >
             {@room.bet}
           </span>
         </span>
-        <div class="absolute coin size-10 top-1 right-2">
-          <div :if={@player_id == @room.player1_id} class="side-a"></div>
-          <div :if={@player_id == @room.player2_id} class="side-b-not-rotated"></div>
-        </div>
       <% else %>
-        <.button
-          :if={@room.player1.user.id != @current_user.id}
-          class="px-7 size-full rounded-none !bg-transparent !text-white"
-          phx-click="join-room"
-          phx-value-room_id={@room.id}
-          disabled={@attendee_tokens < @room.bet}
-        >
-          <.icon name="hero-plus" class="size-12" />
-        </.button>
-        <.button
-          :if={@room.player1.user.id == @current_user.id}
-          class="px-7 my-auto size-full rounded-none !bg-transparent !text-white"
-          phx-click="delete-room"
-          phx-value-room_id={@room.id}
-        >
-          <.icon name="hero-x-mark" class="size-12" />
-        </.button>
+        <div class="border-2 flex items-center justify-center border-dashed border-light/20 size-18 rounded-full aspect-square">
+          <.button
+            :if={@room.player1.user.id != @current_user.id}
+            class="size-full rounded-none bg-transparent! cursor-pointer text-white!"
+            phx-click="join-room"
+            phx-value-room_id={@room.id}
+            disabled={@attendee_tokens < @room.bet}
+          >
+            <.icon name="fa-plus-solid" class="size-8 text-light/30 animate-pulse" />
+          </.button>
+
+          <.button
+            :if={@room.player1.user.id == @current_user.id}
+            class="size-full rounded-none bg-transparent! text-white!"
+            phx-click="delete-room"
+            phx-value-room_id={@room.id}
+          >
+            <.icon name="fa-xmark-solid" class="size-8 text-light/30 animate-pulse" />
+          </.button>
+        </div>
+
+        <p class="text-light/20 text-sm font-medium animate-pulse">{gettext("Waiting...")}</p>
       <% end %>
     </div>
     """

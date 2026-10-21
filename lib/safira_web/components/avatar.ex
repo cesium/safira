@@ -7,7 +7,7 @@ defmodule SafiraWeb.Components.Avatar do
   attr :src, :string, default: nil, doc: "The URL of the image to display."
 
   attr :size, :atom,
-    values: [:xs, :sm, :md, :lg, :xl],
+    values: [:xs, :sm, :md, :lg, :xl, :xxl],
     default: :md,
     doc: "The size of the avatars."
 
@@ -40,7 +40,7 @@ defmodule SafiraWeb.Components.Avatar do
     ~H"""
     <span class={generate_avatar_classes(assigns)}>
       <%= if @src do %>
-        <img src={@src} class={"safira-avatar--#{@type} h-full w-full rounded-full"} />
+        <img src={@src} class="h-full w-full rounded-full" />
       <% else %>
         <.void_avatar color={generate_avatar_color(@handle)} size={@size} />
       <% end %>
@@ -52,6 +52,7 @@ defmodule SafiraWeb.Components.Avatar do
     [
       "safira-avatar",
       "safira-avatar--#{assigns.size}",
+      "safira-avatar--#{assigns.type}",
       assigns.class
     ]
   end
@@ -610,6 +611,7 @@ defmodule SafiraWeb.Components.Avatar do
       :md -> "65"
       :lg -> "80"
       :xl -> "96"
+      :xxl -> "112"
     end
   end
 end

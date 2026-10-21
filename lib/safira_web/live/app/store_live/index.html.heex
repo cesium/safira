@@ -1,6 +1,6 @@
-<.page title="Store" size={:xl} title_class="font-terminal uppercase">
+<.page title="Store" size={:xl} title_class="uppercase">
   <:actions>
-    <span class="text-semibold text-xl border-2 px-4 py-2 rounded-full font-terminal flex place-items-center gap-2">
+    <span class="text-semibold text-xl flex place-items-center gap-2">
       <.icon name="fa-sack-dollar-solid" />
       {@current_user.attendee.tokens}
     </span>
@@ -9,7 +9,7 @@
     <div
       id="products-list"
       phx-update="stream"
-      class="flex flex-wrap gap-6 w-full py-8 justify-between lg:justify-normal"
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-6 w-full"
     >
       <%= for {id, product} <- @streams.products do %>
         <.product_card id={id} data={product} />

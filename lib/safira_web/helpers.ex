@@ -2,6 +2,13 @@ defmodule SafiraWeb.Helpers do
   @moduledoc """
   Helper functions for web views.
   """
+  @product_gradients [
+    "bg-[radial-gradient(circle_at_40%_40%,rgb(26,26,46),rgb(4,4,28))]",
+    "bg-[radial-gradient(circle_at_40%_40%,rgb(46,26,10),rgb(4,4,28))]",
+    "bg-[radial-gradient(circle_at_40%_40%,rgb(26,10,26),rgb(4,4,28))]",
+    "bg-[radial-gradient(circle_at_40%_40%,rgb(15,26,26),rgb(4,4,28))]"
+  ]
+
   alias Timex.Format.DateTime.Formatters.Relative
 
   require Timex.Translator
@@ -191,6 +198,19 @@ defmodule SafiraWeb.Helpers do
     else
       str
     end
+  end
+
+  def product_gradient_class(nil), do: hd(@product_gradients)
+
+  def product_gradient_class(uuid) do
+    index =
+      uuid
+      |> to_string()
+      |> String.to_charlist()
+      |> Enum.sum()
+      |> rem(length(@product_gradients))
+
+    Enum.at(@product_gradients, index)
   end
 
   @doc """
