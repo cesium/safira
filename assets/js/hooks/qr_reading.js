@@ -8,7 +8,11 @@ export const QrScanner = {
 
     const onScanSuccess = (decodedText, decodedResult) => {
         if (this.el.dataset.on_success) {
-          this.pushEvent(this.el.dataset.on_success, decodedText)
+          if (this.el.dataset.target) {
+            this.pushEventTo(this.el.dataset.target, this.el.dataset.on_success, decodedText)
+          } else {
+            this.pushEvent(this.el.dataset.on_success, decodedText)
+          }
         }
     }
 
