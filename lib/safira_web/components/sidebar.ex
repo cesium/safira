@@ -503,7 +503,9 @@ defmodule SafiraWeb.Components.Sidebar do
 
   defp app_dock_items(pages, user) do
     dock_pages =
-      Enum.map([:home, :badges, :games, :store], fn key -> Enum.find(pages, &(&1.key == key)) end)
+      [:home, :badges, :games, :store]
+      |> Enum.map(fn key -> Enum.find(pages, &(&1.key == key)) end)
+      |> Enum.reject(&is_nil/1)
 
     if user do
       dock_pages ++
