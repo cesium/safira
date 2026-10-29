@@ -60,6 +60,8 @@ defmodule SafiraWeb.Sponsor.HomeLive.Index do
     end
   end
 
+  defp list_users(false, nil, _), do: {:ok, {[], %Flop.Meta{current_offset: 0, current_page: 0}}}
+
   defp list_users(false, badge_id, params) do
     case Contest.list_badge_redeems_meta(badge_id, Map.put(params, "page_size", @limit)) do
       {:ok, {redeems, meta}} ->
@@ -79,8 +81,6 @@ defmodule SafiraWeb.Sponsor.HomeLive.Index do
         {:error, reason}
     end
   end
-
-  defp list_users(_, nil, _), do: {:ok, {[], %Flop.Meta{current_offset: 0, current_page: 0}}}
 
   defp has_all_access?(company) do
     company.tier.full_cv_access
