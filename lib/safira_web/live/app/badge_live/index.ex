@@ -4,6 +4,7 @@ defmodule SafiraWeb.App.BadgeLive.Index do
   alias Safira.Contest
   import SafiraWeb.App.BadgeLive.Components.BadgeFilter
   import SafiraWeb.Components.Badge
+  import SafiraWeb.Components.SearchBar
 
   @impl true
   def mount(_params, _session, socket) do
