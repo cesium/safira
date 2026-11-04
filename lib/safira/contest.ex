@@ -223,6 +223,22 @@ defmodule Safira.Contest do
     end)
   end
 
+  @doc """
+  Lists Badgedex badges for an attendee, filtered by name.
+
+  When `only_owned` is `true`, only badges already redeemed by the attendee are
+  included. When it is `false`, all badges are considered. An empty search term
+  leaves the list unfiltered by name.
+
+  Returns `{:ok, badges}` on success or `{:error, meta}` if Flop validation
+  fails.
+
+  ## Examples
+
+      iex> list_attendee_badgedex_badges(attendee_id, "coffee")
+
+      iex> list_attendee_badgedex_badges(attendee_id, "coffee", true)
+  """
   def list_attendee_badgedex_badges(attendee_id, search_term, only_owned \\ false) do
     params =
       search_term
@@ -248,6 +264,7 @@ defmodule Safira.Contest do
     end
   end
 
+  # Builds Flop parameters for an optional badge name search.
   defp search_params(""), do: %{}
 
   defp search_params(search_term) do
