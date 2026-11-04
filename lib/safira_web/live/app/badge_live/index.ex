@@ -19,37 +19,31 @@ defmodule SafiraWeb.App.BadgeLive.Index do
      socket
      |> assign(:current_page, :badges)
      |> assign(:selection, :all)
-     |> stream(:badges, attendee_redeems)}
+     |> stream(:badges, attendee_redeems)
+     |> assign(:search_query, "")}
   end
 
   @impl true
   def handle_event("set-selection", %{"selection" => "all"}, socket) do
-    {:noreply,
-     socket
-     |> assign(:selection, :all)
-     |> stream(
-       :badges,
-       Contest.list_attendee_all_badges_redeem_status(socket.assigns.current_user.attendee.id),
-       reset: true
-     )}
+    socket
+    |> assign(:selection, :all)
+    |> reload_badges()
   end
 
   def handle_event("set-selection", %{"selection" => "redeemed"}, socket) do
-    {:noreply,
-     socket
-     |> assign(:selection, :redeemed)
-     |> stream(
-       :badges,
-       Contest.list_attendee_all_badges_redeem_status(
-         socket.assigns.current_user.attendee.id,
-         true
-       ),
-       reset: true
-     )}
+    socket
+    |> assign(:selection, :redeemed)
+    |> reload_badges()
   end
 
   def handle_event("set-selection", _, socket) do
     {:noreply, socket}
+  end
+
+  def handle_event("update-search", %{"badge_search" => search_term}, socket) do
+    socket
+    |> assign(:search_query, search_term)
+    |> reload_badges()
   end
 
   @impl true
@@ -58,5 +52,22 @@ defmodule SafiraWeb.App.BadgeLive.Index do
      socket
      |> stream_delete(:badges, redeem.badge)
      |> stream_insert(:badges, Map.put(redeem.badge, :redeemed_at, redeem.inserted_at), at: 0)}
+  end
+
+  defp reload_badges(socket) do
+    attendee_id = socket.assigns.current_user.attendee.id
+    only_owned = socket.assigns.selection == :redeemed
+
+    case Contest.list_attendee_badgedex_badges(
+           attendee_id,
+           socket.assigns.search_query,
+           only_owned
+         ) do
+      {:ok, badges} ->
+        {:noreply, stream(socket, :badges, badges, reset: true)}
+
+      {:error, _meta} ->
+        {:noreply, socket}
+    end
   end
 end

@@ -223,6 +223,37 @@ defmodule Safira.Contest do
     end)
   end
 
+  def list_attendee_badgedex_badges(attendee_id, search_term, only_owned \\ false) do
+    params =
+      search_term
+      |> String.trim()
+      |> search_params()
+
+    badges = list_attendee_all_badges_redeem_status(attendee_id, only_owned)
+
+    with {:ok, flop} <- Flop.validate(params, for: Badge) do
+      matching_badge_ids =
+        Badge
+        |> Flop.filter(flop, for: Badge)
+        |> select([b], b.id)
+        |> Repo.all()
+        |> MapSet.new()
+
+      filtered_badges =
+        Enum.filter(badges, fn badge ->
+          MapSet.member?(matching_badge_ids, badge.id)
+        end)
+
+      {:ok, filtered_badges}
+    end
+  end
+
+  defp search_params(""), do: %{}
+
+  defp search_params(search_term) do
+    %{filters: [%{field: :name, op: :ilike_and, value: search_term}]}
+  end
+
   @doc """
   Lists all badges that can currently be redeemed.
 
