@@ -15,7 +15,7 @@ defmodule SafiraWeb.App.StoreLive.Components.PurchaseModal do
 
   attr :body_class, :string,
     default:
-      "bg-primary w-full max-w-lg mx-auto rounded-2xl border border-light/10 ring-white p-8 pt-9"
+      "bg-dark w-full max-w-lg mx-auto rounded-2xl border border-light/10 ring-white p-8 pt-9"
 
   def purchase_modal(assigns) do
     ~H"""

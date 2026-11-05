@@ -3,10 +3,10 @@ defmodule SafiraWeb.Helpers do
   Helper functions for web views.
   """
   @product_gradients [
-    "bg-[radial-gradient(circle_at_40%_40%,rgb(26,26,46),rgb(4,4,28))]",
-    "bg-[radial-gradient(circle_at_40%_40%,rgb(46,26,10),rgb(4,4,28))]",
-    "bg-[radial-gradient(circle_at_40%_40%,rgb(26,10,26),rgb(4,4,28))]",
-    "bg-[radial-gradient(circle_at_40%_40%,rgb(15,26,26),rgb(4,4,28))]"
+    "bg-[radial-gradient(circle_at_40%_40%,rgb(26,26,46),rgb(10,10,10))]",
+    "bg-[radial-gradient(circle_at_40%_40%,rgb(46,26,10),rgb(10,10,10))]",
+    "bg-[radial-gradient(circle_at_40%_40%,rgb(26,10,26),rgb(10,10,10))]",
+    "bg-[radial-gradient(circle_at_40%_40%,rgb(15,26,26),rgb(10,10,10))]"
   ]
 
   alias Timex.Format.DateTime.Formatters.Relative
