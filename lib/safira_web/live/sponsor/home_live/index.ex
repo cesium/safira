@@ -34,7 +34,9 @@ defmodule SafiraWeb.Sponsor.HomeLive.Index do
          |> stream(:users, users, reset: true)}
 
       {:error, _reason} ->
-        {:noreply, socket |> put_flash(:error, gettext("An error occurred"))}
+        {:noreply, socket
+        |> put_flash(:error, gettext("Invalid search parameters"))
+        |> push_navigate(to: ~p"/sponsor")}
     end
   end
 
@@ -51,6 +53,7 @@ defmodule SafiraWeb.Sponsor.HomeLive.Index do
         {:noreply,
          socket
          |> assign(:all, string_to_bool(all))
+         |> assign(:form, to_form(%{"all" => string_to_bool(all)}))
          |> assign(:current_page, :visitors)
          |> assign(:meta, meta)
          |> stream(:users, users, reset: true)}
@@ -91,7 +94,11 @@ defmodule SafiraWeb.Sponsor.HomeLive.Index do
       id: redeem.id,
       name: redeem.attendee.user.name,
       handle: redeem.attendee.user.handle,
-      image: nil,
+      image: Uploaders.UserPicture.url(
+    {redeem.attendee.user.picture, redeem.attendee.user},
+    :original,
+    signed: true
+  ),
       cv:
         Uploaders.CV.url({redeem.attendee.user.cv, redeem.attendee.user}, :original, signed: true)
     }
@@ -102,7 +109,7 @@ defmodule SafiraWeb.Sponsor.HomeLive.Index do
       id: user.id,
       name: user.name,
       handle: user.handle,
-      image: nil,
+      image: Uploaders.UserPicture.url({user.picture, user}, :original, signed: true),
       cv: Uploaders.CV.url({user.cv, user}, :original, signed: true)
     }
   end
