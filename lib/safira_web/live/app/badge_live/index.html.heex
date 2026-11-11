@@ -13,7 +13,11 @@
     <div
       id="badges"
       phx-update="stream"
-      class="grid grid-cols-1 gap-x-10 gap-y-5 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6"
+      phx-viewport-bottom={@badges_has_more && "load-more-badges"}
+      class={[
+        "grid grid-cols-1 gap-x-10 gap-y-5 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6",
+        @badges_has_more && "pb-50"
+      ]}
     >
       <%= for {id, badge} <- @streams.badges do %>
         <.link id={id} patch={~p"/app/badges/#{badge.id}"}>

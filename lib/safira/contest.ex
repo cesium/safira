@@ -230,8 +230,7 @@ defmodule Safira.Contest do
   included. When it is `false`, all badges are considered. An empty search term
   leaves the list unfiltered by name.
 
-  Returns `{:ok, badges}` on success or `{:error, meta}` if Flop validation
-  fails.
+  Returns `{:ok, badges, next_cursor, has_more}`.
 
   ## Examples
 
@@ -239,36 +238,67 @@ defmodule Safira.Contest do
 
       iex> list_attendee_badgedex_badges(attendee_id, "coffee", true)
   """
-  def list_attendee_badgedex_badges(attendee_id, search_term, only_owned \\ false) do
-    params =
-      search_term
-      |> String.trim()
-      |> search_params()
+  def list_attendee_badgedex_badges(attendee_id, search_term, only_owned \\ false, opts \\ []) do
+    page_size = Keyword.get(opts, :limit, 30)
+    after_cursor = Keyword.get(opts, :after)
+    search_term = String.trim(search_term)
 
-    badges = list_attendee_all_badges_redeem_status(attendee_id, only_owned)
+    query =
+      from b in Badge,
+        left_join: br in BadgeRedeem,
+        on: br.badge_id == b.id and br.attendee_id == ^attendee_id,
+        preload: [:category],
+        order_by: [desc_nulls_last: br.inserted_at, asc: b.id],
+        select: {b, br.inserted_at}
 
-    with {:ok, flop} <- Flop.validate(params, for: Badge) do
-      matching_badge_ids =
-        Badge
-        |> Flop.filter(flop, for: Badge)
-        |> select([b], b.id)
-        |> Repo.all()
-        |> MapSet.new()
+    query =
+      if only_owned do
+        from [b, br] in query, where: not is_nil(br.id)
+      else
+        query
+      end
 
-      filtered_badges =
-        Enum.filter(badges, fn badge ->
-          MapSet.member?(matching_badge_ids, badge.id)
-        end)
+    query =
+      if search_term == "" do
+        query
+      else
+        from [b, _br] in query, where: ilike(b.name, ^"%#{search_term}%")
+      end
 
-      {:ok, filtered_badges}
-    end
+    query = apply_badgedex_cursor(query, after_cursor)
+    fetch_limit = page_size + 1
+    query = limit(query, ^fetch_limit)
+
+    results = Repo.all(query)
+    has_more = length(results) > page_size
+    page = Enum.take(results, page_size)
+
+    badges =
+      Enum.map(page, fn {badge, redeemed_at} ->
+        Map.put(badge, :redeemed_at, redeemed_at)
+      end)
+
+    next_cursor =
+      case List.last(page) do
+        {badge, redeemed_at} -> {redeemed_at, badge.id}
+        nil -> nil
+      end
+
+    {:ok, badges, next_cursor, has_more}
   end
 
-  # Builds Flop parameters for an optional badge name search.
-  defp search_params(""), do: %{}
+  defp apply_badgedex_cursor(query, nil), do: query
 
-  defp search_params(search_term) do
-    %{filters: [%{field: :name, op: :ilike_and, value: search_term}]}
+  defp apply_badgedex_cursor(query, {redeemed_at, badge_id}) do
+    if redeemed_at do
+      from [b, br] in query,
+        where:
+          br.inserted_at < ^redeemed_at or
+            (br.inserted_at == ^redeemed_at and b.id > ^badge_id) or is_nil(br.inserted_at)
+    else
+      from [b, br] in query,
+        where: is_nil(br.inserted_at) and b.id > ^badge_id
+    end
   end
 
   @doc """
