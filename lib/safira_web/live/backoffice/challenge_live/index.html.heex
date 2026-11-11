@@ -27,10 +27,10 @@
       <:col :let={{_id, _challenge}} label="">
         <.icon name="hero-bars-3" class="w-5 h-5 handle cursor-pointer ml-4" />
       </:col>
-      <:col :let={{_id, challenge}} label="Name" sortable field={:name}>
+      <:col :let={{_id, challenge}} label="Name">
         {challenge.name}
       </:col>
-      <:col :let={{_id, challenge}} label="Description" sortable field={:description}>
+      <:col :let={{_id, challenge}} label="Description">
         {Helpers.trim_string(challenge.description, 128)}
       </:col>
       <:action :let={{_id, challenge}}>

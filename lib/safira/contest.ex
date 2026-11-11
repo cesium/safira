@@ -62,13 +62,19 @@ defmodule Safira.Contest do
 
   def list_badges(params) do
     Badge
-    |> Flop.validate_and_run(params, for: Badge)
+    |> Flop.validate_and_run(params,
+      for: Badge,
+      default_order: %{order_by: [:name, :id], order_directions: [:asc, :asc]}
+    )
   end
 
   def list_badges(%{} = params, opts) when is_list(opts) do
     Badge
     |> apply_filters(opts)
-    |> Flop.validate_and_run(params, for: Badge)
+    |> Flop.validate_and_run(params,
+      for: Badge,
+      default_order: %{order_by: [:name, :id], order_directions: [:asc, :asc]}
+    )
   end
 
   @doc """
@@ -109,8 +115,10 @@ defmodule Safira.Contest do
     |> join(:inner, [br], b in Badge, on: b.id == br.badge_id, as: :badge)
     |> where([br, b], br.attendee_id == ^attendee_id)
     |> preload([:badge, attendee: [:user], redeemed_by: [:user]])
-    |> order_by([br], desc: br.inserted_at)
-    |> Flop.validate_and_run(params, for: BadgeRedeem)
+    |> Flop.validate_and_run(params,
+      for: BadgeRedeem,
+      default_order: %{order_by: [:inserted_at, :id], order_directions: [:desc, :desc]}
+    )
   end
 
   @doc """
@@ -179,7 +187,10 @@ defmodule Safira.Contest do
     |> join(:inner, [br, a], u in assoc(a, :user), as: :user)
     |> preload(attendee: [:user], redeemed_by: [:user])
     |> apply_filters(opts)
-    |> Flop.validate_and_run(params, for: BadgeRedeem)
+    |> Flop.validate_and_run(params,
+      for: BadgeRedeem,
+      default_order: %{order_by: [:inserted_at, :id], order_directions: [:desc, :desc]}
+    )
   end
 
   @doc """
@@ -247,14 +258,20 @@ defmodule Safira.Contest do
   def list_available_badges(params) do
     Badge
     |> where([b], b.begin <= ^DateTime.utc_now() and b.end >= ^DateTime.utc_now() and b.givable)
-    |> Flop.validate_and_run(params, for: Badge)
+    |> Flop.validate_and_run(params,
+      for: Badge,
+      default_order: %{order_by: [:name, :id], order_directions: [:asc, :asc]}
+    )
   end
 
   def list_available_badges(%{} = params, opts) when is_list(opts) do
     Badge
     |> apply_filters(opts)
     |> where([b], b.begin <= ^DateTime.utc_now() and b.end >= ^DateTime.utc_now() and b.givable)
-    |> Flop.validate_and_run(params, for: Badge)
+    |> Flop.validate_and_run(params,
+      for: Badge,
+      default_order: %{order_by: [:name, :id], order_directions: [:asc, :asc]}
+    )
   end
 
   @doc """

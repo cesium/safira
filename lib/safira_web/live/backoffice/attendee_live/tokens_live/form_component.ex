@@ -30,9 +30,20 @@ defmodule SafiraWeb.Backoffice.AttendeeLive.TokensLive.FormComponent do
             type="select"
             required
           />
-          <.field field={assigns.form[:tokens]} type="number" value={0} label="Tokens" required />
+          <.field
+            field={assigns.form[:tokens]}
+            type="number"
+            value={@amount}
+            min="1"
+            step="1"
+            label="Tokens"
+            required
+          />
+          <p :if={@amount != "" and is_nil(@amount_int)} class="text-sm text-red-600">
+            {gettext("Tokens must be a whole number greater than 0.")}
+          </p>
           <:actions>
-            <.button phx-disable-with="Saving...">
+            <.button phx-disable-with="Saving..." disabled={is_nil(@amount_int)}>
               {gettext("Save Tokens")}
             </.button>
           </:actions>
@@ -82,6 +93,8 @@ defmodule SafiraWeb.Backoffice.AttendeeLive.TokensLive.FormComponent do
      |> assign(assigns)
      |> assign(:current_tokens, attendee.tokens)
      |> assign(:option, "Add")
+     |> assign(:amount, "")
+     |> assign(:amount_int, nil)
      |> assign_new(:form, fn ->
        to_form(form)
      end)}
@@ -90,35 +103,17 @@ defmodule SafiraWeb.Backoffice.AttendeeLive.TokensLive.FormComponent do
   @impl true
   def handle_event(
         "validate",
-        %{"attendee" => %{"tokens" => tokens} = attendee_params, "set_action" => action} =
-          _params,
+        %{"attendee" => %{"tokens" => tokens}, "set_action" => action},
         socket
       ) do
-    case {tokens, action} do
-      {"", _} ->
-        {:noreply, socket}
+    amount_int = parse_amount(tokens)
 
-      {tokens, "Add"} ->
-        tokens_int = String.to_integer(tokens)
-        changeset = Accounts.change_attendee(socket.assigns.attendee, attendee_params)
-
-        {:noreply,
-         socket
-         |> assign(:form, to_form(changeset, action: :validate))
-         |> assign(:option, "Add")
-         |> assign(:current_tokens, socket.assigns.attendee.tokens + tokens_int)}
-
-      {tokens, "Remove"} ->
-        tokens_int = String.to_integer(tokens)
-        current_tokens = max(0, socket.assigns.attendee.tokens - tokens_int)
-        changeset = Accounts.change_attendee(socket.assigns.attendee, attendee_params)
-
-        {:noreply,
-         socket
-         |> assign(:form, to_form(changeset, action: :validate))
-         |> assign(:option, "Remove")
-         |> assign(:current_tokens, current_tokens)}
-    end
+    {:noreply,
+     socket
+     |> assign(:option, action)
+     |> assign(:amount, tokens)
+     |> assign(:amount_int, amount_int)
+     |> assign(:current_tokens, new_balance(socket.assigns.attendee.tokens, amount_int, action))}
   end
 
   @impl true
@@ -126,21 +121,45 @@ defmodule SafiraWeb.Backoffice.AttendeeLive.TokensLive.FormComponent do
     attendee = socket.assigns.attendee
     tokens = socket.assigns.current_tokens
 
-    case Contest.change_attendee_tokens(attendee, tokens) do
-      {:ok, _attendee} ->
-        {:noreply, socket |> push_navigate(to: socket.assigns.patch)}
+    if is_nil(socket.assigns.amount_int) do
+      {:noreply, assign(socket, live_action: :default)}
+    else
+      case Contest.change_attendee_tokens(attendee, tokens) do
+        {:ok, _changes} ->
+          {:noreply, socket |> push_navigate(to: socket.assigns.patch)}
 
-      {:error, %Ecto.Changeset{} = changeset} ->
-        {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
+        {:error, _operation, _value, _changes} ->
+          {:noreply,
+           socket
+           |> assign(live_action: :default)
+           |> put_flash(:error, gettext("Could not update the tokens. Please try again."))}
+      end
     end
   end
 
   @impl true
   def handle_event("confirm-modal", _params, socket) do
-    {:noreply, assign(socket, live_action: :confirm_tokens)}
+    if is_nil(socket.assigns.amount_int) do
+      {:noreply, socket}
+    else
+      {:noreply, assign(socket, live_action: :confirm_tokens)}
+    end
   end
 
   def handle_event("cancel", _params, socket) do
     {:noreply, assign(socket, live_action: :default)}
   end
+
+  # Tokens are always whole numbers; the action (Add/Remove) gives the direction,
+  # so the amount must be a positive integer. Anything else ("", "1.5", "1e2", "-5") is invalid.
+  defp parse_amount(value) do
+    case Integer.parse(value) do
+      {amount, ""} when amount > 0 -> amount
+      _ -> nil
+    end
+  end
+
+  defp new_balance(current, nil, _action), do: current
+  defp new_balance(current, amount, "Add"), do: current + amount
+  defp new_balance(current, amount, "Remove"), do: max(0, current - amount)
 end

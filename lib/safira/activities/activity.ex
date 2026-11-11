@@ -12,7 +12,7 @@ defmodule Safira.Activities.Activity do
   @derive {
     Flop.Schema,
     filterable: [:title],
-    sortable: [:timestamp],
+    sortable: [:title, :timestamp, :id],
     default_limit: 11,
     adapter_opts: [
       compound_fields: [
@@ -20,8 +20,8 @@ defmodule Safira.Activities.Activity do
       ]
     ],
     default_order: %{
-      order_by: [:timestamp],
-      order_directions: [:asc]
+      order_by: [:timestamp, :id],
+      order_directions: [:asc, :asc]
     }
   }
 

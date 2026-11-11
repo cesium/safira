@@ -11,7 +11,7 @@ defmodule Safira.Activities.Speaker do
 
   @derive {
     Flop.Schema,
-    filterable: [:name], sortable: [:name, :company], default_limit: 3
+    filterable: [:name], sortable: [:name, :company, :id], default_limit: 3
   }
 
   schema "speakers" do

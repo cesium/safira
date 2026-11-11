@@ -36,7 +36,10 @@ defmodule Safira.Companies do
     Company
     |> join(:left, [c], t in assoc(c, :tier), as: :tier)
     |> preload(:tier)
-    |> Flop.validate_and_run(params, for: Company)
+    |> Flop.validate_and_run(params,
+      for: Company,
+      default_order: %{order_by: [:tier, :name], order_directions: [:asc, :asc]}
+    )
   end
 
   def list_companies(%{} = params, opts) when is_list(opts) do
@@ -44,7 +47,10 @@ defmodule Safira.Companies do
     |> apply_filters(opts)
     |> join(:left, [c], t in assoc(c, :tier), as: :tier)
     |> preload(:tier)
-    |> Flop.validate_and_run(params, for: Company)
+    |> Flop.validate_and_run(params,
+      for: Company,
+      default_order: %{order_by: [:tier, :name], order_directions: [:asc, :asc]}
+    )
   end
 
   @doc """

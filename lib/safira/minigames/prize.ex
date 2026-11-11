@@ -9,7 +9,7 @@ defmodule Safira.Minigames.Prize do
 
   @derive {
     Flop.Schema,
-    filterable: [:name], sortable: [:name, :stock], default_limit: 11
+    filterable: [:name], sortable: [:name, :stock, :id], default_limit: 11
   }
 
   schema "prizes" do
