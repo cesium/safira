@@ -228,4 +228,26 @@ defmodule SafiraWeb.Helpers do
       "dashboard"
     end
   end
+
+  @doc """
+  Returns the first and last name from a full name string.
+  ## Examples
+      iex> short_name("Alexandre Guilherme Ferreira de Magalhães")
+      "Alexandre Magalhães"
+      iex> short_name("Afonso Santos")
+      "Afonso Santos"
+      iex> short_name("Afonso")
+      "Afonso"
+      iex> short_name(nil)
+      ""
+  """
+  def short_name(nil), do: ""
+
+  def short_name(name) when is_binary(name) do
+    case String.split(name, ~r/\s+/, trim: true) do
+      [] -> ""
+      [first] -> first
+      [first | rest] -> "#{first} #{List.last(rest)}"
+    end
+  end
 end

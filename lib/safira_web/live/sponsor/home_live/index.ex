@@ -15,52 +15,64 @@ defmodule SafiraWeb.Sponsor.HomeLive.Index do
   def mount(_params, _session, socket) do
     {:ok,
      socket
-     |> assign(:all_enabled, has_all_access?(socket.assigns.current_user.company))
-     |> assign(:all, false)
-     |> assign(:form, to_form(%{"all" => false}))}
+     |> assign(:all_enabled, has_all_access?(socket.assigns.current_user.company))}
   end
 
   @impl true
   def handle_params(params, _url, socket) do
     badge_id = socket.assigns.current_user.company.badge_id
 
-    case list_users(socket.assigns.all_enabled and socket.assigns.all, badge_id, params) do
+    all_requested = params["all"] == "true"
+    all_active = socket.assigns.all_enabled and all_requested
+
+    case list_users(all_active, badge_id, params) do
       {:ok, {users, meta}} ->
         {:noreply,
          socket
          |> assign(:current_page, :visitors)
          |> assign(:meta, meta)
          |> assign(:params, params)
+         |> assign(:all, all_active)
+         |> assign(:form, to_form(%{"all" => all_active}))
          |> stream(:users, users, reset: true)}
 
       {:error, _reason} ->
-        {:noreply, socket |> put_flash(:error, gettext("An error occurred"))}
+        {:noreply,
+         socket
+         |> put_flash(:error, gettext("Invalid search parameters"))
+         |> push_patch(to: ~p"/sponsor")}
     end
   end
 
   @impl true
   def handle_event("validate", %{"all" => all}, socket) do
-    badge_id = socket.assigns.current_user.company.badge_id
+    new_params =
+      socket.assigns.params
+      |> Map.delete("page")
 
-    case list_users(
-           socket.assigns.all_enabled and string_to_bool(all),
-           badge_id,
-           socket.assigns.params
-         ) do
-      {:ok, {users, meta}} ->
-        {:noreply,
-         socket
-         |> assign(:all, string_to_bool(all))
-         |> assign(:current_page, :visitors)
-         |> assign(:meta, meta)
-         |> stream(:users, users, reset: true)}
+    new_params =
+      if string_to_bool(all) do
+        Map.put(new_params, "all", "true")
+      else
+        Map.delete(new_params, "all")
+      end
 
-      {:error, _reason} ->
-        {:noreply, socket |> assign(:all, all) |> put_flash(:error, gettext("An error occurred"))}
-    end
+    {:noreply, push_patch(socket, to: ~p"/sponsor?#{new_params}")}
   end
 
-  defp list_users(false, nil, _), do: {:ok, {[], %Flop.Meta{current_offset: 0, current_page: 0}}}
+  defp list_users(false, nil, _),
+    do:
+      {:ok,
+       {[],
+        %Flop.Meta{
+          current_offset: 0,
+          current_page: 1,
+          page_size: @limit,
+          total_count: 0,
+          total_pages: 0,
+          has_previous_page?: false,
+          has_next_page?: false
+        }}}
 
   defp list_users(false, badge_id, params) do
     case Contest.list_badge_redeems_meta(badge_id, Map.put(params, "page_size", @limit)) do
@@ -91,7 +103,12 @@ defmodule SafiraWeb.Sponsor.HomeLive.Index do
       id: redeem.id,
       name: redeem.attendee.user.name,
       handle: redeem.attendee.user.handle,
-      image: nil,
+      image:
+        Uploaders.UserPicture.url(
+          {redeem.attendee.user.picture, redeem.attendee.user},
+          :original,
+          signed: true
+        ),
       cv:
         Uploaders.CV.url({redeem.attendee.user.cv, redeem.attendee.user}, :original, signed: true)
     }
@@ -102,7 +119,7 @@ defmodule SafiraWeb.Sponsor.HomeLive.Index do
       id: user.id,
       name: user.name,
       handle: user.handle,
-      image: nil,
+      image: Uploaders.UserPicture.url({user.picture, user}, :original, signed: true),
       cv: Uploaders.CV.url({user.cv, user}, :original, signed: true)
     }
   end
