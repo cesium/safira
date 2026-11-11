@@ -11,7 +11,7 @@ defmodule Safira.Contest.Badge do
 
   @derive {
     Flop.Schema,
-    filterable: [:name], sortable: [:name], default_limit: 30
+    filterable: [:name], sortable: [:name, :id], default_limit: 30
   }
 
   schema "badges" do

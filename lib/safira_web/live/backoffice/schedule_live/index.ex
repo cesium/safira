@@ -16,14 +16,9 @@ defmodule SafiraWeb.Backoffice.ScheduleLive.Index do
 
   @impl true
   def handle_params(params, _url, socket) do
-    case Activities.list_activities(
-           if socket.assigns.live_action != :speakers do
-             params
-           else
-             %{}
-           end,
-           preloads: [:category]
-         ) do
+    activity_params = if socket.assigns.live_action == :index, do: params, else: %{}
+
+    case Activities.list_activities(activity_params, preloads: [:category]) do
       {:ok, {activities, meta}} ->
         {:noreply,
          socket

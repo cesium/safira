@@ -161,14 +161,20 @@ defmodule Safira.Accounts do
   def list_staffs(params) do
     User
     |> where(type: :staff)
-    |> Flop.validate_and_run(params, for: User)
+    |> Flop.validate_and_run(params,
+      for: User,
+      default_order: %{order_by: [:name, :id], order_directions: [:asc, :asc]}
+    )
   end
 
   def list_staffs(%{} = params, opts) when is_list(opts) do
     User
     |> apply_filters(opts)
     |> where(type: :staff)
-    |> Flop.validate_and_run(params, for: User)
+    |> Flop.validate_and_run(params,
+      for: User,
+      default_order: %{order_by: [:name, :id], order_directions: [:asc, :asc]}
+    )
   end
 
   def update_user(%User{} = user, attrs) do

@@ -51,7 +51,10 @@ defmodule Safira.Activities do
     |> select([u, at, e], u)
     |> preload(:attendee)
     |> apply_filters(opts)
-    |> Flop.validate_and_run(params, for: User)
+    |> Flop.validate_and_run(params,
+      for: User,
+      default_order: %{order_by: [:name, :id], order_directions: [:asc, :asc]}
+    )
   end
 
   @doc """
@@ -310,13 +313,19 @@ defmodule Safira.Activities do
 
   def list_speakers(params) do
     Speaker
-    |> Flop.validate_and_run(params, for: Speaker)
+    |> Flop.validate_and_run(params,
+      for: Speaker,
+      default_order: %{order_by: [:name, :id], order_directions: [:asc, :asc]}
+    )
   end
 
   def list_speakers(%{} = params, opts) when is_list(opts) do
     Speaker
     |> apply_filters(opts)
-    |> Flop.validate_and_run(params, for: Speaker)
+    |> Flop.validate_and_run(params,
+      for: Speaker,
+      default_order: %{order_by: [:name, :id], order_directions: [:asc, :asc]}
+    )
   end
 
   @doc """

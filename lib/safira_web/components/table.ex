@@ -258,23 +258,13 @@ defmodule SafiraWeb.Components.Table do
   defp order_direction(%Flop{}, _), do: nil
 
   defp next_order_query(field, flop, params) do
-    updated_flop =
-      if order_direction(flop, field) == :desc do
-        index = Enum.find_index(flop.order_by, &(&1 == field))
-
-        %{
-          flop
-          | order_by: List.delete_at(flop.order_by, index),
-            order_directions: List.delete_at(flop.order_directions, index)
-        }
-      else
-        Flop.push_order(flop, field)
-      end
+    updated_flop = Flop.push_order(flop, field)
 
     query =
       params
       |> Map.put("order_by", updated_flop.order_by)
       |> Map.put("order_directions", updated_flop.order_directions)
+      |> Map.put("page", 1)
 
     "?#{Query.encode(query)}"
   end

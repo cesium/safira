@@ -31,13 +31,19 @@ defmodule Safira.Store do
 
   def list_products(params) do
     Product
-    |> Flop.validate_and_run(params, for: Product)
+    |> Flop.validate_and_run(params,
+      for: Product,
+      default_order: %{order_by: [:name], order_directions: [:asc]}
+    )
   end
 
   def list_products(%{} = params, opts) when is_list(opts) do
     Product
     |> apply_filters(opts)
-    |> Flop.validate_and_run(params, for: Product)
+    |> Flop.validate_and_run(params,
+      for: Product,
+      default_order: %{order_by: [:name], order_directions: [:asc]}
+    )
   end
 
   @doc """
@@ -58,7 +64,10 @@ defmodule Safira.Store do
     |> join(:left, [i], p in assoc(i, :product), as: :product)
     |> where([i], not is_nil(i.product_id))
     |> preload(attendee: [:user], product: [])
-    |> Flop.validate_and_run(params, for: Item)
+    |> Flop.validate_and_run(params,
+      for: Item,
+      default_order: %{order_by: [:inserted_at, :id], order_directions: [:desc, :desc]}
+    )
   end
 
   def list_purchases(%{} = params, opts) when is_list(opts) do
@@ -67,7 +76,10 @@ defmodule Safira.Store do
     |> where([i], not is_nil(i.product_id))
     |> apply_filters(opts)
     |> preload(attendee: [:user], product: [])
-    |> Flop.validate_and_run(params, for: Item)
+    |> Flop.validate_and_run(params,
+      for: Item,
+      default_order: %{order_by: [:inserted_at, :id], order_directions: [:desc, :desc]}
+    )
   end
 
   @doc """

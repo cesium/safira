@@ -47,13 +47,19 @@ defmodule Safira.Minigames do
 
   def list_prizes(params) do
     Prize
-    |> Flop.validate_and_run(params, for: Prize)
+    |> Flop.validate_and_run(params,
+      for: Prize,
+      default_order: %{order_by: [:name, :id], order_directions: [:asc, :asc]}
+    )
   end
 
   def list_prizes(%{} = params, opts) when is_list(opts) do
     Prize
     |> apply_filters(opts)
-    |> Flop.validate_and_run(params, for: Prize)
+    |> Flop.validate_and_run(params,
+      for: Prize,
+      default_order: %{order_by: [:name, :id], order_directions: [:asc, :asc]}
+    )
   end
 
   @doc """

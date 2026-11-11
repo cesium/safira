@@ -19,7 +19,7 @@ defmodule SafiraWeb.Backoffice.BadgeLive.RedeemLive.Index do
             <.table_search
               id="attendees-table-name-search"
               params={@params}
-              field={:name}
+              field={:attendee_name}
               path={~p"/dashboard/badges/#{@badge.id}/redeems"}
               placeholder={gettext("Search for attendees")}
             />
