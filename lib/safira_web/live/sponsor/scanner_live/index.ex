@@ -63,7 +63,7 @@ defmodule SafiraWeb.Sponsor.ScannerLive.Index do
     if is_nil(badge_id) do
       {:ok,
        socket
-       |> put_flash(:error, "Company does not have badge")
+       |> put_flash(:error, gettext("Company does not have badge"))
        |> push_navigate(to: ~p"/sponsor")}
     else
       badge = Contest.get_badge!(badge_id)
@@ -143,7 +143,7 @@ defmodule SafiraWeb.Sponsor.ScannerLive.Index do
          |> assign(:given_list, [credential_id | socket.assigns.given_list])}
 
       {:error, _} ->
-        {:noreply, socket |> assign(:modal_data, :not_linked)}
+        {:noreply, socket |> assign(:modal_data, :redeem_failed)}
     end
   end
 
@@ -155,6 +155,9 @@ defmodule SafiraWeb.Sponsor.ScannerLive.Index do
 
   defp error_message(:not_linked),
     do: gettext("This credential is not linked to any attendee! (400)")
+
+  defp error_message(:redeem_failed),
+    do: gettext("Could not redeem badge! (500)")
 
   defp error_message(:invalid), do: gettext("Not a valid credential! (400)")
 end

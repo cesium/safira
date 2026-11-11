@@ -21,8 +21,8 @@ defmodule Safira.Contest.BadgeRedeem do
                field: :name
              ],
              badge_name: [
-              binding: :badge,
-              field: :name
+               binding: :badge,
+               field: :name
              ]
            ]}
 

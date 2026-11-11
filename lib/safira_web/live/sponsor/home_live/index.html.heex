@@ -13,21 +13,44 @@
           {gettext("Download CVs")}
         </.button>
       </.link>
-      <.simple_form :if={@all_enabled} for={@form} phx-change="validate" class="sm:flex hidden">
-        <.field field={@form[:all]} type="switch" label="All" wrapper_class="pb-2" />
+      <.simple_form
+        :if={@all_enabled}
+        id="visitors-all-form-desktop"
+        for={@form}
+        phx-change="validate"
+        class="sm:flex hidden"
+      >
+        <.field
+          id="visitors-all-switch-desktop"
+          field={@form[:all]}
+          type="switch"
+          label={gettext("All")}
+          wrapper_class="pb-2"
+        />
       </.simple_form>
     </div>
   </:actions>
 
-  <div class="sm:hidden flex gap-x-2 items-center justify-center">
-    <.simple_form :if={@all_enabled} for={@form} phx-change="validate">
-      <.field field={@form[:all]} type="switch" label="All" wrapper_class="pb-2" />
-    </.simple_form>
+  <div class="sm:hidden flex gap-x-4 items-center justify-center">
     <.link href={~p"/downloads/cvs"} target="_blank" class="justify-end">
       <.button>
         {gettext("Download CVs")}
       </.button>
     </.link>
+    <.simple_form
+      :if={@all_enabled}
+      id="visitors-all-form-mobile"
+      for={@form}
+      phx-change="validate"
+    >
+      <.field
+        id="visitors-all-switch-mobile"
+        field={@form[:all]}
+        type="switch"
+        label={gettext("All")}
+        wrapper_class="pb-2"
+      />
+    </.simple_form>
   </div>
 
   <ul id="visitors-list" class="grid grid-cols-2 md:grid-cols-4" phx-update="stream">
