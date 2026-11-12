@@ -82,7 +82,8 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.Minesweeper.FormComponent do
   end
 
   def handle_event("validate", params, socket) do
-    changeset = validate_configuration(params["max_multiplier"], params["house_edge"], params["is_active"])
+    changeset =
+      validate_configuration(params["max_multiplier"], params["house_edge"], params["is_active"])
 
     {:noreply,
      assign(socket, form: to_form(changeset, action: :validate, as: :wheel_configuration))}
@@ -100,15 +101,23 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.Minesweeper.FormComponent do
   end
 
   defp validate_configuration(max_multiplier, house_edge, is_active) do
-    {%{}, %{max_multiplier: :integer, house_edge: :integer , is_active: :boolean}}
-    |> Changeset.cast(%{max_multiplier: max_multiplier,  house_edge: house_edge, is_active: is_active}, [:max_multiplier, :house_edge, :is_active])
+    {%{}, %{max_multiplier: :integer, house_edge: :integer, is_active: :boolean}}
+    |> Changeset.cast(
+      %{max_multiplier: max_multiplier, house_edge: house_edge, is_active: is_active},
+      [:max_multiplier, :house_edge, :is_active]
+    )
     |> Changeset.validate_required([:max_multiplier, :house_edge])
-    |> Changeset.validate_number(:max_multiplier, greater_than: 0)  
-    |> Changeset.validate_number(:house_edge, greater_than_or_equal_to: 0, less_than_or_equal_to: 100)
+    |> Changeset.validate_number(:max_multiplier, greater_than: 0)
+    |> Changeset.validate_number(:house_edge,
+      greater_than_or_equal_to: 0,
+      less_than_or_equal_to: 100
+    )
   end
 
   defp valid_config?(params) do
-    validation = validate_configuration(params["max_multiplier"], params["house_edge"], params["is_active"])
+    validation =
+      validate_configuration(params["max_multiplier"], params["house_edge"], params["is_active"])
+
     validation.errors == []
   end
 end

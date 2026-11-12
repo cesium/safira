@@ -351,7 +351,6 @@ defmodule SafiraWeb.Router do
           end
 
           live "/minesweeper", MinigamesLive.Index, :edit_minesweeper
-
         end
 
         scope "/scanner", ScannerLive do

@@ -48,7 +48,7 @@ defmodule SafiraWeb.App.GamesLive.MinesweeperLive.Index do
     attendee = socket.assigns.current_user.attendee
     bet = socket.assigns.bet
     mines = socket.assigns.mines
-    
+
     case Minigames.place_bet_minesweeper(attendee, bet, mines) do
       {:ok, game} ->
         {:noreply,
