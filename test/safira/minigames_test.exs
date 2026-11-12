@@ -751,4 +751,77 @@ defmodule Safira.MinigamesTest do
 
     defp symbol_counts(symbols), do: symbols |> Enum.map(& &1.id) |> Enum.frequencies()
   end
+
+  describe "minesweeper_rounds" do
+    alias Safira.Minigames.MinesweeperRound
+
+    import Safira.MinigamesFixtures
+
+    @invalid_attrs %{status: nil, mine_positions: nil, revealed_positions: nil}
+
+    test "list_minesweeper_rounds/0 returns all minesweeper_rounds" do
+      minesweeper_round = minesweeper_round_fixture()
+      assert Minigames.list_minesweeper_rounds() == [minesweeper_round]
+    end
+
+    test "get_minesweeper_round!/1 returns the minesweeper_round with given id" do
+      minesweeper_round = minesweeper_round_fixture()
+      assert Minigames.get_minesweeper_round!(minesweeper_round.id) == minesweeper_round
+    end
+
+    test "create_minesweeper_round/1 with valid data creates a minesweeper_round" do
+      valid_attrs = %{status: "some status", mine_positions: [1, 2], revealed_positions: [1, 2]}
+
+      assert {:ok, %MinesweeperRound{} = minesweeper_round} =
+               Minigames.create_minesweeper_round(valid_attrs)
+
+      assert minesweeper_round.status == "some status"
+      assert minesweeper_round.mine_positions == [1, 2]
+      assert minesweeper_round.revealed_positions == [1, 2]
+    end
+
+    test "create_minesweeper_round/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Minigames.create_minesweeper_round(@invalid_attrs)
+    end
+
+    test "update_minesweeper_round/2 with valid data updates the minesweeper_round" do
+      minesweeper_round = minesweeper_round_fixture()
+
+      update_attrs = %{
+        status: "some updated status",
+        mine_positions: [1],
+        revealed_positions: [1]
+      }
+
+      assert {:ok, %MinesweeperRound{} = minesweeper_round} =
+               Minigames.update_minesweeper_round(minesweeper_round, update_attrs)
+
+      assert minesweeper_round.status == "some updated status"
+      assert minesweeper_round.mine_positions == [1]
+      assert minesweeper_round.revealed_positions == [1]
+    end
+
+    test "update_minesweeper_round/2 with invalid data returns error changeset" do
+      minesweeper_round = minesweeper_round_fixture()
+
+      assert {:error, %Ecto.Changeset{}} =
+               Minigames.update_minesweeper_round(minesweeper_round, @invalid_attrs)
+
+      assert minesweeper_round == Minigames.get_minesweeper_round!(minesweeper_round.id)
+    end
+
+    test "delete_minesweeper_round/1 deletes the minesweeper_round" do
+      minesweeper_round = minesweeper_round_fixture()
+      assert {:ok, %MinesweeperRound{}} = Minigames.delete_minesweeper_round(minesweeper_round)
+
+      assert_raise Ecto.NoResultsError, fn ->
+        Minigames.get_minesweeper_round!(minesweeper_round.id)
+      end
+    end
+
+    test "change_minesweeper_round/1 returns a minesweeper_round changeset" do
+      minesweeper_round = minesweeper_round_fixture()
+      assert %Ecto.Changeset{} = Minigames.change_minesweeper_round(minesweeper_round)
+    end
+  end
 end
