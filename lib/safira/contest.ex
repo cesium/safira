@@ -224,6 +224,84 @@ defmodule Safira.Contest do
   end
 
   @doc """
+  Lists Badgedex badges for an attendee, filtered by name.
+
+  When `only_owned` is `true`, only badges already redeemed by the attendee are
+  included. When it is `false`, all badges are considered. An empty search term
+  leaves the list unfiltered by name.
+
+  Returns `{:ok, badges, next_cursor, has_more}`.
+
+  ## Examples
+
+      iex> list_attendee_badgedex_badges(attendee_id, "coffee")
+
+      iex> list_attendee_badgedex_badges(attendee_id, "coffee", true)
+  """
+  def list_attendee_badgedex_badges(attendee_id, search_term, only_owned \\ false, opts \\ []) do
+    page_size = Keyword.get(opts, :limit, 30)
+    after_cursor = Keyword.get(opts, :after)
+    search_term = String.trim(search_term)
+
+    query =
+      from b in Badge,
+        left_join: br in BadgeRedeem,
+        on: br.badge_id == b.id and br.attendee_id == ^attendee_id,
+        preload: [:category],
+        order_by: [desc_nulls_last: br.inserted_at, asc: b.id],
+        select: {b, br.inserted_at}
+
+    query =
+      if only_owned do
+        from [b, br] in query, where: not is_nil(br.id)
+      else
+        query
+      end
+
+    query =
+      if search_term == "" do
+        query
+      else
+        from [b, _br] in query, where: ilike(b.name, ^"%#{search_term}%")
+      end
+
+    query = apply_badgedex_cursor(query, after_cursor)
+    fetch_limit = page_size + 1
+    query = limit(query, ^fetch_limit)
+
+    results = Repo.all(query)
+    has_more = length(results) > page_size
+    page = Enum.take(results, page_size)
+
+    badges =
+      Enum.map(page, fn {badge, redeemed_at} ->
+        Map.put(badge, :redeemed_at, redeemed_at)
+      end)
+
+    next_cursor =
+      case List.last(page) do
+        {badge, redeemed_at} -> {redeemed_at, badge.id}
+        nil -> nil
+      end
+
+    {:ok, badges, next_cursor, has_more}
+  end
+
+  defp apply_badgedex_cursor(query, nil), do: query
+
+  defp apply_badgedex_cursor(query, {redeemed_at, badge_id}) do
+    if redeemed_at do
+      from [b, br] in query,
+        where:
+          br.inserted_at < ^redeemed_at or
+            (br.inserted_at == ^redeemed_at and b.id > ^badge_id) or is_nil(br.inserted_at)
+    else
+      from [b, br] in query,
+        where: is_nil(br.inserted_at) and b.id > ^badge_id
+    end
+  end
+
+  @doc """
   Lists all badges that can currently be redeemed.
 
   ## Examples

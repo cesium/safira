@@ -1,12 +1,23 @@
 <.page title={gettext("Badgedex")} size={:xl} title_class="uppercase">
-  <div class="mx-auto w-fit">
-    <.badge_filter selection={@selection} />
+  <div class="relative flex flex-col lg:flex-row lg:items-center gap-5">
+    <div class="mx-auto lg:absolute lg:left-1/2 lg:-translate-x-1/2 w-fit">
+      <.badge_filter selection={@selection} />
+    </div>
+
+    <div class="mx-auto lg:mx-0 w-full sm:w-fit lg:ml-auto">
+      <.search_bar />
+    </div>
   </div>
+
   <div class="flex w-full items-center justify-center flex-col mt-8">
     <div
       id="badges"
       phx-update="stream"
-      class="grid grid-cols-1 gap-x-10 gap-y-5 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6"
+      phx-viewport-bottom={@badges_has_more && "load-more-badges"}
+      class={[
+        "grid grid-cols-1 gap-x-10 gap-y-5 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6",
+        @badges_has_more && "pb-50"
+      ]}
     >
       <%= for {id, badge} <- @streams.badges do %>
         <.link id={id} patch={~p"/app/badges/#{badge.id}"}>
