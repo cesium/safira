@@ -29,6 +29,12 @@ defmodule SafiraWeb.App.GamesLive.Index do
         icon: "scratch_card.svg",
         path: "scratch_card",
         desc: "Scratch scratch scratch, and reveal your fortune"
+      },
+      %{
+        name: "Mine Sweeper",
+        icon: "mine.svg",
+        path: "minesweeper",
+        desc: "One wrong step and BOOM! Clear the board and cashout the prize"
       }
     ]
 
