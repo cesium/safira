@@ -159,4 +159,23 @@ defmodule Safira.MinigamesFixtures do
 
     scratch_card_symbol
   end
+
+  @doc """
+  Generate a minesweeper_round.
+  """
+  def minesweeper_round_fixture(attrs \\ %{}) do
+    {:ok, minesweeper_round} =
+      attrs
+      |> Enum.into(%{
+        attendee_id: Safira.AccountsFixtures.attendee_fixture().id,
+        bet: 42,
+        mine_positions: [1, 2],
+        revealed_positions: [1, 2],
+        status: :active,
+        tokens: 42
+      })
+      |> Safira.Minigames.create_minesweeper_round()
+
+    minesweeper_round
+  end
 end

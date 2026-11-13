@@ -2281,4 +2281,492 @@ defmodule Safira.Minigames do
   def change_scratch_card_symbol(%ScratchCardSymbol{} = scratch_card_symbol, attrs \\ %{}) do
     ScratchCardSymbol.changeset(scratch_card_symbol, attrs)
   end
+
+  alias Safira.Minigames.MinesweeperRound
+
+  @minesweeper_board_size 16
+  @minesweeper_min_mines 1
+  @minesweeper_max_mines @minesweeper_board_size - 1
+
+  def minesweeper_board_size, do: @minesweeper_board_size
+  def minesweeper_min_mines, do: @minesweeper_min_mines
+  def minesweeper_max_mines, do: @minesweeper_max_mines
+
+  @doc """
+  Returns the list of minesweeper_rounds.
+
+  ## Examples
+
+      iex> list_minesweeper_rounds()
+      [%MinesweeperRound{}, ...]
+
+  """
+  def list_minesweeper_rounds do
+    Repo.all(MinesweeperRound)
+  end
+
+  @doc """
+  Gets a single minesweeper_round.
+
+  Raises `Ecto.NoResultsError` if the Minesweeper game does not exist.
+
+  ## Examples
+
+      iex> get_minesweeper_round!(123)
+      %MinesweeperRound{}
+
+      iex> get_minesweeper_round!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_minesweeper_round!(id), do: Repo.get!(MinesweeperRound, id)
+
+  @doc """
+  Creates a minesweeper_round.
+
+  ## Examples
+
+      iex> create_minesweeper_round(%{field: value})
+      {:ok, %MinesweeperRound{}}
+
+      iex> create_minesweeper_round(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_minesweeper_round(attrs) do
+    %MinesweeperRound{}
+    |> MinesweeperRound.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a minesweeper_round.
+
+  ## Examples
+
+      iex> update_minesweeper_round(minesweeper_round, %{field: new_value})
+      {:ok, %MinesweeperRound{}}
+
+      iex> update_minesweeper_round(minesweeper_round, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_minesweeper_round(%MinesweeperRound{} = minesweeper_round, attrs) do
+    minesweeper_round
+    |> MinesweeperRound.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a minesweeper_round.
+
+  ## Examples
+
+      iex> delete_minesweeper_round(minesweeper_round)
+      {:ok, %MinesweeperRound{}}
+
+      iex> delete_minesweeper_round(minesweeper_round)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_minesweeper_round(%MinesweeperRound{} = minesweeper_round) do
+    Repo.delete(minesweeper_round)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking minesweeper_round changes.
+
+  ## Examples
+
+      iex> change_minesweeper_round(minesweeper_round)
+      %Ecto.Changeset{data: %MinesweeperRound{}}
+
+  """
+  def change_minesweeper_round(%MinesweeperRound{} = minesweeper_round, attrs \\ %{}) do
+    MinesweeperRound.changeset(minesweeper_round, attrs)
+  end
+
+  def minesweeper_round_active?(nil), do: false
+  def minesweeper_round_active?(game), do: game.status == :active
+
+  @doc """
+  Changes the minesweeper active status.
+
+  ## Examples
+
+      iex> change_minesweeper_active(true)
+      :ok
+  """
+  def change_minesweeper_active(active) do
+    Constants.set("minesweeper_active_status", active)
+    broadcast_minesweeper_config_update("is_active", active)
+  end
+
+  @doc """
+  Gets the minesweeper active status.
+
+  ## Examples
+
+      iex> minesweeper_active?()
+      true
+  """
+  def minesweeper_active? do
+    case Constants.get("minesweeper_active_status") do
+      {:ok, active} ->
+        active
+
+      {:error, _} ->
+        # If the active status is not set, set it to true by default
+        change_minesweeper_active(true)
+        true
+    end
+  end
+
+  @doc """
+  Changes the minesweeper house edge, a fraction between 0 and 1.
+
+  ## Examples
+
+      iex> change_minesweeper_house_edge(0.05)
+      :ok
+  """
+  def change_minesweeper_house_edge(house_edge) do
+    Constants.set("minesweeper_house_edge", house_edge)
+    broadcast_minesweeper_config_update("house_edge", house_edge)
+  end
+
+  @doc """
+  Gets the minesweeper house edge.
+
+  ## Examples
+
+      iex> get_minesweeper_house_edge()
+      0.05
+  """
+  def get_minesweeper_house_edge do
+    case Constants.get("minesweeper_house_edge") do
+      {:ok, house_edge} ->
+        house_edge
+
+      {:error, _} ->
+        # If the house edge is not set, set it to 0.05 by default
+        change_minesweeper_house_edge(0.05)
+        0.05
+    end
+  end
+
+  @doc """
+  Changes the minesweeper maximum multiplier.
+
+  ## Examples
+
+      iex> change_minesweeper_max_multiplier(50)
+      :ok
+  """
+  def change_minesweeper_max_multiplier(max_multiplier) do
+    Constants.set("minesweeper_max_multiplier", max_multiplier)
+    broadcast_minesweeper_config_update("max_multiplier", max_multiplier)
+  end
+
+  @doc """
+  Gets the minesweeper maximum multiplier.
+
+  ## Examples
+
+      iex> get_minesweeper_max_multiplier()
+      50
+  """
+  def get_minesweeper_max_multiplier do
+    case Constants.get("minesweeper_max_multiplier") do
+      {:ok, max_multiplier} ->
+        max_multiplier
+
+      {:error, _} ->
+        # If the max multiplier is not set, set it to 50 by default
+        change_minesweeper_max_multiplier(50)
+        50
+    end
+  end
+
+  @doc """
+  Returns the multiplier after safe tiles were revealed on a board with mines.
+
+  The fair multiplier is the inverse of the probability of surviving reveals,
+  so the expected return is 1 - house_edge for every mine count and every cashout
+  point. The cap only lowers payouts.
+
+  ## Examples
+
+      iex> minesweeper_multiplier(1, 1, 0.0, 50.0)
+      1.066
+
+      iex> minesweeper_multiplier(3, 5, 0.05, 50.0)
+      3.224
+  """
+  def minesweeper_multiplier(mines, picks, house_edge, max_multiplier) do
+    fair_multiplier =
+      0..(picks - 1)//1
+      |> Enum.reduce(1, fn i, acc ->
+        acc * (@minesweeper_board_size - i) / (@minesweeper_board_size - mines - i)
+      end)
+
+    # The cap is configured as an integer; always return a float so callers can Float.round/2 it.
+    min(fair_multiplier * (1 - house_edge), max_multiplier * 1.0)
+  end
+
+  @doc """
+  Returns the current multiplier of a minesweeper round, using the configured house edge and cap.
+  """
+  def minesweeper_round_multiplier(round) do
+    minesweeper_multiplier(
+      length(round.mine_positions),
+      length(round.revealed_positions),
+      get_minesweeper_house_edge(),
+      get_minesweeper_max_multiplier()
+    )
+  end
+
+  @doc """
+  Checks if an attendee has an active minesweeper round.
+
+  ## Examples
+
+      iex> has_active_minesweeper_round?(123)
+      true
+
+      iex> has_active_minesweeper_round?(456)
+      false
+  """
+  def has_active_minesweeper_round?(attendee_id) do
+    MinesweeperRound
+    |> where([r], r.attendee_id == ^attendee_id and r.status == :active)
+    |> Repo.exists?()
+  end
+
+  def continue_active_minesweeper_round(attendee_id) do
+    MinesweeperRound
+    |> where([mr], mr.attendee_id == ^attendee_id and mr.status == :active)
+    |> Repo.one()
+  end
+
+  def place_bet_minesweeper(_attendee, _bet, mines)
+      when mines not in @minesweeper_min_mines..@minesweeper_max_mines,
+      do: {:error, "Invalid number of mines"}
+
+  def place_bet_minesweeper(attendee, bet, mines) do
+    case minesweeper_active?() do
+      true ->
+        case has_active_minesweeper_round?(attendee.id) do
+          false ->
+            case minesweeper_bet_transaction(attendee, bet, mines) do
+              {:ok, result} ->
+                {:ok, result.round}
+
+              {:error, :attendee, message, _} ->
+                {:error, message}
+
+              {:error, _, _, _} ->
+                {:error, "An error occurred while placing your bet on minesweeper"}
+            end
+
+          _ ->
+            {:error, "Attendee already has an active minesweeper round"}
+        end
+
+      _ ->
+        {:error, "The minesweeper game is not active"}
+    end
+  end
+
+  defp minesweeper_bet_transaction(attendee, bet, mines) do
+    Multi.new()
+    |> Multi.put(:mine_positions, generate_mine_positions(mines))
+    |> Multi.run(:attendee, fn repo, _changes ->
+      repo
+      |> lock_attendee(attendee.id)
+      |> validate_balance(bet)
+    end)
+    |> Multi.merge(fn %{attendee: attendee} ->
+      Contest.change_attendee_tokens_transaction(
+        attendee,
+        attendee.tokens - bet,
+        :attendee_state_tokens,
+        :previous_daily_tokens,
+        :new_daily_tokens
+      )
+    end)
+    |> Multi.insert(:round, fn %{mine_positions: mine_positions} ->
+      %MinesweeperRound{}
+      |> MinesweeperRound.changeset(%{
+        attendee_id: attendee.id,
+        mine_positions: mine_positions,
+        bet: bet
+      })
+    end)
+    |> Repo.transaction()
+  end
+
+  defp validate_balance(attendee, bet) do
+    if attendee.tokens >= bet, do: {:ok, attendee}, else: {:error, "Not enough tokens"}
+  end
+
+  defp generate_mine_positions(ammount) do
+    0..(@minesweeper_board_size - 1)
+    |> Enum.sort_by(fn _ -> strong_randomizer() end)
+    |> Enum.take(ammount)
+  end
+
+  def reveal_minesweeper_tile(attendee, round_id, position) do
+    case position in 0..(@minesweeper_board_size - 1) do
+      true ->
+        case reveal_minesweeper_tile_transaction(attendee, round_id, position) do
+          {:ok, %{cashed_out_round: round}} ->
+            {:ok, round}
+
+          {:ok, %{updated_round: round}} ->
+            {:ok, round}
+
+          {:error, :round, message, _} ->
+            {:error, message}
+
+          {:error, _, _, _} ->
+            {:error, "An error occurred while revealing the tile"}
+        end
+
+      _ ->
+        {:error, "Invalid tile position"}
+    end
+  end
+
+  defp reveal_minesweeper_tile_transaction(attendee, round_id, position) do
+    Multi.new()
+    |> Multi.run(:round, fn repo, _changes ->
+      lock_active_minesweeper_round(repo, attendee.id, round_id)
+      |> validate_reveal(position)
+    end)
+    |> Multi.update(:updated_round, fn %{round: round} ->
+      status = if mine?(position, round), do: :lost, else: :active
+
+      MinesweeperRound.changeset(round, %{
+        revealed_positions: round.revealed_positions ++ [position],
+        status: status
+      })
+    end)
+    |> Multi.merge(fn %{updated_round: round} ->
+      if auto_cashout?(round),
+        do: cashout_minesweeper_round_multi(attendee, round),
+        else: Multi.new()
+    end)
+    |> Repo.transaction()
+  end
+
+  defp auto_cashout?(%{status: :active} = round),
+    do: board_cleared?(round) or multiplier_cap_reached?(round)
+
+  defp auto_cashout?(_round), do: false
+
+  defp board_cleared?(round),
+    do: length(round.revealed_positions) == @minesweeper_board_size - length(round.mine_positions)
+
+  defp multiplier_cap_reached?(round),
+    do: minesweeper_round_multiplier(round) >= get_minesweeper_max_multiplier()
+
+  defp validate_reveal(nil, _position),
+    do: {:error, "Attendee has no active minesweeper round"}
+
+  defp validate_reveal(round, position) do
+    if revealed?(position, round), do: {:error, "Tile already revealed"}, else: {:ok, round}
+  end
+
+  defp mine?(position, round), do: position in round.mine_positions
+  defp revealed?(position, round), do: position in round.revealed_positions
+
+  def cashout_minesweeper_round(attendee, round_id) do
+    case cashout_minesweeper_round_transaction(attendee, round_id) do
+      {:ok, %{cashed_out_round: round}} ->
+        {:ok, round}
+
+      {:error, :round, message, _} ->
+        {:error, message}
+
+      {:error, _, _, _} ->
+        {:error, "An error occurred while cashing out"}
+    end
+  end
+
+  defp cashout_minesweeper_round_transaction(attendee, round_id) do
+    Multi.new()
+    |> Multi.run(:round, fn repo, _changes ->
+      lock_active_minesweeper_round(repo, attendee.id, round_id)
+      |> validate_cashout()
+    end)
+    |> Multi.merge(fn %{round: round} -> cashout_minesweeper_round_multi(attendee, round) end)
+    |> Repo.transaction()
+  end
+
+  # Must be used inside a transaction that already locks the round.
+  defp cashout_minesweeper_round_multi(attendee, round) do
+    payout = floor(round.bet * minesweeper_round_multiplier(round))
+
+    Multi.new()
+    |> Multi.update(
+      :cashed_out_round,
+      MinesweeperRound.changeset(round, %{status: :cashed_out, tokens: payout})
+    )
+    |> Multi.run(:attendee, fn repo, _changes -> {:ok, lock_attendee(repo, attendee.id)} end)
+    |> Multi.merge(fn %{attendee: attendee} ->
+      Contest.change_attendee_tokens_transaction(
+        attendee,
+        attendee.tokens + payout,
+        :attendee_state_tokens,
+        :previous_daily_tokens,
+        :new_daily_tokens
+      )
+    end)
+  end
+
+  defp validate_cashout(nil),
+    do: {:error, "Attendee has no active minesweeper round"}
+
+  defp validate_cashout(round) do
+    if any_revealed?(round), do: {:ok, round}, else: {:error, "No tiles revealed yet"}
+  end
+
+  defp any_revealed?(round), do: round.revealed_positions != []
+
+  # Token updates write an absolute balance, so the row must be locked between read and write
+  # or a concurrent credit or debit from another game would be overwritten.
+  defp lock_attendee(repo, attendee_id) do
+    Attendee
+    |> lock("FOR UPDATE")
+    |> repo.get!(attendee_id)
+  end
+
+  defp lock_active_minesweeper_round(repo, attendee_id, round_id) do
+    MinesweeperRound
+    |> where(
+      [mr],
+      mr.id == ^round_id and mr.attendee_id == ^attendee_id and mr.status == :active
+    )
+    |> lock("FOR UPDATE")
+    |> repo.one()
+  end
+
+  @doc """
+  Subscribes the caller to the minesweeper configuration updates.
+
+  ## Examples
+
+      iex> subscribe_to_minesweeper_config_update()
+      :ok
+  """
+  def subscribe_to_minesweeper_config_update(config) do
+    Phoenix.PubSub.subscribe(@pubsub, minesweeper_config_topic(config))
+  end
+
+  defp minesweeper_config_topic(config), do: "minesweeper:#{config}"
+
+  defp broadcast_minesweeper_config_update(config, value) do
+    Phoenix.PubSub.broadcast(@pubsub, minesweeper_config_topic(config), {config, value})
+  end
 end

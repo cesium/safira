@@ -14,7 +14,7 @@ defmodule SafiraWeb.App.GamesLive.SlotsLive.Components.PaytableModal do
   attr :on_cancel, JS, default: %JS{}
 
   attr :body_class, :string,
-    default: "bg-primary w-full rounded-2xl border border-light/10 ring-white p-8 pt-9"
+    default: "bg-dark w-full rounded-2xl border border-light/10 ring-white p-8 pt-9"
 
   def paytable_modal(assigns) do
     paylines = Minigames.list_slots_paylines()

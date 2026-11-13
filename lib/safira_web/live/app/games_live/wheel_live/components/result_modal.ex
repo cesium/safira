@@ -13,7 +13,7 @@ defmodule SafiraWeb.App.GamesLive.WheelLive.Components.ResultModal do
 
   attr :content_class, :string,
     default:
-      "bg-primary w-full max-w-lg mx-auto rounded-2xl border border-light/10 ring-white p-8 pt-9"
+      "bg-dark w-full max-w-lg mx-auto rounded-2xl border border-light/10 ring-white p-8 pt-9"
 
   attr :container_class, :string, default: "flex min-h-full items-center justify-center"
   attr :show_vault_link, :boolean, default: true

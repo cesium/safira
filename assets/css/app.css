@@ -23,11 +23,13 @@
 
 @theme {
   --color-primary: #04041c;
-  --color-accent: #ffdb0d;
+  --color-accent: #7A0395;
   --color-light: #ffffff;
   --color-light-muted: #a1a1aa;
   --color-light-shade: #e5e7eb;
   --color-dark: #09090b;
+  --color-app-dark: #0a0a0a;
+  --color-app-dark-soft: #0d0d0d;
   --color-dark-muted: #71717a;
   --color-dark-shade: #27272a;
 
