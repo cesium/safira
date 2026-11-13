@@ -167,9 +167,12 @@ defmodule Safira.MinigamesFixtures do
     {:ok, minesweeper_round} =
       attrs
       |> Enum.into(%{
+        attendee_id: Safira.AccountsFixtures.attendee_fixture().id,
+        bet: 42,
         mine_positions: [1, 2],
         revealed_positions: [1, 2],
-        status: "some status"
+        status: :active,
+        tokens: 42
       })
       |> Safira.Minigames.create_minesweeper_round()
 

@@ -28,13 +28,13 @@ defmodule SafiraWeb.App.GamesLive.MinesweeperLive.Index do
 
   @impl true
   def handle_event("set-bet", %{"bet" => bet}, socket) do
-    bet = if bet != "", do: String.to_integer(bet), else: 0
+    bet = parse_integer(bet, 0)
 
     {:noreply, socket |> assign(:bet, max(bet, 0))}
   end
 
   def handle_event("set-mines", %{"mines" => mines}, socket) do
-    mines = if mines != "", do: String.to_integer(mines), else: socket.assigns.mines
+    mines = parse_integer(mines, socket.assigns.mines)
 
     {:noreply,
      socket
@@ -71,7 +71,10 @@ defmodule SafiraWeb.App.GamesLive.MinesweeperLive.Index do
         {:noreply, socket}
 
       game ->
-        case Minigames.reveal_minesweeper_tile(attendee, game.id, String.to_integer(position)) do
+        case Minigames.reveal_minesweeper_tile(attendee, game.id, parse_integer(position, nil)) do
+          {:ok, %{status: :cashed_out} = round} ->
+            {:noreply, socket |> assign_cashout(round)}
+
           {:ok, round} ->
             {:noreply, socket |> assign_round(round)}
 
@@ -91,11 +94,7 @@ defmodule SafiraWeb.App.GamesLive.MinesweeperLive.Index do
       game ->
         case Minigames.cashout_minesweeper_round(attendee, game.id) do
           {:ok, round} ->
-            {:noreply,
-             socket
-             |> assign(:result, %{multiplier: socket.assigns.multiplier, winnings: round.tokens})
-             |> assign(:attendee_tokens, socket.assigns.attendee_tokens + round.tokens)
-             |> assign_round(nil)}
+            {:noreply, socket |> assign_cashout(round)}
 
           {:error, message} ->
             {:noreply, socket |> put_flash(:error, message)}
@@ -182,13 +181,7 @@ defmodule SafiraWeb.App.GamesLive.MinesweeperLive.Index do
   defp assign_round(socket, round) do
     case Minigames.minesweeper_round_active?(round) do
       true ->
-        multiplier =
-          Minigames.minesweeper_multiplier(
-            length(round.mine_positions),
-            length(round.revealed_positions),
-            Minigames.get_minesweeper_house_edge(),
-            Minigames.get_minesweeper_max_multiplier()
-          )
+        multiplier = Minigames.minesweeper_round_multiplier(round)
 
         socket
         |> assign(:game, round)
@@ -201,5 +194,23 @@ defmodule SafiraWeb.App.GamesLive.MinesweeperLive.Index do
         socket
         |> assign(:game, round)
     end
+  end
+
+  defp parse_integer(value, default) when is_binary(value) do
+    case Integer.parse(value) do
+      {integer, ""} -> integer
+      _ -> default
+    end
+  end
+
+  defp parse_integer(_value, default), do: default
+
+  defp assign_cashout(socket, round) do
+    multiplier = Minigames.minesweeper_round_multiplier(round)
+
+    socket
+    |> assign(:result, %{multiplier: Float.round(multiplier, 2), winnings: round.tokens})
+    |> assign(:attendee_tokens, socket.assigns.attendee_tokens + round.tokens)
+    |> assign_round(nil)
   end
 end

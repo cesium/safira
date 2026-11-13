@@ -756,8 +756,16 @@ defmodule Safira.MinigamesTest do
     alias Safira.Minigames.MinesweeperRound
 
     import Safira.MinigamesFixtures
+    import Safira.AccountsFixtures
 
-    @invalid_attrs %{status: nil, mine_positions: nil, revealed_positions: nil}
+    @invalid_attrs %{
+      attendee_id: nil,
+      bet: nil,
+      mine_positions: nil,
+      revealed_positions: nil,
+      status: nil,
+      tokens: nil
+    }
 
     test "list_minesweeper_rounds/0 returns all minesweeper_rounds" do
       minesweeper_round = minesweeper_round_fixture()
@@ -770,14 +778,26 @@ defmodule Safira.MinigamesTest do
     end
 
     test "create_minesweeper_round/1 with valid data creates a minesweeper_round" do
-      valid_attrs = %{status: "some status", mine_positions: [1, 2], revealed_positions: [1, 2]}
+      attendee = attendee_fixture()
+
+      valid_attrs = %{
+        attendee_id: attendee.id,
+        bet: 42,
+        mine_positions: [1, 2],
+        revealed_positions: [1, 2],
+        status: :active,
+        tokens: 42
+      }
 
       assert {:ok, %MinesweeperRound{} = minesweeper_round} =
                Minigames.create_minesweeper_round(valid_attrs)
 
-      assert minesweeper_round.status == "some status"
+      assert minesweeper_round.attendee_id == attendee.id
+      assert minesweeper_round.bet == 42
       assert minesweeper_round.mine_positions == [1, 2]
       assert minesweeper_round.revealed_positions == [1, 2]
+      assert minesweeper_round.status == :active
+      assert minesweeper_round.tokens == 42
     end
 
     test "create_minesweeper_round/1 with invalid data returns error changeset" do
@@ -788,17 +808,21 @@ defmodule Safira.MinigamesTest do
       minesweeper_round = minesweeper_round_fixture()
 
       update_attrs = %{
-        status: "some updated status",
+        bet: 43,
         mine_positions: [1],
-        revealed_positions: [1]
+        revealed_positions: [1],
+        status: :lost,
+        tokens: 43
       }
 
       assert {:ok, %MinesweeperRound{} = minesweeper_round} =
                Minigames.update_minesweeper_round(minesweeper_round, update_attrs)
 
-      assert minesweeper_round.status == "some updated status"
+      assert minesweeper_round.bet == 43
       assert minesweeper_round.mine_positions == [1]
       assert minesweeper_round.revealed_positions == [1]
+      assert minesweeper_round.status == :lost
+      assert minesweeper_round.tokens == 43
     end
 
     test "update_minesweeper_round/2 with invalid data returns error changeset" do
@@ -822,6 +846,72 @@ defmodule Safira.MinigamesTest do
     test "change_minesweeper_round/1 returns a minesweeper_round changeset" do
       minesweeper_round = minesweeper_round_fixture()
       assert %Ecto.Changeset{} = Minigames.change_minesweeper_round(minesweeper_round)
+    end
+  end
+
+  describe "minesweeper gameplay" do
+    import Safira.AccountsFixtures
+
+    alias Safira.Accounts
+
+    setup do
+      Minigames.change_minesweeper_active(true)
+      Minigames.change_minesweeper_house_edge(0.0)
+      Minigames.change_minesweeper_max_multiplier(50)
+
+      %{attendee: attendee_fixture(%{tokens: 100})}
+    end
+
+    defp start_round(attendee, mine_positions) do
+      {:ok, round} =
+        Minigames.create_minesweeper_round(%{
+          attendee_id: attendee.id,
+          mine_positions: mine_positions,
+          bet: 10
+        })
+
+      round
+    end
+
+    test "placing a bet with an out-of-range mine count is refused", %{attendee: attendee} do
+      for mines <- [0, 16] do
+        assert {:error, "Invalid number of mines"} =
+                 Minigames.place_bet_minesweeper(attendee, 10, mines)
+      end
+
+      assert Accounts.get_attendee!(attendee.id).tokens == 100
+      refute Minigames.has_active_minesweeper_round?(attendee.id)
+    end
+
+    test "placing a bet above the balance is refused", %{attendee: attendee} do
+      assert {:error, "Not enough tokens"} = Minigames.place_bet_minesweeper(attendee, 101, 3)
+
+      assert Accounts.get_attendee!(attendee.id).tokens == 100
+      refute Minigames.has_active_minesweeper_round?(attendee.id)
+    end
+
+    test "revealing the last safe tile cashes the round out", %{attendee: attendee} do
+      round = start_round(attendee, Enum.to_list(0..14))
+
+      assert {:ok, round} = Minigames.reveal_minesweeper_tile(attendee, round.id, 15)
+
+      # One safe tile out of 16 pays 16x the bet with no house edge.
+      assert round.status == :cashed_out
+      assert round.tokens == 160
+      assert Accounts.get_attendee!(attendee.id).tokens == 100 + 160
+    end
+
+    test "reaching the multiplier cap cashes the round out", %{attendee: attendee} do
+      Minigames.change_minesweeper_max_multiplier(2)
+      round = start_round(attendee, Enum.to_list(0..5))
+
+      # 16/10 = 1.6x is below the cap, 1.6 * 15/9 = 2.67x is capped at 2x.
+      assert {:ok, %{status: :active}} = Minigames.reveal_minesweeper_tile(attendee, round.id, 6)
+      assert {:ok, round} = Minigames.reveal_minesweeper_tile(attendee, round.id, 7)
+
+      assert round.status == :cashed_out
+      assert round.tokens == 20
+      assert Accounts.get_attendee!(attendee.id).tokens == 100 + 20
     end
   end
 end

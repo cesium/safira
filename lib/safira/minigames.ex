@@ -2510,7 +2510,20 @@ defmodule Safira.Minigames do
         acc * (@minesweeper_board_size - i) / (@minesweeper_board_size - mines - i)
       end)
 
-    min(fair_multiplier * (1 - house_edge), max_multiplier)
+    # The cap is configured as an integer; always return a float so callers can Float.round/2 it.
+    min(fair_multiplier * (1 - house_edge), max_multiplier * 1.0)
+  end
+
+  @doc """
+  Returns the current multiplier of a minesweeper round, using the configured house edge and cap.
+  """
+  def minesweeper_round_multiplier(round) do
+    minesweeper_multiplier(
+      length(round.mine_positions),
+      length(round.revealed_positions),
+      get_minesweeper_house_edge(),
+      get_minesweeper_max_multiplier()
+    )
   end
 
   @doc """
@@ -2536,9 +2549,11 @@ defmodule Safira.Minigames do
     |> Repo.one()
   end
 
-  def place_bet_minesweeper(attendee, bet, mines) do
-    attendee = Accounts.get_attendee!(attendee.id)
+  def place_bet_minesweeper(_attendee, _bet, mines)
+      when mines not in @minesweeper_min_mines..@minesweeper_max_mines,
+      do: {:error, "Invalid number of mines"}
 
+  def place_bet_minesweeper(attendee, bet, mines) do
     case minesweeper_active?() do
       true ->
         case has_active_minesweeper_round?(attendee.id) do
@@ -2546,6 +2561,9 @@ defmodule Safira.Minigames do
             case minesweeper_bet_transaction(attendee, bet, mines) do
               {:ok, result} ->
                 {:ok, result.round}
+
+              {:error, :attendee, message, _} ->
+                {:error, message}
 
               {:error, _, _, _} ->
                 {:error, "An error occurred while placing your bet on minesweeper"}
@@ -2563,8 +2581,19 @@ defmodule Safira.Minigames do
   defp minesweeper_bet_transaction(attendee, bet, mines) do
     Multi.new()
     |> Multi.put(:mine_positions, generate_mine_positions(mines))
-    |> Multi.merge(fn _changes ->
-      Contest.change_attendee_tokens_transaction(attendee, attendee.tokens - bet, :attendee)
+    |> Multi.run(:attendee, fn repo, _changes ->
+      repo
+      |> lock_attendee(attendee.id)
+      |> validate_balance(bet)
+    end)
+    |> Multi.merge(fn %{attendee: attendee} ->
+      Contest.change_attendee_tokens_transaction(
+        attendee,
+        attendee.tokens - bet,
+        :attendee_state_tokens,
+        :previous_daily_tokens,
+        :new_daily_tokens
+      )
     end)
     |> Multi.insert(:round, fn %{mine_positions: mine_positions} ->
       %MinesweeperRound{}
@@ -2577,6 +2606,10 @@ defmodule Safira.Minigames do
     |> Repo.transaction()
   end
 
+  defp validate_balance(attendee, bet) do
+    if attendee.tokens >= bet, do: {:ok, attendee}, else: {:error, "Not enough tokens"}
+  end
+
   defp generate_mine_positions(ammount) do
     0..(@minesweeper_board_size - 1)
     |> Enum.sort_by(fn _ -> strong_randomizer() end)
@@ -2587,6 +2620,9 @@ defmodule Safira.Minigames do
     case position in 0..(@minesweeper_board_size - 1) do
       true ->
         case reveal_minesweeper_tile_transaction(attendee, round_id, position) do
+          {:ok, %{cashed_out_round: round}} ->
+            {:ok, round}
+
           {:ok, %{updated_round: round}} ->
             {:ok, round}
 
@@ -2608,7 +2644,6 @@ defmodule Safira.Minigames do
       lock_active_minesweeper_round(repo, attendee.id, round_id)
       |> validate_reveal(position)
     end)
-    # TODO cashout when the board is cleared or the multiplier cap is reached
     |> Multi.update(:updated_round, fn %{round: round} ->
       status = if mine?(position, round), do: :lost, else: :active
 
@@ -2617,8 +2652,24 @@ defmodule Safira.Minigames do
         status: status
       })
     end)
+    |> Multi.merge(fn %{updated_round: round} ->
+      if auto_cashout?(round),
+        do: cashout_minesweeper_round_multi(attendee, round),
+        else: Multi.new()
+    end)
     |> Repo.transaction()
   end
+
+  defp auto_cashout?(%{status: :active} = round),
+    do: board_cleared?(round) or multiplier_cap_reached?(round)
+
+  defp auto_cashout?(_round), do: false
+
+  defp board_cleared?(round),
+    do: length(round.revealed_positions) == @minesweeper_board_size - length(round.mine_positions)
+
+  defp multiplier_cap_reached?(round),
+    do: minesweeper_round_multiplier(round) >= get_minesweeper_max_multiplier()
 
   defp validate_reveal(nil, _position),
     do: {:error, "Attendee has no active minesweeper round"}
@@ -2649,30 +2700,21 @@ defmodule Safira.Minigames do
       lock_active_minesweeper_round(repo, attendee.id, round_id)
       |> validate_cashout()
     end)
-    |> Multi.run(:payout, fn _repo, %{round: round} ->
-      multiplier =
-        minesweeper_multiplier(
-          length(round.mine_positions),
-          length(round.revealed_positions),
-          get_minesweeper_house_edge(),
-          get_minesweeper_max_multiplier()
-        )
+    |> Multi.merge(fn %{round: round} -> cashout_minesweeper_round_multi(attendee, round) end)
+    |> Repo.transaction()
+  end
 
-      {:ok, floor(round.bet * multiplier)}
-    end)
-    |> Multi.update(:cashed_out_round, fn %{round: round, payout: payout} ->
-      MinesweeperRound.changeset(round, %{
-        status: :cashed_out,
-        tokens: payout
-      })
-    end)
-    |> Multi.run(:attendee, fn repo, _changes ->
-      {:ok,
-       Attendee
-       |> lock("FOR UPDATE")
-       |> repo.get!(attendee.id)}
-    end)
-    |> Multi.merge(fn %{attendee: attendee, payout: payout} ->
+  # Must be used inside a transaction that already locks the round.
+  defp cashout_minesweeper_round_multi(attendee, round) do
+    payout = floor(round.bet * minesweeper_round_multiplier(round))
+
+    Multi.new()
+    |> Multi.update(
+      :cashed_out_round,
+      MinesweeperRound.changeset(round, %{status: :cashed_out, tokens: payout})
+    )
+    |> Multi.run(:attendee, fn repo, _changes -> {:ok, lock_attendee(repo, attendee.id)} end)
+    |> Multi.merge(fn %{attendee: attendee} ->
       Contest.change_attendee_tokens_transaction(
         attendee,
         attendee.tokens + payout,
@@ -2681,7 +2723,6 @@ defmodule Safira.Minigames do
         :new_daily_tokens
       )
     end)
-    |> Repo.transaction()
   end
 
   defp validate_cashout(nil),
@@ -2692,6 +2733,14 @@ defmodule Safira.Minigames do
   end
 
   defp any_revealed?(round), do: round.revealed_positions != []
+
+  # Token updates write an absolute balance, so the row must be locked between read and write
+  # or a concurrent credit or debit from another game would be overwritten.
+  defp lock_attendee(repo, attendee_id) do
+    Attendee
+    |> lock("FOR UPDATE")
+    |> repo.get!(attendee_id)
+  end
 
   defp lock_active_minesweeper_round(repo, attendee_id, round_id) do
     MinesweeperRound

@@ -7,6 +7,8 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.Minesweeper.FormComponent do
   alias Ecto.Changeset
   alias Safira.Minigames
 
+  @max_house_edge floor(100 / Minigames.minesweeper_board_size())
+
   def render(assigns) do
     ~H"""
     <div>
@@ -49,7 +51,8 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.Minesweeper.FormComponent do
                   type="number"
                   help_text={
                     gettext(
-                      "The percentage of total bets retained over time. Must be a number between 0 and 100."
+                      "The percentage of total bets retained over time. Must be a number between 0 and %{max}.",
+                      max: @max_house_edge
                     )
                   }
                 />
@@ -68,6 +71,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.Minesweeper.FormComponent do
   def mount(socket) do
     {:ok,
      socket
+     |> assign(:max_house_edge, @max_house_edge)
      |> assign(
        form:
          to_form(
@@ -86,7 +90,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.Minesweeper.FormComponent do
       validate_configuration(params["max_multiplier"], params["house_edge"], params["is_active"])
 
     {:noreply,
-     assign(socket, form: to_form(changeset, action: :validate, as: :wheel_configuration))}
+     assign(socket, form: to_form(changeset, action: :validate, as: :minesweeper_configuration))}
   end
 
   def handle_event("save", params, socket) do
@@ -107,10 +111,10 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.Minesweeper.FormComponent do
       [:max_multiplier, :house_edge, :is_active]
     )
     |> Changeset.validate_required([:max_multiplier, :house_edge])
-    |> Changeset.validate_number(:max_multiplier, greater_than: 0)
+    |> Changeset.validate_number(:max_multiplier, greater_than: 1)
     |> Changeset.validate_number(:house_edge,
       greater_than_or_equal_to: 0,
-      less_than_or_equal_to: 100
+      less_than_or_equal_to: @max_house_edge
     )
   end
 
