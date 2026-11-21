@@ -30,7 +30,7 @@ defmodule SafiraWeb.UserResetPasswordLive do
         <:actions>
           <.action_button
             title={gettext("Reset Password")}
-            title_class="text-lg !font-iregular !normal-case"
+            title_class="text-lg !font-mono !normal-case"
             class="!h-14"
             disabled={@form.errors != []}
           />

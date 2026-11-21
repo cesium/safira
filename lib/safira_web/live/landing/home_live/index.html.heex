@@ -1,4 +1,4 @@
-<div class="xl:px-[15rem] md:px-[8rem] px-[2.5rem]">
+<div class="px-10 md:px-15">
   <.hero
     event_start_date={@event_start_date}
     event_end_date={@event_end_date}
@@ -20,7 +20,7 @@
     current_user={@current_user}
   />
 </div>
-<div class="xl:px-[15rem] md:px-[8rem] px-[2.5rem]">
+<div class="px-10 md:px-15">
   <.speakers :if={@has_highlighted_speakers?} speakers={@streams.speakers} />
   <.sponsors :if={@has_sponsors?} tiers={@tiers} />
   <.partners />

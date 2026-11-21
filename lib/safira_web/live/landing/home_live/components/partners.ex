@@ -5,7 +5,7 @@ defmodule SafiraWeb.Landing.HomeLive.Components.Partners do
   def partners(assigns) do
     ~H"""
     <div class="spacing w-full bg-secondary pt-20 pb-20">
-      <h2 class="font-terminal uppercase select-none py-10 text-center text-5xl text-white lg:text-6xl">
+      <h2 class="font-pixel uppercase select-none py-10 text-center text-5xl text-white lg:text-6xl">
         {gettext("Partners who made this possible")}
       </h2>
       <div class="my-10 flex flex-wrap items-center justify-center gap-10">

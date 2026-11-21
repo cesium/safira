@@ -12,7 +12,7 @@ defmodule SafiraWeb.Landing.Components.Navbar do
   def navbar(assigns) do
     ~H"""
     <div>
-      <nav class="pt-8 pb-4 xl:px-[15rem] md:px-[8rem] px-[2.5rem]">
+      <nav class="pt-8 pb-4 px-10 md:px-15">
         <div class="flex h-16 items-center justify-between">
           <div class="relative flex flex-auto">
             <div class="flex w-full justify-between">
@@ -120,7 +120,7 @@ defmodule SafiraWeb.Landing.Components.Navbar do
             <.link
               navigate={page.url}
               phx-click={hide_mobile_navbar()}
-              class="font-terminal uppercase text-3xl text-white transition-colors duration-75 ease-in hover:text-accent"
+              class="font-pixel uppercase text-3xl text-white transition-colors duration-75 ease-in hover:text-accent"
             >
               {page.title}
             </.link>
@@ -129,7 +129,7 @@ defmodule SafiraWeb.Landing.Components.Navbar do
             :if={!@current_user}
             navigate={~p"/users/log_in"}
             phx-click={hide_mobile_navbar()}
-            class="font-terminal uppercase text-3xl text-white transition-colors duration-75 ease-in hover:text-accent"
+            class="font-pixel uppercase text-3xl text-white transition-colors duration-75 ease-in hover:text-accent"
           >
             Log in
           </.link>
@@ -140,7 +140,7 @@ defmodule SafiraWeb.Landing.Components.Navbar do
             :if={user_type?(@current_user, :staff)}
             patch={~p"/dashboard/scanner"}
             phx-click={hide_mobile_navbar()}
-            class="font-terminal uppercase text-3xl text-white transition-colors duration-75 ease-in hover:text-accent"
+            class="font-pixel uppercase text-3xl text-white transition-colors duration-75 ease-in hover:text-accent"
           >
             Dashboard
           </.link>
@@ -148,7 +148,7 @@ defmodule SafiraWeb.Landing.Components.Navbar do
             :if={user_type?(@current_user, :attendee)}
             patch={~p"/app"}
             phx-click={hide_mobile_navbar()}
-            class="font-terminal uppercase text-3xl text-white transition-colors duration-75 ease-in hover:text-accent"
+            class="font-pixel uppercase text-3xl text-white transition-colors duration-75 ease-in hover:text-accent"
           >
             App
           </.link>
@@ -156,7 +156,7 @@ defmodule SafiraWeb.Landing.Components.Navbar do
             :if={user_type?(@current_user, :company)}
             patch={~p"/sponsor/scanner"}
             phx-click={hide_mobile_navbar()}
-            class="font-terminal uppercase text-3xl text-white transition-colors duration-75 ease-in hover:text-accent"
+            class="font-pixel uppercase text-3xl text-white transition-colors duration-75 ease-in hover:text-accent"
           >
             Scanner
           </.link>
@@ -165,7 +165,7 @@ defmodule SafiraWeb.Landing.Components.Navbar do
             method="delete"
             href={~p"/users/log_out"}
             phx-click={hide_mobile_navbar()}
-            class="font-terminal uppercase text-3xl text-white transition-colors duration-75 ease-in hover:text-accent"
+            class="font-pixel uppercase text-3xl text-white transition-colors duration-75 ease-in hover:text-accent"
           >
             Sign Out
           </.link>

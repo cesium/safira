@@ -69,7 +69,7 @@ defmodule SafiraWeb.Landing.SpeakersLive.Components.Speakers do
         <div class="flex w-full flex-col justify-between">
           <div class="flex justify-between">
             <div>
-              <h2 class="font-terminal uppercase text-xl">{@speaker.name}</h2>
+              <h2 class="font-pixel uppercase text-xl">{@speaker.name}</h2>
               <p class="">{@speaker.title}</p>
               <p class="">{@speaker.company}</p>
             </div>
@@ -93,7 +93,7 @@ defmodule SafiraWeb.Landing.SpeakersLive.Components.Speakers do
             </p>
             <button
               :if={@speaker.biography}
-              class="ml-4 font-terminal uppercase w-16 select-none rounded-full px-2 text-xl text-white border border-white hover:bg-white/20 transition-colors"
+              class="ml-4 font-pixel uppercase w-16 select-none rounded-full px-2 text-xl text-white border border-white hover:bg-white/20 transition-colors"
               phx-click={
                 if @selected do
                   JS.toggle(
@@ -165,10 +165,10 @@ defmodule SafiraWeb.Landing.SpeakersLive.Components.Speakers do
         </div>
 
         <div class="-mt-8 md:-mt-10">
-          <h5 class="font-terminal uppercase text-2xl text-accent md:text-3xl">
+          <h5 class="font-pixel uppercase text-2xl text-accent md:text-3xl">
             {gettext("Happening on")}
           </h5>
-          <h2 class="font-terminal uppercase text-center">
+          <h2 class="font-pixel uppercase text-center">
             {@date |> Timex.format!("{D} {Mshort}")}
           </h2>
         </div>

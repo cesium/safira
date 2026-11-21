@@ -24,7 +24,7 @@ defmodule SafiraWeb.UserForgotPasswordLive do
         <:actions>
           <.action_button
             title={gettext("Send password reset instructions")}
-            title_class="text-lg !font-iregular !normal-case"
+            title_class="text-lg !font-mono !normal-case"
             class="!h-14"
           />
         </:actions>

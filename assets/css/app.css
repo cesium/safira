@@ -9,18 +9,6 @@
 @source "../../lib/safira_web.ex";
 @source "../../lib/safira_web";
 
-@font-face {
-  font-family: 'Terminal';
-  src: url('/fonts/Terminal/TerminalGrotesque.ttf') format('truetype');
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Inter-Regular';
-  src: url('/fonts/Inter/Inter-Regular.ttf') format('truetype');
-  font-display: swap;
-}
-
 @theme {
   --color-primary: #04041c;
   --color-accent: #ffdb0d;
@@ -96,8 +84,8 @@
   --color-info-900: var(--color-blue-900);
   --color-info-950: var(--color-blue-950);
 
-  --font-terminal: 'Terminal', ui-monospace, monospace;
-  --font-iregular: 'Inter-Regular', ui-sans-serif, sans-serif;
+  --font-pixel: 'Geist Pixel', ui-monospace, monospace;
+  --font-mono: 'Geist Mono', ui-monospace, monospace;
 
   --animate-slide-in: slide-in 1.5s ease-in-out;
   --animate-fade-in: fade-in 0.5s ease-in-out;
@@ -271,7 +259,7 @@ select:-webkit-autofill:focus {
   .markdown-body code,
   .markdown-body kbd,
   .markdown-body samp {
-    font-family: var(--font-terminal);
+    font-family: var(--font-pixel);
     font-size: 0.9em;
     background: color-mix(in srgb, currentColor, transparent 92%);
     border-radius: 0.35rem;

@@ -20,12 +20,12 @@ defmodule SafiraWeb.App.WaitingLive.Index do
       </div>
       <!-- Timer to the event  -->
       <div class="z-20 mt-8">
-        <h1 class="font-terminal text-center text-2xl sm:text-4xl uppercase">
+        <h1 class="font-pixel text-center text-2xl sm:text-4xl uppercase">
           {gettext("Waiting for the event to start!")}
         </h1>
         <div
           id="seconds-remaining"
-          class="font-terminal text-center text-4xl sm:text-6xl mt-12 uppercase"
+          class="font-pixel text-center text-4xl sm:text-6xl mt-12 uppercase"
           phx-hook="Countdown"
         >
         </div>

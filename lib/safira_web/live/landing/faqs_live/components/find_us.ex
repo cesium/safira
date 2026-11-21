@@ -9,22 +9,22 @@ defmodule SafiraWeb.Landing.FAQLive.Components.FindUs do
     ~H"""
     <section class="spacing flex flex-col py-20 lg:flex-row lg:justify-between">
       <div class="z-40 mb-10 mr-10 flex flex-col text-white">
-        <h2 class="font-terminal uppercase mb-2 select-none text-6xl font-bold">
+        <h2 class="font-pixel uppercase mb-2 select-none text-6xl font-bold">
           {gettext("How to find us")}
         </h2>
 
-        <p class="mb-8 font-iregular">
+        <p class="mb-8 font-mono">
           {gettext(
             "SEI is free for participants and is organized by volunteers from CeSIUM and from the university community."
           )}
         </p>
-        <.link href="https://whereis.uminho.pt/CG-02.html" target="_blank" class="mb-8 font-iregular">
+        <.link href="https://whereis.uminho.pt/CG-02.html" target="_blank" class="mb-8 font-mono">
           {gettext("This year's event will take place at Pedagogic Complex 2, Gualtar Campus.")}
         </.link>
         <p class="mb-2 font-ibold">
           Centro de Estudantes de Engenharia Informática
         </p>
-        <ul class="list-inside list-disc font-iregular">
+        <ul class="list-inside list-disc font-mono">
           <.link href={"mailto:#{email()}"}>
             <li>E-mail: {email()}</li>
           </.link>

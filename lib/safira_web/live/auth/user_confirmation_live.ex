@@ -15,7 +15,7 @@ defmodule SafiraWeb.UserConfirmationLive do
           <.icon name="hero-check" class="w-10 h-10 sm:w-16 sm:h-16" />
         </span>
       </div>
-      <h1 class="px-4 font-terminal uppercase text-3xl text-center mt-8 sm:mt-10">
+      <h1 class="px-4 font-pixel uppercase text-3xl text-center mt-8 sm:mt-10">
         {gettext("Email address has been verified!")}
       </h1>
       <p class="text-center mt-6 px-4">

@@ -1,4 +1,4 @@
-<div class="font-iregular">
+<div class="font-mono">
   <div class="relative h-dvh flex overflow-hidden">
     <.app_sidebar
       :if={Map.get(assigns, :event_started, true)}
@@ -30,7 +30,7 @@
         }
         end_time={@current_spotlight.end}
       />
-      <main class="text-light flex-1 relative z-0 overflow-y-auto focus:outline-none font-iregular bg-primary">
+      <main class="text-light flex-1 relative z-0 overflow-y-auto focus:outline-none font-mono bg-primary">
         <div class="h-full w-full">
           <.flash_group flash={@flash} />
           {@inner_content}

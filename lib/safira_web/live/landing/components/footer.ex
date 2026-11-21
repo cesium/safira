@@ -11,7 +11,7 @@ defmodule SafiraWeb.Landing.Components.Footer do
 
   def footer(assigns) do
     ~H"""
-    <footer class="xl:px-[15rem] md:px-[8rem] px-[2.5rem]">
+    <footer class="px-10 md:px-15">
       <div class="flex flex-col justify-between gap-16 py-10 lg:flex-row items-center">
         <div class="flex select-none items-start justify-center lg:justify-start">
           <img src="/images/sei-logo.svg" width={100} height={100} alt="SEI Logo" />
@@ -20,7 +20,7 @@ defmodule SafiraWeb.Landing.Components.Footer do
           </p>
         </div>
         <div class="flex-2">
-          <div class="grid lg:grid-flow-col lg:auto-rows-max gap-8 grid-cols-1 lg:grid-rows-2 select-none justify-items-center whitespace-nowrap font-iregular text-sm text-white">
+          <div class="grid lg:grid-flow-col lg:auto-rows-max gap-8 grid-cols-1 lg:grid-rows-2 select-none justify-items-center whitespace-nowrap font-mono text-sm text-white">
             <%= for {link, idx} <- Enum.with_index(footer_links()) do %>
               <!-- In order to properly align links to the right, if there are an odd number of links
                    enabled we need to add a fake cell to the grid in order to create space on the left

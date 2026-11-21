@@ -19,7 +19,7 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.Simulator.Index do
           <.wheel />
 
           <.button phx-click="spin-wheel" disabled={@in_spin?} phx-target={@myself}>
-            <p class="uppercase font-terminal text-xl px-4">
+            <p class="uppercase font-pixel text-xl px-4">
               {gettext("Spin the wheel")}
             </p>
           </.button>
