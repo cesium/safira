@@ -3,13 +3,13 @@ defmodule SafiraWeb.App.WaitingLive.Index do
 
   alias Safira.Event
 
-  import SafiraWeb.Landing.Components.Sparkles
+  import SafiraWeb.Components.Metaballs
 
   @impl true
   def render(assigns) do
     ~H"""
     <div>
-      <.sparkles />
+      <.metaballs />
       <!-- 3D physics based credential scene  -->
       <div
         id="credential-scene"

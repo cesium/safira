@@ -6,7 +6,8 @@ defmodule SafiraWeb.ErrorHTML do
   """
   use SafiraWeb, :html
 
-  import SafiraWeb.Landing.Components.{Footer, Navbar, Sparkles}
+  import SafiraWeb.Landing.Components.{Footer, Navbar}
+  import SafiraWeb.Components.Metaballs
 
   embed_templates "error_html/*"
 end
