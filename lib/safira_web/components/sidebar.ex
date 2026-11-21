@@ -167,7 +167,7 @@ defmodule SafiraWeb.Components.Sidebar do
 
     <!-- Static sidebar for desktop -->
     <div class="hidden lg:flex lg:shrink-0">
-      <div class={"flex flex-col w-64 border-r #{@border} bg-primary pt-5"}>
+      <div class={"flex flex-col w-64 border-r #{@border} bg-dark pt-5"}>
         <.link navigate={@logo_url} class="flex items-center shrink-0 px-16 pt-4 pb-4">
           <img class="hidden w-full h-full dark:block" src={@logo_images.light} />
           <img class="w-full h-full dark:hidden" src={@logo_images.dark} />

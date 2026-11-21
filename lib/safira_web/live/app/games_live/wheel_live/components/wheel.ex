@@ -18,7 +18,7 @@ defmodule SafiraWeb.App.GamesLive.WheelLive.Components.Wheel do
           >
             <%= for i <- 0..@slices do %>
               <div
-                class="absolute top-[50%] left-[50%] h-0.5 w-[50%] rotate-10 bg-primary/60"
+                class="absolute top-[50%] left-[50%] h-0.5 w-[50%] rotate-10 bg-dark/60"
                 style={"transform: rotate(" <> to_string(i * (360/@slices)) <> "deg); transform-origin: 0% 50%;"}
               >
               </div>

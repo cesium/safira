@@ -14,7 +14,7 @@ defmodule SafiraWeb.App.GamesLive.SlotsLive.Components.ResultModal do
 
   attr :content_class, :string,
     default:
-      "bg-primary w-full max-w-lg mx-auto rounded-2xl border border-light/10 ring-white p-8 pt-9"
+      "bg-dark w-full max-w-lg mx-auto rounded-2xl border border-light/10 ring-white p-8 pt-9"
 
   attr :container_class, :string, default: "flex min-h-full items-center justify-center"
 
@@ -55,6 +55,7 @@ defmodule SafiraWeb.App.GamesLive.SlotsLive.Components.ResultModal do
 
   defp result_title(multiplier) do
     cond do
+      multiplier < 1 -> gettext("Partial refund")
       multiplier == 1 -> gettext("Bet refunded")
       multiplier > 1 -> gettext("Congratulations!")
     end
@@ -62,6 +63,9 @@ defmodule SafiraWeb.App.GamesLive.SlotsLive.Components.ResultModal do
 
   defp result_description(multiplier, winnings) do
     cond do
+      multiplier < 1 ->
+        gettext("You got back %{winnings} tokens.", winnings: winnings)
+
       multiplier == 1 ->
         gettext("You got back %{winnings} tokens. Want to try again?", winnings: winnings)
 

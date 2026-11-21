@@ -121,6 +121,8 @@ defmodule SafiraWeb.Router do
             live "/", Index, :index
             live "/paytable", Index, :show_paytable
           end
+
+          live "/minesweeper", MinesweeperLive.Index, :index
         end
 
         scope "/badges", BadgeLive do
@@ -347,6 +349,8 @@ defmodule SafiraWeb.Router do
             live "/drops", MinigamesLive.Index, :edit_scratch_card_drops
             live "/symbols", MinigamesLive.Index, :edit_scratch_card_symbols
           end
+
+          live "/minesweeper", MinigamesLive.Index, :edit_minesweeper
         end
 
         scope "/scanner", ScannerLive do

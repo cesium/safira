@@ -1,0 +1,146 @@
+<.page
+  title="Minesweeper"
+  size={:xl}
+  title_class="uppercase"
+  back_to_link="/app/games"
+  back_to_link_text="Back to Minigames"
+  back_to_link_class="text-light/50 hover:text-white mt-2 transition-colors duration-300"
+>
+  <:actions>
+    <span class="text-semibold text-xl flex place-items-center gap-2">
+      <.icon name="fa-sack-dollar-solid" />
+      {@attendee_tokens}
+    </span>
+  </:actions>
+
+  <section class="w-full flex flex-col items-center justify-center space-y-12">
+    <div id="minesweeper-game" class="flex flex-col items-center gap-8 w-full">
+      <div class="grid grid-cols-4 gap-2 shrink-0 w-full max-w-84 aspect-square rounded-3xl border border-light/10 bg-light/5 p-3">
+        <.tile
+          :for={position <- 0..15}
+          position={position}
+          state={tile_state(@game, position)}
+          disabled={not Minigames.minesweeper_round_active?(@game)}
+        />
+      </div>
+
+      <div class="flex flex-col gap-4 items-center max-w-xl w-full">
+        <div class="flex w-full gap-2">
+          <div class="flex items-center py-2 w-full px-4 rounded-xl border border-light/10 bg-light/5">
+            <.icon name="fa-sack-dollar-solid" class="size-4" />
+            <.form for={%{}} phx-change="set-bet" class="w-full">
+              <input
+                name="bet"
+                type="number"
+                min="1"
+                max={@attendee_tokens}
+                value={@bet}
+                disabled={Minigames.minesweeper_round_active?(@game)}
+                phx-debounce="250"
+                class="w-full bg-transparent border-none focus:ring-transparent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none safira-number-input-without-bg"
+              />
+            </.form>
+          </div>
+
+          <.control_button
+            phx-click="set-bet"
+            phx-value-bet={round(@bet / 2)}
+            disabled={Minigames.minesweeper_round_active?(@game)}
+          >
+            1/2
+          </.control_button>
+          <.control_button
+            phx-click="set-bet"
+            phx-value-bet={@bet * 2}
+            disabled={Minigames.minesweeper_round_active?(@game)}
+          >
+            x2
+          </.control_button>
+          <.control_button
+            phx-click="set-bet"
+            phx-value-bet={@attendee_tokens}
+            disabled={Minigames.minesweeper_round_active?(@game)}
+          >
+            MAX
+          </.control_button>
+        </div>
+
+        <div class="flex w-full gap-2">
+          <div class="flex items-center py-2 w-full px-4 rounded-xl border border-light/10 bg-light/5">
+            <.icon name="fa-bomb-solid" class="size-4" />
+            <.form for={%{}} phx-change="set-mines" class="w-full">
+              <input
+                name="mines"
+                type="number"
+                min={@min_mines}
+                max={@max_mines}
+                value={@mines}
+                disabled={Minigames.minesweeper_round_active?(@game)}
+                phx-debounce="250"
+                class="w-full bg-transparent border-none focus:ring-transparent [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none safira-number-input-without-bg"
+              />
+            </.form>
+          </div>
+
+          <.control_button
+            phx-click="set-mines"
+            phx-value-mines={@mines - 1}
+            disabled={Minigames.minesweeper_round_active?(@game)}
+          >
+            -
+          </.control_button>
+          <.control_button
+            phx-click="set-mines"
+            phx-value-mines={@mines + 1}
+            disabled={Minigames.minesweeper_round_active?(@game)}
+          >
+            +
+          </.control_button>
+          <.control_button
+            phx-click="set-mines"
+            phx-value-mines={@max_mines}
+            disabled={Minigames.minesweeper_round_active?(@game)}
+          >
+            MAX
+          </.control_button>
+        </div>
+
+        <div
+          :if={Minigames.minesweeper_round_active?(@game)}
+          class="flex w-full items-center justify-between py-3 px-4 rounded-xl border border-light/10 bg-light/5"
+        >
+          <span class="uppercase text-sm text-light/50">{gettext("Multiplier")}</span>
+          <span class="font-bold">x{@multiplier}</span>
+        </div>
+
+        <.action_button
+          :if={not Minigames.minesweeper_round_active?(@game)}
+          title={gettext("Bet")}
+          class="mx-0 border! border-light/10! h-fit! py-4 bg-light/5"
+          disabled={@bet <= 0 || @bet > @attendee_tokens || not @minesweeper_active?}
+          phx-click="start-game"
+        />
+
+        <.action_button
+          :if={Minigames.minesweeper_round_active?(@game)}
+          title={gettext("Cashout")}
+          subtitle={"#{@winnings}"}
+          subtitle_icon="sack-dollar-solid"
+          class="mx-0 border! border-light/10! h-fit! py-4 bg-light/5"
+          disabled={@game.revealed_positions == []}
+          phx-click="cashout"
+        />
+      </div>
+    </div>
+  </section>
+</.page>
+
+<.result_modal
+  :if={@result}
+  multiplier={@result.multiplier}
+  winnings={@result.winnings}
+  wrapper_class="px-6"
+  show
+  id="confirm"
+  on_cancel={JS.push("close-modal")}
+/>

@@ -10,44 +10,42 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.CoinFlip.FormComponent do
   def render(assigns) do
     ~H"""
     <div>
-      <.page
-        title={gettext("Coin Flip Configuration")}
-        subtitle={gettext("Configures coin flip minigame's internal settings.")}
-      >
-        <div class="my-8">
-          <.form
-            id="wheel-config-form"
-            for={@form}
-            phx-submit="save"
-            phx-change="validate"
-            phx-target={@myself}
-          >
-            <div class="grid grid-cols-2">
-              <.field
-                field={@form[:is_active]}
-                name="is_active"
-                label="Active"
-                type="switch"
-                help_text={gettext("Defines whether the coin flip minigame is active.")}
-                wrapper_class="my-6"
-              />
-              <.field
-                field={@form[:fee]}
-                name="fee"
-                type="number"
-                help_text={
-                  gettext(
-                    "Fee in percentage that gets removed from the total bet. Must be a number between 0 and 100."
-                  )
-                }
-              />
-            </div>
-            <div class="flex flex-row-reverse">
-              <.button phx-disable-with="Saving...">{gettext("Save Configuration")}</.button>
-            </div>
-          </.form>
-        </div>
-      </.page>
+      <.header>
+        {gettext("Coin Flip Configuration")}
+        <:subtitle>{gettext("Configures coin flip minigame's internal settings.")}</:subtitle>
+      </.header>
+      <div class="mt-8">
+        <.form
+          id="wheel-config-form"
+          for={@form}
+          phx-submit="save"
+          phx-change="validate"
+          phx-target={@myself}
+        >
+          <div class="grid grid-cols-1 gap-x-6 sm:grid-cols-2">
+            <.field
+              field={@form[:is_active]}
+              name="is_active"
+              label="Active"
+              type="switch"
+              help_text={gettext("Defines whether the coin flip minigame is active.")}
+            />
+            <.field
+              field={@form[:fee]}
+              name="fee"
+              type="number"
+              help_text={
+                gettext(
+                  "Fee in percentage that gets removed from the total bet. Must be a number between 0 and 100."
+                )
+              }
+            />
+          </div>
+          <div class="flex flex-row-reverse">
+            <.button phx-disable-with="Saving...">{gettext("Save Configuration")}</.button>
+          </div>
+        </.form>
+      </div>
     </div>
     """
   end

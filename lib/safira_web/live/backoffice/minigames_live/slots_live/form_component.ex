@@ -10,56 +10,58 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.Slots.FormComponent do
   def render(assigns) do
     ~H"""
     <div>
-      <.page
-        title={gettext("Slots Configuration")}
-        subtitle={gettext("Configures slots minigame's internal settings.")}
-      >
-        <:actions>
-          <.link navigate={~p"/dashboard/minigames/slots/reels_icons"}>
-            <.button>
-              <.icon name="hero-star" class="w-5" />
-            </.button>
-          </.link>
-          <.link navigate={~p"/dashboard/minigames/slots/reels_position"}>
-            <.button>
-              <.icon name="hero-view-columns" class="w-5" />
-            </.button>
-          </.link>
-          <.link navigate={~p"/dashboard/minigames/slots/paytable"}>
-            <.button>
-              <.icon name="hero-circle-stack" class="w-5" />
-            </.button>
-          </.link>
-          <.link navigate={~p"/dashboard/minigames/slots/payline"}>
-            <.button>
-              <.icon name="hero-rectangle-stack" class="w-5" />
-            </.button>
-          </.link>
-        </:actions>
-        <div class="my-8">
-          <.form
-            id="slots-config-form"
-            for={@form}
-            phx-submit="save"
-            phx-change="validate"
-            phx-target={@myself}
-          >
-            <div class="grid grid-cols-2">
-              <.field
-                field={@form[:is_active]}
-                name="is_active"
-                label="Active"
-                type="switch"
-                help_text={gettext("Defines whether the slots minigame is active.")}
-                wrapper_class="my-6"
-              />
-            </div>
-            <div class="flex flex-row-reverse">
-              <.button phx-disable-with="Saving...">{gettext("Save Configuration")}</.button>
-            </div>
-          </.form>
-        </div>
-      </.page>
+      <.header>
+        {gettext("Slots Configuration")}
+        <:subtitle>{gettext("Configures slots minigame's internal settings.")}</:subtitle>
+      </.header>
+      <div class="mt-4 flex flex-wrap gap-2">
+        <.link navigate={~p"/dashboard/minigames/slots/reels_icons"}>
+          <.button class="flex items-center gap-2">
+            <.icon name="hero-star" class="w-5" />
+            {gettext("Reel icons")}
+          </.button>
+        </.link>
+        <.link navigate={~p"/dashboard/minigames/slots/reels_position"}>
+          <.button class="flex items-center gap-2">
+            <.icon name="hero-view-columns" class="w-5" />
+            {gettext("Reel positions")}
+          </.button>
+        </.link>
+        <.link navigate={~p"/dashboard/minigames/slots/paytable"}>
+          <.button class="flex items-center gap-2">
+            <.icon name="hero-circle-stack" class="w-5" />
+            {gettext("Paytable")}
+          </.button>
+        </.link>
+        <.link navigate={~p"/dashboard/minigames/slots/payline"}>
+          <.button class="flex items-center gap-2">
+            <.icon name="hero-rectangle-stack" class="w-5" />
+            {gettext("Paylines")}
+          </.button>
+        </.link>
+      </div>
+      <div class="mt-8">
+        <.form
+          id="slots-config-form"
+          for={@form}
+          phx-submit="save"
+          phx-change="validate"
+          phx-target={@myself}
+        >
+          <div class="grid grid-cols-1 gap-x-6 sm:grid-cols-2">
+            <.field
+              field={@form[:is_active]}
+              name="is_active"
+              label="Active"
+              type="switch"
+              help_text={gettext("Defines whether the slots minigame is active.")}
+            />
+          </div>
+          <div class="flex flex-row-reverse">
+            <.button phx-disable-with="Saving...">{gettext("Save Configuration")}</.button>
+          </div>
+        </.form>
+      </div>
     </div>
     """
   end

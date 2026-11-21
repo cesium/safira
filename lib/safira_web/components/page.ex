@@ -28,7 +28,9 @@ defmodule SafiraWeb.Components.Page do
         title_class={"#{size_class(@size)} #{@title_class}"}
         class={"#{if @banner, do: "min-h-40 text-white items-end! pt-0 pb-5.5", else: ""} px-6 lg:px-8 py-9"}
         style={header_style(@banner)}
-        overlay_class={@banner && "bg-gradient-to-t from-primary from-0% to-transparent to-[60%]"}
+        overlay_class={
+          @banner && "bg-gradient-to-t from-app-dark-soft from-0% to-transparent to-[60%]"
+        }
       >
         {@title}
         <:subtitle :if={@subtitle != "" || @back_to_link}>
