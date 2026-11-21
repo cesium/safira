@@ -2287,10 +2287,12 @@ defmodule Safira.Minigames do
   @minesweeper_board_size 16
   @minesweeper_min_mines 1
   @minesweeper_max_mines @minesweeper_board_size - 1
+  @minesweeper_default_mines 3
 
   def minesweeper_board_size, do: @minesweeper_board_size
   def minesweeper_min_mines, do: @minesweeper_min_mines
   def minesweeper_max_mines, do: @minesweeper_max_mines
+  def minesweeper_default_mines, do: @minesweeper_default_mines
 
   @doc """
   Returns the list of minesweeper_rounds.
@@ -2515,14 +2517,15 @@ defmodule Safira.Minigames do
   end
 
   @doc """
-  Returns the current multiplier of a minesweeper round, using the configured house edge and cap.
+  Returns the current multiplier of a minesweeper round, using the house edge and cap
+  saved when its bet was placed.
   """
   def minesweeper_round_multiplier(round) do
     minesweeper_multiplier(
       length(round.mine_positions),
       length(round.revealed_positions),
-      get_minesweeper_house_edge(),
-      get_minesweeper_max_multiplier()
+      round.house_edge,
+      round.max_multiplier
     )
   end
 
@@ -2600,7 +2603,9 @@ defmodule Safira.Minigames do
       |> MinesweeperRound.changeset(%{
         attendee_id: attendee.id,
         mine_positions: mine_positions,
-        bet: bet
+        bet: bet,
+        house_edge: get_minesweeper_house_edge(),
+        max_multiplier: get_minesweeper_max_multiplier()
       })
     end)
     |> Repo.transaction()
@@ -2669,7 +2674,7 @@ defmodule Safira.Minigames do
     do: length(round.revealed_positions) == @minesweeper_board_size - length(round.mine_positions)
 
   defp multiplier_cap_reached?(round),
-    do: minesweeper_round_multiplier(round) >= get_minesweeper_max_multiplier()
+    do: minesweeper_round_multiplier(round) >= round.max_multiplier
 
   defp validate_reveal(nil, _position),
     do: {:error, "Attendee has no active minesweeper round"}

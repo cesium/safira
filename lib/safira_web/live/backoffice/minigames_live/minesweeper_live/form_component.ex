@@ -7,8 +7,6 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.Minesweeper.FormComponent do
   alias Ecto.Changeset
   alias Safira.Minigames
 
-  @max_house_edge floor(100 / Minigames.minesweeper_board_size())
-
   def render(assigns) do
     ~H"""
     <div>
@@ -51,11 +49,11 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.Minesweeper.FormComponent do
                   type="number"
                   help_text={
                     gettext(
-                      "The percentage of total bets retained over time. Must be a number between 0 and %{max}.",
-                      max: @max_house_edge
+                      "The percentage of total bets retained over time. Must be a number between 0 and 99."
                     )
                   }
                 />
+                <.field_help_text help_text={@break_even_text} />
               </div>
             </div>
             <div class="flex flex-row-reverse">
@@ -69,15 +67,18 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.Minesweeper.FormComponent do
   end
 
   def mount(socket) do
+    house_edge = Minigames.get_minesweeper_house_edge()
+    max_multiplier = Minigames.get_minesweeper_max_multiplier()
+
     {:ok,
      socket
-     |> assign(:max_house_edge, @max_house_edge)
+     |> assign(:break_even_text, break_even_text(house_edge, max_multiplier))
      |> assign(
        form:
          to_form(
            %{
-             "max_multiplier" => Minigames.get_minesweeper_max_multiplier(),
-             "house_edge" => round(Minigames.get_minesweeper_house_edge() * 100),
+             "max_multiplier" => max_multiplier,
+             "house_edge" => round(house_edge * 100),
              "is_active" => Minigames.minesweeper_active?()
            },
            as: :minesweeper_configuration
@@ -89,8 +90,18 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.Minesweeper.FormComponent do
     changeset =
       validate_configuration(params["max_multiplier"], params["house_edge"], params["is_active"])
 
+    break_even_text =
+      if changeset.valid? do
+        break_even_text(
+          Changeset.get_field(changeset, :house_edge) / 100,
+          Changeset.get_field(changeset, :max_multiplier)
+        )
+      end
+
     {:noreply,
-     assign(socket, form: to_form(changeset, action: :validate, as: :minesweeper_configuration))}
+     socket
+     |> assign(:break_even_text, break_even_text)
+     |> assign(form: to_form(changeset, action: :validate, as: :minesweeper_configuration))}
   end
 
   def handle_event("save", params, socket) do
@@ -114,8 +125,19 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.Minesweeper.FormComponent do
     |> Changeset.validate_number(:max_multiplier, greater_than: 1)
     |> Changeset.validate_number(:house_edge,
       greater_than_or_equal_to: 0,
-      less_than_or_equal_to: @max_house_edge
+      less_than: 100
     )
+  end
+
+  defp break_even_text(house_edge, max_multiplier) do
+    mines = Minigames.minesweeper_default_mines()
+
+    picks =
+      Enum.find(1..(Minigames.minesweeper_board_size() - mines), fn picks ->
+        Minigames.minesweeper_multiplier(mines, picks, house_edge, max_multiplier) >= 1
+      end)
+
+    gettext("Bet recovered in %{picks} picks (%{mines} mines)", picks: picks, mines: mines)
   end
 
   defp valid_config?(params) do

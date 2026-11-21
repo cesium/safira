@@ -169,6 +169,8 @@ defmodule Safira.MinigamesFixtures do
       |> Enum.into(%{
         attendee_id: Safira.AccountsFixtures.attendee_fixture().id,
         bet: 42,
+        house_edge: 0.05,
+        max_multiplier: 42,
         mine_positions: [1, 2],
         revealed_positions: [1, 2],
         status: :active,

@@ -761,6 +761,8 @@ defmodule Safira.MinigamesTest do
     @invalid_attrs %{
       attendee_id: nil,
       bet: nil,
+      house_edge: nil,
+      max_multiplier: nil,
       mine_positions: nil,
       revealed_positions: nil,
       status: nil,
@@ -783,6 +785,8 @@ defmodule Safira.MinigamesTest do
       valid_attrs = %{
         attendee_id: attendee.id,
         bet: 42,
+        house_edge: 0.05,
+        max_multiplier: 42,
         mine_positions: [1, 2],
         revealed_positions: [1, 2],
         status: :active,
@@ -794,6 +798,8 @@ defmodule Safira.MinigamesTest do
 
       assert minesweeper_round.attendee_id == attendee.id
       assert minesweeper_round.bet == 42
+      assert minesweeper_round.house_edge == 0.05
+      assert minesweeper_round.max_multiplier == 42
       assert minesweeper_round.mine_positions == [1, 2]
       assert minesweeper_round.revealed_positions == [1, 2]
       assert minesweeper_round.status == :active
@@ -809,6 +815,8 @@ defmodule Safira.MinigamesTest do
 
       update_attrs = %{
         bet: 43,
+        house_edge: 0.06,
+        max_multiplier: 43,
         mine_positions: [1],
         revealed_positions: [1],
         status: :lost,
@@ -819,6 +827,8 @@ defmodule Safira.MinigamesTest do
                Minigames.update_minesweeper_round(minesweeper_round, update_attrs)
 
       assert minesweeper_round.bet == 43
+      assert minesweeper_round.house_edge == 0.06
+      assert minesweeper_round.max_multiplier == 43
       assert minesweeper_round.mine_positions == [1]
       assert minesweeper_round.revealed_positions == [1]
       assert minesweeper_round.status == :lost
@@ -867,7 +877,9 @@ defmodule Safira.MinigamesTest do
         Minigames.create_minesweeper_round(%{
           attendee_id: attendee.id,
           mine_positions: mine_positions,
-          bet: 10
+          bet: 10,
+          house_edge: Minigames.get_minesweeper_house_edge(),
+          max_multiplier: Minigames.get_minesweeper_max_multiplier()
         })
 
       round
@@ -912,6 +924,17 @@ defmodule Safira.MinigamesTest do
       assert round.status == :cashed_out
       assert round.tokens == 20
       assert Accounts.get_attendee!(attendee.id).tokens == 100 + 20
+    end
+
+    test "config changes mid-round don't change that round's payout", %{attendee: attendee} do
+      round = start_round(attendee, Enum.to_list(0..7))
+      assert {:ok, _round} = Minigames.reveal_minesweeper_tile(attendee, round.id, 8)
+
+      Minigames.change_minesweeper_house_edge(0.05)
+      Minigames.change_minesweeper_max_multiplier(1.5)
+
+      assert {:ok, round} = Minigames.cashout_minesweeper_round(attendee, round.id)
+      assert round.tokens == 20
     end
   end
 end

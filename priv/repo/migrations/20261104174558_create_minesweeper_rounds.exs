@@ -10,6 +10,8 @@ defmodule Safira.Repo.Migrations.CreateMinesweeperRounds do
       add :status, :string, null: false
       add :bet, :integer, null: false
       add :tokens, :integer, default: 0
+      add :house_edge, :float, null: false
+      add :max_multiplier, :integer, null: false
 
       add :attendee_id, references(:attendees, type: :binary_id, on_delete: :delete_all),
         null: false

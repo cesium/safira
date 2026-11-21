@@ -18,7 +18,7 @@ defmodule SafiraWeb.App.GamesLive.MinesweeperLive.Index do
      |> assign(:current_page, :minesweeper)
      |> assign(:attendee_tokens, attendee.tokens)
      |> assign(:bet, 10)
-     |> assign(:mines, 3)
+     |> assign(:mines, Minigames.minesweeper_default_mines())
      |> assign(:min_mines, Minigames.minesweeper_min_mines())
      |> assign(:max_mines, Minigames.minesweeper_max_mines())
      |> assign_round(Minigames.continue_active_minesweeper_round(attendee.id))
