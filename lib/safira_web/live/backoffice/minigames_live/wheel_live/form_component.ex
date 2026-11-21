@@ -10,49 +10,48 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.Wheel.FormComponent do
   def render(assigns) do
     ~H"""
     <div>
-      <.page
-        title={gettext("Lucky Wheel Configuration")}
-        subtitle={gettext("Configures lucky wheel minigame's internal settings.")}
-      >
-        <:actions>
-          <.link navigate={~p"/dashboard/minigames/wheel/drops"}>
-            <.button>
-              <.icon name="hero-table-cells" class="w-5" />
-            </.button>
-          </.link>
-        </:actions>
-        <div class="my-8">
-          <.form
-            id="wheel-config-form"
-            for={@form}
-            phx-submit="save"
-            phx-change="validate"
-            phx-target={@myself}
-          >
-            <div class="grid grid-cols-2">
-              <.field
-                field={@form[:is_active]}
-                name="is_active"
-                label="Active"
-                type="switch"
-                help_text={gettext("Defines whether the wheel minigame is active.")}
-                wrapper_class="my-6"
-              />
-              <.field
-                field={@form[:price]}
-                name="price"
-                type="number"
-                help_text={
-                  gettext("Price in tokens that attendees need to pay to spin the lucky wheel.")
-                }
-              />
-            </div>
-            <div class="flex flex-row-reverse">
-              <.button phx-disable-with="Saving...">Save Configuration</.button>
-            </div>
-          </.form>
-        </div>
-      </.page>
+      <.header>
+        {gettext("Lucky Wheel Configuration")}
+        <:subtitle>{gettext("Configures lucky wheel minigame's internal settings.")}</:subtitle>
+      </.header>
+      <div class="mt-4 flex flex-wrap gap-2">
+        <.link navigate={~p"/dashboard/minigames/wheel/drops"}>
+          <.button class="flex items-center gap-2">
+            <.icon name="hero-table-cells" class="w-5" />
+            {gettext("Drops")}
+          </.button>
+        </.link>
+      </div>
+      <div class="mt-8">
+        <.form
+          id="wheel-config-form"
+          for={@form}
+          phx-submit="save"
+          phx-change="validate"
+          phx-target={@myself}
+        >
+          <div class="grid grid-cols-1 gap-x-6 sm:grid-cols-2">
+            <.field
+              field={@form[:is_active]}
+              name="is_active"
+              label="Active"
+              type="switch"
+              help_text={gettext("Defines whether the wheel minigame is active.")}
+            />
+            <.field
+              field={@form[:price]}
+              name="price"
+              type="number"
+              help_text={
+                gettext("Price in tokens that attendees need to pay to spin the lucky wheel.")
+              }
+            />
+          </div>
+          <div class="flex flex-row-reverse">
+            <.button phx-disable-with="Saving...">Save Configuration</.button>
+          </div>
+        </.form>
+      </div>
     </div>
     """
   end

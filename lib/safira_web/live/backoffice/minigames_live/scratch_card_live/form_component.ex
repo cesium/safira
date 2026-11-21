@@ -10,58 +10,54 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.ScratchCard.FormComponent do
   def render(assigns) do
     ~H"""
     <div>
-      <.page
-        title={gettext("Scratch Card Configuration")}
-        subtitle={gettext("Configures scratch card minigame's internal settings.")}
-      >
-        <:actions>
-          <.link navigate={~p"/dashboard/minigames/scratch_card/drops"}>
-            <.button>
-              <.icon name="hero-table-cells" class="w-5" />
-            </.button>
-          </.link>
-        </:actions>
+      <.header>
+        {gettext("Scratch Card Configuration")}
+        <:subtitle>{gettext("Configures scratch card minigame's internal settings.")}</:subtitle>
+      </.header>
+      <div class="mt-4 flex flex-wrap gap-2">
+        <.link navigate={~p"/dashboard/minigames/scratch_card/drops"}>
+          <.button class="flex items-center gap-2">
+            <.icon name="hero-table-cells" class="w-5" />
+            {gettext("Drops")}
+          </.button>
+        </.link>
 
-        <:actions>
-          <.link navigate={~p"/dashboard/minigames/scratch_card/symbols"}>
-            <.button>
-              <.icon name="hero-star" class="w-5" />
-            </.button>
-          </.link>
-        </:actions>
+        <.link navigate={~p"/dashboard/minigames/scratch_card/symbols"}>
+          <.button class="flex items-center gap-2">
+            <.icon name="hero-star" class="w-5" />
+            {gettext("Symbols")}
+          </.button>
+        </.link>
+      </div>
 
-        <div class="my-8">
-          <.form
-            id="scratch-card-config-form"
-            for={@form}
-            phx-submit="save"
-            phx-change="validate"
-            phx-target={@myself}
-          >
-            <div class="grid grid-cols-2">
-              <.field
-                field={@form[:is_active]}
-                name="is_active"
-                label="Active"
-                type="switch"
-                help_text={gettext("Defines whether the scratch card minigame is active.")}
-                wrapper_class="my-6"
-              />
-              <.field
-                field={@form[:price]}
-                name="price"
-                type="number"
-                help_text={
-                  gettext("Price in tokens that attendees need to pay to buy a scratch card.")
-                }
-              />
-            </div>
-            <div class="flex flex-row-reverse">
-              <.button phx-disable-with="Saving...">{gettext("Save Configuration")}</.button>
-            </div>
-          </.form>
-        </div>
-      </.page>
+      <div class="mt-8">
+        <.form
+          id="scratch-card-config-form"
+          for={@form}
+          phx-submit="save"
+          phx-change="validate"
+          phx-target={@myself}
+        >
+          <div class="grid grid-cols-1 gap-x-6 sm:grid-cols-2">
+            <.field
+              field={@form[:is_active]}
+              name="is_active"
+              label="Active"
+              type="switch"
+              help_text={gettext("Defines whether the scratch card minigame is active.")}
+            />
+            <.field
+              field={@form[:price]}
+              name="price"
+              type="number"
+              help_text={gettext("Price in tokens that attendees need to pay to buy a scratch card.")}
+            />
+          </div>
+          <div class="flex flex-row-reverse">
+            <.button phx-disable-with="Saving...">{gettext("Save Configuration")}</.button>
+          </div>
+        </.form>
+      </div>
     </div>
     """
   end

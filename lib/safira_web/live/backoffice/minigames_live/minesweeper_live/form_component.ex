@@ -10,58 +10,57 @@ defmodule SafiraWeb.Backoffice.MinigamesLive.Minesweeper.FormComponent do
   def render(assigns) do
     ~H"""
     <div>
-      <.page
-        title={gettext("Minesweeper Configuration")}
-        subtitle={gettext("Configures minesweeper minigame's internal settings.")}
-      >
-        <div class="my-8">
-          <.form
-            id="minesweeper-config-form"
-            for={@form}
-            phx-submit="save"
-            phx-change="validate"
-            phx-target={@myself}
-          >
-            <div class="grid grid-cols-2 gap-4">
+      <.header>
+        {gettext("Minesweeper Configuration")}
+        <:subtitle>{gettext("Configures minesweeper minigame's internal settings.")}</:subtitle>
+      </.header>
+      <div class="mt-8">
+        <.form
+          id="minesweeper-config-form"
+          for={@form}
+          phx-submit="save"
+          phx-change="validate"
+          phx-target={@myself}
+        >
+          <div class="grid grid-cols-1 gap-x-6 sm:grid-cols-2">
+            <.field
+              field={@form[:is_active]}
+              name="is_active"
+              label="Active"
+              type="switch"
+              help_text={gettext("Defines whether the minesweeper minigame is active.")}
+            />
+            <div class="flex flex-col">
               <.field
-                field={@form[:is_active]}
-                name="is_active"
-                label="Active"
-                type="switch"
-                help_text={gettext("Defines whether the minesweeper minigame is active.")}
-                wrapper_class="my-6"
+                field={@form[:max_multiplier]}
+                name="max_multiplier"
+                type="number"
+                help_text={
+                  gettext(
+                    "The highest possible payout multiplier an attendee can reach in a single round. Must be greater than 1."
+                  )
+                }
               />
-              <div class="flex flex-col">
-                <.field
-                  field={@form[:max_multiplier]}
-                  name="max_multiplier"
-                  type="number"
-                  help_text={
-                    gettext(
-                      "The highest possible payout multiplier an attendee can reach in a single round. Must be greater than 1."
-                    )
-                  }
-                />
 
-                <.field
-                  field={@form[:house_edge]}
-                  name="house_edge"
-                  type="number"
-                  help_text={
-                    gettext(
-                      "The percentage of total bets retained over time. Must be a number between 0 and 99."
-                    )
-                  }
-                />
-                <.field_help_text help_text={@break_even_text} />
-              </div>
+              <.field
+                field={@form[:house_edge]}
+                name="house_edge"
+                type="number"
+                wrapper_class="mb-2!"
+                help_text={
+                  gettext(
+                    "The percentage of total bets retained over time. Must be a number between 0 and 99."
+                  )
+                }
+              />
+              <.field_help_text help_text={@break_even_text} class="mb-6" />
             </div>
-            <div class="flex flex-row-reverse">
-              <.button phx-disable-with="Saving...">{gettext("Save Configuration")}</.button>
-            </div>
-          </.form>
-        </div>
-      </.page>
+          </div>
+          <div class="flex flex-row-reverse">
+            <.button phx-disable-with="Saving...">{gettext("Save Configuration")}</.button>
+          </div>
+        </.form>
+      </div>
     </div>
     """
   end

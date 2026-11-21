@@ -82,7 +82,7 @@
 
 <.modal
   :if={@live_action in [:edit_slots]}
-  id="coin-flip-config-modal"
+  id="slots-config-modal"
   wrapper_class="p-3"
   show
   on_cancel={JS.patch(~p"/dashboard/minigames/")}
@@ -219,7 +219,8 @@
 
 <.modal
   :if={@live_action in [:edit_minesweeper]}
-  id="minesweeper-modal"
+  id="minesweeper-config-modal"
+  wrapper_class="p-3"
   show
   on_cancel={JS.patch(~p"/dashboard/minigames/")}
 >
