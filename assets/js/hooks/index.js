@@ -13,3 +13,4 @@ export { ZipUpload } from "./zip_upload.js";
 export { Dock } from "./dock.js";
 export { ScratchCard } from "./scratch_card.js";
 export { Metaballs } from "./metaballs.js";
+export { HeroScrollLink } from "./hero_scroll_link.js";

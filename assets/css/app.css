@@ -10,8 +10,8 @@
 @source "../../lib/safira_web";
 
 @theme {
-  --color-primary: #04041c;
-  --color-accent: #ffdb0d;
+  --color-primary: #000000;
+  --color-accent: #dc01df;
   --color-light: #ffffff;
   --color-light-muted: #a1a1aa;
   --color-light-shade: #e5e7eb;

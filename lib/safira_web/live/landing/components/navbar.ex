@@ -8,6 +8,7 @@ defmodule SafiraWeb.Landing.Components.Navbar do
   attr :pages, :list, default: []
   attr :registrations_open?, :boolean, default: false
   attr :current_user, :map, default: nil
+  attr :current_page, :atom, default: nil
   attr :class, :any, default: nil
 
   def navbar(assigns) do
@@ -79,15 +80,57 @@ defmodule SafiraWeb.Landing.Components.Navbar do
       </nav>
       <nav
         :if={@pages != []}
-        class="fixed inset-x-0 bottom-0 z-30 hidden lg:flex justify-center gap-8.75 pt-12.5 pb-12.5 bg-radial-[100%_78%_at_bottom] from-black/50 to-transparent select-none pointer-events-none"
+        class="fixed inset-x-0 bottom-0 z-30 hidden lg:flex justify-center pt-12.5 pb-12.5 bg-radial-[100%_100%_at_bottom] from-black/80 to-transparent select-none pointer-events-none"
       >
-        <.link
-          :for={page <- @pages}
-          navigate={page.url}
-          class="pointer-events-auto font-pixel text-base text-white transition-colors duration-75 ease-in hover:text-accent"
+        <div
+          aria-hidden="true"
+          class="absolute inset-0 -z-10 backdrop-blur-xs mask-t-from-50%"
         >
-          {page.title}
+        </div>
+        <.link
+          :if={@current_page != :home}
+          navigate={~p"/"}
+          class="pointer-events-auto absolute bottom-12.5 left-10 md:left-15 flex items-center gap-2 font-pixel text-base text-white opacity-80 transition-colors duration-75 ease-in hover:text-accent"
+        >
+          <.icon name="hero-arrow-left-mini" class="size-4" /> Back to homepage
         </.link>
+        <.link
+          id="hero-scroll-link"
+          href="#about"
+          phx-hook="HeroScrollLink"
+          data-hidden
+          inert
+          phx-mounted={JS.ignore_attributes(["data-hidden", "inert"])}
+          class="group pointer-events-auto grid grid-cols-[1fr] opacity-80 transition-[grid-template-columns] duration-500 ease-in-out data-hidden:grid-cols-[0fr]"
+        >
+          <span class="min-w-0">
+            <span class="flex items-center gap-2 whitespace-nowrap pr-8.75 font-pixel text-base text-white transition duration-500 ease-in-out group-hover:text-accent group-data-hidden:translate-x-full group-data-hidden:opacity-0">
+              Scroll to discover more <.icon name="hero-arrow-down-mini" class="size-4" />
+            </span>
+          </span>
+        </.link>
+        <div class="relative z-10 flex gap-8.75">
+          <.link
+            :for={page <- @pages}
+            navigate={page.url}
+            aria-current={page.key == @current_page && "page"}
+            class={[
+              "pointer-events-auto font-pixel text-base text-white transition-colors duration-75 ease-in",
+              if(page.key == @current_page,
+                do:
+                  "relative after:absolute after:inset-x-0 after:-bottom-2 after:h-1 after:rounded-full after:bg-white/60 after:blur-sm",
+                else: "opacity-70 hover:text-accent"
+              )
+            ]}
+          >
+            {page.title}
+            <.icon
+              :if={page.key == @current_page}
+              name="fa-circle-solid"
+              class="absolute -bottom-2.5 left-1/2 size-1.5 -translate-x-1/2"
+            />
+          </.link>
+        </div>
       </nav>
       <div
         id="mobile-navbar"
