@@ -2,6 +2,7 @@ defmodule SafiraWeb.Landing.HomeLive.Index do
   alias Safira.Companies
   use SafiraWeb, :landing_view
 
+  import SafiraWeb.Landing.Components.Overlay
   import SafiraWeb.Landing.HomeLive.Components.{Hero, Partners, Pitch, Sponsors, Speakers}
 
   alias Safira.{Activities, Event}

@@ -8,10 +8,11 @@ defmodule SafiraWeb.Landing.Components.Navbar do
   attr :pages, :list, default: []
   attr :registrations_open?, :boolean, default: false
   attr :current_user, :map, default: nil
+  attr :class, :any, default: nil
 
   def navbar(assigns) do
     ~H"""
-    <div>
+    <div class={@class}>
       <nav class="pt-8 pb-4 px-10 md:px-15">
         <div class="flex h-16 items-center justify-between">
           <div class="relative flex flex-auto">
