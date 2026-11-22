@@ -85,6 +85,8 @@
   --color-info-950: var(--color-blue-950);
 
   --font-pixel: 'Geist Pixel', ui-monospace, monospace;
+  --font-pixel-grid: 'Geist Pixel', ui-monospace, monospace;
+  --font-pixel-grid--font-variation-settings: 'ELSH' 25;
   --font-mono: 'Geist Mono', ui-monospace, monospace;
 
   --animate-slide-in: slide-in 1.5s ease-in-out;

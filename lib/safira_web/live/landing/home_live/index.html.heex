@@ -1,14 +1,5 @@
 <.overlay fade={:in}>
-  <section
-    id="hero"
-    class="flex min-h-dvh snap-start flex-col justify-center px-10 md:px-15"
-  >
-    <.hero
-      event_start_date={@event_start_date}
-      event_end_date={@event_end_date}
-      registrations_open?={@registrations_open?}
-    />
-  </section>
+  <.hero event_start_date={@event_start_date} event_end_date={@event_end_date} />
 </.overlay>
 <.overlay id="about" class="snap-start">
   <div class="px-10 md:px-15">
