@@ -10,28 +10,24 @@ defmodule SafiraWeb.Landing.Components.Overlay do
     doc: ":in goes from transparent at the top to black, :out from black to transparent"
 
   attr :class, :any, default: nil
-  attr :rest, :global
   slot :inner_block, required: true
 
   def overlay(assigns) do
     ~H"""
-    <div
-      class={[
-        "flow-root",
-        case @fade do
-          nil ->
-            "bg-black"
+    <div class={[
+      "flow-root",
+      case @fade do
+        nil ->
+          "bg-black"
 
-          :in ->
-            "bg-linear-to-b from-transparent via-black/27 via-36% to-black to-98%"
+        :in ->
+          "bg-linear-to-b from-transparent via-black/27 via-36% to-black to-98%"
 
-          :out ->
-            "bg-linear-to-t from-transparent via-black/70 via-45% to-black to-90%"
-        end,
-        @class
-      ]}
-      {@rest}
-    >
+        :out ->
+          "bg-linear-to-t from-transparent via-black/70 via-45% to-black to-90%"
+      end,
+      @class
+    ]}>
       {render_slot(@inner_block)}
     </div>
     """

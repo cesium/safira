@@ -1,7 +1,8 @@
 <.overlay fade={:in}>
   <.hero event_start_date={@event_start_date} event_end_date={@event_end_date} />
 </.overlay>
-<.overlay id="about" class="snap-start">
+<.overlay>
+  <div id="about" class="snap-start"></div>
   <div class="px-10 md:px-15">
     <.pitch :if={@has_schedule? || @has_highlighted_speakers? || @has_sponsors?} />
   </div>
