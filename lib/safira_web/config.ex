@@ -10,31 +10,37 @@ defmodule SafiraWeb.Config do
 
     [
       %{
+        key: :schedule,
         title: "Schedule",
         url: "/schedule",
         feature_flag: "schedule_enabled"
       },
       %{
+        key: :team,
         title: "Team",
         url: "/team",
         feature_flag: "team_enabled"
       },
       %{
+        key: :challenges,
         title: "Challenges",
         url: "/challenges",
         feature_flag: "challenges_enabled"
       },
       %{
+        key: :speakers,
         title: "Speakers",
         url: "/speakers",
         feature_flag: "speakers_enabled"
       },
       %{
+        key: :faqs,
         title: "FAQs",
         url: "/faqs",
         feature_flag: "faqs_enabled"
       },
       %{
+        key: :call_for_staff,
         title: "Call for Staff",
         url: "https://forms.gle/XWHoNu4LjC8BogF68",
         feature_flag: "call_for_staff_enabled"

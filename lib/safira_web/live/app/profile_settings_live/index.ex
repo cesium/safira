@@ -8,7 +8,7 @@ defmodule SafiraWeb.App.ProfileSettingsLive do
       title="Settings"
       subtitle="Manage your profile settings"
       size={:xl}
-      title_class="font-terminal uppercase"
+      title_class="font-pixel uppercase"
     >
       <.live_component
         module={SafiraWeb.UserAuth.Components.UserProfileSettings}

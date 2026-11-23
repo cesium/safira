@@ -11,7 +11,8 @@ defmodule SafiraWeb.Layouts do
   use SafiraWeb, :html
 
   import SafiraWeb.Components.Sidebar
-  import SafiraWeb.Landing.Components.{Footer, Navbar, Sparkles}
+  import SafiraWeb.Landing.Components.{Footer, Navbar}
+  import SafiraWeb.Components.Metaballs
   import SafiraWeb.Components.Banner
 
   embed_templates "layouts/*"

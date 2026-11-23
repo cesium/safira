@@ -3,13 +3,13 @@ defmodule SafiraWeb.App.WaitingLive.Index do
 
   alias Safira.Event
 
-  import SafiraWeb.Landing.Components.Sparkles
+  import SafiraWeb.Components.Metaballs
 
   @impl true
   def render(assigns) do
     ~H"""
     <div>
-      <.sparkles />
+      <.metaballs />
       <!-- 3D physics based credential scene  -->
       <div
         id="credential-scene"
@@ -20,12 +20,12 @@ defmodule SafiraWeb.App.WaitingLive.Index do
       </div>
       <!-- Timer to the event  -->
       <div class="z-20 mt-8">
-        <h1 class="font-terminal text-center text-2xl sm:text-4xl uppercase">
+        <h1 class="font-pixel text-center text-2xl sm:text-4xl uppercase">
           {gettext("Waiting for the event to start!")}
         </h1>
         <div
           id="seconds-remaining"
-          class="font-terminal text-center text-4xl sm:text-6xl mt-12 uppercase"
+          class="font-pixel text-center text-4xl sm:text-6xl mt-12 uppercase"
           phx-hook="Countdown"
         >
         </div>

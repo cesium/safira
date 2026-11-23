@@ -16,7 +16,7 @@ defmodule SafiraWeb.ConfirmationPendingLive do
           <.icon name="hero-envelope" class="w-10 h-10 sm:w-16 sm:h-16" />
         </span>
       </div>
-      <h1 class="px-4 font-terminal uppercase text-3xl text-center mt-8 sm:mt-10">
+      <h1 class="px-4 font-pixel uppercase text-3xl text-center mt-8 sm:mt-10">
         {gettext("We need to verify your email address!")}
       </h1>
       <p class="text-center mt-6 px-4">
@@ -31,12 +31,12 @@ defmodule SafiraWeb.ConfirmationPendingLive do
       <p class="text-center mt-4 px-4">
         {gettext("Still can't find it?")}
       </p>
-      <div class="font-terminal px-4 sm:px-24 text-center text-2xl sm:text-4xl mt-12">
+      <div class="font-pixel px-4 sm:px-24 text-center text-2xl sm:text-4xl mt-12">
         <.action_button
           title={gettext("Re-send Verification Email")}
           phx-click="resend"
           class="!h-14"
-          title_class="text-lg !font-iregular !normal-case"
+          title_class="text-lg !font-mono !normal-case"
         />
       </div>
       <p class="text-sm sm:text-md text-center mt-8 opacity-80 px-4">

@@ -84,7 +84,7 @@
     <div class="flex flex-col gap-4 w-full">
       <div class="flex flex-row gap-1 items-center pb-4 border-b-2 border-light/10">
         <.icon name="fa-medal-solid" class="size-4 text-accent" />
-        <h1 class="font-semibold text-light/50 font-terminal uppercase px-2">
+        <h1 class="font-semibold text-light/50 font-pixel uppercase px-2">
           {gettext("Last 5 badges redeemed")}
         </h1>
       </div>
@@ -99,7 +99,7 @@
           class="flex flex-col gap-1 px-3 basis-1/2 sm:basis-auto sm:min-w-52"
         >
           <.badge id={"#{id}-#{badge.id}"} badge={badge} width="max-w-44" show_tokens />
-          <p class="text-sm font-terminal uppercase mx-auto">
+          <p class="text-sm font-pixel uppercase mx-auto">
             {relative_datetime(badge.redeemed_at)}
           </p>
         </div>
@@ -139,7 +139,7 @@
     </div>
     <div class="flex flex-col gap-4 w-full sm:w-fit">
       <div class="flex flex-row justify-between items-center mt-4 pb-2 h-12 border-b-2 border-white">
-        <h1 class="font-semibold font-terminal uppercase px-2">
+        <h1 class="font-semibold font-pixel uppercase px-2">
           {gettext("Last 5 badges redeemed")}
         </h1>
       </div>
@@ -150,7 +150,7 @@
           class="flex flex-col gap-1 sm:min-w-52"
         >
           <.badge id={"#{id}-#{badge.id}"} badge={badge} width="max-w-44" show_tokens />
-          <p class="text-sm font-terminal uppercase mx-auto">
+          <p class="text-sm font-pixel uppercase mx-auto">
             {relative_datetime(badge.redeemed_at)}
           </p>
         </div>

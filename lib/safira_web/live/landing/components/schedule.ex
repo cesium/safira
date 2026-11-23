@@ -73,7 +73,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
   defp filters(assigns) do
     ~H"""
     <div class="block relative mt-8">
-      <span class="w-full font-iregular text-lg uppercase">{gettext("Filter by")}</span>
+      <span class="w-full font-mono text-lg uppercase">{gettext("Filter by")}</span>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 pt-4">
         <%= for category <- fetch_categories() do %>
@@ -123,12 +123,12 @@ defmodule SafiraWeb.Landing.Components.Schedule do
     <div id={@activity.id} class="mx-2 sm:w-full border-t border-white p-[10px] ml-[10px] relative">
       <div class="relative h-full">
         <!-- Times -->
-        <p class="text-lg font-iregular font-bold text-white xs:text-xl">
+        <p class="text-lg font-mono font-bold text-white xs:text-xl">
           {"#{@activity.time_start |> Timex.format!("{h24}:{m}")} - #{@activity.time_end |> Timex.format!("{h24}:{m}")}"}
         </p>
         <!-- Title -->
-        <p class="font-iregular text-xl text-white">
-          <span :if={@activity.category} class="font-iregular font-bold">
+        <p class="font-mono text-xl text-white">
+          <span :if={@activity.category} class="font-mono font-bold">
             {@activity.category.name}
           </span>
           <span class={!@activity.category && "font-bold"}>
@@ -136,7 +136,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
           </span>
         </p>
         <!-- Speakers -->
-        <ul class="my-[0.4em] flex font-iregular text-sm text-gray-400 z-10 gap-2 xl:gap-0">
+        <ul class="my-[0.4em] flex font-mono text-sm text-gray-400 z-10 gap-2 xl:gap-0">
           <li
             :for={{speaker, index} <- Enum.with_index(@activity.speakers, fn el, i -> {el, i} end)}
             class="list-none xl:float-left"
@@ -170,7 +170,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
           <div class="flex flex-wrap justify-center">
             <!-- Location -->
             <div class="flex w-auto items-center">
-              <p class="float-right font-iregular text-sm text-gray-400">
+              <p class="float-right font-mono text-sm text-gray-400">
                 {@activity.location}
               </p>
             </div>
@@ -178,7 +178,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
             <div class="float-right mr-5 flex flex-1 items-center justify-end">
               <p
                 :if={enrolments_enabled(@activity, @user_role, @enrolments)}
-                class="relative hover:underline cursor-pointer -mr-3 font-iregular text-lg text-accent sm:mr-1"
+                class="relative hover:underline cursor-pointer -mr-3 font-mono text-lg text-accent sm:mr-1"
                 phx-click="enrol"
                 phx-target={@myself}
                 data-confirm={"#{gettext("You are enrolling for")} #{@activity.title}. #{gettext("This action cannot be undone. Are you sure?")}"}
@@ -188,7 +188,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
               </p>
               <p
                 :if={already_enrolled(@activity, @enrolments)}
-                class="relative -mr-3 font-iregular text-lg text-accent sm:mr-1"
+                class="relative -mr-3 font-mono text-lg text-accent sm:mr-1"
                 phx-value-activity_id={@activity.id}
               >
                 {gettext("Enrolled")}
@@ -197,7 +197,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
             <!-- Expand -->
             <button
               :if={not is_nil(@activity.description) and @activity.description != ""}
-              class="font-terminal uppercase w-16 select-none rounded-full px-2 text-xl text-white border border-white hover:bg-white/20 transition-colors"
+              class="font-pixel uppercase w-16 select-none rounded-full px-2 text-xl text-white border border-white hover:bg-white/20 transition-colors"
               phx-click={
                 JS.toggle(
                   to: "#schedule-#{@activity.id}",
@@ -222,7 +222,7 @@ defmodule SafiraWeb.Landing.Components.Schedule do
     ~H"""
     <div id={@activity.id} class="mx-2 sm:w-full border-t border-white p-[10px] ml-[10px] relative">
       <div class="relative h-full flex flex-row justify-between items-center">
-        <p class="font-iregular text-xl text-white font-bold">
+        <p class="font-mono text-xl text-white font-bold">
           {@activity.title}
         </p>
         <div>
@@ -252,10 +252,10 @@ defmodule SafiraWeb.Landing.Components.Schedule do
         </div>
 
         <div class="-mt-8 md:-mt-10">
-          <h5 class="font-terminal uppercase text-2xl text-accent md:text-3xl">
+          <h5 class="font-pixel uppercase text-2xl text-accent md:text-3xl">
             {@date |> Timex.format!("{D} {Mshort}")}
           </h5>
-          <h2 class="font-terminal uppercase">
+          <h2 class="font-pixel uppercase">
             {@date |> Timex.format!("{WDfull}")}
           </h2>
         </div>
